@@ -45,7 +45,6 @@ add_subdirectory( Half )
 add_subdirectory( Iex )
 add_subdirectory( IexMath )
 add_subdirectory( Imath )
-add_subdirectory( IlmThread )
 
 # Can't seem to do EXCLUDE_FROM_ALL on the test executables
 # since you can't then create a dependency on the internal
