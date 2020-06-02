@@ -4,7 +4,7 @@
 
 To build the latest release of Imath, begin by downloading the
 source from the releases page
-https://github.com/AcademySoftwareFoundation/Imath-test/tarball/master.
+https://github.com/AcademySoftwareFoundation/Imath-test/tarball/{version}.
 
 To build from the latest development version, which may not be stable,
 download the master branch via
@@ -30,14 +30,8 @@ directory of the source code tree as ``$source_directory``.
 
 Make sure these are installed on your system before building Imath:
 
-* Imath requires CMake version 3.10 or newer (or autoconf on Linux systems).
-  - NB: CMake 3.12 is required for current PyIlmBase support
+* Imath requires CMake version 3.10 or newer (or autoconf on Linux systems).##
 * C++ compiler that supports C++11
-* Python and boost-python if building the PyIlmBase module.
-  - NB: If you have a custom install of boost and have issues, you may
-    need to set Boost_ROOT and/or manually disable Boost_NO_BOOST_CMAKE
-    in the PyIlmBase cmake file when you run cmake. See the FindBoost
-    documentation that is part of cmake for more information.
 
 The instructions that follow describe building Imath with CMake, but
 you can also build and install Imath via the autoconf
@@ -112,8 +106,7 @@ similar options, you are encouraged to look at the ``CMakeLists.txt``
 infrastructure. In particular, there has been an attempt to centralize
 the settings into a common place to more easily see all of them in a
 text editor. For IlmBase, this is config/IlmBaseSetup.cmake inside the
-IlmBase tree. For Imath, the settings will similarly be found in
-``config/ImathSetup.cmake``. As per usual, these settings can also be
+IlmBase tree. As per usual, these settings can also be
 seen and/or edited using any of the various gui editors for working
 with cmake such as ``ccmake``, ``cmake-gui``, as well as some of the
 IDEs in common use.
@@ -130,6 +123,7 @@ isolation.
 
 A toolchain file is simply just a cmake script that sets all the
 compiler and related flags and is run very early in the configuration
+
 step to be able to set all the compiler options and such for the
 discovery that cmake performs automatically. These options can be set
 on the command line still if that is clearer, but a theoretical
@@ -150,8 +144,8 @@ More documentation:
 ## CMake Configuration Options
 
 The default CMake configuration options are stored in
-``IlmBase/config/IlmBaseSetup.cmake`` and in
-``Imath/config/ImathSetup.cmake``. To see a complete set of option
+``IlmBase/config/IlmBaseSetup.cmake``.
+To see a complete set of option
 variables, run:
 
     % cmake -LAH $source_directory
@@ -184,10 +178,6 @@ You can customize these options three ways:
 
   Public namespace alias for Iex. Default is ``Iex``.
 
-* **ILMBASE\_ILMTHREAD\_NAMESPACE**
-
-  Public namespace alias for IlmThread. Default is ``IlmThread``.
-
 * **ILMBASE\_IMATH\_NAMESPACE**
  
   Public namespace alias for Imath. Default is ``Imath``.
@@ -196,10 +186,6 @@ You can customize these options three ways:
  
   Real namespace for Iex that will end up in compiled symbols. Default is ``Iex\_<major>\_<minor>``.
 
-* **ILMBASE\_INTERNAL\_ILMTHREAD\_NAMESPACE**
- 
-  Real namespace for IlmThread that will end up in compiled symbols. Default is ``IlmThread\_<major>\_<minor>``.
-
 * **ILMBASE\_INTERNAL\_IMATH\_NAMESPACE**
  
   Real namespace for Imath that will end up in compiled symbols. Default is ``Imath\_<major>\_<minor>``.
@@ -207,19 +193,6 @@ You can customize these options three ways:
 * **ILMBASE\_NAMESPACE\_CUSTOM**
  
   Whether the namespace has been customized (so external users know)
-
-### Python Options:
-
-* **PyIlmBase\_Python2\_SITEARCH\_REL**
-
-  This will normally be computed based on where the python2 binary and site-packages live and
-  then be a relative path based on the root of those. For example, if site-packages is in
-  ``/usr/lib/python2.7/site-packages`` and the python binary is ``/usr/bin/python2.7``, this
-  will result in the default install path being ``${CMAKE\_INSTALL\_PREFIX}/lib/python2.7/site-packages``
-
-* **PyIlmBase\_Python3\_SITEARCH\_REL**
-
-  Identical logic to PyIlmBase\_Python2\_SITEARCH\_REL path above, but for python 3.x
 
 ### Linting Options:
 
