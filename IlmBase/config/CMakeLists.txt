@@ -19,35 +19,6 @@ if(ILMBASE_HAVE_UCONTEXT_H)
   endif()
 endif()
 
-###check_include_files(pthread.h ILMBASE_HAVE_PTHREAD)
-if(Threads_FOUND)
-  if(CMAKE_HAVE_PTHREAD_H OR CMAKE_USE_PTHREADS_INIT OR CMAKE_HP_PTHREAD_INIT)
-    set(ILMBASE_HAVE_PTHREAD ON)
-    # TODO: remove this once we cleanly have ILMBASE_ prefix on all #defines
-    set(HAVE_PTHREAD ON)
-  endif()
-
-  # we have threads, but do we have posix semaphores for sem_init?
-  # should be in pthreads
-  if(NOT (APPLE OR (WIN32 AND (NOT MINGW))))
-    if(MINGW)
-      check_include_files("pthread_unistd.h;semaphore.h" ILMBASE_HAVE_SEMAPHORE_H)
-    else()
-      check_include_files(semaphore.h ILMBASE_HAVE_SEMAPHORE_H)
-    endif()
-    if(ILMBASE_HAVE_SEMAPHORE_H AND ILMBASE_HAVE_PTHREAD)
-      # should just be in libc, so no need for check_library_exists
-      set(CMAKE_REQUIRED_FLAGS ${CMAKE_THREAD_LIBS_INIT})
-      check_library_exists(pthread sem_init "" ILMBASE_HAVE_POSIX_SEMAPHORES)
-      # TODO: remove this once we cleanly have ILMBASE_ prefix on all #defines
-      if(ILMBASE_HAVE_POSIX_SEMAPHORES)
-        set(HAVE_POSIX_SEMAPHORES ON)
-      endif()
-      set(CMAKE_REQUIRED_FLAGS)
-    endif()
-  endif()
-endif()
-
 if (ILMBASE_ENABLE_LARGE_STACK)
   set(ILMBASE_HAVE_LARGE_STACK ON)
 endif()
