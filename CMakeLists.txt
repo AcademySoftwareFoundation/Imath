@@ -14,25 +14,38 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-# Hint: This can be set to enable custom find_package
-# search paths, probably best to set it when configuring
-# on the command line to cmake instead of setting it
-# here.
-###set(CMAKE_PREFIX_PATH "/prefix")
+# we include this first to parse configure.ac and extract the version
+# numbers
+include(config/ParseConfigure.cmake)
 
-project(ImathMetaProject)
+#set up our project
+project(Imath VERSION 1.0 LANGUAGES C CXX)
 
+#######################################
+#######################################
+# This declares all the configuration variables visible
+# in cmake-gui or similar and the rest of the global
+# project setup
+#
+# Please look at this file to see what is configurable
+#######################################
+#######################################
+include(config/IlmBaseSetup.cmake)
 
-# An "official" way to make this a super-project
-# basically overrides the find_package to not find anything
-# for stuff we're including locally
-set(as_subproject IlmBase)
-macro(find_package)
-  if(NOT "${ARGV0}" IN_LIST as_subproject)
-    _find_package(${ARGV})
-  endif()
-endmacro()
+# generates config headers, package config files
+add_subdirectory(config)
 
+# utility function for the repeated boilerplate of defining
+# the libraries
+include(config/LibraryDefine.cmake)
+
+#######################################
+
+# Include these modules without enable/disable options
+add_subdirectory(Half)
+add_subdirectory(Iex)
+add_subdirectory(IexMath)
+add_subdirectory(Imath)
 
 # If you want to use ctest to configure, build and
 # upload the results, cmake has builtin support for
@@ -60,12 +73,11 @@ endmacro()
 include(CTest)
 if(BUILD_TESTING)
   enable_testing()
+
+  add_subdirectory(HalfTest)
+  add_subdirectory(IexTest)
+  add_subdirectory(ImathTest)
 endif()
-
-#######################################
-
-# Include these two modules without enable/disable options
-add_subdirectory(IlmBase)
 
 # Including this module will add a `clang-format` target to the build if
 # the clang-format executable can be found.

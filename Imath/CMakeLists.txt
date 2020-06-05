@@ -46,5 +46,5 @@ ilmbase_define_library(Imath
     ImathVecAlgo.h
     ImathVec.h
   DEPENDENCIES
-    IlmBase::Half IlmBase::IexMath
-)
+    Half IexMath
+    )
