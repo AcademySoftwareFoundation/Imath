@@ -9,7 +9,6 @@ ilmbase_define_library(Imath
     ImathColorAlgo.cpp
     ImathFun.cpp
     ImathVec.cpp
-    ImathExc.cpp
     ImathMatrixAlgo.cpp
   HEADERS
     ImathBoxAlgo.h
@@ -17,7 +16,6 @@ ilmbase_define_library(Imath
     ImathColorAlgo.h
     ImathColor.h
     ImathEuler.h
-    ImathExc.h
     ImathExport.h
     ImathForward.h
     ImathFrame.h
@@ -48,3 +46,4 @@ ilmbase_define_library(Imath
   DEPENDENCIES
     Half IexMath
     )
+  

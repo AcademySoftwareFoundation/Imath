@@ -45,7 +45,6 @@
 
 #include "ImathPlatform.h"
 #include "ImathFun.h"
-#include "ImathExc.h"
 #include "ImathVec.h"
 #include "ImathShear.h"
 #include "ImathNamespace.h"
@@ -245,7 +244,7 @@ template <class T> class Matrix22
     //------------------------------------------------------------
     // Inverse matrix: If singExc is false, inverting a singular
     // matrix produces an identity matrix.  If singExc is true,
-    // inverting a singular matrix throws a SingMatrixExc.
+    // inverting a singular matrix throws std::invalid_argument.
     //
     // inverse() and invert() invert matrices using determinants.
     //
@@ -527,7 +526,7 @@ template <class T> class Matrix33
     //------------------------------------------------------------
     // Inverse matrix: If singExc is false, inverting a singular
     // matrix produces an identity matrix.  If singExc is true,
-    // inverting a singular matrix throws a SingMatrixExc.
+    // inverting a singular matrix throws a std::invalid_argument.
     //
     // inverse() and invert() invert matrices using determinants;
     // gjInverse() and gjInvert() use the Gauss-Jordan method.
@@ -902,7 +901,7 @@ template <class T> class Matrix44
     //------------------------------------------------------------
     // Inverse matrix: If singExc is false, inverting a singular
     // matrix produces an identity matrix.  If singExc is true,
-    // inverting a singular matrix throws a SingMatrixExc.
+    // inverting a singular matrix throws a std::invalid_argument.
     //
     // inverse() and invert() invert matrices using determinants;
     // gjInverse() and gjInvert() use the Gauss-Jordan method.
@@ -1625,7 +1624,7 @@ Matrix22<T>::inverse (bool singExc) const
                 else
                 {
                     if (singExc)
-                        throw SingMatrixExc ("Cannot invert "
+                        throw std::invalid_argument ("Cannot invert "
                                                 "singular matrix.");
                     return Matrix22();
                 }
@@ -2308,7 +2307,7 @@ Matrix33<T>::gjInverse (bool singExc) const
         if (pivotsize == 0)
         {
             if (singExc)
-                throw ::IMATH_INTERNAL_NAMESPACE::SingMatrixExc ("Cannot invert singular matrix.");
+                throw std::invalid_argument ("Cannot invert singular matrix.");
 
             return Matrix33();
         }
@@ -2350,7 +2349,7 @@ Matrix33<T>::gjInverse (bool singExc) const
         if ((f = t[i][i]) == 0)
         {
             if (singExc)
-                throw ::IMATH_INTERNAL_NAMESPACE::SingMatrixExc ("Cannot invert singular matrix.");
+                throw std::invalid_argument ("Cannot invert singular matrix.");
 
             return Matrix33();
         }
@@ -2429,7 +2428,7 @@ Matrix33<T>::inverse (bool singExc) const
                     else
                     {
                         if (singExc)
-                            throw SingMatrixExc ("Cannot invert "
+                            throw std::invalid_argument ("Cannot invert "
                                                  "singular matrix.");
                         return Matrix33();
                     }
@@ -2480,7 +2479,7 @@ Matrix33<T>::inverse (bool singExc) const
                     else
                     {
                         if (singExc)
-                            throw SingMatrixExc ("Cannot invert "
+                            throw std::invalid_argument ("Cannot invert "
                                                  "singular matrix.");
                         return Matrix33();
                     }
@@ -3577,7 +3576,7 @@ Matrix44<T>::gjInverse (bool singExc) const
         if (pivotsize == 0)
         {
             if (singExc)
-                throw ::IMATH_INTERNAL_NAMESPACE::SingMatrixExc ("Cannot invert singular matrix.");
+                throw std::invalid_argument ("Cannot invert singular matrix.");
 
             return Matrix44();
         }
@@ -3619,7 +3618,7 @@ Matrix44<T>::gjInverse (bool singExc) const
         if ((f = t[i][i]) == 0)
         {
             if (singExc)
-                throw ::IMATH_INTERNAL_NAMESPACE::SingMatrixExc ("Cannot invert singular matrix.");
+                throw std::invalid_argument ("Cannot invert singular matrix.");
 
             return Matrix44();
         }
@@ -3707,7 +3706,7 @@ Matrix44<T>::inverse (bool singExc) const
                 else
                 {
                     if (singExc)
-                        throw SingMatrixExc ("Cannot invert singular matrix.");
+                        throw std::invalid_argument ("Cannot invert singular matrix.");
 
                     return Matrix44();
                 }

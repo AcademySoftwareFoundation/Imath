@@ -43,8 +43,6 @@ include(config/LibraryDefine.cmake)
 
 # Include these modules without enable/disable options
 add_subdirectory(Half)
-add_subdirectory(Iex)
-add_subdirectory(IexMath)
 add_subdirectory(Imath)
 
 # If you want to use ctest to configure, build and
@@ -75,7 +73,6 @@ if(BUILD_TESTING)
   enable_testing()
 
   add_subdirectory(HalfTest)
-  add_subdirectory(IexTest)
   add_subdirectory(ImathTest)
 endif()
 

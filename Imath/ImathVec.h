@@ -43,7 +43,6 @@
 //
 //----------------------------------------------------
 
-#include "ImathExc.h"
 #include "ImathLimits.h"
 #include "ImathMath.h"
 #include "ImathNamespace.h"
@@ -220,7 +219,7 @@ template <class T> class Vec2
     //----------------------------------------------------------------
     // Length and normalization:  If v.length() is 0.0, v.normalize()
     // and v.normalized() produce a null vector; v.normalizeExc() and
-    // v.normalizedExc() throw a NullVecExc.
+    // v.normalizedExc() throw a std::domain_error.
     // v.normalizeNonNull() and v.normalizedNonNull() are slightly
     // faster than the other normalization routines, but if v.length()
     // is 0.0, the result is undefined.
@@ -437,7 +436,7 @@ template <class T> class Vec3
     //----------------------------------------------------------------
     // Length and normalization:  If v.length() is 0.0, v.normalize()
     // and v.normalized() produce a null vector; v.normalizeExc() and
-    // v.normalizedExc() throw a NullVecExc.
+    // v.normalizedExc() throw a std::domain_error.
     // v.normalizeNonNull() and v.normalizedNonNull() are slightly
     // faster than the other normalization routines, but if v.length()
     // is 0.0, the result is undefined.
@@ -624,7 +623,7 @@ template <class T> class Vec4
     //----------------------------------------------------------------
     // Length and normalization:  If v.length() is 0.0, v.normalize()
     // and v.normalized() produce a null vector; v.normalizeExc() and
-    // v.normalizedExc() throw a NullVecExc.
+    // v.normalizedExc() throw a std::domain_error.
     // v.normalizeNonNull() and v.normalizedNonNull() are slightly
     // faster than the other normalization routines, but if v.length()
     // is 0.0, the result is undefined.
@@ -1229,7 +1228,7 @@ Vec2<T>::normalizeExc ()
     T l = length();
 
     if (l == T (0))
-	throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     x /= l;
     y /= l;
@@ -1266,7 +1265,7 @@ Vec2<T>::normalizedExc () const
     T l = length();
 
     if (l == T (0))
-	throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     return Vec2 (x / l, y / l);
 }
@@ -1377,7 +1376,7 @@ Vec3<T>::Vec3 (const Vec4<S> &v, InfException)
         T m = baseTypeMax() * absW;
         
         if (vx <= -m || vx >= m || vy <= -m || vy >= m || vz <= -m || vz >= m)
-            throw InfPointExc ("Cannot normalize point at infinity.");
+            throw std::domain_error ("Cannot normalize point at infinity.");
     }
 
     x = vx / vw;
@@ -1721,7 +1720,7 @@ Vec3<T>::normalizeExc ()
     T l = length();
 
     if (l == T (0))
-	throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     x /= l;
     y /= l;
@@ -1760,7 +1759,7 @@ Vec3<T>::normalizedExc () const
     T l = length();
 
     if (l == T (0))
-	throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     return Vec3 (x / l, y / l, z / l);
 }
@@ -2126,7 +2125,7 @@ Vec4<T>::normalizeExc ()
     T l = length();
 
     if (l == T (0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     x /= l;
     y /= l;
@@ -2167,7 +2166,7 @@ Vec4<T>::normalizedExc () const
     T l = length();
 
     if (l == T (0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     return Vec4 (x / l, y / l, z / l, w / l);
 }
