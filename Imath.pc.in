@@ -1,0 +1,17 @@
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## Copyright Contributors to the Imath Project.
+##
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+libsuffix=@LIB_SUFFIX_DASH@
+Name: Imath
+Description: Base half data type and math libraries.
+Version: @IMATH_VERSION@
+Requires:
+Conflicts:
+Libs: -L${libdir} -lImath${libsuffix} -lHalf${libsuffix}
+Cflags: -I${includedir} -I${includedir}/Imath

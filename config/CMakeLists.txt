@@ -23,24 +23,24 @@ if (ILMBASE_ENABLE_LARGE_STACK)
   set(ILMBASE_HAVE_LARGE_STACK ON)
 endif()
 
-configure_file(IlmBaseConfig.h.in_cmake ${CMAKE_CURRENT_BINARY_DIR}/IlmBaseConfig.h)
-configure_file(IlmBaseConfigInternal.h.in_cmake ${CMAKE_CURRENT_BINARY_DIR}/IlmBaseConfigInternal.h)
+configure_file(ImathConfig.h.in_cmake ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
+configure_file(ImathConfigInternal.h.in_cmake ${CMAKE_CURRENT_BINARY_DIR}/ImathConfigInternal.h)
 
-add_library(IlmBaseConfig INTERFACE)
-target_include_directories(IlmBaseConfig INTERFACE
+add_library(ImathConfig INTERFACE)
+target_include_directories(ImathConfig INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${ILMBASE_OUTPUT_SUBDIR}>)
 
 install(
   FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/IlmBaseConfig.h
+    ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h
   DESTINATION
     ${CMAKE_INSTALL_INCLUDEDIR}/${ILMBASE_OUTPUT_SUBDIR}
 )
 
-install(TARGETS IlmBaseConfig EXPORT ${PROJECT_NAME})
-add_library(Imath::Config ALIAS IlmBaseConfig)
+install(TARGETS ImathConfig EXPORT ${PROJECT_NAME})
+add_library(Imath::Config ALIAS ImathConfig)
 
 if(ILMBASE_INSTALL_PKG_CONFIG)
   # use a helper function to avoid variable pollution, but pretty simple
@@ -65,7 +65,7 @@ if(ILMBASE_INSTALL_PKG_CONFIG)
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
     )
   endfunction()
-  ilmbase_pkg_config_help(../IlmBase.pc.in)
+  ilmbase_pkg_config_help(../Imath.pc.in)
 else()
   message(NOTICE "-- WARNING pkg-config generation disabled")
 endif()
@@ -74,7 +74,7 @@ endif()
 # moral equivalent of a pkg-config file for cmake
 # and replaces the Find*.cmake of the "old" cmake
 include(CMakePackageConfigHelpers)
-configure_package_config_file(IlmBaseConfig.cmake.in
+configure_package_config_file(ImathConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
