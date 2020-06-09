@@ -14,12 +14,11 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-# we include this first to parse configure.ac and extract the version
-# numbers
-include(config/ParseConfigure.cmake)
+# we include this first to obtain version numbers from Configure.cmake
+include(config/configure.cmake)
 
 #set up our project
-project(Imath VERSION 1.0 LANGUAGES C CXX)
+project(Imath VERSION ${IMATH_VERSION} LANGUAGES C CXX)
 
 #######################################
 #######################################
@@ -30,7 +29,7 @@ project(Imath VERSION 1.0 LANGUAGES C CXX)
 # Please look at this file to see what is configurable
 #######################################
 #######################################
-include(config/IlmBaseSetup.cmake)
+include(config/ImathSetup.cmake)
 
 # generates config headers, package config files
 add_subdirectory(config)
