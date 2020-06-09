@@ -1,6 +1,6 @@
 # Code of Conduct
 
-The OpenEXR project abides by Linux Foundation's code of conduct,
+The Imath project abides by Linux Foundation's code of conduct,
 which you can read in full
 [here](https://lfprojects.org/policies/code-of-conduct).
 

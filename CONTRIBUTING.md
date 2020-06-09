@@ -1,6 +1,6 @@
-# Contributing to OpenEXR
+# Contributing to Imath
 
-Thank you for your interest in contributing to OpenEXR. This document
+Thank you for your interest in contributing to Imath. This document
 explains our contribution process and procedures:
 
 * [Getting Information](#Getting-Information)
@@ -11,7 +11,7 @@ explains our contribution process and procedures:
 * [Creating a Release](#Creating-a-Release)
 
 For a description of the roles and responsibilities of the various
-members of the OpenEXR community, see [GOVERNANCE](GOVERNANCE.md), and
+members of the Imath community, see [GOVERNANCE](GOVERNANCE.md), and
 for further details, see the project's [Technical
 Charter](ASWF/charter/OpenEXR-Technical-Charter.md). Briefly,
 Contributors are anyone who submits content to the project, Committers
@@ -39,7 +39,7 @@ the place for question such has "How do I...".
 
 ### How to Report a Bug
 
-OpenEXR use GitHub's issue tracking system for bugs and enhancements:
+Imath use GitHub's issue tracking system for bugs and enhancements:
 https://github.com/AcademySoftwareFoundation/Imath/issues
 
 If you are submitting a bug report, please be sure to note which
@@ -435,7 +435,7 @@ define's such as ``INT_MAX``:
 
 All new source files should begin with a copyright and license stating:
 
-    // Copyright (c) Contributors to the OpenEXR Project. All rights reserved.
+    // Copyright (c) Contributors to the Imath Project. All rights reserved.
     // SPDX-License-Identifier: BSD-3-Clause
 
 #### Third-party libraries
