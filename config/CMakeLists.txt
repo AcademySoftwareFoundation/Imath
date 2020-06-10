@@ -44,7 +44,7 @@ add_library(Imath::Config ALIAS ImathConfig)
 
 if(IMATH_INSTALL_PKG_CONFIG)
   # use a helper function to avoid variable pollution, but pretty simple
-  function(ilmbase_pkg_config_help pcinfile)
+  function(imath_pkg_config_help pcinfile)
     set(prefix ${CMAKE_INSTALL_PREFIX})
     set(exec_prefix "\${prefix}")
     set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
@@ -65,7 +65,7 @@ if(IMATH_INSTALL_PKG_CONFIG)
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
     )
   endfunction()
-  ilmbase_pkg_config_help(../Imath.pc.in)
+  imath_pkg_config_help(../Imath.pc.in)
 else()
   message(NOTICE "-- WARNING pkg-config generation disabled")
 endif()

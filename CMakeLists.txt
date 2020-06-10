@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-if(OPENEXR_BUILD_BOTH_STATIC_SHARED OR ILMBASE_BUILD_BOTH_STATIC_SHARED)
+if(IMATH_BUILD_BOTH_STATIC_SHARED OR IMATH_BUILD_BOTH_STATIC_SHARED)
   if (${CMAKE_VERSION} VERSION_LESS "3.12.0")
     message(FATAL_ERROR "CMake 3.12 or newer is required for object library support when building both static and shared libraries")
   endif()

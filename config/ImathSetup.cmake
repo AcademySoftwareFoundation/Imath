@@ -16,7 +16,7 @@ set(tmp 14)
 if(CMAKE_CXX_STANDARD)
   set(tmp ${CMAKE_CXX_STANDARD})
 endif()
-set(OPENEXR_CXX_STANDARD "${tmp}" CACHE STRING "C++ standard to compile against")
+set(IMATH_CXX_STANDARD "${tmp}" CACHE STRING "C++ standard to compile against")
 set(tmp)
 
 # Namespace-related settings, allows one to customize the
@@ -52,17 +52,17 @@ set(CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "Suffix for debug builds")
 option(BUILD_SHARED_LIBS "Build shared library" ON)
 # This allows a "double library" setup, where we compile both
 # a dynamic and shared library
-option(ILMBASE_BUILD_BOTH_STATIC_SHARED  "Build both static and shared libraries in one step (otherwise follows BUILD_SHARED_LIBS)" OFF)
-if (ILMBASE_BUILD_BOTH_STATIC_SHARED)
+option(IMATH_BUILD_BOTH_STATIC_SHARED  "Build both static and shared libraries in one step (otherwise follows BUILD_SHARED_LIBS)" OFF)
+if (IMATH_BUILD_BOTH_STATIC_SHARED)
   set(BUILD_SHARED_LIBS ON)
 endif()
 # Suffix to append to root name, this helps with version management
 # but can be turned off if you don't care, or otherwise customized
-set(ILMBASE_LIB_SUFFIX "-${ILMBASE_VERSION_API}" CACHE STRING "string added to the end of all the libraries")
+set(IMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "string added to the end of all the libraries")
 # when building both dynamic and static, the additional string to
 # add to the library name, such that to get static linkage, you
 # would use -lImath_static (or target_link_libraries(xxx IlmBase::Imath_static))
-set(ILMBASE_STATIC_LIB_SUFFIX "_static" CACHE STRING "When building both static and shared, name to append to static library (in addition to normal suffix)")
+set(IMATH_STATIC_LIB_SUFFIX "_static" CACHE STRING "When building both static and shared, name to append to static library (in addition to normal suffix)")
 
 # rpath related setup
 # make sure we force an rpath to the rpath we're compiling
@@ -107,15 +107,15 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Code check related features
-option(OPENEXR_USE_CLANG_TIDY "Check if clang-tidy is available, and enable that" OFF)
-if(OPENEXR_USE_CLANG_TIDY)
-  find_program(OPENEXR_CLANG_TIDY_BIN clang-tidy)
-  if(OPENEXR_CLANG_TIDY_BIN-NOTFOUND)
+option(IMATH_USE_CLANG_TIDY "Check if clang-tidy is available, and enable that" OFF)
+if(IMATH_USE_CLANG_TIDY)
+  find_program(IMATH_CLANG_TIDY_BIN clang-tidy)
+  if(IMATH_CLANG_TIDY_BIN-NOTFOUND)
     message(FATAL_ERROR "clang-tidy processing requested, but no clang-tidy found")
   endif()
   # TODO: Need to define the list of valid checks and add a file with said list
   set(CMAKE_CXX_CLANG_TIDY
-    ${OPENEXR_CLANG_TIDY_BIN};
+    ${IMATH_CLANG_TIDY_BIN};
     -header-filter=.;
     -checks=*;
   )

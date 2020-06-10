@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
-# Copyright Contributors to the OpenEXR Project.
+# Copyright Contributors to the Imath Project.
 
-ilmbase_define_library(Imath
+imath_define_library(Imath
   PRIV_EXPORT IMATH_EXPORTS
   CURDIR ${CMAKE_CURRENT_SOURCE_DIR}
   SOURCES
