@@ -14,8 +14,8 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-# we include this first to obtain version numbers from Configure.cmake
-include(config/configure.cmake)
+# we include this first to obtain version numbers from version.cmake
+include(config/version.cmake)
 
 #set up our project
 project(Imath VERSION ${IMATH_VERSION} LANGUAGES C CXX)

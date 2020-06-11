@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
-# Copyright Contributors to the Imath Project.
+# Copyright Contributors to the OpenEXR Project.
 
 include(CheckIncludeFiles)
 include(CheckSymbolExists)
@@ -22,9 +22,8 @@ endif()
 if (IMATH_ENABLE_LARGE_STACK)
   set(IMATH_HAVE_LARGE_STACK ON)
 endif()
-
-configure_file(ImathConfig.h.in_cmake ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
-configure_file(ImathConfigInternal.h.in_cmake ${CMAKE_CURRENT_BINARY_DIR}/ImathConfigInternal.h)
+configure_file(ImathConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
+configure_file(ImathConfigInternal.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfigInternal.h)
 
 add_library(ImathConfig INTERFACE)
 target_include_directories(ImathConfig INTERFACE

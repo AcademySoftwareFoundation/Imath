@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
-# Copyright Contributors to the Imath Project.
+# Copyright Contributors to the OpenEXR Project.
 
 set(IMATH_VERSION_MAJOR 1)
 set(IMATH_VERSION_MINOR 0)
