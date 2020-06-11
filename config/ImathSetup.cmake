@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
-# Copyright Contributors to the Imath Project.
+# Copyright Contributors to the OpenEXR Project.
 
 include(GNUInstallDirs)
 
@@ -24,21 +24,21 @@ set(tmp)
 set(IMATH_NAMESPACE_CUSTOM "0" CACHE STRING "Whether the namespace has been customized (so external users know)")
 set(IMATH_INTERNAL_IMATH_NAMESPACE "Imath_${IMATH_VERSION_API}" CACHE STRING "Real namespace for Imath that will end up in compiled symbols")
 set(IMATH_IMATH_NAMESPACE "Imath" CACHE STRING "Public namespace alias for Imath")
-set(IMATH_PACKAGE_NAME "IlmBase ${IMATH_VERSION}" CACHE STRING "Public string / label for displaying package")
+set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}" CACHE STRING "Public string / label for displaying package")
 
-# Whether to generate and install a pkg-config file IlmBase.pc on
+# Whether to generate and install a pkg-config file Imath.pc on
 if(WIN32)
-option(IMATH_INSTALL_PKG_CONFIG "Install IlmBase.pc file" OFF)
+option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" OFF)
 else()
-option(IMATH_INSTALL_PKG_CONFIG "Install IlmBase.pc file" ON)
+option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" ON)
 endif()
 
 ########################
 ## Build related options
 
 # This is a variable here for use in install lines. Care must be taken
-# when changing this, as many things assume this is OpenEXR
-set(IMATH_OUTPUT_SUBDIR OpenEXR CACHE STRING "Destination sub-folder of the include path for install")
+# when changing this, as many things assume this is Imath
+set(IMATH_OUTPUT_SUBDIR Imath CACHE STRING "Destination sub-folder of the include path for install")
 
 # This does not seem to be available as a per-target property,
 # but is pretty harmless to set globally
@@ -61,7 +61,7 @@ endif()
 set(IMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "string added to the end of all the libraries")
 # when building both dynamic and static, the additional string to
 # add to the library name, such that to get static linkage, you
-# would use -lImath_static (or target_link_libraries(xxx IlmBase::Imath_static))
+# would use -lImath_static (or target_link_libraries(xxx Imath::Imath_static))
 set(IMATH_STATIC_LIB_SUFFIX "_static" CACHE STRING "When building both static and shared, name to append to static library (in addition to normal suffix)")
 
 # rpath related setup
