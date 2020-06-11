@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
-# Copyright Contributors to the Imath Project.
+# Copyright Contributors to the OpenEXR Project.
 
 imath_define_library(Half
   PRIV_EXPORT HALF_EXPORTS

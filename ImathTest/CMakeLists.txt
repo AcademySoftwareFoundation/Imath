@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
-# Copyright Contributors to the Imath Project.
+# Copyright Contributors to the OpenEXR Project.
 
 add_executable(ImathTest 
   main.cpp
