@@ -37,7 +37,7 @@ find_package(Imath ${PYIMATH_VERSION} EXACT REQUIRED CONFIG)
 # first make sure we find *some* python
 find_package(Python COMPONENTS Interpreter Development)
 if(NOT TARGET Python::Interpreter AND NOT TARGET Python::Python)
-  message(WARNING ": Unable to find any python interpreter or libraries, disabling PyIlmBase")
+  message(WARNING ": Unable to find any python interpreter or libraries, disabling PyImath")
   return()
 endif()
 
@@ -63,7 +63,7 @@ else()
   message(WARNING ": Unable to find Python3 interpreter or development libraries")
 endif()
 if (NOT Python2_FOUND AND NOT Python3_FOUND)
-  message(WARNING ": Disabling PyIlmBase")
+  message(WARNING ": Disabling PyImath")
   return()
 endif()
 
@@ -115,13 +115,13 @@ if(Python2_FOUND)
   # we can't just use the Python2_SITEARCH variable as that then will
   # ignore CMAKE_INSTALL_PREFIX. Could extract this to a function somewhere
   # if it is generally useful
-  pyilmbase_extract_rel_sitearch(PyIlmBase_Python2_SITEARCH_REL 2 ${Python2_EXECUTABLE} ${Python2_SITEARCH})
+  pyimath_extract_rel_sitearch(PyImath_Python2_SITEARCH_REL 2 ${Python2_EXECUTABLE} ${Python2_SITEARCH})
 endif()
 if(Python3_FOUND)
   set(PYIMATH_BOOST_PY3_COMPONENT "python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
   message(STATUS "Found Python3 libraries: ${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
   # and figure out the install root here
-  pyilmbase_extract_rel_sitearch(PyIlmBase_Python3_SITEARCH_REL 3 ${Python3_EXECUTABLE} ${Python3_SITEARCH})
+  pyimath_extract_rel_sitearch(PyImath_Python3_SITEARCH_REL 3 ${Python3_EXECUTABLE} ${Python3_SITEARCH})
 endif()
 
 # different flavors of O.S. have multiple versions of python
@@ -181,7 +181,7 @@ if(Boost_PYTHON_FOUND AND NOT _pyilmbase_have_perver_boost)
   # set it to a bogus string but not empty so later we don't test against a namespace only target
   set(PYIMATH_BOOST_PY3_COMPONENT pythonIgnore)
 elseif(NOT _pyilmbase_have_perver_boost)
-  message(WARNING "Unable to find boost::python library, disabling PyIlmBase. If you believe this is wrong, check the cmake documentation and see if you need to set Boost_ROOT or Boost_NO_BOOST_CMAKE")
+  message(WARNING "Unable to find boost::python library, disabling PyImath. If you believe this is wrong, check the cmake documentation and see if you need to set Boost_ROOT or Boost_NO_BOOST_CMAKE")
   return()
 else()
   if(TARGET Boost::${PYIMATH_BOOST_PY2_COMPONENT})
@@ -220,7 +220,7 @@ if(NOT BUILD_SHARED_LIBS)
 endif()
 
 add_subdirectory( PyImath )
-if(TARGET Python2::IlmBaseNumPy OR TARGET Python3::IlmBaseNumPy)
+if(TARGET Python2::ImathNumPy OR TARGET Python3::ImathNumPy)
   add_subdirectory( PyImathNumpy )
 endif()
 
@@ -231,7 +231,7 @@ include(CTest)
 if(BUILD_TESTING)
   enable_testing()
   add_subdirectory( PyImathTest )
-  if(TARGET Python2::IlmBaseNumPy OR TARGET Python3::IlmBaseNumPy)
+  if(TARGET Python2::ImathNumPy OR TARGET Python3::ImathNumPy)
     add_subdirectory( PyImathNumpyTest )
   endif()
 endif()

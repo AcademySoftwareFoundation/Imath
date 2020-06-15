@@ -77,7 +77,7 @@ function(PYIMATH_DEFINE_MODULE modname)
   endif()
 
   if(NOT PYIMATH_CURMOD_LIBNAME)
-    message(FATAL_ERROR "NYI usage of pyilmbase_define_module")
+    message(FATAL_ERROR "NYI usage of pyimath_define_module")
     return()
   endif()
 
@@ -105,7 +105,7 @@ function(PYIMATH_DEFINE_MODULE modname)
     set(extraDeps ${PYIMATH_CURMOD_MODULE_DEPS})
     list(TRANSFORM extraDeps APPEND ${PYIMATH_LIB_PYTHONVER_ROOT}${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR})
 
-    pyilmbase_add_library_priv(${libname}
+    pyimath_add_library_priv(${libname}
       ${libarglist}
       ${extraDeps}
       Python2::Python
@@ -126,7 +126,7 @@ function(PYIMATH_DEFINE_MODULE modname)
       LIBRARY_OUTPUT_NAME "${modname}"
       DEBUG_POSTFIX ""
     )
-    install(TARGETS ${modname}_python2 DESTINATION ${PyIlmBase_Python2_SITEARCH_REL})
+    install(TARGETS ${modname}_python2 DESTINATION ${PyImath_Python2_SITEARCH_REL})
   endif()
 
   if(TARGET Python3::Python AND TARGET Boost::${PYIMATH_BOOST_PY3_COMPONENT})
@@ -134,7 +134,7 @@ function(PYIMATH_DEFINE_MODULE modname)
     set(extraDeps ${PYIMATH_CURMOD_MODULE_DEPS})
     list(TRANSFORM extraDeps APPEND ${PYIMATH_LIB_PYTHONVER_ROOT}${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR})
 
-    pyilmbase_add_library_priv(${libname}
+    pyimath_add_library_priv(${libname}
       ${libarglist}
       ${extraDeps}
       Python3::Python
@@ -153,6 +153,6 @@ function(PYIMATH_DEFINE_MODULE modname)
       LIBRARY_OUTPUT_NAME "${modname}"
       DEBUG_POSTFIX ""
     )
-    install(TARGETS ${modname}_python3 DESTINATION ${PyIlmBase_Python3_SITEARCH_REL})
+    install(TARGETS ${modname}_python3 DESTINATION ${PyImath_Python3_SITEARCH_REL})
   endif()
 endfunction()
