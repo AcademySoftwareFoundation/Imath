@@ -7,8 +7,8 @@ include(GNUInstallDirs)
 ## Target configuration
 
 # TODO: Right now, we support compiling for multiple pythons at once
-set(PYILMBASE_OVERRIDE_PYTHON2_INSTALL_DIR "" CACHE STRING "Override the install location for any python 2.x modules compiled")
-set(PYILMBASE_OVERRIDE_PYTHON3_INSTALL_DIR "" CACHE STRING "Override the install location for any python 3.x modules compiled")
+set(PYIMATH_OVERRIDE_PYTHON2_INSTALL_DIR "" CACHE STRING "Override the install location for any python 2.x modules compiled")
+set(PYIMATH_OVERRIDE_PYTHON3_INSTALL_DIR "" CACHE STRING "Override the install location for any python 3.x modules compiled")
 
 # Enables tracking of floating point exceptions and throwing them
 # as the signals are received
@@ -23,11 +23,11 @@ endif()
 set(OPENEXR_CXX_STANDARD "${tmp}" CACHE STRING "C++ standard to compile against")
 set(tmp)
 
-# Whether to generate and install a pkg-config file PyIlmBase.pc
+# Whether to generate and install a pkg-config file PyImath.pc
 if (WIN32)
-option(PYILMBASE_INSTALL_PKG_CONFIG "Install PyIlmBase.pc file" OFF)
+option(PYIMATH_INSTALL_PKG_CONFIG "Install PyImath.pc file" OFF)
 else()
-option(PYILMBASE_INSTALL_PKG_CONFIG "Install PyIlmBase.pc file" ON)
+option(PYIMATH_INSTALL_PKG_CONFIG "Install PyImath.pc file" ON)
 endif()
 
 ########################
@@ -36,15 +36,15 @@ endif()
 # Suffix to append to root name, this helps with version management
 # but can be turned off if you don't care, or otherwise customized
 # 
-set(PYILMBASE_LIB_SUFFIX "-${PYILMBASE_VERSION_API}" CACHE STRING "String added to the end of all the libraries")
+set(PYIMATH_LIB_SUFFIX "-${PYIMATH_VERSION_API}" CACHE STRING "String added to the end of all the libraries")
 # This provides a root for the unique name of the library based on
 # the version of python being compiled for
-set(PYILMBASE_LIB_PYTHONVER_ROOT "_Python" CACHE STRING "String added as a root to the identifier of the python version in the libraries")
+set(PYIMATH_LIB_PYTHONVER_ROOT "_Python" CACHE STRING "String added as a root to the identifier of the python version in the libraries")
 
 # This is a variable here for use in install lines when creating
 # libraries (otherwise ignored). Care must be taken when changing this,
 # as many things assume this is OpenEXR
-set(PYILMBASE_OUTPUT_SUBDIR OpenEXR CACHE STRING "Destination sub-folder of the include path for install")
+set(PYIMATH_OUTPUT_SUBDIR OpenEXR CACHE STRING "Destination sub-folder of the include path for install")
 
 # This does not seem to be available as a per-target property,
 # but is pretty harmless to set globally

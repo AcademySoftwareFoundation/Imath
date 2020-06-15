@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-imath_define_module(imath
+pyimath_define_module(imath
   LIBNAME PyImath
   PRIV_EXPORT PYIMATH_BUILD
   CURDIR ${CMAKE_CURRENT_SOURCE_DIR}
