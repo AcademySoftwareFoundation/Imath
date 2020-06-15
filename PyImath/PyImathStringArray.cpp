@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathStringArrayRegister.h"
 #include "PyImathStringArray.h"

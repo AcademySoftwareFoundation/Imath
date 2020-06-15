@@ -158,7 +158,7 @@ class FixedVArray
 
         if (throwExc)
         {
-            throw IEX_NAMESPACE::ArgExc("Dimensions of source do not match destination");
+          throw std::invalid_argument("Dimensions of source do not match destination");
         }
 
         return len();
@@ -191,7 +191,7 @@ class FixedVArray
 
         if (throwExc)
         {
-            throw IEX_NAMESPACE::ArgExc("Dimensions of source do not match destination");
+          throw std::invalid_argument("Dimensions of source do not match destination");
         }
 
         return len();

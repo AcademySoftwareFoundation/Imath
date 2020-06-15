@@ -32,10 +32,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImath.h"
-#include <PyIex.h>
 #include "PyImathExport.h"
 
 

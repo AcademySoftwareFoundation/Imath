@@ -51,7 +51,6 @@
 #include "PyImathBox.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
-#include <Iex.h>
 #include "PyImathMathExc.h"
 #include <boost/cast.hpp>
 #include "PyImathOperators.h"
@@ -78,7 +77,7 @@ static Vec2<T> * Vec2_tuple_constructor(const BoostPyType &t)
     else if(t.attr("__len__")() == 2)
         return new Vec2<T>(extract<T>(t[0]), extract<T>(t[1]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Vec2 constructor expects tuple of length 1 or 2");
+      throw std::invalid_argument ("Vec2 constructor expects tuple of length 1 or 2");
 }
 
 template <class T>
@@ -104,7 +103,7 @@ static Vec2<T> * Vec2_object_constructor1(const object &obj)
             w.y = extract<T>(t[1]);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 2");
+            throw std::invalid_argument ("tuple must have length of 2");
     }
     else if(e5.check()) { T a = e5(); w.setValue(a, a); }
     else if(e6.check())
@@ -116,10 +115,10 @@ static Vec2<T> * Vec2_object_constructor1(const object &obj)
             w.y = extract<T>(l[1]);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "list must have length of 2");
+            throw std::invalid_argument ("list must have length of 2");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to Vec2 constructor");
+        throw std::invalid_argument ("invalid parameters passed to Vec2 constructor");
     
     Vec2<T> *v = new Vec2<T>;
     *v = w;
@@ -137,10 +136,10 @@ static Vec2<T> * Vec2_object_constructor2(const object &obj1, const object &obj2
     Vec2<T> *v = new Vec2<T>;
     
     if(e1.check()) { v->x = boost::numeric_cast<T>(e1());}
-    else { THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to Vec2 constructor"); }
+    else { throw std::invalid_argument ("invalid parameters passed to Vec2 constructor"); }
     
     if(e2.check()) { v->y = boost::numeric_cast<T>(e2());}
-    else { THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to Vec2 constructor"); }    
+    else { throw std::invalid_argument ("invalid parameters passed to Vec2 constructor"); }    
     
     return v;
 }
@@ -437,7 +436,7 @@ Vec2_idivObj(IMATH_NAMESPACE::Vec2<T> &v, const object &o)
         if (e.check())
             return v /= e();
         else
-            THROW (IEX_NAMESPACE::ArgExc, "V2 division expects an argument"
+            throw std::invalid_argument ("V2 division expects an argument"
                    "convertible to a V2");
     }
 }
@@ -465,7 +464,7 @@ Vec2_subTuple(const Vec2<T> &v, const BoostPyType &t)
         w.y = v.y - extract<T>(t[1]);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 2");
+        throw std::invalid_argument ("tuple must have length of 2");
     
     return w;
 }
@@ -493,7 +492,7 @@ Vec2_rsubTuple(const Vec2<T> &v, const BoostPyType &t)
         w.y = extract<T>(t[1]) - v.y;
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 2");
+        throw std::invalid_argument ("tuple must have length of 2");
     
     return w;
 }
@@ -511,7 +510,7 @@ Vec2_addTuple(const Vec2<T> &v, const BoostPyType &t)
         w.y = v.y + extract<T>(t[1]);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 2");
+        throw std::invalid_argument ("tuple must have length of 2");
     
     return w;
 }
@@ -574,7 +573,7 @@ Vec2_mulTuple(const Vec2<T> &v, BoostPyType t)
         w.y = v.y*extract<T>(t[1]);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 1 or 2");
+        throw std::invalid_argument ("tuple must have length of 1 or 2");
     
     return w;
 }
@@ -606,10 +605,10 @@ Vec2_divTuple(const Vec2<T> &v, const BoostPyType &t)
         if(x != T(0) && y != T(0))
             return Vec2<T>(v.x / x, v.y / y);
         else
-            THROW(IEX_NAMESPACE::MathExc, "Division by zero");
+          throw std::domain_error ("Division by zero");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Vec2 expects tuple of length 2");
+        throw std::invalid_argument ("Vec2 expects tuple of length 2");
 }
 
 template <class T,class BoostPyType>
@@ -627,10 +626,10 @@ Vec2_rdivTuple(const Vec2<T> &v, const BoostPyType &t)
             w.setValue(x / v.x, y / v.y);
         }
         else
-            THROW(IEX_NAMESPACE::MathExc, "Division by zero");
+            throw std::domain_error ("Division by zero");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 2");
+        throw std::invalid_argument ("tuple must have length of 2");
     
     return w;
 }
@@ -645,7 +644,7 @@ Vec2_divT(const Vec2<T> &v, T a)
         w.setValue(v.x / a, v.y / a);
     }
     else
-        THROW(IEX_NAMESPACE::MathExc, "Division by zero");
+        throw std::domain_error ("Division by zero");
 
     return w;
 }
@@ -660,7 +659,7 @@ Vec2_rdivT(const Vec2<T> &v, T a)
         w.setValue(a / v.x, a / v.y);
     }
     else
-        THROW(IEX_NAMESPACE::MathExc, "Division by zero");
+        throw std::domain_error ("Division by zero");
 
     return w;
 }
@@ -686,10 +685,10 @@ lessThan(const Vec2<T> &v, const object &obj)
             w.setValue(x,y);
         }
         else
-           THROW(IEX_NAMESPACE::LogicExc, "Vec2 expects tuple of length 2");
+           throw std::invalid_argument ("Vec2 expects tuple of length 2");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to operator <");
+        throw std::invalid_argument ("invalid parameters passed to operator <");
     
     bool isLessThan = (v.x <= w.x && v.y <= w.y)
                     && v != w;
@@ -718,10 +717,10 @@ greaterThan(const Vec2<T> &v, const object &obj)
             w.setValue(x,y);
         }
         else
-           THROW(IEX_NAMESPACE::LogicExc, "Vec2 expects tuple of length 2");
+           throw std::invalid_argument ("Vec2 expects tuple of length 2");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to operator >");
+        throw std::invalid_argument ("invalid parameters passed to operator >");
     
     bool isGreaterThan = (v.x >= w.x && v.y >= w.y)
                        && v != w;
@@ -750,10 +749,10 @@ lessThanEqual(const Vec2<T> &v, const object &obj)
             w.setValue(x,y);
         }
         else
-           THROW(IEX_NAMESPACE::LogicExc, "Vec2 expects tuple of length 2");
+           throw std::invalid_argument ("Vec2 expects tuple of length 2");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to operator <=");
+        throw std::invalid_argument ("invalid parameters passed to operator <=");
     
     bool isLessThanEqual = (v.x <= w.x && v.y <= w.y);
                    
@@ -781,10 +780,10 @@ greaterThanEqual(const Vec2<T> &v, const object &obj)
             w.setValue(x,y);
         }
         else
-           THROW(IEX_NAMESPACE::LogicExc, "Vec2 expects tuple of length 2"); 
+           throw std::invalid_argument ("Vec2 expects tuple of length 2"); 
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to operator >=");
+        throw std::invalid_argument ("invalid parameters passed to operator >=");
     
     bool isGreaterThanEqual = (v.x >= w.x && v.y >= w.y);
 
@@ -803,7 +802,7 @@ setItemTuple(FixedArray<IMATH_NAMESPACE::Vec2<T> > &va, Py_ssize_t index, const 
         va[va.canonical_index(index)] = v;
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 2 expected");
+        throw std::invalid_argument ("tuple of length 2 expected");
 }
 
 template <class T>
@@ -830,14 +829,14 @@ equalWithAbsErrorObj(const Vec2<T> &v, const object &obj1, const object &obj2)
             w.y = extract<T>(t[1]);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "tuple of length 2 expected");
+            throw std::invalid_argument ("tuple of length 2 expected");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to equalWithAbsError");
+        throw std::invalid_argument ("invalid parameters passed to equalWithAbsError");
     
     if(e5.check())      { return v.equalWithAbsError(w, e5()); }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to equalWithAbsError");
+        throw std::invalid_argument ("invalid parameters passed to equalWithAbsError");
 }
 
 template <class T>
@@ -864,14 +863,14 @@ equalWithRelErrorObj(const Vec2<T> &v, const object &obj1, const object &obj2)
             w.y = extract<T>(t[1]);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "tuple of length 2 expected");
+            throw std::invalid_argument ("tuple of length 2 expected");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to equalWithRelError");
+        throw std::invalid_argument ("invalid parameters passed to equalWithRelError");
     
     if(e5.check())      { return v.equalWithRelError(w, e5()); }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to equalWithRelError");
+        throw std::invalid_argument ("invalid parameters passed to equalWithRelError");
     
 }
 
@@ -887,7 +886,7 @@ equalWithAbsErrorTuple(Vec2<T> &v, const tuple &t, T e)
         w.y = extract<T>(t[1]);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 2 expected");
+        throw std::invalid_argument ("tuple of length 2 expected");
     
     return v.equalWithAbsError(w, e);
 }
@@ -904,7 +903,7 @@ equalWithRelErrorTuple(Vec2<T> &v, const tuple &t, T e)
         w.y = extract<T>(t[1]);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 2 expected");
+        throw std::invalid_argument ("tuple of length 2 expected");
     
     return v.equalWithRelError(w, e);
 }
@@ -922,7 +921,7 @@ equal(const Vec2<T> &v, const BoostPyType &t)
         return (v == w);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 2 expected");    
+        throw std::invalid_argument ("tuple of length 2 expected");    
 }
 
 template <class T,class BoostPyType>
@@ -938,7 +937,7 @@ notequal(const Vec2<T> &v, const BoostPyType &t)
         return (v != w);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 2 expected");    
+        throw std::invalid_argument ("tuple of length 2 expected");    
 }
 
 template <class T>

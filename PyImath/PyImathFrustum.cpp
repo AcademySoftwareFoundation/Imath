@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathFrustum.h"
 #include "PyImathDecorators.h"
@@ -43,7 +43,6 @@
 #include "PyImath.h"
 #include "PyImathMathExc.h"
 #include "PyImathVec.h"
-#include <Iex.h>
 
 namespace PyImath{
 using namespace boost::python;
@@ -137,7 +136,7 @@ projectScreenToRayTuple(Frustum<T> &f, const tuple &t)
         return f.projectScreenToRay(point);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "projectScreenToRay expects tuple of length 2");
+        throw std::invalid_argument ( "projectScreenToRay expects tuple of length 2");
     
 }
 
@@ -163,7 +162,7 @@ projectPointToScreenTuple(Frustum<T> &f, const tuple &t)
         return f.projectPointToScreen(point);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "projectPointToScreen expects tuple of length 3");
+        throw std::invalid_argument ( "projectPointToScreen expects tuple of length 3");
     
 }
 
@@ -176,7 +175,7 @@ projectPointToScreenObj(Frustum<T> &f, const object &o)
     if (PyImath::V3<T>::convert (o.ptr(), &v))
         return f.projectPointToScreen(v);
     else
-        THROW(IEX_NAMESPACE::LogicExc, "projectPointToScreen expects tuple of length 3");
+        throw std::invalid_argument ( "projectPointToScreen expects tuple of length 3");
 }
 
 template <class T>
@@ -225,7 +224,7 @@ worldRadiusTuple(Frustum<T> &f, const tuple &t, T radius)
         return f.worldRadius(point, radius);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "worldRadius expects tuple of length 3");
+        throw std::invalid_argument ( "worldRadius expects tuple of length 3");
 }
 
 template <class T>
@@ -250,7 +249,7 @@ screenRadiusTuple(Frustum<T> &f, const tuple &t, T radius)
         return f.screenRadius(point, radius);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "screenRadius expects tuple of length 3");
+      throw std::invalid_argument ("screenRadius expects tuple of length 3");
 }
 
 template <class T>

@@ -4,7 +4,7 @@
 ### The autoconf setup for this folder generates a PyImathConfig.h file
 ### but no source actually uses that, so let's elide that for now
 
-configure_file(PyImathConfigInternal.h.in_cmake ${CMAKE_CURRENT_BINARY_DIR}/PyImathConfigInternal.h)
+configure_file(PyImathConfigInternal.h.in ${CMAKE_CURRENT_BINARY_DIR}/../PyImath/PyImathConfigInternal.h)
 add_library(PyImathConfig INTERFACE)
 target_include_directories(PyImathConfig INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)

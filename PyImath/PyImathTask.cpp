@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathTask.h"
 

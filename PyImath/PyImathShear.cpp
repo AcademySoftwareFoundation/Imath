@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathShear.h"
 
@@ -45,7 +45,6 @@
 #include <boost/format.hpp>
 #include "PyImath.h"
 #include "PyImathMathExc.h"
-#include <Iex.h>
 
 
 namespace PyImath{
@@ -105,7 +104,7 @@ static Shear6<T> * shearTupleConstructor(tuple t)
                              extract<T>(t[3]), extract<T>(t[4]), extract<T>(t[5]));        
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Shear6 expects tuple of length 3 or 6");
+      throw std::invalid_argument ("Shear6 expects tuple of length 3 or 6");
 }
 
 template <class T>
@@ -242,7 +241,7 @@ subtract1(Shear6<T> &v, tuple t)
         w[5] = v[5] - extract<T>(t[5]);
     }        
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 6");
+        throw std::domain_error ("tuple must have length of 6");
     
     return w;
 }
@@ -263,7 +262,7 @@ subtract2(Shear6<T> &v, tuple t)
         w[5] = extract<T>(t[5]) - v[5];
     }        
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 6");
+        throw std::domain_error ("tuple must have length of 6");
     
     return w;
 }
@@ -319,7 +318,7 @@ addTuple(Shear6<T> &v, tuple t)
         w[5] = v[5] + extract<T>(t[5]);
     }        
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 6");
+        throw std::domain_error ("tuple must have length of 6");
     
     return w;
 }
@@ -357,7 +356,7 @@ multTuple(Shear6<T> &v, tuple t)
         w[5] = v[5] * extract<T>(t[5]);
     }        
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 6");
+        throw std::domain_error ("tuple must have length of 6");
     
     return w;
 }
@@ -378,7 +377,7 @@ rdiv(Shear6<T> &v, T a)
         w[5] = a/v[5];
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Division by Zero");
+        throw std::domain_error ("Division by Zero");
     
     return w;
 }
@@ -389,7 +388,7 @@ divTuple(Shear6<T> &v, const tuple &t)
 {
     MATH_EXC_ON;
     if(t.attr("__len__")() != 6)
-        THROW(IEX_NAMESPACE::LogicExc, "Shear6 expects tuple of length 6");
+        throw std::domain_error ("Shear6 expects tuple of length 6");
     
     Shear6<T> w;
     for(int i = 0; i < 6; ++i)
@@ -398,7 +397,7 @@ divTuple(Shear6<T> &v, const tuple &t)
         if(a != T (0))
             w[i] = v[i] / a;
         else
-            THROW(IEX_NAMESPACE::LogicExc, "Division by Zero"); 
+            throw std::domain_error ("Division by Zero"); 
     }
     
     return w;
@@ -410,7 +409,7 @@ rdivTuple(Shear6<T> &v, const tuple &t)
 {
     MATH_EXC_ON;
     if(t.attr("__len__")() != 6)
-        THROW(IEX_NAMESPACE::LogicExc, "Shear6 expects tuple of length 6");
+        throw std::domain_error ("Shear6 expects tuple of length 6");
     
     Shear6<T> w;
     for(int i = 0; i < 6; ++i)
@@ -419,7 +418,7 @@ rdivTuple(Shear6<T> &v, const tuple &t)
         if(v[i] != T (0))
             w[i] = a / v[i];
         else
-            THROW(IEX_NAMESPACE::LogicExc, "Division by Zero"); 
+            throw std::domain_error ("Division by Zero"); 
     }
     
     return w;
@@ -479,7 +478,7 @@ static void
 setitem(Shear6<T> &shear, int i, T a)
 {
     if(i < 0 || i > 5)
-        THROW(IEX_NAMESPACE::LogicExc, "Index out of range");
+        throw std::domain_error ("Index out of range");
     
     shear[i] = a;
 }

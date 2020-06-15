@@ -47,7 +47,6 @@
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
 #include "PyImath.h"
-#include <Iex.h>
 #include "PyImathMathExc.h"
 
 namespace PyImath {
@@ -515,7 +514,7 @@ setItemTuple(FixedArray2D<IMATH_NAMESPACE::Color4<T> > &va, const tuple &index, 
            va.canonical_index(extract<Py_ssize_t>(index[1]),va.len()[1])) = v;
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 4 expected");
+      throw std::invalid_argument ("tuple of length 4 expected");
 }
 
 template <class T>

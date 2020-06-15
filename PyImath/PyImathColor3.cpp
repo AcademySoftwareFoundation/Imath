@@ -38,7 +38,7 @@
 // order to work around MSVC limitations.
 //
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathColor.h"
 #include "PyImathVec.h"
@@ -53,7 +53,6 @@
 #include <ImathVec.h>
 #include <ImathColor.h>
 #include <ImathColorAlgo.h>
-#include <Iex.h>
 #include "PyImathColor3ArrayImpl.h"
 
 namespace PyImath {
@@ -194,7 +193,7 @@ static Color3<T> * Color3_construct_tuple(const tuple &t)
         return new Color3<T>(extract<T>(t[0]), extract<T>(t[1]), extract<T>(t[2]));
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");
+      throw std::invalid_argument ("Color3 expects tuple of length 3");
 }
 
 template <class T>
@@ -206,7 +205,7 @@ static Color3<T> * Color3_construct_list(const list &l)
         return new Color3<T>(extract<T>(l[0]), extract<T>(l[1]), extract<T>(l[2]));
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects list of length 3");
+      throw std::invalid_argument ("Color3 expects list of length 3");
 }
 
 template <class T>
@@ -235,7 +234,7 @@ addTuple(Color3<T> &color, const tuple &t)
                          color.y + extract<T>(t[1]), 
                          color.z + extract<T>(t[2]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");
+        throw std::invalid_argument ("Color3 expects tuple of length 3");
 }
 
 template <class T>
@@ -273,7 +272,7 @@ subtractL(Color3<T> &color, const tuple &t)
                          color.y - extract<T>(t[1]), 
                          color.z - extract<T>(t[2]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");
+        throw std::invalid_argument ("Color3 expects tuple of length 3");
 }
 
 template <class T>
@@ -306,7 +305,7 @@ subtractR(Color3<T> &color, const tuple &t)
                          extract<T>(t[1]) - color.y, 
                          extract<T>(t[2]) - color.z);
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");
+        throw std::invalid_argument ("Color3 expects tuple of length 3");
 }
 
 template <class T>
@@ -375,7 +374,7 @@ mulTuple(Color3<T> &color, const tuple &t)
                          color.y * extract<T>(t[1]), 
                          color.z * extract<T>(t[2]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");
+        throw std::invalid_argument ("Color3 expects tuple of length 3");
 }
 
 template <class T>
@@ -420,7 +419,7 @@ divTupleL(Color3<T> &color, const tuple &t)
                          color.y / extract<T>(t[1]), 
                          color.z / extract<T>(t[2]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");    
+        throw std::invalid_argument ("Color3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -433,7 +432,7 @@ divTupleR(Color3<T> &color, const tuple &t)
                          extract<T>(t[1]) / color.y, 
                          extract<T>(t[2]) / color.z);
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");    
+        throw std::invalid_argument ("Color3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -469,7 +468,7 @@ hsv2rgbTuple(const tuple &t)
         return IMATH_NAMESPACE::hsv2rgb(color);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");    
+        throw std::invalid_argument ("Color3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -495,7 +494,7 @@ rgb2hsvTuple(const tuple &t)
         return IMATH_NAMESPACE::rgb2hsv(color);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");    
+        throw std::invalid_argument ("Color3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -529,7 +528,7 @@ setValueTuple(Color3<T> &color, const tuple &t)
         color.setValue(v);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");
+        throw std::invalid_argument ("Color3 expects tuple of length 3");
 }
 
 template <class T>

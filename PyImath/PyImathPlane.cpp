@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathPlane.h"
 #include "PyImathDecorators.h"
@@ -44,7 +44,6 @@
 #include "PyImath.h"
 #include "PyImathVec.h"
 #include "PyImathMathExc.h"
-#include <Iex.h>
 
 namespace PyImath{
 using namespace boost::python;
@@ -88,7 +87,7 @@ static Plane3<T> *Plane3_plane_construct(const object &planeObj)
 
     else
     {
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameter passed to Plane constructor");
+      throw std::invalid_argument ("invalid parameter passed to Plane constructor");
     }
     
     return p;
@@ -108,7 +107,7 @@ static Plane3<T> *Plane3_tuple_constructor1(const tuple &t, T distance)
         return new Plane3<T>(normal, distance);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuple of length 3");
+        throw std::domain_error ("Plane3 expects tuple of length 3");
 }
 
 template <class T>
@@ -129,7 +128,7 @@ static Plane3<T> *Plane3_tuple_constructor2(const tuple &t0, const tuple &t1)
         return new Plane3<T>(point, normal);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuples of length 3");
+        throw std::domain_error ("Plane3 expects tuples of length 3");
 }
 
 template <class T>
@@ -154,7 +153,7 @@ static Plane3<T> *Plane3_tuple_constructor3(const tuple &t0, const tuple &t1, co
         return new Plane3<T>(point0, point1, point2);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuple of length 3");
+        throw std::domain_error ("Plane3 expects tuple of length 3");
 }
 
 template <class T>
@@ -340,7 +339,7 @@ setTuple1(Plane3<T> &plane, const tuple &t, T distance)
         plane.set(normal, distance);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuple of length 3");    
+        throw std::domain_error ("Plane3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -362,7 +361,7 @@ setTuple2(Plane3<T> &plane, const tuple &t0, const tuple &t1)
         plane.set(point, normal);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuples of length 3");
+        throw std::domain_error ("Plane3 expects tuples of length 3");
 }
 
 template <class T>
@@ -388,7 +387,7 @@ setTuple3(Plane3<T> &plane, const tuple &t0, const tuple &t1, const tuple &t2)
         plane.set(point0, point1, point2);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuple of length 3");
+        throw std::domain_error ("Plane3 expects tuple of length 3");
 }
 
 template <class T>
@@ -414,7 +413,7 @@ reflectPointTuple(Plane3<T> &plane, const tuple &t)
         return plane.reflectPoint(point);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuple of length 3");
+        throw std::domain_error ("Plane3 expects tuple of length 3");
 }
 
 template <class T>
@@ -440,7 +439,7 @@ distanceToTuple(Plane3<T> &plane, const tuple &t)
         return plane.distanceTo(point);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuple of length 3");    
+        throw std::domain_error ("Plane3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -466,7 +465,7 @@ reflectVectorTuple(Plane3<T> &plane, const tuple &t)
         return plane.reflectVector(point);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Plane3 expects tuple of length 3");
+        throw std::domain_error ("Plane3 expects tuple of length 3");
 }
 
 template <class T>
