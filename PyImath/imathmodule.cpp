@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include <Python.h>
 #include <boost/python.hpp>
@@ -44,7 +44,6 @@
 #include <ImathFun.h>
 #include <ImathMatrixAlgo.h>
 
-#include <PyIexExport.h>
 #include "PyImathFixedArray.h"
 #include "PyImath.h"
 #include "PyImathExport.h"
@@ -64,7 +63,6 @@
 #include "PyImathMathExc.h"
 #include "PyImathAutovectorize.h"
 #include "PyImathStringArrayRegister.h"
-#include <PyIex.h>
 
 using namespace boost::python;
 using namespace PyImath;
@@ -462,15 +460,6 @@ BOOST_PYTHON_MODULE(imath)
     scope().attr("DBL_MAX")      = IMATH_NAMESPACE::limits<double>::max();
     scope().attr("DBL_SMALLEST") = IMATH_NAMESPACE::limits<double>::smallest();
     scope().attr("DBL_EPS")      = IMATH_NAMESPACE::limits<double>::epsilon();
-    
-    //
-    // Register Exceptions
-    //
-    PyIex::registerExc<IMATH_NAMESPACE::NullVecExc,IEX_NAMESPACE::MathExc>("NullVecExc","imath");
-    PyIex::registerExc<IMATH_NAMESPACE::NullQuatExc,IEX_NAMESPACE::MathExc>("NullQuatExc","imath");
-    PyIex::registerExc<IMATH_NAMESPACE::SingMatrixExc,IEX_NAMESPACE::MathExc>("SingMatrixExc","imath");
-    PyIex::registerExc<IMATH_NAMESPACE::ZeroScaleExc,IEX_NAMESPACE::MathExc>("ZeroScaleExc","imath");
-    PyIex::registerExc<IMATH_NAMESPACE::IntVecNormalizeExc,IEX_NAMESPACE::MathExc>("IntVecNormalizeExc","imath");
 
     def("computeBoundingBox", &computeBoundingBox<float>,
         "computeBoundingBox(position) -- computes the bounding box from the position array.");

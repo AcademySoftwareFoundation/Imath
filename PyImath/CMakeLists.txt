@@ -82,5 +82,5 @@ pyimath_define_module(imath
     PyImathVec4Impl.h
     PyImathVecOperators.h
   DEPENDENCIES
-    Imath Config
+    Imath
   )
