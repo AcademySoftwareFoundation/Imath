@@ -10,16 +10,16 @@ Imath is a basic, light-weight, and efficient representation of 2D and
 objects, functions, and data types common in computer graphics
 applications, including the “half” 16-bit floating-point type.
 
-### Imath Project Mission
+### Project Mission
 
 The goals of the Imath project are simplicity, ease of use,
-correctness and verifiability, and breadth of adoption. Imath is not
-intended to be a comprehensive linear algebra or numerical analysis
-package. 
+correctness and verifiability, performance, and breadth of
+adoption. Imath is not intended to be a comprehensive linear algebra
+or numerical analysis package.
 
-### Imath Features
+### Features
 
-* Half: 16-bit floating-point type
+* half: 16-bit floating-point type
 * Vector: V2s, V2i, V2f, V2d, V3s, V3i, V3f, V3d, V4s, V4i, V4f, V4d 
 * Matrix: M22f, M22d, M33f, M33d, M44f, M44d 
 * Bounding box: Box2s, Box2i, Box2f, Box2d, Box3s, Box3i, Box3f, Box3d
@@ -41,22 +41,22 @@ cross-compilable on other systems.
 
 ### About Imath
 
-Imath was originally developed at Industrial Light & Magic and was
-originally distributed as a part of the
-[OpenEXR](https://github.com/AcademySoftwareFoundation/openexr)
-project. OpenEXR is a project of the [Academy Software
-Foundation](https://www.aswf.io).
+Imath was originally developed at Industrial Light & Magic in the
+early 2000's and was originally distributed as open source as a part
+of the [OpenEXR](https://github.com/AcademySoftwareFoundation/openexr)
+project.
 
-Imath continues to be maintained as a sub-project of OpenEXR.  See
-[GOVERNANCE](GOVERNANCE.md) for more information about how the project
-operates.
+Imath continues to be maintained as a sub-project of OpenEXR, which is
+now a project of the [Academy Software
+Foundation](https://www.aswf.io).  See [GOVERNANCE.md](GOVERNANCE.md) for
+more information about how the project operates.
 
 The OpenEXR project is dedicated to promoting a harassment-free
 community. Read our [code of conduct](CODE_OF_CONDUCT.md).
 
-## Developer Quick Start
+### Developer Quick Start
 
-See [INSTALL](INSTALL.md) for instructions on downloading and building Imath
+See [INSTALL.md](INSTALL.md) for instructions on downloading and building Imath
 from source.
 
 ### Getting Help
@@ -74,13 +74,13 @@ There are two primary ways to connect with the project:
 ### Getting Involved
 
 The OpenEXR developer community welcomes contributions to the
-project. See [CONTRIBUTING](CONTRIBUTING.md) for more information
+project. See [CONTRIBUTING.md](CONTRIBUTING.md) for more information
 about contributing to Imath and OpenEXR.
 
 ## License
 
-Imath continued to be released under its original OpenEXR [BSD-3-Clause](LICENSE) license.
+Imath continued to be released under its original OpenEXR [BSD-3-Clause](LICENSE.md) license.
 
 ---
 
-![aswf](https://github.com/AcademySoftwareFoundation/openexr/images/aswf.png)
+![aswf](https://github.com/AcademySoftwareFoundation/openexr/blob/master/ASWF/images/aswf.png)
