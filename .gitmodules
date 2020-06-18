@@ -1,0 +1,3 @@
+[submodule "PyImath"]
+	path = PyImath
+	url = https://github.com/AcademySoftwareFoundation/PyImath.git
