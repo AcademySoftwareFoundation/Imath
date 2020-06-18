@@ -20,16 +20,6 @@ include(config/version.cmake)
 #set up our project
 project(Imath VERSION ${IMATH_VERSION} LANGUAGES C CXX)
 
-# An "official" way to make this a super-project
-# basically overrides the find_package to not find anything
-# for stuff we're including locally
-set(as_subproject Imath)
-macro(find_package)
-  if(NOT "${ARGV0}" IN_LIST as_subproject)
-    _find_package(${ARGV})
-  endif()
-endmacro()
-
 #######################################
 #######################################
 # This declares all the configuration variables visible
@@ -53,18 +43,6 @@ include(config/LibraryDefine.cmake)
 # Include these modules without enable/disable options
 add_subdirectory(Half)
 add_subdirectory(Imath)
-
-# Determine whether PyImath is configured to be installed
-# and whether it has already been cloned as a submodule.
-if(BUILD_PYIMATH)
-  find_path(PYIMATH PyImath)
-  if((NOT PYIMATH) OR (NOT EXISTS ${PYIMATH}))
-    # PyImath has not yet been cloned as a submodule
-    execute_process(COMMAND git submodule update --init -- PyImath
-      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-  endif()
-  add_subdirectory(PyImath)
-endif()
 
 # If you want to use ctest to configure, build and
 # upload the results, cmake has builtin support for
