@@ -30,7 +30,7 @@ macro(find_package)
   endif()
 endmacro()
 
-#####################n##################
+#######################################
 #######################################
 # This declares all the configuration variables visible
 # in cmake-gui or similar and the rest of the global
@@ -54,11 +54,13 @@ include(config/LibraryDefine.cmake)
 add_subdirectory(Half)
 add_subdirectory(Imath)
 
+# Determine whether PyImath is configured to be installed
+# and whether it has already been cloned as a submodule.
 if(BUILD_PYIMATH)
   find_path(PYIMATH PyImath)
   if((NOT PYIMATH) OR (NOT EXISTS ${PYIMATH}))
     # PyImath has not yet been cloned as a submodule
-    execute_process(COMMAND git submodule update --init -- ${PYIMATH}
+    execute_process(COMMAND git submodule update --init -- PyImath
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
   endif()
   add_subdirectory(PyImath)
