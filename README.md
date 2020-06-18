@@ -5,8 +5,8 @@
 
 # Imath
 
-Imath is a basic, light-weight, and efficient representation of 2D and
-3D vectors and matrices and other simple but useful mathematical
+Imath is a basic, light-weight, and efficient C++ representation of 2D
+and 3D vectors and matrices and other simple but useful mathematical
 objects, functions, and data types common in computer graphics
 applications, including the “half” 16-bit floating-point type.
 
@@ -79,7 +79,7 @@ about contributing to Imath and OpenEXR.
 
 ## License
 
-Imath continued to be released under its original OpenEXR [BSD-3-Clause](LICENSE.md) license.
+Imath continues to be released under its original OpenEXR [BSD-3-Clause](LICENSE.md) license.
 
 ---
 
