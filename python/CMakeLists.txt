@@ -11,9 +11,9 @@ endif()
 
 # we include this first to parse configure.ac and extract the version
 # numbers
-include(config/ParseConfigure.cmake)
+include(config/version.cmake)
 
-project(PyIlmBase VERSION ${PYILMBASE_VERSION} LANGUAGES C CXX)
+project(PyImath VERSION ${PYIMATH_VERSION} LANGUAGES C CXX)
 
 #######################################
 #######################################
@@ -24,10 +24,10 @@ project(PyIlmBase VERSION ${PYILMBASE_VERSION} LANGUAGES C CXX)
 # Please look at this file to see what is configurable
 #######################################
 #######################################
-include(config/PyIlmBaseSetup.cmake)
+include(config/PyImathSetup.cmake)
 
-# we have a strong dependence on IlmBase being an exact match
-find_package(IlmBase ${PYILMBASE_VERSION} EXACT REQUIRED CONFIG)
+# we have a strong dependence on Imath being an exact match
+find_package(Imath ${PYIMATH_VERSION} EXACT REQUIRED CONFIG)
 
 # we are building a python extension, so of course we depend on
 # python as well. Except we don't know which version...
@@ -37,7 +37,7 @@ find_package(IlmBase ${PYILMBASE_VERSION} EXACT REQUIRED CONFIG)
 # first make sure we find *some* python
 find_package(Python COMPONENTS Interpreter Development)
 if(NOT TARGET Python::Interpreter AND NOT TARGET Python::Python)
-  message(WARNING ": Unable to find any python interpreter or libraries, disabling PyIlmBase")
+  message(WARNING ": Unable to find any python interpreter or libraries, disabling PyImath")
   return()
 endif()
 
@@ -63,7 +63,7 @@ else()
   message(WARNING ": Unable to find Python3 interpreter or development libraries")
 endif()
 if (NOT Python2_FOUND AND NOT Python3_FOUND)
-  message(WARNING ": Disabling PyIlmBase")
+  message(WARNING ": Disabling PyImath")
   return()
 endif()
 
@@ -71,7 +71,7 @@ endif()
 # for our other dependency - boost.
 # Boost Python has some .. annoyances in that the python module
 # has version names attached to it
-function(PYILMBASE_EXTRACT_REL_SITEARCH varname pyver pyexe pysitearch)
+function(PYIMATH_EXTRACT_REL_SITEARCH varname pyver pyexe pysitearch)
   get_filename_component(_exedir ${pyexe} DIRECTORY)
   # we do this such that cmake will canonicalize the slashes
   # so the directory search will work under windows and unix
@@ -110,18 +110,18 @@ function(PYILMBASE_EXTRACT_REL_SITEARCH varname pyver pyexe pysitearch)
 endfunction()
 
 if(Python2_FOUND)
-  set(PYILMBASE_BOOST_PY2_COMPONENT "python${Python2_VERSION_MAJOR}${Python2_VERSION_MINOR}")
+  set(PYIMATH_BOOST_PY2_COMPONENT "python${Python2_VERSION_MAJOR}${Python2_VERSION_MINOR}")
   message(STATUS "Found Python2 libraries: ${Python2_VERSION_MAJOR}${Python2_VERSION_MINOR}")
   # we can't just use the Python2_SITEARCH variable as that then will
   # ignore CMAKE_INSTALL_PREFIX. Could extract this to a function somewhere
   # if it is generally useful
-  pyilmbase_extract_rel_sitearch(PyIlmBase_Python2_SITEARCH_REL 2 ${Python2_EXECUTABLE} ${Python2_SITEARCH})
+  pyimath_extract_rel_sitearch(PyImath_Python2_SITEARCH_REL 2 ${Python2_EXECUTABLE} ${Python2_SITEARCH})
 endif()
 if(Python3_FOUND)
-  set(PYILMBASE_BOOST_PY3_COMPONENT "python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
+  set(PYIMATH_BOOST_PY3_COMPONENT "python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
   message(STATUS "Found Python3 libraries: ${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR}")
   # and figure out the install root here
-  pyilmbase_extract_rel_sitearch(PyIlmBase_Python3_SITEARCH_REL 3 ${Python3_EXECUTABLE} ${Python3_SITEARCH})
+  pyimath_extract_rel_sitearch(PyImath_Python3_SITEARCH_REL 3 ${Python3_EXECUTABLE} ${Python3_SITEARCH})
 endif()
 
 # different flavors of O.S. have multiple versions of python
@@ -143,63 +143,63 @@ endif()
 find_package(Boost OPTIONAL_COMPONENTS
   python
   python2
-  ${PYILMBASE_BOOST_PY2_COMPONENT}
+  ${PYIMATH_BOOST_PY2_COMPONENT}
   python3
-  ${PYILMBASE_BOOST_PY3_COMPONENT})
-set(_pyilmbase_have_perver_boost)
-if(PYILMBASE_BOOST_PY2_COMPONENT)
-  string(TOUPPER ${PYILMBASE_BOOST_PY2_COMPONENT} PYILMBASE_PY2_UPPER)
+  ${PYIMATH_BOOST_PY3_COMPONENT})
+set(_pyimath_have_perver_boost)
+if(PYIMATH_BOOST_PY2_COMPONENT)
+  string(TOUPPER ${PYIMATH_BOOST_PY2_COMPONENT} PYIMATH_PY2_UPPER)
 else()
-  set(PYILMBASE_BOOST_PY2_COMPONENT python2x_NOTFOUND)
-  set(PYILMBASE_PY2_UPPER PYTHON2X_NOTFOUND)
+  set(PYIMATH_BOOST_PY2_COMPONENT python2x_NOTFOUND)
+  set(PYIMATH_PY2_UPPER PYTHON2X_NOTFOUND)
 endif()
-if(PYILMBASE_BOOST_PY3_COMPONENT)
-  string(TOUPPER ${PYILMBASE_BOOST_PY3_COMPONENT} PYILMBASE_PY3_UPPER)
+if(PYIMATH_BOOST_PY3_COMPONENT)
+  string(TOUPPER ${PYIMATH_BOOST_PY3_COMPONENT} PYIMATH_PY3_UPPER)
 else()
-  set(PYILMBASE_BOOST_PY3_COMPONENT python3x_NOTFOUND)
-  set(PYILMBASE_PY3_UPPER PYTHON3X_NOTFOUND)
+  set(PYIMATH_BOOST_PY3_COMPONENT python3x_NOTFOUND)
+  set(PYIMATH_PY3_UPPER PYTHON3X_NOTFOUND)
 endif()
-if(Boost_PYTHON2_FOUND OR Boost_${PYILMBASE_PY2_UPPER}_FOUND)
-  set(_pyilmbase_have_perver_boost TRUE)
-  if(NOT Boost_${PYILMBASE_PY2_UPPER}_FOUND)
+if(Boost_PYTHON2_FOUND OR Boost_${PYIMATH_PY2_UPPER}_FOUND)
+  set(_pyimath_have_perver_boost TRUE)
+  if(NOT Boost_${PYIMATH_PY2_UPPER}_FOUND)
     message(WARNING "Legacy Boost python2 found, but does not include minor version, this is an old configuration and may not be portable")
-    set(PYILMBASE_BOOST_PY2_COMPONENT python2)
+    set(PYIMATH_BOOST_PY2_COMPONENT python2)
   endif()
 endif()
-if(Boost_PYTHON3_FOUND OR Boost_${PYILMBASE_PY3_UPPER}_FOUND)
-  set(_pyilmbase_have_perver_boost TRUE)
-  if(NOT Boost_${PYILMBASE_PY3_UPPER}_FOUND)
+if(Boost_PYTHON3_FOUND OR Boost_${PYIMATH_PY3_UPPER}_FOUND)
+  set(_pyimath_have_perver_boost TRUE)
+  if(NOT Boost_${PYIMATH_PY3_UPPER}_FOUND)
     message(WARNING "Legacy Boost python3 found, but does not include minor version, this is an old configuration and may not be portable")
-    set(PYILMBASE_BOOST_PY3_COMPONENT python3)
+    set(PYIMATH_BOOST_PY3_COMPONENT python3)
   endif()
 endif()
 
-if(Boost_PYTHON_FOUND AND NOT _pyilmbase_have_perver_boost)
+if(Boost_PYTHON_FOUND AND NOT _pyimath_have_perver_boost)
   # old boost case, I guess we just warn and assume it is python2 (likely)
   message(WARNING "Ambiguous boost python module found, assuming python 2. If you have a new boost library, try cleaning the cmake cache and reconfigure with -DBoost_NO_BOOST_CMAKE=ON")
-  set(PYILMBASE_BOOST_PY2_COMPONENT python)
+  set(PYIMATH_BOOST_PY2_COMPONENT python)
   # set it to a bogus string but not empty so later we don't test against a namespace only target
-  set(PYILMBASE_BOOST_PY3_COMPONENT pythonIgnore)
-elseif(NOT _pyilmbase_have_perver_boost)
-  message(WARNING "Unable to find boost::python library, disabling PyIlmBase. If you believe this is wrong, check the cmake documentation and see if you need to set Boost_ROOT or Boost_NO_BOOST_CMAKE")
+  set(PYIMATH_BOOST_PY3_COMPONENT pythonIgnore)
+elseif(NOT _pyimath_have_perver_boost)
+  message(WARNING "Unable to find boost::python library, disabling PyImath. If you believe this is wrong, check the cmake documentation and see if you need to set Boost_ROOT or Boost_NO_BOOST_CMAKE")
   return()
 else()
-  if(TARGET Boost::${PYILMBASE_BOOST_PY2_COMPONENT})
-    message(STATUS " -> Found Python 2 boost: Boost::${PYILMBASE_BOOST_PY2_COMPONENT}")
-  elseif(Boost_PYTHON2_FOUND OR Boost_${PYILMBASE_PY2_UPPER}_FOUND)
+  if(TARGET Boost::${PYIMATH_BOOST_PY2_COMPONENT})
+    message(STATUS " -> Found Python 2 boost: Boost::${PYIMATH_BOOST_PY2_COMPONENT}")
+  elseif(Boost_PYTHON2_FOUND OR Boost_${PYIMATH_PY2_UPPER}_FOUND)
     message(WARNING "Found boost for python 2, but FindBoost did not create an import library. If you believe this is wrong, check the cmake documentation and see if you need to set Boost_ROOT or Boost_NO_BOOST_CMAKE")
     return()
   endif()
-  if(TARGET Boost::${PYILMBASE_BOOST_PY3_COMPONENT})
-    message(STATUS " -> Found Python 3 boost: Boost::${PYILMBASE_BOOST_PY3_COMPONENT}")
-  elseif(Boost_PYTHON3_FOUND OR Boost_${PYILMBASE_PY3_UPPER}_FOUND)
+  if(TARGET Boost::${PYIMATH_BOOST_PY3_COMPONENT})
+    message(STATUS " -> Found Python 3 boost: Boost::${PYIMATH_BOOST_PY3_COMPONENT}")
+  elseif(Boost_PYTHON3_FOUND OR Boost_${PYIMATH_PY3_UPPER}_FOUND)
     message(WARNING "Found boost for python 3, but FindBoost did not create an import library. If you believe this is wrong, check the cmake documentation and see if you need to set Boost_ROOT or Boost_NO_BOOST_CMAKE")
     return()
   endif()
 endif()
-unset(PYILMBASE_PY2_UPPER)
-unset(PYILMBASE_PY3_UPPER)
-unset(_pyilmbase_have_perver_boost)
+unset(PYIMATH_PY2_UPPER)
+unset(PYIMATH_PY3_UPPER)
+unset(_pyimath_have_perver_boost)
 
 # unfortunately, we can't use the boost numpy stuff, as that requires a
 # version of boost that is newer than is mandated by many active versions
@@ -219,9 +219,8 @@ if(NOT BUILD_SHARED_LIBS)
   message(WARNING "Forcing python bindings to be built with dynamic libraries")
 endif()
 
-add_subdirectory( PyIex )
 add_subdirectory( PyImath )
-if(TARGET Python2::IlmBaseNumPy OR TARGET Python3::IlmBaseNumPy)
+if(TARGET Python2::ImathNumPy OR TARGET Python3::ImathNumPy)
   add_subdirectory( PyImathNumpy )
 endif()
 
@@ -231,9 +230,8 @@ endif()
 include(CTest)
 if(BUILD_TESTING)
   enable_testing()
-  add_subdirectory( PyIexTest )
   add_subdirectory( PyImathTest )
-  if(TARGET Python2::IlmBaseNumPy OR TARGET Python3::IlmBaseNumPy)
+  if(TARGET Python2::ImathNumPy OR TARGET Python3::ImathNumPy)
     add_subdirectory( PyImathNumpyTest )
   endif()
 endif()

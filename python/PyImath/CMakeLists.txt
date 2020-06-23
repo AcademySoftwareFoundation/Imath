@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-pyilmbase_define_module(imath
+pyimath_define_module(imath
   LIBNAME PyImath
   PRIV_EXPORT PYIMATH_BUILD
   CURDIR ${CMAKE_CURRENT_SOURCE_DIR}
@@ -82,6 +82,5 @@ pyilmbase_define_module(imath
     PyImathVec4Impl.h
     PyImathVecOperators.h
   DEPENDENCIES
-    IlmBase::Iex IlmBase::IexMath IlmBase::Imath PyIlmBase::Config
-  MODULE_DEPS PyIex
+    Imath
   )

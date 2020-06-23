@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-# We require this to get object library link library support and
-# combined python 2 + 3 support
-if(OPENEXR_BUILD_BOTH_STATIC_SHARED OR ILMBASE_BUILD_BOTH_STATIC_SHARED)
+if(IMATH_BUILD_BOTH_STATIC_SHARED OR IMATH_BUILD_BOTH_STATIC_SHARED)
   if (${CMAKE_VERSION} VERSION_LESS "3.12.0")
     message(FATAL_ERROR "CMake 3.12 or newer is required for object library support when building both static and shared libraries")
   endif()
@@ -16,25 +14,47 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-# Hint: This can be set to enable custom find_package
-# search paths, probably best to set it when configuring
-# on the command line to cmake instead of setting it
-# here.
-###set(CMAKE_PREFIX_PATH "/prefix")
+# we include this first to obtain version numbers from version.cmake
+include(config/version.cmake)
 
-project(OpenEXRMetaProject)
+#set up our project
+project(Imath VERSION ${IMATH_VERSION} LANGUAGES C CXX)
+
+#######################################
+#######################################
+# This declares all the configuration variables visible
+# in cmake-gui or similar and the rest of the global
+# project setup
+#
+# Please look at this file to see what is configurable
+#######################################
+#######################################
+include(config/ImathSetup.cmake)
+
+# generates config headers, package config files
+add_subdirectory(config)
+
+# utility function for the repeated boilerplate of defining
+# the libraries
+include(config/LibraryDefine.cmake)
+
+#######################################
+
+# Include these modules without enable/disable options
+add_subdirectory(Half)
+add_subdirectory(Imath)
+# Tell CMake where to find the ImathConfig.cmake file. Makes it posible to call 
+# find_package(Imath) in downstream projects
+set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
+# Add an empty ImathTargets.cmake file for the config to use. 
+# Can be empty since we already defined the targets in add_subdirectory
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
 
 
-# An "official" way to make this a super-project
-# basically overrides the find_package to not find anything
-# for stuff we're including locally
-set(as_subproject IlmBase OpenEXR)
-macro(find_package)
-  if(NOT "${ARGV0}" IN_LIST as_subproject)
-    _find_package(${ARGV})
-  endif()
-endmacro()
-
+option(PYTHON "Set ON to compile PyImath bindings")
+if (PYTHON)
+  add_subdirectory(python)
+endif()
 
 # If you want to use ctest to configure, build and
 # upload the results, cmake has builtin support for
@@ -52,7 +72,7 @@ endmacro()
 #
 # [or whatever you name the file you edit]
 # 
-#set(CTEST_PROJECT_NAME "OpenEXR")
+#set(CTEST_PROJECT_NAME "Imath")
 #set(CTEST_NIGHTLY_START_TIME "01:01:01 UTC")
 #set(CTEST_DROP_METHOD "http") # there are others...
 #set(CTEST_DROP_SITE "open.cdash.org")
@@ -62,23 +82,9 @@ endmacro()
 include(CTest)
 if(BUILD_TESTING)
   enable_testing()
-endif()
 
-#######################################
-
-# Include these two modules without enable/disable options
-add_subdirectory(IlmBase)
-add_subdirectory(OpenEXR)
-
-# should this just be always on and we conditionally compile what
-# is found and warn otherwise? or error out?
-option(PYILMBASE_ENABLE "Enables configuration of the PyIlmBase module" ON)
-if(PYILMBASE_ENABLE)
-  if (${CMAKE_VERSION} VERSION_LESS "3.12.0")
-    message(WARNING ": CMake version ${CMAKE_VERSION} detected, PyIlmBase uses newer features of cmake (>= 3.12), disabling")
-  else()
-    add_subdirectory(PyIlmBase)
-  endif()
+  add_subdirectory(HalfTest)
+  add_subdirectory(ImathTest)
 endif()
 
 # Including this module will add a `clang-format` target to the build if

@@ -1,19 +1,19 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-### The autoconf setup for this folder generates a PyIlmBaseConfig.h file
+### The autoconf setup for this folder generates a PyImathConfig.h file
 ### but no source actually uses that, so let's elide that for now
 
-configure_file(PyIlmBaseConfigInternal.h.in_cmake ${CMAKE_CURRENT_BINARY_DIR}/PyIlmBaseConfigInternal.h)
-add_library(PyIlmBaseConfig INTERFACE)
-target_include_directories(PyIlmBaseConfig INTERFACE
+configure_file(PyImathConfigInternal.h.in ${CMAKE_CURRENT_BINARY_DIR}/../PyImath/PyImathConfigInternal.h)
+add_library(PyImathConfig INTERFACE)
+target_include_directories(PyImathConfig INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
-install(TARGETS PyIlmBaseConfig EXPORT ${PROJECT_NAME})
-add_library(PyIlmBase::Config ALIAS PyIlmBaseConfig)
+install(TARGETS PyImathConfig EXPORT ${PROJECT_NAME})
+add_library(PyImath::Config ALIAS PyImathConfig)
 
-if(PYILMBASE_INSTALL_PKG_CONFIG)
+if(PYIMATH_INSTALL_PKG_CONFIG)
   # use a helper function to avoid variable pollution, but pretty simple
-  function(pyilmbase_pkg_config_help pcinfile)
+  function(pyimath_pkg_config_help pcinfile)
     set(prefix ${CMAKE_INSTALL_PREFIX})
     set(exec_prefix ${CMAKE_INSTALL_BINDIR})
     set(libdir ${CMAKE_INSTALL_LIBDIR})
@@ -26,7 +26,7 @@ if(PYILMBASE_INSTALL_PKG_CONFIG)
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
     )
   endfunction()
-  pyilmbase_pkg_config_help(../PyIlmBase.pc.in)
+  pyimath_pkg_config_help(../PyImath.pc.in)
 endif()
 
 # The main export of the configuration - This is the
@@ -35,7 +35,7 @@ endif()
 include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
-  VERSION ${PYILMBASE_VERSION}
+  VERSION ${PYIMATH_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake

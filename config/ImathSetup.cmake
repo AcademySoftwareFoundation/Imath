@@ -8,7 +8,7 @@ include(GNUInstallDirs)
 
 # This is primarily for the halfFunction code that enables a stack
 # object (if you enable this) that contains a LUT of the function
-option(ILMBASE_ENABLE_LARGE_STACK "Enables code to take advantage of large stack support"     OFF)
+option(IMATH_ENABLE_LARGE_STACK "Enables code to take advantage of large stack support"     OFF)
 
 # What C++ standard to compile for
 # VFX Platform 18 is c++14, so let's enable that by default
@@ -16,33 +16,29 @@ set(tmp 14)
 if(CMAKE_CXX_STANDARD)
   set(tmp ${CMAKE_CXX_STANDARD})
 endif()
-set(OPENEXR_CXX_STANDARD "${tmp}" CACHE STRING "C++ standard to compile against")
+set(IMATH_CXX_STANDARD "${tmp}" CACHE STRING "C++ standard to compile against")
 set(tmp)
 
 # Namespace-related settings, allows one to customize the
 # namespace generated, and to version the namespaces
-set(ILMBASE_NAMESPACE_CUSTOM "0" CACHE STRING "Whether the namespace has been customized (so external users know)")
-set(ILMBASE_INTERNAL_IMATH_NAMESPACE "Imath_${ILMBASE_VERSION_API}" CACHE STRING "Real namespace for Imath that will end up in compiled symbols")
-set(ILMBASE_INTERNAL_IEX_NAMESPACE "Iex_${ILMBASE_VERSION_API}" CACHE STRING "Real namespace for Iex that will end up in compiled symbols")
-set(ILMBASE_INTERNAL_ILMTHREAD_NAMESPACE "IlmThread_${ILMBASE_VERSION_API}" CACHE STRING "Real namespace for IlmThread that will end up in compiled symbols")
-set(ILMBASE_IMATH_NAMESPACE "Imath" CACHE STRING "Public namespace alias for Imath")
-set(ILMBASE_IEX_NAMESPACE "Iex" CACHE STRING "Public namespace alias for Iex")
-set(ILMBASE_ILMTHREAD_NAMESPACE "IlmThread" CACHE STRING "Public namespace alias for IlmThread")
-set(ILMBASE_PACKAGE_NAME "IlmBase ${ILMBASE_VERSION}" CACHE STRING "Public string / label for displaying package")
+set(IMATH_NAMESPACE_CUSTOM "0" CACHE STRING "Whether the namespace has been customized (so external users know)")
+set(IMATH_INTERNAL_IMATH_NAMESPACE "Imath_${IMATH_VERSION_API}" CACHE STRING "Real namespace for Imath that will end up in compiled symbols")
+set(IMATH_IMATH_NAMESPACE "Imath" CACHE STRING "Public namespace alias for Imath")
+set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}" CACHE STRING "Public string / label for displaying package")
 
-# Whether to generate and install a pkg-config file IlmBase.pc on
+# Whether to generate and install a pkg-config file Imath.pc on
 if(WIN32)
-option(ILMBASE_INSTALL_PKG_CONFIG "Install IlmBase.pc file" OFF)
+option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" OFF)
 else()
-option(ILMBASE_INSTALL_PKG_CONFIG "Install IlmBase.pc file" ON)
+option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" ON)
 endif()
 
 ########################
 ## Build related options
 
 # This is a variable here for use in install lines. Care must be taken
-# when changing this, as many things assume this is OpenEXR
-set(ILMBASE_OUTPUT_SUBDIR OpenEXR CACHE STRING "Destination sub-folder of the include path for install")
+# when changing this, as many things assume this is Imath
+set(IMATH_OUTPUT_SUBDIR Imath CACHE STRING "Destination sub-folder of the include path for install")
 
 # This does not seem to be available as a per-target property,
 # but is pretty harmless to set globally
@@ -56,17 +52,17 @@ set(CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "Suffix for debug builds")
 option(BUILD_SHARED_LIBS "Build shared library" ON)
 # This allows a "double library" setup, where we compile both
 # a dynamic and shared library
-option(ILMBASE_BUILD_BOTH_STATIC_SHARED  "Build both static and shared libraries in one step (otherwise follows BUILD_SHARED_LIBS)" OFF)
-if (ILMBASE_BUILD_BOTH_STATIC_SHARED)
+option(IMATH_BUILD_BOTH_STATIC_SHARED  "Build both static and shared libraries in one step (otherwise follows BUILD_SHARED_LIBS)" OFF)
+if (IMATH_BUILD_BOTH_STATIC_SHARED)
   set(BUILD_SHARED_LIBS ON)
 endif()
 # Suffix to append to root name, this helps with version management
 # but can be turned off if you don't care, or otherwise customized
-set(ILMBASE_LIB_SUFFIX "-${ILMBASE_VERSION_API}" CACHE STRING "string added to the end of all the libraries")
+set(IMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "string added to the end of all the libraries")
 # when building both dynamic and static, the additional string to
 # add to the library name, such that to get static linkage, you
-# would use -lImath_static (or target_link_libraries(xxx IlmBase::Imath_static))
-set(ILMBASE_STATIC_LIB_SUFFIX "_static" CACHE STRING "When building both static and shared, name to append to static library (in addition to normal suffix)")
+# would use -lImath_static (or target_link_libraries(xxx Imath::Imath_static))
+set(IMATH_STATIC_LIB_SUFFIX "_static" CACHE STRING "When building both static and shared, name to append to static library (in addition to normal suffix)")
 
 # rpath related setup
 # make sure we force an rpath to the rpath we're compiling
@@ -111,15 +107,15 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Code check related features
-option(OPENEXR_USE_CLANG_TIDY "Check if clang-tidy is available, and enable that" OFF)
-if(OPENEXR_USE_CLANG_TIDY)
-  find_program(OPENEXR_CLANG_TIDY_BIN clang-tidy)
-  if(OPENEXR_CLANG_TIDY_BIN-NOTFOUND)
+option(IMATH_USE_CLANG_TIDY "Check if clang-tidy is available, and enable that" OFF)
+if(IMATH_USE_CLANG_TIDY)
+  find_program(IMATH_CLANG_TIDY_BIN clang-tidy)
+  if(IMATH_CLANG_TIDY_BIN-NOTFOUND)
     message(FATAL_ERROR "clang-tidy processing requested, but no clang-tidy found")
   endif()
   # TODO: Need to define the list of valid checks and add a file with said list
   set(CMAKE_CXX_CLANG_TIDY
-    ${OPENEXR_CLANG_TIDY_BIN};
+    ${IMATH_CLANG_TIDY_BIN};
     -header-filter=.;
     -checks=*;
   )

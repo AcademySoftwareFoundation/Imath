@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-ilmbase_define_library(Imath
+imath_define_library(Imath
   PRIV_EXPORT IMATH_EXPORTS
   CURDIR ${CMAKE_CURRENT_SOURCE_DIR}
   SOURCES
@@ -9,7 +9,6 @@ ilmbase_define_library(Imath
     ImathColorAlgo.cpp
     ImathFun.cpp
     ImathVec.cpp
-    ImathExc.cpp
     ImathMatrixAlgo.cpp
   HEADERS
     ImathBoxAlgo.h
@@ -17,7 +16,6 @@ ilmbase_define_library(Imath
     ImathColorAlgo.h
     ImathColor.h
     ImathEuler.h
-    ImathExc.h
     ImathExport.h
     ImathForward.h
     ImathFrame.h
@@ -46,5 +44,6 @@ ilmbase_define_library(Imath
     ImathVecAlgo.h
     ImathVec.h
   DEPENDENCIES
-    IlmBase::Half IlmBase::IexMath
-)
+    Half IexMath
+    )
+  
