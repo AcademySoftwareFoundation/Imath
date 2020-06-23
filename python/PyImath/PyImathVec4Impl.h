@@ -50,7 +50,6 @@
 #include "PyImath.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
-#include <Iex.h>
 #include "PyImathMathExc.h"
 
 namespace PyImath {
@@ -91,7 +90,7 @@ static Vec4<T> * Vec4_object_constructor1(const object &obj)
             res.w = extract<T>(t[3]);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 4");
+            throw std::invalid_argument ("tuple must have length of 4");
         
     }
     else if(e5.check()) { T a = (T) e5(); res = IMATH_NAMESPACE::Vec4<T>(a, a, a, a); }
@@ -106,10 +105,10 @@ static Vec4<T> * Vec4_object_constructor1(const object &obj)
             res.w = extract<T>(l[3]);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "list must have length of 4");
+            throw std::invalid_argument ("list must have length of 4");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to Vec4 constructor");
+        throw std::invalid_argument ("invalid parameters passed to Vec4 constructor");
     
     Vec4<T> *v = new Vec4<T>;
     *v = res;
@@ -128,16 +127,16 @@ static Vec4<T> * Vec4_object_constructor2(const object &obj1, const object &obj2
     Vec4<T> *v = new Vec4<T>;
     
     if(e1.check()) { v->x = (T) e1();}
-    else { THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to Vec4 constructor"); }
+    else { throw std::invalid_argument ("invalid parameters passed to Vec4 constructor"); }
     
     if(e2.check()) { v->y = (T) e2();}
-    else { THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to Vec4 constructor"); }    
+    else { throw std::invalid_argument ("invalid parameters passed to Vec4 constructor"); }    
 
     if(e3.check()) { v->z = (T) e3();}
-    else { THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to Vec4 constructor"); } 
+    else { throw std::invalid_argument ("invalid parameters passed to Vec4 constructor"); } 
 
     if(e4.check()) { v->w = (T) e4();}
-    else { THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to Vec4 constructor"); } 
+    else { throw std::invalid_argument ("invalid parameters passed to Vec4 constructor"); } 
     
     return v;
 }
@@ -402,7 +401,7 @@ Vec4_idivObj(IMATH_NAMESPACE::Vec4<T> &v, const object &o)
         if (e.check())
             return v /= (T) e();
         else
-            THROW (IEX_NAMESPACE::ArgExc, "V4 division expects an argument "
+            throw std::invalid_argument ("V4 division expects an argument "
                    "convertible to a V4");
     }
 }
@@ -432,7 +431,7 @@ Vec4_subTuple(const Vec4<T> &v, const BoostPyType &t)
         w.w = v.w - extract<T>(t[3]);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 4");
+        throw std::invalid_argument ("tuple must have length of 4");
     
     return w;
 }
@@ -461,7 +460,7 @@ Vec4_rsubTuple(const Vec4<T> &v, const BoostPyType &t)
         w.w = extract<T>(t[3]) - v.w;
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 4");
+        throw std::invalid_argument ("tuple must have length of 4");
     
     return w;
 }
@@ -481,7 +480,7 @@ Vec4_addTuple(const Vec4<T> &v, const BoostPyType &t)
         w.w = v.w + extract<T>(t[3]);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 4");
+        throw std::invalid_argument ("tuple must have length of 4");
     
     return w;
 }
@@ -548,7 +547,7 @@ mult(const Vec4<T> &v, tuple t)
         w.w = v.w*extract<T>(t[3]);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 1 or 4");
+        throw std::invalid_argument ("tuple must have length of 1 or 4");
     
     return w;
 }
@@ -574,10 +573,10 @@ Vec4_divTuple(const Vec4<T> &v, const BoostPyType &t)
         if(x != T(0) && y != T(0) && z != T(0) && w != T(0))
             return Vec4<T>(v.x / x, v.y / y, v.z / z, v.w / w);
         else
-            THROW(IEX_NAMESPACE::MathExc, "Division by zero");
+            throw std::domain_error ("Division by zero");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Vec4 expects tuple of length 4");
+        throw std::invalid_argument ("Vec4 expects tuple of length 4");
 }
 
 template <class T, class BoostPyType>
@@ -597,10 +596,10 @@ Vec4_rdivTuple(const Vec4<T> &v, const BoostPyType &t)
             setValue(res, (T) (x / v.x), (T) (y / v.y), (T) (z / v.z), (T) (w / v.w));
         }
         else
-            THROW(IEX_NAMESPACE::MathExc, "Division by zero");
+            throw std::domain_error ("Division by zero");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple must have length of 4");
+        throw std::invalid_argument ("tuple must have length of 4");
     
     return res;
 }
@@ -615,7 +614,7 @@ Vec4_divT(const Vec4<T> &v, T a)
         setValue(res, (T) (v.x / a), (T) (v.y / a), (T) (v.z / a), (T) (v.w / a));
     }
     else
-        THROW(IEX_NAMESPACE::MathExc, "Division by zero");
+        throw std::domain_error ("Division by zero");
 
     return res;
 }
@@ -630,7 +629,7 @@ Vec4_rdivT(const Vec4<T> &v, T a)
         setValue(res, (T) (a / v.x), (T) (a / v.y), (T) (a / v.z), (T) (a / v.w));
     }
     else
-        THROW(IEX_NAMESPACE::MathExc, "Division by zero");
+        throw std::domain_error ("Division by zero");
 
     return res;
 }
@@ -673,7 +672,7 @@ lessThan(const Vec4<T> &v, const object &obj)
         setValue(res,x,y,z,w);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to operator <");
+        throw std::invalid_argument ("invalid parameters passed to operator <");
     
     bool isLessThan = (v.x <= res.x && v.y <= res.y && v.z <= res.z && v.w <= res.w)
                     && v != res;
@@ -703,7 +702,7 @@ greaterThan(const Vec4<T> &v, const object &obj)
         setValue(res,x,y,z,w);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to operator >");
+        throw std::invalid_argument ("invalid parameters passed to operator >");
     
     bool isGreaterThan = (v.x >= res.x && v.y >= res.y && v.z >= res.z && v.w >= res.w)
                        && v != res;
@@ -733,7 +732,7 @@ lessThanEqual(const Vec4<T> &v, const object &obj)
         setValue(res,x,y,z,w);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to operator <=");
+        throw std::invalid_argument ("invalid parameters passed to operator <=");
     
     bool isLessThanEqual = (v.x <= res.x && v.y <= res.y && v.z <= res.z && v.w <= res.w);
                    
@@ -762,7 +761,7 @@ greaterThanEqual(const Vec4<T> &v, const object &obj)
         setValue(res,x,y,z,w);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to operator >=");
+        throw std::invalid_argument ("invalid parameters passed to operator >=");
     
     bool isGreaterThanEqual = (v.x >= res.x && v.y >= res.y && v.z >= res.z && v.w >= res.w);
 
@@ -796,14 +795,14 @@ equalWithAbsErrorObj(const Vec4<T> &v, const object &obj1, const object &obj2)
             res.z = extract<T>(t[3]);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "tuple of length 4 expected");
+            throw std::invalid_argument ("tuple of length 4 expected");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to equalWithAbsError");
+        throw std::invalid_argument ("invalid parameters passed to equalWithAbsError");
     
     if(e5.check())      { return v.equalWithAbsError(res, (T) e5()); }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to equalWithAbsError");
+        throw std::invalid_argument ("invalid parameters passed to equalWithAbsError");
 }
 
 template <class T>
@@ -832,14 +831,14 @@ equalWithRelErrorObj(const Vec4<T> &v, const object &obj1, const object &obj2)
             res.w = extract<T>(t[3]);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "tuple of length 4 expected");
+            throw std::invalid_argument ("tuple of length 4 expected");
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to equalWithRelError");
+        throw std::invalid_argument ("invalid parameters passed to equalWithRelError");
     
     if(e5.check())      { return v.equalWithRelError(res, (T) e5()); }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "invalid parameters passed to equalWithRelError");    
+        throw std::invalid_argument ("invalid parameters passed to equalWithRelError");    
     
 }
 
@@ -859,7 +858,7 @@ equal(const Vec4<T> &v, const tuple &t)
         return (v == res);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 4 expected");    
+        throw std::invalid_argument ("tuple of length 4 expected");    
 }
 
 template <class T>
@@ -877,7 +876,7 @@ notequal(const Vec4<T> &v, const tuple &t)
         return (v != res);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 4 expected");    
+        throw std::invalid_argument ("tuple of length 4 expected");    
 }
 
 template <class T>

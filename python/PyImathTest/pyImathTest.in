@@ -7,7 +7,6 @@ import sys
 import traceback
 from math import cos, pi, sin, sqrt
 
-import iex
 from imath import *
 
 
@@ -1673,28 +1672,11 @@ testList.append(('testMaskedV3dArray', lambda : testMaskedVecTypeArray(V3dArray)
 def testExceptions():
 
     # Verify that the exception classes defined in imath
-    # are subclasses of the exception classes in iex:
-    # NullVecExc should be caught by "except NullVecExc",
-    # "except iex.MathExc", "except iex.BaseExc" and
-    # "except iex.std_exception".
+    # are caught by "except NullVecExc", "except RuntimeError"
 
     try:
         raise NullVecExc
     except NullVecExc:
-        pass
-    else:
-        assert 0
-
-    try:
-        raise NullVecExc
-    except iex.MathExc:
-        pass
-    else:
-        assert 0
-
-    try:
-        raise NullVecExc
-    except iex.BaseExc:
         pass
     else:
         assert 0
@@ -8417,15 +8399,6 @@ testList.append (('testC4Array',testC4Array))
 def testFpExceptions():
 
     try:
-        v = V3f (1, 1, 1)
-        v = v / 0
-        print (v)
-    except iex.MathExc:
-        pass
-    else:
-        assert 0
-
-    try:
         f = sqrt (-1)
         print (f)
     except ValueError:
@@ -8434,14 +8407,6 @@ def testFpExceptions():
         pass
     else:
         assert 0
-
-    # The overflow exception may not masked properly on Windows?
-    #try:
-    #    v = V3d (1e200, 1e200, 1e200)
-    #    v = v * v * v
-    #    print (v)
-    #except iex.MathExc:
-    #    pass
 
     try:
         f = sqrt (-1)
@@ -8672,7 +8637,7 @@ def testSymmetricEigensolve():
     m[2][3] = 1000
     try:
         m.symmetricEigensolve()
-    except iex.ArgExc:
+    except ValueError:
         pass
     else:
         assert 0
@@ -8710,7 +8675,7 @@ def testSymmetricEigensolve():
     m[1][2] = 1000
     try:
         m.symmetricEigensolve()
-    except iex.ArgExc:
+    except ValueError:
         pass
     else:
         assert 0

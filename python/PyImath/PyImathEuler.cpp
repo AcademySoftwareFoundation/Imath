@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathEuler.h"
 #include "PyImathDecorators.h"
@@ -44,7 +44,6 @@
 #include "PyImath.h"
 #include "PyImathMathExc.h"
 #include <ImathVec.h>
-#include <Iex.h>
 #include "PyImathOperators.h"
 
 // XXX incomplete array wrapping, docstrings missing
@@ -204,7 +203,7 @@ setXYZTuple(Euler<T> &euler, const tuple &t)
         euler.setXYZVector(v);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color3 expects tuple of length 3");    
+        throw std::invalid_argument ("Color3 expects tuple of length 3");    
 }
 
 // needed to convert Eulerf::Order to Euler<T>::Order

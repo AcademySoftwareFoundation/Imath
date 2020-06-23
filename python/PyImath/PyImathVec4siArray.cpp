@@ -33,7 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathVec4ArrayImpl.h"
 #include "PyImathExport.h"

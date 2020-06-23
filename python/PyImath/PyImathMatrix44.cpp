@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #define BOOST_PYTHON_MAX_ARITY 17
 
@@ -51,7 +51,6 @@
 #include "PyImathMathExc.h"
 #include <ImathVec.h>
 #include <ImathMatrixAlgo.h>
-#include <Iex.h>
 #include "PyImathTask.h"
 
 namespace PyImath {
@@ -498,7 +497,7 @@ scale44Tuple(Matrix44<T> &mat, const tuple &t)
         return mat.scale(s);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "m.scale needs tuple of length 3");
+        throw std::domain_error ("m.scale needs tuple of length 3");
 }
 
 template <class T>
@@ -523,7 +522,7 @@ rotationMatrix44(Matrix44<T> &mat, const object &fromObj, const object &toObj)
     }
     else
     {
-        THROW(IEX_NAMESPACE::ArgExc, "m.rotationMatrix expected V3 arguments");
+      throw std::invalid_argument ("m.rotationMatrix expected V3 arguments");
     }   
 }
 
@@ -543,7 +542,7 @@ rotationMatrixWithUp44(Matrix44<T> &mat, const object &fromObj, const object &to
     }
     else
     {
-        THROW(IEX_NAMESPACE::ArgExc, "m.rotationMatrix expected V3 arguments");
+      throw std::invalid_argument ("m.rotationMatrix expected V3 arguments");
     }   
 }
 
@@ -579,7 +578,7 @@ setScale44Tuple(Matrix44<T> &mat, const tuple &t)
         return mat.setScale(s);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "m.translate needs tuple of length 3");
+        throw std::domain_error ("m.translate needs tuple of length 3");
 }
 
 
@@ -626,7 +625,7 @@ setShear44Tuple(Matrix44<T> &mat, const tuple &t)
         return mat.setShear(shear);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "m.setShear needs tuple of length 3 or 6");
+        throw std::domain_error ("m.setShear needs tuple of length 3 or 6");
 }
 
 template <class T>
@@ -652,7 +651,7 @@ setTranslation44Tuple(Matrix44<T> &mat, const tuple &t)
         return mat.setTranslation(trans);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "m.translate needs tuple of length 3");
+        throw std::domain_error ("m.translate needs tuple of length 3");
 }
 
 template <class T>
@@ -667,7 +666,7 @@ setTranslation44Obj(Matrix44<T> &mat, const object &o)
     }
     else
     {
-        THROW(IEX_NAMESPACE::ArgExc, "m.setTranslation expected V3 argument");
+      throw std::invalid_argument ("m.setTranslation expected V3 argument");
         return mat;
     }   
 }
@@ -723,7 +722,7 @@ shear44Tuple(Matrix44<T> &mat, const tuple &t)
         return mat.shear(shear);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "m.shear needs tuple of length 3 or 6");
+        throw std::domain_error ("m.shear needs tuple of length 3 or 6");
 }
 
 
@@ -739,7 +738,7 @@ translate44(Matrix44<T> &mat, const object &t)
     }
     else
     {
-        THROW(IEX_NAMESPACE::ArgExc, "m.translate expected V3 argument");
+      throw std::invalid_argument ("m.translate expected V3 argument");
         return mat;
     }   
 }
@@ -758,7 +757,7 @@ translate44Tuple(Matrix44<T> &mat, const tuple &t)
         return mat.translate(trans);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "m.translate needs tuple of length 3");
+        throw std::domain_error ("m.translate needs tuple of length 3");
 }
 
 template <class T>
@@ -925,7 +924,7 @@ static Matrix44<T> * Matrix4_tuple_constructor(const tuple &t0, const tuple &t1,
                              extract<T>(t3[0]),  extract<T>(t3[1]),  extract<T>(t3[2]),  extract<T>(t3[3]));
   }
   else
-      THROW(IEX_NAMESPACE::LogicExc, "Matrix44 takes 4 tuples of length 4");
+      throw std::domain_error ("Matrix44 takes 4 tuples of length 4");
 }
 
 template <class T, class S>

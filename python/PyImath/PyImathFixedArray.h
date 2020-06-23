@@ -39,16 +39,10 @@
 #include <boost/operators.hpp>
 #include <boost/shared_array.hpp>
 #include <boost/any.hpp>
-#include <Iex.h>
 #include <iostream>
-#include <IexMathFloatExc.h>
 #include "PyImathUtil.h"
 
 #ifdef PYIMATH_ENABLE_EXCEPTIONS
-# define PY_IMATH_LEAVE_PYTHON IEX_NAMESPACE::MathExcOn mathexcon (IEX_NAMESPACE::IEEE_OVERFLOW | \
-                                                        IEX_NAMESPACE::IEEE_DIVZERO |  \
-                                                        IEX_NAMESPACE::IEEE_INVALID);  \
-                              PyImath::PyReleaseLock pyunlock;
 # define PY_IMATH_RETURN_PYTHON mathexcon.handleOutstandingExceptions()
 #else
 # define PY_IMATH_LEAVE_PYTHON PyImath::PyReleaseLock pyunlock;
@@ -91,11 +85,11 @@ class FixedArray
     {
         if (length < 0)
         {
-            throw IEX_NAMESPACE::LogicExc("Fixed array length must be non-negative");
+          throw std::domain_error  ("Fixed array length must be non-negative");
         }
         if (stride <= 0)
         {
-            throw IEX_NAMESPACE::LogicExc("Fixed array stride must be positive");
+          throw std::domain_error  ("Fixed array stride must be positive");
         }
         // nothing
     }
@@ -105,11 +99,11 @@ class FixedArray
     {
         if (_length < 0)
         {
-            throw IEX_NAMESPACE::LogicExc("Fixed array length must be non-negative");
+            throw std::domain_error("Fixed array length must be non-negative");
         }
         if (stride <= 0)
         {
-            throw IEX_NAMESPACE::LogicExc("Fixed array stride must be positive");
+            throw std::domain_error("Fixed array stride must be positive");
         }
         // nothing
     }
@@ -118,7 +112,7 @@ class FixedArray
         : _ptr(0), _length(length), _stride(1), _handle(), _unmaskedLength(0)
     {
         if (_length < 0) {
-            throw IEX_NAMESPACE::LogicExc("Fixed array length must be non-negative");
+            throw std::domain_error("Fixed array length must be non-negative");
         }
         boost::shared_array<T> a(new T[length]);
         T tmp = FixedArrayDefaultValue<T>::value();
@@ -131,7 +125,7 @@ class FixedArray
         : _ptr(0), _length(length), _stride(1), _handle(), _unmaskedLength(0)
     {
         if (_length < 0) {
-            throw IEX_NAMESPACE::LogicExc("Fixed array length must be non-negative");
+            throw std::domain_error("Fixed array length must be non-negative");
         }
         boost::shared_array<T> a(new T[length]);
         _handle = a;
@@ -142,7 +136,7 @@ class FixedArray
         : _ptr(0), _length(length), _stride(1), _handle(), _unmaskedLength(0)
     {
         if (_length < 0) {
-            throw IEX_NAMESPACE::LogicExc("Fixed array length must be non-negative");
+            throw std::domain_error("Fixed array length must be non-negative");
         }
         boost::shared_array<T> a(new T[length]);
         for (Py_ssize_t i=0; i<length; ++i) a[i] = initialValue;
@@ -155,7 +149,7 @@ class FixedArray
     {
         if (f.isMaskedReference())
         {
-            throw IEX_NAMESPACE::NoImplExc("Masking an already-masked FixedArray not supported yet (SQ27000)");
+            throw std::invalid_argument("Masking an already-masked FixedArray not supported yet (SQ27000)");
         }
 
         size_t len = f.match_dimension(mask);
@@ -257,7 +251,7 @@ class FixedArray
             }
             // e can be -1 if the iteration is backwards with a negative slice operator [::-n] (n > 0).
             if (s < 0 || e < -1 || sl < 0) {
-                throw IEX_NAMESPACE::LogicExc("Slice extraction produced invalid start, end, or length indices");
+                throw std::domain_error("Slice extraction produced invalid start, end, or length indices");
             }
             start = s;
             end = e;
@@ -376,7 +370,7 @@ class FixedArray
 
         if (_indices)
         {
-            throw IEX_NAMESPACE::ArgExc("We don't support setting item masks for masked reference arrays.");
+          throw std::invalid_argument("We don't support setting item masks for masked reference arrays.");
         }
 
         size_t len = match_dimension(mask);
@@ -392,7 +386,7 @@ class FixedArray
                 if (mask[i]) count++;
 
             if ((size_t)data.len() != count) {
-                throw IEX_NAMESPACE::ArgExc("Dimensions of source data do not match destination either masked or unmasked");
+              throw std::invalid_argument("Dimensions of source data do not match destination either masked or unmasked");
             }
 
             Py_ssize_t dataIndex = 0;
@@ -507,7 +501,7 @@ class FixedArray
 
         if (throwExc)
         {
-            throw IEX_NAMESPACE::ArgExc("Dimensions of source do not match destination");
+          throw std::invalid_argument("Dimensions of source do not match destination");
         }
 
         return len();

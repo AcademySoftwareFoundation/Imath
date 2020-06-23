@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #define BOOST_PYTHON_MAX_ARITY 17
 
@@ -51,7 +51,6 @@
 #include "PyImathMathExc.h"
 #include <ImathVec.h>
 #include <ImathMatrixAlgo.h>
-#include <Iex.h>
 
 namespace PyImath {
 
@@ -350,7 +349,7 @@ scale22Tuple(Matrix22<T> &mat, const tuple &t)
         return mat.scale(s);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "m.scale needs tuple of length 2");
+        throw std::invalid_argument ( "m.scale needs tuple of length 2");
 }
 
 template <class T>
@@ -392,7 +391,7 @@ setScale22Tuple(Matrix22<T> &mat, const tuple &t)
         return mat.setScale(s);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "m.setScale needs tuple of length 2");
+        throw std::invalid_argument ( "m.setScale needs tuple of length 2");
 }
 
 template <class T>
@@ -547,7 +546,7 @@ static Matrix22<T> * Matrix2_tuple_constructor(const tuple &t0, const tuple &t1)
                              extract<T>(t1[0]),  extract<T>(t1[1]));
   }
   else
-      THROW(IEX_NAMESPACE::LogicExc, "Matrix22 takes 2 tuples of length 2");
+    throw std::invalid_argument  ("Matrix22 takes 2 tuples of length 2");
 }
 
 template <class T, class S>

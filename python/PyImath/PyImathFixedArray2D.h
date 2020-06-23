@@ -39,7 +39,6 @@
 #include <boost/operators.hpp>
 #include <boost/shared_array.hpp>
 #include <boost/any.hpp>
-#include <Iex.h>
 #include <iostream>
 #include "PyImathFixedArray.h"
 #include "PyImathOperators.h"
@@ -65,9 +64,9 @@ class FixedArray2D
         : _ptr(ptr), _length(lengthX, lengthY), _stride(strideX, lengthX), _handle()
     {
         if (lengthX < 0 || lengthY < 0)
-            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
+            throw std::domain_error("Fixed array 2d lengths must be non-negative");
         if (strideX <= 0)
-            throw IEX_NAMESPACE::LogicExc("Fixed array 2d strides must be positive");
+            throw std::domain_error("Fixed array 2d strides must be positive");
         initializeSize();
         //std::cout << "fixed array external construct" << std::endl;
         // nothing
@@ -77,9 +76,9 @@ class FixedArray2D
         : _ptr(ptr), _length(lengthX, lengthY), _stride(strideX, strideY), _handle()
     {
         if (lengthX < 0 || lengthY < 0)
-            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
+            throw std::domain_error("Fixed array 2d lengths must be non-negative");
         if (strideX <= 0 || strideY < 0)
-            throw IEX_NAMESPACE::LogicExc("Fixed array 2d strides must be positive");
+            throw std::domain_error("Fixed array 2d strides must be positive");
         initializeSize();
         //std::cout << "fixed array external construct" << std::endl;
         // nothing
@@ -97,7 +96,7 @@ class FixedArray2D
         : _ptr(0), _length(lengthX, lengthY), _stride(1, lengthX), _handle()
     {
         if (lengthX < 0 || lengthY < 0)
-            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
+            throw std::domain_error("Fixed array 2d lengths must be non-negative");
         initializeSize();
         T tmp = FixedArrayDefaultValue<T>::value();
         boost::shared_array<T> a(new T[_size]);
@@ -110,7 +109,7 @@ class FixedArray2D
         : _ptr(0), _length(length), _stride(1, length.x), _handle()
     {
         if (length.x < 0 || length.y < 0)
-            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
+            throw std::domain_error("Fixed array 2d lengths must be non-negative");
         initializeSize();
         T tmp = FixedArrayDefaultValue<T>::value();
         boost::shared_array<T> a(new T[_size]);
@@ -123,7 +122,7 @@ class FixedArray2D
         : _ptr(0), _length(lengthX, lengthY), _stride(1, lengthX), _handle()
     {
         if (lengthX < 0 || lengthY < 0)
-            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
+            throw std::domain_error("Fixed array 2d lengths must be non-negative");
         initializeSize();
         boost::shared_array<T> a(new T[_size]);
         for (size_t i=0; i<_size; ++i) a[i] = initialValue;
@@ -203,7 +202,7 @@ class FixedArray2D
                 boost::python::throw_error_already_set();
             }
             if (s < 0 || e < 0 || sl < 0) {
-                throw IEX_NAMESPACE::LogicExc("Slice extraction produced invalid start, end, or length indices");
+                throw std::domain_error("Slice extraction produced invalid start, end, or length indices");
             }
             start = s;
             end = e;

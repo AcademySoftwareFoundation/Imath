@@ -51,7 +51,6 @@
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
 #include <ImathBox.h>
-#include <Iex.h>
 #include "PyImathMathExc.h"
 #include "PyImathOperators.h"
 #include "PyImathVecOperators.h"
@@ -81,7 +80,7 @@ setItemTuple(FixedArray<IMATH_NAMESPACE::Box<T> > &va, Py_ssize_t index, const t
         va[(size_t)va.canonical_index(index)] = v;
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 2 expected");
+      throw std::invalid_argument ("tuple of length 2 expected");
 }
 
 template <class T>

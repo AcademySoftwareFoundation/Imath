@@ -59,7 +59,6 @@
 #include "PyImathFixedArray.h"
 #include "PyImathTask.h"
 #include "PyImathUtil.h"
-#include <IexMathFloatExc.h>
 
 namespace PyImath {
 
@@ -276,7 +275,7 @@ match_lengths(const std::pair<size_t,bool> &len1, const std::pair<size_t,bool> &
 
     // now both arguments are vectorized, check for dimension match
     if (len1.first != len2.first)
-        throw IEX_NAMESPACE::ArgExc("Array dimensions passed into function do not match");
+      throw std::invalid_argument("Array dimensions passed into function do not match");
 
     return len1;
 }

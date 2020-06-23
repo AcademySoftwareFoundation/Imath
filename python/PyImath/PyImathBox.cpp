@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathBox.h"
 #include "PyImathVec.h"
@@ -40,7 +40,6 @@
 #include "PyImathDecorators.h"
 #include "PyImathExport.h"
 #include <boost/python/make_constructor.hpp>
-#include <Iex.h>
 #include <ImathBoxAlgo.h>
 #include "PyImathTask.h"
 #include <vector>
@@ -100,7 +99,7 @@ static Box<T> * box2TupleConstructor1(const tuple &t)
         }
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Invalid input to Box tuple constructor");
+      throw std::invalid_argument ( "Invalid input to Box tuple constructor");
 }
 
 template <class T>
@@ -115,7 +114,7 @@ static Box<T> * box2TupleConstructor2(const tuple &t0, const tuple &t1)
         return new Box<T>(point0, point1);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Invalid input to Box tuple constructor");
+      throw std::invalid_argument ("Invalid input to Box tuple constructor");
 }
 
 template <class T, class S>
@@ -158,11 +157,11 @@ static Box<T> * box3TupleConstructor1(const tuple &t)
             return new Box<T> (t0, t1);
         }
         else
-            THROW(IEX_NAMESPACE::LogicExc, "Invalid input to Box tuple constructor");
+          throw std::invalid_argument ("Invalid input to Box tuple constructor");
     }
 
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Invalid input to Box tuple constructor");
+      throw std::invalid_argument ("Invalid input to Box tuple constructor");
 }
 
 template <class T>
@@ -182,7 +181,7 @@ static Box<T> * box3TupleConstructor2(const tuple &t0, const tuple &t1)
         return new Box<T>(point0, point1);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Invalid input to Box tuple constructor");
+      throw std::invalid_argument ("Invalid input to Box tuple constructor");
 }
 
 template <class T>
@@ -306,7 +305,9 @@ struct ExtendByTask : public Task
     }
     void execute(size_t start, size_t end)
     {
-        ASSERT(false, IEX_NAMESPACE::NoImplExc, "Box::ExtendBy execute requires a thread id");
+      assert (std::invalid_argument);
+      //TODO: verify this is desired assertion
+      //, std::invalid_argument, "Box::ExtendBy execute requires a thread id");
     }
 };
 

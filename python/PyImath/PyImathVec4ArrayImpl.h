@@ -50,7 +50,6 @@
 #include "PyImath.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
-#include <Iex.h>
 #include "PyImathMathExc.h"
 #include "PyImathOperators.h"
 #include "PyImathVecOperators.h"
@@ -84,7 +83,7 @@ setItemTuple(FixedArray<IMATH_NAMESPACE::Vec4<T> > &va, Py_ssize_t index, const 
         va[va.canonical_index(index)] = v;
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "tuple of length 4 expected");
+      throw std::invalid_argument ("tuple of length 4 expected");
 }
 
 template <class T>

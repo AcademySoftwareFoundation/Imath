@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathColor.h"
 #include "PyImathDecorators.h"
@@ -45,7 +45,6 @@
 #include "PyImathMathExc.h"
 #include <ImathColor.h>
 #include <ImathColorAlgo.h>
-#include <Iex.h>
 #include "PyImathColor4Array2DImpl.h"
 #include "PyImathColor4ArrayImpl.h"
 
@@ -134,7 +133,7 @@ static Color4<T> * Color4_construct_tuple(const tuple &t)
                              extract<T>(t[3]));
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");
+        throw std::invalid_argument ("Color4 expects tuple of length 4");
 }
 
 template <class T>
@@ -149,7 +148,7 @@ static Color4<T> * Color4_construct_list(const list &l)
                              extract<T>(l[3]));
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects list of length 4");
+        throw std::invalid_argument ("Color4 expects list of length 4");
 }
 
 template <class T>
@@ -218,7 +217,7 @@ hsv2rgbTuple(const tuple &t)
         return IMATH_NAMESPACE::hsv2rgb(color);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");    
+        throw std::invalid_argument ("Color4 expects tuple of length 4");    
 }
 
 template <class T>
@@ -245,7 +244,7 @@ rgb2hsvTuple(const tuple &t)
         return IMATH_NAMESPACE::rgb2hsv(color);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");    
+        throw std::invalid_argument ("Color4 expects tuple of length 4");    
 }
 
 
@@ -281,7 +280,7 @@ setValueTuple(Color4<T> &color, const tuple &t)
         color.setValue(v);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");
+        throw std::invalid_argument ("Color4 expects tuple of length 4");
 }
 
 template <class T>
@@ -311,7 +310,7 @@ addTuple(Color4<T> &color, const tuple &t)
                          color.b + extract<T>(t[2]),
                          color.a + extract<T>(t[3]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");
+        throw std::invalid_argument ("Color4 expects tuple of length 4");
 }
 
 template <class T>
@@ -350,7 +349,7 @@ subtractL(Color4<T> &color, const tuple &t)
                          color.b - extract<T>(t[2]),
                          color.a - extract<T>(t[3]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");
+        throw std::invalid_argument ("Color4 expects tuple of length 4");
 }
 
 template <class T>
@@ -364,7 +363,7 @@ subtractR(Color4<T> &color, const tuple &t)
                          extract<T>(t[2]) - color.b,
                          extract<T>(t[3]) - color.a);
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");
+        throw std::invalid_argument ("Color4 expects tuple of length 4");
 }
 
 template <class T>
@@ -456,7 +455,7 @@ mulTuple(Color4<T> &color, const tuple &t)
                          color.b * extract<T>(t[2]),
                          color.a * extract<T>(t[3]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");
+        throw std::invalid_argument ("Color4 expects tuple of length 4");
 }
 
 template <class T>
@@ -502,7 +501,7 @@ divTupleL(Color4<T> &color, const tuple &t)
                          color.b / extract<T>(t[2]),
                          color.a / extract<T>(t[3]));
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");    
+        throw std::invalid_argument ("Color4 expects tuple of length 4");    
 }
 
 template <class T>
@@ -516,7 +515,7 @@ divTupleR(Color4<T> &color, const tuple &t)
                          extract<T>(t[2]) / color.b,
                          extract<T>(t[3]) / color.a);
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Color4 expects tuple of length 4");    
+        throw std::invalid_argument ("Color4 expects tuple of length 4");    
 }
 
 template <class T>

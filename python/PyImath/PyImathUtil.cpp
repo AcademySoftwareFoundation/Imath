@@ -32,10 +32,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathUtil.h"
-#include <Iex.h>
 #include <boost/python.hpp>
 #include <pystate.h>
 
@@ -70,7 +69,7 @@ pyHaveLock()
     // version.
     
     if (!Py_IsInitialized())
-	throw IEX_NAMESPACE::LogicExc("PyReleaseLock called without the interpreter initialized");
+      throw std::invalid_argument ("PyReleaseLock called without the interpreter initialized");
 
     PyThreadState *myThreadState = PyGILState_GetThisThreadState();
 

@@ -52,7 +52,6 @@
 #include "ImathMatrix.h"
 #include "ImathQuat.h"
 #include "ImathEuler.h"
-#include "ImathExc.h"
 #include "ImathVec.h"
 #include "ImathLimits.h"
 #include "ImathNamespace.h"
@@ -84,7 +83,7 @@ IMATH_EXPORT_CONST M44d identity44d;
 //   that determines the functions' behavior when the matrix'
 //   scaling is very close to zero:
 //
-//   If exc is true, the functions throw an Imath::ZeroScale exception.
+//   If exc is true, the functions throw a std::domain_error exception.
 //
 //   If exc is false:
 //
@@ -798,7 +797,7 @@ checkForZeroScaleInRow (const T& scl,
 	if ((abs (scl) < 1 && abs (row[i]) >= limits<T>::max() * abs (scl)))
 	{
 	    if (exc)
-		throw IMATH_INTERNAL_NAMESPACE::ZeroScaleExc ("Cannot remove zero scaling "
+                throw std::domain_error ("Cannot remove zero scaling "
 					   "from matrix.");
 	    else
 		return false;
@@ -1315,7 +1314,7 @@ checkForZeroScaleInRow (const T& scl,
         if ((abs (scl) < 1 && abs (row[i]) >= limits<T>::max() * abs (scl)))
         {
             if (exc)
-                throw IMATH_INTERNAL_NAMESPACE::ZeroScaleExc (
+                throw std::domain_error (
                         "Cannot remove zero scaling from matrix.");
             else
                 return false;

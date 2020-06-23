@@ -65,9 +65,9 @@ normalizeOrThrow(Vec2<T> &v)
         {
             if (axis != -1)
             {
-                throw IntVecNormalizeExc ("Cannot normalize an integer "
-                                          "vector unless it is parallel "
-                                          "to a principal axis");
+              throw ("Cannot normalize an integer "
+                                    "vector unless it is parallel "
+                                    "to a principal axis");
             }
             axis = i;
         }
@@ -88,9 +88,9 @@ normalizeOrThrow(Vec3<T> &v)
         {
             if (axis != -1)
             {
-                throw IntVecNormalizeExc ("Cannot normalize an integer "
-                                          "vector unless it is parallel "
-                                          "to a principal axis");
+                throw ("Cannot normalize an integer "
+                                      "vector unless it is parallel "
+                                      "to a principal axis");
             }
             axis = i;
         }
@@ -111,9 +111,9 @@ normalizeOrThrow(Vec4<T> &v)
         {
             if (axis != -1)
             {
-                throw IntVecNormalizeExc ("Cannot normalize an integer "
-                                          "vector unless it is parallel "
-                                          "to a principal axis");
+                throw ("Cannot normalize an integer "
+                                      "vector unless it is parallel "
+                                      "to a principal axis");
             }
             axis = i;
         }
@@ -152,7 +152,7 @@ const Vec2<short> &
 Vec2<short>::normalizeExc ()
 {
     if ((x == 0) && (y == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     normalizeOrThrow<short>(*this);
     return *this;
@@ -183,7 +183,7 @@ Vec2<short>
 Vec2<short>::normalizedExc () const
 {
     if ((x == 0) && (y == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     Vec2<short> v(*this);
     normalizeOrThrow<short>(v);
@@ -228,7 +228,7 @@ const Vec2<int> &
 Vec2<int>::normalizeExc ()
 {
     if ((x == 0) && (y == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     normalizeOrThrow<int>(*this);
     return *this;
@@ -259,7 +259,7 @@ Vec2<int>
 Vec2<int>::normalizedExc () const
 {
     if ((x == 0) && (y == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     Vec2<int> v(*this);
     normalizeOrThrow<int>(v);
@@ -304,7 +304,7 @@ const Vec3<short> &
 Vec3<short>::normalizeExc ()
 {
     if ((x == 0) && (y == 0) && (z == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     normalizeOrThrow<short>(*this);
     return *this;
@@ -335,7 +335,7 @@ Vec3<short>
 Vec3<short>::normalizedExc () const
 {
     if ((x == 0) && (y == 0) && (z == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     Vec3<short> v(*this);
     normalizeOrThrow<short>(v);
@@ -380,7 +380,7 @@ const Vec3<int> &
 Vec3<int>::normalizeExc ()
 {
     if ((x == 0) && (y == 0) && (z == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     normalizeOrThrow<int>(*this);
     return *this;
@@ -411,7 +411,7 @@ Vec3<int>
 Vec3<int>::normalizedExc () const
 {
     if ((x == 0) && (y == 0) && (z == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     Vec3<int> v(*this);
     normalizeOrThrow<int>(v);
@@ -456,7 +456,7 @@ const Vec4<short> &
 Vec4<short>::normalizeExc ()
 {
     if ((x == 0) && (y == 0) && (z == 0) && (w == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     normalizeOrThrow<short>(*this);
     return *this;
@@ -487,7 +487,7 @@ Vec4<short>
 Vec4<short>::normalizedExc () const
 {
     if ((x == 0) && (y == 0) && (z == 0) && (w == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     Vec4<short> v(*this);
     normalizeOrThrow<short>(v);
@@ -532,7 +532,7 @@ const Vec4<int> &
 Vec4<int>::normalizeExc ()
 {
     if ((x == 0) && (y == 0) && (z == 0) && (w == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     normalizeOrThrow<int>(*this);
     return *this;
@@ -563,7 +563,7 @@ Vec4<int>
 Vec4<int>::normalizedExc () const
 {
     if ((x == 0) && (y == 0) && (z == 0) && (w == 0))
-        throw NullVecExc ("Cannot normalize null vector.");
+        throw std::domain_error ("Cannot normalize null vector.");
 
     Vec4<int> v(*this);
     normalizeOrThrow<int>(v);

@@ -32,10 +32,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathStringTable.h"
-#include <Iex.h>
 #include <limits>
 #include "PyImathExport.h"
 
@@ -50,7 +49,7 @@ StringTableT<T>::lookup(const T &s) const
 
     typename StringSet::const_iterator it = strings.find(s);
     if (it == strings.end()) {
-        throw IEX_NAMESPACE::ArgExc("String table access out of bounds");
+      throw std::domain_error ("String table access out of bounds");
     }
 
     return it->i;
@@ -65,7 +64,7 @@ StringTableT<T>::lookup(StringTableIndex index) const
 
     typename IndexSet::const_iterator it = indices.find(index);
     if (it == indices.end()) {
-        throw IEX_NAMESPACE::ArgExc("String table access out of bounds");
+      throw std::domain_error ("String table access out of bounds");
     }
 
     return it->s;
@@ -82,7 +81,7 @@ StringTableT<T>::intern(const T &s)
     if (it == strings.end()) {
         size_t next_index = _table.size();
         if (next_index > std::numeric_limits<StringTableIndex::index_type>::max()) {
-            throw IEX_NAMESPACE::ArgExc("Unable to intern string - string table would exceed maximum size");
+          throw std::domain_error ("Unable to intern string - string table would exceed maximum size");
         }
         StringTableIndex index = StringTableIndex(StringTableIndex::index_type(next_index));
         _table.insert(StringTableEntry<T>(index,s));

@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathLine.h"
 #include "PyImathDecorators.h"
@@ -46,7 +46,6 @@
 #include "PyImathMathExc.h"
 #include <ImathLineAlgo.h>
 #include <ImathMatrix.h>
-#include <Iex.h>
 
 
 namespace PyImath{
@@ -85,7 +84,7 @@ Line3_tuple_construct(const tuple &t0, const tuple &t1)
         return new Line3<T>(v0, v1);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");    
+      throw std::invalid_argument ("Line3 expects tuple of length 3");    
 }
 
 template <class T, class S>
@@ -126,7 +125,7 @@ setTuple(Line3<T> &line, const tuple &t0, const tuple &t1)
         line.set(v0, v1);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");    
+      throw std::invalid_argument ("Line3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -167,7 +166,7 @@ distanceToTuple(Line3<T> line, const tuple &t)
         return line.distanceTo(v);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");      
+        throw std::invalid_argument ( "Line3 expects tuple of length 3");      
 }
 
 template <class T>
@@ -201,7 +200,7 @@ closestPointToTuple(Line3<T> line, const tuple &t)
         return line.closestPointTo(v);
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");      
+        throw std::invalid_argument ( "Line3 expects tuple of length 3");      
 }
 
 template <class T>
@@ -232,7 +231,7 @@ setPositionTuple(Line3<T> &line, const tuple &t)
         line.pos = pos;
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");    
+        throw std::invalid_argument ( "Line3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -265,7 +264,7 @@ setDirectionTuple(Line3<T> &line, const tuple &t)
         line.dir = dir.normalized();
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");    
+        throw std::invalid_argument ( "Line3 expects tuple of length 3");    
 }
 
 template <class T>
@@ -328,7 +327,7 @@ closestVertexTuple(Line3<T> &line, const tuple &t0, const tuple &t1, const tuple
         return IMATH_NAMESPACE::closestVertex(v0, v1, v2, line);
     }        
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");      
+        throw std::invalid_argument ( "Line3 expects tuple of length 3");      
 }
 
 template <class T>
@@ -391,7 +390,7 @@ intersectTuple(Line3<T> &line, const tuple &t0, const tuple &t1, const tuple &t2
         }
     }
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");
+        throw std::invalid_argument ( "Line3 expects tuple of length 3");
 }
 
 template <class T>
@@ -417,7 +416,7 @@ rotatePointTuple(Line3<T> &line, const tuple &t, const T &r)
         return IMATH_NAMESPACE::rotatePoint(p, line, r);
     }        
     else
-        THROW(IEX_NAMESPACE::LogicExc, "Line3 expects tuple of length 3");      
+        throw std::invalid_argument ( "Line3 expects tuple of length 3");      
 }
 
 template <class T>

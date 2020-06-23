@@ -43,7 +43,6 @@
 //
 //----------------------------------------------------
 
-#include "ImathExc.h"
 #include "ImathLimits.h"
 #include "ImathMath.h"
 #include "ImathVec.h"

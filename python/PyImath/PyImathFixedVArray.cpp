@@ -32,14 +32,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PyIlmBaseConfigInternal.h"
+#include "PyImathConfigInternal.h"
 
 #include "PyImathFixedVArray.h"
 
 #include <boost/python.hpp>
 #include <boost/shared_array.hpp>
 #include <boost/any.hpp>
-#include <Iex.h>
 #include "PyImathExport.h"
 
 namespace PyImath {
@@ -52,11 +51,11 @@ FixedVArray<T>::FixedVArray (std::vector<T>* ptr, Py_ssize_t length,
 {
     if (length < 0)
     {
-        throw IEX_NAMESPACE::ArgExc("Fixed array length must be non-negative");
+        throw std::invalid_argument("Fixed array length must be non-negative");
     }
     if (stride <= 0)
     {
-        throw IEX_NAMESPACE::ArgExc("Fixed array stride must be positive");
+        throw std::invalid_argument("Fixed array stride must be positive");
     }
 
     // Nothing else to do (pointer given, so we have the data)
@@ -70,11 +69,11 @@ FixedVArray<T>::FixedVArray (std::vector<T>* ptr, Py_ssize_t length,
 {
     if (length < 0)
     {
-        throw IEX_NAMESPACE::ArgExc("Fixed array length must be non-negative");
+        throw std::invalid_argument("Fixed array length must be non-negative");
     }
     if (stride <= 0)
     {
-        throw IEX_NAMESPACE::ArgExc("Fixed array stride must be positive");
+        throw std::invalid_argument("Fixed array stride must be positive");
     }
 
     // Nothing else to do (pointer given, so we have the data)
@@ -86,7 +85,7 @@ FixedVArray<T>::FixedVArray(Py_ssize_t length)
 {
     if (length < 0)
     {
-        throw IEX_NAMESPACE::ArgExc("Fixed array length must be non-negative");
+        throw std::invalid_argument("Fixed array length must be non-negative");
     }
 
     boost::shared_array<std::vector<T> > a(new std::vector<T>[length]);
@@ -101,7 +100,7 @@ FixedVArray<T>::FixedVArray(Py_ssize_t length)
 // {
 //     if (length < 0)
 //     {
-//         throw IEX_NAMESPACE::ArgExc("Fixed array length must be non-negative");
+//         throw std::invalid_argument("Fixed array length must be non-negative");
 //     }
 // 
 //     boost::shared_array<std::vector<T> > a(new std::vector<T>[length]);
@@ -115,7 +114,7 @@ FixedVArray<T>::FixedVArray(const T& initialValue, Py_ssize_t length)
 {
     if (length < 0)
     {
-        throw IEX_NAMESPACE::ArgExc("Fixed array length must be non-negative");
+        throw std::invalid_argument("Fixed array length must be non-negative");
     }
 
     boost::shared_array<std::vector<T> > a(new std::vector<T>[length]);
@@ -133,7 +132,7 @@ FixedVArray<T>::FixedVArray(FixedVArray<T>& other, const FixedArray<int>& mask)
 {
     if (other.isMaskedReference())
     {
-        throw IEX_NAMESPACE::NoImplExc
+      throw std::invalid_argument
             ("Masking an already-masked FixedVArray is not supported yet (SQ27000)");
     }
 
@@ -257,7 +256,7 @@ extract_slice_indices (PyObject* index, size_t& start, size_t& end,
         }
         if (s < 0 || e < -1 || sl < 0)
         {
-            throw IEX_NAMESPACE::LogicExc
+            throw std::domain_error
                   ("Slice extraction produced invalid start, end, or length indices");
         }
 
@@ -435,7 +434,7 @@ FixedVArray<T>::setitem_vector_mask (const FixedArray<int>& mask,
     // This restriction could be removed if there is a compelling use-case.
     if (_indices)
     {
-        throw IEX_NAMESPACE::ArgExc
+        throw std::invalid_argument
             ("We don't support setting item masks for masked reference arrays");
     }
 
@@ -463,7 +462,7 @@ FixedVArray<T>::setitem_vector_mask (const FixedArray<int>& mask,
         }
         if ((size_t) data.len() != count)
         {
-            throw IEX_NAMESPACE::ArgExc
+            throw std::invalid_argument
                 ("Dimensions of source data do not match destination "
                  "either masked or unmasked");
         }

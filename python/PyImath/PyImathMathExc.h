@@ -35,12 +35,8 @@
 #ifndef _PyImathMathExc_h_
 #define _PyImathMathExc_h_
 
-#include <IexMathFloatExc.h>
-
 #ifdef PYIMATH_ENABLE_EXCEPTIONS
-# define MATH_EXC_ON IEX_NAMESPACE::MathExcOn mathexcon (IEX_NAMESPACE::IEEE_OVERFLOW | \
-                                              IEX_NAMESPACE::IEEE_DIVZERO |  \
-                                              IEX_NAMESPACE::IEEE_INVALID)
+
 #else
 # define MATH_EXC_ON
 #endif
