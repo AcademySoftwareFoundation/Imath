@@ -8,10 +8,10 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 libsuffix=@LIB_SUFFIX_DASH@
-Name: IlmBase
-Description: Base math and exception libraries
-Version: @ILMBASE_VERSION@
+Name: Imath
+Description: Base half data type and math libraries.
+Version: @IMATH_VERSION@
 Requires:
 Conflicts:
-Libs: -L${libdir} -lImath${libsuffix} -lHalf${libsuffix} -lIex${libsuffix} -lIexMath${libsuffix} -lIlmThread${libsuffix} @PTHREAD_LIBS@
-Cflags: @PTHREAD_CFLAGS@ -I${includedir} -I${includedir}/OpenEXR
+Libs: -L${libdir} -lImath${libsuffix} -lHalf${libsuffix}
+Cflags: -I${includedir} -I${includedir}/Imath
