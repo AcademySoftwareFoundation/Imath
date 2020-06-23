@@ -204,9 +204,10 @@ jacobiEigensolve(const Matrix& m)
         {
             const T Aij = m[i][j],
                     Aji = m[j][i];
-            assert (std::abs(Aij - Aji) < tol);
-              // TODO: IEX_NAMESPACE::ArgExc,
-              //     "Symmetric eigensolve requires a symmetric matrix (matrix[i][j] == matrix[j][i]).");
+            if (std::abs(Aij - Aji) >= tol){
+              throw std::invalid_argument
+              ("Symmetric eigensolve requires a symmetric matrix (matrix[i][j] == matrix[j][i]).");
+            }
         }
     }
 

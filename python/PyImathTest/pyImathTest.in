@@ -1667,62 +1667,6 @@ testList.append(('testMaskedV3dArray', lambda : testMaskedVecTypeArray(V3dArray)
 
 
 # -------------------------------------------------------------------------
-# Tests for exceptions defined in imath module
-
-def testExceptions():
-
-    # Verify that the exception classes defined in imath
-    # are caught by "except NullVecExc", "except RuntimeError"
-
-    try:
-        raise NullVecExc
-    except NullVecExc:
-        pass
-    else:
-        assert 0
-
-    try:
-        raise NullVecExc
-    except RuntimeError:
-        pass
-    else:
-        assert 0
-
-    try:
-        raise NullQuatExc
-    except RuntimeError:
-        pass
-    else:
-        assert 0
-
-    try:
-        raise SingMatrixExc
-    except RuntimeError:
-        pass
-    else:
-        assert 0
-    try:
-        raise ZeroScaleExc
-    except RuntimeError:
-        pass
-    else:
-        assert 0
-
-    try:
-        raise IntVecNormalizeExc
-    except RuntimeError:
-        pass
-    else:
-        assert 0
-
-    print ("ok")
-    return
-
-
-testList.append (('testExceptions',testExceptions))
-
-
-# -------------------------------------------------------------------------
 # Tests for functions
 
 def testFun ():
