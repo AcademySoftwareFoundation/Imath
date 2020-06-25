@@ -53,7 +53,7 @@ project.
 Imath continues to be maintained as a sub-project of OpenEXR, which is
 now a project of the [Academy Software
 Foundation](https://www.aswf.io).  See
-[GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/master/GOVERNANCE.md)
+the OpenEXR project's [GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/master/GOVERNANCE.md)
 for more information about how the project operates.
 
 The OpenEXR project is dedicated to promoting a harassment-free
