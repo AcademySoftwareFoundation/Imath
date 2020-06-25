@@ -1,6 +1,6 @@
 # Code of Conduct
 
-Imath is a sub-project of the OpenEXR project, whcih abides by Linux
+Imath is a sub-project of the OpenEXR project, which abides by Linux
 Foundation's code of conduct, which you can read in full
 [here](https://lfprojects.org/policies/code-of-conduct).
 
