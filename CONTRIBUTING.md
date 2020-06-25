@@ -10,13 +10,18 @@ explains our contribution process and procedures:
 * [Versioning Policy](#Versioning-Policy)
 * [Creating a Release](#Creating-a-Release)
 
+Imath is a sub-project of
+[OpenEXR](https://github.com/AcademySoftwareFoundation/openexr) and
+follows OpenEXR's governance and contribution policies.
+
 For a description of the roles and responsibilities of the various
-members of the Imath community, see [GOVERNANCE](GOVERNANCE.md), and
-for further details, see the project's [Technical
-Charter](ASWF/charter/OpenEXR-Technical-Charter.md). Briefly,
-Contributors are anyone who submits content to the project, Committers
-review and approve such submissions, and the Technical Steering
-Committee provides general project oversight.
+members of the OpeneEXR community, see [GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/master/GOVERNANCE.md),
+and for further details, see the OpenEXR project's [Technical
+Charter](https://github.com/AcademySoftwareFoundation/openexr/blob/master/ASWF/charter/OpenEXR-Technical-Charter.md).
+Briefly, a "contributor" is anyone who submits content to the project,
+a "committer" is someone who reviews and approves such submissions,
+and the Technical Steering Committee provides general project
+oversight.
 
 ## Getting Information
 
@@ -26,7 +31,7 @@ There are two primary ways to connect with the Imath project:
   This is a development focused mail list with a deep history of
   technical conversations and decisions that have shaped the project.
 
-* [GitHub Issues](https://github.com/AcademySoftwareFoundation/imath/issues): GitHub
+* [GitHub Issues](https://github.com/AcademySoftwareFoundation/Imath/issues): GitHub
   Issues are used both to track bugs and to discuss feature requests.
 
 ### How to Ask for Help
@@ -64,11 +69,13 @@ among the project community.
 ### How to Report a Security Vulnerability
 
 If you think you've found a potential vulnerability in Imath, please
-refer to [SECURITY.md] to responsibly disclose it.
+refer to [SECURITY.md](SECURITY.md) to responsibly disclose it.
 
 ### How to Contribute a Bug Fix or Change
 
-To contribute code to the project, first read over the [GOVERNANCE](GOVERNANCE.md) page to understand the roles involved. You'll need:
+To contribute code to the project, first read over the
+[GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/master/GOVERNANCE.md)
+page to understand the roles involved. You'll need:
 
 * A good knowledge of git.
 
@@ -76,7 +83,7 @@ To contribute code to the project, first read over the [GOVERNANCE](GOVERNANCE.m
 
 * An understanding of the project's development workflow.
 
-* Legal authorization, that is, you need to have signed a Contributor
+* Legal authorization, that is, you need to have signed a contributor
   License Agreement. See below for details.
 
 ## Legal Requirements
@@ -93,8 +100,8 @@ license.
 ### Contributor License Agreements
 
 Developers who wish to contribute code to be considered for inclusion
-in the Imath distribution must first complete a **Contributor
-License Agreement**.
+in the Imath distribution must first complete a **Contributor License
+Agreement** for the OpenEXR project.
 
 Imath uses EasyCLA for managing CLAs, which automatically
 checks to ensure CLAs are signed by a contributor before a commit
@@ -149,9 +156,9 @@ contributions should be done on top of it.
 After sufficient work is done on the master branch and the Imath
 leadership determines that a release is due, we will bump the relevant
 internal versioning and tag a commit with the corresponding version
-number, e.g. v2.0.1. Each Minor version also has its own “Release
+number, e.g. v2.0.1. Each minor version also has its own “Release
 Branch”, e.g. RB-1.1. This marks a branch of code dedicated to that
-Major.Minor version, which allows upstream bug fixes to be
+``major.minor version``, which allows upstream bug fixes to be
 cherry-picked to a given version while still allowing the master
 branch to continue forward onto higher versions. This basic repository
 structure keeps maintenance low, while remaining simple to understand.
@@ -211,12 +218,12 @@ with a separate pull request.
 
 4. Create a Github pull request from your topic branch.
 
-5. Pull requests will be reviewed by project Committers and Contributors,
+5. Pull requests will be reviewed by project committers and contributors,
 who may discuss, offer constructive feedback, request changes, or approve
 the work.
 
-6. Upon receiving the required number of Committer approvals (as
-outlined in [Required Approvals](#required-approvals)), a Committer
+6. Upon receiving the required number of committer approvals (as
+outlined in [Required Approvals](#required-approvals)), a committer
 other than the PR contributor may merge changes into the master
 branch.
 
@@ -225,9 +232,9 @@ branch.
 Modifications of the contents of the Imath repository are made on a
 collaborative basis. Anyone with a GitHub account may propose a
 modification via pull request and it will be considered by the project
-Committers.
+committers.
 
-Pull requests must meet a minimum number of Committer approvals prior
+Pull requests must meet a minimum number of committer approvals prior
 to being merged. Rather than having a hard rule for all PRs, the
 requirement is based on the complexity and risk of the proposed
 changes, factoring in the length of time the PR has been open to
@@ -242,35 +249,35 @@ and alert all the stakeholders to be on the lookout for the eventual
 PR when it appears.
 
 * Small changes (bug fixes, docs, tests, cleanups) can be approved and
-merged by a single Committer.
+merged by a single committer.
 
 * Big changes that can alter behavior, add major features, or present
-a high degree of risk should be signed off by TWO Committers, ideally
+a high degree of risk should be signed off by TWO committers, ideally
 one of whom should be the "owner" for that section of the codebase (if
 a specific owner has been designated). If the person submitting the PR
 is him/herself the "owner" of that section of the codebase, then only
-one additional Committer approval is sufficient. But in either case, a
+one additional committer approval is sufficient. But in either case, a
 48 hour minimum is helpful to give everybody a chance to see it,
 unless it's a critical emergency fix (which would probably put it in
 the previous "small fix" category, rather than a "big feature").
 
 * Escape valve: big changes can nonetheless be merged by a single
-Committer if the PR has been open for over two weeks without any
-unaddressed objections from other Committers. At some point, we have
+committer if the PR has been open for over two weeks without any
+unaddressed objections from other committers. At some point, we have
 to assume that the people who know and care are monitoring the PRs and
 that an extended period without objections is really assent.
 
-Approval must be from Committers who are not authors of the change. If
-one or more Committers oppose a proposed change, then the change
+Approval must be from committers who are not authors of the change. If
+one or more committers oppose a proposed change, then the change
 cannot be accepted unless:
 
-* Discussions and/or additional changes result in no Committers
-objecting to the change. Previously-objecting Committers do not
+* Discussions and/or additional changes result in no committers
+objecting to the change. Previously-objecting committers do not
 necessarily have to sign-off on the change, but they should not be
 opposed to it.
 
 * The change is escalated to the TSC and the TSC votes to approve the
-change.  This should only happen if disagreements between Committers
+change.  This should only happen if disagreements between committers
 cannot be resolved through discussion.
 
 Committers may opt to elevate significant or controversial
@@ -293,56 +300,6 @@ expected to validate the behavior of very part of the library.
 
 The test should should be run, via ``make check``, before submitting a
 pull request.
-
-### Project Issue Handling Process
-
-Incoming new issues are labeled promptly by the TSC using GitHub labels. 
-
-The labels include:
-
-* **Autotools** - A problem with the autoconf configuration setup.
-
-* **Bug** - A bug in the source code. Something appears to be
-    functioning improperly: a compile error, a crash, unexpected behavior, etc. 
-
-* **Build/Install Issue** - A problem with building or installing the
-    library: configuration file, external dependency, a compile error
-    with a release version that prevents installation.
-
-* **C++** - A C++ compilation issue: a compiler warning, syntax issue,
-    or language usage or suggested upgrade.
-
-* **CMake** - A build issue with the CMake configuration files.
-
-* **CVE** - A security vulnerability bug.
-
-* **Documentation** - The project documentation: developer or user
-    guide, web site, project policies, etc.
-
-* **Feature Request** - A suggested change or addition of
-    functionality to the library.
-
-* **Mac OS** - A build issue specific to Mac OS.
-
-* **MinGW** - An issue specific to MinGW
-
-* **Modification** - A modification to the code, refactoring or
-    optimization without significant additional behavior
-
-* **Needs Info** - Issue is waiting for more information from the
-    submitter.
-
-* **Question/Problem/Help** - A request for help or further
-    investigation, possibly just user error or misunderstanding.
-
-* **Test Failure** - One of the automated tests is failing, or an
-    analysis tool is reporting problematic behavior.
-
-* **TSC** - To be discussed in the technical steering committee.
-
-* **Windows** - A build issue specific to Windows
-
-* **Won't Fix** - No further action will taken.
 
 ## Coding Style
 
@@ -433,9 +390,9 @@ define's such as ``INT_MAX``:
 
 #### Copyright Notices
 
-All new source files should begin with a copyright and license stating:
+All new source files should begin with a copyright and license referencing the OpenEXR project:
 
-    // Copyright (c) Contributors to the Imath Project. All rights reserved.
+    // Copyright (c) Contributors to the OpenEXR Project. All rights reserved.
     // SPDX-License-Identifier: BSD-3-Clause
 
 #### Third-party libraries
