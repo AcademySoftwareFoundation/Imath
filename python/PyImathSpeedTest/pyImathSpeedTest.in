@@ -1,13 +1,8 @@
 #!@PYTHON@
 
-import math
 import random
-import string
 import sys
-import traceback
 import time
-import timeit
-from math import cos, pi, sin, sqrt
 
 from imath import *
 
@@ -15,50 +10,48 @@ X = 1000000
 f = open("time_trials.txt", "a")
 f.write("~~~Performing tests using Python version "+repr(sys.version_info.major)+"~~~\n")
 
+#MULTIPLICAITON TESTING
 tests_multMatrix = []
 
 def time_multVecMatrix(description, mat, vArray):
-    f.write("Test: "+description+"\n")
+    f.write("Test: "+description+" (Vec)\n")
     start_time = time.time()
     x = mat.multVecMatrix(vArray)
     f.write("    "+repr(time.time() - start_time)+"\n")
 
 def time_multDirMatrix(description, mat, vArray):
-    f.write("Test: "+description+"\n")
+    f.write("Test: "+description+" (Dir)\n")
     start_time = time.time()
     x = mat.multDirMatrix(vArray)
     f.write("    "+repr(time.time() - start_time)+"\n")
 
-m44 = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
-v3a = V3fArray(X)
-v3a[:] = V3f(1,1,1)
-tests_multMatrix.append(["M44f * Vec3Array", m44, v3a])
+m44f = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3fa = V3fArray(X)
+v3fa[:] = V3f(1,1,1)
+tests_multMatrix.append(["M44f * Vec3Array", m44f, v3fa])
 
-m33 = M33f(5,6,6, 2,2,2, 6,6,2)
-v2a = V2fArray(X)
-v2a[:] = V2f(1,1)
-tests_multMatrix.append(["M33f * Vec2Array", m33, v2a])
+m33f = M33f(5,6,6, 2,2,2, 6,6,2)
+v2fa = V2fArray(X)
+v2fa[:] = V2f(1,1)
+tests_multMatrix.append(["M33f * Vec2Array", m33f, v2fa])
 
-m44 = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
-v3a = V3dArray(X)
-v3a[:] = V3d(1,1,1)
-tests_multMatrix.append(["M44d * Vec3Array", m44, v3a])
+m44d = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3da = V3dArray(X)
+v3da[:] = V3d(1,1,1)
+tests_multMatrix.append(["M44d * Vec3Array", m44d, v3da])
 
-m33 = M33d(5,6,6, 2,2,2, 6,6,2)
-v2a = V2dArray(X)
-v2a[:] = V2d(1,1)
-tests_multMatrix.append(["M33d * Vec2Array", m33, v2a])
+m33d = M33d(1,0,5, 2,1,6, 3,4,0)
+v2da = V2dArray(X)
+v2da[:] = V2d(1,1)
+tests_multMatrix.append(["M33d * Vec2Array", m33d, v2da])
 
-f.write("Using multVecMatrix\n")
 for test in tests_multMatrix:
     time_multVecMatrix(test[0], test[1], test[2])
-
-f.write("Using multDirMatrix\n")
-for test in tests_multMatrix:
     time_multDirMatrix(test[0], test[1], test[2])
 
-
-tests_inverse = []
+#INVERT TESTING
+tests_inver = []
+tests_gjInver = []
 
 def time_inverse(description, mat):
     f.write("Test: "+description+" inverse\n")
@@ -74,25 +67,43 @@ def time_invert(description, mat):
         mat.invert()
     f.write("    "+repr(time.time() - start_time)+"\n")
 
-m44 = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
-tests_inverse.append(["M44f", m44])
+def time_gjInverse(description, mat):
+    f.write("Test: "+description+" gjInverse\n")
+    start_time = time.time()
+    for i in range(0, X):
+        x = mat.gjInverse()
+    f.write("    "+repr(time.time() - start_time)+"\n")
 
-m33 = M33f(1,0,5, 2,1,6, 3,4,0)
-tests_inverse.append(["M33f", m33])
+def time_gjInvert(description, mat):
+    f.write("Test: "+description+" gjInvert\n")
+    start_time = time.time()
+    for i in range(0, X):
+        mat.gjInvert()
+    f.write("    "+repr(time.time() - start_time)+"\n")
 
-m22 = M22f(4,7, 2,6)
-tests_inverse.append(["M22f", m22])
+tests_inver.append(["M44f", m44f])
+tests_gjInver.append(["M44f", m44f])
 
-m44 = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
-tests_inverse.append(["M44d", m44])
+tests_inver.append(["M33f", m33f])
+tests_gjInver.append(["M33f", m33f])
 
-m33 = M33d(1,0,5, 2,1,6, 3,4,0)
-tests_inverse.append(["M33d", m33])
+m22f = M22f(4,7, 2,6)
+tests_inver.append(["M22f", m22f])
 
-m22 = M22d(4,7, 2,6)
-tests_inverse.append(["M22d", m22])
+tests_inver.append(["M44d", m44d])
+tests_gjInver.append(["M44d", m44d])
 
-for test in tests_inverse:
+tests_inver.append(["M33d", m33d])
+tests_gjInver.append(["M33d", m33d])
+
+m22d = M22d(4,7, 2,6)
+tests_inver.append(["M22d", m22d])
+
+for test in tests_inver:
     time_inverse(test[0], test[1])
     time_invert(test[0], test[1])
-    
+
+for test in tests_gjInver:
+    #gjInversion can not be performed on 2x2
+    time_gjInverse(test[0], test[1])
+    time_gjInvert(test[0], test[1])
