@@ -2,26 +2,23 @@
 
 ## Download
 
-To build the latest release of Imath, begin by downloading the
-source from the releases page
-https://github.com/AcademySoftwareFoundation/Imath-test/tarball/{version}.
+To build the latest release of Imath, begin by downloading the source
+from the releases page
+https://github.com/AcademySoftwareFoundation/Imath/releases.
 
 To build from the latest development version, which may not be stable,
-download the master branch via
-https://github.com/AcademySoftwareFoundation/Imath-test/tarball/master, and extract the
-contents via ``tar``.
+clone the GitHub repo directly via:
 
-You can download the repository tarball file either via a browser, or
-on the Linux/macOS via the command line using ``wget`` or ``curl``:
+    % git clone https://github.com/AcademySoftwareFoundation/Imath.git
 
-    % curl -L https://github.com/AcademySoftwareFoundation/Imath-test/tarball/master | tar xv
+Alternatively, you can download the master branch via
+https://github.com/AcademySoftwareFoundation/Imath/tarball/master, and
+extract the contents via ``tar``:
 
-This will produce a source directory named
-``AcademySoftwareFoundation-Imath-test-<abbreviated-SHA-1-checksum>``.
+    % curl -L https://github.com/AcademySoftwareFoundation/Imath/tarball/master | tar xv
 
-Alternatively, clone the GitHub repo directly via:
-
-    % git clone https://github.com/AcademySoftwareFoundation/Imath-test.git
+which will produce a source directory named
+``AcademySoftwareFoundation-Imath-<abbreviated-SHA-1-checksum>``.
 
 In the instructions that follow, we will refer to the top-level
 directory of the source code tree as ``$source_directory``.
@@ -30,12 +27,8 @@ directory of the source code tree as ``$source_directory``.
 
 Make sure these are installed on your system before building Imath:
 
-* Imath requires CMake version 3.10 or newer (or autoconf on Linux systems).##
+* Imath requires CMake version 3.10 or newer 
 * C++ compiler that supports C++11
-
-The instructions that follow describe building Imath with CMake, but
-you can also build and install Imath via the autoconf
-bootstrap/configure utilities, described below.
 
 ## Linux/macOS Quick Start
 
@@ -61,7 +54,7 @@ no arguments, as above, ``make install`` installs the header files in
 ``/usr/local/include``, the object libraries in ``/usr/local/lib``, and the
 executable programs in ``/usr/local/bin``.
 
-## PyImath
+## Python Bindings
 
 If you wish to install the optional python bindings included in this
 repository, this must first be toggled on by appending -DPYTHON=ON to the
@@ -88,13 +81,12 @@ can specify a local install directory to cmake via the
 
 ## Library Names
 
-Using either cmake or autoconf based configuration mechanisms described
-in this document, by default the installed libraries follow a pattern
-for how they are named. This is done to enable multiple versions of the
-library to be installed and targeted by different builds depending on
-the needs of the project. A simple example of this would be to have
-different versions of the library installed to allow for applications
-targeting different VFX Platform years to co-exist.
+By default the installed libraries follow a pattern for how they are
+named. This is done to enable multiple versions of the library to be
+installed and targeted by different builds depending on the needs of
+the project. A simple example of this would be to have different
+versions of the library installed to allow for applications targeting
+different VFX Platform years to co-exist.
 
 If you are building dynamic libraries, once you have configured, built,
 and installed the libraries, you should see the following pattern of
@@ -117,8 +109,8 @@ If you are interested in controlling custom namespace declarations or
 similar options, you are encouraged to look at the ``CMakeLists.txt``
 infrastructure. In particular, there has been an attempt to centralize
 the settings into a common place to more easily see all of them in a
-text editor. For IlmBase, this is config/IlmBaseSetup.cmake inside the
-IlmBase tree. As per usual, these settings can also be
+text editor. For Imath, this is config/ImathSetup.cmake inside the
+Imath tree. As per usual, these settings can also be
 seen and/or edited using any of the various gui editors for working
 with cmake such as ``ccmake``, ``cmake-gui``, as well as some of the
 IDEs in common use.
@@ -135,7 +127,6 @@ isolation.
 
 A toolchain file is simply just a cmake script that sets all the
 compiler and related flags and is run very early in the configuration
-
 step to be able to set all the compiler options and such for the
 discovery that cmake performs automatically. These options can be set
 on the command line still if that is clearer, but a theoretical
@@ -156,7 +147,7 @@ More documentation:
 ## CMake Configuration Options
 
 The default CMake configuration options are stored in
-``IlmBase/config/IlmBaseSetup.cmake``.
+``Imath/config/ImathSetup.cmake``.
 To see a complete set of option
 variables, run:
 
@@ -182,7 +173,7 @@ You can customize these options three ways:
 
 * **ILMBASE\_LIB\_SUFFIX**
 
-  Append the given string to the end of all the IlmBase libraries. Default is ``-<major>_<minor>`` version string. Please see the section on library names
+  Append the given string to the end of all the Imath libraries. Default is ``-<major>_<minor>`` version string. Please see the section on library names
 
 ### Namespace Options:
 
@@ -212,7 +203,7 @@ These linting options are experimental, and primarily for developer-only use at 
 
 * **ILMBASE\_USE\_CLANG\_TIDY**
  
-  Enable clang-tidy for IlmBase libraries, if it is available. Default is OFF.
+  Enable clang-tidy for Imath libraries, if it is available. Default is OFF.
 
 ### Testing Options:
 
@@ -240,7 +231,7 @@ See the cmake documentation for more information (https://cmake.org/cmake/help/v
 
   ** CMAKE\_CXX\_COMPILER**
 
-  ** CMAKE\_C\_COMPILER**
+g  ** CMAKE\_C\_COMPILER**
 
   ** CMAKE\_LINKER**
 
@@ -260,14 +251,3 @@ If you would like to confirm compile flags, you don’t have to specify the verb
 
     % make VERBOSE=1
 
-## Configuring via Autoconf
-
-As an alternative to CMake on Linux systems, the Imath build can be configured via the provided bootstrap/configure scripts: 
-
-    % cd $source_directory
-    % ./bootstrap
-    % ./configure --prefix=$install_directory
-    % make
-    % make install
-    
-Run ``./configure --help`` for a complete set of configuration options.
