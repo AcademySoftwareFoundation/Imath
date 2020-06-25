@@ -1,0 +1,98 @@
+#!@PYTHON@
+
+import math
+import random
+import string
+import sys
+import traceback
+import time
+import timeit
+from math import cos, pi, sin, sqrt
+
+from imath import *
+
+X = 1000000
+f = open("time_trials.txt", "a")
+f.write("~~~Performing tests using Python version "+repr(sys.version_info.major)+"~~~\n")
+
+tests_multMatrix = []
+
+def time_multVecMatrix(description, mat, vArray):
+    f.write("Test: "+description+"\n")
+    start_time = time.time()
+    x = mat.multVecMatrix(vArray)
+    f.write("    "+repr(time.time() - start_time)+"\n")
+
+def time_multDirMatrix(description, mat, vArray):
+    f.write("Test: "+description+"\n")
+    start_time = time.time()
+    x = mat.multDirMatrix(vArray)
+    f.write("    "+repr(time.time() - start_time)+"\n")
+
+m44 = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3a = V3fArray(X)
+v3a[:] = V3f(1,1,1)
+tests_multMatrix.append(["M44f * Vec3Array", m44, v3a])
+
+m33 = M33f(5,6,6, 2,2,2, 6,6,2)
+v2a = V2fArray(X)
+v2a[:] = V2f(1,1)
+tests_multMatrix.append(["M33f * Vec2Array", m33, v2a])
+
+m44 = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3a = V3dArray(X)
+v3a[:] = V3d(1,1,1)
+tests_multMatrix.append(["M44d * Vec3Array", m44, v3a])
+
+m33 = M33d(5,6,6, 2,2,2, 6,6,2)
+v2a = V2dArray(X)
+v2a[:] = V2d(1,1)
+tests_multMatrix.append(["M33d * Vec2Array", m33, v2a])
+
+f.write("Using multVecMatrix\n")
+for test in tests_multMatrix:
+    time_multVecMatrix(test[0], test[1], test[2])
+
+f.write("Using multDirMatrix\n")
+for test in tests_multMatrix:
+    time_multDirMatrix(test[0], test[1], test[2])
+
+
+tests_inverse = []
+
+def time_inverse(description, mat):
+    f.write("Test: "+description+" inverse\n")
+    start_time = time.time()
+    for i in range(0, X):
+        x = mat.inverse()
+    f.write("    "+repr(time.time() - start_time)+"\n")
+
+def time_invert(description, mat):
+    f.write("Test: "+description+" invert\n")
+    start_time = time.time()
+    for i in range(0, X):
+        mat.invert()
+    f.write("    "+repr(time.time() - start_time)+"\n")
+
+m44 = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+tests_inverse.append(["M44f", m44])
+
+m33 = M33f(1,0,5, 2,1,6, 3,4,0)
+tests_inverse.append(["M33f", m33])
+
+m22 = M22f(4,7, 2,6)
+tests_inverse.append(["M22f", m22])
+
+m44 = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+tests_inverse.append(["M44d", m44])
+
+m33 = M33d(1,0,5, 2,1,6, 3,4,0)
+tests_inverse.append(["M33d", m33])
+
+m22 = M22d(4,7, 2,6)
+tests_inverse.append(["M22d", m22])
+
+for test in tests_inverse:
+    time_inverse(test[0], test[1])
+    time_invert(test[0], test[1])
+    
