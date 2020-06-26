@@ -175,6 +175,30 @@ tests_shear.append(["M44f shear with Vec3f", m44f, V3f(1,2,3)])
 tests_shear.append(["M44d shear with Vec3d", m44d, V3d(1,2,3)])
 tests_shear.append(["M33f shear with Vec2f", m33f, V2f(1,2)])
 tests_shear.append(["M33d shear with Vec2d", m33d, V2d(1,2)])
+#TODO: add Shear6<T>
 
 for test in tests_shear:
     time_shear(test[0], test[1], test[2])
+
+# SCALE TEST
+
+tests_scale = []
+
+def time_scale(description, mat, scale_in):
+    f.write("Test: "+description+"\n")
+    start_time = time.clock_gettime(4)
+    for i in range(0,X):
+        x = mat.scale(scale_in)
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
+
+    
+tests_scale.append(["M44f Scale", m44f, 2])
+tests_scale.append(["M44d Scale", m44d, 2])
+tests_scale.append(["M33f Scale", m33f, 2])
+tests_scale.append(["M33d Scale", m33d, 2])
+tests_scale.append(["M22f Scale", m22f, 2])
+tests_scale.append(["M22d Scale", m22d, 2])
+
+for test in tests_shear:
+    time_scale(test[0], test[1], test[2])
+
