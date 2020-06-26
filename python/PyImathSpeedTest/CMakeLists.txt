@@ -1,15 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-if(TARGET Python2::Interpreter)
-  add_test(PyImath.PyImathSpeedTest_Python2
-    ${Python2_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pyImathSpeedTest.in
-    )
-  set_tests_properties(PyImath.PyImathSpeedTest_Python2 PROPERTIES
-    ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/python${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}"
-    )
-endif()
-
+# Speed tests are not performed in Python2 as getting acurate time is difficult.
 if(TARGET Python3::Interpreter)
   add_test(PyImath.PyImathSpeedTest_Python3
     ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pyImathSpeedTest.in

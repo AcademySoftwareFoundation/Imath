@@ -1291,7 +1291,7 @@ extractSHRT (const Matrix33<T> &mat,
     Matrix33<T> rot;
 
     rot = mat;
-    if (! extractAndRemoveScalingAndShear (rot, s, h, exc))
+    if (! extractAndRemoveScalingndShear (rot, s, h, exc))
 	return false;
 
     extractEuler (rot, r);
