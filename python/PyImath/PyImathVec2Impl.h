@@ -1174,6 +1174,8 @@ register_Vec2Array()
     generate_member_bindings<op_vecLength2<IMATH_NAMESPACE::Vec2<T> >    >(vec2Array_class,"length2","");
     generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec2<T> >  >(vec2Array_class,"normalize","");
     generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec2<T> > >(vec2Array_class,"normalized","");
+    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec2<T> >  >(vec2Array_class,"normalizeExc","");
+    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec2<T> > >(vec2Array_class,"normalizedExc","");
 
     generate_member_bindings<op_vec2Cross<T>,           true_>(vec2Array_class,"cross","return the cross product of (self,x)",boost::python::args("x"));
     generate_member_bindings<op_vecDot<IMATH_NAMESPACE::Vec2<T> >,true_>(vec2Array_class,"dot","return the inner product of (self,x)",boost::python::args("x"));

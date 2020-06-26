@@ -6,24 +6,24 @@ import time
 
 from imath import *
 
-X = 1000000
+X = 1000
 f = open("time_trials.txt", "a")
-f.write("~~~Performing tests using Python version "+repr(sys.version_info.major)+"~~~\n")
+f.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 
 #MULTIPLICAITON TESTING
 tests_multMatrix = []
 
 def time_multVecMatrix(description, mat, vArray):
     f.write("Test: "+description+" (Vec)\n")
-    start_time = time.time()
+    start_time = time.clock_gettime(4)
     x = mat.multVecMatrix(vArray)
-    f.write("    "+repr(time.time() - start_time)+"\n")
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
 def time_multDirMatrix(description, mat, vArray):
     f.write("Test: "+description+" (Dir)\n")
-    start_time = time.time()
+    start_time = time.clock_gettime(4)
     x = mat.multDirMatrix(vArray)
-    f.write("    "+repr(time.time() - start_time)+"\n")
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
 m44f = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
 v3fa = V3fArray(X)
@@ -55,31 +55,31 @@ tests_gjInver = []
 
 def time_inverse(description, mat):
     f.write("Test: "+description+" inverse\n")
-    start_time = time.time()
+    start_time = time.clock_gettime(4)
     for i in range(0, X):
         x = mat.inverse()
-    f.write("    "+repr(time.time() - start_time)+"\n")
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
 def time_invert(description, mat):
     f.write("Test: "+description+" invert\n")
-    start_time = time.time()
+    start_time = time.clock_gettime(4)
     for i in range(0, X):
         mat.invert()
-    f.write("    "+repr(time.time() - start_time)+"\n")
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
 def time_gjInverse(description, mat):
     f.write("Test: "+description+" gjInverse\n")
-    start_time = time.time()
+    start_time = time.clock_gettime(4)
     for i in range(0, X):
         x = mat.gjInverse()
-    f.write("    "+repr(time.time() - start_time)+"\n")
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
 def time_gjInvert(description, mat):
     f.write("Test: "+description+" gjInvert\n")
-    start_time = time.time()
+    start_time = time.clock_gettime(4)
     for i in range(0, X):
         mat.gjInvert()
-    f.write("    "+repr(time.time() - start_time)+"\n")
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
 tests_inver.append(["M44f", m44f])
 tests_gjInver.append(["M44f", m44f])
@@ -107,3 +107,74 @@ for test in tests_gjInver:
     #gjInversion can not be performed on 2x2
     time_gjInverse(test[0], test[1])
     time_gjInvert(test[0], test[1])
+
+# NORMALIZE TEST
+
+tests_normalize = []
+
+def time_normalize(description, vArray):
+    f.write("Test: "+description+" normalize\n")
+    start_time = time.clock_gettime(4)
+    vArray.normalize()
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
+
+def time_normalizeExc(description, vArray):
+    f.write("Test: "+description+" normalizeExc\n")
+    start_time = time.clock_gettime(4)
+    vArray.normalizeExc()
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
+
+def time_normalized(description, vArray):
+    f.write("Test: "+description+" normalized\n")
+    start_time = time.clock_gettime(4)
+    x = vArray.normalized()
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
+
+def time_normalizedExc(description, vArray):
+    f.write("Test: "+description+" normalizedExc\n")
+    start_time = time.clock_gettime(4)
+    x = vArray.normalizedExc()
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
+
+    
+tests_normalize.append(["Vec2fArray", v2fa])
+tests_normalize.append(["Vec2dArray", v2da])
+tests_normalize.append(["Vec3fArray", v3fa])
+tests_normalize.append(["Vec3dArray", v3da])
+
+v4fa = V4fArray(X)
+v4fa[:] = V4f(1,1,1,1)
+tests_normalize.append(["Vec4fArray", v4fa])
+
+v4da = V4dArray(X)
+v4da[:] = V4d(1,1,1,1)
+tests_normalize.append(["Vec4dArray", v4da])
+
+for test in tests_normalize:
+    time_normalize(test[0], test[1])
+    time_normalizeExc(test[0], test[1])
+    time_normalized(test[0], test[1])
+    time_normalizedExc(test[0], test[1])
+
+# SHEAR TEST
+
+tests_shear = []
+
+def time_shear(description, mat, shear_in):
+    f.write("Test: "+description+"\n")
+    start_time = time.clock_gettime(4)
+    x = mat.shear(shear_in)
+    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
+
+    
+tests_shear.append(["M44f shear with tuple", m44f, (1,2,3)])
+tests_shear.append(["M44d shear with tuple", m44d, (1,2,3)])
+tests_shear.append(["M33f shear with tuple", m33f, (1,2)])
+tests_shear.append(["M33d shear with tuple", m33d, (1,2)])
+tests_shear.append(["M44f shear with Vec3f", m44f, V3f(1,2,3)])
+tests_shear.append(["M44d shear with Vec3d", m44d, V3d(1,2,3)])
+tests_shear.append(["M33f shear with Vec2f", m33f, V2f(1,2)])
+tests_shear.append(["M33d shear with Vec2d", m33d, V2d(1,2)])
+
+for test in tests_shear:
+    time_shear(test[0], test[1], test[2])
