@@ -6,199 +6,229 @@ import time
 
 from imath import *
 
-X = 1000
-f = open("time_trials.txt", "a")
-f.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
+X = 10000000
+f = open("time_trials.csv", "a")
+all_tests = {}
+
+def time_operation(func):
+    tested_inputs = all_tests[func]
+    for tested_input in tested_inputs:
+        arg_string = ""
+        for arg in tested_input:
+            arg_string += type(arg).__name__ + " "
+        f.write(func.__name__+": "+arg_string) # generates unique description
+        start_time = time.clock_gettime(4)
+        func(tested_input)
+        f.write(","+repr(time.clock_gettime(4) - start_time)+"\n")
 
 #MULTIPLICAITON TESTING
-tests_multMatrix = []
 
-def time_multVecMatrix(description, mat, vArray):
-    f.write("Test: "+description+" (Vec)\n")
-    start_time = time.clock_gettime(4)
+def time_multVecMatrix(test_input):
+    mat = test_input[0]
+    vArray = test_input[1]
     x = mat.multVecMatrix(vArray)
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
-def time_multDirMatrix(description, mat, vArray):
-    f.write("Test: "+description+" (Dir)\n")
-    start_time = time.clock_gettime(4)
+def time_multDirMatrix(test_input):
+    mat = test_input[0]
+    vArray = test_input[1]
     x = mat.multDirMatrix(vArray)
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
 m44f = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
 v3fa = V3fArray(X)
 v3fa[:] = V3f(1,1,1)
-tests_multMatrix.append(["M44f * Vec3Array", m44f, v3fa])
 
 m33f = M33f(5,6,6, 2,2,2, 6,6,2)
 v2fa = V2fArray(X)
 v2fa[:] = V2f(1,1)
-tests_multMatrix.append(["M33f * Vec2Array", m33f, v2fa])
 
 m44d = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
 v3da = V3dArray(X)
 v3da[:] = V3d(1,1,1)
-tests_multMatrix.append(["M44d * Vec3Array", m44d, v3da])
 
 m33d = M33d(1,0,5, 2,1,6, 3,4,0)
 v2da = V2dArray(X)
 v2da[:] = V2d(1,1)
-tests_multMatrix.append(["M33d * Vec2Array", m33d, v2da])
 
-for test in tests_multMatrix:
-    time_multVecMatrix(test[0], test[1], test[2])
-    time_multDirMatrix(test[0], test[1], test[2])
+tests_multMatrix = [[m44f, v3fa],
+                    [m33f, v2fa],
+                    [m44d, v3da],
+                    [m33d, v2da]]
+
+all_tests[time_multVecMatrix] = tests_multMatrix
+all_tests[time_multDirMatrix] = tests_multMatrix
 
 #INVERT TESTING
-tests_inver = []
-tests_gjInver = []
 
-def time_inverse(description, mat):
-    f.write("Test: "+description+" inverse\n")
-    start_time = time.clock_gettime(4)
+def time_inverse(test_input):
+    mat = test_input[0]
     for i in range(0, X):
         x = mat.inverse()
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
-def time_invert(description, mat):
-    f.write("Test: "+description+" invert\n")
-    start_time = time.clock_gettime(4)
+def time_invert(test_input):
+    mat = test_input[0]
     for i in range(0, X):
         mat.invert()
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
-def time_gjInverse(description, mat):
-    f.write("Test: "+description+" gjInverse\n")
-    start_time = time.clock_gettime(4)
+def time_gjInverse(test_input):
+    mat = test_input[0]
     for i in range(0, X):
         x = mat.gjInverse()
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
-def time_gjInvert(description, mat):
-    f.write("Test: "+description+" gjInvert\n")
-    start_time = time.clock_gettime(4)
+def time_gjInvert(test_input):
+    mat = test_input[0]
     for i in range(0, X):
         mat.gjInvert()
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
-tests_inver.append(["M44f", m44f])
-tests_gjInver.append(["M44f", m44f])
-
-tests_inver.append(["M33f", m33f])
-tests_gjInver.append(["M33f", m33f])
 
 m22f = M22f(4,7, 2,6)
-tests_inver.append(["M22f", m22f])
-
-tests_inver.append(["M44d", m44d])
-tests_gjInver.append(["M44d", m44d])
-
-tests_inver.append(["M33d", m33d])
-tests_gjInver.append(["M33d", m33d])
-
 m22d = M22d(4,7, 2,6)
-tests_inver.append(["M22d", m22d])
 
-for test in tests_inver:
-    time_inverse(test[0], test[1])
-    time_invert(test[0], test[1])
+tests_inver = [[m44f],
+               [m33f],
+               [m22f],
+               [m44d],
+               [m33d],
+               [m22d]]
 
-for test in tests_gjInver:
-    #gjInversion can not be performed on 2x2
-    time_gjInverse(test[0], test[1])
-    time_gjInvert(test[0], test[1])
+tests_gjInver = [[m44f],
+                 [m33f],
+                 [m44d],
+                 [m33d]]
+
+all_tests[time_inverse] = tests_inver
+all_tests[time_invert] = tests_inver
+all_tests[time_gjInverse] = tests_gjInver
+all_tests[time_gjInvert] = tests_gjInver
 
 # NORMALIZE TEST
 
-tests_normalize = []
-
-def time_normalize(description, vArray):
-    f.write("Test: "+description+" normalize\n")
-    start_time = time.clock_gettime(4)
+def time_normalize(test_input):
+    vArray = test_input[0]
     vArray.normalize()
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
-def time_normalizeExc(description, vArray):
-    f.write("Test: "+description+" normalizeExc\n")
-    start_time = time.clock_gettime(4)
+def time_normalizeExc(test_input):
+    vArray = test_input[0]
     vArray.normalizeExc()
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
-def time_normalized(description, vArray):
-    f.write("Test: "+description+" normalized\n")
-    start_time = time.clock_gettime(4)
+def time_normalized(test_input):
+    vArray = test_input[0]
     x = vArray.normalized()
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
 
-def time_normalizedExc(description, vArray):
-    f.write("Test: "+description+" normalizedExc\n")
-    start_time = time.clock_gettime(4)
+def time_normalizedExc(test_input):    
+    vArray = test_input[0]
     x = vArray.normalizedExc()
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
-
-    
-tests_normalize.append(["Vec2fArray", v2fa])
-tests_normalize.append(["Vec2dArray", v2da])
-tests_normalize.append(["Vec3fArray", v3fa])
-tests_normalize.append(["Vec3dArray", v3da])
 
 v4fa = V4fArray(X)
 v4fa[:] = V4f(1,1,1,1)
-tests_normalize.append(["Vec4fArray", v4fa])
 
 v4da = V4dArray(X)
 v4da[:] = V4d(1,1,1,1)
-tests_normalize.append(["Vec4dArray", v4da])
 
-for test in tests_normalize:
-    time_normalize(test[0], test[1])
-    time_normalizeExc(test[0], test[1])
-    time_normalized(test[0], test[1])
-    time_normalizedExc(test[0], test[1])
+tests_normalize = [[v2fa],
+                   [v2da],
+                   [v3fa],
+                   [v3da],
+                   [v4fa],
+                   [v4da]]
+
+all_tests[time_normalize] = tests_normalize
+all_tests[time_normalizeExc] = tests_normalize
+all_tests[time_normalized] = tests_normalize
+all_tests[time_normalizedExc] = tests_normalize
 
 # SHEAR TEST
 
-tests_shear = []
-
-def time_shear(description, mat, shear_in):
-    f.write("Test: "+description+"\n")
-    start_time = time.clock_gettime(4)
-    x = mat.shear(shear_in)
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
-
+def time_shear(test_input):
+    mat = test_input[0]
+    shear_in = test_input[1]
+    for i in range(0,X):
+        x = mat.shear(shear_in)
     
-tests_shear.append(["M44f shear with tuple", m44f, (1,2,3)])
-tests_shear.append(["M44d shear with tuple", m44d, (1,2,3)])
-tests_shear.append(["M33f shear with tuple", m33f, (1,2)])
-tests_shear.append(["M33d shear with tuple", m33d, (1,2)])
-tests_shear.append(["M44f shear with Vec3f", m44f, V3f(1,2,3)])
-tests_shear.append(["M44d shear with Vec3d", m44d, V3d(1,2,3)])
-tests_shear.append(["M33f shear with Vec2f", m33f, V2f(1,2)])
-tests_shear.append(["M33d shear with Vec2d", m33d, V2d(1,2)])
+all_tests[time_shear] = [[m44f, (1,2,3)],
+                         [m44d, (1,2,3)],
+                         [m33f, (1,2)],
+                         [m33d, (1,2)],
+                         [m44f, V3f(1,2,3)],
+                         [m44d, V3d(1,2,3)],
+                         [m33f, V2f(1,2)],
+                         [m33d, V2d(1,2)]]
 #TODO: add Shear6<T>
-
-for test in tests_shear:
-    time_shear(test[0], test[1], test[2])
 
 # SCALE TEST
 
-tests_scale = []
-
-def time_scale(description, mat, scale_in):
-    f.write("Test: "+description+"\n")
-    start_time = time.clock_gettime(4)
+def time_scale(test_input):
+    mat = test_input[0]
+    scale_in = test_input[1]
     for i in range(0,X):
         x = mat.scale(scale_in)
-    f.write("    "+repr(time.clock_gettime(4) - start_time)+"\n")
+        #TODO: determine significance of Python bytcode impact on speed
 
+all_tests[time_scale] = [[m44f, 2.0],
+                         [m44d, 2.0],
+                         [m33f, 2.0],
+                         [m33d, 2.0],
+                         [m22f, 2.0],
+                         [m22d, 2.0]]
+
+# TRANSLATION TEST
+
+def time_translate(test_input):
+    mat = test_input[0]
+    trans_in = test_input[1]
+    for i in range(0,X):
+        x = mat.translate(trans_in)
     
-tests_scale.append(["M44f Scale", m44f, 2])
-tests_scale.append(["M44d Scale", m44d, 2])
-tests_scale.append(["M33f Scale", m33f, 2])
-tests_scale.append(["M33d Scale", m33d, 2])
-tests_scale.append(["M22f Scale", m22f, 2])
-tests_scale.append(["M22d Scale", m22d, 2])
+all_tests[time_translate] = [[m44f, V3f(1,1,1)],
+                             [m44d, V3d(1,1,1)],
+                             [m33f, V2f(1,1)],
+                             [m33d, V2d(1,1)]]
 
-for test in tests_shear:
-    time_scale(test[0], test[1], test[2])
+# FRUSTUM TEST
 
+def time_frustum_init(description, parameters):
+    f.write(description)
+    start_time = time.clock_gettime(4)
+    for i in range(0,X):
+        x = Frustum(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
+    f.write(","+repr(time.clock_gettime(4) - start_time)+"\n")
+#UNIMPLEMENTED 
+    
+for func in all_tests:
+    time_operation(func)
+
+"""
+def time_NOARRAYvec(test_input):
+    mat = test_input[0]
+    vec = test_input[1]
+    for i in range(0, X):
+        x = mat.multVecMatrix(vec)
+    
+def time_NOARRAYdir(test_input):
+    mat = test_input[0]
+    vec = test_input[1]
+    for i in range(0, X):
+        x = mat.multDirMatrix(vec)
+    
+m44f = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3f = V3f(1,1,1)
+
+m33f = M33f(5,6,6, 2,2,2, 6,6,2)
+v2f = V2f(1,1)
+
+m44d = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3d = V3d(1,1,1)
+
+m33d = M33d(1,0,5, 2,1,6, 3,4,0)
+v2d = V2d(1,1)
+
+tests_multMatrix = [[m44f, v3f],
+                    [m33f, v2f],
+                    [m44d, v3d],
+                    [m33d, v2d]]
+add_tests = {}
+add_tests[time_NOARRAYvec] = tests_multMatrix
+add_tests[time_NOARRAYdir] = tests_multMatrix
+
+for func in add_tests:
+    time_operation(func)
+"""
