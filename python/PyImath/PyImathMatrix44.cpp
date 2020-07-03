@@ -1188,13 +1188,39 @@ setM44ArrayItem(FixedArray<IMATH_NAMESPACE::Matrix44<T> > &ma,
 }
 
 template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix44<T> > 
+inverse44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  FixedArray<IMATH_NAMESPACE::Matrix44<T> > dst(len);
+  for (size_t i=0; i<len; ++i) dst[i] = ma[i].inverse(singExc);    
+  return dst;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix44<T> > &
+invert44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  for (size_t i=0; i<len; ++i) ma[i].invert(singExc);    
+  return ma;
+}
+
+BOOST_PYTHON_FUNCTION_OVERLOADS(invert44_array_overloads, invert44_array, 1, 2);
+BOOST_PYTHON_FUNCTION_OVERLOADS(inverse44_array_overloads, inverse44_array, 1, 2);
+
+template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Matrix44<T> > >
 register_M44Array()
 {
     class_<FixedArray<IMATH_NAMESPACE::Matrix44<T> > > matrixArray_class = FixedArray<IMATH_NAMESPACE::Matrix44<T> >::register_("Fixed length array of IMATH_NAMESPACE::Matrix44");
     matrixArray_class
          .def("__setitem__", &setM44ArrayItem<T>)
-        ;
+         .def("inverse",&inverse44_array<T>,inverse44_array_overloads("inverse() return an inverted copy of this matrix"))
+         .def("invert",&invert44_array<T>,invert44_array_overloads("invert()  invert these matricies")[return_internal_reference<>()])
+      ;
     return matrixArray_class;
 }
 
