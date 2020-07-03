@@ -59,15 +59,7 @@ all_tests[time_multVecMatrix] = tests_multMatrix
 all_tests[time_multDirMatrix] = tests_multMatrix
 
 #INVERT TESTING
-"""
-def time_ARRAY_invert(test_input):
-    mArray = test_input[0]
-    mArray.invert()
-
-def time_ARRAY_inverse(test_input):
-    mArray = test_input[0]
-    x = mArray.inverse()
-"""   
+   
 def time_inverse(test_input):
     mata = test_input[0]
     x = mata.inverse()
@@ -76,13 +68,13 @@ def time_invert(test_input):
     mata = test_input[0]
     mata.invert()
 
-"""def time_gjInverse(test_input):
+def time_gjInverse(test_input):
     mata = test_input[0]
     x = mata.gjInverse()
 
 def time_gjInvert(test_input):
     mata = test_input[0]
-    mata.gjInvert()"""
+    mata.gjInvert()
 
 
 m22f = M22f(4.0,7.0, 2.0,6.0)
@@ -112,23 +104,11 @@ tests_gjInver = [[m44fa],
                  [m33fa],
                  [m44da],
                  [m33da]]
-"""
-m22fa = M22fArray(X)
-m22da = M22dArray(X)
-for i in range(0, X):
-    m22da[i] = M22d(random.randrange(-10,10),random.randrange(-10,10),
-                    random.randrange(-10,10),random.randrange(-10,10))
-"""
-#m22fa[:] = m22f
-#tests_Ainver = [[m22fa],[m22da]]
-
-#all_tests[time_ARRAY_invert] = tests_Ainver
-#all_tests[time_ARRAY_inverse] = tests_Ainver
 
 all_tests[time_inverse] = tests_inver
 all_tests[time_invert] = tests_inver
-#all_tests[time_gjInverse] = tests_gjInver
-#all_tests[time_gjInvert] = tests_gjInver
+all_tests[time_gjInverse] = tests_gjInver
+all_tests[time_gjInvert] = tests_gjInver
 
 # NORMALIZE TEST
 
