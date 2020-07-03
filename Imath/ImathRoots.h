@@ -82,10 +82,10 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 //
 //--------------------------------------------------------------------------
 
-template <class T> int	solveLinear (T a, T b, T &x);
-template <class T> int	solveQuadratic (T a, T b, T c, T x[2]);
-template <class T> int	solveNormalizedCubic (T r, T s, T t, T x[3]);
-template <class T> int	solveCubic (T a, T b, T c, T d, T x[3]);
+template <class T> constexpr int	solveLinear (T a, T b, T &x);
+template <class T> constexpr int	solveQuadratic (T a, T b, T c, T x[2]);
+template <class T> constexpr int	solveNormalizedCubic (T r, T s, T t, T x[3]);
+template <class T> constexpr int	solveCubic (T a, T b, T c, T d, T x[3]);
 
 
 //---------------
@@ -93,7 +93,7 @@ template <class T> int	solveCubic (T a, T b, T c, T d, T x[3]);
 //---------------
 
 template <class T>
-int
+constexpr int
 solveLinear (T a, T b, T &x)
 {
     if (a != 0)
@@ -113,7 +113,7 @@ solveLinear (T a, T b, T &x)
 
 
 template <class T>
-int
+constexpr int
 solveQuadratic (T a, T b, T c, T x[2])
 {
     if (a == 0)
@@ -147,7 +147,7 @@ solveQuadratic (T a, T b, T c, T x[2])
 
 
 template <class T>
-int
+constexpr int
 solveNormalizedCubic (T r, T s, T t, T x[3])
 {
     T p  = (3 * s - r * r) / 3;
@@ -201,7 +201,7 @@ solveNormalizedCubic (T r, T s, T t, T x[3])
 
 
 template <class T>
-int
+constexpr int
 solveCubic (T a, T b, T c, T d, T x[3])
 {
     if (a == 0)

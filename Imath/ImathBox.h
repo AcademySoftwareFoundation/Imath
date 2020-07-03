@@ -84,16 +84,16 @@ class Box
     //	Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    Box (); 
-    Box (const T &point);
-    Box (const T &minT, const T &maxT);
+    constexpr Box (); 
+    constexpr Box (const T &point);
+    constexpr Box (const T &minT, const T &maxT);
 
     //--------------------
     //  Operators:  ==, !=
     //--------------------
     
-    bool		operator == (const Box<T> &src) const;
-    bool		operator != (const Box<T> &src) const;
+    constexpr bool      operator == (const Box<T> &src) const;
+    constexpr bool      operator != (const Box<T> &src) const;
 
     //------------------
     //	Box manipulation
@@ -108,20 +108,21 @@ class Box
     //	Query functions - these compute results each time
     //---------------------------------------------------
 
-    T			size () const;
-    T			center () const;
-    bool		intersects (const T &point) const;
-    bool		intersects (const Box<T> &box) const;
+    constexpr T 	size () const;
+    constexpr T		center () const;
+    constexpr bool	intersects (const T &point) const;
+    constexpr bool	intersects (const Box<T> &box) const;
 
+    constexpr
     unsigned int	majorAxis () const;
 
     //----------------
     //	Classification
     //----------------
 
-    bool		isEmpty () const;
-    bool		hasVolume () const;
-    bool		isInfinite () const;
+    constexpr bool	isEmpty () const;
+    constexpr bool	hasVolume () const;
+    constexpr bool	isInfinite () const;
 };
 
 
@@ -144,14 +145,14 @@ typedef Box <V3d> Box3d;
 
 
 template <class T>
-inline Box<T>::Box()
+constexpr inline Box<T>::Box()
 {
     makeEmpty();
 }
 
 
 template <class T>
-inline Box<T>::Box (const T &point)
+constexpr inline Box<T>::Box (const T &point)
 {
     min = point;
     max = point;
@@ -159,7 +160,7 @@ inline Box<T>::Box (const T &point)
 
 
 template <class T>
-inline Box<T>::Box (const T &minT, const T &maxT)
+constexpr inline Box<T>::Box (const T &minT, const T &maxT)
 {
     min = minT;
     max = maxT;
@@ -167,7 +168,7 @@ inline Box<T>::Box (const T &minT, const T &maxT)
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<T>::operator == (const Box<T> &src) const
 {
     return (min == src.min && max == src.max);
@@ -175,7 +176,7 @@ Box<T>::operator == (const Box<T> &src) const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<T>::operator != (const Box<T> &src) const
 {
     return (min != src.min || max != src.max);
@@ -228,7 +229,7 @@ Box<T>::extendBy(const Box<T> &box)
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<T>::intersects(const T &point) const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -242,7 +243,7 @@ Box<T>::intersects(const T &point) const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<T>::intersects(const Box<T> &box) const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -256,7 +257,7 @@ Box<T>::intersects(const Box<T> &box) const
 
 
 template <class T> 
-inline T
+constexpr inline T
 Box<T>::size() const 
 { 
     if (isEmpty())
@@ -267,7 +268,7 @@ Box<T>::size() const
 
 
 template <class T> 
-inline T
+constexpr inline T
 Box<T>::center() const 
 { 
     return (max + min) / 2;
@@ -275,7 +276,7 @@ Box<T>::center() const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<T>::isEmpty() const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -288,7 +289,7 @@ Box<T>::isEmpty() const
 }
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<T>::isInfinite() const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -302,7 +303,7 @@ Box<T>::isInfinite() const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<T>::hasVolume() const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -316,7 +317,7 @@ Box<T>::hasVolume() const
 
 
 template<class T>
-inline unsigned int
+constexpr inline unsigned int
 Box<T>::majorAxis() const
 {
     unsigned int major = 0;
@@ -355,16 +356,16 @@ class Box<Vec2<T> >
     //  Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    Box(); 
-    Box (const Vec2<T> &point);
-    Box (const Vec2<T> &minT, const Vec2<T> &maxT);
+    constexpr Box(); 
+    constexpr Box (const Vec2<T> &point);
+    constexpr Box (const Vec2<T> &minT, const Vec2<T> &maxT);
 
     //--------------------
     //  Operators:  ==, !=
     //--------------------
 
-    bool		operator == (const Box<Vec2<T> > &src) const;
-    bool		operator != (const Box<Vec2<T> > &src) const;
+    constexpr bool	operator == (const Box<Vec2<T> > &src) const;
+    constexpr bool	operator != (const Box<Vec2<T> > &src) const;
 
     //------------------
     //  Box manipulation
@@ -379,20 +380,21 @@ class Box<Vec2<T> >
     //  Query functions - these compute results each time
     //---------------------------------------------------
 
-    Vec2<T>		size() const;
-    Vec2<T>		center() const;
-    bool		intersects (const Vec2<T> &point) const;
-    bool		intersects (const Box<Vec2<T> > &box) const;
+    constexpr Vec2<T>	size() const;
+    constexpr Vec2<T>	center() const;
+    constexpr bool	intersects (const Vec2<T> &point) const;
+    constexpr bool	intersects (const Box<Vec2<T> > &box) const;
 
+    constexpr
     unsigned int	majorAxis() const;
 
     //----------------
     //  Classification
     //----------------
 
-    bool		isEmpty() const;
-    bool		hasVolume() const;
-    bool		isInfinite() const;
+    constexpr bool	isEmpty() const;
+    constexpr bool	hasVolume() const;
+    constexpr bool	isInfinite() const;
 };
 
 
@@ -400,14 +402,14 @@ class Box<Vec2<T> >
 //  Implementation
 
 template <class T>
-inline Box<Vec2<T> >::Box()
+constexpr inline Box<Vec2<T> >::Box()
 {
     makeEmpty();
 }
 
 
 template <class T>
-inline Box<Vec2<T> >::Box (const Vec2<T> &point)
+constexpr inline Box<Vec2<T> >::Box (const Vec2<T> &point)
 {
     min = point;
     max = point;
@@ -415,7 +417,7 @@ inline Box<Vec2<T> >::Box (const Vec2<T> &point)
 
 
 template <class T>
-inline Box<Vec2<T> >::Box (const Vec2<T> &minT, const Vec2<T> &maxT)
+constexpr inline Box<Vec2<T> >::Box (const Vec2<T> &minT, const Vec2<T> &maxT)
 {
     min = minT;
     max = maxT;
@@ -423,7 +425,7 @@ inline Box<Vec2<T> >::Box (const Vec2<T> &minT, const Vec2<T> &maxT)
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec2<T> >::operator ==  (const Box<Vec2<T> > &src) const
 {
     return (min == src.min && max == src.max);
@@ -431,7 +433,7 @@ Box<Vec2<T> >::operator ==  (const Box<Vec2<T> > &src) const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec2<T> >::operator != (const Box<Vec2<T> > &src) const
 {
     return (min != src.min || max != src.max);
@@ -490,7 +492,7 @@ Box<Vec2<T> >::extendBy (const Box<Vec2<T> > &box)
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec2<T> >::intersects (const Vec2<T> &point) const
 {
     if (point[0] < min[0] || point[0] > max[0] ||
@@ -502,7 +504,7 @@ Box<Vec2<T> >::intersects (const Vec2<T> &point) const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec2<T> >::intersects (const Box<Vec2<T> > &box) const
 {
     if (box.max[0] < min[0] || box.min[0] > max[0] ||
@@ -514,7 +516,7 @@ Box<Vec2<T> >::intersects (const Box<Vec2<T> > &box) const
 
 
 template <class T> 
-inline Vec2<T>
+constexpr inline Vec2<T>
 Box<Vec2<T> >::size() const 
 { 
     if (isEmpty())
@@ -525,7 +527,7 @@ Box<Vec2<T> >::size() const
 
 
 template <class T> 
-inline Vec2<T>
+constexpr inline Vec2<T>
 Box<Vec2<T> >::center() const 
 { 
     return (max + min) / 2;
@@ -533,7 +535,7 @@ Box<Vec2<T> >::center() const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec2<T> >::isEmpty() const
 {
     if (max[0] < min[0] ||
@@ -544,7 +546,7 @@ Box<Vec2<T> >::isEmpty() const
 }
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec2<T> > ::isInfinite() const
 {
     if (min[0] != limits<T>::min() || max[0] != limits<T>::max() ||
@@ -556,7 +558,7 @@ Box<Vec2<T> > ::isInfinite() const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec2<T> >::hasVolume() const
 {
     if (max[0] <= min[0] ||
@@ -568,7 +570,7 @@ Box<Vec2<T> >::hasVolume() const
 
 
 template <class T>
-inline unsigned int
+constexpr inline unsigned int
 Box<Vec2<T> >::majorAxis() const
 {
     unsigned int major = 0;
@@ -597,16 +599,16 @@ class Box<Vec3<T> >
     //  Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    Box(); 
-    Box (const Vec3<T> &point);
-    Box (const Vec3<T> &minT, const Vec3<T> &maxT);
+    constexpr Box(); 
+    constexpr Box (const Vec3<T> &point);
+    constexpr Box (const Vec3<T> &minT, const Vec3<T> &maxT);
 
     //--------------------
     //  Operators:  ==, !=
     //--------------------
 
-    bool		operator == (const Box<Vec3<T> > &src) const;
-    bool		operator != (const Box<Vec3<T> > &src) const;
+    constexpr bool	operator == (const Box<Vec3<T> > &src) const;
+    constexpr bool	operator != (const Box<Vec3<T> > &src) const;
 
     //------------------
     //  Box manipulation
@@ -621,20 +623,21 @@ class Box<Vec3<T> >
     //  Query functions - these compute results each time
     //---------------------------------------------------
 
-    Vec3<T>		size() const;
-    Vec3<T>		center() const;
-    bool		intersects (const Vec3<T> &point) const;
-    bool		intersects (const Box<Vec3<T> > &box) const;
+    constexpr Vec3<T>	size() const;
+    constexpr Vec3<T>	center() const;
+    constexpr bool	intersects (const Vec3<T> &point) const;
+    constexpr bool	intersects (const Box<Vec3<T> > &box) const;
 
+    constexpr
     unsigned int	majorAxis() const;
 
     //----------------
     //  Classification
     //----------------
 
-    bool		isEmpty() const;
-    bool		hasVolume() const;
-    bool		isInfinite() const;
+    constexpr bool	isEmpty() const;
+    constexpr bool	hasVolume() const;
+    constexpr bool	isInfinite() const;
 };
 
 
@@ -643,14 +646,14 @@ class Box<Vec3<T> >
 
 
 template <class T>
-inline Box<Vec3<T> >::Box()
+constexpr inline Box<Vec3<T> >::Box()
 {
     makeEmpty();
 }
 
 
 template <class T>
-inline Box<Vec3<T> >::Box (const Vec3<T> &point)
+constexpr inline Box<Vec3<T> >::Box (const Vec3<T> &point)
 {
     min = point;
     max = point;
@@ -658,7 +661,7 @@ inline Box<Vec3<T> >::Box (const Vec3<T> &point)
 
 
 template <class T>
-inline Box<Vec3<T> >::Box (const Vec3<T> &minT, const Vec3<T> &maxT)
+constexpr inline Box<Vec3<T> >::Box (const Vec3<T> &minT, const Vec3<T> &maxT)
 {
     min = minT;
     max = maxT;
@@ -666,7 +669,7 @@ inline Box<Vec3<T> >::Box (const Vec3<T> &minT, const Vec3<T> &maxT)
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec3<T> >::operator == (const Box<Vec3<T> > &src) const
 {
     return (min == src.min && max == src.max);
@@ -674,7 +677,7 @@ Box<Vec3<T> >::operator == (const Box<Vec3<T> > &src) const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec3<T> >::operator != (const Box<Vec3<T> > &src) const
 {
     return (min != src.min || max != src.max);
@@ -745,7 +748,7 @@ Box<Vec3<T> >::extendBy (const Box<Vec3<T> > &box)
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec3<T> >::intersects (const Vec3<T> &point) const
 {
     if (point[0] < min[0] || point[0] > max[0] ||
@@ -758,7 +761,7 @@ Box<Vec3<T> >::intersects (const Vec3<T> &point) const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec3<T> >::intersects (const Box<Vec3<T> > &box) const
 {
     if (box.max[0] < min[0] || box.min[0] > max[0] ||
@@ -771,7 +774,7 @@ Box<Vec3<T> >::intersects (const Box<Vec3<T> > &box) const
 
 
 template <class T> 
-inline Vec3<T>
+constexpr inline Vec3<T>
 Box<Vec3<T> >::size() const 
 { 
     if (isEmpty())
@@ -782,7 +785,7 @@ Box<Vec3<T> >::size() const
 
 
 template <class T> 
-inline Vec3<T>
+constexpr inline Vec3<T>
 Box<Vec3<T> >::center() const 
 { 
     return (max + min) / 2;
@@ -790,7 +793,7 @@ Box<Vec3<T> >::center() const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec3<T> >::isEmpty() const
 {
     if (max[0] < min[0] ||
@@ -802,7 +805,7 @@ Box<Vec3<T> >::isEmpty() const
 }
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec3<T> >::isInfinite() const
 {
     if (min[0] != limits<T>::min() || max[0] != limits<T>::max() ||
@@ -815,7 +818,7 @@ Box<Vec3<T> >::isInfinite() const
 
 
 template <class T>
-inline bool
+constexpr inline bool
 Box<Vec3<T> >::hasVolume() const
 {
     if (max[0] <= min[0] ||
@@ -828,7 +831,7 @@ Box<Vec3<T> >::hasVolume() const
 
 
 template <class T>
-inline unsigned int
+constexpr inline unsigned int
 Box<Vec3<T> >::majorAxis() const
 {
     unsigned int major = 0;

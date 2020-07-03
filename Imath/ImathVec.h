@@ -75,7 +75,8 @@ template <class T> class Vec2
 
     T			x, y;
 
-    T &			operator [] (int i);
+    constexpr T &	operator [] (int i);
+    constexpr
     const T &		operator [] (int i) const;
 
 
@@ -84,17 +85,18 @@ template <class T> class Vec2
     //-------------
 
     Vec2 ();                        // no initialization
-    explicit Vec2 (T a);            // (a a)
-    Vec2 (T a, T b);                // (a b)
+    constexpr explicit Vec2 (T a);  // (a a)
+    constexpr Vec2 (T a, T b);      // (a b)
 
 
     //---------------------------------
     // Copy constructors and assignment
     //---------------------------------
 
-    Vec2 (const Vec2 &v);
-    template <class S> Vec2 (const Vec2<S> &v);
+    constexpr Vec2 (const Vec2 &v);
+    template <class S> constexpr Vec2 (const Vec2<S> &v);
 
+    constexpr
     const Vec2 &	operator = (const Vec2 &v);
 
     //------------
@@ -128,10 +130,10 @@ template <class T> class Vec2
     //---------
 
     template <class S>
-    bool		operator == (const Vec2<S> &v) const;
+    constexpr bool	operator == (const Vec2<S> &v) const;
 
     template <class S>
-    bool		operator != (const Vec2<S> &v) const;
+    constexpr bool	operator != (const Vec2<S> &v) const;
 
 
     //-----------------------------------------------------------------------
@@ -152,15 +154,15 @@ template <class T> class Vec2
     //      abs (this[i] - v[i]) <= e * abs (this[i])
     //-----------------------------------------------------------------------
 
-    bool		equalWithAbsError (const Vec2<T> &v, T e) const;
-    bool		equalWithRelError (const Vec2<T> &v, T e) const;
+    constexpr bool	equalWithAbsError (const Vec2<T> &v, T e) const;
+    constexpr bool	equalWithRelError (const Vec2<T> &v, T e) const;
 
     //------------
     // Dot product
     //------------
 
-    T			dot (const Vec2 &v) const;
-    T			operator ^ (const Vec2 &v) const;
+    constexpr T		dot (const Vec2 &v) const;
+    constexpr T		operator ^ (const Vec2 &v) const;
 
 
     //------------------------------------------------
@@ -168,31 +170,34 @@ template <class T> class Vec2
     // Vec3 (this->x, this->y, 0) % Vec3 (v.x, v.y, 0)
     //------------------------------------------------
 
-    T			cross (const Vec2 &v) const;
-    T			operator % (const Vec2 &v) const;
+    constexpr T		cross (const Vec2 &v) const;
+    constexpr T		operator % (const Vec2 &v) const;
 
 
     //------------------------
     // Component-wise addition
     //------------------------
 
+    constexpr
     const Vec2 &	operator += (const Vec2 &v);
-    Vec2		operator + (const Vec2 &v) const;
+    constexpr Vec2	operator + (const Vec2 &v) const;
 
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
+    constexpr
     const Vec2 &	operator -= (const Vec2 &v);
-    Vec2		operator - (const Vec2 &v) const;
+    constexpr Vec2	operator - (const Vec2 &v) const;
 
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    Vec2		operator - () const;
+    constexpr Vec2	operator - () const;
+    constexpr
     const Vec2 &	negate ();
 
 
@@ -200,20 +205,24 @@ template <class T> class Vec2
     // Component-wise multiplication
     //------------------------------
 
+    constexpr
     const Vec2 &	operator *= (const Vec2 &v);
+    constexpr
     const Vec2 &	operator *= (T a);
-    Vec2		operator * (const Vec2 &v) const;
-    Vec2		operator * (T a) const;
+    constexpr Vec2	operator * (const Vec2 &v) const;
+    constexpr Vec2	operator * (T a) const;
 
 
     //------------------------
     // Component-wise division
     //------------------------
 
+    constexpr
     const Vec2 &	operator /= (const Vec2 &v);
+    constexpr
     const Vec2 &	operator /= (T a);
-    Vec2		operator / (const Vec2 &v) const;
-    Vec2		operator / (T a) const;
+    constexpr Vec2	operator / (const Vec2 &v) const;
+    constexpr Vec2	operator / (T a) const;
 
 
     //----------------------------------------------------------------
@@ -225,33 +234,36 @@ template <class T> class Vec2
     // is 0.0, the result is undefined.
     //----------------------------------------------------------------
 
-    T			length () const;
-    T			length2 () const;
+    constexpr T		length () const;
+    constexpr T		length2 () const;
 
+    constexpr
     const Vec2 &	normalize ();           // modifies *this
+    constexpr
     const Vec2 &	normalizeExc ();
+    constexpr
     const Vec2 &	normalizeNonNull ();
 
-    Vec2<T>		normalized () const;	// does not modify *this
-    Vec2<T>		normalizedExc () const;
-    Vec2<T>		normalizedNonNull () const;
+    constexpr Vec2<T>	normalized () const;	// does not modify *this
+    constexpr Vec2<T>	normalizedExc () const;
+    constexpr Vec2<T>	normalizedNonNull () const;
 
 
     //--------------------------------------------------------
     // Number of dimensions, i.e. number of elements in a Vec2
     //--------------------------------------------------------
 
-    static unsigned int	dimensions() {return 2;}
+    constexpr static unsigned int	dimensions() {return 2;}
 
 
     //-------------------------------------------------
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    static T		baseTypeMin()		{return limits<T>::min();}
-    static T		baseTypeMax()		{return limits<T>::max();}
-    static T		baseTypeSmallest()	{return limits<T>::smallest();}
-    static T		baseTypeEpsilon()	{return limits<T>::epsilon();}
+    constexpr static T	baseTypeMin()		{return limits<T>::min();}
+    constexpr static T	baseTypeMax()		{return limits<T>::max();}
+    constexpr static T	baseTypeSmallest()	{return limits<T>::smallest();}
+    constexpr static T	baseTypeEpsilon()	{return limits<T>::epsilon();}
 
 
     //--------------------------------------------------------------
@@ -264,7 +276,7 @@ template <class T> class Vec2
 
   private:
 
-    T			lengthTiny () const;
+    constexpr T		lengthTiny () const;
 };
 
 
@@ -278,7 +290,8 @@ template <class T> class Vec3
 
     T			x, y, z;
 
-    T &			operator [] (int i);
+    constexpr T &	operator [] (int i);
+    constexpr
     const T &		operator [] (int i) const;
 
 
@@ -286,8 +299,10 @@ template <class T> class Vec3
     // Constructors
     //-------------
 
-    Vec3 ();			   // no initialization
+    constexpr Vec3 ();		   // no initialization
+    constexpr
     explicit Vec3 (T a);           // (a a a)
+    constexpr
     Vec3 (T a, T b, T c);	   // (a b c)
 
 
@@ -295,9 +310,10 @@ template <class T> class Vec3
     // Copy constructors and assignment
     //---------------------------------
 
-    Vec3 (const Vec3 &v);
-    template <class S> Vec3 (const Vec3<S> &v);
+    constexpr Vec3 (const Vec3 &v);
+    template <class S> constexpr Vec3 (const Vec3<S> &v);
 
+    constexpr
     const Vec3 &	operator = (const Vec3 &v);
 
     //-----------
@@ -317,8 +333,8 @@ template <class T> class Vec3
     // if w is zero or if division by w would overflow.
     //---------------------------------------------------------
 
-    template <class S> explicit Vec3 (const Vec4<S> &v);
-    template <class S> explicit Vec3 (const Vec4<S> &v, InfException);
+    template <class S> explicit constexpr Vec3 (const Vec4<S> &v);
+    template <class S> explicit constexpr Vec3 (const Vec4<S> &v, InfException);
 
 
     //----------------------
@@ -346,10 +362,10 @@ template <class T> class Vec3
     //---------
 
     template <class S>
-    bool		operator == (const Vec3<S> &v) const;
+    constexpr bool	operator == (const Vec3<S> &v) const;
 
     template <class S>
-    bool		operator != (const Vec3<S> &v) const;
+    constexpr bool	operator != (const Vec3<S> &v) const;
 
     //-----------------------------------------------------------------------
     // Compare two vectors and test if they are "approximately equal":
@@ -369,47 +385,51 @@ template <class T> class Vec3
     //      abs (this[i] - v[i]) <= e * abs (this[i])
     //-----------------------------------------------------------------------
 
-    bool		equalWithAbsError (const Vec3<T> &v, T e) const;
-    bool		equalWithRelError (const Vec3<T> &v, T e) const;
+    constexpr bool	equalWithAbsError (const Vec3<T> &v, T e) const;
+    constexpr bool	equalWithRelError (const Vec3<T> &v, T e) const;
 
     //------------
     // Dot product
     //------------
 
-    T			dot (const Vec3 &v) const;
-    T			operator ^ (const Vec3 &v) const;
+    constexpr T		dot (const Vec3 &v) const;
+    constexpr T		operator ^ (const Vec3 &v) const;
 
 
     //---------------------------
     // Right-handed cross product
     //---------------------------
 
-    Vec3		cross (const Vec3 &v) const;
+    constexpr Vec3	cross (const Vec3 &v) const;
+    constexpr
     const Vec3 &	operator %= (const Vec3 &v);
-    Vec3		operator % (const Vec3 &v) const;
+    constexpr Vec3	operator % (const Vec3 &v) const;
 
 
     //------------------------
     // Component-wise addition
     //------------------------
 
+    constexpr
     const Vec3 &	operator += (const Vec3 &v);
-    Vec3		operator + (const Vec3 &v) const;
+    constexpr Vec3	operator + (const Vec3 &v) const;
 
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
+    constexpr
     const Vec3 &	operator -= (const Vec3 &v);
-    Vec3		operator - (const Vec3 &v) const;
+    constexpr Vec3	operator - (const Vec3 &v) const;
 
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    Vec3		operator - () const;
+    constexpr Vec3	operator - () const;
+    constexpr
     const Vec3 &	negate ();
 
 
@@ -417,20 +437,24 @@ template <class T> class Vec3
     // Component-wise multiplication
     //------------------------------
 
+    constexpr
     const Vec3 &	operator *= (const Vec3 &v);
+    constexpr
     const Vec3 &	operator *= (T a);
-    Vec3		operator * (const Vec3 &v) const;
-    Vec3		operator * (T a) const;
+    constexpr Vec3	operator * (const Vec3 &v) const;
+    constexpr Vec3	operator * (T a) const;
 
 
     //------------------------
     // Component-wise division
     //------------------------
 
+    constexpr
     const Vec3 &	operator /= (const Vec3 &v);
+    constexpr
     const Vec3 &	operator /= (T a);
-    Vec3		operator / (const Vec3 &v) const;
-    Vec3		operator / (T a) const;
+    constexpr Vec3	operator / (const Vec3 &v) const;
+    constexpr Vec3	operator / (T a) const;
 
 
     //----------------------------------------------------------------
@@ -442,33 +466,36 @@ template <class T> class Vec3
     // is 0.0, the result is undefined.
     //----------------------------------------------------------------
 
-    T			length () const;
-    T			length2 () const;
+    constexpr T		length () const;
+    constexpr T		length2 () const;
 
+    constexpr
     const Vec3 &	normalize ();           // modifies *this
+    constexpr
     const Vec3 &	normalizeExc ();
+    constexpr
     const Vec3 &	normalizeNonNull ();
 
-    Vec3<T>		normalized () const;	// does not modify *this
-    Vec3<T>		normalizedExc () const;
-    Vec3<T>		normalizedNonNull () const;
+    constexpr Vec3<T>	normalized () const;	// does not modify *this
+    constexpr Vec3<T>	normalizedExc () const;
+    constexpr Vec3<T>	normalizedNonNull () const;
 
 
     //--------------------------------------------------------
     // Number of dimensions, i.e. number of elements in a Vec3
     //--------------------------------------------------------
 
-    static unsigned int	dimensions() {return 3;}
+    constexpr static unsigned int	dimensions() {return 3;}
 
 
     //-------------------------------------------------
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    static T		baseTypeMin()		{return limits<T>::min();}
-    static T		baseTypeMax()		{return limits<T>::max();}
-    static T		baseTypeSmallest()	{return limits<T>::smallest();}
-    static T		baseTypeEpsilon()	{return limits<T>::epsilon();}
+    constexpr static T	baseTypeMin()		{return limits<T>::min();}
+    constexpr static T	baseTypeMax()		{return limits<T>::max();}
+    constexpr static T	baseTypeSmallest()	{return limits<T>::smallest();}
+    constexpr static T	baseTypeEpsilon()	{return limits<T>::epsilon();}
 
 
     //--------------------------------------------------------------
@@ -481,7 +508,7 @@ template <class T> class Vec3
 
   private:
 
-    T			lengthTiny () const;
+    constexpr T		lengthTiny () const;
 };
 
 
@@ -496,7 +523,8 @@ template <class T> class Vec4
 
     T               x, y, z, w; 
 
-    T &             operator [] (int i);
+    constexpr T &   operator [] (int i);
+    constexpr
     const T &       operator [] (int i) const;
 
 
@@ -504,8 +532,10 @@ template <class T> class Vec4
     // Constructors
     //-------------
 
-    Vec4 ();			   // no initialization
+    constexpr Vec4 ();		   // no initialization
+    constexpr
     explicit Vec4 (T a);           // (a a a a)
+    constexpr
     Vec4 (T a, T b, T c, T d);	   // (a b c d)
 
 
@@ -513,10 +543,10 @@ template <class T> class Vec4
     // Copy constructors and assignment
     //---------------------------------
 
-    Vec4 (const Vec4 &v);
-    template <class S> Vec4 (const Vec4<S> &v);
+    constexpr Vec4 (const Vec4 &v);
+    template <class S> constexpr Vec4 (const Vec4<S> &v);
 
-    const Vec4 &    operator = (const Vec4 &v);
+    constexpr const Vec4 &    operator = (const Vec4 &v);
 
     //-----------
     // Destructor
@@ -528,7 +558,7 @@ template <class T> class Vec4
     // Vec3 to Vec4 conversion, sets w to 1
     //-------------------------------------
 
-    template <class S> explicit Vec4 (const Vec3<S> &v);
+    template <class S> explicit constexpr Vec4 (const Vec3<S> &v);
 
 
     //---------
@@ -536,10 +566,10 @@ template <class T> class Vec4
     //---------
 
     template <class S>
-    bool            operator == (const Vec4<S> &v) const;
+    constexpr bool  operator == (const Vec4<S> &v) const;
 
     template <class S>
-    bool            operator != (const Vec4<S> &v) const;
+    constexpr bool  operator != (const Vec4<S> &v) const;
 
 
     //-----------------------------------------------------------------------
@@ -560,16 +590,16 @@ template <class T> class Vec4
     //      abs (this[i] - v[i]) <= e * abs (this[i])
     //-----------------------------------------------------------------------
 
-    bool		equalWithAbsError (const Vec4<T> &v, T e) const;
-    bool		equalWithRelError (const Vec4<T> &v, T e) const;
+    constexpr bool      equalWithAbsError (const Vec4<T> &v, T e) const;
+    constexpr bool	equalWithRelError (const Vec4<T> &v, T e) const;
 
 
     //------------
     // Dot product
     //------------
 
-    T			dot (const Vec4 &v) const;
-    T			operator ^ (const Vec4 &v) const;
+    constexpr T		dot (const Vec4 &v) const;
+    constexpr T		operator ^ (const Vec4 &v) const;
 
 
     //-----------------------------------
@@ -580,23 +610,26 @@ template <class T> class Vec4
     // Component-wise addition
     //------------------------
 
+    constexpr
     const Vec4 &    operator += (const Vec4 &v);
-    Vec4            operator + (const Vec4 &v) const;
+    constexpr Vec4  operator + (const Vec4 &v) const;
 
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
+    constexpr
     const Vec4 &    operator -= (const Vec4 &v);
-    Vec4            operator - (const Vec4 &v) const;
+    constexpr Vec4  operator - (const Vec4 &v) const;
 
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    Vec4            operator - () const;
+    constexpr Vec4  operator - () const;
+    constexpr
     const Vec4 &    negate ();
 
 
@@ -604,20 +637,24 @@ template <class T> class Vec4
     // Component-wise multiplication
     //------------------------------
 
+    constexpr
     const Vec4 &    operator *= (const Vec4 &v);
+    constexpr
     const Vec4 &    operator *= (T a);
-    Vec4            operator * (const Vec4 &v) const;
-    Vec4            operator * (T a) const;
+    constexpr Vec4  operator * (const Vec4 &v) const;
+    constexpr Vec4  operator * (T a) const;
 
 
     //------------------------
     // Component-wise division
     //------------------------
 
+    constexpr
     const Vec4 &    operator /= (const Vec4 &v);
+    constexpr
     const Vec4 &    operator /= (T a);
-    Vec4            operator / (const Vec4 &v) const;
-    Vec4            operator / (T a) const;
+    constexpr Vec4  operator / (const Vec4 &v) const;
+    constexpr Vec4  operator / (T a) const;
 
 
     //----------------------------------------------------------------
@@ -629,15 +666,21 @@ template <class T> class Vec4
     // is 0.0, the result is undefined.
     //----------------------------------------------------------------
 
-    T               length () const;
-    T               length2 () const;
+    constexpr T     length () const;
+    constexpr T     length2 () const;
 
+    constexpr
     const Vec4 &    normalize ();           // modifies *this
+    constexpr
     const Vec4 &    normalizeExc ();
+    constexpr
     const Vec4 &    normalizeNonNull ();
 
+    constexpr
     Vec4<T>         normalized () const;	// does not modify *this
+    constexpr
     Vec4<T>         normalizedExc () const;
+    constexpr
     Vec4<T>         normalizedNonNull () const;
 
 
@@ -645,17 +688,17 @@ template <class T> class Vec4
     // Number of dimensions, i.e. number of elements in a Vec4
     //--------------------------------------------------------
 
-    static unsigned int	dimensions() {return 4;}
+    constexpr static unsigned int	dimensions() {return 4;}
 
 
     //-------------------------------------------------
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    static T		baseTypeMin()		{return limits<T>::min();}
-    static T		baseTypeMax()		{return limits<T>::max();}
-    static T		baseTypeSmallest()	{return limits<T>::smallest();}
-    static T		baseTypeEpsilon()	{return limits<T>::epsilon();}
+    constexpr static T	baseTypeMin()		{return limits<T>::min();}
+    constexpr static T	baseTypeMax()		{return limits<T>::max();}
+    constexpr static T	baseTypeSmallest()	{return limits<T>::smallest();}
+    constexpr static T	baseTypeEpsilon()	{return limits<T>::epsilon();}
 
 
     //--------------------------------------------------------------
@@ -668,7 +711,7 @@ template <class T> class Vec4
 
   private:
 
-    T			lengthTiny () const;
+    constexpr T		lengthTiny () const;
 };
 
 
@@ -689,9 +732,9 @@ std::ostream &	operator << (std::ostream &s, const Vec4<T> &v);
 // Reverse multiplication: S * Vec2<T> and S * Vec3<T>
 //----------------------------------------------------
 
-template <class T> Vec2<T>	operator * (T a, const Vec2<T> &v);
-template <class T> Vec3<T>	operator * (T a, const Vec3<T> &v);
-template <class T> Vec4<T>	operator * (T a, const Vec4<T> &v);
+template <class T> constexpr Vec2<T>	operator * (T a, const Vec2<T> &v);
+template <class T> constexpr Vec3<T>	operator * (T a, const Vec3<T> &v);
+template <class T> constexpr Vec4<T>	operator * (T a, const Vec4<T> &v);
 
 
 //-------------------------
@@ -864,14 +907,14 @@ Vec4<int>::normalizedNonNull () const;
 //------------------------
 
 template <class T>
-inline T &
+constexpr inline T &
 Vec2<T>::operator [] (int i)
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-inline const T &
+constexpr inline const T &
 Vec2<T>::operator [] (int i) const
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
@@ -885,14 +928,14 @@ Vec2<T>::Vec2 ()
 }
 
 template <class T>
-inline
+constexpr inline
 Vec2<T>::Vec2 (T a)
 {
     x = y = a;
 }
 
 template <class T>
-inline
+constexpr inline
 Vec2<T>::Vec2 (T a, T b)
 {
     x = a;
@@ -900,7 +943,7 @@ Vec2<T>::Vec2 (T a, T b)
 }
 
 template <class T>
-inline
+constexpr inline
 Vec2<T>::Vec2 (const Vec2 &v)
 {
     x = v.x;
@@ -909,7 +952,7 @@ Vec2<T>::Vec2 (const Vec2 &v)
 
 template <class T>
 template <class S>
-inline
+constexpr inline
 Vec2<T>::Vec2 (const Vec2<S> &v)
 {
     x = T (v.x);
@@ -917,7 +960,7 @@ Vec2<T>::Vec2 (const Vec2<S> &v)
 }
 
 template <class T>
-inline const Vec2<T> &
+constexpr inline const Vec2<T> &
 Vec2<T>::operator = (const Vec2 &v)
 {
     x = v.x;
@@ -977,7 +1020,7 @@ Vec2<T>::getValue() const
 
 template <class T>
 template <class S>
-inline bool
+constexpr inline bool
 Vec2<T>::operator == (const Vec2<S> &v) const
 {
     return x == v.x && y == v.y;
@@ -985,14 +1028,14 @@ Vec2<T>::operator == (const Vec2<S> &v) const
 
 template <class T>
 template <class S>
-inline bool
+constexpr inline bool
 Vec2<T>::operator != (const Vec2<S> &v) const
 {
     return x != v.x || y != v.y;
 }
 
 template <class T>
-bool
+constexpr bool
 Vec2<T>::equalWithAbsError (const Vec2<T> &v, T e) const
 {
     for (int i = 0; i < 2; i++)
@@ -1003,7 +1046,7 @@ Vec2<T>::equalWithAbsError (const Vec2<T> &v, T e) const
 }
 
 template <class T>
-bool
+constexpr bool
 Vec2<T>::equalWithRelError (const Vec2<T> &v, T e) const
 {
     for (int i = 0; i < 2; i++)
@@ -1014,21 +1057,21 @@ Vec2<T>::equalWithRelError (const Vec2<T> &v, T e) const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec2<T>::dot (const Vec2 &v) const
 {
     return x * v.x + y * v.y;
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec2<T>::operator ^ (const Vec2 &v) const
 {
     return dot (v);
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec2<T>::cross (const Vec2 &v) const
 {
     return x * v.y - y * v.x;
@@ -1036,14 +1079,14 @@ Vec2<T>::cross (const Vec2 &v) const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec2<T>::operator % (const Vec2 &v) const
 {
     return x * v.y - y * v.x;
 }
 
 template <class T>
-inline const Vec2<T> &
+constexpr inline const Vec2<T> &
 Vec2<T>::operator += (const Vec2 &v)
 {
     x += v.x;
@@ -1052,14 +1095,14 @@ Vec2<T>::operator += (const Vec2 &v)
 }
 
 template <class T>
-inline Vec2<T>
+constexpr inline Vec2<T>
 Vec2<T>::operator + (const Vec2 &v) const
 {
     return Vec2 (x + v.x, y + v.y);
 }
 
 template <class T>
-inline const Vec2<T> &
+constexpr inline const Vec2<T> &
 Vec2<T>::operator -= (const Vec2 &v)
 {
     x -= v.x;
@@ -1068,21 +1111,21 @@ Vec2<T>::operator -= (const Vec2 &v)
 }
 
 template <class T>
-inline Vec2<T>
+constexpr inline Vec2<T>
 Vec2<T>::operator - (const Vec2 &v) const
 {
     return Vec2 (x - v.x, y - v.y);
 }
 
 template <class T>
-inline Vec2<T>
+constexpr inline Vec2<T>
 Vec2<T>::operator - () const
 {
     return Vec2 (-x, -y);
 }
 
 template <class T>
-inline const Vec2<T> &
+constexpr inline const Vec2<T> &
 Vec2<T>::negate ()
 {
     x = -x;
@@ -1091,7 +1134,7 @@ Vec2<T>::negate ()
 }
 
 template <class T>
-inline const Vec2<T> &
+constexpr inline const Vec2<T> &
 Vec2<T>::operator *= (const Vec2 &v)
 {
     x *= v.x;
@@ -1100,7 +1143,7 @@ Vec2<T>::operator *= (const Vec2 &v)
 }
 
 template <class T>
-inline const Vec2<T> &
+constexpr inline const Vec2<T> &
 Vec2<T>::operator *= (T a)
 {
     x *= a;
@@ -1109,21 +1152,21 @@ Vec2<T>::operator *= (T a)
 }
 
 template <class T>
-inline Vec2<T>
+constexpr inline Vec2<T>
 Vec2<T>::operator * (const Vec2 &v) const
 {
     return Vec2 (x * v.x, y * v.y);
 }
 
 template <class T>
-inline Vec2<T>
+constexpr inline Vec2<T>
 Vec2<T>::operator * (T a) const
 {
     return Vec2 (x * a, y * a);
 }
 
 template <class T>
-inline const Vec2<T> &
+constexpr inline const Vec2<T> &
 Vec2<T>::operator /= (const Vec2 &v)
 {
     x /= v.x;
@@ -1132,7 +1175,7 @@ Vec2<T>::operator /= (const Vec2 &v)
 }
 
 template <class T>
-inline const Vec2<T> &
+constexpr inline const Vec2<T> &
 Vec2<T>::operator /= (T a)
 {
     x /= a;
@@ -1141,21 +1184,21 @@ Vec2<T>::operator /= (T a)
 }
 
 template <class T>
-inline Vec2<T>
+constexpr inline Vec2<T>
 Vec2<T>::operator / (const Vec2 &v) const
 {
     return Vec2 (x / v.x, y / v.y);
 }
 
 template <class T>
-inline Vec2<T>
+constexpr inline Vec2<T>
 Vec2<T>::operator / (T a) const
 {
     return Vec2 (x / a, y / a);
 }
 
 template <class T>
-T
+constexpr T
 Vec2<T>::lengthTiny () const
 {
     T absX = (x >= T (0))? x: -x;
@@ -1182,7 +1225,7 @@ Vec2<T>::lengthTiny () const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec2<T>::length () const
 {
     T length2 = dot (*this);
@@ -1194,14 +1237,14 @@ Vec2<T>::length () const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec2<T>::length2 () const
 {
     return dot (*this);
 }
 
 template <class T>
-const Vec2<T> &
+constexpr const Vec2<T> &
 Vec2<T>::normalize ()
 {
     T l = length();
@@ -1222,7 +1265,7 @@ Vec2<T>::normalize ()
 }
 
 template <class T>
-const Vec2<T> &
+constexpr const Vec2<T> &
 Vec2<T>::normalizeExc ()
 {
     T l = length();
@@ -1236,7 +1279,7 @@ Vec2<T>::normalizeExc ()
 }
 
 template <class T>
-inline
+constexpr inline
 const Vec2<T> &
 Vec2<T>::normalizeNonNull ()
 {
@@ -1247,7 +1290,7 @@ Vec2<T>::normalizeNonNull ()
 }
 
 template <class T>
-Vec2<T>
+constexpr Vec2<T>
 Vec2<T>::normalized () const
 {
     T l = length();
@@ -1259,7 +1302,7 @@ Vec2<T>::normalized () const
 }
 
 template <class T>
-Vec2<T>
+constexpr Vec2<T>
 Vec2<T>::normalizedExc () const
 {
     T l = length();
@@ -1271,7 +1314,7 @@ Vec2<T>::normalizedExc () const
 }
 
 template <class T>
-inline
+constexpr inline
 Vec2<T>
 Vec2<T>::normalizedNonNull () const
 {
@@ -1285,35 +1328,35 @@ Vec2<T>::normalizedNonNull () const
 //-----------------------
 
 template <class T>
-inline T &
+constexpr inline T &
 Vec3<T>::operator [] (int i)
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-inline const T &
+constexpr inline const T &
 Vec3<T>::operator [] (int i) const
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-inline
+constexpr inline
 Vec3<T>::Vec3 ()
 {
     // empty
 }
 
 template <class T>
-inline
+constexpr inline
 Vec3<T>::Vec3 (T a)
 {
     x = y = z = a;
 }
 
 template <class T>
-inline
+constexpr inline
 Vec3<T>::Vec3 (T a, T b, T c)
 {
     x = a;
@@ -1322,7 +1365,7 @@ Vec3<T>::Vec3 (T a, T b, T c)
 }
 
 template <class T>
-inline
+constexpr inline
 Vec3<T>::Vec3 (const Vec3 &v)
 {
     x = v.x;
@@ -1332,7 +1375,7 @@ Vec3<T>::Vec3 (const Vec3 &v)
 
 template <class T>
 template <class S>
-inline
+constexpr inline
 Vec3<T>::Vec3 (const Vec3<S> &v)
 {
     x = T (v.x);
@@ -1341,7 +1384,7 @@ Vec3<T>::Vec3 (const Vec3<S> &v)
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::operator = (const Vec3 &v)
 {
     x = v.x;
@@ -1352,7 +1395,7 @@ Vec3<T>::operator = (const Vec3 &v)
 
 template <class T>
 template <class S>
-inline
+constexpr inline
 Vec3<T>::Vec3 (const Vec4<S> &v)
 {
     x = T (v.x / v.w);
@@ -1362,7 +1405,7 @@ Vec3<T>::Vec3 (const Vec4<S> &v)
 
 template <class T>
 template <class S>
-Vec3<T>::Vec3 (const Vec4<S> &v, InfException)
+constexpr Vec3<T>::Vec3 (const Vec4<S> &v, InfException)
 {
     T vx = T (v.x);
     T vy = T (v.y);
@@ -1440,7 +1483,7 @@ Vec3<T>::getValue() const
 
 template <class T>
 template <class S>
-inline bool
+constexpr inline bool
 Vec3<T>::operator == (const Vec3<S> &v) const
 {
     return x == v.x && y == v.y && z == v.z;
@@ -1448,14 +1491,14 @@ Vec3<T>::operator == (const Vec3<S> &v) const
 
 template <class T>
 template <class S>
-inline bool
+constexpr inline bool
 Vec3<T>::operator != (const Vec3<S> &v) const
 {
     return x != v.x || y != v.y || z != v.z;
 }
 
 template <class T>
-bool
+constexpr bool
 Vec3<T>::equalWithAbsError (const Vec3<T> &v, T e) const
 {
     for (int i = 0; i < 3; i++)
@@ -1466,7 +1509,7 @@ Vec3<T>::equalWithAbsError (const Vec3<T> &v, T e) const
 }
 
 template <class T>
-bool
+constexpr bool
 Vec3<T>::equalWithRelError (const Vec3<T> &v, T e) const
 {
     for (int i = 0; i < 3; i++)
@@ -1477,21 +1520,21 @@ Vec3<T>::equalWithRelError (const Vec3<T> &v, T e) const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec3<T>::dot (const Vec3 &v) const
 {
     return x * v.x + y * v.y + z * v.z;
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec3<T>::operator ^ (const Vec3 &v) const
 {
     return dot (v);
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::cross (const Vec3 &v) const
 {
     return Vec3 (y * v.z - z * v.y,
@@ -1500,7 +1543,7 @@ Vec3<T>::cross (const Vec3 &v) const
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::operator %= (const Vec3 &v)
 {
     T a = y * v.z - z * v.y;
@@ -1513,7 +1556,7 @@ Vec3<T>::operator %= (const Vec3 &v)
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::operator % (const Vec3 &v) const
 {
     return Vec3 (y * v.z - z * v.y,
@@ -1522,7 +1565,7 @@ Vec3<T>::operator % (const Vec3 &v) const
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::operator += (const Vec3 &v)
 {
     x += v.x;
@@ -1532,14 +1575,14 @@ Vec3<T>::operator += (const Vec3 &v)
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::operator + (const Vec3 &v) const
 {
     return Vec3 (x + v.x, y + v.y, z + v.z);
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::operator -= (const Vec3 &v)
 {
     x -= v.x;
@@ -1549,21 +1592,21 @@ Vec3<T>::operator -= (const Vec3 &v)
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::operator - (const Vec3 &v) const
 {
     return Vec3 (x - v.x, y - v.y, z - v.z);
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::operator - () const
 {
     return Vec3 (-x, -y, -z);
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::negate ()
 {
     x = -x;
@@ -1573,7 +1616,7 @@ Vec3<T>::negate ()
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::operator *= (const Vec3 &v)
 {
     x *= v.x;
@@ -1583,7 +1626,7 @@ Vec3<T>::operator *= (const Vec3 &v)
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::operator *= (T a)
 {
     x *= a;
@@ -1593,21 +1636,21 @@ Vec3<T>::operator *= (T a)
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::operator * (const Vec3 &v) const
 {
     return Vec3 (x * v.x, y * v.y, z * v.z);
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::operator * (T a) const
 {
     return Vec3 (x * a, y * a, z * a);
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::operator /= (const Vec3 &v)
 {
     x /= v.x;
@@ -1617,7 +1660,7 @@ Vec3<T>::operator /= (const Vec3 &v)
 }
 
 template <class T>
-inline const Vec3<T> &
+constexpr inline const Vec3<T> &
 Vec3<T>::operator /= (T a)
 {
     x /= a;
@@ -1627,21 +1670,21 @@ Vec3<T>::operator /= (T a)
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::operator / (const Vec3 &v) const
 {
     return Vec3 (x / v.x, y / v.y, z / v.z);
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 Vec3<T>::operator / (T a) const
 {
     return Vec3 (x / a, y / a, z / a);
 }
 
 template <class T>
-T
+constexpr T
 Vec3<T>::lengthTiny () const
 {
     T absX = (x >= T (0))? x: -x;
@@ -1673,7 +1716,7 @@ Vec3<T>::lengthTiny () const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec3<T>::length () const
 {
     T length2 = dot (*this);
@@ -1685,14 +1728,14 @@ Vec3<T>::length () const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec3<T>::length2 () const
 {
     return dot (*this);
 }
 
 template <class T>
-const Vec3<T> &
+constexpr const Vec3<T> &
 Vec3<T>::normalize ()
 {
     T l = length();
@@ -1714,7 +1757,7 @@ Vec3<T>::normalize ()
 }
 
 template <class T>
-const Vec3<T> &
+constexpr const Vec3<T> &
 Vec3<T>::normalizeExc ()
 {
     T l = length();
@@ -1730,7 +1773,7 @@ Vec3<T>::normalizeExc ()
 
 template <class T>
 inline
-const Vec3<T> &
+constexpr const Vec3<T> &
 Vec3<T>::normalizeNonNull ()
 {
     T l = length();
@@ -1741,7 +1784,7 @@ Vec3<T>::normalizeNonNull ()
 }
 
 template <class T>
-Vec3<T>
+constexpr Vec3<T>
 Vec3<T>::normalized () const
 {
     T l = length();
@@ -1753,7 +1796,7 @@ Vec3<T>::normalized () const
 }
 
 template <class T>
-Vec3<T>
+constexpr Vec3<T>
 Vec3<T>::normalizedExc () const
 {
     T l = length();
@@ -1766,7 +1809,7 @@ Vec3<T>::normalizedExc () const
 
 template <class T>
 inline
-Vec3<T>
+constexpr Vec3<T>
 Vec3<T>::normalizedNonNull () const
 {
     T l = length();
@@ -1779,35 +1822,35 @@ Vec3<T>::normalizedNonNull () const
 //-----------------------
 
 template <class T>
-inline T &
+constexpr inline T &
 Vec4<T>::operator [] (int i)
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-inline const T &
+constexpr inline const T &
 Vec4<T>::operator [] (int i) const
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-inline
+constexpr inline
 Vec4<T>::Vec4 ()
 {
     // empty
 }
 
 template <class T>
-inline
+constexpr inline
 Vec4<T>::Vec4 (T a)
 {
     x = y = z = w = a;
 }
 
 template <class T>
-inline
+constexpr inline
 Vec4<T>::Vec4 (T a, T b, T c, T d)
 {
     x = a;
@@ -1817,7 +1860,7 @@ Vec4<T>::Vec4 (T a, T b, T c, T d)
 }
 
 template <class T>
-inline
+constexpr inline
 Vec4<T>::Vec4 (const Vec4 &v)
 {
     x = v.x;
@@ -1828,7 +1871,7 @@ Vec4<T>::Vec4 (const Vec4 &v)
 
 template <class T>
 template <class S>
-inline
+constexpr inline
 Vec4<T>::Vec4 (const Vec4<S> &v)
 {
     x = T (v.x);
@@ -1838,7 +1881,7 @@ Vec4<T>::Vec4 (const Vec4<S> &v)
 }
 
 template <class T>
-inline const Vec4<T> &
+constexpr inline const Vec4<T> &
 Vec4<T>::operator = (const Vec4 &v)
 {
     x = v.x;
@@ -1850,7 +1893,7 @@ Vec4<T>::operator = (const Vec4 &v)
 
 template <class T>
 template <class S>
-inline
+constexpr inline
 Vec4<T>::Vec4 (const Vec3<S> &v)
 {
     x = T (v.x);
@@ -1861,7 +1904,7 @@ Vec4<T>::Vec4 (const Vec3<S> &v)
 
 template <class T>
 template <class S>
-inline bool
+constexpr inline bool
 Vec4<T>::operator == (const Vec4<S> &v) const
 {
     return x == v.x && y == v.y && z == v.z && w == v.w;
@@ -1869,14 +1912,14 @@ Vec4<T>::operator == (const Vec4<S> &v) const
 
 template <class T>
 template <class S>
-inline bool
+constexpr inline bool
 Vec4<T>::operator != (const Vec4<S> &v) const
 {
     return x != v.x || y != v.y || z != v.z || w != v.w;
 }
 
 template <class T>
-bool
+constexpr bool
 Vec4<T>::equalWithAbsError (const Vec4<T> &v, T e) const
 {
     for (int i = 0; i < 4; i++)
@@ -1887,7 +1930,7 @@ Vec4<T>::equalWithAbsError (const Vec4<T> &v, T e) const
 }
 
 template <class T>
-bool
+constexpr bool
 Vec4<T>::equalWithRelError (const Vec4<T> &v, T e) const
 {
     for (int i = 0; i < 4; i++)
@@ -1898,14 +1941,14 @@ Vec4<T>::equalWithRelError (const Vec4<T> &v, T e) const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec4<T>::dot (const Vec4 &v) const
 {
     return x * v.x + y * v.y + z * v.z + w * v.w;
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec4<T>::operator ^ (const Vec4 &v) const
 {
     return dot (v);
@@ -1913,7 +1956,7 @@ Vec4<T>::operator ^ (const Vec4 &v) const
 
 
 template <class T>
-inline const Vec4<T> &
+constexpr inline const Vec4<T> &
 Vec4<T>::operator += (const Vec4 &v)
 {
     x += v.x;
@@ -1924,14 +1967,14 @@ Vec4<T>::operator += (const Vec4 &v)
 }
 
 template <class T>
-inline Vec4<T>
+constexpr inline Vec4<T>
 Vec4<T>::operator + (const Vec4 &v) const
 {
     return Vec4 (x + v.x, y + v.y, z + v.z, w + v.w);
 }
 
 template <class T>
-inline const Vec4<T> &
+constexpr inline const Vec4<T> &
 Vec4<T>::operator -= (const Vec4 &v)
 {
     x -= v.x;
@@ -1942,21 +1985,21 @@ Vec4<T>::operator -= (const Vec4 &v)
 }
 
 template <class T>
-inline Vec4<T>
+constexpr inline Vec4<T>
 Vec4<T>::operator - (const Vec4 &v) const
 {
     return Vec4 (x - v.x, y - v.y, z - v.z, w - v.w);
 }
 
 template <class T>
-inline Vec4<T>
+constexpr inline Vec4<T>
 Vec4<T>::operator - () const
 {
     return Vec4 (-x, -y, -z, -w);
 }
 
 template <class T>
-inline const Vec4<T> &
+constexpr inline const Vec4<T> &
 Vec4<T>::negate ()
 {
     x = -x;
@@ -1967,7 +2010,7 @@ Vec4<T>::negate ()
 }
 
 template <class T>
-inline const Vec4<T> &
+constexpr inline const Vec4<T> &
 Vec4<T>::operator *= (const Vec4 &v)
 {
     x *= v.x;
@@ -1978,7 +2021,7 @@ Vec4<T>::operator *= (const Vec4 &v)
 }
 
 template <class T>
-inline const Vec4<T> &
+constexpr inline const Vec4<T> &
 Vec4<T>::operator *= (T a)
 {
     x *= a;
@@ -1989,21 +2032,21 @@ Vec4<T>::operator *= (T a)
 }
 
 template <class T>
-inline Vec4<T>
+constexpr inline Vec4<T>
 Vec4<T>::operator * (const Vec4 &v) const
 {
     return Vec4 (x * v.x, y * v.y, z * v.z, w * v.w);
 }
 
 template <class T>
-inline Vec4<T>
+constexpr inline Vec4<T>
 Vec4<T>::operator * (T a) const
 {
     return Vec4 (x * a, y * a, z * a, w * a);
 }
 
 template <class T>
-inline const Vec4<T> &
+constexpr inline const Vec4<T> &
 Vec4<T>::operator /= (const Vec4 &v)
 {
     x /= v.x;
@@ -2014,7 +2057,7 @@ Vec4<T>::operator /= (const Vec4 &v)
 }
 
 template <class T>
-inline const Vec4<T> &
+constexpr inline const Vec4<T> &
 Vec4<T>::operator /= (T a)
 {
     x /= a;
@@ -2025,21 +2068,21 @@ Vec4<T>::operator /= (T a)
 }
 
 template <class T>
-inline Vec4<T>
+constexpr inline Vec4<T>
 Vec4<T>::operator / (const Vec4 &v) const
 {
     return Vec4 (x / v.x, y / v.y, z / v.z, w / v.w);
 }
 
 template <class T>
-inline Vec4<T>
+constexpr inline Vec4<T>
 Vec4<T>::operator / (T a) const
 {
     return Vec4 (x / a, y / a, z / a, w / a);
 }
 
 template <class T>
-T
+constexpr T
 Vec4<T>::lengthTiny () const
 {
     T absX = (x >= T (0))? x: -x;
@@ -2077,7 +2120,7 @@ Vec4<T>::lengthTiny () const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec4<T>::length () const
 {
     T length2 = dot (*this);
@@ -2089,14 +2132,14 @@ Vec4<T>::length () const
 }
 
 template <class T>
-inline T
+constexpr inline T
 Vec4<T>::length2 () const
 {
     return dot (*this);
 }
 
 template <class T>
-const Vec4<T> &
+constexpr const Vec4<T> &
 Vec4<T>::normalize ()
 {
     T l = length();
@@ -2119,7 +2162,7 @@ Vec4<T>::normalize ()
 }
 
 template <class T>
-const Vec4<T> &
+constexpr const Vec4<T> &
 Vec4<T>::normalizeExc ()
 {
     T l = length();
@@ -2135,7 +2178,7 @@ Vec4<T>::normalizeExc ()
 }
 
 template <class T>
-inline
+constexpr inline
 const Vec4<T> &
 Vec4<T>::normalizeNonNull ()
 {
@@ -2148,7 +2191,7 @@ Vec4<T>::normalizeNonNull ()
 }
 
 template <class T>
-Vec4<T>
+constexpr Vec4<T>
 Vec4<T>::normalized () const
 {
     T l = length();
@@ -2160,7 +2203,7 @@ Vec4<T>::normalized () const
 }
 
 template <class T>
-Vec4<T>
+constexpr Vec4<T>
 Vec4<T>::normalizedExc () const
 {
     T l = length();
@@ -2173,7 +2216,7 @@ Vec4<T>::normalizedExc () const
 
 template <class T>
 inline
-Vec4<T>
+constexpr Vec4<T>
 Vec4<T>::normalizedNonNull () const
 {
     T l = length();
@@ -2211,21 +2254,21 @@ operator << (std::ostream &s, const Vec4<T> &v)
 //-----------------------------------------
 
 template <class T>
-inline Vec2<T>
+constexpr inline Vec2<T>
 operator * (T a, const Vec2<T> &v)
 {
     return Vec2<T> (a * v.x, a * v.y);
 }
 
 template <class T>
-inline Vec3<T>
+constexpr inline Vec3<T>
 operator * (T a, const Vec3<T> &v)
 {
     return Vec3<T> (a * v.x, a * v.y, a * v.z);
 }
 
 template <class T>
-inline Vec4<T>
+constexpr inline Vec4<T>
 operator * (T a, const Vec4<T> &v)
 {
     return Vec4<T> (a * v.x, a * v.y, a * v.z, a * v.w);
