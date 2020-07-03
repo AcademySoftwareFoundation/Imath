@@ -1208,6 +1208,27 @@ invert44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true
   return ma;
 }
 
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix44<T> > 
+gjInverse44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  FixedArray<IMATH_NAMESPACE::Matrix44<T> > dst(len);
+  for (size_t i=0; i<len; ++i) dst[i] = ma[i].gjInverse(singExc);    
+  return dst;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix44<T> > &
+gjInvert44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  for (size_t i=0; i<len; ++i) ma[i].gjInvert(singExc);    
+  return ma;
+}
+
 BOOST_PYTHON_FUNCTION_OVERLOADS(invert44_array_overloads, invert44_array, 1, 2);
 BOOST_PYTHON_FUNCTION_OVERLOADS(inverse44_array_overloads, inverse44_array, 1, 2);
 
@@ -1220,6 +1241,8 @@ register_M44Array()
          .def("__setitem__", &setM44ArrayItem<T>)
          .def("inverse",&inverse44_array<T>,inverse44_array_overloads("inverse() return an inverted copy of this matrix"))
          .def("invert",&invert44_array<T>,invert44_array_overloads("invert()  invert these matricies")[return_internal_reference<>()])
+         .def("gjInverse",&gjInverse44_array<T>,inverse44_array_overloads("gjInverse() return an inverted copy of this matrix"))
+         .def("gjInvert",&gjInvert44_array<T>,invert44_array_overloads("giInvert()  invert these matricies")[return_internal_reference<>()])
       ;
     return matrixArray_class;
 }

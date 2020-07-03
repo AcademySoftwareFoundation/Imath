@@ -1098,6 +1098,27 @@ setM33ArrayItem(FixedArray<IMATH_NAMESPACE::Matrix33<T> > &ma,
 
 template <class T>
 static FixedArray<IMATH_NAMESPACE::Matrix33<T> > 
+gjInverse33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  FixedArray<IMATH_NAMESPACE::Matrix33<T> > dst(len);
+  for (size_t i=0; i<len; ++i) dst[i] = ma[i].gjInverse(singExc);    
+  return dst;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix33<T> > &
+gjInvert33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  for (size_t i=0; i<len; ++i) ma[i].gjInvert(singExc);    
+  return ma;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix33<T> > 
 inverse33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
 {
   MATH_EXC_ON;
@@ -1128,8 +1149,10 @@ register_M33Array()
     class_<FixedArray<IMATH_NAMESPACE::Matrix33<T> > > matrixArray_class = FixedArray<IMATH_NAMESPACE::Matrix33<T> >::register_("Fixed length array of IMATH_NAMESPACE::Matrix33");
     matrixArray_class
          .def("__setitem__", &setM33ArrayItem<T>)
-         .def("inverse",&inverse33_array<T>,inverse33_array_overloads("inverse() return an inverted copy of this matrix"))
+         .def("inverse",&inverse33_array<T>,inverse33_array_overloads("inverse() return an inverted copy of these matricies"))
          .def("invert",&invert33_array<T>,invert33_array_overloads("invert() invert these matricies")[return_internal_reference<>()])
+         .def("gjInverse",&gjInverse33_array<T>,inverse33_array_overloads("gjInverse() return an inverted copy of these matricies"))
+         .def("gjInvert",&gjInvert33_array<T>,invert33_array_overloads("gjInvert() invert these matricies")[return_internal_reference<>()])
         ;
     return matrixArray_class;
 }
