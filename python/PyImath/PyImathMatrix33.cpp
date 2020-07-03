@@ -150,8 +150,7 @@ invert33 (Matrix33<T> &m, bool singExc = true)
 }
 
 template <class T>
-static Matrix33<T>
-inverse33 (Matrix33<T> &m, bool singExc = true)
+static Matrix33<T>inverse33 (Matrix33<T> &m, bool singExc = true)
 {
     MATH_EXC_ON;
     return m.inverse(singExc);
@@ -1098,12 +1097,39 @@ setM33ArrayItem(FixedArray<IMATH_NAMESPACE::Matrix33<T> > &ma,
 }
 
 template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix33<T> > 
+inverse33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  FixedArray<IMATH_NAMESPACE::Matrix33<T> > dst(len);
+  for (size_t i=0; i<len; ++i) dst[i] = ma[i].inverse(singExc);    
+  return dst;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix33<T> > &
+invert33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  for (size_t i=0; i<len; ++i) ma[i].invert(singExc);    
+  return ma;
+}
+
+BOOST_PYTHON_FUNCTION_OVERLOADS(invert33_array_overloads, invert33_array, 1, 2);
+BOOST_PYTHON_FUNCTION_OVERLOADS(inverse33_array_overloads, inverse33_array, 1, 2);
+
+
+template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Matrix33<T> > >
 register_M33Array()
 {
     class_<FixedArray<IMATH_NAMESPACE::Matrix33<T> > > matrixArray_class = FixedArray<IMATH_NAMESPACE::Matrix33<T> >::register_("Fixed length array of IMATH_NAMESPACE::Matrix33");
     matrixArray_class
          .def("__setitem__", &setM33ArrayItem<T>)
+         .def("inverse",&inverse33_array<T>,inverse33_array_overloads("inverse() return an inverted copy of this matrix"))
+         .def("invert",&invert33_array<T>,invert33_array_overloads("invert() invert these matricies")[return_internal_reference<>()])
         ;
     return matrixArray_class;
 }
