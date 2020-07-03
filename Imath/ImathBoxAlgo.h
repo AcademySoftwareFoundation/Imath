@@ -85,7 +85,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 
 template <class T>
-inline T
+constexpr inline T
 clip (const T &p, const Box<T> &box)
 {
     //
@@ -110,7 +110,7 @@ clip (const T &p, const Box<T> &box)
 
 
 template <class T>
-inline T
+constexpr inline T
 closestPointInBox (const T &p, const Box<T> &box)
 {
     return clip (p, box);
@@ -118,7 +118,7 @@ closestPointInBox (const T &p, const Box<T> &box)
 
 
 template <class T>
-Vec3<T>
+constexpr Vec3<T>
 closestPointOnBox (const Vec3<T> &p, const Box< Vec3<T> > &box)
 {
     //
@@ -161,7 +161,7 @@ closestPointOnBox (const Vec3<T> &p, const Box< Vec3<T> > &box)
 
 
 template <class S, class T>
-Box< Vec3<S> >
+constexpr Box< Vec3<S> >
 transform (const Box< Vec3<S> > &box, const Matrix44<T> &m)
 {
     //
@@ -324,7 +324,7 @@ transform (const Box< Vec3<S> > &box,
 
 
 template <class S, class T>
-Box< Vec3<S> >
+constexpr Box< Vec3<S> >
 affineTransform (const Box< Vec3<S> > &box, const Matrix44<T> &m)
 {
     //
@@ -434,7 +434,7 @@ affineTransform (const Box< Vec3<S> > &box,
 
 
 template <class T>
-bool
+constexpr bool
 findEntryAndExitPoints (const Line3<T> &r,
 			const Box<Vec3<T> > &b,
 			Vec3<T> &entry,
@@ -724,7 +724,7 @@ findEntryAndExitPoints (const Line3<T> &r,
 
 
 template<class T>
-bool
+constexpr bool
 intersects (const Box< Vec3<T> > &b, const Line3<T> &r, Vec3<T> &ip)
 {
     //
@@ -1003,7 +1003,7 @@ intersects (const Box< Vec3<T> > &b, const Line3<T> &r, Vec3<T> &ip)
 
 
 template<class T>
-bool
+constexpr bool
 intersects (const Box< Vec3<T> > &box, const Line3<T> &ray)
 {
     Vec3<T> ignored;

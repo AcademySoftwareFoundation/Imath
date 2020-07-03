@@ -63,8 +63,8 @@ class Line3
     //	Constructors - default is normalized units along direction
     //-------------------------------------------------------------
 
-    Line3() {}
-    Line3(const Vec3<T>& point1, const Vec3<T>& point2);
+    constexpr Line3() {}
+    constexpr Line3(const Vec3<T>& point1, const Vec3<T>& point2);
 
     //------------------
     //	State Query/Set
@@ -77,16 +77,16 @@ class Line3
     //	F(t)
     //-------
 
-    Vec3<T>			operator() (T parameter) const;
+    constexpr Vec3<T>		operator() (T parameter) const;
 
     //---------
     //	Query
     //---------
 
-    T				distanceTo(const Vec3<T>& point) const;
-    T				distanceTo(const Line3<T>& line) const;
-    Vec3<T>			closestPointTo(const Vec3<T>& point) const;
-    Vec3<T>			closestPointTo(const Line3<T>& line) const;
+    constexpr T			distanceTo(const Vec3<T>& point) const;
+    constexpr T			distanceTo(const Line3<T>& line) const;
+    constexpr Vec3<T>  		closestPointTo(const Vec3<T>& point) const;
+    constexpr Vec3<T>		closestPointTo(const Line3<T>& line) const;
 };
 
 
@@ -103,7 +103,8 @@ typedef Line3<double> Line3d;
 //---------------
 
 template <class T>
-inline Line3<T>::Line3(const Vec3<T> &p0, const Vec3<T> &p1)
+constexpr inline
+Line3<T>::Line3(const Vec3<T> &p0, const Vec3<T> &p1)
 {
     set(p0,p1);
 }
@@ -116,32 +117,36 @@ inline void Line3<T>::set(const Vec3<T> &p0, const Vec3<T> &p1)
 }
 
 template <class T>
-inline Vec3<T> Line3<T>::operator()(T parameter) const
+constexpr inline Vec3<T>
+Line3<T>::operator()(T parameter) const
 {
     return pos + dir * parameter;
 }
 
 template <class T>
-inline T Line3<T>::distanceTo(const Vec3<T>& point) const
+constexpr inline T
+Line3<T>::distanceTo(const Vec3<T>& point) const
 {
     return (closestPointTo(point)-point).length();
 }
 
 template <class T>
-inline Vec3<T> Line3<T>::closestPointTo(const Vec3<T>& point) const
+constexpr inline Vec3<T>
+Line3<T>::closestPointTo(const Vec3<T>& point) const
 {
     return ((point - pos) ^ dir) * dir + pos;
 }
 
 template <class T>
-inline T Line3<T>::distanceTo(const Line3<T>& line) const
+constexpr inline T
+Line3<T>::distanceTo(const Line3<T>& line) const
 {
     T d = (dir % line.dir) ^ (line.pos - pos);
     return (d >= 0)? d: -d;
 }
 
 template <class T>
-inline Vec3<T> 
+constexpr inline Vec3<T> 
 Line3<T>::closestPointTo(const Line3<T>& line) const
 {
     // Assumes the lines are normalized
@@ -174,7 +179,8 @@ std::ostream& operator<< (std::ostream &o, const Line3<T> &line)
 }
 
 template<class S, class T>
-inline Line3<S> operator * (const Line3<S> &line, const Matrix44<T> &M)
+constexpr inline Line3<S>
+operator * (const Line3<S> &line, const Matrix44<T> &M)
 {
     return Line3<S>( line.pos * M, (line.pos + line.dir) * M );
 }

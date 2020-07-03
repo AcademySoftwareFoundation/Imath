@@ -67,12 +67,12 @@ class Plane3
     Vec3<T>			normal;
     T				distance;
 
-    Plane3() {}
-    Plane3(const Vec3<T> &normal, T distance);
-    Plane3(const Vec3<T> &point, const Vec3<T> &normal);
-    Plane3(const Vec3<T> &point1,
-	   const Vec3<T> &point2,
-	   const Vec3<T> &point3);
+    constexpr Plane3() {}
+    constexpr Plane3(const Vec3<T> &normal, T distance);
+    constexpr Plane3(const Vec3<T> &point, const Vec3<T> &normal);
+    constexpr Plane3(const Vec3<T> &point1,
+	             const Vec3<T> &point2,
+	             const Vec3<T> &point3);
 
     //----------------------
     //	Various set methods
@@ -92,16 +92,16 @@ class Plane3
     //	Utilities
     //----------------------
 
-    bool                        intersect(const Line3<T> &line,
-                                          Vec3<T> &intersection) const;
+    constexpr bool              intersect(const Line3<T> &line,
+                                           Vec3<T> &intersection) const;
 
-    bool                        intersectT(const Line3<T> &line,
+    constexpr bool              intersectT(const Line3<T> &line,
 					   T &parameter) const;
 
-    T				distanceTo(const Vec3<T> &) const;
+    constexpr T		     	distanceTo(const Vec3<T> &) const;
 
-    Vec3<T>                     reflectPoint(const Vec3<T> &) const;
-    Vec3<T>                     reflectVector(const Vec3<T> &) const;
+    constexpr Vec3<T>           reflectPoint(const Vec3<T> &) const;
+    constexpr Vec3<T>           reflectVector(const Vec3<T> &) const;
 };
 
 
@@ -118,7 +118,8 @@ typedef Plane3<double> Plane3d;
 //---------------
 
 template <class T>
-inline Plane3<T>::Plane3(const Vec3<T> &p0,
+constexpr inline
+Plane3<T>::Plane3(const Vec3<T> &p0,
 			 const Vec3<T> &p1,
 			 const Vec3<T> &p2)
 {
@@ -126,13 +127,15 @@ inline Plane3<T>::Plane3(const Vec3<T> &p0,
 }
 
 template <class T>
-inline Plane3<T>::Plane3(const Vec3<T> &n, T d)
+constexpr inline
+Plane3<T>::Plane3(const Vec3<T> &n, T d)
 {
     set(n, d);
 }
 
 template <class T>
-inline Plane3<T>::Plane3(const Vec3<T> &p, const Vec3<T> &n)
+constexpr inline
+Plane3<T>::Plane3(const Vec3<T> &p, const Vec3<T> &n)
 {
     set(p, n);
 }
@@ -164,27 +167,31 @@ inline void Plane3<T>::set(const Vec3<T>& n, T d)
 }
 
 template <class T>
-inline T Plane3<T>::distanceTo(const Vec3<T> &point) const
+constexpr inline T
+Plane3<T>::distanceTo(const Vec3<T> &point) const
 {
     return (point ^ normal) - distance;
 }
 
 template <class T>
-inline Vec3<T> Plane3<T>::reflectPoint(const Vec3<T> &point) const
+constexpr inline Vec3<T>
+Plane3<T>::reflectPoint(const Vec3<T> &point) const
 {
     return normal * distanceTo(point) * -2.0 + point;
 }
 
 
 template <class T>
-inline Vec3<T> Plane3<T>::reflectVector(const Vec3<T> &v) const
+constexpr inline Vec3<T>
+Plane3<T>::reflectVector(const Vec3<T> &v) const
 {
     return normal * (normal ^ v)  * 2.0 - v;
 }
 
 
 template <class T>
-inline bool Plane3<T>::intersect(const Line3<T>& line, Vec3<T>& point) const
+constexpr inline bool
+Plane3<T>::intersect(const Line3<T>& line, Vec3<T>& point) const
 {
     T d = normal ^ line.dir;
     if ( d == 0.0 ) return false;
@@ -194,7 +201,8 @@ inline bool Plane3<T>::intersect(const Line3<T>& line, Vec3<T>& point) const
 }
 
 template <class T>
-inline bool Plane3<T>::intersectT(const Line3<T>& line, T &t) const
+constexpr inline bool
+Plane3<T>::intersectT(const Line3<T>& line, T &t) const
 {
     T d = normal ^ line.dir;
     if ( d == 0.0 ) return false;
@@ -210,7 +218,8 @@ std::ostream &operator<< (std::ostream &o, const Plane3<T> &plane)
 }
 
 template<class T>
-Plane3<T> operator* (const Plane3<T> &plane, const Matrix44<T> &M)
+constexpr Plane3<T>
+operator* (const Plane3<T> &plane, const Matrix44<T> &M)
 {
     //                        T
     //	                    -1
@@ -246,7 +255,8 @@ Plane3<T> operator* (const Plane3<T> &plane, const Matrix44<T> &M)
 }
 
 template<class T>
-Plane3<T> operator- (const Plane3<T> &plane)
+constexpr Plane3<T>
+operator- (const Plane3<T> &plane)
 {
     return Plane3<T>(-plane.normal,-plane.distance);
 }

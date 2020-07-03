@@ -58,7 +58,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 // Find the projection of vector t onto vector s (Vec2, Vec3, Vec4)
 //-----------------------------------------------------------------
 
-template <class Vec> Vec        project (const Vec &s, const Vec &t);
+template <class Vec> constexpr Vec        project (const Vec &s, const Vec &t);
 
 
 //------------------------------------------------
@@ -66,7 +66,7 @@ template <class Vec> Vec        project (const Vec &s, const Vec &t);
 // in the same plane as s and t (Vec2, Vec3, Vec4)
 //------------------------------------------------
 
-template <class Vec> Vec        orthogonal (const Vec &s, const Vec &t);
+template <class Vec> constexpr Vec        orthogonal (const Vec &s, const Vec &t);
 
 
 //-----------------------------------------------
@@ -74,7 +74,7 @@ template <class Vec> Vec        orthogonal (const Vec &s, const Vec &t);
 // off a plane with normal t (Vec2, Vec3, Vec4)
 //-----------------------------------------------
 
-template <class Vec> Vec        reflect (const Vec &s, const Vec &t);
+template <class Vec> constexpr Vec        reflect (const Vec &s, const Vec &t);
 
 
 //--------------------------------------------------------------------
@@ -82,17 +82,17 @@ template <class Vec> Vec        reflect (const Vec &s, const Vec &t);
 // (Vec2, Vec3, Vec4)
 //--------------------------------------------------------------------
 
-template <class Vec> Vec        closestVertex (const Vec &v0,
-                                               const Vec &v1,
-                                               const Vec &v2, 
-                                               const Vec &p);
+template <class Vec> constexpr Vec        closestVertex (const Vec &v0,
+                                                         const Vec &v1,
+                                                         const Vec &v2, 
+                                                         const Vec &p);
 
 //---------------
 // Implementation
 //---------------
 
 template <class Vec>
-Vec
+constexpr Vec
 project (const Vec &s, const Vec &t)
 {
     Vec sNormalized = s.normalized();
@@ -100,21 +100,21 @@ project (const Vec &s, const Vec &t)
 }
 
 template <class Vec>
-Vec
+constexpr Vec
 orthogonal (const Vec &s, const Vec &t)
 {
     return t - project (s, t);
 }
 
 template <class Vec>
-Vec
+constexpr Vec
 reflect (const Vec &s, const Vec &t)
 {
     return s - typename Vec::BaseType(2) * (s - project(t, s));
 }
 
 template <class Vec>
-Vec
+constexpr Vec
 closestVertex(const Vec &v0,
               const Vec &v1,
               const Vec &v2, 

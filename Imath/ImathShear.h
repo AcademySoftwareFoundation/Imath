@@ -62,7 +62,8 @@ template <class T> class Shear6
 
     T			xy, xz, yz, yx, zx, zy;
 
-    T &			operator [] (int i);
+    constexpr T &	operator [] (int i);
+    constexpr
     const T &		operator [] (int i) const;
 
 
@@ -70,11 +71,14 @@ template <class T> class Shear6
     // Constructors
     //-------------
 
-    Shear6 ();			   // (0 0 0 0 0 0)
+    constexpr Shear6 ();	   // (0 0 0 0 0 0)
+    constexpr
     Shear6 (T XY, T XZ, T YZ);	   // (XY XZ YZ 0 0 0)
+    constexpr
     Shear6 (const Vec3<T> &v);     // (v.x v.y v.z 0 0 0)
     template <class S>             // (v.x v.y v.z 0 0 0)
-	Shear6 (const Vec3<S> &v);
+	constexpr Shear6 (const Vec3<S> &v);
+    constexpr
     Shear6 (T XY, T XZ, T YZ,      // (XY XZ YZ YX ZX ZY)
 	    T YX, T ZX, T ZY);	
 
@@ -83,12 +87,14 @@ template <class T> class Shear6
     // Copy constructors and assignment
     //---------------------------------
 
-    Shear6 (const Shear6 &h);
-    template <class S> Shear6 (const Shear6<S> &h);
+    constexpr Shear6 (const Shear6 &h);
+    template <class S> constexpr Shear6 (const Shear6<S> &h);
 
+    constexpr
     const Shear6 &	operator = (const Shear6 &h);
     template <class S> 
-	const Shear6 &	operator = (const Vec3<S> &v);
+	constexpr
+        const Shear6 &	operator = (const Vec3<S> &v);
 
     //------------
     // Destructor
@@ -122,10 +128,10 @@ template <class T> class Shear6
     //---------
 
     template <class S>
-    bool		operator == (const Shear6<S> &h) const;
+    constexpr bool	operator == (const Shear6<S> &h) const;
 
     template <class S>
-    bool		operator != (const Shear6<S> &h) const;
+    constexpr bool	operator != (const Shear6<S> &h) const;
 
     //-----------------------------------------------------------------------
     // Compare two shears and test if they are "approximately equal":
@@ -145,31 +151,34 @@ template <class T> class Shear6
     //      abs (this[i] - h[i]) <= e * abs (this[i])
     //-----------------------------------------------------------------------
 
-    bool		equalWithAbsError (const Shear6<T> &h, T e) const;
-    bool		equalWithRelError (const Shear6<T> &h, T e) const;
+    constexpr bool	equalWithAbsError (const Shear6<T> &h, T e) const;
+    constexpr bool	equalWithRelError (const Shear6<T> &h, T e) const;
 
 
     //------------------------
     // Component-wise addition
     //------------------------
 
+    constexpr
     const Shear6 &	operator += (const Shear6 &h);
-    Shear6		operator + (const Shear6 &h) const;
+    constexpr Shear6	operator + (const Shear6 &h) const;
 
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
+    constexpr
     const Shear6 &	operator -= (const Shear6 &h);
-    Shear6		operator - (const Shear6 &h) const;
+    constexpr Shear6	operator - (const Shear6 &h) const;
 
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    Shear6		operator - () const;
+    constexpr Shear6	operator - () const;
+    constexpr
     const Shear6 &	negate ();
 
 
@@ -177,26 +186,31 @@ template <class T> class Shear6
     // Component-wise multiplication
     //------------------------------
 
+    constexpr
     const Shear6 &	operator *= (const Shear6 &h);
+    constexpr
     const Shear6 &	operator *= (T a);
-    Shear6		operator * (const Shear6 &h) const;
-    Shear6		operator * (T a) const;
+    constexpr Shear6	operator * (const Shear6 &h) const;
+    constexpr Shear6	operator * (T a) const;
 
 
     //------------------------
     // Component-wise division
     //------------------------
 
+    constexpr
     const Shear6 &	operator /= (const Shear6 &h);
+    constexpr
     const Shear6 &	operator /= (T a);
-    Shear6		operator / (const Shear6 &h) const;
-    Shear6		operator / (T a) const;
+    constexpr Shear6	operator / (const Shear6 &h) const;
+    constexpr Shear6	operator / (T a) const;
 
 
     //----------------------------------------------------------
     // Number of dimensions, i.e. number of elements in a Shear6
     //----------------------------------------------------------
 
+    constexpr
     static unsigned int	dimensions() {return 6;}
 
 
@@ -204,10 +218,10 @@ template <class T> class Shear6
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    static T		baseTypeMin()		{return limits<T>::min();}
-    static T		baseTypeMax()		{return limits<T>::max();}
-    static T		baseTypeSmallest()	{return limits<T>::smallest();}
-    static T		baseTypeEpsilon()	{return limits<T>::epsilon();}
+    constexpr static T	baseTypeMin()		{return limits<T>::min();}
+    constexpr static T	baseTypeMax()		{return limits<T>::max();}
+    constexpr static T	baseTypeSmallest()	{return limits<T>::smallest();}
+    constexpr static T	baseTypeEpsilon()	{return limits<T>::epsilon();}
 
 
     //--------------------------------------------------------------
@@ -232,7 +246,7 @@ std::ostream &	operator << (std::ostream &s, const Shear6<T> &h);
 // Reverse multiplication: scalar * Shear6<T>
 //----------------------------------------------------
 
-template <class S, class T> Shear6<T>	operator * (S a, const Shear6<T> &h);
+template <class S, class T> constexpr Shear6<T>	operator * (S a, const Shear6<T> &h);
 
 
 //-------------------------
@@ -252,28 +266,28 @@ typedef Shear6 <double> Shear6d;
 //-----------------------
 
 template <class T>
-inline T &
+constexpr inline T &
 Shear6<T>::operator [] (int i)
 {
     return (&xy)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-inline const T &
+constexpr inline const T &
 Shear6<T>::operator [] (int i) const
 {
     return (&xy)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-inline
+constexpr inline
 Shear6<T>::Shear6 ()
 {
     xy = xz = yz = yx = zx = zy = 0;
 }
 
 template <class T>
-inline
+constexpr inline
 Shear6<T>::Shear6 (T XY, T XZ, T YZ)
 {
     xy = XY;
@@ -285,7 +299,7 @@ Shear6<T>::Shear6 (T XY, T XZ, T YZ)
 }
 
 template <class T>
-inline
+constexpr inline
 Shear6<T>::Shear6 (const Vec3<T> &v)
 {
     xy = v.x;
@@ -298,7 +312,7 @@ Shear6<T>::Shear6 (const Vec3<T> &v)
 
 template <class T>
 template <class S>
-inline
+constexpr inline
 Shear6<T>::Shear6 (const Vec3<S> &v)
 {
     xy = T (v.x);
@@ -310,7 +324,7 @@ Shear6<T>::Shear6 (const Vec3<S> &v)
 }
 
 template <class T>
-inline
+constexpr inline
 Shear6<T>::Shear6 (T XY, T XZ, T YZ, T YX, T ZX, T ZY)
 {
     xy = XY;
@@ -322,7 +336,7 @@ Shear6<T>::Shear6 (T XY, T XZ, T YZ, T YX, T ZX, T ZY)
 }
 
 template <class T>
-inline
+constexpr inline
 Shear6<T>::Shear6 (const Shear6 &h)
 {
     xy = h.xy;
@@ -335,7 +349,7 @@ Shear6<T>::Shear6 (const Shear6 &h)
 
 template <class T>
 template <class S>
-inline
+constexpr inline
 Shear6<T>::Shear6 (const Shear6<S> &h)
 {
     xy = T (h.xy);
@@ -347,7 +361,7 @@ Shear6<T>::Shear6 (const Shear6<S> &h)
 }
 
 template <class T>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::operator = (const Shear6 &h)
 {
     xy = h.xy;
@@ -361,7 +375,7 @@ Shear6<T>::operator = (const Shear6 &h)
 
 template <class T>
 template <class S>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::operator = (const Vec3<S> &v)
 {
     xy = T (v.x);
@@ -441,7 +455,7 @@ Shear6<T>::getValue() const
 
 template <class T>
 template <class S>
-inline bool
+constexpr inline bool
 Shear6<T>::operator == (const Shear6<S> &h) const
 {
     return xy == h.xy  &&  xz == h.xz  &&  yz == h.yz  &&  
@@ -450,7 +464,7 @@ Shear6<T>::operator == (const Shear6<S> &h) const
 
 template <class T>
 template <class S>
-inline bool
+constexpr inline bool
 Shear6<T>::operator != (const Shear6<S> &h) const
 {
     return xy != h.xy  ||  xz != h.xz  ||  yz != h.yz  ||
@@ -458,7 +472,7 @@ Shear6<T>::operator != (const Shear6<S> &h) const
 }
 
 template <class T>
-bool
+constexpr bool
 Shear6<T>::equalWithAbsError (const Shear6<T> &h, T e) const
 {
     for (int i = 0; i < 6; i++)
@@ -469,7 +483,7 @@ Shear6<T>::equalWithAbsError (const Shear6<T> &h, T e) const
 }
 
 template <class T>
-bool
+constexpr bool
 Shear6<T>::equalWithRelError (const Shear6<T> &h, T e) const
 {
     for (int i = 0; i < 6; i++)
@@ -481,7 +495,7 @@ Shear6<T>::equalWithRelError (const Shear6<T> &h, T e) const
 
 
 template <class T>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::operator += (const Shear6 &h)
 {
     xy += h.xy;
@@ -494,7 +508,7 @@ Shear6<T>::operator += (const Shear6 &h)
 }
 
 template <class T>
-inline Shear6<T>
+constexpr inline Shear6<T>
 Shear6<T>::operator + (const Shear6 &h) const
 {
     return Shear6 (xy + h.xy, xz + h.xz, yz + h.yz,
@@ -502,7 +516,7 @@ Shear6<T>::operator + (const Shear6 &h) const
 }
 
 template <class T>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::operator -= (const Shear6 &h)
 {
     xy -= h.xy;
@@ -515,7 +529,7 @@ Shear6<T>::operator -= (const Shear6 &h)
 }
 
 template <class T>
-inline Shear6<T>
+constexpr inline Shear6<T>
 Shear6<T>::operator - (const Shear6 &h) const
 {
     return Shear6 (xy - h.xy, xz - h.xz, yz - h.yz,
@@ -523,14 +537,14 @@ Shear6<T>::operator - (const Shear6 &h) const
 }
 
 template <class T>
-inline Shear6<T>
+constexpr inline Shear6<T>
 Shear6<T>::operator - () const
 {
     return Shear6 (-xy, -xz, -yz, -yx, -zx, -zy);
 }
 
 template <class T>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::negate ()
 {
     xy = -xy;
@@ -543,7 +557,7 @@ Shear6<T>::negate ()
 }
 
 template <class T>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::operator *= (const Shear6 &h)
 {
     xy *= h.xy;
@@ -556,7 +570,7 @@ Shear6<T>::operator *= (const Shear6 &h)
 }
 
 template <class T>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::operator *= (T a)
 {
     xy *= a;
@@ -569,7 +583,7 @@ Shear6<T>::operator *= (T a)
 }
 
 template <class T>
-inline Shear6<T>
+constexpr inline Shear6<T>
 Shear6<T>::operator * (const Shear6 &h) const
 {
     return Shear6 (xy * h.xy, xz * h.xz, yz * h.yz, 
@@ -577,7 +591,7 @@ Shear6<T>::operator * (const Shear6 &h) const
 }
 
 template <class T>
-inline Shear6<T>
+constexpr inline Shear6<T>
 Shear6<T>::operator * (T a) const
 {
     return Shear6 (xy * a, xz * a, yz * a,
@@ -585,7 +599,7 @@ Shear6<T>::operator * (T a) const
 }
 
 template <class T>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::operator /= (const Shear6 &h)
 {
     xy /= h.xy;
@@ -598,7 +612,7 @@ Shear6<T>::operator /= (const Shear6 &h)
 }
 
 template <class T>
-inline const Shear6<T> &
+constexpr inline const Shear6<T> &
 Shear6<T>::operator /= (T a)
 {
     xy /= a;
@@ -611,7 +625,7 @@ Shear6<T>::operator /= (T a)
 }
 
 template <class T>
-inline Shear6<T>
+constexpr inline Shear6<T>
 Shear6<T>::operator / (const Shear6 &h) const
 {
     return Shear6 (xy / h.xy, xz / h.xz, yz / h.yz,
@@ -619,7 +633,7 @@ Shear6<T>::operator / (const Shear6 &h) const
 }
 
 template <class T>
-inline Shear6<T>
+constexpr inline Shear6<T>
 Shear6<T>::operator / (T a) const
 {
     return Shear6 (xy / a, xz / a, yz / a,
@@ -647,7 +661,7 @@ operator << (std::ostream &s, const Shear6<T> &h)
 //-----------------------------------------
 
 template <class S, class T>
-inline Shear6<T>
+constexpr inline Shear6<T>
 operator * (S a, const Shear6<T> &h)
 {
     return Shear6<T> (a * h.xy, a * h.xz, a * h.yz,
