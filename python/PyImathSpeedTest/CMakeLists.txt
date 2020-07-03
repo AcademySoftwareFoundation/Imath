@@ -2,7 +2,8 @@
 # Copyright Contributors to the OpenEXR Project.
 
 # Speed tests are not performed in Python2 as getting acurate time is difficult.
-if(TARGET Python3::Interpreter)
+# set -DSPEED=ON when running cmake to perform these tests.
+if(TARGET Python3::Interpreter AND SPEED) 
   add_test(PyImath.PyImathSpeedTest_Python3
     ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pyImathSpeedTest.in
     )
