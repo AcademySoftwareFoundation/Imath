@@ -305,9 +305,7 @@ struct ExtendByTask : public Task
     }
     void execute(size_t start, size_t end)
     {
-      assert (std::invalid_argument);
-      //TODO: verify this is desired assertion
-      //, std::invalid_argument, "Box::ExtendBy execute requires a thread id");
+        throw std::invalid_argument ("Box::ExtendBy execute requires a thread id");
     }
 };
 
