@@ -58,7 +58,8 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 // Find the projection of vector t onto vector s (Vec2, Vec3, Vec4)
 //-----------------------------------------------------------------
 
-template <class Vec> constexpr Vec        project (const Vec &s, const Vec &t);
+template <class Vec>
+IMATH_CONSTEXPR14 Vec                     project (const Vec &s, const Vec &t);
 
 
 //------------------------------------------------
@@ -82,7 +83,8 @@ template <class Vec> constexpr Vec        reflect (const Vec &s, const Vec &t);
 // (Vec2, Vec3, Vec4)
 //--------------------------------------------------------------------
 
-template <class Vec> constexpr Vec        closestVertex (const Vec &v0,
+template <class Vec>
+IMATH_CONSTEXPR14 Vec                     closestVertex (const Vec &v0,
                                                          const Vec &v1,
                                                          const Vec &v2, 
                                                          const Vec &p);
@@ -92,7 +94,7 @@ template <class Vec> constexpr Vec        closestVertex (const Vec &v0,
 //---------------
 
 template <class Vec>
-constexpr Vec
+IMATH_CONSTEXPR14 Vec
 project (const Vec &s, const Vec &t)
 {
     Vec sNormalized = s.normalized();
@@ -114,7 +116,7 @@ reflect (const Vec &s, const Vec &t)
 }
 
 template <class Vec>
-constexpr Vec
+IMATH_CONSTEXPR14 Vec
 closestVertex(const Vec &v0,
               const Vec &v1,
               const Vec &v2, 

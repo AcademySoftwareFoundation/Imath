@@ -218,13 +218,13 @@ class Euler : public Vec3<T>
     //--------------------------------------------------------------------
 
     constexpr Euler();
-    constexpr Euler(const Euler&);
-    constexpr Euler(Order p);
-    constexpr Euler(const Vec3<T> &v, Order o = Default, InputLayout l = IJKLayout);
-    constexpr Euler(T i, T j, T k, Order o = Default, InputLayout l = IJKLayout);
-    constexpr Euler(const Euler<T> &euler, Order newp);
-    constexpr Euler(const Matrix33<T> &, Order o = Default);
-    constexpr Euler(const Matrix44<T> &, Order o = Default);
+    IMATH_CONSTEXPR14 Euler(const Euler&);
+    IMATH_CONSTEXPR14 Euler(Order p);
+    IMATH_CONSTEXPR14 Euler(const Vec3<T> &v, Order o = Default, InputLayout l = IJKLayout);
+    IMATH_CONSTEXPR14 Euler(T i, T j, T k, Order o = Default, InputLayout l = IJKLayout);
+    IMATH_CONSTEXPR14 Euler(const Euler<T> &euler, Order newp);
+    IMATH_CONSTEXPR14 Euler(const Matrix33<T> &, Order o = Default);
+    IMATH_CONSTEXPR14 Euler(const Matrix44<T> &, Order o = Default);
 
     //-------------
     //  Destructor
@@ -236,9 +236,9 @@ class Euler : public Vec3<T>
     //  Algebraic functions/ Operators
     //---------------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Euler<T>&	operator=  (const Euler<T>&);
-    constexpr
+    IMATH_CONSTEXPR14
     const Euler<T>&	operator=  (const Vec3<T>&);
 
     //--------------------------------------------------------
@@ -252,7 +252,8 @@ class Euler : public Vec3<T>
 
     void		setXYZVector(const Vec3<T> &);
 
-    constexpr Order	order() const;
+    IMATH_CONSTEXPR14
+    Order	        order() const;
     void		setOrder(Order);
 
     void		set(Axis initial,
@@ -322,7 +323,7 @@ class Euler : public Vec3<T>
     //
     //-----------------------------------------------------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     static float	angleMod (T angle);
     static void		simpleXYZRotation (Vec3<T> &xyzRot,
 					   const Vec3<T> &targetXyzRot);
@@ -416,7 +417,7 @@ constexpr Euler<T>::Euler() :
 {}
 
 template<class T>
-constexpr Euler<T>::Euler(typename Euler<T>::Order p) :
+IMATH_CONSTEXPR14 Euler<T>::Euler(typename Euler<T>::Order p) :
     Vec3<T>(0,0,0),
     _frameStatic(true),
     _initialRepeated(false),
@@ -427,7 +428,7 @@ constexpr Euler<T>::Euler(typename Euler<T>::Order p) :
 }
 
 template<class T>
-constexpr inline Euler<T>::Euler( const Vec3<T> &v, 
+IMATH_CONSTEXPR14 inline Euler<T>::Euler( const Vec3<T> &v, 
 			typename Euler<T>::Order p, 
 			typename Euler<T>::InputLayout l ) 
 {
@@ -437,13 +438,13 @@ constexpr inline Euler<T>::Euler( const Vec3<T> &v,
 }
 
 template<class T>
-constexpr inline Euler<T>::Euler(const Euler<T> &euler)
+IMATH_CONSTEXPR14 inline Euler<T>::Euler(const Euler<T> &euler)
 {
     operator=(euler);
 }
 
 template<class T>
-constexpr inline Euler<T>::Euler(const Euler<T> &euler,Order p)
+IMATH_CONSTEXPR14 inline Euler<T>::Euler(const Euler<T> &euler,Order p)
 {
     setOrder(p);
     Matrix33<T> M = euler.toMatrix33();
@@ -451,7 +452,7 @@ constexpr inline Euler<T>::Euler(const Euler<T> &euler,Order p)
 }
 
 template<class T>
-constexpr inline Euler<T>::Euler( T xi, T yi, T zi, 
+IMATH_CONSTEXPR14 inline Euler<T>::Euler( T xi, T yi, T zi, 
 			typename Euler<T>::Order p,
 			typename Euler<T>::InputLayout l)
 {
@@ -461,14 +462,14 @@ constexpr inline Euler<T>::Euler( T xi, T yi, T zi,
 }
 
 template<class T>
-constexpr inline Euler<T>::Euler( const Matrix33<T> &M, typename Euler::Order p )
+IMATH_CONSTEXPR14 inline Euler<T>::Euler( const Matrix33<T> &M, typename Euler::Order p )
 {
     setOrder(p);
     extract(M);
 }
 
 template<class T>
-constexpr inline Euler<T>::Euler( const Matrix44<T> &M, typename Euler::Order p )
+IMATH_CONSTEXPR14 inline Euler<T>::Euler( const Matrix44<T> &M, typename Euler::Order p )
 {
     setOrder(p);
     extract(M);
@@ -783,7 +784,7 @@ Euler<T>::legal(typename Euler<T>::Order order)
 }
 
 template<class T>
-constexpr typename Euler<T>::Order
+IMATH_CONSTEXPR14 typename Euler<T>::Order
 Euler<T>::order() const
 {
     int foo = (_initialAxis == Z ? 0x2000 : (_initialAxis == Y ? 0x1000 : 0));
@@ -817,7 +818,7 @@ void Euler<T>::set(typename Euler<T>::Axis axis,
 }
 
 template<class T>
-constexpr const Euler<T>& Euler<T>::operator= (const Euler<T> &euler)
+IMATH_CONSTEXPR14 const Euler<T>& Euler<T>::operator= (const Euler<T> &euler)
 {
     x = euler.x;
     y = euler.y;
@@ -830,7 +831,7 @@ constexpr const Euler<T>& Euler<T>::operator= (const Euler<T> &euler)
 }
 
 template<class T>
-constexpr const Euler<T>& Euler<T>::operator= (const Vec3<T> &v)
+IMATH_CONSTEXPR14 const Euler<T>& Euler<T>::operator= (const Vec3<T> &v)
 {
     x = v.x;
     y = v.y;
@@ -857,7 +858,7 @@ std::ostream& operator << (std::ostream &o, const Euler<T> &euler)
 }
 
 template <class T>
-constexpr float
+IMATH_CONSTEXPR14 float
 Euler<T>::angleMod (T angle)
 {
     const T pi = static_cast<T>(M_PI);

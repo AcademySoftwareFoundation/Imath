@@ -64,7 +64,7 @@ class Line3
     //-------------------------------------------------------------
 
     constexpr Line3() {}
-    constexpr Line3(const Vec3<T>& point1, const Vec3<T>& point2);
+    IMATH_CONSTEXPR14 Line3(const Vec3<T>& point1, const Vec3<T>& point2);
 
     //------------------
     //	State Query/Set
@@ -84,9 +84,9 @@ class Line3
     //---------
 
     constexpr T			distanceTo(const Vec3<T>& point) const;
-    constexpr T			distanceTo(const Line3<T>& line) const;
+    IMATH_CONSTEXPR14 T	     	distanceTo(const Line3<T>& line) const;
     constexpr Vec3<T>  		closestPointTo(const Vec3<T>& point) const;
-    constexpr Vec3<T>		closestPointTo(const Line3<T>& line) const;
+    IMATH_CONSTEXPR14 Vec3<T>	closestPointTo(const Line3<T>& line) const;
 };
 
 
@@ -103,7 +103,7 @@ typedef Line3<double> Line3d;
 //---------------
 
 template <class T>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Line3<T>::Line3(const Vec3<T> &p0, const Vec3<T> &p1)
 {
     set(p0,p1);
@@ -138,7 +138,7 @@ Line3<T>::closestPointTo(const Vec3<T>& point) const
 }
 
 template <class T>
-constexpr inline T
+IMATH_CONSTEXPR14 inline T
 Line3<T>::distanceTo(const Line3<T>& line) const
 {
     T d = (dir % line.dir) ^ (line.pos - pos);
@@ -146,7 +146,7 @@ Line3<T>::distanceTo(const Line3<T>& line) const
 }
 
 template <class T>
-constexpr inline Vec3<T> 
+IMATH_CONSTEXPR14 inline Vec3<T> 
 Line3<T>::closestPointTo(const Line3<T>& line) const
 {
     // Assumes the lines are normalized
