@@ -95,7 +95,7 @@ class Quat
     // Copy constructor
     //-------------------
 
-    constexpr Quat (const Quat &q);
+    IMATH_CONSTEXPR14 Quat (const Quat &q);
 
     //-------------
     // Destructor
@@ -119,21 +119,21 @@ class Quat
     //	a 4D vector when one of the operands is scalar
     //-------------------------------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Quat<T> &	operator =	(const Quat<T> &q);
-    constexpr
+    IMATH_CONSTEXPR14
     const Quat<T> &	operator *=	(const Quat<T> &q);
-    constexpr
+    IMATH_CONSTEXPR14
     const Quat<T> &	operator *=	(T t);
-    constexpr
+    IMATH_CONSTEXPR14
     const Quat<T> &	operator /=	(const Quat<T> &q);
-    constexpr
+    IMATH_CONSTEXPR14
     const Quat<T> &	operator /=	(T t);
-    constexpr
+    IMATH_CONSTEXPR14
     const Quat<T> &	operator +=	(const Quat<T> &q);
-    constexpr
+    IMATH_CONSTEXPR14
     const Quat<T> &	operator -=	(const Quat<T> &q);
-    constexpr
+    IMATH_CONSTEXPR14
     T &			operator []	(int index);	// as 4D vector
     constexpr
     T			operator []	(int index) const;
@@ -141,10 +141,14 @@ class Quat
     template <class S> constexpr bool operator == (const Quat<S> &q) const;
     template <class S> constexpr bool operator != (const Quat<S> &q) const;
 
-    constexpr Quat<T> &	invert ();		// this -> 1 / this
-    constexpr Quat<T>	inverse () const;
-    constexpr Quat<T> &	normalize ();		// returns this
-    constexpr Quat<T>	normalized () const;
+    IMATH_CONSTEXPR14
+    Quat<T> &	        invert ();		// this -> 1 / this
+    IMATH_CONSTEXPR14
+    Quat<T>	        inverse () const;
+    IMATH_CONSTEXPR14
+    Quat<T> &	        normalize ();		// returns this
+    IMATH_CONSTEXPR14
+    Quat<T>	        normalized () const;
     constexpr T	 	length () const;	// in R4
     constexpr Vec3<T>   rotateVector(const Vec3<T> &original) const;
     constexpr T         euclideanInnerProduct(const Quat<T> &q) const;
@@ -153,9 +157,11 @@ class Quat
     //	Rotation conversion
     //-----------------------
 
-    constexpr Quat<T> &	setAxisAngle (const Vec3<T> &axis, T radians);
+    IMATH_CONSTEXPR14
+    Quat<T> &	        setAxisAngle (const Vec3<T> &axis, T radians);
 
-    constexpr Quat<T> &	setRotation (const Vec3<T> &fromDirection,
+    IMATH_CONSTEXPR14
+    Quat<T> &	        setRotation (const Vec3<T> &fromDirection,
 				     const Vec3<T> &toDirection);
 
     constexpr T		angle () const;
@@ -178,8 +184,8 @@ class Quat
 };
 
 
-template<class T>
-constexpr Quat<T>	slerp (const Quat<T> &q1, const Quat<T> &q2, T t);
+template<class T> IMATH_CONSTEXPR14
+Quat<T>	                slerp (const Quat<T> &q1, const Quat<T> &q2, T t);
 
 template<class T>
 constexpr Quat<T>	slerpShortestArc
@@ -233,8 +239,8 @@ constexpr Quat<T>	operator ~ (const Quat<T> &q);
 template<class T>
 constexpr Quat<T>	operator - (const Quat<T> &q);
 
-template<class T>
-constexpr Vec3<T>	operator * (const Vec3<T> &v, const Quat<T> &q);
+template<class T> IMATH_CONSTEXPR14
+Vec3<T>	                operator * (const Vec3<T> &v, const Quat<T> &q);
 
 
 //--------------------
@@ -282,7 +288,7 @@ Quat<T>::Quat (T s, Vec3<T> d): r (s), v (d)
 }
 
 template<class T>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Quat<T>::Quat(const Quat<T> &q)
 {
 	operator=(q);
@@ -296,7 +302,7 @@ Quat<T>::identity ()
 }
 
 template<class T>
-constexpr inline const Quat<T> &
+IMATH_CONSTEXPR14 inline const Quat<T> &
 Quat<T>::operator = (const Quat<T> &q)
 {
     r = q.r;
@@ -306,7 +312,7 @@ Quat<T>::operator = (const Quat<T> &q)
 
 
 template<class T>
-constexpr inline const Quat<T> &
+IMATH_CONSTEXPR14 inline const Quat<T> &
 Quat<T>::operator *= (const Quat<T> &q)
 {
     T rtmp = r * q.r - (v ^ q.v);
@@ -317,7 +323,7 @@ Quat<T>::operator *= (const Quat<T> &q)
 
 
 template<class T>
-constexpr inline const Quat<T> &
+IMATH_CONSTEXPR14 inline const Quat<T> &
 Quat<T>::operator *= (T t)
 {
     r *= t;
@@ -327,7 +333,7 @@ Quat<T>::operator *= (T t)
 
 
 template<class T>
-constexpr inline const Quat<T> &
+IMATH_CONSTEXPR14 inline const Quat<T> &
 Quat<T>::operator /= (const Quat<T> &q)
 {
     *this = *this * q.inverse();
@@ -336,7 +342,7 @@ Quat<T>::operator /= (const Quat<T> &q)
 
 
 template<class T>
-constexpr inline const Quat<T> &
+IMATH_CONSTEXPR14 inline const Quat<T> &
 Quat<T>::operator /= (T t)
 {
     r /= t;
@@ -346,7 +352,7 @@ Quat<T>::operator /= (T t)
 
 
 template<class T>
-constexpr inline const Quat<T> &
+IMATH_CONSTEXPR14 inline const Quat<T> &
 Quat<T>::operator += (const Quat<T> &q)
 {
     r += q.r;
@@ -356,7 +362,7 @@ Quat<T>::operator += (const Quat<T> &q)
 
 
 template<class T>
-constexpr inline const Quat<T> &
+IMATH_CONSTEXPR14 inline const Quat<T> &
 Quat<T>::operator -= (const Quat<T> &q)
 {
     r -= q.r;
@@ -366,7 +372,7 @@ Quat<T>::operator -= (const Quat<T> &q)
 
 
 template<class T>
-constexpr inline T &
+IMATH_CONSTEXPR14 inline T &
 Quat<T>::operator [] (int index)
 {
     return index ? v[index - 1] : r;
@@ -416,7 +422,7 @@ Quat<T>::length () const
 
 
 template <class T>
-constexpr inline Quat<T> &
+IMATH_CONSTEXPR14 inline Quat<T> &
 Quat<T>::normalize ()
 {
     if (T l = length())
@@ -435,7 +441,7 @@ Quat<T>::normalize ()
 
 
 template <class T>
-constexpr inline Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 Quat<T>::normalized () const
 {
     if (T l = length())
@@ -446,7 +452,7 @@ Quat<T>::normalized () const
 
 
 template<class T>
-constexpr inline Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 Quat<T>::inverse () const
 {
     //
@@ -461,7 +467,7 @@ Quat<T>::inverse () const
 
 
 template<class T>
-constexpr inline Quat<T> &
+IMATH_CONSTEXPR14 inline Quat<T> &
 Quat<T>::invert ()
 {
     T qdot = (*this) ^ (*this);
@@ -501,7 +507,7 @@ Quat<T>::euclideanInnerProduct (const Quat<T> &q) const
 
 
 template<class T>
-constexpr T
+IMATH_CONSTEXPR14 T
 angle4D (const Quat<T> &q1, const Quat<T> &q2)
 {
     //
@@ -520,7 +526,7 @@ angle4D (const Quat<T> &q1, const Quat<T> &q2)
 
 
 template<class T>
-constexpr Quat<T>
+IMATH_CONSTEXPR14 Quat<T>
 slerp (const Quat<T> &q1, const Quat<T> &q2, T t)
 {
     //
@@ -718,7 +724,7 @@ Quat<T>::axis () const
 
 
 template <class T>
-constexpr inline Quat<T> &
+IMATH_CONSTEXPR14 inline Quat<T> &
 Quat<T>::setAxisAngle (const Vec3<T> &axis, T radians)
 {
     r = Math<T>::cos (radians / 2);
@@ -728,7 +734,7 @@ Quat<T>::setAxisAngle (const Vec3<T> &axis, T radians)
 
 
 template <class T>
-constexpr Quat<T> &
+IMATH_CONSTEXPR14 Quat<T> &
 Quat<T>::setRotation (const Vec3<T> &from, const Vec3<T> &to)
 {
     //
@@ -976,7 +982,7 @@ operator - (const Quat<T> &q)
 
 
 template<class T>
-constexpr inline Vec3<T>
+IMATH_CONSTEXPR14 inline Vec3<T>
 operator * (const Vec3<T> &v, const Quat<T> &q)
 {
     Vec3<T> a = q.v % v;

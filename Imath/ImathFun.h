@@ -83,7 +83,7 @@ ulerp (T a, T b, Q t)
 
 
 template <class T>
-constexpr inline T
+IMATH_CONSTEXPR14 inline T
 lerpfactor(T m, T a, T b)
 {
     //

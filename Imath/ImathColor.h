@@ -73,7 +73,7 @@ class Color3: public Vec3 <T>
     constexpr Color3 (const Color3 &c);
     template <class S> constexpr Color3 (const Vec3<S> &v);
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color3 &	operator = (const Color3 &c);
 
 
@@ -81,7 +81,7 @@ class Color3: public Vec3 <T>
     // Component-wise addition
     //------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color3 &	operator += (const Color3 &c);
     constexpr
     Color3		operator + (const Color3 &c) const;
@@ -91,7 +91,7 @@ class Color3: public Vec3 <T>
     // Component-wise subtraction
     //---------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color3 &	operator -= (const Color3 &c);
     constexpr
     Color3		operator - (const Color3 &c) const;
@@ -103,7 +103,7 @@ class Color3: public Vec3 <T>
 
     constexpr
     Color3		operator - () const;
-    constexpr
+    IMATH_CONSTEXPR14
     const Color3 &	negate ();
 
 
@@ -111,9 +111,9 @@ class Color3: public Vec3 <T>
     // Component-wise multiplication
     //------------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color3 &	operator *= (const Color3 &c);
-    constexpr
+    IMATH_CONSTEXPR14
     const Color3 &	operator *= (T a);
     constexpr Color3	operator * (const Color3 &c) const;
     constexpr Color3	operator * (T a) const;
@@ -123,9 +123,9 @@ class Color3: public Vec3 <T>
     // Component-wise division
     //------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color3 &	operator /= (const Color3 &c);
-    constexpr
+    IMATH_CONSTEXPR14
     const Color3 &	operator /= (T a);
     constexpr Color3	operator / (const Color3 &c) const;
     constexpr Color3	operator / (T a) const;
@@ -150,9 +150,9 @@ template <class T> class Color4
     //-------------
 
     Color4 ();			    	// no initialization
-    constexpr
+    IMATH_CONSTEXPR14
     explicit Color4 (T a);		// (a a a a)
-    constexpr
+    IMATH_CONSTEXPR14
     Color4 (T a, T b, T c, T d);	// (a b c d)
     ~Color4 () = default;
 
@@ -160,10 +160,10 @@ template <class T> class Color4
     // Copy constructors and assignment
     //---------------------------------
 
-    constexpr Color4 (const Color4 &v);
-    template <class S> constexpr Color4 (const Color4<S> &v);
+    IMATH_CONSTEXPR14 Color4 (const Color4 &v);
+    template <class S> IMATH_CONSTEXPR14 Color4 (const Color4<S> &v);
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color4 &	operator = (const Color4 &v);
 
 
@@ -202,7 +202,7 @@ template <class T> class Color4
     // Component-wise addition
     //------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color4 &	operator += (const Color4 &v);
     constexpr Color4	operator + (const Color4 &v) const;
 
@@ -211,7 +211,7 @@ template <class T> class Color4
     // Component-wise subtraction
     //---------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color4 &	operator -= (const Color4 &v);
     constexpr Color4	operator - (const Color4 &v) const;
 
@@ -221,7 +221,7 @@ template <class T> class Color4
     //------------------------------------
 
     constexpr Color4	operator - () const;
-    constexpr
+    IMATH_CONSTEXPR14
     const Color4 &	negate ();
 
 
@@ -229,9 +229,9 @@ template <class T> class Color4
     // Component-wise multiplication
     //------------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color4 &	operator *= (const Color4 &v);
-    constexpr
+    IMATH_CONSTEXPR14
     const Color4 &	operator *= (T a);
     constexpr Color4	operator * (const Color4 &v) const;
     constexpr Color4	operator * (T a) const;
@@ -241,9 +241,9 @@ template <class T> class Color4
     // Component-wise division
     //------------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Color4 &	operator /= (const Color4 &v);
-    constexpr
+    IMATH_CONSTEXPR14
     const Color4 &	operator /= (T a);
     constexpr Color4	operator / (const Color4 &v) const;
     constexpr Color4	operator / (T a) const;
@@ -349,7 +349,7 @@ Color3<T>::Color3 (const Vec3<S> &v): Vec3 <T> (v)
 }
 
 template <class T>
-constexpr inline const Color3<T> &
+IMATH_CONSTEXPR14 inline const Color3<T> &
 Color3<T>::operator = (const Color3 &c)
 {
     *((Vec3<T> *) this) = c;
@@ -357,7 +357,7 @@ Color3<T>::operator = (const Color3 &c)
 }
 
 template <class T>
-constexpr inline const Color3<T> &
+IMATH_CONSTEXPR14 inline const Color3<T> &
 Color3<T>::operator += (const Color3 &c)
 {
     *((Vec3<T> *) this) += c;
@@ -372,7 +372,7 @@ Color3<T>::operator + (const Color3 &c) const
 }
 
 template <class T>
-constexpr inline const Color3<T> &
+IMATH_CONSTEXPR14 inline const Color3<T> &
 Color3<T>::operator -= (const Color3 &c)
 {
     *((Vec3<T> *) this) -= c;
@@ -394,7 +394,7 @@ Color3<T>::operator - () const
 }
 
 template <class T>
-constexpr inline const Color3<T> &
+IMATH_CONSTEXPR14 inline const Color3<T> &
 Color3<T>::negate ()
 {
     ((Vec3<T> *) this)->negate();
@@ -402,7 +402,7 @@ Color3<T>::negate ()
 }
 
 template <class T>
-constexpr inline const Color3<T> &
+IMATH_CONSTEXPR14 inline const Color3<T> &
 Color3<T>::operator *= (const Color3 &c)
 {
     *((Vec3<T> *) this) *= c;
@@ -410,7 +410,7 @@ Color3<T>::operator *= (const Color3 &c)
 }
 
 template <class T>
-constexpr inline const Color3<T> &
+IMATH_CONSTEXPR14 inline const Color3<T> &
 Color3<T>::operator *= (T a)
 {
     *((Vec3<T> *) this) *= a;
@@ -432,7 +432,7 @@ Color3<T>::operator * (T a) const
 }
 
 template <class T>
-constexpr inline const Color3<T> &
+IMATH_CONSTEXPR14 inline const Color3<T> &
 Color3<T>::operator /= (const Color3 &c)
 {
     *((Vec3<T> *) this) /= c;
@@ -440,7 +440,7 @@ Color3<T>::operator /= (const Color3 &c)
 }
 
 template <class T>
-constexpr inline const Color3<T> &
+IMATH_CONSTEXPR14 inline const Color3<T> &
 Color3<T>::operator /= (T a)
 {
     *((Vec3<T> *) this) /= a;
@@ -487,14 +487,14 @@ Color4<T>::Color4 ()
 }
 
 template <class T>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Color4<T>::Color4 (T x)
 {
     r = g = b = a = x;
 }
 
 template <class T>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Color4<T>::Color4 (T x, T y, T z, T w)
 {
     r = x;
@@ -504,7 +504,7 @@ Color4<T>::Color4 (T x, T y, T z, T w)
 }
 
 template <class T>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Color4<T>::Color4 (const Color4 &v)
 {
     r = v.r;
@@ -515,7 +515,7 @@ Color4<T>::Color4 (const Color4 &v)
 
 template <class T>
 template <class S>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Color4<T>::Color4 (const Color4<S> &v)
 {
     r = T (v.r);
@@ -525,7 +525,7 @@ Color4<T>::Color4 (const Color4<S> &v)
 }
 
 template <class T>
-constexpr inline const Color4<T> &
+IMATH_CONSTEXPR14 inline const Color4<T> &
 Color4<T>::operator = (const Color4 &v)
 {
     r = v.r;
@@ -610,7 +610,7 @@ Color4<T>::operator != (const Color4<S> &v) const
 }
 
 template <class T>
-constexpr inline const Color4<T> &
+IMATH_CONSTEXPR14 inline const Color4<T> &
 Color4<T>::operator += (const Color4 &v)
 {
     r += v.r;
@@ -628,7 +628,7 @@ Color4<T>::operator + (const Color4 &v) const
 }
 
 template <class T>
-constexpr inline const Color4<T> &
+IMATH_CONSTEXPR14 inline const Color4<T> &
 Color4<T>::operator -= (const Color4 &v)
 {
     r -= v.r;
@@ -653,7 +653,7 @@ Color4<T>::operator - () const
 }
 
 template <class T>
-constexpr inline const Color4<T> &
+IMATH_CONSTEXPR14 inline const Color4<T> &
 Color4<T>::negate ()
 {
     r = -r;
@@ -664,7 +664,7 @@ Color4<T>::negate ()
 }
 
 template <class T>
-constexpr inline const Color4<T> &
+IMATH_CONSTEXPR14 inline const Color4<T> &
 Color4<T>::operator *= (const Color4 &v)
 {
     r *= v.r;
@@ -675,7 +675,7 @@ Color4<T>::operator *= (const Color4 &v)
 }
 
 template <class T>
-constexpr inline const Color4<T> &
+IMATH_CONSTEXPR14 inline const Color4<T> &
 Color4<T>::operator *= (T x)
 {
     r *= x;
@@ -700,7 +700,7 @@ Color4<T>::operator * (T x) const
 }
 
 template <class T>
-constexpr inline const Color4<T> &
+IMATH_CONSTEXPR14 inline const Color4<T> &
 Color4<T>::operator /= (const Color4 &v)
 {
     r /= v.r;
@@ -711,7 +711,7 @@ Color4<T>::operator /= (const Color4 &v)
 }
 
 template <class T>
-constexpr inline const Color4<T> &
+IMATH_CONSTEXPR14 inline const Color4<T> &
 Color4<T>::operator /= (T x)
 {
     r /= x;

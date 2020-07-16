@@ -68,17 +68,17 @@ template<class T>
 class Frustum
 {
   public:
-    constexpr Frustum();
-    constexpr Frustum(const Frustum &);
-    constexpr Frustum(T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho=false);
-    constexpr Frustum(T nearPlane, T farPlane, T fovx, T fovy, T aspect);
+    IMATH_CONSTEXPR14 Frustum();
+    IMATH_CONSTEXPR14 Frustum(const Frustum &);
+    IMATH_CONSTEXPR14 Frustum(T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho=false);
+    IMATH_CONSTEXPR14 Frustum(T nearPlane, T farPlane, T fovx, T fovy, T aspect);
     virtual ~Frustum();
 
     //--------------------
     // Assignment operator
     //--------------------
 
-    constexpr
+    IMATH_CONSTEXPR14
     const Frustum &     operator = (const Frustum &);
 
     //--------------------
@@ -183,7 +183,7 @@ class Frustum
 
 
 template<class T>
-constexpr inline Frustum<T>::Frustum()
+IMATH_CONSTEXPR14 inline Frustum<T>::Frustum()
 {
     set(T (0.1),
         T (1000.0),
@@ -195,19 +195,19 @@ constexpr inline Frustum<T>::Frustum()
 }
 
 template<class T>
-constexpr inline Frustum<T>::Frustum(const Frustum &f)
+IMATH_CONSTEXPR14 inline Frustum<T>::Frustum(const Frustum &f)
 {
     *this = f;
 }
 
 template<class T>
-constexpr inline Frustum<T>::Frustum(T n, T f, T l, T r, T t, T b, bool o)
+IMATH_CONSTEXPR14 inline Frustum<T>::Frustum(T n, T f, T l, T r, T t, T b, bool o)
 {
     set(n,f,l,r,t,b,o);
 }
 
 template<class T>
-constexpr inline Frustum<T>::Frustum(T nearPlane, T farPlane, T fovx, T fovy, T aspect)
+IMATH_CONSTEXPR14 inline Frustum<T>::Frustum(T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 {
     set(nearPlane,farPlane,fovx,fovy,aspect);
 }
@@ -218,7 +218,7 @@ Frustum<T>::~Frustum()
 }
 
 template<class T>
-constexpr const Frustum<T> &
+IMATH_CONSTEXPR14 const Frustum<T> &
 Frustum<T>::operator = (const Frustum &f)
 {
     _nearPlane    = f._nearPlane;

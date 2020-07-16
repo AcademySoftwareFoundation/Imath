@@ -68,11 +68,11 @@ class Plane3
     T				distance;
 
     constexpr Plane3() {}
-    constexpr Plane3(const Vec3<T> &normal, T distance);
-    constexpr Plane3(const Vec3<T> &point, const Vec3<T> &normal);
-    constexpr Plane3(const Vec3<T> &point1,
-	             const Vec3<T> &point2,
-	             const Vec3<T> &point3);
+    IMATH_CONSTEXPR14 Plane3(const Vec3<T> &normal, T distance);
+    IMATH_CONSTEXPR14 Plane3(const Vec3<T> &point, const Vec3<T> &normal);
+    IMATH_CONSTEXPR14 Plane3(const Vec3<T> &point1,
+	                     const Vec3<T> &point2,
+	                     const Vec3<T> &point3);
 
     //----------------------
     //	Various set methods
@@ -92,10 +92,10 @@ class Plane3
     //	Utilities
     //----------------------
 
-    constexpr bool              intersect(const Line3<T> &line,
+    IMATH_CONSTEXPR14 bool      intersect(const Line3<T> &line,
                                            Vec3<T> &intersection) const;
 
-    constexpr bool              intersectT(const Line3<T> &line,
+    IMATH_CONSTEXPR14 bool      intersectT(const Line3<T> &line,
 					   T &parameter) const;
 
     constexpr T		     	distanceTo(const Vec3<T> &) const;
@@ -118,7 +118,7 @@ typedef Plane3<double> Plane3d;
 //---------------
 
 template <class T>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Plane3<T>::Plane3(const Vec3<T> &p0,
 			 const Vec3<T> &p1,
 			 const Vec3<T> &p2)
@@ -127,14 +127,14 @@ Plane3<T>::Plane3(const Vec3<T> &p0,
 }
 
 template <class T>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Plane3<T>::Plane3(const Vec3<T> &n, T d)
 {
     set(n, d);
 }
 
 template <class T>
-constexpr inline
+IMATH_CONSTEXPR14 inline
 Plane3<T>::Plane3(const Vec3<T> &p, const Vec3<T> &n)
 {
     set(p, n);
@@ -190,7 +190,7 @@ Plane3<T>::reflectVector(const Vec3<T> &v) const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Plane3<T>::intersect(const Line3<T>& line, Vec3<T>& point) const
 {
     T d = normal ^ line.dir;
@@ -201,7 +201,7 @@ Plane3<T>::intersect(const Line3<T>& line, Vec3<T>& point) const
 }
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Plane3<T>::intersectT(const Line3<T>& line, T &t) const
 {
     T d = normal ^ line.dir;
@@ -218,7 +218,7 @@ std::ostream &operator<< (std::ostream &o, const Plane3<T> &plane)
 }
 
 template<class T>
-constexpr Plane3<T>
+IMATH_CONSTEXPR14 Plane3<T>
 operator* (const Plane3<T> &plane, const Matrix44<T> &M)
 {
     //                        T

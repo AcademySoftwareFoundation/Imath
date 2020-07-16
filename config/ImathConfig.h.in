@@ -50,4 +50,13 @@
                              (uint32_t(IMATH_VERSION_MINOR) << 16) | \
                              (uint32_t(IMATH_VERSION_PATCH) <<  8))
 
+//
+// Constexpr C++14 conditional definition
+//
+#if(__cplusplus >= 201402L)
+  #define IMATH_CONSTEXPR14 constexpr
+#else
+  #define IMATH_CONSTEXPR14 /* can not be constexpr before c++14 */
+#endif
+
 #endif // INCLUDED_IMATH_CONFIG_H

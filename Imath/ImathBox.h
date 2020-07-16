@@ -84,9 +84,9 @@ class Box
     //	Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    constexpr Box (); 
-    constexpr Box (const T &point);
-    constexpr Box (const T &minT, const T &maxT);
+    IMATH_CONSTEXPR14 Box (); 
+    IMATH_CONSTEXPR14 Box (const T &point);
+    IMATH_CONSTEXPR14 Box (const T &minT, const T &maxT);
 
     //--------------------
     //  Operators:  ==, !=
@@ -145,14 +145,14 @@ typedef Box <V3d> Box3d;
 
 
 template <class T>
-constexpr inline Box<T>::Box()
+IMATH_CONSTEXPR14 inline Box<T>::Box()
 {
     makeEmpty();
 }
 
 
 template <class T>
-constexpr inline Box<T>::Box (const T &point)
+IMATH_CONSTEXPR14 inline Box<T>::Box (const T &point)
 {
     min = point;
     max = point;
@@ -160,7 +160,7 @@ constexpr inline Box<T>::Box (const T &point)
 
 
 template <class T>
-constexpr inline Box<T>::Box (const T &minT, const T &maxT)
+IMATH_CONSTEXPR14 inline Box<T>::Box (const T &minT, const T &maxT)
 {
     min = minT;
     max = maxT;
@@ -356,9 +356,9 @@ class Box<Vec2<T> >
     //  Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    constexpr Box(); 
-    constexpr Box (const Vec2<T> &point);
-    constexpr Box (const Vec2<T> &minT, const Vec2<T> &maxT);
+    IMATH_CONSTEXPR14 Box(); 
+    IMATH_CONSTEXPR14 Box (const Vec2<T> &point);
+    IMATH_CONSTEXPR14 Box (const Vec2<T> &minT, const Vec2<T> &maxT);
 
     //--------------------
     //  Operators:  ==, !=
@@ -402,14 +402,14 @@ class Box<Vec2<T> >
 //  Implementation
 
 template <class T>
-constexpr inline Box<Vec2<T> >::Box()
+IMATH_CONSTEXPR14 inline Box<Vec2<T> >::Box()
 {
     makeEmpty();
 }
 
 
 template <class T>
-constexpr inline Box<Vec2<T> >::Box (const Vec2<T> &point)
+IMATH_CONSTEXPR14 inline Box<Vec2<T> >::Box (const Vec2<T> &point)
 {
     min = point;
     max = point;
@@ -417,7 +417,7 @@ constexpr inline Box<Vec2<T> >::Box (const Vec2<T> &point)
 
 
 template <class T>
-constexpr inline Box<Vec2<T> >::Box (const Vec2<T> &minT, const Vec2<T> &maxT)
+IMATH_CONSTEXPR14 inline Box<Vec2<T> >::Box (const Vec2<T> &minT, const Vec2<T> &maxT)
 {
     min = minT;
     max = maxT;
@@ -578,7 +578,7 @@ Box<Vec2<T> >::majorAxis() const
 
     if (s[1] > s[major])
         major = 1;
-
+    
     return major;
 }
 
@@ -599,9 +599,9 @@ class Box<Vec3<T> >
     //  Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    constexpr Box(); 
-    constexpr Box (const Vec3<T> &point);
-    constexpr Box (const Vec3<T> &minT, const Vec3<T> &maxT);
+    IMATH_CONSTEXPR14 Box(); 
+    IMATH_CONSTEXPR14 Box (const Vec3<T> &point);
+    IMATH_CONSTEXPR14 Box (const Vec3<T> &minT, const Vec3<T> &maxT);
 
     //--------------------
     //  Operators:  ==, !=
@@ -646,14 +646,14 @@ class Box<Vec3<T> >
 
 
 template <class T>
-constexpr inline Box<Vec3<T> >::Box()
+IMATH_CONSTEXPR14 inline Box<Vec3<T> >::Box()
 {
     makeEmpty();
 }
 
 
 template <class T>
-constexpr inline Box<Vec3<T> >::Box (const Vec3<T> &point)
+IMATH_CONSTEXPR14 inline Box<Vec3<T> >::Box (const Vec3<T> &point)
 {
     min = point;
     max = point;
@@ -661,7 +661,7 @@ constexpr inline Box<Vec3<T> >::Box (const Vec3<T> &point)
 
 
 template <class T>
-constexpr inline Box<Vec3<T> >::Box (const Vec3<T> &minT, const Vec3<T> &maxT)
+IMATH_CONSTEXPR14 inline Box<Vec3<T> >::Box (const Vec3<T> &minT, const Vec3<T> &maxT)
 {
     min = minT;
     max = maxT;
