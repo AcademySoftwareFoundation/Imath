@@ -80,7 +80,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 
 template <class T>
-bool
+IMATH_CONSTEXPR14 bool
 closestPoints
     (const Line3<T>& line1,
      const Line3<T>& line2,
@@ -120,7 +120,7 @@ closestPoints
 
 
 template <class T>
-bool
+IMATH_CONSTEXPR14 bool
 intersect
     (const Line3<T> &line,
      const Vec3<T> &v0,
@@ -225,7 +225,7 @@ intersect
 
 
 template <class T>
-Vec3<T>
+IMATH_CONSTEXPR14 Vec3<T>
 closestVertex
     (const Vec3<T> &v0,
      const Vec3<T> &v1,
@@ -255,7 +255,7 @@ closestVertex
 
 
 template <class T>
-Vec3<T>
+IMATH_CONSTEXPR14 Vec3<T>
 rotatePoint (const Vec3<T> p, Line3<T> l, T angle)
 {
     //
