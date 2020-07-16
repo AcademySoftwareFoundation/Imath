@@ -62,8 +62,8 @@ class Sphere3
     //	Constructors
     //---------------
 
-    Sphere3() : center(0,0,0), radius(0) {}
-    Sphere3(const Vec3<T> &c, T r) : center(c), radius(r) {}
+    constexpr Sphere3() : center(0,0,0), radius(0) {}
+    constexpr Sphere3(const Vec3<T> &c, T r) : center(c), radius(r) {}
 
     //-------------------------------------------------------------------
     //	Utilities:
@@ -89,8 +89,8 @@ class Sphere3
     //-------------------------------------------------------------------
 
     void circumscribe(const Box<Vec3<T> > &box);
-    bool intersect(const Line3<T> &l, Vec3<T> &intersection) const;
-    bool intersectT(const Line3<T> &l, T &t) const;
+    constexpr bool intersect(const Line3<T> &l, Vec3<T> &intersection) const;
+    constexpr bool intersectT(const Line3<T> &l, T &t) const;
 };
 
 
@@ -115,7 +115,7 @@ void Sphere3<T>::circumscribe(const Box<Vec3<T> > &box)
 
 
 template <class T>
-bool Sphere3<T>::intersectT(const Line3<T> &line, T &t) const
+constexpr bool Sphere3<T>::intersectT(const Line3<T> &line, T &t) const
 {
     bool doesIntersect = true;
 
@@ -157,7 +157,7 @@ bool Sphere3<T>::intersectT(const Line3<T> &line, T &t) const
 
 
 template <class T>
-bool Sphere3<T>::intersect(const Line3<T> &line, Vec3<T> &intersection) const
+constexpr bool Sphere3<T>::intersect(const Line3<T> &line, Vec3<T> &intersection) const
 {
     T t;
 

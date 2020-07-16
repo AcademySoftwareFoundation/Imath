@@ -95,7 +95,7 @@ public:
         _total = t;
     }
 
-    double get() const
+    constexpr double get() const
     {
         return _total;
     }
@@ -630,7 +630,7 @@ swapColumns (IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A, int j, int k)
 }
 
 template <typename T>
-T
+IMATH_CONSTEXPR14 T
 maxOffDiag (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
 {
     T result = 0;
@@ -644,7 +644,7 @@ maxOffDiag (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
 }
 
 template <typename T>
-T
+IMATH_CONSTEXPR14 T
 maxOffDiag (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
 {
     T result = 0;
@@ -1090,7 +1090,7 @@ jacobiRotation (Matrix44<T>& A,
 }
 
 template <typename TM>
-inline
+IMATH_CONSTEXPR14 inline
 typename TM::BaseType
 maxOffDiagSymm (const TM& A)
 {
