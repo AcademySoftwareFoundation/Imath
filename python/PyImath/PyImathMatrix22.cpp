@@ -713,12 +713,38 @@ setM22ArrayItem(FixedArray<IMATH_NAMESPACE::Matrix22<T> > &ma,
 }
 
 template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix22<T> > 
+inverse22_array(FixedArray<IMATH_NAMESPACE::Matrix22<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  FixedArray<IMATH_NAMESPACE::Matrix22<T> > dst(len);
+  for (size_t i=0; i<len; ++i) dst[i] = ma[i].inverse(singExc);    
+  return dst;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix22<T> > &
+invert22_array(FixedArray<IMATH_NAMESPACE::Matrix22<T> >&ma, bool singExc = true)
+{
+  MATH_EXC_ON;
+  size_t len = ma.len();
+  for (size_t i=0; i<len; ++i) ma[i].invert(singExc);    
+  return ma;
+}
+
+BOOST_PYTHON_FUNCTION_OVERLOADS(invert22_array_overloads, invert22_array, 1, 2);
+BOOST_PYTHON_FUNCTION_OVERLOADS(inverse22_array_overloads, inverse22_array, 1, 2);
+
+template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Matrix22<T> > >
 register_M22Array()
 {
     class_<FixedArray<IMATH_NAMESPACE::Matrix22<T> > > matrixArray_class = FixedArray<IMATH_NAMESPACE::Matrix22<T> >::register_("Fixed length array of IMATH_NAMESPACE::Matrix22");
     matrixArray_class
          .def("__setitem__", &setM22ArrayItem<T>)
+         .def("inverse",&inverse22_array<T>,inverse22_array_overloads("inverse() return an inverted copy of this matrix"))
+         .def("invert",&invert22_array<T>,invert22_array_overloads("invert() invert these matricies")[return_internal_reference<>()])
         ;
     return matrixArray_class;
 }
