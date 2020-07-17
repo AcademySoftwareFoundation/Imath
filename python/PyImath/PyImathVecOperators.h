@@ -63,6 +63,16 @@ struct op_vecNormalized {
 };
 
 template <class T>
+struct op_vecNormalizeExc {
+    static inline void apply(T &v) { v.normalizeExc(); }
+};
+
+template <class T>
+struct op_vecNormalizedExc {
+    static inline T apply(const T &v) { return v.normalizedExc(); }
+};
+  
+template <class T>
 struct op_vec3Cross {
     static inline IMATH_NAMESPACE::Vec3<T> apply(const IMATH_NAMESPACE::Vec3<T> &a, const IMATH_NAMESPACE::Vec3<T> &b) { return a.cross(b); }
 };

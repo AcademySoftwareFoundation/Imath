@@ -1,0 +1,244 @@
+#!@PYTHON@
+
+import random
+import sys
+import time
+import numpy as np
+
+from imath import *
+
+X = 1000000
+f = open("time_trials.csv", "a")
+all_tests = {}
+
+def time_operation(func):
+    tested_inputs = all_tests[func]
+    for tested_input in tested_inputs:
+        arg_string = ""
+        for arg in tested_input:
+            arg_string += type(arg).__name__ + " "
+        f.write(func.__name__+": "+arg_string) # generates unique description
+        start_time = time.clock_gettime(4)
+        func(tested_input)
+        f.write(","+repr(time.clock_gettime(4) - start_time)+"\n")
+
+#MULTIPLICAITON TESTING
+
+def time_multVecMatrix(test_input):
+    mat = test_input[0]
+    vArray = test_input[1]
+    x = mat.multVecMatrix(vArray)
+
+def time_multDirMatrix(test_input):
+    mat = test_input[0]
+    vArray = test_input[1]
+    x = mat.multDirMatrix(vArray)
+
+m44f = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3fa = V3fArray(X)
+v3fa[:] = V3f(1,1,1)
+
+m33f = M33f(5,6,6, 2,2,2, 6,6,2)
+v2fa = V2fArray(X)
+v2fa[:] = V2f(1,1)
+
+m44d = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3da = V3dArray(X)
+v3da[:] = V3d(1,1,1)
+
+m33d = M33d(1,0,5, 2,1,6, 3,4,0)
+v2da = V2dArray(X)
+v2da[:] = V2d(1,1)
+
+tests_multMatrix = [[m44f, v3fa],
+                    [m33f, v2fa],
+                    [m44d, v3da],
+                    [m33d, v2da]]
+
+all_tests[time_multVecMatrix] = tests_multMatrix
+all_tests[time_multDirMatrix] = tests_multMatrix
+
+#INVERT TESTING
+   
+def time_inverse(test_input):
+    mata = test_input[0]
+    x = mata.inverse()
+    
+def time_invert(test_input):
+    mata = test_input[0]
+    mata.invert()
+
+def time_gjInverse(test_input):
+    mata = test_input[0]
+    x = mata.gjInverse()
+
+def time_gjInvert(test_input):
+    mata = test_input[0]
+    mata.gjInvert()
+
+
+m22f = M22f(4.0,7.0, 2.0,6.0)
+m22d = M22d(4.0,7.0, 2.0,6.0)
+
+m22fa = M22fArray(X)
+m22fa[:] = m22f
+m22da = M22dArray(X)
+m22da[:] = m22d
+m33fa = M33fArray(X)
+m33fa[:] = m33f
+m33da = M33dArray(X)
+m33da[:] = m33d
+m44fa = M44fArray(X)
+m44fa[:] = m44f
+m44da = M44dArray(X)
+m44da[:] = m44d
+
+tests_inver = [[m44fa],
+               [m33fa],
+               [m22fa],
+               [m44da],
+               [m33da],
+               [m22da]]
+
+tests_gjInver = [[m44fa],
+                 [m33fa],
+                 [m44da],
+                 [m33da]]
+
+all_tests[time_inverse] = tests_inver
+all_tests[time_invert] = tests_inver
+all_tests[time_gjInverse] = tests_gjInver
+all_tests[time_gjInvert] = tests_gjInver
+
+# NORMALIZE TEST
+
+def time_normalize(test_input):
+    vArray = test_input[0]
+    vArray.normalize()
+
+def time_normalizeExc(test_input):
+    vArray = test_input[0]
+    vArray.normalizeExc()
+
+def time_normalized(test_input):
+    vArray = test_input[0]
+    x = vArray.normalized()
+
+def time_normalizedExc(test_input):    
+    vArray = test_input[0]
+    x = vArray.normalizedExc()
+
+v4fa = V4fArray(X)
+v4fa[:] = V4f(1,1,1,1)
+
+v4da = V4dArray(X)
+v4da[:] = V4d(1,1,1,1)
+
+tests_normalize = [[v2fa],
+                   [v2da],
+                   [v3fa],
+                   [v3da],
+                   [v4fa],
+                   [v4da]]
+
+all_tests[time_normalize] = tests_normalize
+all_tests[time_normalizeExc] = tests_normalize
+all_tests[time_normalized] = tests_normalize
+all_tests[time_normalizedExc] = tests_normalize
+
+# SHEAR TEST
+
+def time_shear(test_input):
+    mat = test_input[0]
+    shear_in = test_input[1]
+    for i in range(0,X):
+        x = mat.shear(shear_in)
+    
+all_tests[time_shear] = [[m44f, (1,2,3)],
+                         [m44d, (1,2,3)],
+                         [m33f, (1,2)],
+                         [m33d, (1,2)],
+                         [m44f, V3f(1,2,3)],
+                         [m44d, V3d(1,2,3)],
+                         [m33f, V2f(1,2)],
+                         [m33d, V2d(1,2)]]
+#TODO: add Shear6<T>
+
+# SCALE TEST
+
+def time_scale(test_input):
+    mat = test_input[0]
+    scale_in = test_input[1]
+    for i in range(0,X):
+        x = mat.scale(scale_in)
+        #TODO: determine significance of Python bytcode impact on speed
+
+all_tests[time_scale] = [[m44f, 2.0],
+                         [m44d, 2.0],
+                         [m33f, 2.0],
+                         [m33d, 2.0],
+                         [m22f, 2.0],
+                         [m22d, 2.0]]
+
+# TRANSLATION TEST
+
+def time_translate(test_input):
+    mat = test_input[0]
+    trans_in = test_input[1]
+    for i in range(0,X):
+        x = mat.translate(trans_in)
+    
+all_tests[time_translate] = [[m44f, V3f(1,1,1)],
+                             [m44d, V3d(1,1,1)],
+                             [m33f, V2f(1,1)],
+                             [m33d, V2d(1,1)]]
+
+# FRUSTUM TEST
+
+def time_frustum_init(description, parameters):
+    f.write(description)
+    start_time = time.clock_gettime(4)
+    for i in range(0,X):
+        x = Frustum(parameters[0], parameters[1], parameters[2], parameters[3], parameters[4])
+    f.write(","+repr(time.clock_gettime(4) - start_time)+"\n")
+#UNIMPLEMENTED 
+    
+for func in all_tests:
+    time_operation(func)
+
+"""
+def time_NOARRAYvec(test_input):
+    mat = test_input[0]
+    vec = test_input[1]
+    for i in range(0, X):
+        x = mat.multVecMatrix(vec)
+    
+def time_NOARRAYdir(test_input):
+    mat = test_input[0]
+    vec = test_input[1]
+    for i in range(0, X):
+        x = mat.multDirMatrix(vec)
+    
+m44f = M44f(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3f = V3f(1,1,1)
+
+m33f = M33f(5,6,6, 2,2,2, 6,6,2)
+v2f = V2f(1,1)
+
+m44d = M44d(5,6,6,8, 2,2,2,8, 6,6,2,8, 2,3,6,7)
+v3d = V3d(1,1,1)
+
+m33d = M33d(1,0,5, 2,1,6, 3,4,0)
+v2d = V2d(1,1)
+
+tests_multMatrix = [[m44f, v3f],
+                    [m33f, v2f],
+                    [m44d, v3d],
+                    [m33d, v2d]]
+add_tests = {}
+add_tests[time_NOARRAYvec] = tests_multMatrix
+add_tests[time_NOARRAYdir] = tests_multMatrix
+
+for func in add_tests:
+    time_operation(func)
+"""
