@@ -40,10 +40,6 @@
 #include "PyImathFixedArray.h"
 #include "PyImathOperators.h"
 
-#ifdef __clang__
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wself-assign-overloaded"
-#endif
 namespace PyImath {
 
 //
@@ -545,8 +541,5 @@ static void add_bitwise_math_functions(boost::python::class_<FixedMatrix<T> > &c
 
 
 }
-#ifdef __clang__
-#    pragma clang diagnostic pop
-#endif
 
 #endif
