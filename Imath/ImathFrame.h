@@ -62,19 +62,19 @@ template<class T> class Matrix44;
 //  See Graphics Gems I for the underlying algorithm.
 // 
 
-template<class T> Matrix44<T> firstFrame( const Vec3<T>&,    // First point
-                                          const Vec3<T>&,    // Second point 
-                                          const Vec3<T>& );  // Third point
+template<class T> Matrix44<T> constexpr firstFrame( const Vec3<T>&,    // First point
+                                                    const Vec3<T>&,    // Second point 
+                                                    const Vec3<T>& );  // Third point
 
-template<class T> Matrix44<T> nextFrame( const Matrix44<T>&, // Previous matrix
-                                         const Vec3<T>&,     // Previous point
-                                         const Vec3<T>&,     // Current point
-                                         Vec3<T>&,           // Previous tangent
-                                         Vec3<T>& );         // Current tangent
+template<class T> Matrix44<T> constexpr nextFrame( const Matrix44<T>&, // Previous matrix
+                                                   const Vec3<T>&,     // Previous point
+                                                   const Vec3<T>&,     // Current point
+                                                   Vec3<T>&,           // Previous tangent
+                                                   Vec3<T>& );         // Current tangent
 
-template<class T> Matrix44<T> lastFrame( const Matrix44<T>&, // Previous matrix
-                                         const Vec3<T>&,     // Previous point
-                                         const Vec3<T>& );   // Last point
+template<class T> Matrix44<T> constexpr lastFrame( const Matrix44<T>&, // Previous matrix
+                                                   const Vec3<T>&,     // Previous point
+                                                   const Vec3<T>& );   // Last point
 
 //
 //  firstFrame - Compute the first reference frame along a curve.
@@ -87,7 +87,7 @@ template<class T> Matrix44<T> lastFrame( const Matrix44<T>&, // Previous matrix
 //  Throw 'NullVecExc' if 'pi' and 'pj' are equals.
 //
 
-template<class T> Matrix44<T> firstFrame
+template<class T> Matrix44<T> constexpr firstFrame
 ( 
     const Vec3<T>& pi,             // First point
     const Vec3<T>& pj,             // Second point
@@ -125,7 +125,7 @@ template<class T> Matrix44<T> firstFrame
 //  new point and tangent vector along the curve.
 //
 
-template<class T> Matrix44<T> nextFrame
+template<class T> Matrix44<T> constexpr nextFrame
 ( 
     const Matrix44<T>&  Mi,             // Previous matrix
     const Vec3<T>&      pi,             // Previous point
@@ -176,7 +176,7 @@ template<class T> Matrix44<T> nextFrame
 //  last point along the curve.
 //
 
-template<class T> Matrix44<T> lastFrame
+template<class T> Matrix44<T> constexpr lastFrame
 ( 
     const Matrix44<T>&  Mi,             // Previous matrix
     const Vec3<T>&      pi,             // Previous point

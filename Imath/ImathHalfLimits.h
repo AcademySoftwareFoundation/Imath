@@ -54,12 +54,12 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 template <>
 struct limits <half>
 {
-    static float		min()		{return -HALF_MAX;}
-    static float		max()		{return HALF_MAX;}
-    static float		smallest()	{return HALF_MIN;}
-    static float		epsilon()	{return HALF_EPSILON;}
-    static bool			isIntegral()	{return false;}
-    static bool			isSigned()	{return true;}
+    constexpr static float	min()		{return -HALF_MAX;}
+    constexpr static float	max()		{return HALF_MAX;}
+    constexpr static float	smallest()	{return HALF_MIN;}
+    constexpr static float	epsilon()	{return HALF_EPSILON;}
+    constexpr static bool	isIntegral()	{return false;}
+    constexpr static bool	isSigned()	{return true;}
 };
 
 

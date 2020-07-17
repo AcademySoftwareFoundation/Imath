@@ -51,7 +51,7 @@
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
-inline T
+constexpr inline T
 abs (T a)
 {
     return (a > T(0)) ? a : -a;
@@ -59,7 +59,7 @@ abs (T a)
 
 
 template <class T>
-inline int
+constexpr inline int
 sign (T a)
 {
     return (a > T(0))? 1 : ((a < T(0)) ? -1 : 0);
@@ -67,7 +67,7 @@ sign (T a)
 
 
 template <class T, class Q>
-inline T
+constexpr inline T
 lerp (T a, T b, Q t)
 {
     return (T) (a * (1 - t) + b * t);
@@ -75,7 +75,7 @@ lerp (T a, T b, Q t)
 
 
 template <class T, class Q>
-inline T
+constexpr inline T
 ulerp (T a, T b, Q t)
 {
     return (T) ((a > b)? (a - (a - b) * t): (a + (b - a) * t));
@@ -83,7 +83,7 @@ ulerp (T a, T b, Q t)
 
 
 template <class T>
-inline T
+IMATH_CONSTEXPR14 inline T
 lerpfactor(T m, T a, T b)
 {
     //
@@ -107,7 +107,7 @@ lerpfactor(T m, T a, T b)
 
 
 template <class T>
-inline T
+constexpr inline T
 clamp (T a, T l, T h)
 {
     return (a < l)? l : ((a > h)? h : a);
@@ -115,7 +115,7 @@ clamp (T a, T l, T h)
 
 
 template <class T>
-inline int
+constexpr inline int
 cmp (T a, T b)
 {
     return IMATH_INTERNAL_NAMESPACE::sign (a - b);
@@ -123,7 +123,7 @@ cmp (T a, T b)
 
 
 template <class T>
-inline int
+constexpr inline int
 cmpt (T a, T b, T t)
 {
     return (IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t)? 0 : cmp (a, b);
@@ -131,7 +131,7 @@ cmpt (T a, T b, T t)
 
 
 template <class T>
-inline bool
+constexpr inline bool
 iszero (T a, T t)
 {
     return (IMATH_INTERNAL_NAMESPACE::abs (a) <= t) ? 1 : 0;
@@ -139,14 +139,14 @@ iszero (T a, T t)
 
 
 template <class T1, class T2, class T3>
-inline bool
+constexpr inline bool
 equal (T1 a, T2 b, T3 t)
 {
     return IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t;
 }
 
 template <class T>
-inline int
+constexpr inline int
 floor (T x)
 {
     return (x >= 0)? int (x): -(int (-x) + (-x > int (-x)));
@@ -154,14 +154,14 @@ floor (T x)
 
 
 template <class T>
-inline int
+constexpr inline int
 ceil (T x)
 {
     return -floor (-x);
 }
 
 template <class T>
-inline int
+constexpr inline int
 trunc (T x)
 {
     return (x >= 0) ? int(x) : -int(-x);
@@ -176,7 +176,7 @@ trunc (T x)
 //	mods(x,y) == x - y * divs(x,y)
 //
 
-inline int
+constexpr inline int
 divs (int x, int y)
 {
     return (x >= 0)? ((y >= 0)?  ( x / y): -( x / -y)):
@@ -184,7 +184,7 @@ divs (int x, int y)
 }
 
 
-inline int
+constexpr inline int
 mods (int x, int y)
 {
     return (x >= 0)? ((y >= 0)?  ( x % y):  ( x % -y)):
@@ -200,7 +200,7 @@ mods (int x, int y)
 //	modp(x,y) == x - y * divp(x,y)
 // 
 
-inline int
+constexpr inline int
 divp (int x, int y)
 {
     return (x >= 0)? ((y >= 0)?  (     x  / y): -(      x  / -y)):
@@ -208,7 +208,7 @@ divp (int x, int y)
 }
 
 
-inline int
+constexpr inline int
 modp (int x, int y)
 {
     return x - y * divp (x, y);
