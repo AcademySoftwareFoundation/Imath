@@ -161,7 +161,7 @@ closestPointOnBox (const Vec3<T> &p, const Box< Vec3<T> > &box)
 
 
 template <class S, class T>
-IMATH_CONSTEXPR14 Box< Vec3<S> >
+Box< Vec3<S> >
 transform (const Box< Vec3<S> > &box, const Matrix44<T> &m)
 {
     //
@@ -324,7 +324,7 @@ transform (const Box< Vec3<S> > &box,
 
 
 template <class S, class T>
-IMATH_CONSTEXPR14 Box< Vec3<S> >
+Box< Vec3<S> >
 affineTransform (const Box< Vec3<S> > &box, const Matrix44<T> &m)
 {
     //

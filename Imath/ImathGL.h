@@ -40,7 +40,6 @@
 
 #include "ImathVec.h"
 #include "ImathMatrix.h"
-#include "IexMathExc.h"
 #include "ImathFun.h"
 #include "ImathNamespace.h"
 

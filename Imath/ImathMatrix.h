@@ -281,7 +281,6 @@ template <class T> class Matrix22
     //-----------------------------------------
 
     template <class S>
-    IMATH_CONSTEXPR14
     const Matrix22 &    setRotation (S r);
 
 
@@ -614,7 +613,6 @@ template <class T> class Matrix33
     //-----------------------------------------
 
     template <class S>
-    IMATH_CONSTEXPR14
     const Matrix33 &    setRotation (S r);
 
 
@@ -1018,7 +1016,6 @@ template <class T> class Matrix44
     //--------------------------------------------------------
 
     template <class S>
-    IMATH_CONSTEXPR14
     const Matrix44 &    setEulerAngles (const Vec3<S>& r);
 
 
@@ -1036,7 +1033,6 @@ template <class T> class Matrix44
     //-------------------------------------------
 
     template <class S>
-    IMATH_CONSTEXPR14
     const Matrix44 &    rotate (const Vec3<S> &r);
 
 
@@ -1730,7 +1726,7 @@ Matrix22<T>::determinant () const
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 const Matrix22<T> &
+const Matrix22<T> &
 Matrix22<T>::setRotation (S r)
 {
     S cos_r, sin_r;
@@ -2617,7 +2613,7 @@ Matrix33<T>::determinant () const
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 const Matrix33<T> &
+const Matrix33<T> &
 Matrix33<T>::setRotation (S r)
 {
     S cos_r, sin_r;
@@ -3857,7 +3853,7 @@ Matrix44<T>::determinant () const
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 const Matrix44<T> &
+const Matrix44<T> &
 Matrix44<T>::setEulerAngles (const Vec3<S>& r)
 {
     S cos_rz, sin_rz, cos_ry, sin_ry, cos_rx, sin_rx;
@@ -3927,7 +3923,7 @@ Matrix44<T>::setAxisAngle (const Vec3<S>& axis, S angle)
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 const Matrix44<T> &
+const Matrix44<T> &
 Matrix44<T>::rotate (const Vec3<S> &r)
 {
     S cos_rz, sin_rz, cos_ry, sin_ry, cos_rx, sin_rx;

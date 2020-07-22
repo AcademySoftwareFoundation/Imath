@@ -95,7 +95,7 @@ public:
         _total = t;
     }
 
-    constexpr double get() const
+    double get() const
     {
         return _total;
     }
