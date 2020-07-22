@@ -108,21 +108,26 @@ class Box
     //	Query functions - these compute results each time
     //---------------------------------------------------
 
-    constexpr T 	size () const;
-    constexpr T		center () const;
-    constexpr bool	intersects (const T &point) const;
-    constexpr bool	intersects (const Box<T> &box) const;
+    IMATH_CONSTEXPR14 T size () const;
+    constexpr T	        center () const;
+    IMATH_CONSTEXPR14
+    bool	        intersects (const T &point) const;
+    IMATH_CONSTEXPR14
+    bool	        intersects (const Box<T> &box) const;
 
-    constexpr
+    IMATH_CONSTEXPR14
     unsigned int	majorAxis () const;
 
     //----------------
     //	Classification
     //----------------
 
-    constexpr bool	isEmpty () const;
-    constexpr bool	hasVolume () const;
-    constexpr bool	isInfinite () const;
+    IMATH_CONSTEXPR14
+    bool	        isEmpty () const;
+    IMATH_CONSTEXPR14
+    bool	        hasVolume () const;
+    IMATH_CONSTEXPR14
+    bool	        isInfinite () const;
 };
 
 
@@ -229,7 +234,7 @@ Box<T>::extendBy(const Box<T> &box)
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<T>::intersects(const T &point) const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -243,7 +248,7 @@ Box<T>::intersects(const T &point) const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<T>::intersects(const Box<T> &box) const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -257,7 +262,7 @@ Box<T>::intersects(const Box<T> &box) const
 
 
 template <class T> 
-constexpr inline T
+IMATH_CONSTEXPR14 inline T
 Box<T>::size() const 
 { 
     if (isEmpty())
@@ -276,7 +281,7 @@ Box<T>::center() const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<T>::isEmpty() const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -289,7 +294,7 @@ Box<T>::isEmpty() const
 }
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<T>::isInfinite() const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -303,7 +308,7 @@ Box<T>::isInfinite() const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<T>::hasVolume() const
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
@@ -317,7 +322,7 @@ Box<T>::hasVolume() const
 
 
 template<class T>
-constexpr inline unsigned int
+IMATH_CONSTEXPR14 inline unsigned int
 Box<T>::majorAxis() const
 {
     unsigned int major = 0;
@@ -380,21 +385,27 @@ class Box<Vec2<T> >
     //  Query functions - these compute results each time
     //---------------------------------------------------
 
-    constexpr Vec2<T>	size() const;
+    IMATH_CONSTEXPR14
+    Vec2<T>	        size() const;
     constexpr Vec2<T>	center() const;
-    constexpr bool	intersects (const Vec2<T> &point) const;
-    constexpr bool	intersects (const Box<Vec2<T> > &box) const;
+    IMATH_CONSTEXPR14
+    bool	        intersects (const Vec2<T> &point) const;
+    IMATH_CONSTEXPR14
+    bool	        intersects (const Box<Vec2<T> > &box) const;
 
-    constexpr
+    IMATH_CONSTEXPR14
     unsigned int	majorAxis() const;
 
     //----------------
     //  Classification
     //----------------
 
-    constexpr bool	isEmpty() const;
-    constexpr bool	hasVolume() const;
-    constexpr bool	isInfinite() const;
+    IMATH_CONSTEXPR14
+    bool	        isEmpty() const;
+    IMATH_CONSTEXPR14
+    bool	        hasVolume() const;
+    IMATH_CONSTEXPR14
+    bool 	        isInfinite() const;
 };
 
 
@@ -492,7 +503,7 @@ Box<Vec2<T> >::extendBy (const Box<Vec2<T> > &box)
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T> >::intersects (const Vec2<T> &point) const
 {
     if (point[0] < min[0] || point[0] > max[0] ||
@@ -504,7 +515,7 @@ Box<Vec2<T> >::intersects (const Vec2<T> &point) const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T> >::intersects (const Box<Vec2<T> > &box) const
 {
     if (box.max[0] < min[0] || box.min[0] > max[0] ||
@@ -516,7 +527,7 @@ Box<Vec2<T> >::intersects (const Box<Vec2<T> > &box) const
 
 
 template <class T> 
-constexpr inline Vec2<T>
+IMATH_CONSTEXPR14 inline Vec2<T>
 Box<Vec2<T> >::size() const 
 { 
     if (isEmpty())
@@ -535,7 +546,7 @@ Box<Vec2<T> >::center() const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T> >::isEmpty() const
 {
     if (max[0] < min[0] ||
@@ -546,7 +557,7 @@ Box<Vec2<T> >::isEmpty() const
 }
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T> > ::isInfinite() const
 {
     if (min[0] != limits<T>::min() || max[0] != limits<T>::max() ||
@@ -558,7 +569,7 @@ Box<Vec2<T> > ::isInfinite() const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T> >::hasVolume() const
 {
     if (max[0] <= min[0] ||
@@ -570,7 +581,7 @@ Box<Vec2<T> >::hasVolume() const
 
 
 template <class T>
-constexpr inline unsigned int
+IMATH_CONSTEXPR14 inline unsigned int
 Box<Vec2<T> >::majorAxis() const
 {
     unsigned int major = 0;
@@ -623,21 +634,27 @@ class Box<Vec3<T> >
     //  Query functions - these compute results each time
     //---------------------------------------------------
 
-    constexpr Vec3<T>	size() const;
+    IMATH_CONSTEXPR14
+    Vec3<T>	        size() const;
     constexpr Vec3<T>	center() const;
-    constexpr bool	intersects (const Vec3<T> &point) const;
-    constexpr bool	intersects (const Box<Vec3<T> > &box) const;
+    IMATH_CONSTEXPR14
+    bool	        intersects (const Vec3<T> &point) const;
+    IMATH_CONSTEXPR14
+    bool	        intersects (const Box<Vec3<T> > &box) const;
 
-    constexpr
+    IMATH_CONSTEXPR14
     unsigned int	majorAxis() const;
 
     //----------------
     //  Classification
     //----------------
 
-    constexpr bool	isEmpty() const;
-    constexpr bool	hasVolume() const;
-    constexpr bool	isInfinite() const;
+    IMATH_CONSTEXPR14
+    bool	        isEmpty() const;
+    IMATH_CONSTEXPR14
+    bool	        hasVolume() const;
+    IMATH_CONSTEXPR14
+    bool	        isInfinite() const;
 };
 
 
@@ -748,7 +765,7 @@ Box<Vec3<T> >::extendBy (const Box<Vec3<T> > &box)
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T> >::intersects (const Vec3<T> &point) const
 {
     if (point[0] < min[0] || point[0] > max[0] ||
@@ -761,7 +778,7 @@ Box<Vec3<T> >::intersects (const Vec3<T> &point) const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T> >::intersects (const Box<Vec3<T> > &box) const
 {
     if (box.max[0] < min[0] || box.min[0] > max[0] ||
@@ -774,7 +791,7 @@ Box<Vec3<T> >::intersects (const Box<Vec3<T> > &box) const
 
 
 template <class T> 
-constexpr inline Vec3<T>
+IMATH_CONSTEXPR14 inline Vec3<T>
 Box<Vec3<T> >::size() const 
 { 
     if (isEmpty())
@@ -793,7 +810,7 @@ Box<Vec3<T> >::center() const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T> >::isEmpty() const
 {
     if (max[0] < min[0] ||
@@ -805,7 +822,7 @@ Box<Vec3<T> >::isEmpty() const
 }
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T> >::isInfinite() const
 {
     if (min[0] != limits<T>::min() || max[0] != limits<T>::max() ||
@@ -818,7 +835,7 @@ Box<Vec3<T> >::isInfinite() const
 
 
 template <class T>
-constexpr inline bool
+IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T> >::hasVolume() const
 {
     if (max[0] <= min[0] ||
@@ -831,7 +848,7 @@ Box<Vec3<T> >::hasVolume() const
 
 
 template <class T>
-constexpr inline unsigned int
+IMATH_CONSTEXPR14 inline unsigned int
 Box<Vec3<T> >::majorAxis() const
 {
     unsigned int major = 0;

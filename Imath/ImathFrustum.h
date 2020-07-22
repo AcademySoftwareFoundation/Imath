@@ -137,8 +137,8 @@ class Frustum
 
     constexpr T         fovx() const;
     constexpr T         fovy() const;
-    constexpr T         aspect() const;
-    constexpr
+    IMATH_CONSTEXPR14 T aspect() const;
+    IMATH_CONSTEXPR14
     Matrix44<T>         projectionMatrix() const;
     constexpr bool      degenerate() const;
 
@@ -149,27 +149,32 @@ class Frustum
     //  space.  
     //-----------------------------------------------------------------------
 
-    constexpr Frustum<T> window(T left, T right, T top, T bottom) const;
+    IMATH_CONSTEXPR14
+    Frustum<T>          window(T left, T right, T top, T bottom) const;
 
     //----------------------------------------------------------
     // Projection is in screen space / Conversion from Z-Buffer
     //----------------------------------------------------------
 
-    constexpr Line3<T>  projectScreenToRay( const Vec2<T> & ) const;
-    constexpr Vec2<T>   projectPointToScreen( const Vec3<T> & ) const;
+    IMATH_CONSTEXPR14
+    Line3<T>            projectScreenToRay( const Vec2<T> & ) const;
+    IMATH_CONSTEXPR14
+    Vec2<T>             projectPointToScreen( const Vec3<T> & ) const;
 
-    constexpr T         ZToDepth(long zval, long min, long max) const;
-    constexpr T         normalizedZToDepth(T zval) const;
-    constexpr long      DepthToZ(T depth, long zmin, long zmax) const;
+    IMATH_CONSTEXPR14 T ZToDepth(long zval, long min, long max) const;
+    IMATH_CONSTEXPR14 T normalizedZToDepth(T zval) const;
+    IMATH_CONSTEXPR14
+    long                DepthToZ(T depth, long zmin, long zmax) const;
 
-    constexpr T         worldRadius(const Vec3<T> &p, T radius) const;
-    constexpr T         screenRadius(const Vec3<T> &p, T radius) const;
+    IMATH_CONSTEXPR14 T worldRadius(const Vec3<T> &p, T radius) const;
+    IMATH_CONSTEXPR14 T screenRadius(const Vec3<T> &p, T radius) const;
 
 
   protected:
 
     constexpr Vec2<T>   screenToLocal( const Vec2<T> & ) const;
-    constexpr Vec2<T>   localToScreen( const Vec2<T> & ) const;
+    IMATH_CONSTEXPR14
+    Vec2<T>             localToScreen( const Vec2<T> & ) const;
 
   protected:
     T                   _nearPlane;
@@ -340,7 +345,7 @@ constexpr T Frustum<T>::fovy() const
 }
 
 template<class T>
-constexpr T Frustum<T>::aspect() const
+IMATH_CONSTEXPR14 T Frustum<T>::aspect() const
 {
     T rightMinusLeft = _right-_left;
     T topMinusBottom = _top-_bottom;
@@ -356,7 +361,7 @@ constexpr T Frustum<T>::aspect() const
 }
 
 template<class T>
-constexpr Matrix44<T> Frustum<T>::projectionMatrix() const
+IMATH_CONSTEXPR14 Matrix44<T> Frustum<T>::projectionMatrix() const
 {
     T rightPlusLeft  = _right+_left;
     T rightMinusLeft = _right-_left;
@@ -450,7 +455,7 @@ constexpr bool Frustum<T>::degenerate() const
 }
 
 template<class T>
-constexpr Frustum<T> Frustum<T>::window(T l, T r, T t, T b) const
+IMATH_CONSTEXPR14 Frustum<T> Frustum<T>::window(T l, T r, T t, T b) const
 {
     // move it to 0->1 space
 
@@ -469,7 +474,7 @@ constexpr Vec2<T> Frustum<T>::screenToLocal(const Vec2<T> &s) const
 }
 
 template<class T>
-constexpr Vec2<T> Frustum<T>::localToScreen(const Vec2<T> &p) const
+IMATH_CONSTEXPR14 Vec2<T> Frustum<T>::localToScreen(const Vec2<T> &p) const
 {
     T leftPlusRight  = _left - T (2) * p.x + _right;
     T leftMinusRight = _left-_right;
@@ -491,7 +496,7 @@ constexpr Vec2<T> Frustum<T>::localToScreen(const Vec2<T> &p) const
 }
 
 template<class T>
-constexpr Line3<T> Frustum<T>::projectScreenToRay(const Vec2<T> &p) const
+IMATH_CONSTEXPR14 Line3<T> Frustum<T>::projectScreenToRay(const Vec2<T> &p) const
 {
     Vec2<T> point = screenToLocal(p);
     if (orthographic())
@@ -502,7 +507,7 @@ constexpr Line3<T> Frustum<T>::projectScreenToRay(const Vec2<T> &p) const
 }
 
 template<class T>
-constexpr Vec2<T> Frustum<T>::projectPointToScreen(const Vec3<T> &point) const
+IMATH_CONSTEXPR14 Vec2<T> Frustum<T>::projectPointToScreen(const Vec3<T> &point) const
 {
     if (orthographic() || point.z == T (0))
         return localToScreen( Vec2<T>( point.x, point.y ) );
@@ -512,7 +517,7 @@ constexpr Vec2<T> Frustum<T>::projectPointToScreen(const Vec3<T> &point) const
 }
 
 template<class T>
-constexpr T Frustum<T>::ZToDepth(long zval,long zmin,long zmax) const
+IMATH_CONSTEXPR14 T Frustum<T>::ZToDepth(long zval,long zmin,long zmax) const
 {
     int zdiff = zmax - zmin;
 
@@ -529,7 +534,7 @@ constexpr T Frustum<T>::ZToDepth(long zval,long zmin,long zmax) const
 }
 
 template<class T>
-constexpr T Frustum<T>::normalizedZToDepth(T zval) const
+IMATH_CONSTEXPR14 T Frustum<T>::normalizedZToDepth(T zval) const
 {
     T Zp = zval * 2.0 - 1;
 
@@ -556,7 +561,7 @@ constexpr T Frustum<T>::normalizedZToDepth(T zval) const
 }
 
 template<class T>
-constexpr long Frustum<T>::DepthToZ(T depth,long zmin,long zmax) const
+IMATH_CONSTEXPR14 long Frustum<T>::DepthToZ(T depth,long zmin,long zmax) const
 {
     long zdiff     = zmax - zmin;
     T farMinusNear = _farPlane-_nearPlane;
@@ -604,7 +609,7 @@ constexpr long Frustum<T>::DepthToZ(T depth,long zmin,long zmax) const
 }
 
 template<class T>
-constexpr T Frustum<T>::screenRadius(const Vec3<T> &p, T radius) const
+IMATH_CONSTEXPR14 T Frustum<T>::screenRadius(const Vec3<T> &p, T radius) const
 {
     // Derivation:
     // Consider X-Z plane.
@@ -631,7 +636,7 @@ constexpr T Frustum<T>::screenRadius(const Vec3<T> &p, T radius) const
 }
 
 template<class T>
-constexpr T Frustum<T>::worldRadius(const Vec3<T> &p, T radius) const
+IMATH_CONSTEXPR14 T Frustum<T>::worldRadius(const Vec3<T> &p, T radius) const
 {
     if (abs(-_nearPlane) > 1 || abs(p.z) < limits<T>::max() * abs(-_nearPlane))
     {
