@@ -278,13 +278,10 @@ class Euler : public Vec3<T>
     void		extract(const Matrix33<T>&);
     void		extract(const Matrix44<T>&);
     void		extract(const Quat<T>&);
-
-    constexpr
     Matrix33<T>		toMatrix33() const;
-    constexpr
     Matrix44<T>		toMatrix44() const;
-    constexpr Quat<T>	toQuat() const;
-    constexpr Vec3<T>	toXYZVector() const;
+    Quat<T>	        toQuat() const;
+    Vec3<T>	        toXYZVector() const;
 
     //---------------------------------------------------
     //	Use this function to unpack angles from ijk form
@@ -398,7 +395,7 @@ Euler<T>::setXYZVector(const Vec3<T> &v)
 }
 
 template<class T>
-constexpr inline Vec3<T>
+inline Vec3<T>
 Euler<T>::toXYZVector() const
 {
     int i,j,k;
@@ -640,7 +637,7 @@ void Euler<T>::extract(const Matrix44<T> &M)
 }
 
 template<class T>
-constexpr Matrix33<T> Euler<T>::toMatrix33() const
+Matrix33<T> Euler<T>::toMatrix33() const
 {
     int i,j,k;
     angleOrder(i,j,k);
@@ -683,7 +680,7 @@ constexpr Matrix33<T> Euler<T>::toMatrix33() const
 }
 
 template<class T>
-constexpr Matrix44<T> Euler<T>::toMatrix44() const
+Matrix44<T> Euler<T>::toMatrix44() const
 {
     int i,j,k;
     angleOrder(i,j,k);
@@ -726,7 +723,7 @@ constexpr Matrix44<T> Euler<T>::toMatrix44() const
 }
 
 template<class T>
-constexpr Quat<T> Euler<T>::toQuat() const
+Quat<T> Euler<T>::toQuat() const
 {
     Vec3<T> angles;
     int i,j,k;

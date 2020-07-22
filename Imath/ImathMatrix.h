@@ -587,7 +587,6 @@ template <class T> class Matrix33
     IMATH_CONSTEXPR14
     const Matrix33 &    gjInvert (bool singExc = false);
 
-    IMATH_CONSTEXPR14
     Matrix33<T>         gjInverse (bool singExc = false) const;
 
 
@@ -992,7 +991,6 @@ template <class T> class Matrix44
     IMATH_CONSTEXPR14
     const Matrix44 &    gjInvert (bool singExc = false);
 
-    IMATH_CONSTEXPR14
     Matrix44<T>         gjInverse (bool singExc = false) const;
 
 
@@ -2366,7 +2364,7 @@ Matrix33<T>::gjInvert (bool singExc)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Matrix33<T>
+Matrix33<T>
 Matrix33<T>::gjInverse (bool singExc) const
 {
     int i, j, k;
@@ -3635,7 +3633,7 @@ Matrix44<T>::gjInvert (bool singExc)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Matrix44<T>
+Matrix44<T>
 Matrix44<T>::gjInverse (bool singExc) const
 {
     int i, j, k;

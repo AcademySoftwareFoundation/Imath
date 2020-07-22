@@ -228,6 +228,7 @@ template <class T> class Vec2
     constexpr Vec2	operator / (T a) const;
 
 
+  
     //----------------------------------------------------------------
     // Length and normalization:  If v.length() is 0.0, v.normalize()
     // and v.normalized() produce a null vector; v.normalizeExc() and
@@ -237,21 +238,15 @@ template <class T> class Vec2
     // is 0.0, the result is undefined.
     //----------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 T	length () const;
+    T	                length () const;
     constexpr T		length2 () const;
 
-    IMATH_CONSTEXPR14
     const Vec2 &	normalize ();           // modifies *this
-    IMATH_CONSTEXPR14
     const Vec2 &	normalizeExc ();
-    IMATH_CONSTEXPR14
     const Vec2 &	normalizeNonNull ();
 
-    IMATH_CONSTEXPR14
     Vec2<T>	        normalized () const;	// does not modify *this
-    IMATH_CONSTEXPR14
     Vec2<T>	        normalizedExc () const;
-    IMATH_CONSTEXPR14
     Vec2<T>	        normalizedNonNull () const;
 
     //--------------------------------------------------------
@@ -475,21 +470,15 @@ template <class T> class Vec3
     // is 0.0, the result is undefined.
     //----------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 T	length () const;
+    T	                length () const;
     constexpr T		length2 () const;
 
-    IMATH_CONSTEXPR14
     const Vec3 &	normalize ();           // modifies *this
-    IMATH_CONSTEXPR14
     const Vec3 &	normalizeExc ();
-    IMATH_CONSTEXPR14
     const Vec3 &	normalizeNonNull ();
 
-    IMATH_CONSTEXPR14
     Vec3<T>	        normalized () const;	// does not modify *this
-    IMATH_CONSTEXPR14
     Vec3<T>	        normalizedExc () const;
-    IMATH_CONSTEXPR14
     Vec3<T>	        normalizedNonNull () const;
 
 
@@ -682,22 +671,15 @@ template <class T> class Vec4
     // is 0.0, the result is undefined.
     //----------------------------------------------------------------
 
-    IMATH_CONSTEXPR14
     T               length () const;
     constexpr T     length2 () const;
 
-    IMATH_CONSTEXPR14
     const Vec4 &    normalize ();           // modifies *this
-    IMATH_CONSTEXPR14
     const Vec4 &    normalizeExc ();
-    IMATH_CONSTEXPR14
     const Vec4 &    normalizeNonNull ();
 
-    IMATH_CONSTEXPR14
     Vec4<T>         normalized () const;	// does not modify *this
-    IMATH_CONSTEXPR14
     Vec4<T>         normalizedExc () const;
-    IMATH_CONSTEXPR14
     Vec4<T>         normalizedNonNull () const;
 
 
@@ -876,7 +858,8 @@ Vec3<int>::normalizedNonNull () const;
 template <> short
 Vec4<short>::length () const;
 
-template <> const Vec4<short> &
+template <> const
+Vec4<short> &
 Vec4<short>::normalize ();
 
 template <> const Vec4<short> &
@@ -1242,7 +1225,7 @@ Vec2<T>::lengthTiny () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+inline T
 Vec2<T>::length () const
 {
     T length2 = dot (*this);
@@ -1261,7 +1244,7 @@ Vec2<T>::length2 () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Vec2<T> &
+const Vec2<T> &
 Vec2<T>::normalize ()
 {
     T l = length();
@@ -1282,7 +1265,7 @@ Vec2<T>::normalize ()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Vec2<T> &
+const Vec2<T> &
 Vec2<T>::normalizeExc ()
 {
     T l = length();
@@ -1296,7 +1279,7 @@ Vec2<T>::normalizeExc ()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline
+inline
 const Vec2<T> &
 Vec2<T>::normalizeNonNull ()
 {
@@ -1306,8 +1289,7 @@ Vec2<T>::normalizeNonNull ()
     return *this;
 }
 
-template <class T>
-IMATH_CONSTEXPR14 Vec2<T>
+template <class T> Vec2<T>
 Vec2<T>::normalized () const
 {
     T l = length();
@@ -1318,8 +1300,7 @@ Vec2<T>::normalized () const
     return Vec2 (x / l, y / l);
 }
 
-template <class T>
-IMATH_CONSTEXPR14 Vec2<T>
+template <class T> Vec2<T>
 Vec2<T>::normalizedExc () const
 {
     T l = length();
@@ -1331,8 +1312,7 @@ Vec2<T>::normalizedExc () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline
-Vec2<T>
+inline Vec2<T>
 Vec2<T>::normalizedNonNull () const
 {
     T l = length();
@@ -1733,7 +1713,7 @@ Vec3<T>::lengthTiny () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+inline T
 Vec3<T>::length () const
 {
     T length2 = dot (*this);
@@ -1752,7 +1732,7 @@ Vec3<T>::length2 () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Vec3<T> &
+const Vec3<T> &
 Vec3<T>::normalize ()
 {
     T l = length();
@@ -1774,7 +1754,7 @@ Vec3<T>::normalize ()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Vec3<T> &
+const Vec3<T> &
 Vec3<T>::normalizeExc ()
 {
     T l = length();
@@ -1790,7 +1770,7 @@ Vec3<T>::normalizeExc ()
 
 template <class T>
 inline
-IMATH_CONSTEXPR14 const Vec3<T> &
+const Vec3<T> &
 Vec3<T>::normalizeNonNull ()
 {
     T l = length();
@@ -1801,7 +1781,7 @@ Vec3<T>::normalizeNonNull ()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec3<T>
+Vec3<T>
 Vec3<T>::normalized () const
 {
     T l = length();
@@ -1813,7 +1793,7 @@ Vec3<T>::normalized () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec3<T>
+Vec3<T>
 Vec3<T>::normalizedExc () const
 {
     T l = length();
@@ -1825,8 +1805,7 @@ Vec3<T>::normalizedExc () const
 }
 
 template <class T>
-inline
-IMATH_CONSTEXPR14 Vec3<T>
+inline Vec3<T>
 Vec3<T>::normalizedNonNull () const
 {
     T l = length();
@@ -2137,7 +2116,7 @@ Vec4<T>::lengthTiny () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+inline T
 Vec4<T>::length () const
 {
     T length2 = dot (*this);
@@ -2156,7 +2135,7 @@ Vec4<T>::length2 () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Vec4<T> &
+const Vec4<T> &
 Vec4<T>::normalize ()
 {
     T l = length();
@@ -2179,7 +2158,7 @@ Vec4<T>::normalize ()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Vec4<T> &
+const Vec4<T> &
 Vec4<T>::normalizeExc ()
 {
     T l = length();
@@ -2195,7 +2174,7 @@ Vec4<T>::normalizeExc ()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline
+inline
 const Vec4<T> &
 Vec4<T>::normalizeNonNull ()
 {
@@ -2208,7 +2187,7 @@ Vec4<T>::normalizeNonNull ()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec4<T>
+Vec4<T>
 Vec4<T>::normalized () const
 {
     T l = length();
@@ -2220,7 +2199,7 @@ Vec4<T>::normalized () const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec4<T>
+Vec4<T>
 Vec4<T>::normalizedExc () const
 {
     T l = length();
@@ -2232,8 +2211,7 @@ Vec4<T>::normalizedExc () const
 }
 
 template <class T>
-inline
-IMATH_CONSTEXPR14 Vec4<T>
+inline Vec4<T>
 Vec4<T>::normalizedNonNull () const
 {
     T l = length();
