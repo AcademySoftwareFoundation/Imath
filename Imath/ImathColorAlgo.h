@@ -92,7 +92,7 @@ hsv2rgb(const Vec3<T> &hsv)
 
 
 template<class T> 
-constexpr Color4<T>  
+IMATH_CONSTEXPR14 Color4<T>  
 hsv2rgb(const Color4<T> &hsv)
 {
     if ( limits<T>::isIntegral() )

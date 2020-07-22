@@ -89,8 +89,8 @@ class Sphere3
     //-------------------------------------------------------------------
 
     void circumscribe(const Box<Vec3<T> > &box);
-    constexpr bool intersect(const Line3<T> &l, Vec3<T> &intersection) const;
-    constexpr bool intersectT(const Line3<T> &l, T &t) const;
+    IMATH_CONSTEXPR14 bool intersect(const Line3<T> &l, Vec3<T> &intersection) const;
+    IMATH_CONSTEXPR14 bool intersectT(const Line3<T> &l, T &t) const;
 };
 
 
@@ -115,7 +115,7 @@ void Sphere3<T>::circumscribe(const Box<Vec3<T> > &box)
 
 
 template <class T>
-constexpr bool Sphere3<T>::intersectT(const Line3<T> &line, T &t) const
+IMATH_CONSTEXPR14 bool Sphere3<T>::intersectT(const Line3<T> &line, T &t) const
 {
     bool doesIntersect = true;
 
@@ -157,7 +157,7 @@ constexpr bool Sphere3<T>::intersectT(const Line3<T> &line, T &t) const
 
 
 template <class T>
-constexpr bool Sphere3<T>::intersect(const Line3<T> &line, Vec3<T> &intersection) const
+IMATH_CONSTEXPR14 bool Sphere3<T>::intersect(const Line3<T> &line, Vec3<T> &intersection) const
 {
     T t;
 

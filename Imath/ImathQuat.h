@@ -150,7 +150,8 @@ class Quat
     IMATH_CONSTEXPR14
     Quat<T>	        normalized () const;
     constexpr T	 	length () const;	// in R4
-    constexpr Vec3<T>   rotateVector(const Vec3<T> &original) const;
+    IMATH_CONSTEXPR14
+    Vec3<T>             rotateVector(const Vec3<T> &original) const;
     constexpr T         euclideanInnerProduct(const Quat<T> &q) const;
 
     //-----------------------
@@ -171,9 +172,10 @@ class Quat
     Matrix33<T>		toMatrix33 () const;
     constexpr
     Matrix44<T>		toMatrix44 () const;
-
-    constexpr Quat<T>	log () const;
-    constexpr Quat<T>	exp () const;
+    IMATH_CONSTEXPR14
+    Quat<T>	        log () const;
+    IMATH_CONSTEXPR14
+    Quat<T>	        exp () const;
 
 
   private:
@@ -187,13 +189,13 @@ class Quat
 template<class T> IMATH_CONSTEXPR14
 Quat<T>	                slerp (const Quat<T> &q1, const Quat<T> &q2, T t);
 
-template<class T>
-constexpr Quat<T>	slerpShortestArc
+template<class T> IMATH_CONSTEXPR14
+Quat<T>	                slerpShortestArc
                               (const Quat<T> &q1, const Quat<T> &q2, T t);
 
 
-template<class T>
-constexpr Quat<T>	squad (const Quat<T> &q1, const Quat<T> &q2, 
+template<class T> IMATH_CONSTEXPR14
+Quat<T>	                 squad (const Quat<T> &q1, const Quat<T> &q2, 
 			       const Quat<T> &qa, const Quat<T> &qb, T t);
 
 template<class T>
@@ -478,7 +480,8 @@ Quat<T>::invert ()
 
 
 template<class T>
-constexpr inline Vec3<T>
+IMATH_CONSTEXPR14
+Vec3<T>
 Quat<T>::rotateVector(const Vec3<T>& original) const
 {
     //
@@ -559,7 +562,7 @@ slerp (const Quat<T> &q1, const Quat<T> &q2, T t)
 
 
 template<class T>
-constexpr Quat<T>
+IMATH_CONSTEXPR14 Quat<T>
 slerpShortestArc (const Quat<T> &q1, const Quat<T> &q2, T t)
 {
     //
@@ -576,7 +579,7 @@ slerpShortestArc (const Quat<T> &q1, const Quat<T> &q2, T t)
 
 
 template<class T>
-constexpr Quat<T>
+IMATH_CONSTEXPR14 Quat<T>
 spline (const Quat<T> &q0, const Quat<T> &q1,
         const Quat<T> &q2, const Quat<T> &q3,
 	T t)
@@ -612,7 +615,7 @@ spline (const Quat<T> &q0, const Quat<T> &q1,
 
 
 template<class T>
-constexpr Quat<T>
+IMATH_CONSTEXPR14 Quat<T>
 squad (const Quat<T> &q1, const Quat<T> &qa,
        const Quat<T> &qb, const Quat<T> &q2,
        T t)
@@ -635,7 +638,7 @@ squad (const Quat<T> &q1, const Quat<T> &qa,
 
 
 template<class T>
-constexpr Quat<T>
+IMATH_CONSTEXPR14 Quat<T>
 intermediate (const Quat<T> &q0, const Quat<T> &q1, const Quat<T> &q2)
 {
     //
@@ -657,7 +660,7 @@ intermediate (const Quat<T> &q0, const Quat<T> &q1, const Quat<T> &q2)
 
 
 template <class T>
-constexpr inline Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 Quat<T>::log () const
 {
     //
@@ -683,7 +686,7 @@ Quat<T>::log () const
 
 
 template <class T>
-constexpr inline Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 Quat<T>::exp () const
 {
     //

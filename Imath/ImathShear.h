@@ -95,7 +95,7 @@ template <class T> class Shear6
     IMATH_CONSTEXPR14
     const Shear6 &	operator = (const Shear6 &h);
     template <class S> 
-	constexpr
+        IMATH_CONSTEXPR14
         const Shear6 &	operator = (const Vec3<S> &v);
 
     //------------
@@ -153,8 +153,10 @@ template <class T> class Shear6
     //      abs (this[i] - h[i]) <= e * abs (this[i])
     //-----------------------------------------------------------------------
 
-    constexpr bool	equalWithAbsError (const Shear6<T> &h, T e) const;
-    constexpr bool	equalWithRelError (const Shear6<T> &h, T e) const;
+    IMATH_CONSTEXPR14
+    bool	        equalWithAbsError (const Shear6<T> &h, T e) const;
+    IMATH_CONSTEXPR14
+    bool	        equalWithRelError (const Shear6<T> &h, T e) const;
 
 
     //------------------------
@@ -377,7 +379,7 @@ Shear6<T>::operator = (const Shear6 &h)
 
 template <class T>
 template <class S>
-constexpr inline const Shear6<T> &
+IMATH_CONSTEXPR14 inline const Shear6<T> &
 Shear6<T>::operator = (const Vec3<S> &v)
 {
     xy = T (v.x);
@@ -474,7 +476,7 @@ Shear6<T>::operator != (const Shear6<S> &h) const
 }
 
 template <class T>
-constexpr bool
+IMATH_CONSTEXPR14 bool
 Shear6<T>::equalWithAbsError (const Shear6<T> &h, T e) const
 {
     for (int i = 0; i < 6; i++)
@@ -485,7 +487,7 @@ Shear6<T>::equalWithAbsError (const Shear6<T> &h, T e) const
 }
 
 template <class T>
-constexpr bool
+IMATH_CONSTEXPR14 bool
 Shear6<T>::equalWithRelError (const Shear6<T> &h, T e) const
 {
     for (int i = 0; i < 6; i++)
