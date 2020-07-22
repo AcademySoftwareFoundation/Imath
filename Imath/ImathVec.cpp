@@ -55,7 +55,7 @@ namespace
 {
 
 template<class T>
-bool
+IMATH_CONSTEXPR14 bool
 normalizeOrThrow(Vec2<T> &v)
 {
     int axis = -1;
@@ -78,7 +78,7 @@ normalizeOrThrow(Vec2<T> &v)
 
 
 template<class T>
-bool
+IMATH_CONSTEXPR14 bool
 normalizeOrThrow(Vec3<T> &v)
 {
     int axis = -1;
@@ -101,7 +101,7 @@ normalizeOrThrow(Vec3<T> &v)
 
 
 template<class T>
-bool
+IMATH_CONSTEXPR14 bool
 normalizeOrThrow(Vec4<T> &v)
 {
     int axis = -1;
@@ -280,7 +280,7 @@ Vec2<int>::normalizedNonNull () const
 // Vec3<short>
 
 template <> 
-IMATH_EXPORT
+IMATH_EXPORT 
 short
 Vec3<short>::length () const
 {
