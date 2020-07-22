@@ -44,6 +44,6 @@ imath_define_library(Imath
     ImathVecAlgo.h
     ImathVec.h
   DEPENDENCIES
-    Half IexMath
+    Half
     )
   

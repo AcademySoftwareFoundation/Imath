@@ -172,9 +172,7 @@ class Quat
     Matrix33<T>		toMatrix33 () const;
     constexpr
     Matrix44<T>		toMatrix44 () const;
-    IMATH_CONSTEXPR14
     Quat<T>	        log () const;
-    IMATH_CONSTEXPR14
     Quat<T>	        exp () const;
 
 
@@ -660,7 +658,7 @@ intermediate (const Quat<T> &q0, const Quat<T> &q1, const Quat<T> &q2)
 
 
 template <class T>
-IMATH_CONSTEXPR14 inline Quat<T>
+inline Quat<T>
 Quat<T>::log () const
 {
     //
@@ -686,7 +684,7 @@ Quat<T>::log () const
 
 
 template <class T>
-IMATH_CONSTEXPR14 inline Quat<T>
+inline Quat<T>
 Quat<T>::exp () const
 {
     //
