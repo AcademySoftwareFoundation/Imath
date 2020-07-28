@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -32,8 +32,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-
-
 #ifndef INCLUDED_IMATHVECALGO_H
 #define INCLUDED_IMATHVECALGO_H
 
@@ -47,36 +45,31 @@
 //
 //-------------------------------------------------------------------------
 
-#include "ImathVec.h"
 #include "ImathLimits.h"
 #include "ImathNamespace.h"
+#include "ImathVec.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
-
 
 //-----------------------------------------------------------------
 // Find the projection of vector t onto vector s (Vec2, Vec3, Vec4)
 //-----------------------------------------------------------------
 
-template <class Vec>
-IMATH_CONSTEXPR14 Vec                     project (const Vec &s, const Vec &t);
-
+template <class Vec> IMATH_CONSTEXPR14 Vec project (const Vec& s, const Vec& t);
 
 //------------------------------------------------
 // Find a vector that is perpendicular to s and
 // in the same plane as s and t (Vec2, Vec3, Vec4)
 //------------------------------------------------
 
-template <class Vec> constexpr Vec        orthogonal (const Vec &s, const Vec &t);
-
+template <class Vec> constexpr Vec orthogonal (const Vec& s, const Vec& t);
 
 //-----------------------------------------------
 // Find the direction of a ray s after reflection
 // off a plane with normal t (Vec2, Vec3, Vec4)
 //-----------------------------------------------
 
-template <class Vec> constexpr Vec        reflect (const Vec &s, const Vec &t);
-
+template <class Vec> constexpr Vec reflect (const Vec& s, const Vec& t);
 
 //--------------------------------------------------------------------
 // Find the vertex of triangle (v0, v1, v2) that is closest to point p
@@ -84,10 +77,8 @@ template <class Vec> constexpr Vec        reflect (const Vec &s, const Vec &t);
 //--------------------------------------------------------------------
 
 template <class Vec>
-IMATH_CONSTEXPR14 Vec                     closestVertex (const Vec &v0,
-                                                         const Vec &v1,
-                                                         const Vec &v2, 
-                                                         const Vec &p);
+IMATH_CONSTEXPR14 Vec
+closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p);
 
 //---------------
 // Implementation
@@ -95,7 +86,7 @@ IMATH_CONSTEXPR14 Vec                     closestVertex (const Vec &v0,
 
 template <class Vec>
 IMATH_CONSTEXPR14 Vec
-project (const Vec &s, const Vec &t)
+project (const Vec& s, const Vec& t)
 {
     Vec sNormalized = s.normalized();
     return sNormalized * (sNormalized ^ t);
@@ -103,26 +94,23 @@ project (const Vec &s, const Vec &t)
 
 template <class Vec>
 constexpr Vec
-orthogonal (const Vec &s, const Vec &t)
+orthogonal (const Vec& s, const Vec& t)
 {
     return t - project (s, t);
 }
 
 template <class Vec>
 constexpr Vec
-reflect (const Vec &s, const Vec &t)
+reflect (const Vec& s, const Vec& t)
 {
-    return s - typename Vec::BaseType(2) * (s - project(t, s));
+    return s - typename Vec::BaseType (2) * (s - project (t, s));
 }
 
 template <class Vec>
 IMATH_CONSTEXPR14 Vec
-closestVertex(const Vec &v0,
-              const Vec &v1,
-              const Vec &v2, 
-              const Vec &p)
+closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p)
 {
-    Vec nearest = v0;
+    Vec                    nearest = v0;
     typename Vec::BaseType neardot = (v0 - p).length2();
     typename Vec::BaseType tmp     = (v1 - p).length2();
 
@@ -142,7 +130,6 @@ closestVertex(const Vec &v0,
 
     return nearest;
 }
-
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

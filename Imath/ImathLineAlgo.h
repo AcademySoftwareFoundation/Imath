@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -31,8 +31,6 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 ///////////////////////////////////////////////////////////////////////////
-
-
 
 #ifndef INCLUDED_IMATHLINEALGO_H
 #define INCLUDED_IMATHLINEALGO_H
@@ -71,21 +69,19 @@
 //
 //------------------------------------------------------------------
 
-#include "ImathLine.h"
-#include "ImathVecAlgo.h"
 #include "ImathFun.h"
+#include "ImathLine.h"
 #include "ImathNamespace.h"
+#include "ImathVecAlgo.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
-
 template <class T>
 IMATH_CONSTEXPR14 bool
-closestPoints
-    (const Line3<T>& line1,
-     const Line3<T>& line2,
-     Vec3<T>& point1,
-     Vec3<T>& point2)
+closestPoints (const Line3<T>& line1,
+               const Line3<T>& line2,
+               Vec3<T>&        point1,
+               Vec3<T>&        point2)
 {
     //
     // Compute point1 and point2 such that point1 is on line1, point2
@@ -95,40 +91,37 @@ closestPoints
     // This function assumes that line1.dir and line2.dir are normalized.
     //
 
-    Vec3<T> w = line1.pos - line2.pos;
-    T d1w = line1.dir ^ w;
-    T d2w = line2.dir ^ w;
-    T d1d2 = line1.dir ^ line2.dir;
-    T n1 = d1d2 * d2w - d1w;
-    T n2 = d2w - d1d2 * d1w;
-    T d = 1 - d1d2 * d1d2;
-    T absD = abs (d);
+    Vec3<T> w    = line1.pos - line2.pos;
+    T       d1w  = line1.dir ^ w;
+    T       d2w  = line2.dir ^ w;
+    T       d1d2 = line1.dir ^ line2.dir;
+    T       n1   = d1d2 * d2w - d1w;
+    T       n2   = d2w - d1d2 * d1w;
+    T       d    = 1 - d1d2 * d1d2;
+    T       absD = abs (d);
 
-    if ((absD > 1) ||
-	(abs (n1) < limits<T>::max() * absD &&
-	 abs (n2) < limits<T>::max() * absD))
+    if ((absD > 1) || (abs (n1) < limits<T>::max() * absD &&
+                       abs (n2) < limits<T>::max() * absD))
     {
-	point1 = line1 (n1 / d);
-	point2 = line2 (n2 / d);
-	return true;
+        point1 = line1 (n1 / d);
+        point2 = line2 (n2 / d);
+        return true;
     }
     else
     {
-	return false;
+        return false;
     }
 }
 
-
 template <class T>
 IMATH_CONSTEXPR14 bool
-intersect
-    (const Line3<T> &line,
-     const Vec3<T> &v0,
-     const Vec3<T> &v1,
-     const Vec3<T> &v2,
-     Vec3<T> &pt,
-     Vec3<T> &barycentric,
-     bool &front)
+intersect (const Line3<T>& line,
+           const Vec3<T>&  v0,
+           const Vec3<T>&  v1,
+           const Vec3<T>&  v2,
+           Vec3<T>&        pt,
+           Vec3<T>&        barycentric,
+           bool&           front)
 {
     //
     // Given a line and a triangle (v0, v1, v2), the intersect() function
@@ -154,29 +147,29 @@ intersect
     //     pt = v0 * barycentric.x + v1 * barycentric.y + v2 * barycentric.z
     //
 
-    Vec3<T> edge0 = v1 - v0;
-    Vec3<T> edge1 = v2 - v1;
+    Vec3<T> edge0  = v1 - v0;
+    Vec3<T> edge1  = v2 - v1;
     Vec3<T> normal = edge1 % edge0;
 
     T l = normal.length();
 
     if (l != 0)
-	normal /= l;
+        normal /= l;
     else
-	return false;	// zero-area triangle
+        return false; // zero-area triangle
 
     //
     // d is the distance of line.pos from the plane that contains the triangle.
     // The intersection point is at line.pos + (d/nd) * line.dir.
     //
 
-    T d = normal ^ (v0 - line.pos);
+    T d  = normal ^ (v0 - line.pos);
     T nd = normal ^ line.dir;
 
     if (abs (nd) > 1 || abs (d) < limits<T>::max() * abs (nd))
-	pt = line (d / nd);
+        pt = line (d / nd);
     else
-	return false;  // line and plane are nearly parallel
+        return false; // line and plane are nearly parallel
 
     //
     // Compute the barycentric coordinates of the intersection point.
@@ -185,57 +178,55 @@ intersect
     //
 
     {
-	Vec3<T> en = edge0.normalized();
-	Vec3<T> a = pt - v0;
-	Vec3<T> b = v2 - v0;
-	Vec3<T> c = (a - en * (en ^ a));
-	Vec3<T> d = (b - en * (en ^ b));
-	T e = c ^ d;
-	T f = d ^ d;
+        Vec3<T> en = edge0.normalized();
+        Vec3<T> a  = pt - v0;
+        Vec3<T> b  = v2 - v0;
+        Vec3<T> c  = (a - en * (en ^ a));
+        Vec3<T> d  = (b - en * (en ^ b));
+        T       e  = c ^ d;
+        T       f  = d ^ d;
 
-	if (e >= 0 && e <= f)
-	    barycentric.z = e / f;
-	else
-	    return false; // outside
+        if (e >= 0 && e <= f)
+            barycentric.z = e / f;
+        else
+            return false; // outside
     }
 
     {
-	Vec3<T> en = edge1.normalized();
-	Vec3<T> a = pt - v1;
-	Vec3<T> b = v0 - v1;
-	Vec3<T> c = (a - en * (en ^ a));
-	Vec3<T> d = (b - en * (en ^ b));
-	T e = c ^ d;
-	T f = d ^ d;
+        Vec3<T> en = edge1.normalized();
+        Vec3<T> a  = pt - v1;
+        Vec3<T> b  = v0 - v1;
+        Vec3<T> c  = (a - en * (en ^ a));
+        Vec3<T> d  = (b - en * (en ^ b));
+        T       e  = c ^ d;
+        T       f  = d ^ d;
 
-	if (e >= 0 && e <= f)
-	    barycentric.x = e / f;
-	else
-	    return false; // outside
+        if (e >= 0 && e <= f)
+            barycentric.x = e / f;
+        else
+            return false; // outside
     }
 
     barycentric.y = 1 - barycentric.x - barycentric.z;
 
     if (barycentric.y < 0)
-	return false; // outside
+        return false; // outside
 
     front = ((line.dir ^ normal) < 0);
     return true;
 }
 
-
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
-closestVertex
-    (const Vec3<T> &v0,
-     const Vec3<T> &v1,
-     const Vec3<T> &v2,
-     const Line3<T> &l)
+                  closestVertex (const Vec3<T>&  v0,
+                                 const Vec3<T>&  v1,
+                                 const Vec3<T>&  v2,
+                                 const Line3<T>& l)
 {
     Vec3<T> nearest = v0;
-    T neardot       = (v0 - l.closestPointTo(v0)).length2();
-    
-    T tmp           = (v1 - l.closestPointTo(v1)).length2();
+    T       neardot = (v0 - l.closestPointTo (v0)).length2();
+
+    T tmp = (v1 - l.closestPointTo (v1)).length2();
 
     if (tmp < neardot)
     {
@@ -243,7 +234,7 @@ closestVertex
         nearest = v1;
     }
 
-    tmp = (v2 - l.closestPointTo(v2)).length2();
+    tmp = (v2 - l.closestPointTo (v2)).length2();
     if (tmp < neardot)
     {
         neardot = tmp;
@@ -253,10 +244,9 @@ closestVertex
     return nearest;
 }
 
-
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
-rotatePoint (const Vec3<T> p, Line3<T> l, T angle)
+                  rotatePoint (const Vec3<T> p, Line3<T> l, T angle)
 {
     //
     // Rotate the point p around the line l by the given angle.
@@ -267,21 +257,20 @@ rotatePoint (const Vec3<T> p, Line3<T> l, T angle)
     // plane.
     //
 
-    Vec3<T> q = l.closestPointTo(p);
-    Vec3<T> x = p - q;
-    T radius = x.length();
+    Vec3<T> q      = l.closestPointTo (p);
+    Vec3<T> x      = p - q;
+    T       radius = x.length();
 
     x.normalize();
     Vec3<T> y = (x % l.dir).normalize();
 
-    T cosangle = Math<T>::cos(angle);
-    T sinangle = Math<T>::sin(angle);
+    T cosangle = Math<T>::cos (angle);
+    T sinangle = Math<T>::sin (angle);
 
-    Vec3<T> r = q + x * radius * cosangle + y * radius * sinangle; 
+    Vec3<T> r = q + x * radius * cosangle + y * radius * sinangle;
 
     return r;
 }
-
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 
