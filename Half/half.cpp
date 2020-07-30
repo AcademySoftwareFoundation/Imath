@@ -52,24 +52,27 @@ using namespace std;
 // Lookup tables for half-to-float and float-to-half conversion
 //-------------------------------------------------------------
 
+// clang-format off
+
 HALF_EXPORT const half::uif half::_toFloat[1 << 16] =
 #include "toFloat.h"
-    HALF_EXPORT const unsigned short half::_eLut[1 << 9] =
+HALF_EXPORT const unsigned short half::_eLut[1 << 9] =
 #include "eLut.h"
 
-        //-----------------------------------------------
-    // Overflow handler for float-to-half conversion;
-    // generates a hardware floating-point overflow,
-    // which may be trapped by the operating system.
-    //-----------------------------------------------
+//-----------------------------------------------
+// Overflow handler for float-to-half conversion;
+// generates a hardware floating-point overflow,
+// which may be trapped by the operating system.
+//-----------------------------------------------
 
-    HALF_EXPORT float half::overflow()
+HALF_EXPORT float
+half::overflow()
 {
     volatile float f = 1e10;
 
     for (int i = 0; i < 10; i++)
-        f *= f; // this will overflow before
-                // the for­loop terminates
+        f *= f; // this will overflow before the for loop terminates
+
     return f;
 }
 
@@ -91,9 +94,9 @@ half::convert (int i)
     // of float and half (127 versus 15).
     //
 
-    int s = (i >> 16) & 0x00008000;
+    int s =  (i >> 16) & 0x00008000;
     int e = ((i >> 23) & 0x000000ff) - (127 - 15);
-    int m = i & 0x007fffff;
+    int m =   i        & 0x007fffff;
 
     //
     // Now reassemble s, e and m into a half:
