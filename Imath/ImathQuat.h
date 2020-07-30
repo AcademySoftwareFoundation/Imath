@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -31,8 +31,6 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 ///////////////////////////////////////////////////////////////////////////
-
-
 
 #ifndef INCLUDED_IMATHQUAT_H
 #define INCLUDED_IMATHQUAT_H
@@ -64,44 +62,40 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 // Disable MS VC++ warnings about conversion from double to float
-#pragma warning(disable:4244)
+#    pragma warning(disable : 4244)
 #endif
 
-template <class T>
-class Quat
+template <class T> class Quat
 {
   public:
-
-    T			r;	    // real part
-    Vec3<T>		v;	    // imaginary vector
-
+    T r;       // real part
+    Vec3<T> v; // imaginary vector
 
     //-----------------------------------------------------
     // Constructors - default constructor is identity quat
     //-----------------------------------------------------
 
-    constexpr Quat ();
+    constexpr Quat();
 
-    template <class S>
-    constexpr Quat (const Quat<S> &q);
+    template <class S> constexpr Quat (const Quat<S>& q);
 
     constexpr Quat (T s, T i, T j, T k);
 
     constexpr Quat (T s, Vec3<T> d);
 
-    constexpr static Quat<T> identity ();
+    constexpr static Quat<T> identity();
 
     //-------------------
     // Copy constructor
     //-------------------
 
-    IMATH_CONSTEXPR14 Quat (const Quat &q);
+    IMATH_CONSTEXPR14 Quat (const Quat& q);
 
     //-------------
     // Destructor
     //-------------
 
-    ~Quat () = default;
+    ~Quat() = default;
 
     //-------------------------------------------------
     //	Basic Algebra - Operators and Methods
@@ -119,341 +113,274 @@ class Quat
     //	a 4D vector when one of the operands is scalar
     //-------------------------------------------------
 
-    IMATH_CONSTEXPR14
-    const Quat<T> &	operator =	(const Quat<T> &q);
-    IMATH_CONSTEXPR14
-    const Quat<T> &	operator *=	(const Quat<T> &q);
-    IMATH_CONSTEXPR14
-    const Quat<T> &	operator *=	(T t);
-    IMATH_CONSTEXPR14
-    const Quat<T> &	operator /=	(const Quat<T> &q);
-    IMATH_CONSTEXPR14
-    const Quat<T> &	operator /=	(T t);
-    IMATH_CONSTEXPR14
-    const Quat<T> &	operator +=	(const Quat<T> &q);
-    IMATH_CONSTEXPR14
-    const Quat<T> &	operator -=	(const Quat<T> &q);
-    IMATH_CONSTEXPR14
-    T &			operator []	(int index);	// as 4D vector
-    constexpr
-    T			operator []	(int index) const;
+    IMATH_CONSTEXPR14 const Quat<T>& operator= (const Quat<T>& q);
+    IMATH_CONSTEXPR14 const Quat<T>& operator*= (const Quat<T>& q);
+    IMATH_CONSTEXPR14 const Quat<T>& operator*= (T t);
+    IMATH_CONSTEXPR14 const Quat<T>& operator/= (const Quat<T>& q);
+    IMATH_CONSTEXPR14 const Quat<T>& operator/= (T t);
+    IMATH_CONSTEXPR14 const Quat<T>& operator+= (const Quat<T>& q);
+    IMATH_CONSTEXPR14 const Quat<T>& operator-= (const Quat<T>& q);
+    IMATH_CONSTEXPR14 T& operator[] (int index); // as 4D vector
+    constexpr T operator[] (int index) const;
 
-    template <class S> constexpr bool operator == (const Quat<S> &q) const;
-    template <class S> constexpr bool operator != (const Quat<S> &q) const;
+    template <class S> constexpr bool operator== (const Quat<S>& q) const;
+    template <class S> constexpr bool operator!= (const Quat<S>& q) const;
 
-    IMATH_CONSTEXPR14
-    Quat<T> &	        invert ();		// this -> 1 / this
-    IMATH_CONSTEXPR14
-    Quat<T>	        inverse () const;
-    IMATH_CONSTEXPR14
-    Quat<T> &	        normalize ();		// returns this
-    IMATH_CONSTEXPR14
-    Quat<T>	        normalized () const;
-    constexpr T	 	length () const;	// in R4
-    IMATH_CONSTEXPR14
-    Vec3<T>             rotateVector(const Vec3<T> &original) const;
-    constexpr T         euclideanInnerProduct(const Quat<T> &q) const;
+    IMATH_CONSTEXPR14 Quat<T>& invert(); // this -> 1 / this
+    IMATH_CONSTEXPR14 Quat<T> inverse() const;
+    IMATH_CONSTEXPR14 Quat<T>& normalize(); // returns this
+    IMATH_CONSTEXPR14 Quat<T> normalized() const;
+    constexpr T length() const; // in R4
+    IMATH_CONSTEXPR14 Vec3<T> rotateVector (const Vec3<T>& original) const;
+    constexpr T euclideanInnerProduct (const Quat<T>& q) const;
 
     //-----------------------
     //	Rotation conversion
     //-----------------------
 
-    IMATH_CONSTEXPR14
-    Quat<T> &	        setAxisAngle (const Vec3<T> &axis, T radians);
+    IMATH_CONSTEXPR14 Quat<T>& setAxisAngle (const Vec3<T>& axis, T radians);
 
-    IMATH_CONSTEXPR14
-    Quat<T> &	        setRotation (const Vec3<T> &fromDirection,
-				     const Vec3<T> &toDirection);
+    IMATH_CONSTEXPR14 Quat<T>&
+    setRotation (const Vec3<T>& fromDirection, const Vec3<T>& toDirection);
 
-    constexpr T		angle () const;
-    constexpr Vec3<T>	axis () const;
+    constexpr T angle() const;
+    constexpr Vec3<T> axis() const;
 
-    constexpr
-    Matrix33<T>		toMatrix33 () const;
-    constexpr
-    Matrix44<T>		toMatrix44 () const;
-    Quat<T>	        log () const;
-    Quat<T>	        exp () const;
-
+    constexpr Matrix33<T> toMatrix33() const;
+    constexpr Matrix44<T> toMatrix44() const;
+    Quat<T> log() const;
+    Quat<T> exp() const;
 
   private:
-
-    void		setRotationInternal (const Vec3<T> &f0,
-					     const Vec3<T> &t0,
-					     Quat<T> &q);
+    void setRotationInternal (const Vec3<T>& f0, const Vec3<T>& t0, Quat<T>& q);
 };
 
+template <class T> IMATH_CONSTEXPR14 Quat<T> slerp (const Quat<T>& q1, const Quat<T>& q2, T t);
 
-template<class T> IMATH_CONSTEXPR14
-Quat<T>	                slerp (const Quat<T> &q1, const Quat<T> &q2, T t);
+template <class T>
+IMATH_CONSTEXPR14 Quat<T> slerpShortestArc (const Quat<T>& q1, const Quat<T>& q2, T t);
 
-template<class T> IMATH_CONSTEXPR14
-Quat<T>	                slerpShortestArc
-                              (const Quat<T> &q1, const Quat<T> &q2, T t);
+template <class T>
+IMATH_CONSTEXPR14 Quat<T>
+squad (const Quat<T>& q1, const Quat<T>& q2, const Quat<T>& qa, const Quat<T>& qb, T t);
 
+template <class T>
+void intermediate (const Quat<T>& q0,
+                   const Quat<T>& q1,
+                   const Quat<T>& q2,
+                   const Quat<T>& q3,
+                   Quat<T>& qa,
+                   Quat<T>& qb);
 
-template<class T> IMATH_CONSTEXPR14
-Quat<T>	                 squad (const Quat<T> &q1, const Quat<T> &q2, 
-			       const Quat<T> &qa, const Quat<T> &qb, T t);
+template <class T> constexpr Matrix33<T> operator* (const Matrix33<T>& M, const Quat<T>& q);
 
-template<class T>
-void          		intermediate (const Quat<T> &q0, const Quat<T> &q1, 
-				      const Quat<T> &q2, const Quat<T> &q3,
-				      Quat<T> &qa, Quat<T> &qb);
+template <class T> constexpr Matrix33<T> operator* (const Quat<T>& q, const Matrix33<T>& M);
 
-template<class T>
-constexpr
-Matrix33<T>		operator * (const Matrix33<T> &M, const Quat<T> &q);
+template <class T> std::ostream& operator<< (std::ostream& o, const Quat<T>& q);
 
-template<class T>
-constexpr
-Matrix33<T>		operator * (const Quat<T> &q, const Matrix33<T> &M);
+template <class T> constexpr Quat<T> operator* (const Quat<T>& q1, const Quat<T>& q2);
 
-template<class T>
-std::ostream &		operator << (std::ostream &o, const Quat<T> &q);
+template <class T> constexpr Quat<T> operator/ (const Quat<T>& q1, const Quat<T>& q2);
 
-template<class T>
-constexpr Quat<T>	operator * (const Quat<T> &q1, const Quat<T> &q2);
+template <class T> constexpr Quat<T> operator/ (const Quat<T>& q, T t);
 
-template<class T>
-constexpr Quat<T>	operator / (const Quat<T> &q1, const Quat<T> &q2);
+template <class T> constexpr Quat<T> operator* (const Quat<T>& q, T t);
 
-template<class T>
-constexpr Quat<T>	operator / (const Quat<T> &q, T t);
+template <class T> constexpr Quat<T> operator* (T t, const Quat<T>& q);
 
-template<class T>
-constexpr Quat<T>	operator * (const Quat<T> &q, T t);
+template <class T> constexpr Quat<T> operator+ (const Quat<T>& q1, const Quat<T>& q2);
 
-template<class T>
-constexpr Quat<T>	operator * (T t, const Quat<T> &q);
+template <class T> constexpr Quat<T> operator- (const Quat<T>& q1, const Quat<T>& q2);
 
-template<class T>
-constexpr Quat<T>	operator + (const Quat<T> &q1, const Quat<T> &q2);
+template <class T> constexpr Quat<T> operator~ (const Quat<T>& q);
 
-template<class T>
-constexpr Quat<T>	operator - (const Quat<T> &q1, const Quat<T> &q2);
+template <class T> constexpr Quat<T> operator- (const Quat<T>& q);
 
-template<class T>
-constexpr Quat<T>	operator ~ (const Quat<T> &q);
-
-template<class T>
-constexpr Quat<T>	operator - (const Quat<T> &q);
-
-template<class T> IMATH_CONSTEXPR14
-Vec3<T>	                operator * (const Vec3<T> &v, const Quat<T> &q);
-
+template <class T> IMATH_CONSTEXPR14 Vec3<T> operator* (const Vec3<T>& v, const Quat<T>& q);
 
 //--------------------
 // Convenient typedefs
 //--------------------
 
-typedef Quat<float>	Quatf;
-typedef Quat<double>	Quatd;
-
+typedef Quat<float> Quatf;
+typedef Quat<double> Quatd;
 
 //---------------
 // Implementation
 //---------------
 
-template<class T>
-constexpr inline
-Quat<T>::Quat (): r (1), v (0, 0, 0)
+template <class T> constexpr inline Quat<T>::Quat() : r (1), v (0, 0, 0)
 {
     // empty
 }
 
-
-template<class T>
+template <class T>
 template <class S>
-constexpr inline
-Quat<T>::Quat (const Quat<S> &q): r (q.r), v (q.v)
+constexpr inline Quat<T>::Quat (const Quat<S>& q) : r (q.r), v (q.v)
 {
     // empty
 }
 
-
-template<class T>
-constexpr inline
-Quat<T>::Quat (T s, T i, T j, T k): r (s), v (i, j, k)
+template <class T> constexpr inline Quat<T>::Quat (T s, T i, T j, T k) : r (s), v (i, j, k)
 {
     // empty
 }
 
-
-template<class T>
-constexpr inline
-Quat<T>::Quat (T s, Vec3<T> d): r (s), v (d)
+template <class T> constexpr inline Quat<T>::Quat (T s, Vec3<T> d) : r (s), v (d)
 {
     // empty
 }
 
-template<class T>
-IMATH_CONSTEXPR14 inline
-Quat<T>::Quat(const Quat<T> &q)
+template <class T> IMATH_CONSTEXPR14 inline Quat<T>::Quat (const Quat<T>& q)
 {
-	operator=(q);
+    operator= (q);
 }
 
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-Quat<T>::identity ()
+Quat<T>::identity()
 {
     return Quat<T>();
 }
 
-template<class T>
-IMATH_CONSTEXPR14 inline const Quat<T> &
-Quat<T>::operator = (const Quat<T> &q)
+template <class T>
+IMATH_CONSTEXPR14 inline const Quat<T>&
+Quat<T>::operator= (const Quat<T>& q)
 {
     r = q.r;
     v = q.v;
     return *this;
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14 inline const Quat<T> &
-Quat<T>::operator *= (const Quat<T> &q)
+template <class T>
+IMATH_CONSTEXPR14 inline const Quat<T>&
+Quat<T>::operator*= (const Quat<T>& q)
 {
     T rtmp = r * q.r - (v ^ q.v);
-    v = r * q.v + v * q.r + v % q.v;
-    r = rtmp;
+    v      = r * q.v + v * q.r + v % q.v;
+    r      = rtmp;
     return *this;
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14 inline const Quat<T> &
-Quat<T>::operator *= (T t)
+template <class T>
+IMATH_CONSTEXPR14 inline const Quat<T>&
+Quat<T>::operator*= (T t)
 {
     r *= t;
     v *= t;
     return *this;
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14 inline const Quat<T> &
-Quat<T>::operator /= (const Quat<T> &q)
+template <class T>
+IMATH_CONSTEXPR14 inline const Quat<T>&
+Quat<T>::operator/= (const Quat<T>& q)
 {
     *this = *this * q.inverse();
     return *this;
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14 inline const Quat<T> &
-Quat<T>::operator /= (T t)
+template <class T>
+IMATH_CONSTEXPR14 inline const Quat<T>&
+Quat<T>::operator/= (T t)
 {
     r /= t;
     v /= t;
     return *this;
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14 inline const Quat<T> &
-Quat<T>::operator += (const Quat<T> &q)
+template <class T>
+IMATH_CONSTEXPR14 inline const Quat<T>&
+Quat<T>::operator+= (const Quat<T>& q)
 {
     r += q.r;
     v += q.v;
     return *this;
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14 inline const Quat<T> &
-Quat<T>::operator -= (const Quat<T> &q)
+template <class T>
+IMATH_CONSTEXPR14 inline const Quat<T>&
+Quat<T>::operator-= (const Quat<T>& q)
 {
     r -= q.r;
     v -= q.v;
     return *this;
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14 inline T &
-Quat<T>::operator [] (int index)
+template <class T>
+IMATH_CONSTEXPR14 inline T&
+Quat<T>::operator[] (int index)
 {
     return index ? v[index - 1] : r;
 }
 
-
-template<class T>
+template <class T>
 constexpr inline T
-Quat<T>::operator [] (int index) const
+Quat<T>::operator[] (int index) const
 {
     return index ? v[index - 1] : r;
 }
-
 
 template <class T>
 template <class S>
 constexpr inline bool
-Quat<T>::operator == (const Quat<S> &q) const
+Quat<T>::operator== (const Quat<S>& q) const
 {
     return r == q.r && v == q.v;
 }
 
-
 template <class T>
 template <class S>
 constexpr inline bool
-Quat<T>::operator != (const Quat<S> &q) const
+Quat<T>::operator!= (const Quat<S>& q) const
 {
     return r != q.r || v != q.v;
 }
 
-
-template<class T>
+template <class T>
 constexpr inline T
-operator ^ (const Quat<T>& q1 ,const Quat<T>& q2)
+operator^ (const Quat<T>& q1, const Quat<T>& q2)
 {
     return q1.r * q2.r + (q1.v ^ q2.v);
 }
 
-
 template <class T>
 constexpr inline T
-Quat<T>::length () const
+Quat<T>::length() const
 {
     return Math<T>::sqrt (r * r + (v ^ v));
 }
 
-
 template <class T>
-IMATH_CONSTEXPR14 inline Quat<T> &
-Quat<T>::normalize ()
+IMATH_CONSTEXPR14 inline Quat<T>&
+Quat<T>::normalize()
 {
     if (T l = length())
     {
-	r /= l;
-	v /= l;
+        r /= l;
+        v /= l;
     }
     else
     {
-	r = 1;
-	v = Vec3<T> (0);
+        r = 1;
+        v = Vec3<T> (0);
     }
 
     return *this;
 }
 
-
 template <class T>
 IMATH_CONSTEXPR14 inline Quat<T>
-Quat<T>::normalized () const
+Quat<T>::normalized() const
 {
     if (T l = length())
-	return Quat (r / l, v / l);
+        return Quat (r / l, v / l);
 
     return Quat();
 }
 
-
-template<class T>
+template <class T>
 IMATH_CONSTEXPR14 inline Quat<T>
-Quat<T>::inverse () const
+Quat<T>::inverse() const
 {
     //
     // 1    Q*
@@ -465,10 +392,9 @@ Quat<T>::inverse () const
     return Quat (r / qdot, -v / qdot);
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14 inline Quat<T> &
-Quat<T>::invert ()
+template <class T>
+IMATH_CONSTEXPR14 inline Quat<T>&
+Quat<T>::invert()
 {
     T qdot = (*this) ^ (*this);
     r /= qdot;
@@ -476,11 +402,9 @@ Quat<T>::invert ()
     return *this;
 }
 
-
-template<class T>
-IMATH_CONSTEXPR14
-Vec3<T>
-Quat<T>::rotateVector(const Vec3<T>& original) const
+template <class T>
+IMATH_CONSTEXPR14 Vec3<T>
+Quat<T>::rotateVector (const Vec3<T>& original) const
 {
     //
     // Given a vector p and a quaternion q (aka this),
@@ -491,25 +415,23 @@ Quat<T>::rotateVector(const Vec3<T>& original) const
     // anyway).
     //
 
-    Quat<T> vec (0, original);  // temporarily promote grade of original
+    Quat<T> vec (0, original); // temporarily promote grade of original
     Quat<T> inv (*this);
-    inv.v *= -1;                // unit multiplicative inverse
+    inv.v *= -1; // unit multiplicative inverse
     Quat<T> result = *this * vec * inv;
     return result.v;
 }
 
-
-template<class T>
-constexpr inline T 
-Quat<T>::euclideanInnerProduct (const Quat<T> &q) const
+template <class T>
+constexpr inline T
+Quat<T>::euclideanInnerProduct (const Quat<T>& q) const
 {
     return r * q.r + v.x * q.v.x + v.y * q.v.y + v.z * q.v.z;
 }
 
-
-template<class T>
+template <class T>
 IMATH_CONSTEXPR14 T
-angle4D (const Quat<T> &q1, const Quat<T> &q2)
+angle4D (const Quat<T>& q1, const Quat<T>& q2)
 {
     //
     // Compute the angle between two quaternions,
@@ -525,10 +447,9 @@ angle4D (const Quat<T> &q1, const Quat<T> &q2)
     return 2 * Math<T>::atan2 (lengthD, lengthS);
 }
 
-
-template<class T>
+template <class T>
 IMATH_CONSTEXPR14 Quat<T>
-slerp (const Quat<T> &q1, const Quat<T> &q2, T t)
+slerp (const Quat<T>& q1, const Quat<T>& q2, T t)
 {
     //
     // Spherical linear interpolation.
@@ -553,15 +474,14 @@ slerp (const Quat<T> &q1, const Quat<T> &q2, T t)
     T s = 1 - t;
 
     Quat<T> q = sinx_over_x (s * a) / sinx_over_x (a) * s * q1 +
-	        sinx_over_x (t * a) / sinx_over_x (a) * t * q2;
+                sinx_over_x (t * a) / sinx_over_x (a) * t * q2;
 
     return q.normalized();
 }
 
-
-template<class T>
+template <class T>
 IMATH_CONSTEXPR14 Quat<T>
-slerpShortestArc (const Quat<T> &q1, const Quat<T> &q2, T t)
+slerpShortestArc (const Quat<T>& q1, const Quat<T>& q2, T t)
 {
     //
     // Spherical linear interpolation along the shortest
@@ -575,12 +495,9 @@ slerpShortestArc (const Quat<T> &q1, const Quat<T> &q2, T t)
         return slerp (q1, -q2, t);
 }
 
-
-template<class T>
+template <class T>
 IMATH_CONSTEXPR14 Quat<T>
-spline (const Quat<T> &q0, const Quat<T> &q1,
-        const Quat<T> &q2, const Quat<T> &q3,
-	T t)
+spline (const Quat<T>& q0, const Quat<T>& q1, const Quat<T>& q2, const Quat<T>& q3, T t)
 {
     //
     // Spherical Cubic Spline Interpolation -
@@ -592,100 +509,94 @@ spline (const Quat<T> &q0, const Quat<T> &q1,
     // Given a set of quaternion keys: q0, q1, q2, q3,
     // this routine does the interpolation between
     // q1 and q2 by constructing two intermediate
-    // quaternions: qa and qb. The qa and qb are 
-    // computed by the intermediate function to 
+    // quaternions: qa and qb. The qa and qb are
+    // computed by the intermediate function to
     // guarantee the continuity of tangents across
     // adjacent cubic segments. The qa represents in-tangent
     // for q1 and the qb represents the out-tangent for q2.
-    // 
-    // The q1 q2 is the cubic segment being interpolated. 
-    // The q0 is from the previous adjacent segment and q3 is 
+    //
+    // The q1 q2 is the cubic segment being interpolated.
+    // The q0 is from the previous adjacent segment and q3 is
     // from the next adjacent segment. The q0 and q3 are used
     // in computing qa and qb.
-    // 
+    //
 
-    Quat<T> qa = intermediate (q0, q1, q2);
-    Quat<T> qb = intermediate (q1, q2, q3);
+    Quat<T> qa     = intermediate (q0, q1, q2);
+    Quat<T> qb     = intermediate (q1, q2, q3);
     Quat<T> result = squad (q1, qa, qb, q2, t);
 
     return result;
 }
 
-
-template<class T>
+template <class T>
 IMATH_CONSTEXPR14 Quat<T>
-squad (const Quat<T> &q1, const Quat<T> &qa,
-       const Quat<T> &qb, const Quat<T> &q2,
-       T t)
+squad (const Quat<T>& q1, const Quat<T>& qa, const Quat<T>& qb, const Quat<T>& q2, T t)
 {
     //
     // Spherical Quadrangle Interpolation -
     // from Advanced Animation and Rendering
     // Techniques by Watt and Watt, Page 366:
-    // It constructs a spherical cubic interpolation as 
-    // a series of three spherical linear interpolations 
-    // of a quadrangle of unit quaternions. 
-    //     
-  
-    Quat<T> r1 = slerp (q1, q2, t);
-    Quat<T> r2 = slerp (qa, qb, t);
+    // It constructs a spherical cubic interpolation as
+    // a series of three spherical linear interpolations
+    // of a quadrangle of unit quaternions.
+    //
+
+    Quat<T> r1     = slerp (q1, q2, t);
+    Quat<T> r2     = slerp (qa, qb, t);
     Quat<T> result = slerp (r1, r2, 2 * t * (1 - t));
 
     return result;
 }
 
-
-template<class T>
+template <class T>
 IMATH_CONSTEXPR14 Quat<T>
-intermediate (const Quat<T> &q0, const Quat<T> &q1, const Quat<T> &q2)
+intermediate (const Quat<T>& q0, const Quat<T>& q1, const Quat<T>& q2)
 {
     //
     // From advanced Animation and Rendering
     // Techniques by Watt and Watt, Page 366:
-    // computing the inner quadrangle 
+    // computing the inner quadrangle
     // points (qa and qb) to guarantee tangent
     // continuity.
-    // 
+    //
 
     Quat<T> q1inv = q1.inverse();
-    Quat<T> c1 = q1inv * q2;
-    Quat<T> c2 = q1inv * q0;
-    Quat<T> c3 = (T) (-0.25) * (c2.log() + c1.log());
-    Quat<T> qa = q1 * c3.exp();
+    Quat<T> c1    = q1inv * q2;
+    Quat<T> c2    = q1inv * q0;
+    Quat<T> c3    = (T) (-0.25) * (c2.log() + c1.log());
+    Quat<T> qa    = q1 * c3.exp();
     qa.normalize();
     return qa;
 }
 
-
 template <class T>
 inline Quat<T>
-Quat<T>::log () const
+Quat<T>::log() const
 {
     //
-    // For unit quaternion, from Advanced Animation and 
+    // For unit quaternion, from Advanced Animation and
     // Rendering Techniques by Watt and Watt, Page 366:
     //
 
     T theta = Math<T>::acos (std::min (r, (T) 1.0));
 
     if (theta == 0)
-	return Quat<T> (0, v);
-    
+        return Quat<T> (0, v);
+
     T sintheta = Math<T>::sin (theta);
-    
+
     T k;
     if (abs (sintheta) < 1 && abs (theta) >= limits<T>::max() * abs (sintheta))
-	k = 1;
+        k = 1;
     else
-	k = theta / sintheta;
+        k = theta / sintheta;
 
     return Quat<T> ((T) 0, v.x * k, v.y * k, v.z * k);
 }
 
-
 template <class T>
 inline Quat<T>
-Quat<T>::exp () const
+Quat<T>::exp() const
 {
     //
     // For pure quaternion (zero scalar part):
@@ -693,50 +604,46 @@ Quat<T>::exp () const
     // Techniques by Watt and Watt, Page 366:
     //
 
-    T theta = v.length();
+    T theta    = v.length();
     T sintheta = Math<T>::sin (theta);
-    
+
     T k;
     if (abs (theta) < 1 && abs (sintheta) >= limits<T>::max() * abs (theta))
-	k = 1;
+        k = 1;
     else
-	k = sintheta / theta;
+        k = sintheta / theta;
 
     T costheta = Math<T>::cos (theta);
 
     return Quat<T> (costheta, v.x * k, v.y * k, v.z * k);
 }
 
-
 template <class T>
 constexpr inline T
-Quat<T>::angle () const
+Quat<T>::angle() const
 {
     return 2 * Math<T>::atan2 (v.length(), r);
 }
 
-
 template <class T>
 constexpr inline Vec3<T>
-Quat<T>::axis () const
+Quat<T>::axis() const
 {
     return v.normalized();
 }
 
-
 template <class T>
-IMATH_CONSTEXPR14 inline Quat<T> &
-Quat<T>::setAxisAngle (const Vec3<T> &axis, T radians)
+IMATH_CONSTEXPR14 inline Quat<T>&
+Quat<T>::setAxisAngle (const Vec3<T>& axis, T radians)
 {
     r = Math<T>::cos (radians / 2);
     v = axis.normalized() * Math<T>::sin (radians / 2);
     return *this;
 }
 
-
 template <class T>
-IMATH_CONSTEXPR14 Quat<T> &
-Quat<T>::setRotation (const Vec3<T> &from, const Vec3<T> &to)
+IMATH_CONSTEXPR14 Quat<T>&
+Quat<T>::setRotation (const Vec3<T>& from, const Vec3<T>& to)
 {
     //
     // Create a quaternion that rotates vector from into vector to,
@@ -759,59 +666,58 @@ Quat<T>::setRotation (const Vec3<T> &from, const Vec3<T> &to)
 
     if ((f0 ^ t0) >= 0)
     {
-	//
-	// The rotation angle is less than or equal to pi/2.
-	//
+        //
+        // The rotation angle is less than or equal to pi/2.
+        //
 
-	setRotationInternal (f0, t0, *this);
+        setRotationInternal (f0, t0, *this);
     }
     else
     {
-	//
-	// The angle is greater than pi/2.  After computing h0,
-	// which is halfway between f0 and t0, we rotate first
-	// from f0 to h0, then from h0 to t0.
-	//
+        //
+        // The angle is greater than pi/2.  After computing h0,
+        // which is halfway between f0 and t0, we rotate first
+        // from f0 to h0, then from h0 to t0.
+        //
 
-	Vec3<T> h0 = (f0 + t0).normalized();
+        Vec3<T> h0 = (f0 + t0).normalized();
 
-	if ((h0 ^ h0) != 0)
-	{
-	    setRotationInternal (f0, h0, *this);
+        if ((h0 ^ h0) != 0)
+        {
+            setRotationInternal (f0, h0, *this);
 
-	    Quat<T> q;
-	    setRotationInternal (h0, t0, q);
+            Quat<T> q;
+            setRotationInternal (h0, t0, q);
 
-	    *this *= q;
-	}
-	else
-	{
-	    //
-	    // f0 and t0 point in exactly opposite directions.
-	    // Pick an arbitrary axis that is orthogonal to f0,
-	    // and rotate by pi.
-	    //
+            *this *= q;
+        }
+        else
+        {
+            //
+            // f0 and t0 point in exactly opposite directions.
+            // Pick an arbitrary axis that is orthogonal to f0,
+            // and rotate by pi.
+            //
 
-	    r = T (0);
+            r = T (0);
 
-	    Vec3<T> f02 = f0 * f0;
+            Vec3<T> f02 = f0 * f0;
 
-	    if (f02.x <= f02.y && f02.x <= f02.z)
-		v = (f0 % Vec3<T> (1, 0, 0)).normalized();
-	    else if (f02.y <= f02.z)
-		v = (f0 % Vec3<T> (0, 1, 0)).normalized();
-	    else
-		v = (f0 % Vec3<T> (0, 0, 1)).normalized();
-	}
+            if (f02.x <= f02.y && f02.x <= f02.z)
+                v = (f0 % Vec3<T> (1, 0, 0)).normalized();
+            else if (f02.y <= f02.z)
+                v = (f0 % Vec3<T> (0, 1, 0)).normalized();
+            else
+                v = (f0 % Vec3<T> (0, 0, 1)).normalized();
+        }
     }
 
     return *this;
 }
 
-
 template <class T>
 void
-Quat<T>::setRotationInternal (const Vec3<T> &f0, const Vec3<T> &t0, Quat<T> &q)
+Quat<T>::setRotationInternal (const Vec3<T>& f0, const Vec3<T>& t0, Quat<T>& q)
 {
     //
     // The following is equivalent to setAxisAngle(n,2*phi),
@@ -836,155 +742,136 @@ Quat<T>::setRotationInternal (const Vec3<T> &f0, const Vec3<T> &t0, Quat<T> &q)
     // Store the rotation axis and rotation angle.
     //
 
-    q.r = f0 ^ h0;	//  f0 ^ h0 == cos (phi)
-    q.v = f0 % h0;	// (f0 % h0).length() == sin (phi)
+    q.r = f0 ^ h0; //  f0 ^ h0 == cos (phi)
+    q.v = f0 % h0; // (f0 % h0).length() == sin (phi)
 }
 
-
-template<class T>
+template <class T>
 constexpr Matrix33<T>
 Quat<T>::toMatrix33() const
 {
     return Matrix33<T> (1 - 2 * (v.y * v.y + v.z * v.z),
-			    2 * (v.x * v.y + v.z * r),
-			    2 * (v.z * v.x - v.y * r),
+                        2 * (v.x * v.y + v.z * r),
+                        2 * (v.z * v.x - v.y * r),
 
-			    2 * (v.x * v.y - v.z * r),
-		        1 - 2 * (v.z * v.z + v.x * v.x),
-			    2 * (v.y * v.z + v.x * r),
+                        2 * (v.x * v.y - v.z * r),
+                        1 - 2 * (v.z * v.z + v.x * v.x),
+                        2 * (v.y * v.z + v.x * r),
 
-			    2 * (v.z * v.x + v.y * r),
-			    2 * (v.y * v.z - v.x * r),
-		        1 - 2 * (v.y * v.y + v.x * v.x));
+                        2 * (v.z * v.x + v.y * r),
+                        2 * (v.y * v.z - v.x * r),
+                        1 - 2 * (v.y * v.y + v.x * v.x));
 }
 
-template<class T>
+template <class T>
 constexpr Matrix44<T>
 Quat<T>::toMatrix44() const
 {
     return Matrix44<T> (1 - 2 * (v.y * v.y + v.z * v.z),
-			    2 * (v.x * v.y + v.z * r),
-			    2 * (v.z * v.x - v.y * r),
-			    0,
-			    2 * (v.x * v.y - v.z * r),
-		        1 - 2 * (v.z * v.z + v.x * v.x),
-			    2 * (v.y * v.z + v.x * r),
-			    0,
-			    2 * (v.z * v.x + v.y * r),
-			    2 * (v.y * v.z - v.x * r),
-		        1 - 2 * (v.y * v.y + v.x * v.x),
-			    0,
-			    0,
-			    0,
-			    0,
-			    1);
+                        2 * (v.x * v.y + v.z * r),
+                        2 * (v.z * v.x - v.y * r),
+                        0,
+                        2 * (v.x * v.y - v.z * r),
+                        1 - 2 * (v.z * v.z + v.x * v.x),
+                        2 * (v.y * v.z + v.x * r),
+                        0,
+                        2 * (v.z * v.x + v.y * r),
+                        2 * (v.y * v.z - v.x * r),
+                        1 - 2 * (v.y * v.y + v.x * v.x),
+                        0,
+                        0,
+                        0,
+                        0,
+                        1);
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Matrix33<T>
-operator * (const Matrix33<T> &M, const Quat<T> &q)
+operator* (const Matrix33<T>& M, const Quat<T>& q)
 {
     return M * q.toMatrix33();
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Matrix33<T>
-operator * (const Quat<T> &q, const Matrix33<T> &M)
+operator* (const Quat<T>& q, const Matrix33<T>& M)
 {
     return q.toMatrix33() * M;
 }
 
-
-template<class T>
-std::ostream &
-operator << (std::ostream &o, const Quat<T> &q)
+template <class T>
+std::ostream&
+operator<< (std::ostream& o, const Quat<T>& q)
 {
-    return o << "(" << q.r
-	     << " " << q.v.x
-	     << " " << q.v.y
-	     << " " << q.v.z
-	     << ")";
+    return o << "(" << q.r << " " << q.v.x << " " << q.v.y << " " << q.v.z << ")";
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator * (const Quat<T> &q1, const Quat<T> &q2)
+operator* (const Quat<T>& q1, const Quat<T>& q2)
 {
-    return Quat<T> (q1.r * q2.r - (q1.v ^ q2.v),
-		    q1.r * q2.v + q1.v * q2.r + q1.v % q2.v);
+    return Quat<T> (q1.r * q2.r - (q1.v ^ q2.v), q1.r * q2.v + q1.v * q2.r + q1.v % q2.v);
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator / (const Quat<T> &q1, const Quat<T> &q2)
+operator/ (const Quat<T>& q1, const Quat<T>& q2)
 {
     return q1 * q2.inverse();
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator / (const Quat<T> &q, T t)
+operator/ (const Quat<T>& q, T t)
 {
     return Quat<T> (q.r / t, q.v / t);
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator * (const Quat<T> &q, T t)
+operator* (const Quat<T>& q, T t)
 {
     return Quat<T> (q.r * t, q.v * t);
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator * (T t, const Quat<T> &q)
+operator* (T t, const Quat<T>& q)
 {
     return Quat<T> (q.r * t, q.v * t);
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator + (const Quat<T> &q1, const Quat<T> &q2)
+operator+ (const Quat<T>& q1, const Quat<T>& q2)
 {
     return Quat<T> (q1.r + q2.r, q1.v + q2.v);
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator - (const Quat<T> &q1, const Quat<T> &q2)
+operator- (const Quat<T>& q1, const Quat<T>& q2)
 {
     return Quat<T> (q1.r - q2.r, q1.v - q2.v);
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator ~ (const Quat<T> &q)
+operator~ (const Quat<T>& q)
 {
     return Quat<T> (q.r, -q.v);
 }
 
-
-template<class T>
+template <class T>
 constexpr inline Quat<T>
-operator - (const Quat<T> &q)
+operator- (const Quat<T>& q)
 {
     return Quat<T> (-q.r, -q.v);
 }
 
-
-template<class T>
+template <class T>
 IMATH_CONSTEXPR14 inline Vec3<T>
-operator * (const Vec3<T> &v, const Quat<T> &q)
+operator* (const Vec3<T>& v, const Quat<T>& q)
 {
     Vec3<T> a = q.v % v;
     Vec3<T> b = q.v % a;
@@ -992,7 +879,7 @@ operator * (const Vec3<T> &v, const Quat<T> &q)
 }
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
-#pragma warning(default:4244)
+#    pragma warning(default : 4244)
 #endif
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT

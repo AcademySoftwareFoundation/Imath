@@ -3,5 +3,4 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-void testSize ();
-
+void testSize();

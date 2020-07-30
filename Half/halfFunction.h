@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -35,7 +35,6 @@
 // Primary authors:
 //     Florian Kainz <kainz@ilm.com>
 //     Rod Bogart <rgb@ilm.com>
-
 
 //---------------------------------------------------------------------------
 //
@@ -86,55 +85,50 @@
 #include "half.h"
 
 #include "ImathConfig.h"
-#ifndef ILMBASE_HAVE_LARGE_STACK  
-#include <string.h>     // need this for memset
-#else 
+#ifndef ILMBASE_HAVE_LARGE_STACK
+#    include <string.h> // need this for memset
+#else
 #endif
 
 #include <float.h>
 
-
-template <class T>
-class halfFunction
+template <class T> class halfFunction
 {
   public:
-
     //------------
     // Constructor
     //------------
 
     template <class Function>
     halfFunction (Function f,
-		  half domainMin = -HALF_MAX,
-		  half domainMax =  HALF_MAX,
-		  T defaultValue = 0,
-		  T posInfValue  = 0,
-		  T negInfValue  = 0,
-		  T nanValue     = 0);
+                  half domainMin = -HALF_MAX,
+                  half domainMax = HALF_MAX,
+                  T defaultValue = 0,
+                  T posInfValue  = 0,
+                  T negInfValue  = 0,
+                  T nanValue     = 0);
 
 #ifndef ILMBASE_HAVE_LARGE_STACK
-    ~halfFunction () { delete [] _lut; }
-    halfFunction (const halfFunction &) = delete;
-    halfFunction& operator= (const halfFunction &) = delete;
-    halfFunction (halfFunction &&) = delete;
-    halfFunction& operator= (halfFunction &&) = delete;
+    ~halfFunction() { delete[] _lut; }
+    halfFunction (const halfFunction&) = delete;
+    halfFunction& operator= (const halfFunction&) = delete;
+    halfFunction (halfFunction&&)                 = delete;
+    halfFunction& operator= (halfFunction&&) = delete;
 #endif
 
     //-----------
     // Evaluation
     //-----------
 
-    T		operator () (half x) const;
+    T operator() (half x) const;
 
   private:
-
 #ifdef ILMBASE_HAVE_LARGE_STACK
-    T		_lut[1 << 16];
+    T _lut[1 << 16];
 #else
-    T *         _lut;
+    T* _lut;
 #endif
 };
-
 
 //---------------
 // Implementation
@@ -143,40 +137,38 @@ class halfFunction
 template <class T>
 template <class Function>
 halfFunction<T>::halfFunction (Function f,
-			       half domainMin,
-			       half domainMax,
-			       T defaultValue,
-			       T posInfValue,
-			       T negInfValue,
-			       T nanValue)
+                               half domainMin,
+                               half domainMax,
+                               T defaultValue,
+                               T posInfValue,
+                               T negInfValue,
+                               T nanValue)
 {
 #ifndef ILMBASE_HAVE_LARGE_STACK
-    _lut = new T[1<<16];
+    _lut = new T[1 << 16];
 #endif
-    
+
     for (int i = 0; i < (1 << 16); i++)
     {
-	half x;
-	x.setBits (i);
+        half x;
+        x.setBits (i);
 
-	if (x.isNan())
-	    _lut[i] = nanValue;
-	else if (x.isInfinity())
-	    _lut[i] = x.isNegative()? negInfValue: posInfValue;
-	else if (x < domainMin || x > domainMax)
-	    _lut[i] = defaultValue;
-	else
-	    _lut[i] = f (x);
+        if (x.isNan())
+            _lut[i] = nanValue;
+        else if (x.isInfinity())
+            _lut[i] = x.isNegative() ? negInfValue : posInfValue;
+        else if (x < domainMin || x > domainMax)
+            _lut[i] = defaultValue;
+        else
+            _lut[i] = f (x);
     }
 }
 
-
 template <class T>
 inline T
-halfFunction<T>::operator () (half x) const
+halfFunction<T>::operator() (half x) const
 {
     return _lut[x.bits()];
 }
-
 
 #endif

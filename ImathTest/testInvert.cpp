@@ -36,17 +36,17 @@
 #    undef NDEBUG
 #endif
 
-#include <testInvert.h>
 #include "ImathMatrix.h"
 #include "ImathMatrixAlgo.h"
-#include <iostream>
 #include <assert.h>
+#include <iostream>
+#include <testInvert.h>
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
-namespace {
-
+namespace
+{
 
 void
 invertM44f (const M44f &m, float e)
@@ -93,6 +93,8 @@ testInvert ()
     {
 	cout << "M44f" << endl;
 
+        // clang-format off
+
 	M44f m1 ( 1,  0,  0,  0,
 		  0,  1,  0,  0,
 		  0,  0,  1,  0,
@@ -118,6 +120,8 @@ testInvert ()
 		 -8.834660e-01, -4.617587e-01,  7.916244e-02,  3.000000e+00,
 		 -4.726541e+00,  3.044795e+00, -6.737138e+00,  4.000000e+00);
 
+        // clang-format on
+
 	invertM44f (m1, 0);
 	invertM44f (m2, 0);
 	invertM44f (m3, 0);
@@ -127,6 +131,8 @@ testInvert ()
 
     {
 	cout << "M33f" << endl;
+
+        // clang-format off
 
 	M33f m1 ( 1,  0,  0,
 		  0,  1,  0,
@@ -147,6 +153,8 @@ testInvert ()
 	M33f m5 ( 4.683281e-01, -8.749647e-01,  1.229049e-01,
 		  1.251189e-02,  1.456563e-01,  9.892561e-01,
 		 -8.834660e-01, -4.617587e-01,  7.916244e-02);
+
+        // clang-format on
 
 	invertM33f (m1, 0);
 	invertM33f (m2, 0);

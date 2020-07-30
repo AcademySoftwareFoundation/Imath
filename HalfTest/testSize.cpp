@@ -7,25 +7,23 @@
 #    undef NDEBUG
 #endif
 
-#include <testSize.h>
 #include "half.h"
-#include <iostream>
 #include <assert.h>
+#include <iostream>
 #include <stddef.h>
-
+#include <testSize.h>
 
 using namespace std;
 
-
 void
-testSize ()
+testSize()
 {
     cout << "size and alignment\n";
 
     half h[2];
 
-    int size = sizeof (half);
-    ptrdiff_t algn = (char *)&h[1] - (char *)&h[0];
+    int size       = sizeof (half);
+    ptrdiff_t algn = (char*) &h[1] - (char*) &h[0];
 
     cout << "sizeof  (half) = " << size << endl;
     cout << "alignof (half) = " << (int) algn << endl;

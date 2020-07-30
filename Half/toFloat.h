@@ -3,6 +3,7 @@
 // Do not edit.
 //
 
+// clang-format off
 {
     {0x00000000}, {0x33800000}, {0x34000000}, {0x34400000}, 
     {0x34800000}, {0x34a00000}, {0x34c00000}, {0x34e00000}, 
@@ -16389,3 +16390,4 @@
     {0xffff0000}, {0xffff2000}, {0xffff4000}, {0xffff6000}, 
     {0xffff8000}, {0xffffa000}, {0xffffc000}, {0xffffe000}, 
 };
+// clang-format on

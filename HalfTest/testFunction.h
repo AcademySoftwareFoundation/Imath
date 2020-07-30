@@ -3,6 +3,4 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-
-void testFunction ();
-
+void testFunction();

@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -36,20 +36,20 @@
 #    undef NDEBUG
 #endif
 
-#include <testQuatSetRotation.h>
 #include "ImathQuat.h"
 #include "ImathRandom.h"
-#include <iostream>
 #include <assert.h>
-
+#include <iostream>
+#include <testQuatSetRotation.h>
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
-namespace {
+namespace
+{
 
 void
-testRotation (const V3f &from, const V3f &to)
+testRotation (const V3f& from, const V3f& to)
 {
     //
     // Build a quaternion.
@@ -67,9 +67,9 @@ testRotation (const V3f &from, const V3f &to)
 
     V3f fromM = from * M;
     V3f fromQ = from * Q;
-    V3f t0 = to.normalized();
-    V3f fM0 = fromM.normalized();
-    V3f fQ0 = fromQ.normalized();
+    V3f t0    = to.normalized();
+    V3f fM0   = fromM.normalized();
+    V3f fQ0   = fromQ.normalized();
 
     assert (t0.equalWithAbsError (fM0, e));
     assert (t0.equalWithAbsError (fQ0, e));
@@ -82,16 +82,15 @@ testRotation (const V3f &from, const V3f &to)
 
     if (abs (f0 ^ t0) < 0.9)
     {
-	V3f n0 = (from % to).normalized();
-	V3f n0M = n0 * M;
+        V3f n0  = (from % to).normalized();
+        V3f n0M = n0 * M;
 
-	assert (n0.equalWithAbsError (n0M, e));
+        assert (n0.equalWithAbsError (n0M, e));
     }
 }
 
-
 void
-specificVectors ()
+specificVectors()
 {
     cout << "  exact 90-degree rotations" << endl;
 
@@ -137,9 +136,8 @@ specificVectors ()
     testRotation (V3f (1, 2, 3), V3f (-6, -5, -4));
 }
 
-
 void
-randomVectors ()
+randomVectors()
 {
     cout << "  random from and to vectors" << endl;
 
@@ -147,15 +145,14 @@ randomVectors ()
 
     for (int i = 0; i < 500000; ++i)
     {
-	V3f from = hollowSphereRand<V3f> (rand) * rand.nextf (0.1, 10.0);
-	V3f to = hollowSphereRand<V3f> (rand) * rand.nextf (0.1, 10.0);
-	testRotation (from, to);
+        V3f from = hollowSphereRand<V3f> (rand) * rand.nextf (0.1, 10.0);
+        V3f to   = hollowSphereRand<V3f> (rand) * rand.nextf (0.1, 10.0);
+        testRotation (from, to);
     }
 }
 
-
 void
-nearlyEqualVectors ()
+nearlyEqualVectors()
 {
     cout << "  nearly equal from and to vectors" << endl;
 
@@ -164,15 +161,14 @@ nearlyEqualVectors ()
 
     for (int i = 0; i < 500000; ++i)
     {
-	V3f from = hollowSphereRand<V3f> (rand);
-	V3f to = from + e * hollowSphereRand<V3f> (rand);
-	testRotation (from, to);
+        V3f from = hollowSphereRand<V3f> (rand);
+        V3f to   = from + e * hollowSphereRand<V3f> (rand);
+        testRotation (from, to);
     }
 }
 
-
 void
-nearlyOppositeVectors ()
+nearlyOppositeVectors()
 {
     cout << "  nearly opposite from and to vectors" << endl;
 
@@ -181,19 +177,16 @@ nearlyOppositeVectors ()
 
     for (int i = 0; i < 500000; ++i)
     {
-	V3f from = hollowSphereRand<V3f> (rand);
-	V3f to = -from + e * hollowSphereRand<V3f> (rand);
-	testRotation (from, to);
+        V3f from = hollowSphereRand<V3f> (rand);
+        V3f to   = -from + e * hollowSphereRand<V3f> (rand);
+        testRotation (from, to);
     }
 }
 
-
-
 } // namespace
 
-
 void
-testQuatSetRotation ()
+testQuatSetRotation()
 {
     cout << "Testing quaternion rotations" << endl;
 
