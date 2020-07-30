@@ -36,21 +36,21 @@
 #    undef NDEBUG
 #endif
 
-#include <testQuat.h>
-#include "ImathQuat.h"
-#include "ImathMatrixAlgo.h"
 #include "ImathFun.h"
 #include "ImathLimits.h"
+#include "ImathMatrixAlgo.h"
 #include "ImathPlatform.h" /* [i_a] M_PI_2 */
-#include <iostream>
+#include "ImathQuat.h"
 #include <cassert>
 #include <cmath>
-
+#include <iostream>
+#include <testQuat.h>
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
-namespace {
+namespace
+{
 
 template <class T>
 void
@@ -180,6 +180,8 @@ testQuatT ()
 
 	Matrix33<T> m1 = q.toMatrix33();
 
+        // clang-format off
+        
 	assert (m1.equalWithAbsError (Matrix33<T> (0, 1, 0,
 						  -1, 0, 0,
 						   0, 0, 1),
@@ -192,17 +194,16 @@ testQuatT ()
 						   0, 0, 1, 0,
 						   0, 0, 0, 1),
 				      e));
+        // clang-format on
     }
 
     //
     // +, - (unary and binary), ~ *, /, ^
     //
 
-    assert (Quat<T> (1, 2, 3, 4) + Quat<T> (5, 6, 7, 8) ==
-	    Quat<T> (6, 8, 10, 12));
+    assert (Quat<T> (1, 2, 3, 4) + Quat<T> (5, 6, 7, 8) == Quat<T> (6, 8, 10, 12));
 
-    assert (Quat<T> (-1, -2, -3, -4) - Quat<T> (5, 6, 7, 8) ==
-	    Quat<T> (-6, -8, -10, -12));
+    assert (Quat<T> (-1, -2, -3, -4) - Quat<T> (5, 6, 7, 8) == Quat<T> (-6, -8, -10, -12));
 
     assert (-Quat<T> (1, 2, 3, 4) == Quat<T> (-1, -2, -3, -4));
     
@@ -212,14 +213,11 @@ testQuatT ()
 
     assert (Quat<T> (1, 2, 3, 4) * T (2 )== Quat<T> (2, 4, 6, 8));
 
-    assert (Quat<T> (1, 0, 0, 1) * Quat<T> (1, 1, 0, 0) ==
-	    Quat<T> (1, 1, 1, 1));
+    assert (Quat<T> (1, 0, 0, 1) * Quat<T> (1, 1, 0, 0) == Quat<T> (1, 1, 1, 1));
 
-    assert (Quat<T> (1, 1, 0, 0) * Quat<T> (1, 0, 0, 1) ==
-	    Quat<T> (1, 1, -1, 1));
+    assert (Quat<T> (1, 1, 0, 0) * Quat<T> (1, 0, 0, 1) == Quat<T> (1, 1, -1, 1));
     
-    assert (Quat<T> (1, 0, 0, 1) / Quat<T> (0.5, -0.5, 0, 0) ==
-	    Quat<T> (1, 1, 1, 1));
+    assert (Quat<T> (1, 0, 0, 1) / Quat<T> (0.5, -0.5, 0, 0) == Quat<T> (1, 1, 1, 1));
 
     assert (Quat<T> (2, 4, 6, 8) / T (2) == Quat<T> (1, 2, 3, 4));
 
@@ -234,7 +232,8 @@ testQuatT ()
 	Vec3<T> vTo (0, 1, 1);
 	Matrix44<T> m1 = rotationMatrix (vFrom, vTo);
 	
-	Quat<T> q = extractQuat (m1);;
+        Quat<T> q = extractQuat (m1);
+        ;
 
 	Matrix44<T> m2 = q.toMatrix44();
 

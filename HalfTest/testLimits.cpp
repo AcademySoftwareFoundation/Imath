@@ -7,15 +7,16 @@
 #    undef NDEBUG
 #endif
 
-#include <testLimits.h>
 #include "halfLimits.h"
-#include <iostream>
 #include <assert.h>
 #include <cmath>
+#include <iostream>
+#include <testLimits.h>
 
 using namespace std;
 
-namespace {
+namespace
+{
 
 float
 mypow (int x, int y)
@@ -24,26 +25,25 @@ mypow (int x, int y)
 
     if (y < 0)
     {
-	negative = true;
-	y = -y;
+        negative = true;
+        y        = -y;
     }
 
     float z = 1;
 
     while (y > 0)
     {
-	z *= x;
-	y -= 1;
+        z *= x;
+        y -= 1;
     }
 
     if (negative)
-	z = 1 / z;
+        z = 1 / z;
 
     return z;
 }
 
 } // namespace
-
 
 void
 testLimits()
@@ -53,56 +53,56 @@ testLimits()
     cout << "min_exponent\n";
 
     {
-	half h (mypow (2, numeric_limits<half>::min_exponent - 1));
-	assert (h.isNormalized());
+        half h (mypow (2, numeric_limits<half>::min_exponent - 1));
+        assert (h.isNormalized());
     }
 
     {
-	half h (mypow (2, numeric_limits<half>::min_exponent - 2));
-	assert (h.isDenormalized());
+        half h (mypow (2, numeric_limits<half>::min_exponent - 2));
+        assert (h.isDenormalized());
     }
 
     cout << "max_exponent\n";
 
     {
-	half h (mypow (2, numeric_limits<half>::max_exponent - 1));
-	assert (h.isNormalized());
+        half h (mypow (2, numeric_limits<half>::max_exponent - 1));
+        assert (h.isNormalized());
     }
 
     {
-	half h (mypow (2, numeric_limits<half>::max_exponent));
-	assert (h.isInfinity());
+        half h (mypow (2, numeric_limits<half>::max_exponent));
+        assert (h.isInfinity());
     }
 
     cout << "min_exponent10\n";
 
     {
-	half h (mypow (10, numeric_limits<half>::min_exponent10));
-	assert (h.isNormalized());
+        half h (mypow (10, numeric_limits<half>::min_exponent10));
+        assert (h.isNormalized());
     }
 
     {
-	half h (mypow (10, numeric_limits<half>::min_exponent10 - 1));
-	assert (h.isDenormalized());
+        half h (mypow (10, numeric_limits<half>::min_exponent10 - 1));
+        assert (h.isDenormalized());
     }
 
     cout << "max_exponent10\n";
 
     {
-	half h (mypow (10, numeric_limits<half>::max_exponent10));
-	assert (h.isNormalized());
+        half h (mypow (10, numeric_limits<half>::max_exponent10));
+        assert (h.isNormalized());
     }
 
     {
-	half h (mypow (10, numeric_limits<half>::max_exponent10 + 1));
-	assert (h.isInfinity());
+        half h (mypow (10, numeric_limits<half>::max_exponent10 + 1));
+        assert (h.isInfinity());
     }
 
 #if __cplusplus >= 201103L
 
     cout << "max_digits10\n";
-    assert (numeric_limits<half>::max_digits10
-            == std::ceil(numeric_limits<half>::digits * std::log10(2) + 1));
+    assert (numeric_limits<half>::max_digits10 ==
+            std::ceil (numeric_limits<half>::digits * std::log10 (2) + 1));
 
     cout << "lowest\n";
     assert (numeric_limits<half>::lowest() == -HALF_MAX);
@@ -110,5 +110,4 @@ testLimits()
 #endif
 
     cout << "ok\n\n" << flush;
-
 }

@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -85,8 +85,8 @@
 #ifndef _HALF_H_
 #define _HALF_H_
 
-#include "halfExport.h"    // for definition of HALF_EXPORT
 #include "../Imath/ImathNamespace.h"
+#include "halfExport.h" // for definition of HALF_EXPORT
 #include <iostream>
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -94,52 +94,48 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 class half
 {
   public:
-
     //-------------
     // Constructors
     //-------------
 
-    half () = default;			// no initialization
+    half() = default; // no initialization
     half (float f);
     // rule of 5
-    ~half () = default;
-    half (const half &) = default;
-    half (half &&) noexcept = default;
+    ~half()                = default;
+    half (const half&)     = default;
+    half (half&&) noexcept = default;
 
     //--------------------
     // Conversion to float
     //--------------------
 
-    operator		float () const;
-
+    operator float() const;
 
     //------------
     // Unary minus
     //------------
 
-    half		operator - () const;
-
+    half operator-() const;
 
     //-----------
     // Assignment
     //-----------
 
-    half &		operator = (const half  &h) = default;
-    half &		operator = (half  &&h) noexcept = default;
-    half &		operator = (float f);
+    half& operator= (const half& h) = default;
+    half& operator= (half&& h) noexcept = default;
+    half& operator                      = (float f);
 
-    half &		operator += (half  h);
-    half &		operator += (float f);
+    half& operator+= (half h);
+    half& operator+= (float f);
 
-    half &		operator -= (half  h);
-    half &		operator -= (float f);
+    half& operator-= (half h);
+    half& operator-= (float f);
 
-    half &		operator *= (half  h);
-    half &		operator *= (float f);
+    half& operator*= (half h);
+    half& operator*= (float f);
 
-    half &		operator /= (half  h);
-    half &		operator /= (float f);
-
+    half& operator/= (half h);
+    half& operator/= (float f);
 
     //---------------------------------------------------------
     // Round to n-bit precision (n should be between 0 and 10).
@@ -147,8 +143,7 @@ class half
     // bits will be zero.
     //---------------------------------------------------------
 
-    half		round (unsigned int n) const;
-
+    half round (unsigned int n) const;
 
     //--------------------------------------------------------------------
     // Classification:
@@ -171,14 +166,13 @@ class half
     //				is set (negative)
     //--------------------------------------------------------------------
 
-    bool		isFinite () const;
-    bool		isNormalized () const;
-    bool		isDenormalized () const;
-    bool		isZero () const;
-    bool		isNan () const;
-    bool		isInfinity () const;
-    bool		isNegative () const;
-
+    bool isFinite() const;
+    bool isNormalized() const;
+    bool isDenormalized() const;
+    bool isZero() const;
+    bool isNan() const;
+    bool isInfinity() const;
+    bool isNegative() const;
 
     //--------------------------------------------
     // Special values
@@ -194,39 +188,34 @@ class half
     //			pattern 0111110111111111
     //--------------------------------------------
 
-    static half		posInf ();
-    static half		negInf ();
-    static half		qNan ();
-    static half		sNan ();
-
+    static half posInf();
+    static half negInf();
+    static half qNan();
+    static half sNan();
 
     //--------------------------------------
     // Access to the internal representation
     //--------------------------------------
 
-    HALF_EXPORT unsigned short	bits () const;
-    HALF_EXPORT void		setBits (unsigned short bits);
-
+    HALF_EXPORT unsigned short bits() const;
+    HALF_EXPORT void setBits (unsigned short bits);
 
   public:
-
     union uif
     {
-	unsigned int	i;
-	float		f;
+        unsigned int i;
+        float f;
     };
 
   private:
+    HALF_EXPORT static short convert (int i);
+    HALF_EXPORT static float overflow();
 
-    HALF_EXPORT static short                  convert (int i);
-    HALF_EXPORT static float                  overflow ();
+    unsigned short _h;
 
-    unsigned short                            _h;
-
-    HALF_EXPORT static const uif              _toFloat[1 << 16];
-    HALF_EXPORT static const unsigned short   _eLut[1 << 9];
+    HALF_EXPORT static const uif _toFloat[1 << 16];
+    HALF_EXPORT static const unsigned short _eLut[1 << 9];
 };
-
 
 //-------------------------------------------------------------------------
 // Limits
@@ -238,60 +227,58 @@ class half
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 
-  #define HALF_MIN	5.96046448e-08f	// Smallest positive half
+#    define HALF_MIN 5.96046448e-08f // Smallest positive half
 
-  #define HALF_NRM_MIN	6.10351562e-05f	// Smallest positive normalized half
+#    define HALF_NRM_MIN 6.10351562e-05f // Smallest positive normalized half
 
-  #define HALF_MAX	65504.0f	// Largest positive half
+#    define HALF_MAX 65504.0f // Largest positive half
 
-  #define HALF_EPSILON	0.00097656f	// Smallest positive e for which
-					// half (1.0 + e) != half (1.0)
+#    define HALF_EPSILON 0.00097656f // Smallest positive e for which
+                                     // half (1.0 + e) != half (1.0)
 #else
 
-  #define HALF_MIN	5.96046448e-08	// Smallest positive half
+#    define HALF_MIN 5.96046448e-08 // Smallest positive half
 
-  #define HALF_NRM_MIN	6.10351562e-05	// Smallest positive normalized half
+#    define HALF_NRM_MIN 6.10351562e-05 // Smallest positive normalized half
 
-  #define HALF_MAX	65504.0		// Largest positive half
+#    define HALF_MAX 65504.0 // Largest positive half
 
-  #define HALF_EPSILON	0.00097656	// Smallest positive e for which
-					// half (1.0 + e) != half (1.0)
+#    define HALF_EPSILON 0.00097656 // Smallest positive e for which
+// half (1.0 + e) != half (1.0)
 #endif
 
+#define HALF_MANT_DIG 11 // Number of digits in mantissa
+                         // (significand + hidden leading 1)
 
-#define HALF_MANT_DIG	11		// Number of digits in mantissa
-					// (significand + hidden leading 1)
-
-// 
+//
 // floor( (HALF_MANT_DIG - 1) * log10(2) ) => 3.01... -> 3
-#define HALF_DIG	3		// Number of base 10 digits that
-					// can be represented without change
+#define HALF_DIG 3 // Number of base 10 digits that
+                   // can be represented without change
 
 // ceil(HALF_MANT_DIG * log10(2) + 1) => 4.31... -> 5
-#define HALF_DECIMAL_DIG	5	// Number of base-10 digits that are
-					// necessary to uniquely represent all
-					// distinct values
+#define HALF_DECIMAL_DIG 5 // Number of base-10 digits that are
+                           // necessary to uniquely represent all
+                           // distinct values
 
-#define HALF_RADIX	2		// Base of the exponent
+#define HALF_RADIX 2 // Base of the exponent
 
-#define HALF_MIN_EXP	-13		// Minimum negative integer such that
-					// HALF_RADIX raised to the power of
-					// one less than that integer is a
-					// normalized half
+#define HALF_MIN_EXP -13 // Minimum negative integer such that
+                         // HALF_RADIX raised to the power of
+                         // one less than that integer is a
+                         // normalized half
 
-#define HALF_MAX_EXP	16		// Maximum positive integer such that
-					// HALF_RADIX raised to the power of
-					// one less than that integer is a
-					// normalized half
+#define HALF_MAX_EXP 16 // Maximum positive integer such that
+                        // HALF_RADIX raised to the power of
+                        // one less than that integer is a
+                        // normalized half
 
-#define HALF_MIN_10_EXP	-4		// Minimum positive integer such
-					// that 10 raised to that power is
-					// a normalized half
+#define HALF_MIN_10_EXP -4 // Minimum positive integer such
+                           // that 10 raised to that power is
+                           // a normalized half
 
-#define HALF_MAX_10_EXP	4		// Maximum positive integer such
-					// that 10 raised to that power is
-					// a normalized half
-
+#define HALF_MAX_10_EXP 4 // Maximum positive integer such
+                          // that 10 raised to that power is
+                          // a normalized half
 
 //---------------------------------------------------------------------------
 //
@@ -303,9 +290,9 @@ class half
 //	floating point number, whose bits are arranged as follows:
 //
 //	    31 (msb)
-//	    | 
+//	    |
 //	    | 30     23
-//	    | |      | 
+//	    | |      |
 //	    | |      | 22                    0 (lsb)
 //	    | |      | |                     |
 //	    X XXXXXXXX XXXXXXXXXXXXXXXXXXXXXXX
@@ -349,7 +336,7 @@ class half
 //	Here is the bit-layout for a half number, h:
 //
 //	    15 (msb)
-//	    | 
+//	    |
 //	    | 14  10
 //	    | |   |
 //	    | |   | 9        0 (lsb)
@@ -404,13 +391,11 @@ class half
 //
 //---------------------------------------------------------------------------
 
-
 //----------------------------
 // Half-from-float constructor
 //----------------------------
 
-inline
-half::half (float f)
+inline half::half (float f)
 {
     uif x;
 
@@ -418,67 +403,64 @@ half::half (float f)
 
     if (f == 0)
     {
-	//
-	// Common special case - zero.
-	// Preserve the zero's sign bit.
-	//
+        //
+        // Common special case - zero.
+        // Preserve the zero's sign bit.
+        //
 
-	_h = (x.i >> 16);
+        _h = (x.i >> 16);
     }
     else
     {
-	//
-	// We extract the combined sign and exponent, e, from our
-	// floating-point number, f.  Then we convert e to the sign
-	// and exponent of the half number via a table lookup.
-	//
-	// For the most common case, where a normalized half is produced,
-	// the table lookup returns a non-zero value; in this case, all
-	// we have to do is round f's significand to 10 bits and combine
-	// the result with e.
-	//
-	// For all other cases (overflow, zeroes, denormalized numbers
-	// resulting from underflow, infinities and NANs), the table
-	// lookup returns zero, and we call a longer, non-inline function
-	// to do the float-to-half conversion.
-	//
+        //
+        // We extract the combined sign and exponent, e, from our
+        // floating-point number, f.  Then we convert e to the sign
+        // and exponent of the half number via a table lookup.
+        //
+        // For the most common case, where a normalized half is produced,
+        // the table lookup returns a non-zero value; in this case, all
+        // we have to do is round f's significand to 10 bits and combine
+        // the result with e.
+        //
+        // For all other cases (overflow, zeroes, denormalized numbers
+        // resulting from underflow, infinities and NANs), the table
+        // lookup returns zero, and we call a longer, non-inline function
+        // to do the float-to-half conversion.
+        //
 
-	int e = (x.i >> 23) & 0x000001ff;
+        int e = (x.i >> 23) & 0x000001ff;
 
-	e = _eLut[e];
+        e = _eLut[e];
 
-	if (e)
-	{
-	    //
-	    // Simple case - round the significand, m, to 10
-	    // bits and combine it with the sign and exponent.
-	    //
+        if (e)
+        {
+            //
+            // Simple case - round the significand, m, to 10
+            // bits and combine it with the sign and exponent.
+            //
 
-	    int m = x.i & 0x007fffff;
-	    _h = e + ((m + 0x00000fff + ((m >> 13) & 1)) >> 13);
-	}
-	else
-	{
-	    //
-	    // Difficult case - call a function.
-	    //
+            int m = x.i & 0x007fffff;
+            _h    = e + ((m + 0x00000fff + ((m >> 13) & 1)) >> 13);
+        }
+        else
+        {
+            //
+            // Difficult case - call a function.
+            //
 
-	    _h = convert (x.i);
-	}
+            _h = convert (x.i);
+        }
     }
 }
-
 
 //------------------------------------------
 // Half-to-float conversion via table lookup
 //------------------------------------------
 
-inline
-half::operator float () const
+inline half::operator float() const
 {
     return _toFloat[_h].f;
 }
-
 
 //-------------------------
 // Round to n-bit precision
@@ -492,7 +474,7 @@ half::round (unsigned int n) const
     //
 
     if (n >= 10)
-	return *this;
+        return *this;
 
     //
     // Disassemble h into the sign, s,
@@ -510,7 +492,7 @@ half::round (unsigned int n) const
     //
 
     e >>= 9 - n;
-    e  += e & 1;
+    e += e & 1;
     e <<= 9 - n;
 
     //
@@ -519,13 +501,13 @@ half::round (unsigned int n) const
 
     if (e >= 0x7c00)
     {
-	//
-	// Overflow occurred -- truncate instead of rounding.
-	//
+        //
+        // Overflow occurred -- truncate instead of rounding.
+        //
 
-	e = _h;
-	e >>= 10 - n;
-	e <<= 10 - n;
+        e = _h;
+        e >>= 10 - n;
+        e <<= 10 - n;
     }
 
     //
@@ -538,191 +520,168 @@ half::round (unsigned int n) const
     return h;
 }
 
-
 //-----------------------
 // Other inline functions
 //-----------------------
 
-inline half	
-half::operator - () const
+inline half
+half::operator-() const
 {
     half h;
     h._h = _h ^ 0x8000;
     return h;
 }
 
-
-inline half &
-half::operator = (float f)
+inline half&
+half::operator= (float f)
 {
     *this = half (f);
     return *this;
 }
 
-
-inline half &
-half::operator += (half h)
+inline half&
+half::operator+= (half h)
 {
     *this = half (float (*this) + float (h));
     return *this;
 }
 
-
-inline half &
-half::operator += (float f)
+inline half&
+half::operator+= (float f)
 {
     *this = half (float (*this) + f);
     return *this;
 }
 
-
-inline half &
-half::operator -= (half h)
+inline half&
+half::operator-= (half h)
 {
     *this = half (float (*this) - float (h));
     return *this;
 }
 
-
-inline half &
-half::operator -= (float f)
+inline half&
+half::operator-= (float f)
 {
     *this = half (float (*this) - f);
     return *this;
 }
 
-
-inline half &
-half::operator *= (half h)
+inline half&
+half::operator*= (half h)
 {
     *this = half (float (*this) * float (h));
     return *this;
 }
 
-
-inline half &
-half::operator *= (float f)
+inline half&
+half::operator*= (float f)
 {
     *this = half (float (*this) * f);
     return *this;
 }
 
-
-inline half &
-half::operator /= (half h)
+inline half&
+half::operator/= (half h)
 {
     *this = half (float (*this) / float (h));
     return *this;
 }
 
-
-inline half &
-half::operator /= (float f)
+inline half&
+half::operator/= (float f)
 {
     *this = half (float (*this) / f);
     return *this;
 }
 
-
-inline bool	
-half::isFinite () const
+inline bool
+half::isFinite() const
 {
     unsigned short e = (_h >> 10) & 0x001f;
     return e < 31;
 }
 
-
 inline bool
-half::isNormalized () const
+half::isNormalized() const
 {
     unsigned short e = (_h >> 10) & 0x001f;
     return e > 0 && e < 31;
 }
 
-
 inline bool
-half::isDenormalized () const
+half::isDenormalized() const
 {
     unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m =  _h & 0x3ff;
+    unsigned short m = _h & 0x3ff;
     return e == 0 && m != 0;
 }
 
-
 inline bool
-half::isZero () const
+half::isZero() const
 {
     return (_h & 0x7fff) == 0;
 }
 
-
 inline bool
-half::isNan () const
+half::isNan() const
 {
     unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m =  _h & 0x3ff;
+    unsigned short m = _h & 0x3ff;
     return e == 31 && m != 0;
 }
 
-
 inline bool
-half::isInfinity () const
+half::isInfinity() const
 {
     unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m =  _h & 0x3ff;
+    unsigned short m = _h & 0x3ff;
     return e == 31 && m == 0;
 }
 
-
-inline bool	
-half::isNegative () const
+inline bool
+half::isNegative() const
 {
     return (_h & 0x8000) != 0;
 }
 
-
 inline half
-half::posInf ()
+half::posInf()
 {
     half h;
     h._h = 0x7c00;
     return h;
 }
 
-
 inline half
-half::negInf ()
+half::negInf()
 {
     half h;
     h._h = 0xfc00;
     return h;
 }
 
-
 inline half
-half::qNan ()
+half::qNan()
 {
     half h;
     h._h = 0x7fff;
     return h;
 }
 
-
 inline half
-half::sNan ()
+half::sNan()
 {
     half h;
     h._h = 0x7dff;
     return h;
 }
 
-
 inline unsigned short
-half::bits () const
+half::bits() const
 {
     return _h;
 }
-
 
 inline void
 half::setBits (unsigned short bits)
@@ -730,32 +689,28 @@ half::setBits (unsigned short bits)
     _h = bits;
 }
 
-
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
-
 
 //-----------
 // Stream I/O
 //-----------
 
-HALF_EXPORT std::ostream &      operator << (std::ostream &os, IMATH_INTERNAL_NAMESPACE::half  h);
-HALF_EXPORT std::istream &      operator >> (std::istream &is, IMATH_INTERNAL_NAMESPACE::half &h);
+HALF_EXPORT std::ostream& operator<< (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
+HALF_EXPORT std::istream& operator>> (std::istream& is, IMATH_INTERNAL_NAMESPACE::half& h);
 
 //----------
 // Debugging
 //----------
 
-HALF_EXPORT void        printBits   (std::ostream &os, IMATH_INTERNAL_NAMESPACE::half  h);
-HALF_EXPORT void        printBits   (std::ostream &os, float f);
-HALF_EXPORT void        printBits   (char  c[19], IMATH_INTERNAL_NAMESPACE::half  h);
-HALF_EXPORT void        printBits   (char  c[35], float f);
-
+HALF_EXPORT void printBits (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
+HALF_EXPORT void printBits (std::ostream& os, float f);
+HALF_EXPORT void printBits (char c[19], IMATH_INTERNAL_NAMESPACE::half h);
+HALF_EXPORT void printBits (char c[35], float f);
 
 #ifndef __CUDACC__
-    using half = IMATH_INTERNAL_NAMESPACE::half;
-    #else
-    #include <cuda_fp16.h>
+using half = IMATH_INTERNAL_NAMESPACE::half;
+#else
+#    include <cuda_fp16.h>
 #endif
-
 
 #endif

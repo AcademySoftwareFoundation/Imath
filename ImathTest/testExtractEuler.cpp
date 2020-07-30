@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -36,50 +36,51 @@
 #    undef NDEBUG
 #endif
 
-#include <testExtractEuler.h>
-#include "ImathMatrixAlgo.h"
 #include "ImathEuler.h"
-#include "ImathRandom.h"
 #include "ImathFun.h"
-#include <iostream>
+#include "ImathMatrixAlgo.h"
+#include "ImathRandom.h"
 #include <assert.h>
-
+#include <iostream>
+#include <testExtractEuler.h>
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
-namespace {
+namespace
+{
 
-float rad (float deg) {return deg * (M_PI / 180);}
-
+float
+rad (float deg)
+{
+    return deg * (M_PI / 180);
+}
 
 M44f
-matrixEulerMatrix_1 (const M44f &M, Eulerf::Order order)
+matrixEulerMatrix_1 (const M44f& M, Eulerf::Order order)
 {
     V3f f;
 
     if (order == Eulerf::XYZ)
-	extractEulerXYZ (M, f);
+        extractEulerXYZ (M, f);
     else
-	extractEulerZYX (M, f);
+        extractEulerZYX (M, f);
 
-    return Eulerf(f, order).toMatrix44();
+    return Eulerf (f, order).toMatrix44();
 }
 
-
 M44f
-matrixEulerMatrix_2 (const M44f &M, Eulerf::Order order)
+matrixEulerMatrix_2 (const M44f& M, Eulerf::Order order)
 {
     Eulerf f (order);
     f.extract (M);
     return f.toMatrix44();
 }
 
-
 void
 testMatrix (const M44f M,
-	    M44f (*matrixEulerMatrix)(const M44f &, Eulerf::Order),
-	    Eulerf::Order order)
+            M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order),
+            Eulerf::Order order)
 {
     //
     // Extract Euler angles from M, and convert the
@@ -97,74 +98,66 @@ testMatrix (const M44f M,
 
     for (int j = 0; j < 3; ++j)
     {
-	for (int k = 0; k < 3; ++k)
-	{
+        for (int k = 0; k < 3; ++k)
+        {
             if (abs (D[j][k]) > 0.000002)
-	    {
-		cout << "unexpectedly large matrix to "
-			"euler angles conversion error: " <<
-			D[j][k] << endl;
+            {
+                cout << "unexpectedly large matrix to "
+                        "euler angles conversion error: "
+                     << D[j][k] << endl;
 
-		cout << j << " " << k << endl;
+                cout << j << " " << k << endl;
 
-		cout << "M\n" << M << endl;
-		cout << "N\n" << N << endl;
-		cout << "D\n" << D << endl;
+                cout << "M\n" << M << endl;
+                cout << "N\n" << N << endl;
+                cout << "D\n" << D << endl;
 
-		assert (false);
-	    }
-	}
+                assert (false);
+            }
+        }
     }
 }
 
-
 void
-testRandomAngles (M44f (*matrixEulerMatrix)(const M44f &, Eulerf::Order),
-		  Eulerf::Order order)
+testRandomAngles (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order order)
 {
-    Rand48 r(0);
+    Rand48 r (0);
 
     for (int i = 0; i < 100000; ++i)
     {
-	//
-	// Create a rotation matrix, M
-	//
+        //
+        // Create a rotation matrix, M
+        //
 
-	Eulerf e (rad (r.nextf (-180, 180)),
-		  rad (r.nextf (-180, 180)),
-		  rad (r.nextf (-180, 180)),
-		  Eulerf::XYZ);
+        Eulerf e (rad (r.nextf (-180, 180)),
+                  rad (r.nextf (-180, 180)),
+                  rad (r.nextf (-180, 180)),
+                  Eulerf::XYZ);
 
-	M44f M (e.toMatrix44());
+        M44f M (e.toMatrix44());
 
-	//
-	// Add a small random error to the elements of M
-	//
+        //
+        // Add a small random error to the elements of M
+        //
 
-	for (int j = 0; j < 3; ++j)
-	    for (int k = 0; k < 3; ++k)
-		M[j][k] += r.nextf (-1e-7, 1e-7);
+        for (int j = 0; j < 3; ++j)
+            for (int k = 0; k < 3; ++k)
+                M[j][k] += r.nextf (-1e-7, 1e-7);
 
-	//
-	// Extract Euler angles from M, convert the Euler angles
-	// back to a matrix, N, and verify that the entries in M
-	// and N do not differ too much.
-	//
+        //
+        // Extract Euler angles from M, convert the Euler angles
+        // back to a matrix, N, and verify that the entries in M
+        // and N do not differ too much.
+        //
 
-	testMatrix (M, matrixEulerMatrix, order);
+        testMatrix (M, matrixEulerMatrix, order);
     }
 }
 
-
 void
-testAngles (V3f angles,
-	    M44f (*matrixEulerMatrix)(const M44f &, Eulerf::Order),
-	    Eulerf::Order order)
+testAngles (V3f angles, M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order order)
 {
-    Eulerf e (rad (angles.x),
-	      rad (angles.y),
-	      rad (angles.z),
-	      order);
+    Eulerf e (rad (angles.x), rad (angles.y), rad (angles.z), order);
 
     M44f M (e.toMatrix44());
 
@@ -180,21 +173,19 @@ testAngles (V3f angles,
     //
 
     for (int i = 0; i < 3; ++i)
-	for (int j = 0; j < 3; ++j)
-	    if (M[i][j] < -0.5)
-		M[i][j] = -1;
-	    else if (M[i][j] > 0.5)
-		M[i][j] = 1;
-	    else
-		M[i][j] = 0;
+        for (int j = 0; j < 3; ++j)
+            if (M[i][j] < -0.5)
+                M[i][j] = -1;
+            else if (M[i][j] > 0.5)
+                M[i][j] = 1;
+            else
+                M[i][j] = 0;
 
     testMatrix (M, matrixEulerMatrix, order);
 }
 
-
 void
-test (M44f (*matrixEulerMatrix)(const M44f &, Eulerf::Order),
-      Eulerf::Order order)
+test (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order order)
 {
     cout << "order = " << setbase (16) << int (order) << setbase (10) << endl;
 
@@ -205,43 +196,40 @@ test (M44f (*matrixEulerMatrix)(const M44f &, Eulerf::Order),
     // cout << "special angles" << endl;
 
     for (int i = 0; i < 360; i += 90)
-	for (int j = 0; j < 360; j += 90)
-	    for (int k = 0; k < 360; k += 90)
-		testAngles (V3f (i, j, k), matrixEulerMatrix, order);
+        for (int j = 0; j < 360; j += 90)
+            for (int k = 0; k < 360; k += 90)
+                testAngles (V3f (i, j, k), matrixEulerMatrix, order);
 }
 
-
 void
-testRandomAngles33 ()
+testRandomAngles33()
 {
-    Rand48 r(0);
+    Rand48 r (0);
 
     float eps = 8.0 * limits<float>::epsilon();
 
     for (int i = 0; i < 100000; ++i)
     {
-	float angle = rad (r.nextf (-180, 180));
+        float angle = rad (r.nextf (-180, 180));
 
-	M33f M;
-	M.setRotation (angle);
+        M33f M;
+        M.setRotation (angle);
 
-	float angleEx;
-	extractEuler (M, angleEx);
+        float angleEx;
+        extractEuler (M, angleEx);
 
-	assert (IMATH_INTERNAL_NAMESPACE::equal (angle, angleEx, eps));
+        assert (IMATH_INTERNAL_NAMESPACE::equal (angle, angleEx, eps));
     }
 }
 
-
 } // namespace
 
-
 void
-testExtractEuler ()
+testExtractEuler()
 {
     cout << "Testing extraction of rotation angle from 3x3 matrices" << endl;
-    testRandomAngles33 ();
-    
+    testRandomAngles33();
+
     cout << "Testing extraction of Euler angles from matrices" << endl;
 
     cout << "extractEulerXYZ()" << endl;
@@ -257,7 +245,7 @@ testExtractEuler ()
     test (matrixEulerMatrix_2, Eulerf::YXZ);
     test (matrixEulerMatrix_2, Eulerf::ZXY);
     test (matrixEulerMatrix_2, Eulerf::ZYX);
-    
+
     test (matrixEulerMatrix_2, Eulerf::XZX);
     test (matrixEulerMatrix_2, Eulerf::XYX);
     test (matrixEulerMatrix_2, Eulerf::YXY);
@@ -271,7 +259,7 @@ testExtractEuler ()
     test (matrixEulerMatrix_2, Eulerf::YXZr);
     test (matrixEulerMatrix_2, Eulerf::ZXYr);
     test (matrixEulerMatrix_2, Eulerf::ZYXr);
-    
+
     test (matrixEulerMatrix_2, Eulerf::XZXr);
     test (matrixEulerMatrix_2, Eulerf::XYXr);
     test (matrixEulerMatrix_2, Eulerf::YXYr);

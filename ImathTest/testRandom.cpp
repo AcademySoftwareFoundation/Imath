@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -36,22 +36,22 @@
 #    undef NDEBUG
 #endif
 
-#include <testRandom.h>
+#include "ImathFun.h"
 #include "ImathRandom.h"
 #include "ImathVec.h"
-#include "ImathFun.h"
-#include <iostream>
-#include <iomanip>
 #include <assert.h>
-
+#include <iomanip>
+#include <iostream>
+#include <testRandom.h>
 
 using namespace std;
 using IMATH_INTERNAL_NAMESPACE::abs;
 
-namespace {
+namespace
+{
 
 void
-testErand48 ()
+testErand48()
 {
     //
     // Our implementation of erand48(), nrand48(), etc.
@@ -88,10 +88,9 @@ testErand48 ()
     assert (state[2] == 0x306d);
 }
 
-
 template <class Rand>
 void
-testGenerator ()
+testGenerator()
 {
     //
     // Test if the values, and the differences between
@@ -103,39 +102,39 @@ testGenerator ()
 
     int values[N + 1];
     int diffs[2 * N + 3];
-    int *v = &values[0];
-    int *d = &diffs[N + 2];
+    int* v = &values[0];
+    int* d = &diffs[N + 2];
 
     for (int i = 0; i <= N; ++i)
-	v[i] = 0;
+        v[i] = 0;
 
     for (int i = -N; i <= N; ++i)
-	d[i] = 0;
+        d[i] = 0;
 
     Rand rand (0);
     float previous = 0;
 
     for (int i = 0; i < M * N; ++i)
     {
-	float r = rand.nextf (0.0, 1.0);
-	float diff = r - previous;
-	previous = r;
+        float r    = rand.nextf (0.0, 1.0);
+        float diff = r - previous;
+        previous   = r;
 
-	v[int (r * N)] += 1;
-	d[IMATH_INTERNAL_NAMESPACE::floor (diff * N + 0.5)] += 1;
+        v[int (r * N)] += 1;
+        d[IMATH_INTERNAL_NAMESPACE::floor (diff * N + 0.5)] += 1;
     }
 
     cout << "  values" << endl;
 
     for (int i = 0; i < N; ++i)
     {
-	// cout << setw (4) << i << ' ' << setw(6) << v[i] << ' ';
-	assert (abs (v[i] - M) < 0.01 * M);
+        // cout << setw (4) << i << ' ' << setw(6) << v[i] << ' ';
+        assert (abs (v[i] - M) < 0.01 * M);
 
-	// for (int j = 0; j < v[i] * 60 / M; ++j)
-	//      cout << '*';
+        // for (int j = 0; j < v[i] * 60 / M; ++j)
+        //      cout << '*';
 
-	// cout << endl;
+        // cout << endl;
     }
 
     assert (v[N] == 0);
@@ -144,13 +143,13 @@ testGenerator ()
 
     for (int i = -N; i <= N; ++i)
     {
-	// cout << setw (4) << i << ' ' << setw (6) << d[i] << ' ';
-	assert (abs ((N - abs (i)) * M / N - d[i]) < 0.05 * M);
+        // cout << setw (4) << i << ' ' << setw (6) << d[i] << ' ';
+        assert (abs ((N - abs (i)) * M / N - d[i]) < 0.05 * M);
 
-	// for (int j = 0; j < d[i] * 60 / M; ++j)
-	//     cout << '*';
+        // for (int j = 0; j < d[i] * 60 / M; ++j)
+        //     cout << '*';
 
-	// cout << endl;
+        // cout << endl;
     }
 
     cout << "  range" << endl;
@@ -160,13 +159,13 @@ testGenerator ()
 
     for (int i = 0; i <= 10000000; ++i)
     {
-	double r = rand.nextf (0.0, 1.0);
+        double r = rand.nextf (0.0, 1.0);
 
-	if (rMin > r)
-	    rMin = r;
+        if (rMin > r)
+            rMin = r;
 
-	if (rMax < r)
-	    rMax = r;
+        if (rMax < r)
+            rMax = r;
     }
 
     assert (rMin < 0.0001 && rMax > 0.9999);
@@ -175,67 +174,65 @@ testGenerator ()
 
     for (int i = 0; i <= 10000000; ++i)
     {
-	double r0 = rand.nextf (-2.0, 3.0);
-	assert (r0 >= -2.0 && r0 <= 3.0);
+        double r0 = rand.nextf (-2.0, 3.0);
+        assert (r0 >= -2.0 && r0 <= 3.0);
 
-	double r1 = rand.nextf (-pow_2_60, 1);
-	assert (r1 >= -pow_2_60 && r1 <= 1);
+        double r1 = rand.nextf (-pow_2_60, 1);
+        assert (r1 >= -pow_2_60 && r1 <= 1);
 
-	double r2 = rand.nextf (-1, pow_2_60);
-	assert (r2 >= -1 && r2 <= pow_2_60);
+        double r2 = rand.nextf (-1, pow_2_60);
+        assert (r2 >= -1 && r2 <= pow_2_60);
     }
 }
 
-
 template <class Rand>
 void
-testSolidSphere ()
+testSolidSphere()
 {
     const int N = 10;
     const int M = 10000;
     int v[N + 1];
 
     for (int i = 0; i <= N; ++i)
-	v[i] = 0;
+        v[i] = 0;
 
     Rand rand (0);
 
     for (int i = 0; i < M * N; ++i)
     {
-	IMATH_INTERNAL_NAMESPACE::V3f p = IMATH_INTERNAL_NAMESPACE::solidSphereRand<IMATH_INTERNAL_NAMESPACE::V3f> (rand);
-	float l = p.length();
-	v[IMATH_INTERNAL_NAMESPACE::floor (l * N)] += 1;
+        IMATH_INTERNAL_NAMESPACE::V3f p =
+            IMATH_INTERNAL_NAMESPACE::solidSphereRand<IMATH_INTERNAL_NAMESPACE::V3f> (rand);
+        float l = p.length();
+        v[IMATH_INTERNAL_NAMESPACE::floor (l * N)] += 1;
 
-	assert (l < 1.00001);
+        assert (l < 1.00001);
     }
 
     for (int i = 0; i < N; ++i)
-	assert (v[i] > 0);
+        assert (v[i] > 0);
 }
-
 
 template <class Rand>
 void
-testHollowSphere ()
+testHollowSphere()
 {
     const int M = 100000;
     Rand rand (0);
 
     for (int i = 0; i < M; ++i)
     {
-	IMATH_INTERNAL_NAMESPACE::V3f p = IMATH_INTERNAL_NAMESPACE::hollowSphereRand<IMATH_INTERNAL_NAMESPACE::V3f> (rand);
-	float l = p.length();
+        IMATH_INTERNAL_NAMESPACE::V3f p =
+            IMATH_INTERNAL_NAMESPACE::hollowSphereRand<IMATH_INTERNAL_NAMESPACE::V3f> (rand);
+        float l = p.length();
 
-	assert (abs (l - 1) < 0.00001);
+        assert (abs (l - 1) < 0.00001);
     }
 }
 
-
 } // namespace
 
-
 void
-testRandom ()
+testRandom()
 {
     cout << "Testing random number generators" << endl;
 

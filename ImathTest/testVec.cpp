@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2007, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -36,23 +36,23 @@
 #    undef NDEBUG
 #endif
 
-#include <testVec.h>
-#include "ImathVec.h"
 #include "ImathFun.h"
 #include "ImathLimits.h"
-#include <iostream>
+#include "ImathVec.h"
 #include <cassert>
 #include <cmath>
-
+#include <iostream>
+#include <testVec.h>
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
-namespace {
+namespace
+{
 
 template <class T>
 void
-testLength2T ()
+testLength2T()
 {
     const T s = Math<T>::sqrt (limits<T>::smallest());
     const T e = 4 * limits<T>::epsilon();
@@ -108,10 +108,9 @@ testLength2T ()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 }
 
-
 template <class T>
 void
-testLength3T ()
+testLength3T()
 {
     const T s = Math<T>::sqrt (limits<T>::smallest());
     const T e = 4 * limits<T>::epsilon();
@@ -184,10 +183,9 @@ testLength3T ()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 }
 
-
 template <class T>
 void
-testLength4T ()
+testLength4T()
 {
     const T s = Math<T>::sqrt (limits<T>::smallest());
     const T e = 4 * limits<T>::epsilon();
@@ -269,13 +267,10 @@ testLength4T ()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 }
 
-
-
 } // namespace
 
-
 void
-testVec ()
+testVec()
 {
     cout << "Testing some basic vector operations" << endl;
 

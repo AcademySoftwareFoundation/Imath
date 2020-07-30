@@ -7,24 +7,24 @@
 #    undef NDEBUG
 #endif
 
-#include <testSize.h>
 #include <testArithmetic.h>
-#include <testError.h>
 #include <testBitPatterns.h>
 #include <testClassification.h>
-#include <testLimits.h>
+#include <testError.h>
 #include <testFunction.h>
+#include <testLimits.h>
+#include <testSize.h>
 #include <testToFloat.h>
 
 #include <iostream>
 #include <string.h>
 
-
-#define TEST(x) if (argc < 2 || !strcmp (argv[1], #x)) x();
-
+#define TEST(x)                                                                                    \
+    if (argc < 2 || !strcmp (argv[1], #x))                                                         \
+        x();
 
 int
-main (int argc, char *argv[])
+main (int argc, char* argv[])
 {
     std::cout << "\ntesting type half:\n\n" << std::flush;
 
@@ -38,6 +38,6 @@ main (int argc, char *argv[])
     TEST (testClassification);
     TEST (testLimits);
     TEST (testFunction);
-    
+
     return 0;
 }

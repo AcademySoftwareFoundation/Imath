@@ -38,16 +38,18 @@
 
 #include "ImathMatrix.h"
 #include "ImathMatrixAlgo.h"
-#include <iostream>
-#include <math.h>
+#include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <ctime>
-#include <cassert>
+#include <iostream>
 #include <limits>
-#include <algorithm>
+#include <math.h>
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
+
+// clang-format off
 
 const Matrix33<double> A33_1 ( 1, 0, 0, 0, 1, 0, 0, 0, 1 );
 const Matrix33<double> A33_2 ( 1, 0, 0, 0,-1, 0, 0, 0, 1 );
@@ -83,6 +85,7 @@ const Matrix44<double> A44_9 (
     60, -675,  1620, -1050,
    -35,  420, -1050,   700);
 
+// clang-format on
 
 template <typename TM>
 void
@@ -146,8 +149,7 @@ testJacobiEigenSolver(const TM& A)
             else
                 MS[i][j] = 0;
 
-    assert(abs(A.determinant()) - abs(MS.determinant()) <
-               threshold);
+    assert (abs (A.determinant()) - abs (MS.determinant()) < threshold);
 
     // A = V * S * V^T
     TM MA = V * MS * V.transposed();
@@ -182,7 +184,8 @@ testMinMaxEigenValue(const TM& A)
 
   const int dim = TM::dimensions();
 
-  for(int i = 0; i < dim; ++i) {
+    for (int i = 0; i < dim; ++i)
+    {
       assert(abs(minV[i]-V[i][dim - 1]) < threshold);
       assert(abs(maxV[i]-V[i][0]) < threshold);
   }
@@ -201,7 +204,8 @@ testJacobiTiming()
         Vec3<T> S;
 
         t = clock();
-        for(int i = 0; i < rounds; ++i) {
+        for (int i = 0; i < rounds; ++i)
+        {
             A = Matrix33<T>(A33_7);
             jacobiEigenSolver(A, S, V);
             A = Matrix33<T>(A33_8);
@@ -211,7 +215,8 @@ testJacobiTiming()
         cout << "Jacobi EigenSolver of 3x3 matrices took " << tJacobi << " clocks." << endl;
 
         t = clock();
-        for(int i = 0; i < rounds; ++i) {
+        for (int i = 0; i < rounds; ++i)
+        {
             A = Matrix33<T>(A33_7);
             jacobiSVD(A, U, S, V);
             A = Matrix33<T>(A33_8);
@@ -227,7 +232,8 @@ testJacobiTiming()
         Vec4<T> S;
 
         t = clock();
-        for(int i = 0; i < rounds; ++i) {
+        for (int i = 0; i < rounds; ++i)
+        {
             A = Matrix44<T>(A44_7);
             jacobiEigenSolver(A, S, V);
             A = Matrix44<T>(A44_8);
@@ -237,7 +243,8 @@ testJacobiTiming()
         cout << "Jacobi EigenSolver of 4x4 matrices took " << tJacobi << " clocks" << endl;
 
         t = clock();
-        for(int i = 0; i < rounds; ++i) {
+        for (int i = 0; i < rounds; ++i)
+        {
             A = Matrix44<T>(A44_7);
             jacobiSVD(A, U, S, V);
             A = Matrix44<T>(A44_8);
@@ -287,7 +294,8 @@ void
 testJacobiEigenSolver()
 {
     cout << endl;
-    cout <<  "************ Testing IMATH_INTERNAL_NAMESPACE::ImathJacobiEigenSolver ************" << endl;
+    cout << "************ Testing IMATH_INTERNAL_NAMESPACE::ImathJacobiEigenSolver ************"
+         << endl;
     
     cout << "Jacobi EigenSolver in single precision...";
     testJacobiEigenSolverImp<float>();

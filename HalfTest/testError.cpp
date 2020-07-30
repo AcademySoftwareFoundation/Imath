@@ -7,16 +7,17 @@
 #    undef NDEBUG
 #endif
 
-#include <testError.h>
 #include "half.h"
-#include <iostream>
-#include <stdlib.h>
 #include <assert.h>
+#include <iostream>
 #include <random>
+#include <stdlib.h>
+#include <testError.h>
 
 using namespace std;
 
-namespace {
+namespace
+{
 
 float
 drand()
@@ -29,7 +30,6 @@ drand()
 
 } // namespace
 
-
 void
 testNormalizedConversionError()
 {
@@ -39,38 +39,35 @@ testNormalizedConversionError()
 
     for (int i = 0; i < 20000000; i++)
     {
-	float f (drand() * HALF_MAX);
+        float f (drand() * HALF_MAX);
 
-	if (f < HALF_NRM_MIN)
-	    continue;
+        if (f < HALF_NRM_MIN)
+            continue;
 
-	if (i & 1)
-	    f = -f;
+        if (i & 1)
+            f = -f;
 
-	half h (f);
-	float e = 1.0f - h/f;
+        half h (f);
+        float e = 1.0f - h / f;
 
-	if (e < 0)
-	    e = -e;
+        if (e < 0)
+            e = -e;
 
-	if (e > HALF_EPSILON * 0.5)
-	{
-	    cout << "float = " << f <<
-		    ", half = " << h <<
-		    ", error = " << e << endl;
+        if (e > HALF_EPSILON * 0.5)
+        {
+            cout << "float = " << f << ", half = " << h << ", error = " << e << endl;
 
-	    assert (false);
-	}
+            assert (false);
+        }
 
-	if (e > eMax)
-	    eMax = e;
+        if (e > eMax)
+            eMax = e;
     }
 
     cout << "max error          = " << eMax << endl;
     cout << "max expected error = " << HALF_EPSILON * 0.5 << endl;
     cout << "ok\n\n" << flush;
 }
-
 
 void
 testDenormalizedConversionError()
@@ -81,28 +78,26 @@ testDenormalizedConversionError()
 
     for (int i = 0; i < 20000000; i++)
     {
-	float f (drand() * (HALF_NRM_MIN - HALF_MIN));
+        float f (drand() * (HALF_NRM_MIN - HALF_MIN));
 
-	if (i & 1)
-	    f = -f;
+        if (i & 1)
+            f = -f;
 
-	half h (f);
-	float e = h - f;
+        half h (f);
+        float e = h - f;
 
-	if (e < 0)
-	    e = -e;
+        if (e < 0)
+            e = -e;
 
-	if (e > HALF_MIN * 0.5)
-	{
-	    cout << "float = " << f <<
-		    ", half = " << h <<
-		    ", error = " << e << endl;
+        if (e > HALF_MIN * 0.5)
+        {
+            cout << "float = " << f << ", half = " << h << ", error = " << e << endl;
 
-	    assert (false);
-	}
+            assert (false);
+        }
 
-	if (e > eMax)
-	    eMax = e;
+        if (e > eMax)
+            eMax = e;
     }
 
     cout << "max error          = " << eMax << endl;
@@ -110,50 +105,48 @@ testDenormalizedConversionError()
     cout << "ok\n\n" << flush;
 }
 
-
-namespace {
+namespace
+{
 
 void
 testNormalizedRounding (int n)
 {
     cout << "rounding normalized numbers to " << n << "-bit precision\n";
 
-    float eExpected = (n < 10)? HALF_EPSILON * 0.5f * (1 << (10 - n)): 0;
-    float eMax = 0;
+    float eExpected = (n < 10) ? HALF_EPSILON * 0.5f * (1 << (10 - n)) : 0;
+    float eMax      = 0;
 
     for (int i = 0; i < 200000; i++)
     {
-	half h (drand() * HALF_MAX);
+        half h (drand() * HALF_MAX);
 
-	if (h < HALF_NRM_MIN)
-	    continue;
+        if (h < HALF_NRM_MIN)
+            continue;
 
-	if (i & 1)
-	    h = -h;
+        if (i & 1)
+            h = -h;
 
-	half r (h.round(n));
-	float e = 1.0f - r/h;
+        half r (h.round (n));
+        float e = 1.0f - r / h;
 
-	if (e < 0)
-	    e = -e;
+        if (e < 0)
+            e = -e;
 
-	if (e > eExpected)
-	{
-	    cout << "half = " << h <<
-		    ", rounded = " << r <<
-		    ", error = " << e <<
-		    ", expected error = " << eExpected << endl;
+        if (e > eExpected)
+        {
+            cout << "half = " << h << ", rounded = " << r << ", error = " << e
+                 << ", expected error = " << eExpected << endl;
 
-	    printBits (cout, h);
-	    cout << endl;
-	    printBits (cout, r);
-	    cout << endl;
+            printBits (cout, h);
+            cout << endl;
+            printBits (cout, r);
+            cout << endl;
 
-	    assert (false);
-	}
+            assert (false);
+        }
 
-	if (e > eMax)
-	    eMax = e;
+        if (e > eMax)
+            eMax = e;
     }
 
     cout << "max error          = " << eMax << endl;
@@ -161,45 +154,42 @@ testNormalizedRounding (int n)
     cout << "ok\n\n" << flush;
 }
 
-
 void
 testDenormalizedRounding (int n)
 {
     cout << "rounding denormalized numbers to " << n << "-bit precision\n";
 
-    float eExpected = (n < 10)? HALF_MIN * 0.5f * (1 << (10 - n)): 0;
-    float eMax = 0;
+    float eExpected = (n < 10) ? HALF_MIN * 0.5f * (1 << (10 - n)) : 0;
+    float eMax      = 0;
 
     for (int i = 0; i < 200000; i++)
     {
-	half h (drand() * (HALF_NRM_MIN - HALF_MIN));
+        half h (drand() * (HALF_NRM_MIN - HALF_MIN));
 
-	if (i & 1)
-	    h = -h;
+        if (i & 1)
+            h = -h;
 
-	half r (h.round(n));
-	float e = r - h;
+        half r (h.round (n));
+        float e = r - h;
 
-	if (e < 0)
-	    e = -e;
+        if (e < 0)
+            e = -e;
 
-	if (e > eExpected)
-	{
-	    cout << "half = " << h <<
-		    ", rounded = " << r <<
-		    ", error = " << e <<
-		    ", expected error = " << eExpected << endl;
+        if (e > eExpected)
+        {
+            cout << "half = " << h << ", rounded = " << r << ", error = " << e
+                 << ", expected error = " << eExpected << endl;
 
-	    printBits (cout, h);
-	    cout << endl;
-	    printBits (cout, r);
-	    cout << endl;
+            printBits (cout, h);
+            cout << endl;
+            printBits (cout, r);
+            cout << endl;
 
-	    assert (false);
-	}
+            assert (false);
+        }
 
-	if (e > eMax)
-	    eMax = e;
+        if (e > eMax)
+            eMax = e;
     }
 
     cout << "max error          = " << eMax << endl;
@@ -209,9 +199,8 @@ testDenormalizedRounding (int n)
 
 } // namespace
 
-
 void
-testRoundingError ()
+testRoundingError()
 {
     testNormalizedRounding (10);
     testDenormalizedRounding (10);

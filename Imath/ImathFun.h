@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -32,8 +32,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-
-
 #ifndef INCLUDED_IMATHFUN_H
 #define INCLUDED_IMATHFUN_H
 
@@ -44,8 +42,8 @@
 //-----------------------------------------------------------------------------
 
 #include "ImathExport.h"
-#include "ImathLimits.h"
 #include "ImathInt64.h"
+#include "ImathLimits.h"
 #include "ImathNamespace.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -54,17 +52,15 @@ template <class T>
 constexpr inline T
 abs (T a)
 {
-    return (a > T(0)) ? a : -a;
+    return (a > T (0)) ? a : -a;
 }
-
 
 template <class T>
 constexpr inline int
 sign (T a)
 {
-    return (a > T(0))? 1 : ((a < T(0)) ? -1 : 0);
+    return (a > T (0)) ? 1 : ((a < T (0)) ? -1 : 0);
 }
-
 
 template <class T, class Q>
 constexpr inline T
@@ -73,18 +69,16 @@ lerp (T a, T b, Q t)
     return (T) (a * (1 - t) + b * t);
 }
 
-
 template <class T, class Q>
 constexpr inline T
 ulerp (T a, T b, Q t)
 {
-    return (T) ((a > b)? (a - (a - b) * t): (a + (b - a) * t));
+    return (T) ((a > b) ? (a - (a - b) * t) : (a + (b - a) * t));
 }
-
 
 template <class T>
 IMATH_CONSTEXPR14 inline T
-lerpfactor(T m, T a, T b)
+lerpfactor (T m, T a, T b)
 {
     //
     // Return how far m is between a and b, that is return t such that
@@ -99,20 +93,18 @@ lerpfactor(T m, T a, T b)
     T d = b - a;
     T n = m - a;
 
-    if (abs(d) > T(1) || abs(n) < limits<T>::max() * abs(d))
-	return n / d;
+    if (abs (d) > T (1) || abs (n) < limits<T>::max() * abs (d))
+        return n / d;
 
-    return T(0);
+    return T (0);
 }
-
 
 template <class T>
 constexpr inline T
 clamp (T a, T l, T h)
 {
-    return (a < l)? l : ((a > h)? h : a);
+    return (a < l) ? l : ((a > h) ? h : a);
 }
-
 
 template <class T>
 constexpr inline int
@@ -121,14 +113,12 @@ cmp (T a, T b)
     return IMATH_INTERNAL_NAMESPACE::sign (a - b);
 }
 
-
 template <class T>
 constexpr inline int
 cmpt (T a, T b, T t)
 {
-    return (IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t)? 0 : cmp (a, b);
+    return (IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t) ? 0 : cmp (a, b);
 }
-
 
 template <class T>
 constexpr inline bool
@@ -136,7 +126,6 @@ iszero (T a, T t)
 {
     return (IMATH_INTERNAL_NAMESPACE::abs (a) <= t) ? 1 : 0;
 }
-
 
 template <class T1, class T2, class T3>
 constexpr inline bool
@@ -149,9 +138,8 @@ template <class T>
 constexpr inline int
 floor (T x)
 {
-    return (x >= 0)? int (x): -(int (-x) + (-x > int (-x)));
+    return (x >= 0) ? int (x) : -(int (-x) + (-x > int (-x)));
 }
-
 
 template <class T>
 constexpr inline int
@@ -164,9 +152,8 @@ template <class T>
 constexpr inline int
 trunc (T x)
 {
-    return (x >= 0) ? int(x) : -int(-x);
+    return (x >= 0) ? int (x) : -int (-x);
 }
-
 
 //
 // Integer division and remainder where the
@@ -179,18 +166,14 @@ trunc (T x)
 constexpr inline int
 divs (int x, int y)
 {
-    return (x >= 0)? ((y >= 0)?  ( x / y): -( x / -y)):
-		     ((y >= 0)? -(-x / y):  (-x / -y));
+    return (x >= 0) ? ((y >= 0) ? (x / y) : -(x / -y)) : ((y >= 0) ? -(-x / y) : (-x / -y));
 }
-
 
 constexpr inline int
 mods (int x, int y)
 {
-    return (x >= 0)? ((y >= 0)?  ( x % y):  ( x % -y)):
-		     ((y >= 0)? -(-x % y): -(-x % -y));
+    return (x >= 0) ? ((y >= 0) ? (x % y) : (x % -y)) : ((y >= 0) ? -(-x % y) : -(-x % -y));
 }
-
 
 //
 // Integer division and remainder where the
@@ -198,15 +181,14 @@ mods (int x, int y)
 //
 //	divp(x,y) == floor (double(x) / double (y))
 //	modp(x,y) == x - y * divp(x,y)
-// 
+//
 
 constexpr inline int
 divp (int x, int y)
 {
-    return (x >= 0)? ((y >= 0)?  (     x  / y): -(      x  / -y)):
-		     ((y >= 0)? -((y-1-x) / y):  ((-y-1-x) / -y));
+    return (x >= 0) ? ((y >= 0) ? (x / y) : -(x / -y))
+                    : ((y >= 0) ? -((y - 1 - x) / y) : ((-y - 1 - x) / -y));
 }
-
 
 constexpr inline int
 modp (int x, int y)
@@ -222,7 +204,7 @@ modp (int x, int y)
 //
 // predf(f)     returns float(f-e), where e is the smallest
 //              positive number such that float(f-e) != f.
-// 
+//
 // succd(d)     returns double(d+e), where e is the smallest
 //              positive number such that double(d+e) != d.
 //
@@ -232,7 +214,7 @@ modp (int x, int y)
 // Exceptions:  If the input value is an infinity or a nan,
 //              succf(), predf(), succd(), and predd() all
 //              return the input value without changing it.
-// 
+//
 //----------------------------------------------------------
 
 IMATH_EXPORT float succf (float f);
@@ -245,24 +227,31 @@ IMATH_EXPORT double predd (double d);
 // Return true if the number is not a NaN or Infinity.
 //
 
-inline bool 
+inline bool
 finitef (float f)
 {
-    union {float f; int i;} u;
+    union
+    {
+        float f;
+        int i;
+    } u;
     u.f = f;
 
     return (u.i & 0x7f800000) != 0x7f800000;
 }
 
-inline bool 
+inline bool
 finited (double d)
 {
-    union {double d; Int64 i;} u;
+    union
+    {
+        double d;
+        Int64 i;
+    } u;
     u.d = d;
 
     return (u.i & 0x7ff0000000000000LL) != 0x7ff0000000000000LL;
 }
-
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

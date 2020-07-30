@@ -3,8 +3,6 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-
-void testNormalizedConversionError ();
-void testDenormalizedConversionError ();
-void testRoundingError ();
-
+void testNormalizedConversionError();
+void testDenormalizedConversionError();
+void testRoundingError();

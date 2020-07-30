@@ -2,9 +2,9 @@
 //
 // Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -16,8 +16,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -32,11 +32,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-
-
 #ifndef INCLUDED_IMATHINTERVAL_H
 #define INCLUDED_IMATHINTERVAL_H
-
 
 //-------------------------------------------------------------------
 //
@@ -49,94 +46,85 @@
 //
 //-------------------------------------------------------------------
 
-#include "ImathVec.h"
 #include "ImathNamespace.h"
+#include "ImathVec.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
-
-template <class T>	
-class Interval
+template <class T> class Interval
 {
   public:
-
     //-------------------------
     //  Data Members are public
     //-------------------------
 
-    T				min;
-    T				max;
+    T min;
+    T max;
 
     //-----------------------------------------------------
     //	Constructors - an "empty" Interval is created by default
     //-----------------------------------------------------
 
-    Interval(); 
-    constexpr Interval(const T& point);
-    constexpr Interval(const T& minT, const T& maxT);
+    Interval();
+    constexpr Interval (const T& point);
+    constexpr Interval (const T& minT, const T& maxT);
 
     //--------------------------------
     //  Operators:  we get != from STL
     //--------------------------------
-    
-    constexpr bool              operator == (const Interval<T> &src) const;
+
+    constexpr bool operator== (const Interval<T>& src) const;
 
     //------------------
     //	Interval manipulation
     //------------------
 
-    void			makeEmpty();
-    void			extendBy(const T& point);
-    void			extendBy(const Interval<T>& interval);
+    void makeEmpty();
+    void extendBy (const T& point);
+    void extendBy (const Interval<T>& interval);
 
     //---------------------------------------------------
     //	Query functions - these compute results each time
     //---------------------------------------------------
 
-    constexpr T			size() const;
-    constexpr T			center() const;
-    constexpr bool		intersects(const T &point) const;
-    constexpr bool		intersects(const Interval<T> &interval) const;
+    constexpr T size() const;
+    constexpr T center() const;
+    constexpr bool intersects (const T& point) const;
+    constexpr bool intersects (const Interval<T>& interval) const;
 
     //----------------
     //	Classification
     //----------------
 
-    constexpr bool		hasVolume() const;
-    constexpr bool		isEmpty() const;
+    constexpr bool hasVolume() const;
+    constexpr bool isEmpty() const;
 };
-
 
 //--------------------
 // Convenient typedefs
 //--------------------
 
-
-typedef Interval <float>  Intervalf;
-typedef Interval <double> Intervald;
-typedef Interval <short>  Intervals;
-typedef Interval <int>    Intervali;
+typedef Interval<float> Intervalf;
+typedef Interval<double> Intervald;
+typedef Interval<short> Intervals;
+typedef Interval<int> Intervali;
 
 //----------------
 //  Implementation
 //----------------
 
-
-template <class T>
-inline Interval<T>::Interval()
+template <class T> inline Interval<T>::Interval()
 {
     makeEmpty();
 }
 
-template <class T>
-constexpr inline Interval<T>::Interval(const T& point)
+template <class T> constexpr inline Interval<T>::Interval (const T& point)
 {
     min = point;
     max = point;
 }
 
-template <class T>
-constexpr inline Interval<T>::Interval(const T& minV, const T& maxV)
+template <class T> constexpr inline Interval<T>::Interval (const T& minV, const T& maxV)
 {
     min = minV;
     max = maxV;
@@ -144,7 +132,7 @@ constexpr inline Interval<T>::Interval(const T& minV, const T& maxV)
 
 template <class T>
 constexpr inline bool
-Interval<T>::operator == (const Interval<T> &src) const
+Interval<T>::operator== (const Interval<T>& src) const
 {
     return (min == src.min && max == src.max);
 }
@@ -159,52 +147,52 @@ Interval<T>::makeEmpty()
 
 template <class T>
 inline void
-Interval<T>::extendBy(const T& point)
+Interval<T>::extendBy (const T& point)
 {
-    if ( point < min )
-	min = point;
-    
-    if ( point > max )
-	max = point;
+    if (point < min)
+        min = point;
+
+    if (point > max)
+        max = point;
 }
 
 template <class T>
 inline void
-Interval<T>::extendBy(const Interval<T>& interval)
+Interval<T>::extendBy (const Interval<T>& interval)
 {
-    if ( interval.min < min )
-	min = interval.min;
+    if (interval.min < min)
+        min = interval.min;
 
-    if ( interval.max > max )
-	max = interval.max;
+    if (interval.max > max)
+        max = interval.max;
 }
 
 template <class T>
 constexpr inline bool
-Interval<T>::intersects(const T& point) const
+Interval<T>::intersects (const T& point) const
 {
     return point >= min && point <= max;
 }
 
 template <class T>
 constexpr inline bool
-Interval<T>::intersects(const Interval<T>& interval) const
+Interval<T>::intersects (const Interval<T>& interval) const
 {
     return interval.max >= min && interval.min <= max;
 }
 
-template <class T> 
+template <class T>
 constexpr inline T
-Interval<T>::size() const 
-{ 
-    return max-min;
+Interval<T>::size() const
+{
+    return max - min;
 }
 
-template <class T> 
+template <class T>
 cosntexpr inline T
-Interval<T>::center() const 
-{ 
-    return (max+min)/2;
+Interval<T>::center() const
+{
+    return (max + min) / 2;
 }
 
 template <class T>
@@ -220,7 +208,6 @@ Interval<T>::hasVolume() const
 {
     return max > min;
 }
-
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 
