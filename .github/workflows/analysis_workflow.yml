@@ -7,6 +7,11 @@
 name: Analysis
 
 on:
+  pull_request:
+    # TODO: Stop testing on pull requests when testing is known to work!
+    # Jobs are skipped when ONLY Markdown (*.md) files are changed
+    paths-ignore:
+      - '**.md'
   schedule:
     # Weekly Sunday build
     - cron: "0 0 * * 0"
@@ -41,21 +46,18 @@ jobs:
         run: |
           mkdir _install
           mkdir _build
+        shell: bash
       - name: Configure
         run: |
           cmake ../. \
                 -DCMAKE_INSTALL_PREFIX=../_install \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_CXX_STANDARD=11 \
-                -DCMAKE_CXX_FLAGS="-g -O0 -fprofile-arcs -ftest-coverage" \
-                -DCMAKE_CXX_OUTPUT_EXTENSION_REPLACE=ON \
-                -DCMAKE_EXE_LINKER_FLAGS="-lgcov" \
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
-                -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \                
                 -DPYTHON='ON'\
-                -DPYTHON_EXECUTABLE=$(which python)
+                -DPYTHON_EXECUTABLE=$(which python) 
         working-directory: _build
-      - name: Build OpenEXR with build-wrapper
+      - name: Build Imath with build-wrapper
         shell: bash
         run: |
           export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${PWD}/Half:${PWD}/Imath
@@ -67,14 +69,14 @@ jobs:
         run: |
           ctest -T Test \
                 -C Release \
-                -E python.*_Python2 \
+                -E PyImath.*_Python2 \
                 --timeout 7200 \
                 --output-on-failure \
                 -VV
         working-directory: _build
-      - name: Generate code coverage report
-        run: share/ci/scripts/linux/run_gcov.sh
-        shell: bash
+        #    - name: Generate code coverage report
+        #      run: share/ci/scripts/linux/run_gcov.sh
+        #      shell: bash
       - name: Run sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -136,7 +138,7 @@ jobs:
       - name: Valgrind memcheck tests
         run: |
           ctest -C Release \
-                -E python.*_Python2 \
+                -E PyImath.*_Python2 \
                 --timeout 50000 \
                 --force-new-ctest-process \
                 --test-action memcheck \
