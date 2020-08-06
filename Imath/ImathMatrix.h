@@ -73,28 +73,28 @@ template <class T> class Matrix22
 
     T x[2][2];
 
-    T* operator[] (int i);
-    const T* operator[] (int i) const;
+    IMATH_HOSTDEVICE T* operator[] (int i);
+    IMATH_HOSTDEVICE const T* operator[] (int i) const;
 
     //-------------
     // Constructors
     //-------------
 
-    Matrix22 (Uninitialized) {}
+    IMATH_HOSTDEVICE Matrix22 (Uninitialized) {}
 
-    IMATH_CONSTEXPR14 Matrix22();
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22();
     // 1 0
     // 0 1
 
-    IMATH_CONSTEXPR14 Matrix22 (T a);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (T a);
     // a a
     // a a
 
-    IMATH_CONSTEXPR14 Matrix22 (const T a[2][2]);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const T a[2][2]);
     // a[0][0] a[0][1]
     // a[1][0] a[1][1]
 
-    IMATH_CONSTEXPR14 Matrix22 (T a, T b, T c, T d);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (T a, T b, T c, T d);
     // a b
     // c d
 
@@ -102,11 +102,11 @@ template <class T> class Matrix22
     // Copy constructor and assignment
     //--------------------------------
 
-    IMATH_CONSTEXPR14 Matrix22 (const Matrix22& v);
-    template <class S> IMATH_CONSTEXPR14 explicit Matrix22 (const Matrix22<S>& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const Matrix22& v);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix22 (const Matrix22<S>& v);
 
-    IMATH_CONSTEXPR14 const Matrix22& operator= (const Matrix22& v);
-    IMATH_CONSTEXPR14 const Matrix22& operator= (T a);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator= (const Matrix22& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator= (T a);
 
     //------------
     // Destructor
@@ -118,26 +118,27 @@ template <class T> class Matrix22
     // Compatibility with Sb
     //----------------------
 
-    T* getValue();
-    const T* getValue() const;
+    IMATH_HOSTDEVICE T* getValue();
+    IMATH_HOSTDEVICE const T* getValue() const;
 
-    template <class S> void getValue (Matrix22<S>& v) const;
-    template <class S> IMATH_CONSTEXPR14 Matrix22& setValue (const Matrix22<S>& v);
+    template <class S> IMATH_HOSTDEVICE void getValue (Matrix22<S>& v) const;
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22& setValue (const Matrix22<S>& v);
 
-    template <class S> IMATH_CONSTEXPR14 Matrix22& setTheMatrix (const Matrix22<S>& v);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22& setTheMatrix (const Matrix22<S>& v);
 
     //---------
     // Identity
     //---------
 
-    void makeIdentity();
+    IMATH_HOSTDEVICE void makeIdentity();
 
     //---------
     // Equality
     //---------
 
-    constexpr bool operator== (const Matrix22& v) const;
-    constexpr bool operator!= (const Matrix22& v) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Matrix22& v) const;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Matrix22& v) const;
 
     //-----------------------------------------------------------------------
     // Compare two matrices and test if they are "approximately equal":
@@ -157,45 +158,45 @@ template <class T> class Matrix22
     //      abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     //-----------------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix22<T>& v, T e) const;
-    IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix22<T>& v, T e) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix22<T>& v, T e) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix22<T>& v, T e) const;
 
     //------------------------
     // Component-wise addition
     //------------------------
 
-    IMATH_CONSTEXPR14 const Matrix22& operator+= (const Matrix22& v);
-    IMATH_CONSTEXPR14 const Matrix22& operator+= (T a);
-    constexpr Matrix22 operator+ (const Matrix22& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator+= (const Matrix22& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator+= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix22 operator+ (const Matrix22& v) const;
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
-    IMATH_CONSTEXPR14 const Matrix22& operator-= (const Matrix22& v);
-    IMATH_CONSTEXPR14 const Matrix22& operator-= (T a);
-    constexpr Matrix22 operator- (const Matrix22& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator-= (const Matrix22& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator-= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix22 operator- (const Matrix22& v) const;
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    constexpr Matrix22 operator-() const;
-    IMATH_CONSTEXPR14 const Matrix22& negate();
+    IMATH_HOSTDEVICE constexpr Matrix22 operator-() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& negate();
 
     //------------------------------
     // Component-wise multiplication
     //------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix22& operator*= (T a);
-    constexpr Matrix22 operator* (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator*= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix22 operator* (T a) const;
 
     //-----------------------------------
     // Matrix-times-matrix multiplication
     //-----------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix22& operator*= (const Matrix22& v);
-    IMATH_CONSTEXPR14 Matrix22 operator* (const Matrix22& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator*= (const Matrix22& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 operator* (const Matrix22& v) const;
 
     //-----------------------------------------------------------------
     // Vector-times-matrix multiplication; see also the "operator *"
@@ -204,21 +205,21 @@ template <class T> class Matrix22
     // m.multDirMatrix(src,dst) multiplies src by the matrix m.
     //-----------------------------------------------------------------
 
-    template <class S> void multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const;
+    template <class S> IMATH_HOSTDEVICE void multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const;
 
     //------------------------
     // Component-wise division
     //------------------------
 
-    IMATH_CONSTEXPR14 const Matrix22& operator/= (T a);
-    constexpr Matrix22 operator/ (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator/= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix22 operator/ (T a) const;
 
     //------------------
     // Transposed matrix
     //------------------
 
-    IMATH_CONSTEXPR14 const Matrix22& transpose();
-    constexpr Matrix22 transposed() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& transpose();
+    IMATH_HOSTDEVICE constexpr Matrix22 transposed() const;
 
     //------------------------------------------------------------
     // Inverse matrix: If singExc is false, inverting a singular
@@ -229,61 +230,64 @@ template <class T> class Matrix22
     //
     //------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix22& invert (bool singExc = false);
+    IMATH_CONSTEXPR14 const Matrix22& invert (bool singExc);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& invert();
 
-    IMATH_CONSTEXPR14 Matrix22<T> inverse (bool singExc = false) const;
+    IMATH_CONSTEXPR14 Matrix22<T> inverse (bool singExc) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22<T> inverse() const;
 
     //------------
     // Determinant
     //------------
 
-    constexpr T determinant() const;
+    IMATH_HOSTDEVICE constexpr T determinant() const;
 
     //-----------------------------------------
     // Set matrix to rotation by r (in radians)
     //-----------------------------------------
 
-    template <class S> const Matrix22& setRotation (S r);
+    template <class S> IMATH_HOSTDEVICE const Matrix22& setRotation (S r);
 
     //-----------------------------
     // Rotate the given matrix by r
     //-----------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix22& rotate (S r);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& rotate (S r);
 
     //--------------------------------------------
     // Set matrix to scale by given uniform factor
     //--------------------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix22& setScale (T s);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& setScale (T s);
 
     //------------------------------------
     // Set matrix to scale by given vector
     //------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix22& setScale (const Vec2<S>& s);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& setScale (const Vec2<S>& s);
 
     //----------------------
     // Scale the matrix by s
     //----------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix22& scale (const Vec2<S>& s);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& scale (const Vec2<S>& s);
 
     //--------------------------------------------------------
     // Number of the row and column dimensions, since
     // Matrix22 is a square matrix.
     //--------------------------------------------------------
 
-    constexpr static unsigned int dimensions() { return 2; }
+    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() { return 2; }
 
     //-------------------------------------------------
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    constexpr static T baseTypeMin() { return limits<T>::min(); }
-    constexpr static T baseTypeMax() { return limits<T>::max(); }
-    constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
-    constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMin() { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
 
     typedef T BaseType;
     typedef Vec2<T> BaseVecType;
@@ -315,31 +319,31 @@ template <class T> class Matrix33
 
     T x[3][3];
 
-    T* operator[] (int i);
-    const T* operator[] (int i) const;
+    IMATH_HOSTDEVICE T* operator[] (int i);
+    IMATH_HOSTDEVICE const T* operator[] (int i) const;
 
     //-------------
     // Constructors
     //-------------
 
-    Matrix33 (Uninitialized) {}
+    IMATH_HOSTDEVICE Matrix33 (Uninitialized) {}
 
-    IMATH_CONSTEXPR14 Matrix33();
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33();
     // 1 0 0
     // 0 1 0
     // 0 0 1
 
-    IMATH_CONSTEXPR14 Matrix33 (T a);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (T a);
     // a a a
     // a a a
     // a a a
 
-    IMATH_CONSTEXPR14 Matrix33 (const T a[3][3]);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const T a[3][3]);
     // a[0][0] a[0][1] a[0][2]
     // a[1][0] a[1][1] a[1][2]
     // a[2][0] a[2][1] a[2][2]
 
-    IMATH_CONSTEXPR14 Matrix33 (T a, T b, T c, T d, T e, T f, T g, T h, T i);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (T a, T b, T c, T d, T e, T f, T g, T h, T i);
     // a b c
     // d e f
     // g h i
@@ -348,11 +352,11 @@ template <class T> class Matrix33
     // Copy constructor and assignment
     //--------------------------------
 
-    IMATH_CONSTEXPR14 Matrix33 (const Matrix33& v);
-    template <class S> IMATH_CONSTEXPR14 explicit Matrix33 (const Matrix33<S>& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const Matrix33& v);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix33 (const Matrix33<S>& v);
 
-    IMATH_CONSTEXPR14 const Matrix33& operator= (const Matrix33& v);
-    IMATH_CONSTEXPR14 const Matrix33& operator= (T a);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (const Matrix33& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (T a);
 
     //------------
     // Destructor
@@ -364,26 +368,27 @@ template <class T> class Matrix33
     // Compatibility with Sb
     //----------------------
 
-    T* getValue();
-    const T* getValue() const;
+    IMATH_HOSTDEVICE T* getValue();
+    IMATH_HOSTDEVICE const T* getValue() const;
 
-    template <class S> void getValue (Matrix33<S>& v) const;
-    template <class S> IMATH_CONSTEXPR14 Matrix33& setValue (const Matrix33<S>& v);
+    template <class S> IMATH_HOSTDEVICE void getValue (Matrix33<S>& v) const;
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33& setValue (const Matrix33<S>& v);
 
-    template <class S> IMATH_CONSTEXPR14 Matrix33& setTheMatrix (const Matrix33<S>& v);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33& setTheMatrix (const Matrix33<S>& v);
 
     //---------
     // Identity
     //---------
 
-    void makeIdentity();
+    IMATH_HOSTDEVICE void makeIdentity();
 
     //---------
     // Equality
     //---------
 
-    constexpr bool operator== (const Matrix33& v) const;
-    constexpr bool operator!= (const Matrix33& v) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Matrix33& v) const;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Matrix33& v) const;
 
     //-----------------------------------------------------------------------
     // Compare two matrices and test if they are "approximately equal":
@@ -403,45 +408,45 @@ template <class T> class Matrix33
     //      abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     //-----------------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix33<T>& v, T e) const;
-    IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix33<T>& v, T e) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix33<T>& v, T e) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix33<T>& v, T e) const;
 
     //------------------------
     // Component-wise addition
     //------------------------
 
-    IMATH_CONSTEXPR14 const Matrix33& operator+= (const Matrix33& v);
-    IMATH_CONSTEXPR14 const Matrix33& operator+= (T a);
-    constexpr Matrix33 operator+ (const Matrix33& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator+= (const Matrix33& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator+= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix33 operator+ (const Matrix33& v) const;
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
-    IMATH_CONSTEXPR14 const Matrix33& operator-= (const Matrix33& v);
-    IMATH_CONSTEXPR14 const Matrix33& operator-= (T a);
-    constexpr Matrix33 operator- (const Matrix33& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator-= (const Matrix33& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator-= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix33 operator- (const Matrix33& v) const;
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    constexpr Matrix33 operator-() const;
-    IMATH_CONSTEXPR14 const Matrix33& negate();
+    IMATH_HOSTDEVICE constexpr Matrix33 operator-() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& negate();
 
     //------------------------------
     // Component-wise multiplication
     //------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix33& operator*= (T a);
-    constexpr Matrix33 operator* (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator*= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix33 operator* (T a) const;
 
     //-----------------------------------
     // Matrix-times-matrix multiplication
     //-----------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix33& operator*= (const Matrix33& v);
-    IMATH_CONSTEXPR14 Matrix33 operator* (const Matrix33& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator*= (const Matrix33& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 operator* (const Matrix33& v) const;
 
     //-----------------------------------------------------------------
     // Vector-times-matrix multiplication; see also the "operator *"
@@ -455,23 +460,23 @@ template <class T> class Matrix33
     // submatrix, ignoring the rest of matrix m.
     //-----------------------------------------------------------------
 
-    template <class S> void multVecMatrix (const Vec2<S>& src, Vec2<S>& dst) const;
+    template <class S> IMATH_HOSTDEVICE void multVecMatrix (const Vec2<S>& src, Vec2<S>& dst) const;
 
-    template <class S> void multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const;
+    template <class S> IMATH_HOSTDEVICE void multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const;
 
     //------------------------
     // Component-wise division
     //------------------------
 
-    IMATH_CONSTEXPR14 const Matrix33& operator/= (T a);
-    constexpr Matrix33 operator/ (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator/= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix33 operator/ (T a) const;
 
     //------------------
     // Transposed matrix
     //------------------
 
-    IMATH_CONSTEXPR14 const Matrix33& transpose();
-    constexpr Matrix33 transposed() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& transpose();
+    IMATH_HOSTDEVICE constexpr Matrix33 transposed() const;
 
     //------------------------------------------------------------
     // Inverse matrix: If singExc is false, inverting a singular
@@ -487,121 +492,130 @@ template <class T> class Matrix33
     //
     //------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix33& invert (bool singExc = false);
+    IMATH_CONSTEXPR14 const Matrix33& invert (bool singExc);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& invert();
 
-    IMATH_CONSTEXPR14 Matrix33<T> inverse (bool singExc = false) const;
+    IMATH_CONSTEXPR14 Matrix33<T> inverse (bool singExc) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33<T> inverse() const;
 
-    IMATH_CONSTEXPR14 const Matrix33& gjInvert (bool singExc = false);
+    const Matrix33& gjInvert (bool singExc);
+    IMATH_HOSTDEVICE const Matrix33& gjInvert();
 
-    Matrix33<T> gjInverse (bool singExc = false) const;
+    Matrix33<T> gjInverse (bool singExc) const;
+    IMATH_HOSTDEVICE Matrix33<T> gjInverse() const;
 
     //------------------------------------------------
     // Calculate the matrix minor of the (r,c) element
     //------------------------------------------------
 
-    IMATH_CONSTEXPR14 T minorOf (const int r, const int c) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T minorOf (const int r, const int c) const;
 
     //---------------------------------------------------
     // Build a minor using the specified rows and columns
     //---------------------------------------------------
 
+    IMATH_HOSTDEVICE
     constexpr T fastMinor (const int r0, const int r1, const int c0, const int c1) const;
 
     //------------
     // Determinant
     //------------
 
-    constexpr T determinant() const;
+    IMATH_HOSTDEVICE constexpr T determinant() const;
 
     //-----------------------------------------
     // Set matrix to rotation by r (in radians)
     //-----------------------------------------
 
-    template <class S> const Matrix33& setRotation (S r);
+    template <class S> IMATH_HOSTDEVICE const Matrix33& setRotation (S r);
 
     //-----------------------------
     // Rotate the given matrix by r
     //-----------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& rotate (S r);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& rotate (S r);
 
     //--------------------------------------------
     // Set matrix to scale by given uniform factor
     //--------------------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix33& setScale (T s);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setScale (T s);
 
     //------------------------------------
     // Set matrix to scale by given vector
     //------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& setScale (const Vec2<S>& s);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setScale (const Vec2<S>& s);
 
     //----------------------
     // Scale the matrix by s
     //----------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& scale (const Vec2<S>& s);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& scale (const Vec2<S>& s);
 
     //------------------------------------------
     // Set matrix to translation by given vector
     //------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& setTranslation (const Vec2<S>& t);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setTranslation (const Vec2<S>& t);
 
     //-----------------------------
     // Return translation component
     //-----------------------------
 
-    constexpr Vec2<T> translation() const;
+    IMATH_HOSTDEVICE constexpr Vec2<T> translation() const;
 
     //--------------------------
     // Translate the matrix by t
     //--------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& translate (const Vec2<S>& t);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& translate (const Vec2<S>& t);
 
     //-----------------------------------------------------------
     // Set matrix to shear x for each y coord. by given factor xy
     //-----------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& setShear (const S& h);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setShear (const S& h);
 
     //-------------------------------------------------------------
     // Set matrix to shear x for each y coord. by given factor h[0]
     // and to shear y for each x coord. by given factor h[1]
     //-------------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& setShear (const Vec2<S>& h);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setShear (const Vec2<S>& h);
 
     //-----------------------------------------------------------
     // Shear the matrix in x for each y coord. by given factor xy
     //-----------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& shear (const S& xy);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& shear (const S& xy);
 
     //-----------------------------------------------------------
     // Shear the matrix in x for each y coord. by given factor xy
     // and shear y for each x coord. by given factor yx
     //-----------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix33& shear (const Vec2<S>& h);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& shear (const Vec2<S>& h);
 
     //--------------------------------------------------------
     // Number of the row and column dimensions, since
     // Matrix33 is a square matrix.
     //--------------------------------------------------------
 
-    constexpr static unsigned int dimensions() { return 3; }
+    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() { return 3; }
 
     //-------------------------------------------------
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    constexpr static T baseTypeMin() { return limits<T>::min(); }
-    constexpr static T baseTypeMax() { return limits<T>::max(); }
-    constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
-    constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMin() { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
 
     typedef T BaseType;
     typedef Vec3<T> BaseVecType;
@@ -633,34 +647,34 @@ template <class T> class Matrix44
 
     T x[4][4];
 
-    T* operator[] (int i);
-    const T* operator[] (int i) const;
+    IMATH_HOSTDEVICE T* operator[] (int i);
+    IMATH_HOSTDEVICE const T* operator[] (int i) const;
 
     //-------------
     // Constructors
     //-------------
 
-    constexpr Matrix44 (Uninitialized) {}
+    IMATH_HOSTDEVICE constexpr Matrix44 (Uninitialized) {}
 
-    IMATH_CONSTEXPR14 Matrix44();
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44();
     // 1 0 0 0
     // 0 1 0 0
     // 0 0 1 0
     // 0 0 0 1
 
-    IMATH_CONSTEXPR14 Matrix44 (T a);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (T a);
     // a a a a
     // a a a a
     // a a a a
     // a a a a
 
-    IMATH_CONSTEXPR14 Matrix44 (const T a[4][4]);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const T a[4][4]);
     // a[0][0] a[0][1] a[0][2] a[0][3]
     // a[1][0] a[1][1] a[1][2] a[1][3]
     // a[2][0] a[2][1] a[2][2] a[2][3]
     // a[3][0] a[3][1] a[3][2] a[3][3]
 
-    IMATH_CONSTEXPR14
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Matrix44 (T a, T b, T c, T d, T e, T f, T g, T h, T i, T j, T k, T l, T m, T n, T o, T p);
 
     // a b c d
@@ -668,7 +682,7 @@ template <class T> class Matrix44
     // i j k l
     // m n o p
 
-    IMATH_CONSTEXPR14 Matrix44 (Matrix33<T> r, Vec3<T> t);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (Matrix33<T> r, Vec3<T> t);
     // r r r 0
     // r r r 0
     // r r r 0
@@ -684,36 +698,37 @@ template <class T> class Matrix44
     // Copy constructor and assignment
     //--------------------------------
 
-    IMATH_CONSTEXPR14 Matrix44 (const Matrix44& v);
-    template <class S> IMATH_CONSTEXPR14 explicit Matrix44 (const Matrix44<S>& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const Matrix44& v);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix44 (const Matrix44<S>& v);
 
-    IMATH_CONSTEXPR14 const Matrix44& operator= (const Matrix44& v);
-    IMATH_CONSTEXPR14 const Matrix44& operator= (T a);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (const Matrix44& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (T a);
 
     //----------------------
     // Compatibility with Sb
     //----------------------
 
-    T* getValue();
-    const T* getValue() const;
+    IMATH_HOSTDEVICE T* getValue();
+    IMATH_HOSTDEVICE const T* getValue() const;
 
-    template <class S> void getValue (Matrix44<S>& v) const;
-    template <class S> IMATH_CONSTEXPR14 Matrix44& setValue (const Matrix44<S>& v);
+    template <class S> IMATH_HOSTDEVICE void getValue (Matrix44<S>& v) const;
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44& setValue (const Matrix44<S>& v);
 
-    template <class S> IMATH_CONSTEXPR14 Matrix44& setTheMatrix (const Matrix44<S>& v);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44& setTheMatrix (const Matrix44<S>& v);
 
     //---------
     // Identity
     //---------
 
-    void makeIdentity();
+    IMATH_HOSTDEVICE void makeIdentity();
 
     //---------
     // Equality
     //---------
 
-    constexpr bool operator== (const Matrix44& v) const;
-    constexpr bool operator!= (const Matrix44& v) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Matrix44& v) const;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Matrix44& v) const;
 
     //-----------------------------------------------------------------------
     // Compare two matrices and test if they are "approximately equal":
@@ -733,46 +748,47 @@ template <class T> class Matrix44
     //      abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     //-----------------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix44<T>& v, T e) const;
-    IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix44<T>& v, T e) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix44<T>& v, T e) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix44<T>& v, T e) const;
 
     //------------------------
     // Component-wise addition
     //------------------------
 
-    IMATH_CONSTEXPR14 const Matrix44& operator+= (const Matrix44& v);
-    IMATH_CONSTEXPR14 const Matrix44& operator+= (T a);
-    constexpr Matrix44 operator+ (const Matrix44& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator+= (const Matrix44& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator+= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix44 operator+ (const Matrix44& v) const;
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
-    IMATH_CONSTEXPR14 const Matrix44& operator-= (const Matrix44& v);
-    IMATH_CONSTEXPR14 const Matrix44& operator-= (T a);
-    constexpr Matrix44 operator- (const Matrix44& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator-= (const Matrix44& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator-= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix44 operator- (const Matrix44& v) const;
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    constexpr Matrix44 operator-() const;
-    IMATH_CONSTEXPR14 const Matrix44& negate();
+    IMATH_HOSTDEVICE constexpr Matrix44 operator-() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& negate();
 
     //------------------------------
     // Component-wise multiplication
     //------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix44& operator*= (T a);
-    constexpr Matrix44 operator* (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator*= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix44 operator* (T a) const;
 
     //-----------------------------------
     // Matrix-times-matrix multiplication
     //-----------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix44& operator*= (const Matrix44& v);
-    IMATH_CONSTEXPR14 Matrix44 operator* (const Matrix44& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator*= (const Matrix44& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 operator* (const Matrix44& v) const;
 
+    IMATH_HOSTDEVICE
     static void multiply (const Matrix44& a, // assumes that
                           const Matrix44& b, // &a != &c and
                           Matrix44& c);      // &b != &c.
@@ -789,23 +805,23 @@ template <class T> class Matrix44
     // submatrix, ignoring the rest of matrix m.
     //-----------------------------------------------------------------
 
-    template <class S> void multVecMatrix (const Vec3<S>& src, Vec3<S>& dst) const;
+    template <class S> IMATH_HOSTDEVICE void multVecMatrix (const Vec3<S>& src, Vec3<S>& dst) const;
 
-    template <class S> void multDirMatrix (const Vec3<S>& src, Vec3<S>& dst) const;
+    template <class S> IMATH_HOSTDEVICE void multDirMatrix (const Vec3<S>& src, Vec3<S>& dst) const;
 
     //------------------------
     // Component-wise division
     //------------------------
 
-    IMATH_CONSTEXPR14 const Matrix44& operator/= (T a);
-    constexpr Matrix44 operator/ (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator/= (T a);
+    IMATH_HOSTDEVICE constexpr Matrix44 operator/ (T a) const;
 
     //------------------
     // Transposed matrix
     //------------------
 
-    IMATH_CONSTEXPR14 const Matrix44& transpose();
-    constexpr Matrix44 transposed() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& transpose();
+    IMATH_HOSTDEVICE constexpr Matrix44 transposed() const;
 
     //------------------------------------------------------------
     // Inverse matrix: If singExc is false, inverting a singular
@@ -821,24 +837,29 @@ template <class T> class Matrix44
     //
     //------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix44& invert (bool singExc = false);
+    IMATH_CONSTEXPR14 const Matrix44& invert (bool singExc);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& invert();
 
-    IMATH_CONSTEXPR14 Matrix44<T> inverse (bool singExc = false) const;
+    IMATH_CONSTEXPR14 Matrix44<T> inverse (bool singExc) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44<T> inverse() const;
 
-    IMATH_CONSTEXPR14 const Matrix44& gjInvert (bool singExc = false);
+    IMATH_CONSTEXPR14 const Matrix44& gjInvert (bool singExc);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& gjInvert();
 
-    Matrix44<T> gjInverse (bool singExc = false) const;
+    Matrix44<T> gjInverse (bool singExc) const;
+    IMATH_HOSTDEVICE Matrix44<T> gjInverse() const;
 
     //------------------------------------------------
     // Calculate the matrix minor of the (r,c) element
     //------------------------------------------------
 
-    IMATH_CONSTEXPR14 T minorOf (const int r, const int c) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T minorOf (const int r, const int c) const;
 
     //---------------------------------------------------
     // Build a minor using the specified rows and columns
     //---------------------------------------------------
 
+    IMATH_HOSTDEVICE
     constexpr T fastMinor (const int r0,
                            const int r1,
                            const int r2,
@@ -850,61 +871,65 @@ template <class T> class Matrix44
     // Determinant
     //------------
 
-    IMATH_CONSTEXPR14 T determinant() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T determinant() const;
 
     //--------------------------------------------------------
     // Set matrix to rotation by XYZ euler angles (in radians)
     //--------------------------------------------------------
 
-    template <class S> const Matrix44& setEulerAngles (const Vec3<S>& r);
+    template <class S> IMATH_HOSTDEVICE const Matrix44& setEulerAngles (const Vec3<S>& r);
 
     //--------------------------------------------------------
     // Set matrix to rotation around given axis by given angle
     //--------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& setAxisAngle (const Vec3<S>& ax, S ang);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setAxisAngle (const Vec3<S>& ax, S ang);
 
     //-------------------------------------------
     // Rotate the matrix by XYZ euler angles in r
     //-------------------------------------------
 
-    template <class S> const Matrix44& rotate (const Vec3<S>& r);
+    template <class S> IMATH_HOSTDEVICE const Matrix44& rotate (const Vec3<S>& r);
 
     //--------------------------------------------
     // Set matrix to scale by given uniform factor
     //--------------------------------------------
 
-    IMATH_CONSTEXPR14 const Matrix44& setScale (T s);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setScale (T s);
 
     //------------------------------------
     // Set matrix to scale by given vector
     //------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& setScale (const Vec3<S>& s);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setScale (const Vec3<S>& s);
 
     //----------------------
     // Scale the matrix by s
     //----------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& scale (const Vec3<S>& s);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& scale (const Vec3<S>& s);
 
     //------------------------------------------
     // Set matrix to translation by given vector
     //------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& setTranslation (const Vec3<S>& t);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setTranslation (const Vec3<S>& t);
 
     //-----------------------------
     // Return translation component
     //-----------------------------
 
-    constexpr const Vec3<T> translation() const;
+    IMATH_HOSTDEVICE constexpr const Vec3<T> translation() const;
 
     //--------------------------
     // Translate the matrix by t
     //--------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& translate (const Vec3<S>& t);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& translate (const Vec3<S>& t);
 
     //-------------------------------------------------------------
     // Set matrix to shear by given vector h.  The resulting matrix
@@ -913,7 +938,8 @@ template <class T> class Matrix44
     //    will shear y for each z coord. by a factor of h[2] .
     //-------------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& setShear (const Vec3<S>& h);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setShear (const Vec3<S>& h);
 
     //------------------------------------------------------------
     // Set matrix to shear by given factors.  The resulting matrix
@@ -925,7 +951,8 @@ template <class T> class Matrix44
     //    will shear z for each y coord. by a factor of h.zy .
     //------------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& setShear (const Shear6<S>& h);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setShear (const Shear6<S>& h);
 
     //--------------------------------------------------------
     // Shear the matrix by given vector.  The composed matrix
@@ -935,14 +962,14 @@ template <class T> class Matrix44
     //    will shear y for each z coord. by a factor of h[2] .
     //--------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& shear (const Vec3<S>& h);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& shear (const Vec3<S>& h);
 
     //--------------------------------------------------------
     // Number of the row and column dimensions, since
     // Matrix44 is a square matrix.
     //--------------------------------------------------------
 
-    constexpr static unsigned int dimensions() { return 4; }
+    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() { return 4; }
 
     //------------------------------------------------------------
     // Shear the matrix by the given factors.  The composed matrix
@@ -955,16 +982,17 @@ template <class T> class Matrix44
     //    will shear z for each y coord. by a factor of h.zy .
     //------------------------------------------------------------
 
-    template <class S> IMATH_CONSTEXPR14 const Matrix44& shear (const Shear6<S>& h);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& shear (const Shear6<S>& h);
 
     //-------------------------------------------------
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    constexpr static T baseTypeMin() { return limits<T>::min(); }
-    constexpr static T baseTypeMax() { return limits<T>::max(); }
-    constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
-    constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMin() { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
 
     typedef T BaseType;
     typedef Vec4<T> BaseVecType;
@@ -1001,25 +1029,35 @@ template <class T> std::ostream& operator<< (std::ostream& s, const Matrix44<T>&
 // Vector-times-matrix multiplication operators
 //---------------------------------------------
 
-template <class S, class T> const Vec2<S>& operator*= (Vec2<S>& v, const Matrix22<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE const Vec2<S>& operator*= (Vec2<S>& v, const Matrix22<T>& m);
 
-template <class S, class T> Vec2<S> operator* (const Vec2<S>& v, const Matrix22<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE Vec2<S> operator* (const Vec2<S>& v, const Matrix22<T>& m);
 
-template <class S, class T> const Vec2<S>& operator*= (Vec2<S>& v, const Matrix33<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE const Vec2<S>& operator*= (Vec2<S>& v, const Matrix33<T>& m);
 
-template <class S, class T> Vec2<S> operator* (const Vec2<S>& v, const Matrix33<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE Vec2<S> operator* (const Vec2<S>& v, const Matrix33<T>& m);
 
-template <class S, class T> const Vec3<S>& operator*= (Vec3<S>& v, const Matrix33<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE const Vec3<S>& operator*= (Vec3<S>& v, const Matrix33<T>& m);
 
-template <class S, class T> Vec3<S> operator* (const Vec3<S>& v, const Matrix33<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE Vec3<S> operator* (const Vec3<S>& v, const Matrix33<T>& m);
 
-template <class S, class T> const Vec3<S>& operator*= (Vec3<S>& v, const Matrix44<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE const Vec3<S>& operator*= (Vec3<S>& v, const Matrix44<T>& m);
 
-template <class S, class T> Vec3<S> operator* (const Vec3<S>& v, const Matrix44<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE Vec3<S> operator* (const Vec3<S>& v, const Matrix44<T>& m);
 
-template <class S, class T> const Vec4<S>& operator*= (Vec4<S>& v, const Matrix44<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE const Vec4<S>& operator*= (Vec4<S>& v, const Matrix44<T>& m);
 
-template <class S, class T> Vec4<S> operator* (const Vec4<S>& v, const Matrix44<T>& m);
+template <class S, class T>
+IMATH_HOSTDEVICE Vec4<S> operator* (const Vec4<S>& v, const Matrix44<T>& m);
 
 //-------------------------
 // Typedefs for convenience
@@ -1435,6 +1473,14 @@ Matrix22<T>::invert (bool singExc)
 }
 
 template <class T>
+IMATH_CONSTEXPR14 const Matrix22<T>&
+Matrix22<T>::invert()
+{
+    *this = inverse();
+    return *this;
+}
+
+template <class T>
 IMATH_CONSTEXPR14 Matrix22<T>
 Matrix22<T>::inverse (bool singExc) const
 {
@@ -1478,6 +1524,46 @@ Matrix22<T>::inverse (bool singExc) const
 }
 
 template <class T>
+IMATH_CONSTEXPR14 Matrix22<T>
+Matrix22<T>::inverse() const
+{
+    Matrix22 s (x[1][1], -x[0][1], -x[1][0], x[0][0]);
+
+    T r = x[0][0] * x[1][1] - x[1][0] * x[0][1];
+
+    if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            for (int j = 0; j < 2; ++j)
+            {
+                s[i][j] /= r;
+            }
+        }
+    }
+    else
+    {
+        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+
+        for (int i = 0; i < 2; ++i)
+        {
+            for (int j = 0; j < 2; ++j)
+            {
+                if (mr > IMATH_INTERNAL_NAMESPACE::abs (s[i][j]))
+                {
+                    s[i][j] /= r;
+                }
+                else
+                {
+                    return Matrix22();
+                }
+            }
+        }
+    }
+    return s;
+}
+
+template <class T>
 constexpr inline T
 Matrix22<T>::determinant() const
 {
@@ -1491,8 +1577,8 @@ Matrix22<T>::setRotation (S r)
 {
     S cos_r, sin_r;
 
-    cos_r = Math<T>::cos (r);
-    sin_r = Math<T>::sin (r);
+    cos_r = cos ((T) r);
+    sin_r = sin ((T) r);
 
     x[0][0] = cos_r;
     x[0][1] = sin_r;
@@ -1505,6 +1591,7 @@ Matrix22<T>::setRotation (S r)
 
 template <class T>
 template <class S>
+
 IMATH_CONSTEXPR14 const Matrix22<T>&
 Matrix22<T>::rotate (S r)
 {
@@ -1513,6 +1600,7 @@ Matrix22<T>::rotate (S r)
 }
 
 template <class T>
+
 IMATH_CONSTEXPR14 const Matrix22<T>&
 Matrix22<T>::setScale (T s)
 {
@@ -1526,6 +1614,7 @@ Matrix22<T>::setScale (T s)
 
 template <class T>
 template <class S>
+
 IMATH_CONSTEXPR14 const Matrix22<T>&
 Matrix22<T>::setScale (const Vec2<S>& s)
 {
@@ -1539,6 +1628,7 @@ Matrix22<T>::setScale (const Vec2<S>& s)
 
 template <class T>
 template <class S>
+
 IMATH_CONSTEXPR14 const Matrix22<T>&
 Matrix22<T>::scale (const Vec2<S>& s)
 {
@@ -1600,6 +1690,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const T a[3][
 }
 
 template <class T>
+
 IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a, T b, T c, T d, T e, T f, T g, T h, T i)
 {
     x[0][0] = a;
@@ -1620,6 +1711,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix3
 
 template <class T>
 template <class S>
+
 IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix33<S>& v)
 {
     x[0][0] = T (v.x[0][0]);
@@ -1634,6 +1726,7 @@ IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix33<S>& v)
 }
 
 template <class T>
+
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator= (const Matrix33& v)
 {
@@ -1642,6 +1735,7 @@ Matrix33<T>::operator= (const Matrix33& v)
 }
 
 template <class T>
+
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator= (T a)
 {
@@ -2080,10 +2174,18 @@ Matrix33<T>::transposed() const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Matrix33<T>&
+const Matrix33<T>&
 Matrix33<T>::gjInvert (bool singExc)
 {
     *this = gjInverse (singExc);
+    return *this;
+}
+
+template <class T>
+const Matrix33<T>&
+Matrix33<T>::gjInvert()
+{
+    *this = gjInverse();
     return *this;
 }
 
@@ -2192,10 +2294,116 @@ Matrix33<T>::gjInverse (bool singExc) const
 }
 
 template <class T>
+Matrix33<T>
+Matrix33<T>::gjInverse() const
+{
+    int i, j, k;
+    Matrix33 s;
+    Matrix33 t (*this);
+
+    // Forward elimination
+
+    for (i = 0; i < 2; i++)
+    {
+        int pivot = i;
+
+        T pivotsize = t[i][i];
+
+        if (pivotsize < 0)
+            pivotsize = -pivotsize;
+
+        for (j = i + 1; j < 3; j++)
+        {
+            T tmp = t[j][i];
+
+            if (tmp < 0)
+                tmp = -tmp;
+
+            if (tmp > pivotsize)
+            {
+                pivot     = j;
+                pivotsize = tmp;
+            }
+        }
+
+        if (pivotsize == 0)
+        {
+            return Matrix33();
+        }
+
+        if (pivot != i)
+        {
+            for (j = 0; j < 3; j++)
+            {
+                T tmp;
+
+                tmp         = t[i][j];
+                t[i][j]     = t[pivot][j];
+                t[pivot][j] = tmp;
+
+                tmp         = s[i][j];
+                s[i][j]     = s[pivot][j];
+                s[pivot][j] = tmp;
+            }
+        }
+
+        for (j = i + 1; j < 3; j++)
+        {
+            T f = t[j][i] / t[i][i];
+
+            for (k = 0; k < 3; k++)
+            {
+                t[j][k] -= f * t[i][k];
+                s[j][k] -= f * s[i][k];
+            }
+        }
+    }
+
+    // Backward substitution
+
+    for (i = 2; i >= 0; --i)
+    {
+        T f;
+
+        if ((f = t[i][i]) == 0)
+        {
+            return Matrix33();
+        }
+
+        for (j = 0; j < 3; j++)
+        {
+            t[i][j] /= f;
+            s[i][j] /= f;
+        }
+
+        for (j = 0; j < i; j++)
+        {
+            f = t[j][i];
+
+            for (k = 0; k < 3; k++)
+            {
+                t[j][k] -= f * t[i][k];
+                s[j][k] -= f * s[i][k];
+            }
+        }
+    }
+
+    return s;
+}
+
+template <class T>
 IMATH_CONSTEXPR14 const Matrix33<T>&
 Matrix33<T>::invert (bool singExc)
 {
     *this = inverse (singExc);
+    return *this;
+}
+
+template <class T>
+IMATH_CONSTEXPR14 const Matrix33<T>&
+Matrix33<T>::invert()
+{
+    *this = inverse();
     return *this;
 }
 
@@ -2311,6 +2519,111 @@ Matrix33<T>::inverse (bool singExc) const
 }
 
 template <class T>
+IMATH_CONSTEXPR14 Matrix33<T>
+Matrix33<T>::inverse() const
+{
+    if (x[0][2] != 0 || x[1][2] != 0 || x[2][2] != 1)
+    {
+        Matrix33 s (x[1][1] * x[2][2] - x[2][1] * x[1][2],
+                    x[2][1] * x[0][2] - x[0][1] * x[2][2],
+                    x[0][1] * x[1][2] - x[1][1] * x[0][2],
+
+                    x[2][0] * x[1][2] - x[1][0] * x[2][2],
+                    x[0][0] * x[2][2] - x[2][0] * x[0][2],
+                    x[1][0] * x[0][2] - x[0][0] * x[1][2],
+
+                    x[1][0] * x[2][1] - x[2][0] * x[1][1],
+                    x[2][0] * x[0][1] - x[0][0] * x[2][1],
+                    x[0][0] * x[1][1] - x[1][0] * x[0][1]);
+
+        T r = x[0][0] * s[0][0] + x[0][1] * s[1][0] + x[0][2] * s[2][0];
+
+        if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+        {
+            for (int i = 0; i < 3; ++i)
+            {
+                for (int j = 0; j < 3; ++j)
+                {
+                    s[i][j] /= r;
+                }
+            }
+        }
+        else
+        {
+            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+
+            for (int i = 0; i < 3; ++i)
+            {
+                for (int j = 0; j < 3; ++j)
+                {
+                    if (mr > IMATH_INTERNAL_NAMESPACE::abs (s[i][j]))
+                    {
+                        s[i][j] /= r;
+                    }
+                    else
+                    {
+                        return Matrix33();
+                    }
+                }
+            }
+        }
+
+        return s;
+    }
+    else
+    {
+        Matrix33 s (x[1][1],
+                    -x[0][1],
+                    0,
+
+                    -x[1][0],
+                    x[0][0],
+                    0,
+
+                    0,
+                    0,
+                    1);
+
+        T r = x[0][0] * x[1][1] - x[1][0] * x[0][1];
+
+        if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+        {
+            for (int i = 0; i < 2; ++i)
+            {
+                for (int j = 0; j < 2; ++j)
+                {
+                    s[i][j] /= r;
+                }
+            }
+        }
+        else
+        {
+            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+
+            for (int i = 0; i < 2; ++i)
+            {
+                for (int j = 0; j < 2; ++j)
+                {
+                    if (mr > IMATH_INTERNAL_NAMESPACE::abs (s[i][j]))
+                    {
+                        s[i][j] /= r;
+                    }
+                    else
+                    {
+                        return Matrix33();
+                    }
+                }
+            }
+        }
+
+        s[2][0] = -x[2][0] * s[0][0] - x[2][1] * s[1][0];
+        s[2][1] = -x[2][0] * s[0][1] - x[2][1] * s[1][1];
+
+        return s;
+    }
+}
+
+template <class T>
 IMATH_CONSTEXPR14 inline T
 Matrix33<T>::minorOf (const int r, const int c) const
 {
@@ -2345,8 +2658,8 @@ Matrix33<T>::setRotation (S r)
 {
     S cos_r, sin_r;
 
-    cos_r = Math<T>::cos (r);
-    sin_r = Math<T>::sin (r);
+    cos_r = cos ((T) r);
+    sin_r = sin ((T) r);
 
     x[0][0] = cos_r;
     x[0][1] = sin_r;
@@ -3322,6 +3635,14 @@ Matrix44<T>::gjInvert (bool singExc)
 }
 
 template <class T>
+IMATH_CONSTEXPR14 const Matrix44<T>&
+Matrix44<T>::gjInvert()
+{
+    *this = gjInverse();
+    return *this;
+}
+
+template <class T>
 Matrix44<T>
 Matrix44<T>::gjInverse (bool singExc) const
 {
@@ -3426,10 +3747,116 @@ Matrix44<T>::gjInverse (bool singExc) const
 }
 
 template <class T>
+Matrix44<T>
+Matrix44<T>::gjInverse() const
+{
+    int i, j, k;
+    Matrix44 s;
+    Matrix44 t (*this);
+
+    // Forward elimination
+
+    for (i = 0; i < 3; i++)
+    {
+        int pivot = i;
+
+        T pivotsize = t[i][i];
+
+        if (pivotsize < 0)
+            pivotsize = -pivotsize;
+
+        for (j = i + 1; j < 4; j++)
+        {
+            T tmp = t[j][i];
+
+            if (tmp < 0)
+                tmp = -tmp;
+
+            if (tmp > pivotsize)
+            {
+                pivot     = j;
+                pivotsize = tmp;
+            }
+        }
+
+        if (pivotsize == 0)
+        {
+            return Matrix44();
+        }
+
+        if (pivot != i)
+        {
+            for (j = 0; j < 4; j++)
+            {
+                T tmp;
+
+                tmp         = t[i][j];
+                t[i][j]     = t[pivot][j];
+                t[pivot][j] = tmp;
+
+                tmp         = s[i][j];
+                s[i][j]     = s[pivot][j];
+                s[pivot][j] = tmp;
+            }
+        }
+
+        for (j = i + 1; j < 4; j++)
+        {
+            T f = t[j][i] / t[i][i];
+
+            for (k = 0; k < 4; k++)
+            {
+                t[j][k] -= f * t[i][k];
+                s[j][k] -= f * s[i][k];
+            }
+        }
+    }
+
+    // Backward substitution
+
+    for (i = 3; i >= 0; --i)
+    {
+        T f;
+
+        if ((f = t[i][i]) == 0)
+        {
+            return Matrix44();
+        }
+
+        for (j = 0; j < 4; j++)
+        {
+            t[i][j] /= f;
+            s[i][j] /= f;
+        }
+
+        for (j = 0; j < i; j++)
+        {
+            f = t[j][i];
+
+            for (k = 0; k < 4; k++)
+            {
+                t[j][k] -= f * t[i][k];
+                s[j][k] -= f * s[i][k];
+            }
+        }
+    }
+
+    return s;
+}
+
+template <class T>
 IMATH_CONSTEXPR14 const Matrix44<T>&
 Matrix44<T>::invert (bool singExc)
 {
     *this = inverse (singExc);
+    return *this;
+}
+
+template <class T>
+IMATH_CONSTEXPR14 const Matrix44<T>&
+Matrix44<T>::invert()
+{
+    *this = inverse();
     return *this;
 }
 
@@ -3489,6 +3916,72 @@ Matrix44<T>::inverse (bool singExc) const
                     if (singExc)
                         throw std::invalid_argument ("Cannot invert singular matrix.");
 
+                    return Matrix44();
+                }
+            }
+        }
+    }
+
+    s[3][0] = -x[3][0] * s[0][0] - x[3][1] * s[1][0] - x[3][2] * s[2][0];
+    s[3][1] = -x[3][0] * s[0][1] - x[3][1] * s[1][1] - x[3][2] * s[2][1];
+    s[3][2] = -x[3][0] * s[0][2] - x[3][1] * s[1][2] - x[3][2] * s[2][2];
+
+    return s;
+}
+
+template <class T>
+IMATH_CONSTEXPR14 Matrix44<T>
+Matrix44<T>::inverse() const
+{
+    if (x[0][3] != 0 || x[1][3] != 0 || x[2][3] != 0 || x[3][3] != 1)
+        return gjInverse();
+
+    Matrix44 s (x[1][1] * x[2][2] - x[2][1] * x[1][2],
+                x[2][1] * x[0][2] - x[0][1] * x[2][2],
+                x[0][1] * x[1][2] - x[1][1] * x[0][2],
+                0,
+
+                x[2][0] * x[1][2] - x[1][0] * x[2][2],
+                x[0][0] * x[2][2] - x[2][0] * x[0][2],
+                x[1][0] * x[0][2] - x[0][0] * x[1][2],
+                0,
+
+                x[1][0] * x[2][1] - x[2][0] * x[1][1],
+                x[2][0] * x[0][1] - x[0][0] * x[2][1],
+                x[0][0] * x[1][1] - x[1][0] * x[0][1],
+                0,
+
+                0,
+                0,
+                0,
+                1);
+
+    T r = x[0][0] * s[0][0] + x[0][1] * s[1][0] + x[0][2] * s[2][0];
+
+    if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+    {
+        for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                s[i][j] /= r;
+            }
+        }
+    }
+    else
+    {
+        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+
+        for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                if (mr > IMATH_INTERNAL_NAMESPACE::abs (s[i][j]))
+                {
+                    s[i][j] /= r;
+                }
+                else
+                {
                     return Matrix44();
                 }
             }
@@ -3565,13 +4058,13 @@ Matrix44<T>::setEulerAngles (const Vec3<S>& r)
 {
     S cos_rz, sin_rz, cos_ry, sin_ry, cos_rx, sin_rx;
 
-    cos_rz = Math<T>::cos (r[2]);
-    cos_ry = Math<T>::cos (r[1]);
-    cos_rx = Math<T>::cos (r[0]);
+    cos_rz = cos ((T) r[2]);
+    cos_ry = cos ((T) r[1]);
+    cos_rx = cos ((T) r[0]);
 
-    sin_rz = Math<T>::sin (r[2]);
-    sin_ry = Math<T>::sin (r[1]);
-    sin_rx = Math<T>::sin (r[0]);
+    sin_rz = sin ((T) r[2]);
+    sin_ry = sin ((T) r[1]);
+    sin_rx = sin ((T) r[0]);
 
     x[0][0] = cos_rz * cos_ry;
     x[0][1] = sin_rz * cos_ry;
@@ -3638,13 +4131,13 @@ Matrix44<T>::rotate (const Vec3<S>& r)
     S m10, m11, m12;
     S m20, m21, m22;
 
-    cos_rz = Math<S>::cos (r[2]);
-    cos_ry = Math<S>::cos (r[1]);
-    cos_rx = Math<S>::cos (r[0]);
+    cos_rz = cos ((S) r[2]);
+    cos_ry = cos ((S) r[1]);
+    cos_rx = cos ((S) r[0]);
 
-    sin_rz = Math<S>::sin (r[2]);
-    sin_ry = Math<S>::sin (r[1]);
-    sin_rx = Math<S>::sin (r[0]);
+    sin_rz = sin ((S) r[2]);
+    sin_ry = sin ((S) r[1]);
+    sin_rx = sin ((S) r[0]);
 
     m00 = cos_rz * cos_ry;
     m01 = sin_rz * cos_ry;

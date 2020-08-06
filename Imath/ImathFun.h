@@ -49,7 +49,7 @@
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 abs (T a)
 {
     return (a > T (0)) ? a : -a;
