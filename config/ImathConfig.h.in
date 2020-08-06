@@ -59,4 +59,10 @@
   #define IMATH_CONSTEXPR14 /* can not be constexpr before c++14 */
 #endif
 
+#ifdef __CUDACC__
+  #define IMATH_HOSTDEVICE __host__ __device__
+#else
+  #define IMATH_HOSTDEVICE
+#endif
+
 #endif // INCLUDED_IMATH_CONFIG_H
