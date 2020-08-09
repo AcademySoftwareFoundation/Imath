@@ -1,10 +1,9 @@
-Frame
+Roots
 #####
 
-Functions to compute coordinate frames
+Functions to compute roots of simple equations
 
 .. doxygenfunction:: solveLinear
-                     
                      
 
                      
