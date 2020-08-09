@@ -1,5 +1,6 @@
 Introduction to Imath
 #####################
 
-Introdution to imath, bruh.
+Introdution to Imath.
+
 

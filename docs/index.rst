@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Imath-test documentation!
-=======================================
+Imath-test API Documentation
+============================
 
 .. toctree::
    :maxdepth: 3
@@ -16,7 +16,28 @@ Welcome to Imath-test documentation!
    :maxdepth: 3
 
    vec
+   color
    box
+   euler
+   frustum
+   interval
+   line
+   matrix
+   plane
+   quat
+   shear
+   sphere
+   random
+
+.. toctree::
+   :caption: Imath Function
+   :maxdepth: 3
+
+   frame
+   gl
+   glu
+   limits
+   roots
    
 :ref:`genindex`
 
