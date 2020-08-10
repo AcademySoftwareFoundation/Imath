@@ -1,0 +1,6 @@
+# Disable clang-format in half.cpp
+344334aef268206ed1d46399ea85ab276f3f13e6
+
+# Tune .clang-format to match existing style
+c6014892de1acccca0deada8ab3353cd290e9fbc
+
