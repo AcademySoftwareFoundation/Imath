@@ -10,7 +10,7 @@ and 3D vectors and matrices and other simple but useful mathematical
 objects, functions, and data types common in computer graphics
 applications, including the “half” 16-bit floating-point type.
 
-Imath also includes option python bindings for all types and
+Imath also includes optional python bindings for all types and
 functions, including optimized implementations of vector and matrix
 arrays. 
 
@@ -64,6 +64,15 @@ community. Read our [code of conduct](CODE_OF_CONDUCT.md).
 See [INSTALL.md](INSTALL.md) for instructions on downloading and building Imath
 from source.
 
+### A Note about Versioning
+
+Because Imath was originally distributed as a part of OpenEXR, it has
+already had two major release versions, as a part of OpenEXR v1.* and
+v2.*. To avoid confusion with these original releases, the first
+version of Imath released independently of OpenEXR is Version v3.0. To
+be clear, the versioning and release of Imath is no longer tied to
+OpenEXR.
+
 ### Getting Help
 
 There are two primary ways to connect with the project:
@@ -74,7 +83,8 @@ There are two primary ways to connect with the project:
   [openexr-dev@lists.aswf.io](https://lists.aswf.io/g/openexr-dev).
 
 * GitHub Issues: GitHub issues are used both to track bugs and to
-  discuss feature requests.
+  discuss feature requests. Submit an issue here:
+  https://github.com/AcademySoftwareFoundation/imath/issues. 
 
 ### Getting Involved
 
@@ -84,7 +94,7 @@ about contributing to Imath and OpenEXR.
 
 ## License
 
-Imath continues to be released under its original OpenEXR [BSD-3-Clause](LICENSE.md) license.
+Imath is released under OpenEXR's [BSD-3-Clause](LICENSE.md) license.
 
 ---
 
