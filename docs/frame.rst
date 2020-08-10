@@ -3,7 +3,7 @@ Frame
 
 Functions to compute coordinate frames
 
-.. doxygenfunction:: solveLinear
+.. doxygenfunction:: firstFrame
                      
                      
 
