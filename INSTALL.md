@@ -2,8 +2,8 @@
 
 ## Download
 
-To build the latest release of Imath, begin by downloading the source
-from the releases page
+To build the latest release of Imath, download the source from the
+releases page
 https://github.com/AcademySoftwareFoundation/Imath/releases.
 
 To build from the latest development version, which may not be stable,
@@ -170,62 +170,6 @@ You can customize these options three ways:
   Echo all compile commands during make. Default is OFF.
 
 ### Compiler Options:
-
-* **ILMBASE\_LIB\_SUFFIX**
-
-  Append the given string to the end of all the Imath libraries. Default is ``-<major>_<minor>`` version string. Please see the section on library names
-
-### Namespace Options:
-
-* **ILMBASE\_IEX\_NAMESPACE**
-
-  Public namespace alias for Iex. Default is ``Iex``.
-
-* **ILMBASE\_IMATH\_NAMESPACE**
- 
-  Public namespace alias for Imath. Default is ``Imath``.
-
-* **ILMBASE\_INTERNAL\_IEX\_NAMESPACE**
- 
-  Real namespace for Iex that will end up in compiled symbols. Default is ``Iex\_<major>\_<minor>``.
-
-* **ILMBASE\_INTERNAL\_IMATH\_NAMESPACE**
- 
-  Real namespace for Imath that will end up in compiled symbols. Default is ``Imath\_<major>\_<minor>``.
-
-* **ILMBASE\_NAMESPACE\_CUSTOM**
- 
-  Whether the namespace has been customized (so external users know)
-
-### Linting Options:
-
-These linting options are experimental, and primarily for developer-only use at this time.
-
-* **ILMBASE\_USE\_CLANG\_TIDY**
- 
-  Enable clang-tidy for Imath libraries, if it is available. Default is OFF.
-
-### Testing Options:
-
-
-* **BUILD\_TESTING**
- 
-  Build the testing tree. Default is ON.  Note that this causes the test suite to be compiled, but it is not executed.
-
-### Additional CMake Options:
-
-See the cmake documentation for more information (https://cmake.org/cmake/help/v3.12/)
-
-* **CMAKE\_BUILD\_TYPE**
-
-  For builds when not using a multi-configuration generator. Available values: ``Debug``, ``Release``, ``RelWithDebInfo``, ``MinSizeRel``
-
-* **BUILD\_SHARED\_LIBS**
-
-  This is the primary control whether to build static libraries or
-  shared libraries / dlls (side note: technically a convention, hence
-  not an official ``CMAKE\_`` variable, it is defined within cmake and
-  used everywhere to control this static / shared behavior)
 
 * For forcing particular compilers to match VFX platform requirements
 

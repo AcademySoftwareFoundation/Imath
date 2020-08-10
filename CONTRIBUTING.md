@@ -1,4 +1,4 @@
-# Contributing to Imath
+ # Contributing to Imath
 
 Thank you for your interest in contributing to Imath. This document
 explains our contribution process and procedures:
@@ -288,8 +288,8 @@ required.
 ### Test Policy
 
 All functionality in the library must be covered by an automated
-test. Each library has a companion ``Test`` project - ``ImathTest``,
-``HalfTest``, ``IlmImfTest`, etc.  This test suite is collectively
+test. Each library has a companion ``Test`` project,
+i.e. ``ImathTest`` and ``HalfTest``.  This test suite is collectively
 expected to validate the behavior of very part of the library.
 
 * Any new functionality should be accompanied by a test that validates
@@ -298,48 +298,34 @@ expected to validate the behavior of very part of the library.
 * Any change to existing functionality should have tests added if they
   don't already exist.
 
-The test should should be run, via ``make check``, before submitting a
+The test should should be run, via ``make test``, before submitting a
 pull request.
 
 ## Coding Style
 
 #### Formatting
 
-When modifying existing code, follow the surrounding formatting
-conventions so that new or modified code blends in with the current
-code.
+Code formattting is controlled by ``clang-format``, with the style
+specified via the project
+[.clang-format](https://github.com/AcademySoftwareFoundation/Imath/blob/master/.clang-format)
+file.
 
 * Indent with spaces, never tabs. Each indent level should be 4 spaces.
 
 * Function return types go on a separate line:
 
-        const float &	
-        Header::pixelAspectRatio () const
+        template <class T>
+        constexpr inline T
+        abs (T a)
         {
-            ...
+            return (a > T (0)) ? a : -a;
         }
 
-* Use a space between function names and the following parentheses
-  (although you can eliminate the space for functions with no
-  arguments):
-
-        void
-        Header::insert (const string& name, const Attribute& attribute)
-        {
-            insert (name.c_str(), attribute);
-        }
+* Use a space between function names and the following parentheses unless there are no arguments:
+        V3f v (0.0);
+        v.normalize();
 
 * Place curly braces on their own lines:
-
-        void
-        RgbaOutputFile::ToYca::padTmpBuf ()
-        {
-            for (int i = 0; i < N2; ++i)
-            {
-                _tmpBuf[i] = _tmpBuf[N2];
-                _tmpBuf[_width + N2 + i] = _tmpBuf[_width + N2 - 2];
-            }
-        }
 
 #### Naming Conventions
 
@@ -395,19 +381,10 @@ All new source files should begin with a copyright and license referencing the O
     // Copyright (c) Contributors to the OpenEXR Project. All rights reserved.
     // SPDX-License-Identifier: BSD-3-Clause
 
-#### Third-party libraries
-
-Prefer C++11 `std` over boost where possible.  Use boost classes you
-already see in the code base, but check with the project leadership
-before adding new boost usage.
-
 #### Comments and Doxygen
 
-Comment philosophy: try to be clear, try to help teach the reader
-what's going on in your code.
-
-Prefer C++ comments (starting line with `//`) rather than C comments
-(`/* ... */`).
+Use C++ comments (starting line with `//`) rather than C comments (`/*
+... */`).
 
 For public APIs, use Doxygen-style comments (start with `///`), such as:
 
@@ -420,40 +397,3 @@ For public APIs, use Doxygen-style comments (start with `///`), such as:
         float foo;  ///< Doxygen comments on same line look like this
     }
 
-## Versioning Policy
-
-Imath uses [semantic versioning](https://semver.org), which labels
-each version with three numbers: Major.Minor.Patch, where:
-
-* **MAJOR** indicates incompatible API changes
-* **MINOR** indicates functionality added in a backwards-compatible manner
-* **PATCH** indicates backwards-compatible bug fixes 
-
-## Creating a Release
-
-To create a new release from the master branch:
-
-1. Update the release notes in ``CHANGES.md``.
-
-   Write a high-level summary of the features and
-   improvements. Include the summary in ``CHANGES.md`` and also in the
-   Release comments.
-
-   Include the log of all changes since the last release, via:
-
-        git log v2.2.1...v2.3.0 --date=short --pretty=format:"[%s](https://github.com/AcademySoftwareFoundation/openexr/commit/%H) ([%an](@%ae) %ad)"
-
-   Include diff status via:
-
-        git diff --stat v2.2.1
-       
-2. Create a new release on the GitHub Releases page.
-
-3. Tag the release with name beginning with '``v``', e.g. '``v2.3.0``'.
-
-4. Download and sign the release tarball, as described
-[here](https://wiki.debian.org/Creating%20signed%20GitHub%20releases),
-
-5. Attach the detached ``.asc`` signature file to the GitHub release as a
-binary file.
-    
