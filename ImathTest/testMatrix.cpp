@@ -126,6 +126,24 @@ testMatrix()
     }
 
     {
+        cout << "M22f inversion operators" << endl;
+
+        IMATH_INTERNAL_NAMESPACE::M22f m1 (3.0f, 3.0f, 5.0f, 5.0f);
+        IMATH_INTERNAL_NAMESPACE::M22f m2 = m1;
+        assert(m1.inverse(false) == m1.inverse());
+        m2.invert(false);
+        m1.invert();
+        assert(m1 == m2);
+
+        IMATH_INTERNAL_NAMESPACE::M22f m3 (4.0f, 7.0f, 2.0f, 6.0f);
+        m2 = m3;
+        assert(m2.inverse(true) == m2.inverse());
+        m3.invert(true);
+        m2.invert();
+        assert(m3 == m2);
+    }
+
+    {
         cout << "Imath::M33f shear functions" << endl;
 
         IMATH_INTERNAL_NAMESPACE::M33f m1, m2;
@@ -160,6 +178,38 @@ testMatrix()
         IMATH_INTERNAL_NAMESPACE::M33f test3;
         test3.makeIdentity();
         assert (test2 == test3);
+    }
+
+    {
+      cout << "M33f inversion operators" << endl;
+
+      IMATH_INTERNAL_NAMESPACE::M33f m1 (0.0f, 2.0f, -1.0f, 3.0f, -2.0f, 1.0f, 3.0f, 2.0f, -1.0f);
+      IMATH_INTERNAL_NAMESPACE::M33f m2 = m1;
+      assert(m1.inverse(false) == m1.inverse());
+      m2.invert(false);
+      m1.invert();
+      assert(m1 == m2);
+
+      IMATH_INTERNAL_NAMESPACE::M33f m3 (1.0f, 0.0f, 5.0f, 2.0f, 1.0f, 6.0f, 3.0f, 4.0f, 0.0f);
+      m2 = m3;
+      assert(m3.inverse(true) == m3.inverse());
+      m3.invert(true);
+      m2.invert();
+      assert(m3 == m2);
+
+      IMATH_INTERNAL_NAMESPACE::M33f m4 (0.0f, 2.0f, -1.0f, 3.0f, -2.0f, 1.0f, 3.0f, 2.0f, -1.0f);
+      m2 = m4;
+      assert(m4.gjInverse(false) == m4.gjInverse());
+      m2.gjInvert(false);
+      m4.gjInvert();
+      assert(m4 == m2);
+
+      IMATH_INTERNAL_NAMESPACE::M33f m5 (1.0f, 0.0f, 5.0f, 2.0f, 1.0f, 6.0f, 3.0f, 4.0f, 0.0f);
+      m2 = m5;
+      assert(m5.gjInverse(true) == m5.gjInverse());
+      m5.gjInvert(true);
+      m2.gjInvert();
+      assert(m5 == m2);
     }
 
     {
@@ -287,6 +337,98 @@ testMatrix()
         assert (test5[3][1] == 14.0);
         assert (test5[3][2] == 15.0);
         assert (test5[3][3] == 16.0);
+    }
+
+    {
+      cout << "M44f inversion operators" << endl;
+
+      IMATH_INTERNAL_NAMESPACE::M44f m1 (1.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         1.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         1.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f);
+      IMATH_INTERNAL_NAMESPACE::M44f m2 = m1;
+      assert(m1.inverse(false) == m1.inverse());
+      m2.invert(false);
+      m1.invert();
+      assert(m1 == m2);
+
+      IMATH_INTERNAL_NAMESPACE::M44f m3 (5.0f,
+                                         6.0f,
+                                         6.0f,
+                                         8.0f,
+                                         2.0f,
+                                         2.0f,
+                                         2.0f,
+                                         8.0f,
+                                         6.0f,
+                                         6.0f,
+                                         2.0f,
+                                         8.0f,
+                                         2.0f,
+                                         3.0f,
+                                         6.0f,
+                                         7.0f);
+      m2 = m3;
+      assert(m3.inverse(true) == m3.inverse());
+      m3.invert(true);
+      m2.invert();
+      assert(m3 == m2);
+
+      IMATH_INTERNAL_NAMESPACE::M44f m4 (1.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         1.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         1.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f,
+                                         0.0f);
+      m2 = m4;
+      assert(m4.gjInverse(false) == m4.gjInverse());
+      m2.gjInvert(false);
+      m4.gjInvert();
+      assert(m4 == m2);
+
+      IMATH_INTERNAL_NAMESPACE::M44f m5 (5.0f,
+                                         6.0f,
+                                         6.0f,
+                                         8.0f,
+                                         2.0f,
+                                         2.0f,
+                                         2.0f,
+                                         8.0f,
+                                         6.0f,
+                                         6.0f,
+                                         2.0f,
+                                         8.0f,
+                                         2.0f,
+                                         3.0f,
+                                         6.0f,
+                                         7.0f);
+      m2 = m5;
+      assert(m5.gjInverse(true) == m5.gjInverse());
+      m5.gjInvert(true);
+      m2.gjInvert();
+      assert(m5 == m2);
     }
 
     {
