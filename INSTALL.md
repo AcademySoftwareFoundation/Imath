@@ -105,15 +105,44 @@ configuration files included with find_package should set this up.
 
 ## Custom Namespaces
 
-If you are interested in controlling custom namespace declarations or
-similar options, you are encouraged to look at the ``CMakeLists.txt``
-infrastructure. In particular, there has been an attempt to centralize
-the settings into a common place to more easily see all of them in a
-text editor. For Imath, this is config/ImathSetup.cmake inside the
-Imath tree. As per usual, these settings can also be
-seen and/or edited using any of the various gui editors for working
-with cmake such as ``ccmake``, ``cmake-gui``, as well as some of the
-IDEs in common use.
+Normally, all Imath symbols are in the ``Imath`` namespace, but you
+can control this at cmake time via the ``IMATH_IMATH_NAMESPACE`` and
+``IMATH_INTERNAL_IMATH_NAMESPACE`` cmake settings.
+
+These settings specify an ``IMATH_INTERNAL_NAMESPACE`` preprocessor
+definition that places all of the Imath symbols within the given
+namespace rather than the standard ``Imath`` namespace.  Those symbols
+are made available to client code through the ``IMATH_NAMESPACE`` in
+addition to the ``IMATH_INTERNAL_NAMESPACE``. See
+``Imath/ImathConfig.h`` for details.
+
+To ensure source code compatibility, the ``IMATH_NAMESPACE`` defaults
+to ``Imath`` and then ``using namespace IMATH_INTERNAL_NAMESPACE;``
+brings all of the declarations from the ``IMATH_INTERNAL_NAMESPACE``
+into the ``IMATH_NAMESPACE``.  This means that client code can
+continue to use syntax like ``Imath::V3f``, but at link time it will
+resolve to a mangled symbol based on the ``IMATH_INTERNAL_NAMESPACE``.
+
+As an example, if one needed to build against a newer version of Imath and
+have it run alongside an older version in the same application, it is now
+possible to use an internal namespace to prevent collisions between the
+older versions of Imath symbols and the newer ones.  To do this, the
+following could be defined at build time:
+
+    cmake -DIMATH_INTERNAL_IMATH_NAMESPACE=Imath_v2 $source_directory
+
+This means that declarations inside Imath headers look like this (after
+the preprocessor has done its work):
+
+    namespace Imath_v2 {
+        ...
+        class declarations
+        ...
+    }
+
+    namespace Imath {
+        using namespace Imath_v2;
+    }
 
 ## Cross Compiling / Specifying Specific Compilers
 
@@ -147,43 +176,45 @@ More documentation:
 ## CMake Configuration Options
 
 The default CMake configuration options are stored in
-``Imath/config/ImathSetup.cmake``.
-To see a complete set of option
+``Imath/config/ImathSetup.cmake``.  To see a complete set of option
 variables, run:
 
     % cmake -LAH $source_directory
 
-You can customize these options three ways:
+Via standard cmake operation, you can customize these options three
+ways:
 
 1. Modify the ``.cmake`` files in place.
 2. Use the UI ``cmake-gui`` or ``ccmake``.
-2. Specify them as command-line arguments when you invoke cmake.
+2. Specify them as command-line arguments via -D when you invoke cmake.
 
-### Verbose Output Options:
+* ``IMATH_BUILD_BOTH_STATIC_SHARED`` - Build both static and shared
+  libraries in one step (otherwise follows BUILD_SHARED_LIBS). Default
+  is ``OFF``.
 
-* **CMAKE\_EXPORT\_COMPILE\_COMMANDS**
+* **IMATH_CXX_STANDARD** - C++ standard to compile against. Default is
+  ``14``.
 
-  Enable/Disable output of compile commands during generation. Default is OFF.
+* **IMATH_ENABLE_LARGE_STACK** - Enables code to take advantage of
+  large stack support.  Default is ``OFF``.
 
-* **CMAKE\_VERBOSE\_MAKEFILE**
+* **IMATH_INSTALL_PKG_CONFIG** - Install Imath.pc file. Default is
+  ``ON``.
 
-  Echo all compile commands during make. Default is OFF.
+* **IMATH_IMATH_NAMESPACE** - Public namespace alias for
+  Imath. Default is ``Imath``.
 
-### Compiler Options:
+* **IMATH_INTERNAL_IMATH_NAMESPACE** - Real namespace for Imath that
+  will end up in compiled symbols. Default is ``Imath_<major>_<minor>``.
 
-* For forcing particular compilers to match VFX platform requirements
+* ** IMATH_NAMESPACE_CUSTOM** - Whether the namespace has been
+  customized (so external users know). Default is ``NO``.
 
-  ** CMAKE\_CXX\_COMPILER**
+* **IMATH_LIB_SUFFIX** - String added to the end of all the
+  libraries. Default is ``-<major>_<minor>``
 
-g  ** CMAKE\_C\_COMPILER**
-
-  ** CMAKE\_LINKER**
-
-     All the related cmake compiler flags (i.e. CMAKE\_CXX_FLAGS, CMAKE_CXX_FLAGS_DEBUG)
-
-  ** CMAKE\_INSTALL\_RPATH**
-
-     For non-standard install locations where you don’t want to have to set ``LD_LIBRARY_PATH`` to use them
+* **IMATH_OUTPUT_SUBDIR* - Destination sub-folder of the include path
+  for install. Default is ``Imath``.
 
 ## Cmake Tips and Tricks:
 
