@@ -1,4 +1,4 @@
- # Contributing to Imath
+# Contributing to Imath
 
 Thank you for your interest in contributing to Imath. This document
 explains our contribution process and procedures:
