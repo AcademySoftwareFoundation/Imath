@@ -32,6 +32,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
+// clang-format off
+
 #include <Python.h>
 #include <boost/python.hpp>
 #include <PyImath.h>
