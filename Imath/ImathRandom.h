@@ -76,40 +76,40 @@ class IMATH_EXPORT Rand32
     // Constructor
     //------------
 
-    Rand32 (unsigned long int seed = 0);
+    IMATH_HOSTDEVICE Rand32 (unsigned long int seed = 0);
 
     //--------------------------------
     // Re-initialize with a given seed
     //--------------------------------
 
-    void init (unsigned long int seed);
+    IMATH_HOSTDEVICE void init (unsigned long int seed);
 
     //----------------------------------------------------------
     // Get the next value in the sequence (range: [false, true])
     //----------------------------------------------------------
 
-    bool nextb();
+    IMATH_HOSTDEVICE bool nextb();
 
     //---------------------------------------------------------------
     // Get the next value in the sequence (range: [0 ... 0xffffffff])
     //---------------------------------------------------------------
 
-    unsigned long int nexti();
+    IMATH_HOSTDEVICE unsigned long int nexti();
 
     //------------------------------------------------------
     // Get the next value in the sequence (range: [0 ... 1[)
     //------------------------------------------------------
 
-    float nextf();
+    IMATH_HOSTDEVICE float nextf();
 
     //-------------------------------------------------------------------
     // Get the next value in the sequence (range [rangeMin ... rangeMax[)
     //-------------------------------------------------------------------
 
-    float nextf (float rangeMin, float rangeMax);
+    IMATH_HOSTDEVICE float nextf (float rangeMin, float rangeMax);
 
   private:
-    void next();
+    IMATH_HOSTDEVICE void next();
 
     unsigned long int _state;
 };
