@@ -123,11 +123,11 @@ into the ``IMATH_NAMESPACE``.  This means that client code can
 continue to use syntax like ``Imath::V3f``, but at link time it will
 resolve to a mangled symbol based on the ``IMATH_INTERNAL_NAMESPACE``.
 
-As an example, if one needed to build against a newer version of Imath and
-have it run alongside an older version in the same application, it is now
-possible to use an internal namespace to prevent collisions between the
-older versions of Imath symbols and the newer ones.  To do this, the
-following could be defined at build time:
+As an example, if one needed to build against a newer version of Imath
+and have it run alongside an older version in the same application, it
+is possible to use an internal namespace to prevent collisions between
+the older versions of Imath symbols and the newer ones.  To do this,
+the following could be defined at build time:
 
     cmake -DIMATH_INTERNAL_IMATH_NAMESPACE=Imath_v2 $source_directory
 
@@ -188,32 +188,34 @@ ways:
 2. Use the UI ``cmake-gui`` or ``ccmake``.
 2. Specify them as command-line arguments via -D when you invoke cmake.
 
+Common cmake configuration settings:
+
 * ``IMATH_BUILD_BOTH_STATIC_SHARED`` - Build both static and shared
   libraries in one step (otherwise follows BUILD_SHARED_LIBS). Default
   is ``OFF``.
 
-* **IMATH_CXX_STANDARD** - C++ standard to compile against. Default is
+* ``IMATH_CXX_STANDARD`` - C++ standard to compile against. Default is
   ``14``.
 
-* **IMATH_ENABLE_LARGE_STACK** - Enables code to take advantage of
+* ``IMATH_ENABLE_LARGE_STACK`` - Enables code to take advantage of
   large stack support.  Default is ``OFF``.
 
-* **IMATH_INSTALL_PKG_CONFIG** - Install Imath.pc file. Default is
+* ``IMATH_INSTALL_PKG_CONFIG`` - Install Imath.pc file. Default is
   ``ON``.
 
-* **IMATH_IMATH_NAMESPACE** - Public namespace alias for
+* ``IMATH_IMATH_NAMESPACE`` - Public namespace alias for
   Imath. Default is ``Imath``.
 
-* **IMATH_INTERNAL_IMATH_NAMESPACE** - Real namespace for Imath that
+* ``IMATH_INTERNAL_IMATH_NAMESPACE`` - Real namespace for Imath that
   will end up in compiled symbols. Default is ``Imath_<major>_<minor>``.
 
-* ** IMATH_NAMESPACE_CUSTOM** - Whether the namespace has been
+* ``IMATH_NAMESPACE_CUSTOM`` - Whether the namespace has been
   customized (so external users know). Default is ``NO``.
 
-* **IMATH_LIB_SUFFIX** - String added to the end of all the
+* ``IMATH_LIB_SUFFIX`` - String added to the end of all the
   libraries. Default is ``-<major>_<minor>``
 
-* **IMATH_OUTPUT_SUBDIR* - Destination sub-folder of the include path
+* ``IMATH_OUTPUT_SUBDIR`` - Destination sub-folder of the include path
   for install. Default is ``Imath``.
 
 ## Cmake Tips and Tricks:
