@@ -231,9 +231,9 @@ template <class T> constexpr inline Quat<T>::Quat (T s, Vec3<T> d) : r (s), v (d
     // empty
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Quat<T>::Quat (const Quat<T>& q)
+template <class T> constexpr inline Quat<T>::Quat (const Quat<T>& q) : r (q.r), v (q.v)
 {
-    operator= (q);
+    // empty
 }
 
 template <class T>
