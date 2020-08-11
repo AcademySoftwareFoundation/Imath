@@ -1577,8 +1577,8 @@ Matrix22<T>::setRotation (S r)
 {
     S cos_r, sin_r;
 
-    cos_r = cos ((T) r);
-    sin_r = sin ((T) r);
+    cos_r = Math<T>::cos (r);
+    sin_r = Math<T>::sin (r);
 
     x[0][0] = cos_r;
     x[0][1] = sin_r;
@@ -2658,8 +2658,8 @@ Matrix33<T>::setRotation (S r)
 {
     S cos_r, sin_r;
 
-    cos_r = cos ((T) r);
-    sin_r = sin ((T) r);
+    cos_r = Math<T>::cos (r);
+    sin_r = Math<T>::sin (r);
 
     x[0][0] = cos_r;
     x[0][1] = sin_r;
@@ -4058,13 +4058,13 @@ Matrix44<T>::setEulerAngles (const Vec3<S>& r)
 {
     S cos_rz, sin_rz, cos_ry, sin_ry, cos_rx, sin_rx;
 
-    cos_rz = cos ((T) r[2]);
-    cos_ry = cos ((T) r[1]);
-    cos_rx = cos ((T) r[0]);
+    cos_rz = Math<T>::cos (r[2]);
+    cos_ry = Math<T>::cos (r[1]);
+    cos_rx = Math<T>::cos (r[0]);
 
-    sin_rz = sin ((T) r[2]);
-    sin_ry = sin ((T) r[1]);
-    sin_rx = sin ((T) r[0]);
+    sin_rz = Math<T>::sin (r[2]);
+    sin_ry = Math<T>::sin (r[1]);
+    sin_rx = Math<T>::sin (r[0]);
 
     x[0][0] = cos_rz * cos_ry;
     x[0][1] = sin_rz * cos_ry;
@@ -4131,13 +4131,13 @@ Matrix44<T>::rotate (const Vec3<S>& r)
     S m10, m11, m12;
     S m20, m21, m22;
 
-    cos_rz = cos ((S) r[2]);
-    cos_ry = cos ((S) r[1]);
-    cos_rx = cos ((S) r[0]);
+    cos_rz = Math<S>::cos (r[2]);
+    cos_ry = Math<S>::cos (r[1]);
+    cos_rx = Math<S>::cos (r[0]);
 
-    sin_rz = sin ((S) r[2]);
-    sin_ry = sin ((S) r[1]);
-    sin_rx = sin ((S) r[0]);
+    sin_rz = Math<S>::sin (r[2]);
+    sin_ry = Math<S>::sin (r[1]);
+    sin_rx = Math<S>::sin (r[0]);
 
     m00 = cos_rz * cos_ry;
     m01 = sin_rz * cos_ry;
