@@ -44,6 +44,12 @@
 #include "ImathMath.h"
 #include "ImathNamespace.h"
 #include <complex>
+#ifdef __CUDACC__
+#    include <thrust/complex.h>
+#    define COMPLEX_NAMESPACE thrust
+#else
+#    define COMPLEX_NAMESPACE std
+#endif
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
@@ -80,10 +86,11 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 //
 //--------------------------------------------------------------------------
 
-template <class T> IMATH_CONSTEXPR14 int solveLinear (T a, T b, T& x);
-template <class T> IMATH_CONSTEXPR14 int solveQuadratic (T a, T b, T c, T x[2]);
-template <class T> IMATH_CONSTEXPR14 int solveNormalizedCubic (T r, T s, T t, T x[3]);
-template <class T> IMATH_CONSTEXPR14 int solveCubic (T a, T b, T c, T d, T x[3]);
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveLinear (T a, T b, T& x);
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveQuadratic (T a, T b, T c, T x[2]);
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveNormalizedCubic (T r, T s, T t, T x[3]);
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveCubic (T a, T b, T c, T d, T x[3]);
 
 //---------------
 // Implementation
@@ -159,17 +166,21 @@ solveNormalizedCubic (T r, T s, T t, T x[3])
         return 1;
     }
 
-    std::complex<T> u = std::pow (-q / 2 + std::sqrt (std::complex<T> (D)), T (1) / T (3));
+    COMPLEX_NAMESPACE::complex<T> u = COMPLEX_NAMESPACE::pow (
+        -q / 2 + COMPLEX_NAMESPACE::sqrt (COMPLEX_NAMESPACE::complex<T> (D)),
+        T (1) / T (3));
 
-    std::complex<T> v = -p / (T (3) * u);
+    COMPLEX_NAMESPACE::complex<T> v = -p / (T (3) * u);
 
     const T sqrt3 = T (1.73205080756887729352744634150587); // enough digits
                                                             // for long double
-    std::complex<T> y0 (u + v);
+    COMPLEX_NAMESPACE::complex<T> y0 (u + v);
 
-    std::complex<T> y1 (-(u + v) / T (2) + (u - v) / T (2) * std::complex<T> (0, sqrt3));
+    COMPLEX_NAMESPACE::complex<T> y1 (-(u + v) / T (2) +
+                                      (u - v) / T (2) * COMPLEX_NAMESPACE::complex<T> (0, sqrt3));
 
-    std::complex<T> y2 (-(u + v) / T (2) - (u - v) / T (2) * std::complex<T> (0, sqrt3));
+    COMPLEX_NAMESPACE::complex<T> y2 (-(u + v) / T (2) -
+                                      (u - v) / T (2) * COMPLEX_NAMESPACE::complex<T> (0, sqrt3));
 
     if (D > 0)
     {

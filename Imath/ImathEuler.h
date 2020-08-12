@@ -219,16 +219,17 @@ template <class T> class Euler : public Vec3<T>
     // function, defined in ImathMatrixAlgo.h.
     //--------------------------------------------------------------------
 
-    constexpr Euler();
-    IMATH_CONSTEXPR14 Euler (const Euler&);
-    IMATH_CONSTEXPR14 Euler (Order p);
-    IMATH_CONSTEXPR14
-    Euler (const Vec3<T>& v, Order o = Default, InputLayout l = IJKLayout);
-    IMATH_CONSTEXPR14
+    IMATH_HOSTDEVICE constexpr Euler();
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Euler&);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (Order p);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Vec3<T>& v,
+                                              Order o       = Default,
+                                              InputLayout l = IJKLayout);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Euler (T i, T j, T k, Order o = Default, InputLayout l = IJKLayout);
-    IMATH_CONSTEXPR14 Euler (const Euler<T>& euler, Order newp);
-    IMATH_CONSTEXPR14 Euler (const Matrix33<T>&, Order o = Default);
-    IMATH_CONSTEXPR14 Euler (const Matrix44<T>&, Order o = Default);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Euler<T>& euler, Order newp);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Matrix33<T>&, Order o = Default);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Matrix44<T>&, Order o = Default);
 
     //-------------
     //  Destructor
@@ -240,8 +241,8 @@ template <class T> class Euler : public Vec3<T>
     //  Algebraic functions/ Operators
     //---------------------------------
 
-    IMATH_CONSTEXPR14 const Euler<T>& operator= (const Euler<T>&);
-    IMATH_CONSTEXPR14 const Euler<T>& operator= (const Vec3<T>&);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>& operator= (const Euler<T>&);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>& operator= (const Vec3<T>&);
 
     //--------------------------------------------------------
     //	Set the euler value
@@ -249,14 +250,14 @@ template <class T> class Euler : public Vec3<T>
     //	does reorder the input vector.
     //--------------------------------------------------------
 
-    constexpr static bool legal (Order);
+    IMATH_HOSTDEVICE constexpr static bool legal (Order);
 
-    void setXYZVector (const Vec3<T>&);
+    IMATH_HOSTDEVICE void setXYZVector (const Vec3<T>&);
 
-    IMATH_CONSTEXPR14 Order order() const;
-    void setOrder (Order);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Order order() const;
+    IMATH_HOSTDEVICE void setOrder (Order);
 
-    void set (Axis initial, bool relative, bool parityEven, bool firstRepeats);
+    IMATH_HOSTDEVICE void set (Axis initial, bool relative, bool parityEven, bool firstRepeats);
 
     //------------------------------------------------------------
     //	Conversions, toXYZVector() reorders the angles so that
@@ -272,26 +273,26 @@ template <class T> class Euler : public Vec3<T>
     // in ImathMatrixAlgo.h.
     //------------------------------------------------------------
 
-    void extract (const Matrix33<T>&);
-    void extract (const Matrix44<T>&);
-    void extract (const Quat<T>&);
-    Matrix33<T> toMatrix33() const;
-    Matrix44<T> toMatrix44() const;
-    Quat<T> toQuat() const;
-    Vec3<T> toXYZVector() const;
+    IMATH_HOSTDEVICE void extract (const Matrix33<T>&);
+    IMATH_HOSTDEVICE void extract (const Matrix44<T>&);
+    IMATH_HOSTDEVICE void extract (const Quat<T>&);
+    IMATH_HOSTDEVICE Matrix33<T> toMatrix33() const;
+    IMATH_HOSTDEVICE Matrix44<T> toMatrix44() const;
+    IMATH_HOSTDEVICE Quat<T> toQuat() const;
+    IMATH_HOSTDEVICE Vec3<T> toXYZVector() const;
 
     //---------------------------------------------------
     //	Use this function to unpack angles from ijk form
     //---------------------------------------------------
 
-    void angleOrder (int& i, int& j, int& k) const;
+    IMATH_HOSTDEVICE void angleOrder (int& i, int& j, int& k) const;
 
     //---------------------------------------------------
     //	Use this function to determine mapping from xyz to ijk
     // - reshuffles the xyz to match the order
     //---------------------------------------------------
 
-    void angleMapping (int& i, int& j, int& k) const;
+    IMATH_HOSTDEVICE void angleMapping (int& i, int& j, int& k) const;
 
     //----------------------------------------------------------------------
     //
@@ -317,17 +318,18 @@ template <class T> class Euler : public Vec3<T>
     //
     //-----------------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 static float angleMod (T angle);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 static float angleMod (T angle);
 
-    static void simpleXYZRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot);
-    static void nearestRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot, Order order = XYZ);
+    IMATH_HOSTDEVICE static void simpleXYZRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot);
+    IMATH_HOSTDEVICE static void
+    nearestRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot, Order order = XYZ);
 
-    void makeNear (const Euler<T>& target);
+    IMATH_HOSTDEVICE void makeNear (const Euler<T>& target);
 
-    constexpr bool frameStatic() const { return _frameStatic; }
-    constexpr bool initialRepeated() const { return _initialRepeated; }
-    constexpr bool parityEven() const { return _parityEven; }
-    constexpr Axis initialAxis() const { return _initialAxis; }
+    IMATH_HOSTDEVICE constexpr bool frameStatic() const { return _frameStatic; }
+    IMATH_HOSTDEVICE constexpr bool initialRepeated() const { return _initialRepeated; }
+    IMATH_HOSTDEVICE constexpr bool parityEven() const { return _parityEven; }
+    IMATH_HOSTDEVICE constexpr Axis initialAxis() const { return _initialAxis; }
 
   protected:
     bool _frameStatic : 1;     // relative or static rotations
