@@ -1049,7 +1049,7 @@ Vec2<T>::lengthTiny() const
     absX /= max;
     absY /= max;
 
-    return max * Math<T>::sqrt (absX * absX + absY * absY);
+    return max * sqrt ((T) absX * absX + absY * absY);
 }
 
 template <class T>
@@ -1061,7 +1061,7 @@ Vec2<T>::length() const
     if (length2 < T (2) * limits<T>::smallest())
         return lengthTiny();
 
-    return Math<T>::sqrt (length2);
+    return sqrt ((T) length2);
 }
 
 template <class T>
@@ -1520,7 +1520,7 @@ Vec3<T>::lengthTiny() const
     absY /= max;
     absZ /= max;
 
-    return max * Math<T>::sqrt (absX * absX + absY * absY + absZ * absZ);
+    return max * sqrt ((T) absX * absX + absY * absY + absZ * absZ);
 }
 
 template <class T>
@@ -1532,7 +1532,7 @@ Vec3<T>::length() const
     if (length2 < T (2) * limits<T>::smallest())
         return lengthTiny();
 
-    return Math<T>::sqrt (length2);
+    return sqrt ((T) length2);
 }
 
 template <class T>
@@ -1905,7 +1905,7 @@ Vec4<T>::lengthTiny() const
     absZ /= max;
     absW /= max;
 
-    return max * Math<T>::sqrt (absX * absX + absY * absY + absZ * absZ + absW * absW);
+    return max * sqrt ((T) absX * absX + absY * absY + absZ * absZ + absW * absW);
 }
 
 template <class T>
@@ -1917,7 +1917,7 @@ Vec4<T>::length() const
     if (length2 < T (2) * limits<T>::smallest())
         return lengthTiny();
 
-    return Math<T>::sqrt (length2);
+    return sqrt ((T) length2);
 }
 
 template <class T>
