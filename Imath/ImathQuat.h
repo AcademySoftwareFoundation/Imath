@@ -89,7 +89,7 @@ template <class T> class Quat
     // Copy constructor
     //-------------------
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Quat (const Quat& q);
+    IMATH_HOSTDEVICE constexpr Quat (const Quat& q);
 
     //-------------
     // Destructor
