@@ -864,7 +864,7 @@ Vec2<T>::operator!= (const Vec2<S>& v) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Vec2<T>::equalWithAbsError (const Vec2<T>& v, T e) const
 {
     for (int i = 0; i < 2; i++)
@@ -875,7 +875,7 @@ Vec2<T>::equalWithAbsError (const Vec2<T>& v, T e) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Vec2<T>::equalWithRelError (const Vec2<T>& v, T e) const
 {
     for (int i = 0; i < 2; i++)
@@ -1026,7 +1026,7 @@ Vec2<T>::operator/ (T a) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 T
+IMATH_CONSTEXPR14 inline T
 Vec2<T>::lengthTiny() const
 {
     T absX = (x >= T (0)) ? x : -x;
@@ -1072,7 +1072,7 @@ Vec2<T>::length2() const
 }
 
 template <class T>
-const Vec2<T>&
+inline const Vec2<T>&
 Vec2<T>::normalize()
 {
     T l = length();
@@ -1093,7 +1093,7 @@ Vec2<T>::normalize()
 }
 
 template <class T>
-const Vec2<T>&
+inline const Vec2<T>&
 Vec2<T>::normalizeExc()
 {
     T l = length();
@@ -1117,7 +1117,7 @@ Vec2<T>::normalizeNonNull()
 }
 
 template <class T>
-Vec2<T>
+inline Vec2<T>
 Vec2<T>::normalized() const
 {
     T l = length();
@@ -1129,7 +1129,7 @@ Vec2<T>::normalized() const
 }
 
 template <class T>
-Vec2<T>
+inline Vec2<T>
 Vec2<T>::normalizedExc() const
 {
     T l = length();
@@ -1216,8 +1216,7 @@ template <class T> template <class S> IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (co
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14
-Vec3<T>::Vec3 (const Vec4<S>& v, InfException)
+IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec4<S>& v, InfException)
 {
     T vx = T (v.x);
     T vy = T (v.y);
@@ -1310,7 +1309,7 @@ Vec3<T>::operator!= (const Vec3<S>& v) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Vec3<T>::equalWithAbsError (const Vec3<T>& v, T e) const
 {
     for (int i = 0; i < 3; i++)
@@ -1321,7 +1320,7 @@ Vec3<T>::equalWithAbsError (const Vec3<T>& v, T e) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Vec3<T>::equalWithRelError (const Vec3<T>& v, T e) const
 {
     for (int i = 0; i < 3; i++)
@@ -1492,7 +1491,7 @@ Vec3<T>::operator/ (T a) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 T
+IMATH_CONSTEXPR14 inline T
 Vec3<T>::lengthTiny() const
 {
     T absX = (x >= T (0)) ? x : -x;
@@ -1543,7 +1542,7 @@ Vec3<T>::length2() const
 }
 
 template <class T>
-const Vec3<T>&
+inline const Vec3<T>&
 Vec3<T>::normalize()
 {
     T l = length();
@@ -1565,7 +1564,7 @@ Vec3<T>::normalize()
 }
 
 template <class T>
-const Vec3<T>&
+inline const Vec3<T>&
 Vec3<T>::normalizeExc()
 {
     T l = length();
@@ -1591,7 +1590,7 @@ Vec3<T>::normalizeNonNull()
 }
 
 template <class T>
-Vec3<T>
+inline Vec3<T>
 Vec3<T>::normalized() const
 {
     T l = length();
@@ -1603,7 +1602,7 @@ Vec3<T>::normalized() const
 }
 
 template <class T>
-Vec3<T>
+inline Vec3<T>
 Vec3<T>::normalizedExc() const
 {
     T l = length();
@@ -1710,7 +1709,7 @@ Vec4<T>::operator!= (const Vec4<S>& v) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Vec4<T>::equalWithAbsError (const Vec4<T>& v, T e) const
 {
     for (int i = 0; i < 4; i++)
@@ -1721,7 +1720,7 @@ Vec4<T>::equalWithAbsError (const Vec4<T>& v, T e) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Vec4<T>::equalWithRelError (const Vec4<T>& v, T e) const
 {
     for (int i = 0; i < 4; i++)
@@ -1872,7 +1871,7 @@ Vec4<T>::operator/ (T a) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 T
+IMATH_CONSTEXPR14 inline T
 Vec4<T>::lengthTiny() const
 {
     T absX = (x >= T (0)) ? x : -x;
@@ -1928,7 +1927,7 @@ Vec4<T>::length2() const
 }
 
 template <class T>
-const Vec4<T>&
+const inline Vec4<T>&
 Vec4<T>::normalize()
 {
     T l = length();
@@ -1951,7 +1950,7 @@ Vec4<T>::normalize()
 }
 
 template <class T>
-const Vec4<T>&
+const inline Vec4<T>&
 Vec4<T>::normalizeExc()
 {
     T l = length();
@@ -1979,7 +1978,7 @@ Vec4<T>::normalizeNonNull()
 }
 
 template <class T>
-Vec4<T>
+inline Vec4<T>
 Vec4<T>::normalized() const
 {
     T l = length();
@@ -1991,7 +1990,7 @@ Vec4<T>::normalized() const
 }
 
 template <class T>
-Vec4<T>
+inline Vec4<T>
 Vec4<T>::normalizedExc() const
 {
     T l = length();
