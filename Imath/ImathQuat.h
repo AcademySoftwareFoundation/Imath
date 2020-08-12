@@ -75,21 +75,21 @@ template <class T> class Quat
     // Constructors - default constructor is identity quat
     //-----------------------------------------------------
 
-    constexpr Quat();
+    IMATH_HOSTDEVICE constexpr Quat();
 
-    template <class S> constexpr Quat (const Quat<S>& q);
+    template <class S> IMATH_HOSTDEVICE constexpr Quat (const Quat<S>& q);
 
-    constexpr Quat (T s, T i, T j, T k);
+    IMATH_HOSTDEVICE constexpr Quat (T s, T i, T j, T k);
 
-    constexpr Quat (T s, Vec3<T> d);
+    IMATH_HOSTDEVICE constexpr Quat (T s, Vec3<T> d);
 
-    constexpr static Quat<T> identity();
+    IMATH_HOSTDEVICE constexpr static Quat<T> identity();
 
     //-------------------
     // Copy constructor
     //-------------------
 
-    IMATH_CONSTEXPR14 Quat (const Quat& q);
+    IMATH_HOSTDEVICE constexpr Quat (const Quat& q);
 
     //-------------
     // Destructor
@@ -113,46 +113,46 @@ template <class T> class Quat
     //	a 4D vector when one of the operands is scalar
     //-------------------------------------------------
 
-    IMATH_CONSTEXPR14 const Quat<T>& operator= (const Quat<T>& q);
-    IMATH_CONSTEXPR14 const Quat<T>& operator*= (const Quat<T>& q);
-    IMATH_CONSTEXPR14 const Quat<T>& operator*= (T t);
-    IMATH_CONSTEXPR14 const Quat<T>& operator/= (const Quat<T>& q);
-    IMATH_CONSTEXPR14 const Quat<T>& operator/= (T t);
-    IMATH_CONSTEXPR14 const Quat<T>& operator+= (const Quat<T>& q);
-    IMATH_CONSTEXPR14 const Quat<T>& operator-= (const Quat<T>& q);
-    IMATH_CONSTEXPR14 T& operator[] (int index); // as 4D vector
-    constexpr T operator[] (int index) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Quat<T>& operator= (const Quat<T>& q);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Quat<T>& operator*= (const Quat<T>& q);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Quat<T>& operator*= (T t);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Quat<T>& operator/= (const Quat<T>& q);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Quat<T>& operator/= (T t);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Quat<T>& operator+= (const Quat<T>& q);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Quat<T>& operator-= (const Quat<T>& q);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int index); // as 4D vector
+    IMATH_HOSTDEVICE constexpr T operator[] (int index) const;
 
-    template <class S> constexpr bool operator== (const Quat<S>& q) const;
-    template <class S> constexpr bool operator!= (const Quat<S>& q) const;
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator== (const Quat<S>& q) const;
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator!= (const Quat<S>& q) const;
 
-    IMATH_CONSTEXPR14 Quat<T>& invert(); // this -> 1 / this
-    IMATH_CONSTEXPR14 Quat<T> inverse() const;
-    IMATH_CONSTEXPR14 Quat<T>& normalize(); // returns this
-    IMATH_CONSTEXPR14 Quat<T> normalized() const;
-    constexpr T length() const; // in R4
-    IMATH_CONSTEXPR14 Vec3<T> rotateVector (const Vec3<T>& original) const;
-    constexpr T euclideanInnerProduct (const Quat<T>& q) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Quat<T>& invert(); // this -> 1 / this
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Quat<T> inverse() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Quat<T>& normalize(); // returns this
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Quat<T> normalized() const;
+    IMATH_HOSTDEVICE constexpr T length() const; // in R4
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> rotateVector (const Vec3<T>& original) const;
+    IMATH_HOSTDEVICE constexpr T euclideanInnerProduct (const Quat<T>& q) const;
 
     //-----------------------
     //	Rotation conversion
     //-----------------------
 
-    IMATH_CONSTEXPR14 Quat<T>& setAxisAngle (const Vec3<T>& axis, T radians);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Quat<T>& setAxisAngle (const Vec3<T>& axis, T radians);
 
-    IMATH_CONSTEXPR14 Quat<T>&
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Quat<T>&
     setRotation (const Vec3<T>& fromDirection, const Vec3<T>& toDirection);
 
-    constexpr T angle() const;
-    constexpr Vec3<T> axis() const;
+    IMATH_HOSTDEVICE constexpr T angle() const;
+    IMATH_HOSTDEVICE constexpr Vec3<T> axis() const;
 
-    constexpr Matrix33<T> toMatrix33() const;
-    constexpr Matrix44<T> toMatrix44() const;
-    Quat<T> log() const;
-    Quat<T> exp() const;
+    IMATH_HOSTDEVICE constexpr Matrix33<T> toMatrix33() const;
+    IMATH_HOSTDEVICE constexpr Matrix44<T> toMatrix44() const;
+    IMATH_HOSTDEVICE Quat<T> log() const;
+    IMATH_HOSTDEVICE Quat<T> exp() const;
 
   private:
-    void setRotationInternal (const Vec3<T>& f0, const Vec3<T>& t0, Quat<T>& q);
+    IMATH_HOSTDEVICE void setRotationInternal (const Vec3<T>& f0, const Vec3<T>& t0, Quat<T>& q);
 };
 
 template <class T> IMATH_CONSTEXPR14 Quat<T> slerp (const Quat<T>& q1, const Quat<T>& q2, T t);
@@ -231,9 +231,9 @@ template <class T> constexpr inline Quat<T>::Quat (T s, Vec3<T> d) : r (s), v (d
     // empty
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Quat<T>::Quat (const Quat<T>& q)
+template <class T> constexpr inline Quat<T>::Quat (const Quat<T>& q) : r (q.r), v (q.v)
 {
-    operator= (q);
+    // empty
 }
 
 template <class T>
@@ -337,7 +337,7 @@ Quat<T>::operator!= (const Quat<S>& q) const
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 operator^ (const Quat<T>& q1, const Quat<T>& q2)
 {
     return q1.r * q2.r + (q1.v ^ q2.v);

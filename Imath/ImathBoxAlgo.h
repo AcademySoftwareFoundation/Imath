@@ -81,7 +81,7 @@
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 clip (const T& p, const Box<T>& box)
 {
     //
@@ -105,14 +105,14 @@ clip (const T& p, const Box<T>& box)
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 closestPointInBox (const T& p, const Box<T>& box)
 {
     return clip (p, box);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec3<T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
 closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box)
 {
     //
@@ -154,7 +154,7 @@ closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box)
 }
 
 template <class S, class T>
-Box<Vec3<S>>
+IMATH_HOSTDEVICE Box<Vec3<S>>
 transform (const Box<Vec3<S>>& box, const Matrix44<T>& m)
 {
     //
@@ -236,7 +236,7 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m)
 }
 
 template <class S, class T>
-void
+IMATH_HOSTDEVICE void
 transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result)
 {
     //
@@ -314,7 +314,7 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result)
 }
 
 template <class S, class T>
-Box<Vec3<S>>
+IMATH_HOSTDEVICE Box<Vec3<S>>
 affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m)
 {
     //
@@ -365,7 +365,7 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m)
 }
 
 template <class S, class T>
-void
+IMATH_HOSTDEVICE void
 affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result)
 {
     //
@@ -421,7 +421,7 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& re
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
 findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry, Vec3<T>& exit)
 {
     //
@@ -695,7 +695,7 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
 intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip)
 {
     //
@@ -973,7 +973,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
 intersects (const Box<Vec3<T>>& box, const Line3<T>& ray)
 {
     Vec3<T> ignored;

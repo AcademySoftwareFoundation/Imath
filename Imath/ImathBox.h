@@ -80,50 +80,44 @@ template <class T> class Box
     //	Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    IMATH_CONSTEXPR14 Box();
-    IMATH_CONSTEXPR14 Box (const T& point);
-    IMATH_CONSTEXPR14 Box (const T& minT, const T& maxT);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box();
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const T& point);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const T& minT, const T& maxT);
 
     //--------------------
     //  Operators:  ==, !=
     //--------------------
 
-    constexpr bool operator== (const Box<T>& src) const;
-    constexpr bool operator!= (const Box<T>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Box<T>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<T>& src) const;
 
     //------------------
     //	Box manipulation
     //------------------
 
-    void makeEmpty();
-    void extendBy (const T& point);
-    void extendBy (const Box<T>& box);
-    void makeInfinite();
+    IMATH_HOSTDEVICE void makeEmpty();
+    IMATH_HOSTDEVICE void extendBy (const T& point);
+    IMATH_HOSTDEVICE void extendBy (const Box<T>& box);
+    IMATH_HOSTDEVICE void makeInfinite();
 
     //---------------------------------------------------
     //	Query functions - these compute results each time
     //---------------------------------------------------
 
-    IMATH_CONSTEXPR14 T size() const;
-    constexpr T center() const;
-    IMATH_CONSTEXPR14
-    bool intersects (const T& point) const;
-    IMATH_CONSTEXPR14
-    bool intersects (const Box<T>& box) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T size() const;
+    IMATH_HOSTDEVICE constexpr T center() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const T& point) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<T>& box) const;
 
-    IMATH_CONSTEXPR14
-    unsigned int majorAxis() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const;
 
     //----------------
     //	Classification
     //----------------
 
-    IMATH_CONSTEXPR14
-    bool isEmpty() const;
-    IMATH_CONSTEXPR14
-    bool hasVolume() const;
-    IMATH_CONSTEXPR14
-    bool isInfinite() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const;
 };
 
 //--------------------
@@ -337,51 +331,44 @@ template <class T> class Box<Vec2<T>>
     //  Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    IMATH_CONSTEXPR14 Box();
-    IMATH_CONSTEXPR14 Box (const Vec2<T>& point);
-    IMATH_CONSTEXPR14 Box (const Vec2<T>& minT, const Vec2<T>& maxT);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box();
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& point);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& minT, const Vec2<T>& maxT);
 
     //--------------------
     //  Operators:  ==, !=
     //--------------------
 
-    constexpr bool operator== (const Box<Vec2<T>>& src) const;
-    constexpr bool operator!= (const Box<Vec2<T>>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec2<T>>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec2<T>>& src) const;
 
     //------------------
     //  Box manipulation
     //------------------
 
-    void makeEmpty();
-    void extendBy (const Vec2<T>& point);
-    void extendBy (const Box<Vec2<T>>& box);
-    void makeInfinite();
+    IMATH_HOSTDEVICE void makeEmpty();
+    IMATH_HOSTDEVICE void extendBy (const Vec2<T>& point);
+    IMATH_HOSTDEVICE void extendBy (const Box<Vec2<T>>& box);
+    IMATH_HOSTDEVICE void makeInfinite();
 
     //---------------------------------------------------
     //  Query functions - these compute results each time
     //---------------------------------------------------
 
-    IMATH_CONSTEXPR14
-    Vec2<T> size() const;
-    constexpr Vec2<T> center() const;
-    IMATH_CONSTEXPR14
-    bool intersects (const Vec2<T>& point) const;
-    IMATH_CONSTEXPR14
-    bool intersects (const Box<Vec2<T>>& box) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> size() const;
+    IMATH_HOSTDEVICE constexpr Vec2<T> center() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Vec2<T>& point) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<Vec2<T>>& box) const;
 
-    IMATH_CONSTEXPR14
-    unsigned int majorAxis() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const;
 
     //----------------
     //  Classification
     //----------------
 
-    IMATH_CONSTEXPR14
-    bool isEmpty() const;
-    IMATH_CONSTEXPR14
-    bool hasVolume() const;
-    IMATH_CONSTEXPR14
-    bool isInfinite() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const;
 };
 
 //----------------
@@ -564,51 +551,44 @@ template <class T> class Box<Vec3<T>>
     //  Constructors - an "empty" box is created by default
     //-----------------------------------------------------
 
-    IMATH_CONSTEXPR14 Box();
-    IMATH_CONSTEXPR14 Box (const Vec3<T>& point);
-    IMATH_CONSTEXPR14 Box (const Vec3<T>& minT, const Vec3<T>& maxT);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box();
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& point);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& minT, const Vec3<T>& maxT);
 
     //--------------------
     //  Operators:  ==, !=
     //--------------------
 
-    constexpr bool operator== (const Box<Vec3<T>>& src) const;
-    constexpr bool operator!= (const Box<Vec3<T>>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec3<T>>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec3<T>>& src) const;
 
     //------------------
     //  Box manipulation
     //------------------
 
-    void makeEmpty();
-    void extendBy (const Vec3<T>& point);
-    void extendBy (const Box<Vec3<T>>& box);
-    void makeInfinite();
+    IMATH_HOSTDEVICE void makeEmpty();
+    IMATH_HOSTDEVICE void extendBy (const Vec3<T>& point);
+    IMATH_HOSTDEVICE void extendBy (const Box<Vec3<T>>& box);
+    IMATH_HOSTDEVICE void makeInfinite();
 
     //---------------------------------------------------
     //  Query functions - these compute results each time
     //---------------------------------------------------
 
-    IMATH_CONSTEXPR14
-    Vec3<T> size() const;
-    constexpr Vec3<T> center() const;
-    IMATH_CONSTEXPR14
-    bool intersects (const Vec3<T>& point) const;
-    IMATH_CONSTEXPR14
-    bool intersects (const Box<Vec3<T>>& box) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> size() const;
+    IMATH_HOSTDEVICE constexpr Vec3<T> center() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Vec3<T>& point) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<Vec3<T>>& box) const;
 
-    IMATH_CONSTEXPR14
-    unsigned int majorAxis() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const;
 
     //----------------
     //  Classification
     //----------------
 
-    IMATH_CONSTEXPR14
-    bool isEmpty() const;
-    IMATH_CONSTEXPR14
-    bool hasVolume() const;
-    IMATH_CONSTEXPR14
-    bool isInfinite() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const;
 };
 
 //----------------
