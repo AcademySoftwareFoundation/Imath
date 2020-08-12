@@ -621,9 +621,9 @@ template <class T> std::ostream& operator<< (std::ostream& s, const Vec4<T>& v);
 // Reverse multiplication: S * Vec2<T> and S * Vec3<T>
 //----------------------------------------------------
 
-template <class T> constexpr Vec2<T> operator* (T a, const Vec2<T>& v);
-template <class T> constexpr Vec3<T> operator* (T a, const Vec3<T>& v);
-template <class T> constexpr Vec4<T> operator* (T a, const Vec4<T>& v);
+template <class T> IMATH_HOSTDEVICE constexpr Vec2<T> operator* (T a, const Vec2<T>& v);
+template <class T> IMATH_HOSTDEVICE constexpr Vec3<T> operator* (T a, const Vec3<T>& v);
+template <class T> IMATH_HOSTDEVICE constexpr Vec4<T> operator* (T a, const Vec4<T>& v);
 
 //-------------------------
 // Typedefs for convenience

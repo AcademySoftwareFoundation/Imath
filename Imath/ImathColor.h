@@ -54,58 +54,58 @@ template <class T> class Color3 : public Vec3<T>
     // Constructors
     //-------------
 
-    Color3();                         // no initialization
-    constexpr explicit Color3 (T a);  // (a a a)
-    constexpr Color3 (T a, T b, T c); // (a b c)
+    IMATH_HOSTDEVICE Color3();                         // no initialization
+    IMATH_HOSTDEVICE constexpr explicit Color3 (T a);  // (a a a)
+    IMATH_HOSTDEVICE constexpr Color3 (T a, T b, T c); // (a b c)
     ~Color3() = default;
 
     //---------------------------------
     // Copy constructors and assignment
     //---------------------------------
 
-    constexpr Color3 (const Color3& c);
-    template <class S> constexpr Color3 (const Vec3<S>& v);
+    IMATH_HOSTDEVICE constexpr Color3 (const Color3& c);
+    template <class S> IMATH_HOSTDEVICE constexpr Color3 (const Vec3<S>& v);
 
-    IMATH_CONSTEXPR14 const Color3& operator= (const Color3& c);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator= (const Color3& c);
 
     //------------------------
     // Component-wise addition
     //------------------------
 
-    IMATH_CONSTEXPR14 const Color3& operator+= (const Color3& c);
-    constexpr Color3 operator+ (const Color3& c) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator+= (const Color3& c);
+    IMATH_HOSTDEVICE constexpr Color3 operator+ (const Color3& c) const;
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
-    IMATH_CONSTEXPR14 const Color3& operator-= (const Color3& c);
-    constexpr Color3 operator- (const Color3& c) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator-= (const Color3& c);
+    IMATH_HOSTDEVICE constexpr Color3 operator- (const Color3& c) const;
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    constexpr Color3 operator-() const;
-    IMATH_CONSTEXPR14 const Color3& negate();
+    IMATH_HOSTDEVICE constexpr Color3 operator-() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& negate();
 
     //------------------------------
     // Component-wise multiplication
     //------------------------------
 
-    IMATH_CONSTEXPR14 const Color3& operator*= (const Color3& c);
-    IMATH_CONSTEXPR14 const Color3& operator*= (T a);
-    constexpr Color3 operator* (const Color3& c) const;
-    constexpr Color3 operator* (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator*= (const Color3& c);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator*= (T a);
+    IMATH_HOSTDEVICE constexpr Color3 operator* (const Color3& c) const;
+    IMATH_HOSTDEVICE constexpr Color3 operator* (T a) const;
 
     //------------------------
     // Component-wise division
     //------------------------
 
-    IMATH_CONSTEXPR14 const Color3& operator/= (const Color3& c);
-    IMATH_CONSTEXPR14 const Color3& operator/= (T a);
-    constexpr Color3 operator/ (const Color3& c) const;
-    constexpr Color3 operator/ (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator/= (const Color3& c);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator/= (T a);
+    IMATH_HOSTDEVICE constexpr Color3 operator/ (const Color3& c) const;
+    IMATH_HOSTDEVICE constexpr Color3 operator/ (T a) const;
 };
 
 template <class T> class Color4
@@ -117,103 +117,103 @@ template <class T> class Color4
 
     T r, g, b, a;
 
-    T& operator[] (int i);
-    const T& operator[] (int i) const;
+    IMATH_HOSTDEVICE T& operator[] (int i);
+    IMATH_HOSTDEVICE const T& operator[] (int i) const;
 
     //-------------
     // Constructors
     //-------------
 
-    Color4();                                      // no initialization
-    IMATH_CONSTEXPR14 explicit Color4 (T a);       // (a a a a)
-    IMATH_CONSTEXPR14 Color4 (T a, T b, T c, T d); // (a b c d)
+    IMATH_HOSTDEVICE Color4();                                      // no initialization
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Color4 (T a);       // (a a a a)
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (T a, T b, T c, T d); // (a b c d)
     ~Color4() = default;
 
     //---------------------------------
     // Copy constructors and assignment
     //---------------------------------
 
-    IMATH_CONSTEXPR14 Color4 (const Color4& v);
-    template <class S> IMATH_CONSTEXPR14 Color4 (const Color4<S>& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (const Color4& v);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (const Color4<S>& v);
 
-    IMATH_CONSTEXPR14 const Color4& operator= (const Color4& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator= (const Color4& v);
 
     //----------------------
     // Compatibility with Sb
     //----------------------
 
-    template <class S> void setValue (S a, S b, S c, S d);
+    template <class S> IMATH_HOSTDEVICE void setValue (S a, S b, S c, S d);
 
-    template <class S> void setValue (const Color4<S>& v);
+    template <class S> IMATH_HOSTDEVICE void setValue (const Color4<S>& v);
 
-    template <class S> void getValue (S& a, S& b, S& c, S& d) const;
+    template <class S> IMATH_HOSTDEVICE void getValue (S& a, S& b, S& c, S& d) const;
 
-    template <class S> void getValue (Color4<S>& v) const;
+    template <class S> IMATH_HOSTDEVICE void getValue (Color4<S>& v) const;
 
-    T* getValue();
-    const T* getValue() const;
+    IMATH_HOSTDEVICE T* getValue();
+    IMATH_HOSTDEVICE const T* getValue() const;
 
     //---------
     // Equality
     //---------
 
-    template <class S> constexpr bool operator== (const Color4<S>& v) const;
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator== (const Color4<S>& v) const;
 
-    template <class S> constexpr bool operator!= (const Color4<S>& v) const;
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator!= (const Color4<S>& v) const;
 
     //------------------------
     // Component-wise addition
     //------------------------
 
-    IMATH_CONSTEXPR14 const Color4& operator+= (const Color4& v);
-    constexpr Color4 operator+ (const Color4& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator+= (const Color4& v);
+    IMATH_HOSTDEVICE constexpr Color4 operator+ (const Color4& v) const;
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
-    IMATH_CONSTEXPR14 const Color4& operator-= (const Color4& v);
-    constexpr Color4 operator- (const Color4& v) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator-= (const Color4& v);
+    IMATH_HOSTDEVICE constexpr Color4 operator- (const Color4& v) const;
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    constexpr Color4 operator-() const;
-    IMATH_CONSTEXPR14 const Color4& negate();
+    IMATH_HOSTDEVICE constexpr Color4 operator-() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& negate();
 
     //------------------------------
     // Component-wise multiplication
     //------------------------------
 
-    IMATH_CONSTEXPR14 const Color4& operator*= (const Color4& v);
-    IMATH_CONSTEXPR14 const Color4& operator*= (T a);
-    constexpr Color4 operator* (const Color4& v) const;
-    constexpr Color4 operator* (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator*= (const Color4& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator*= (T a);
+    IMATH_HOSTDEVICE constexpr Color4 operator* (const Color4& v) const;
+    IMATH_HOSTDEVICE constexpr Color4 operator* (T a) const;
 
     //------------------------
     // Component-wise division
     //------------------------
 
-    IMATH_CONSTEXPR14 const Color4& operator/= (const Color4& v);
-    IMATH_CONSTEXPR14 const Color4& operator/= (T a);
-    constexpr Color4 operator/ (const Color4& v) const;
-    constexpr Color4 operator/ (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator/= (const Color4& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator/= (T a);
+    IMATH_HOSTDEVICE constexpr Color4 operator/ (const Color4& v) const;
+    IMATH_HOSTDEVICE constexpr Color4 operator/ (T a) const;
 
     //----------------------------------------------------------
     // Number of dimensions, i.e. number of elements in a Color4
     //----------------------------------------------------------
 
-    constexpr static unsigned int dimensions() { return 4; }
+    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() { return 4; }
 
     //-------------------------------------------------
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    constexpr static T baseTypeMin() { return limits<T>::min(); }
-    constexpr static T baseTypeMax() { return limits<T>::max(); }
-    constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
-    constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMin() { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
 
     //--------------------------------------------------------------
     // Base type -- in templates, which accept a parameter, V, which

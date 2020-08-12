@@ -56,28 +56,28 @@ abs (T a)
 }
 
 template <class T>
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 sign (T a)
 {
     return (a > T (0)) ? 1 : ((a < T (0)) ? -1 : 0);
 }
 
 template <class T, class Q>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 lerp (T a, T b, Q t)
 {
     return (T) (a * (1 - t) + b * t);
 }
 
 template <class T, class Q>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 ulerp (T a, T b, Q t)
 {
     return (T) ((a > b) ? (a - (a - b) * t) : (a + (b - a) * t));
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 lerpfactor (T m, T a, T b)
 {
     //
@@ -100,56 +100,56 @@ lerpfactor (T m, T a, T b)
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 clamp (T a, T l, T h)
 {
     return (a < l) ? l : ((a > h) ? h : a);
 }
 
 template <class T>
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 cmp (T a, T b)
 {
     return IMATH_INTERNAL_NAMESPACE::sign (a - b);
 }
 
 template <class T>
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 cmpt (T a, T b, T t)
 {
     return (IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t) ? 0 : cmp (a, b);
 }
 
 template <class T>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 iszero (T a, T t)
 {
     return (IMATH_INTERNAL_NAMESPACE::abs (a) <= t) ? 1 : 0;
 }
 
 template <class T1, class T2, class T3>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 equal (T1 a, T2 b, T3 t)
 {
     return IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t;
 }
 
 template <class T>
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 floor (T x)
 {
     return (x >= 0) ? int (x) : -(int (-x) + (-x > int (-x)));
 }
 
 template <class T>
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 ceil (T x)
 {
     return -floor (-x);
 }
 
 template <class T>
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 trunc (T x)
 {
     return (x >= 0) ? int (x) : -int (-x);
@@ -163,13 +163,13 @@ trunc (T x)
 //	mods(x,y) == x - y * divs(x,y)
 //
 
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 divs (int x, int y)
 {
     return (x >= 0) ? ((y >= 0) ? (x / y) : -(x / -y)) : ((y >= 0) ? -(-x / y) : (-x / -y));
 }
 
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 mods (int x, int y)
 {
     return (x >= 0) ? ((y >= 0) ? (x % y) : (x % -y)) : ((y >= 0) ? -(-x % y) : -(-x % -y));
@@ -183,14 +183,14 @@ mods (int x, int y)
 //	modp(x,y) == x - y * divp(x,y)
 //
 
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 divp (int x, int y)
 {
     return (x >= 0) ? ((y >= 0) ? (x / y) : -(x / -y))
                     : ((y >= 0) ? -((y - 1 - x) / y) : ((-y - 1 - x) / -y));
 }
 
-constexpr inline int
+IMATH_HOSTDEVICE constexpr inline int
 modp (int x, int y)
 {
     return x - y * divp (x, y);
@@ -227,7 +227,7 @@ IMATH_EXPORT double predd (double d);
 // Return true if the number is not a NaN or Infinity.
 //
 
-inline bool
+inline bool IMATH_HOSTDEVICE
 finitef (float f)
 {
     union
@@ -240,7 +240,7 @@ finitef (float f)
     return (u.i & 0x7f800000) != 0x7f800000;
 }
 
-inline bool
+inline bool IMATH_HOSTDEVICE
 finited (double d)
 {
     union
