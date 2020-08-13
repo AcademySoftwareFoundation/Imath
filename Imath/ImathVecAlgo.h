@@ -84,7 +84,7 @@ IMATH_CONSTEXPR14 Vec closestVertex (const Vec& v0, const Vec& v1, const Vec& v2
 //---------------
 
 template <class Vec>
-IMATH_CONSTEXPR14 Vec
+IMATH_CONSTEXPR14 inline Vec
 project (const Vec& s, const Vec& t)
 {
     Vec sNormalized = s.normalized();
@@ -92,14 +92,14 @@ project (const Vec& s, const Vec& t)
 }
 
 template <class Vec>
-constexpr Vec
+constexpr inline Vec
 orthogonal (const Vec& s, const Vec& t)
 {
     return t - project (s, t);
 }
 
 template <class Vec>
-constexpr Vec
+constexpr inline Vec
 reflect (const Vec& s, const Vec& t)
 {
     return s - typename Vec::BaseType (2) * (s - project (t, s));

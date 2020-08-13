@@ -102,7 +102,7 @@ typedef Sphere3<double> Sphere3d;
 //---------------
 
 template <class T>
-void
+inline void
 Sphere3<T>::circumscribe (const Box<Vec3<T>>& box)
 {
     center = T (0.5) * (box.min + box.max);

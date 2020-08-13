@@ -397,7 +397,7 @@ Euler<T>::toXYZVector() const
 }
 
 template <class T>
-constexpr Euler<T>::Euler()
+constexpr inline Euler<T>::Euler()
     : Vec3<T> (0, 0, 0),
       _frameStatic (true),
       _initialRepeated (false),
@@ -406,8 +406,7 @@ constexpr Euler<T>::Euler()
 {}
 
 template <class T>
-IMATH_CONSTEXPR14
-Euler<T>::Euler (typename Euler<T>::Order p)
+IMATH_CONSTEXPR14 inline Euler<T>::Euler (typename Euler<T>::Order p)
     : Vec3<T> (0, 0, 0),
       _frameStatic (true),
       _initialRepeated (false),
@@ -875,7 +874,7 @@ Euler<T>::setOrder (typename Euler<T>::Order p)
 }
 
 template <class T>
-void
+inline void
 Euler<T>::set (typename Euler<T>::Axis axis, bool relative, bool parityEven, bool firstRepeats)
 {
     _initialAxis     = axis;
@@ -885,7 +884,7 @@ Euler<T>::set (typename Euler<T>::Axis axis, bool relative, bool parityEven, boo
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Euler<T>&
+IMATH_CONSTEXPR14 inline const Euler<T>&
 Euler<T>::operator= (const Euler<T>& euler)
 {
     x                = euler.x;
@@ -899,7 +898,7 @@ Euler<T>::operator= (const Euler<T>& euler)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 const Euler<T>&
+IMATH_CONSTEXPR14 inline const Euler<T>&
 Euler<T>::operator= (const Vec3<T>& v)
 {
     x = v.x;
@@ -926,7 +925,7 @@ operator<< (std::ostream& o, const Euler<T>& euler)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 float
+IMATH_CONSTEXPR14 inline float
 Euler<T>::angleMod (T angle)
 {
     const T pi = static_cast<T> (M_PI);
@@ -941,7 +940,7 @@ Euler<T>::angleMod (T angle)
 }
 
 template <class T>
-void
+inline void
 Euler<T>::simpleXYZRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot)
 {
     Vec3<T> d = xyzRot - targetXyzRot;

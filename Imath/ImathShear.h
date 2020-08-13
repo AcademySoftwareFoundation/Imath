@@ -419,7 +419,7 @@ Shear6<T>::operator!= (const Shear6<S>& h) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Shear6<T>::equalWithAbsError (const Shear6<T>& h, T e) const
 {
     for (int i = 0; i < 6; i++)
@@ -430,7 +430,7 @@ Shear6<T>::equalWithAbsError (const Shear6<T>& h, T e) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Shear6<T>::equalWithRelError (const Shear6<T>& h, T e) const
 {
     for (int i = 0; i < 6; i++)

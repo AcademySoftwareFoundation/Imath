@@ -200,7 +200,7 @@ template <class T> Frustum<T>::~Frustum()
 {}
 
 template <class T>
-IMATH_CONSTEXPR14 const Frustum<T>&
+IMATH_CONSTEXPR14 inline const Frustum<T>&
 Frustum<T>::operator= (const Frustum& f)
 {
     _nearPlane    = f._nearPlane;
@@ -215,7 +215,7 @@ Frustum<T>::operator= (const Frustum& f)
 }
 
 template <class T>
-constexpr bool
+constexpr inline bool
 Frustum<T>::operator== (const Frustum<T>& src) const
 {
     return _nearPlane == src._nearPlane && _farPlane == src._farPlane && _left == src._left &&
@@ -231,7 +231,7 @@ Frustum<T>::operator!= (const Frustum<T>& src) const
 }
 
 template <class T>
-void
+inline void
 Frustum<T>::set (T n, T f, T l, T r, T t, T b, bool o)
 {
     _nearPlane    = n;
@@ -244,7 +244,7 @@ Frustum<T>::set (T n, T f, T l, T r, T t, T b, bool o)
 }
 
 template <class T>
-void
+inline void
 Frustum<T>::modifyNearAndFar (T n, T f)
 {
     if (_orthographic)
@@ -274,14 +274,14 @@ Frustum<T>::modifyNearAndFar (T n, T f)
 }
 
 template <class T>
-void
+inline void
 Frustum<T>::setOrthographic (bool ortho)
 {
     _orthographic = ortho;
 }
 
 template <class T>
-void
+inline void
 Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 {
     if (fovx != 0 && fovy != 0)
@@ -309,21 +309,21 @@ Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 }
 
 template <class T>
-constexpr T
+constexpr inline T
 Frustum<T>::fovx() const
 {
     return Math<T>::atan2 (_right, _nearPlane) - Math<T>::atan2 (_left, _nearPlane);
 }
 
 template <class T>
-constexpr T
+constexpr inline T
 Frustum<T>::fovy() const
 {
     return Math<T>::atan2 (_top, _nearPlane) - Math<T>::atan2 (_bottom, _nearPlane);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 T
+IMATH_CONSTEXPR14 inline T
 Frustum<T>::aspect() const
 {
     T rightMinusLeft = _right - _left;
@@ -339,7 +339,7 @@ Frustum<T>::aspect() const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 T
+IMATH_CONSTEXPR14 inline T
 Frustum<T>::aspect_noexcept() const noexcept
 {
     T rightMinusLeft = _right - _left;
@@ -348,7 +348,7 @@ Frustum<T>::aspect_noexcept() const noexcept
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Matrix44<T>
+IMATH_CONSTEXPR14 inline Matrix44<T>
 Frustum<T>::projectionMatrix() const
 {
     T rightPlusLeft  = _right + _left;
@@ -424,7 +424,7 @@ Frustum<T>::projectionMatrix() const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Matrix44<T>
+IMATH_CONSTEXPR14 inline Matrix44<T>
 Frustum<T>::projectionMatrix_noexcept() const noexcept
 {
     T rightPlusLeft  = _right + _left;
@@ -468,14 +468,14 @@ Frustum<T>::projectionMatrix_noexcept() const noexcept
 }
 
 template <class T>
-constexpr bool
+constexpr inline bool
 Frustum<T>::degenerate() const
 {
     return (_nearPlane == _farPlane) || (_left == _right) || (_top == _bottom);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Frustum<T>
+IMATH_CONSTEXPR14 inline Frustum<T>
 Frustum<T>::window (T l, T r, T t, T b) const
 {
     // move it to 0->1 space
@@ -487,7 +487,7 @@ Frustum<T>::window (T l, T r, T t, T b) const
 }
 
 template <class T>
-constexpr Vec2<T>
+constexpr inline Vec2<T>
 Frustum<T>::screenToLocal (const Vec2<T>& s) const
 {
     return Vec2<T> (_left + (_right - _left) * (1.f + s.x) / 2.f,
@@ -495,7 +495,7 @@ Frustum<T>::screenToLocal (const Vec2<T>& s) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec2<T>
+IMATH_CONSTEXPR14 inline Vec2<T>
 Frustum<T>::localToScreen (const Vec2<T>& p) const
 {
     T leftPlusRight  = _left - T (2) * p.x + _right;
@@ -516,7 +516,7 @@ Frustum<T>::localToScreen (const Vec2<T>& p) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Line3<T>
+IMATH_CONSTEXPR14 inline Line3<T>
 Frustum<T>::projectScreenToRay (const Vec2<T>& p) const
 {
     Vec2<T> point = screenToLocal (p);
