@@ -235,7 +235,7 @@ operator* (const Plane3<T>& plane, const Matrix44<T>& M)
 }
 
 template <class T>
-constexpr Plane3<T>
+constexpr inline Plane3<T>
 operator- (const Plane3<T>& plane)
 {
     return Plane3<T> (-plane.normal, -plane.distance);

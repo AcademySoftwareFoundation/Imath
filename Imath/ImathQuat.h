@@ -403,7 +403,7 @@ Quat<T>::invert()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec3<T>
+IMATH_CONSTEXPR14 inline Vec3<T>
 Quat<T>::rotateVector (const Vec3<T>& original) const
 {
     //
@@ -430,7 +430,7 @@ Quat<T>::euclideanInnerProduct (const Quat<T>& q) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 T
+IMATH_CONSTEXPR14 inline T
 angle4D (const Quat<T>& q1, const Quat<T>& q2)
 {
     //
@@ -448,7 +448,7 @@ angle4D (const Quat<T>& q1, const Quat<T>& q2)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 slerp (const Quat<T>& q1, const Quat<T>& q2, T t)
 {
     //
@@ -480,7 +480,7 @@ slerp (const Quat<T>& q1, const Quat<T>& q2, T t)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 slerpShortestArc (const Quat<T>& q1, const Quat<T>& q2, T t)
 {
     //
@@ -496,7 +496,7 @@ slerpShortestArc (const Quat<T>& q1, const Quat<T>& q2, T t)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 spline (const Quat<T>& q0, const Quat<T>& q1, const Quat<T>& q2, const Quat<T>& q3, T t)
 {
     //
@@ -529,7 +529,7 @@ spline (const Quat<T>& q0, const Quat<T>& q1, const Quat<T>& q2, const Quat<T>& 
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 squad (const Quat<T>& q1, const Quat<T>& qa, const Quat<T>& qb, const Quat<T>& q2, T t)
 {
     //
@@ -549,7 +549,7 @@ squad (const Quat<T>& q1, const Quat<T>& qa, const Quat<T>& qb, const Quat<T>& q
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Quat<T>
+IMATH_CONSTEXPR14 inline Quat<T>
 intermediate (const Quat<T>& q0, const Quat<T>& q1, const Quat<T>& q2)
 {
     //
@@ -642,7 +642,7 @@ Quat<T>::setAxisAngle (const Vec3<T>& axis, T radians)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Quat<T>&
+IMATH_CONSTEXPR14 inline Quat<T>&
 Quat<T>::setRotation (const Vec3<T>& from, const Vec3<T>& to)
 {
     //
@@ -716,7 +716,7 @@ Quat<T>::setRotation (const Vec3<T>& from, const Vec3<T>& to)
 }
 
 template <class T>
-void
+inline void
 Quat<T>::setRotationInternal (const Vec3<T>& f0, const Vec3<T>& t0, Quat<T>& q)
 {
     //
@@ -747,7 +747,7 @@ Quat<T>::setRotationInternal (const Vec3<T>& f0, const Vec3<T>& t0, Quat<T>& q)
 }
 
 template <class T>
-constexpr Matrix33<T>
+constexpr inline Matrix33<T>
 Quat<T>::toMatrix33() const
 {
     return Matrix33<T> (1 - 2 * (v.y * v.y + v.z * v.z),
@@ -764,7 +764,7 @@ Quat<T>::toMatrix33() const
 }
 
 template <class T>
-constexpr Matrix44<T>
+constexpr inline Matrix44<T>
 Quat<T>::toMatrix44() const
 {
     return Matrix44<T> (1 - 2 * (v.y * v.y + v.z * v.z),
