@@ -199,9 +199,27 @@ testFrustum()
             1e-6);
     cout << "1";
     assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspect() - ((r - l) / (t - b))) < 1e-6);
+    assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspect_noexcept() - ((r - l) / (t - b))) < 1e-6);
     cout << "2";
 
     IMATH_INTERNAL_NAMESPACE::M44f m = frustum.projectionMatrix();
+    assert (IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][0] - ((2 * n) / (r - l))) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][3]) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][0]) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][1] - ((2 * n) / (t - b))) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][2]) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][3]) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][0] - ((r + l) / (r - l))) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][1] - ((t + b) / (t - b))) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][2] - (-(f + n) / (f - n))) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][3] - -1.0) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][0]) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][1]) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][2] - ((-2 * f * n) / (f - n))) < 1e-6 &&
+            IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3]) < 1e-6);
+    m = frustum.projectionMatrix_noexcept();
     assert (IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][0] - ((2 * n) / (r - l))) < 1e-6 &&
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6 &&
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6 &&

@@ -62,33 +62,36 @@ template <class T> class Plane3
     Vec3<T> normal;
     T distance;
 
-    constexpr Plane3() {}
-    IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& normal, T distance);
-    IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point, const Vec3<T>& normal);
-    IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3);
+    IMATH_HOSTDEVICE constexpr Plane3() {}
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& normal, T distance);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point, const Vec3<T>& normal);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point1,
+                                               const Vec3<T>& point2,
+                                               const Vec3<T>& point3);
 
     //----------------------
     //	Various set methods
     //----------------------
 
-    void set (const Vec3<T>& normal, T distance);
+    IMATH_HOSTDEVICE void set (const Vec3<T>& normal, T distance);
 
-    void set (const Vec3<T>& point, const Vec3<T>& normal);
+    IMATH_HOSTDEVICE void set (const Vec3<T>& point, const Vec3<T>& normal);
 
-    void set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3);
+    IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3);
 
     //----------------------
     //	Utilities
     //----------------------
 
-    IMATH_CONSTEXPR14 bool intersect (const Line3<T>& line, Vec3<T>& intersection) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
+    intersect (const Line3<T>& line, Vec3<T>& intersection) const;
 
-    IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& line, T& parameter) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& line, T& parameter) const;
 
-    constexpr T distanceTo (const Vec3<T>&) const;
+    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>&) const;
 
-    constexpr Vec3<T> reflectPoint (const Vec3<T>&) const;
-    constexpr Vec3<T> reflectVector (const Vec3<T>&) const;
+    IMATH_HOSTDEVICE constexpr Vec3<T> reflectPoint (const Vec3<T>&) const;
+    IMATH_HOSTDEVICE constexpr Vec3<T> reflectVector (const Vec3<T>&) const;
 };
 
 //--------------------
@@ -232,7 +235,7 @@ operator* (const Plane3<T>& plane, const Matrix44<T>& M)
 }
 
 template <class T>
-constexpr Plane3<T>
+constexpr inline Plane3<T>
 operator- (const Plane3<T>& plane)
 {
     return Plane3<T> (-plane.normal, -plane.distance);

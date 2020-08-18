@@ -58,8 +58,8 @@ template <class T> class Sphere3
     //	Constructors
     //---------------
 
-    constexpr Sphere3() : center (0, 0, 0), radius (0) {}
-    constexpr Sphere3 (const Vec3<T>& c, T r) : center (c), radius (r) {}
+    IMATH_HOSTDEVICE constexpr Sphere3() : center (0, 0, 0), radius (0) {}
+    IMATH_HOSTDEVICE constexpr Sphere3 (const Vec3<T>& c, T r) : center (c), radius (r) {}
 
     //-------------------------------------------------------------------
     //	Utilities:
@@ -84,9 +84,10 @@ template <class T> class Sphere3
     //
     //-------------------------------------------------------------------
 
-    void circumscribe (const Box<Vec3<T>>& box);
-    IMATH_CONSTEXPR14 bool intersect (const Line3<T>& l, Vec3<T>& intersection) const;
-    IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& l, T& t) const;
+    IMATH_HOSTDEVICE void circumscribe (const Box<Vec3<T>>& box);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
+    intersect (const Line3<T>& l, Vec3<T>& intersection) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& l, T& t) const;
 };
 
 //--------------------
@@ -101,7 +102,7 @@ typedef Sphere3<double> Sphere3d;
 //---------------
 
 template <class T>
-void
+inline void
 Sphere3<T>::circumscribe (const Box<Vec3<T>>& box)
 {
     center = T (0.5) * (box.min + box.max);

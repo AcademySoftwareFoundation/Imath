@@ -58,33 +58,35 @@ template <class T> class Shear6
 
     T xy, xz, yz, yx, zx, zy;
 
-    IMATH_CONSTEXPR14 T& operator[] (int i);
-    constexpr const T& operator[] (int i) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int i);
+    IMATH_HOSTDEVICE constexpr const T& operator[] (int i) const;
 
     //-------------
     // Constructors
     //-------------
 
-    IMATH_CONSTEXPR14 Shear6();                                     // (0 0 0 0 0 0)
-    IMATH_CONSTEXPR14 Shear6 (T XY, T XZ, T YZ);                    // (XY XZ YZ 0 0 0)
-    IMATH_CONSTEXPR14 Shear6 (const Vec3<T>& v);                    // (v.x v.y v.z 0 0 0)
-    template <class S> IMATH_CONSTEXPR14 Shear6 (const Vec3<S>& v); // (v.x v.y v.z 0 0 0)
-    IMATH_CONSTEXPR14 Shear6 (T XY,                                 // (XY XZ YZ YX ZX ZY)
-                              T XZ,
-                              T YZ,
-                              T YX,
-                              T ZX,
-                              T ZY);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Shear6();                  // (0 0 0 0 0 0)
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Shear6 (T XY, T XZ, T YZ); // (XY XZ YZ 0 0 0)
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Shear6 (const Vec3<T>& v); // (v.x v.y v.z 0 0 0)
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Shear6 (const Vec3<S>& v); // (v.x v.y v.z 0 0 0)
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Shear6 (T XY,              // (XY XZ YZ YX ZX ZY)
+                                               T XZ,
+                                               T YZ,
+                                               T YX,
+                                               T ZX,
+                                               T ZY);
 
     //---------------------------------
     // Copy constructors and assignment
     //---------------------------------
 
-    IMATH_CONSTEXPR14 Shear6 (const Shear6& h);
-    template <class S> IMATH_CONSTEXPR14 Shear6 (const Shear6<S>& h);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Shear6 (const Shear6& h);
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Shear6 (const Shear6<S>& h);
 
-    IMATH_CONSTEXPR14 const Shear6& operator                   = (const Shear6& h);
-    template <class S> IMATH_CONSTEXPR14 const Shear6& operator= (const Vec3<S>& v);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator= (const Shear6& h);
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator= (const Vec3<S>& v);
 
     //------------
     // Destructor
@@ -96,24 +98,25 @@ template <class T> class Shear6
     // Compatibility with Sb
     //----------------------
 
-    template <class S> void setValue (S XY, S XZ, S YZ, S YX, S ZX, S ZY);
+    template <class S> IMATH_HOSTDEVICE void setValue (S XY, S XZ, S YZ, S YX, S ZX, S ZY);
 
-    template <class S> void setValue (const Shear6<S>& h);
+    template <class S> IMATH_HOSTDEVICE void setValue (const Shear6<S>& h);
 
-    template <class S> void getValue (S& XY, S& XZ, S& YZ, S& YX, S& ZX, S& ZY) const;
+    template <class S>
+    IMATH_HOSTDEVICE void getValue (S& XY, S& XZ, S& YZ, S& YX, S& ZX, S& ZY) const;
 
-    template <class S> void getValue (Shear6<S>& h) const;
+    template <class S> IMATH_HOSTDEVICE void getValue (Shear6<S>& h) const;
 
-    T* getValue();
-    const T* getValue() const;
+    IMATH_HOSTDEVICE T* getValue();
+    IMATH_HOSTDEVICE const T* getValue() const;
 
     //---------
     // Equality
     //---------
 
-    template <class S> constexpr bool operator== (const Shear6<S>& h) const;
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator== (const Shear6<S>& h) const;
 
-    template <class S> constexpr bool operator!= (const Shear6<S>& h) const;
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator!= (const Shear6<S>& h) const;
 
     //-----------------------------------------------------------------------
     // Compare two shears and test if they are "approximately equal":
@@ -133,62 +136,62 @@ template <class T> class Shear6
     //      abs (this[i] - h[i]) <= e * abs (this[i])
     //-----------------------------------------------------------------------
 
-    IMATH_CONSTEXPR14 bool equalWithAbsError (const Shear6<T>& h, T e) const;
-    IMATH_CONSTEXPR14 bool equalWithRelError (const Shear6<T>& h, T e) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Shear6<T>& h, T e) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Shear6<T>& h, T e) const;
 
     //------------------------
     // Component-wise addition
     //------------------------
 
-    IMATH_CONSTEXPR14 const Shear6& operator+= (const Shear6& h);
-    constexpr Shear6 operator+ (const Shear6& h) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator+= (const Shear6& h);
+    IMATH_HOSTDEVICE constexpr Shear6 operator+ (const Shear6& h) const;
 
     //---------------------------
     // Component-wise subtraction
     //---------------------------
 
-    IMATH_CONSTEXPR14 const Shear6& operator-= (const Shear6& h);
-    constexpr Shear6 operator- (const Shear6& h) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator-= (const Shear6& h);
+    IMATH_HOSTDEVICE constexpr Shear6 operator- (const Shear6& h) const;
 
     //------------------------------------
     // Component-wise multiplication by -1
     //------------------------------------
 
-    constexpr Shear6 operator-() const;
-    IMATH_CONSTEXPR14 const Shear6& negate();
+    IMATH_HOSTDEVICE constexpr Shear6 operator-() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& negate();
 
     //------------------------------
     // Component-wise multiplication
     //------------------------------
 
-    IMATH_CONSTEXPR14 const Shear6& operator*= (const Shear6& h);
-    IMATH_CONSTEXPR14 const Shear6& operator*= (T a);
-    constexpr Shear6 operator* (const Shear6& h) const;
-    constexpr Shear6 operator* (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator*= (const Shear6& h);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator*= (T a);
+    IMATH_HOSTDEVICE constexpr Shear6 operator* (const Shear6& h) const;
+    IMATH_HOSTDEVICE constexpr Shear6 operator* (T a) const;
 
     //------------------------
     // Component-wise division
     //------------------------
 
-    IMATH_CONSTEXPR14 const Shear6& operator/= (const Shear6& h);
-    IMATH_CONSTEXPR14 const Shear6& operator/= (T a);
-    constexpr Shear6 operator/ (const Shear6& h) const;
-    constexpr Shear6 operator/ (T a) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator/= (const Shear6& h);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator/= (T a);
+    IMATH_HOSTDEVICE constexpr Shear6 operator/ (const Shear6& h) const;
+    IMATH_HOSTDEVICE constexpr Shear6 operator/ (T a) const;
 
     //----------------------------------------------------------
     // Number of dimensions, i.e. number of elements in a Shear6
     //----------------------------------------------------------
 
-    constexpr static unsigned int dimensions() { return 6; }
+    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() { return 6; }
 
     //-------------------------------------------------
     // Limitations of type T (see also class limits<T>)
     //-------------------------------------------------
 
-    constexpr static T baseTypeMin() { return limits<T>::min(); }
-    constexpr static T baseTypeMax() { return limits<T>::max(); }
-    constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
-    constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMin() { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
 
     //--------------------------------------------------------------
     // Base type -- in templates, which accept a parameter, V, which
@@ -209,7 +212,8 @@ template <class T> std::ostream& operator<< (std::ostream& s, const Shear6<T>& h
 // Reverse multiplication: scalar * Shear6<T>
 //----------------------------------------------------
 
-template <class S, class T> constexpr Shear6<T> operator* (S a, const Shear6<T>& h);
+template <class S, class T>
+IMATH_HOSTDEVICE constexpr Shear6<T> operator* (S a, const Shear6<T>& h);
 
 //-------------------------
 // Typedefs for convenience
@@ -415,7 +419,7 @@ Shear6<T>::operator!= (const Shear6<S>& h) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Shear6<T>::equalWithAbsError (const Shear6<T>& h, T e) const
 {
     for (int i = 0; i < 6; i++)
@@ -426,7 +430,7 @@ Shear6<T>::equalWithAbsError (const Shear6<T>& h, T e) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_CONSTEXPR14 inline bool
 Shear6<T>::equalWithRelError (const Shear6<T>& h, T e) const
 {
     for (int i = 0; i < 6; i++)

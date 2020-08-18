@@ -63,56 +63,55 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 template <class T> class Frustum
 {
   public:
-    IMATH_CONSTEXPR14 Frustum();
-    IMATH_CONSTEXPR14 Frustum (const Frustum&);
-    IMATH_CONSTEXPR14
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum();
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (const Frustum&);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Frustum (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false);
-    IMATH_CONSTEXPR14
-    Frustum (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
     virtual ~Frustum();
 
     //--------------------
     // Assignment operator
     //--------------------
 
-    IMATH_CONSTEXPR14
-    const Frustum& operator= (const Frustum&);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Frustum& operator= (const Frustum&);
 
     //--------------------
     //  Operators:  ==, !=
     //--------------------
 
-    constexpr bool operator== (const Frustum<T>& src) const;
-    constexpr bool operator!= (const Frustum<T>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Frustum<T>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Frustum<T>& src) const;
 
     //--------------------------------------------------------
     //  Set functions change the entire state of the Frustum
     //--------------------------------------------------------
 
-    void set (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false);
+    IMATH_HOSTDEVICE void
+    set (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false);
 
-    void set (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
+    IMATH_HOSTDEVICE void set (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
 
     //------------------------------------------------------
     //	These functions modify an already valid frustum state
     //------------------------------------------------------
 
-    void modifyNearAndFar (T nearPlane, T farPlane);
-    void setOrthographic (bool);
+    IMATH_HOSTDEVICE void modifyNearAndFar (T nearPlane, T farPlane);
+    IMATH_HOSTDEVICE void setOrthographic (bool);
 
     //--------------
     //  Access
     //--------------
 
-    constexpr bool orthographic() const { return _orthographic; }
-    constexpr T nearPlane() const { return _nearPlane; }
-    constexpr T hither() const { return _nearPlane; }
-    constexpr T farPlane() const { return _farPlane; }
-    constexpr T yon() const { return _farPlane; }
-    constexpr T left() const { return _left; }
-    constexpr T right() const { return _right; }
-    constexpr T bottom() const { return _bottom; }
-    constexpr T top() const { return _top; }
+    IMATH_HOSTDEVICE constexpr bool orthographic() const { return _orthographic; }
+    IMATH_HOSTDEVICE constexpr T nearPlane() const { return _nearPlane; }
+    IMATH_HOSTDEVICE constexpr T hither() const { return _nearPlane; }
+    IMATH_HOSTDEVICE constexpr T farPlane() const { return _farPlane; }
+    IMATH_HOSTDEVICE constexpr T yon() const { return _farPlane; }
+    IMATH_HOSTDEVICE constexpr T left() const { return _left; }
+    IMATH_HOSTDEVICE constexpr T right() const { return _right; }
+    IMATH_HOSTDEVICE constexpr T bottom() const { return _bottom; }
+    IMATH_HOSTDEVICE constexpr T top() const { return _top; }
 
     //-----------------------------------------------------------------------
     //  Sets the planes in p to be the six bounding planes of the frustum, in
@@ -122,19 +121,20 @@ template <class T> class Frustum
     //  to transform the frustum before setting the planes.
     //-----------------------------------------------------------------------
 
-    void planes (Plane3<T> p[6]) const;
-    void planes (Plane3<T> p[6], const Matrix44<T>& M) const;
+    IMATH_HOSTDEVICE void planes (Plane3<T> p[6]) const;
+    IMATH_HOSTDEVICE void planes (Plane3<T> p[6], const Matrix44<T>& M) const;
 
     //----------------------
     //  Derived Quantities
     //----------------------
 
-    constexpr T fovx() const;
-    constexpr T fovy() const;
+    IMATH_HOSTDEVICE constexpr T fovx() const;
+    IMATH_HOSTDEVICE constexpr T fovy() const;
     IMATH_CONSTEXPR14 T aspect() const;
-    IMATH_CONSTEXPR14
-    Matrix44<T> projectionMatrix() const;
-    constexpr bool degenerate() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T aspect_noexcept() const noexcept;
+    IMATH_CONSTEXPR14 Matrix44<T> projectionMatrix() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44<T> projectionMatrix_noexcept() const noexcept;
+    IMATH_HOSTDEVICE constexpr bool degenerate() const;
 
     //-----------------------------------------------------------------------
     //  Takes a rectangle in the screen space (i.e., -1 <= left <= right <= 1
@@ -143,30 +143,26 @@ template <class T> class Frustum
     //  space.
     //-----------------------------------------------------------------------
 
-    IMATH_CONSTEXPR14
-    Frustum<T> window (T left, T right, T top, T bottom) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 IMATH_HOSTDEVICE Frustum<T>
+    window (T left, T right, T top, T bottom) const;
 
     //----------------------------------------------------------
     // Projection is in screen space / Conversion from Z-Buffer
     //----------------------------------------------------------
 
-    IMATH_CONSTEXPR14
-    Line3<T> projectScreenToRay (const Vec2<T>&) const;
-    IMATH_CONSTEXPR14
-    Vec2<T> projectPointToScreen (const Vec3<T>&) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3<T> projectScreenToRay (const Vec2<T>&) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> projectPointToScreen (const Vec3<T>&) const;
 
-    IMATH_CONSTEXPR14 T ZToDepth (long zval, long min, long max) const;
-    IMATH_CONSTEXPR14 T normalizedZToDepth (T zval) const;
-    IMATH_CONSTEXPR14
-    long DepthToZ (T depth, long zmin, long zmax) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T ZToDepth (long zval, long min, long max) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T normalizedZToDepth (T zval) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 long DepthToZ (T depth, long zmin, long zmax) const;
 
-    IMATH_CONSTEXPR14 T worldRadius (const Vec3<T>& p, T radius) const;
-    IMATH_CONSTEXPR14 T screenRadius (const Vec3<T>& p, T radius) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T worldRadius (const Vec3<T>& p, T radius) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T screenRadius (const Vec3<T>& p, T radius) const;
 
   protected:
-    constexpr Vec2<T> screenToLocal (const Vec2<T>&) const;
-    IMATH_CONSTEXPR14
-    Vec2<T> localToScreen (const Vec2<T>&) const;
+    IMATH_HOSTDEVICE constexpr Vec2<T> screenToLocal (const Vec2<T>&) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> localToScreen (const Vec2<T>&) const;
 
   protected:
     T _nearPlane;
@@ -204,7 +200,7 @@ template <class T> Frustum<T>::~Frustum()
 {}
 
 template <class T>
-IMATH_CONSTEXPR14 const Frustum<T>&
+IMATH_CONSTEXPR14 inline const Frustum<T>&
 Frustum<T>::operator= (const Frustum& f)
 {
     _nearPlane    = f._nearPlane;
@@ -219,7 +215,7 @@ Frustum<T>::operator= (const Frustum& f)
 }
 
 template <class T>
-constexpr bool
+constexpr inline bool
 Frustum<T>::operator== (const Frustum<T>& src) const
 {
     return _nearPlane == src._nearPlane && _farPlane == src._farPlane && _left == src._left &&
@@ -235,7 +231,7 @@ Frustum<T>::operator!= (const Frustum<T>& src) const
 }
 
 template <class T>
-void
+inline void
 Frustum<T>::set (T n, T f, T l, T r, T t, T b, bool o)
 {
     _nearPlane    = n;
@@ -248,7 +244,7 @@ Frustum<T>::set (T n, T f, T l, T r, T t, T b, bool o)
 }
 
 template <class T>
-void
+inline void
 Frustum<T>::modifyNearAndFar (T n, T f)
 {
     if (_orthographic)
@@ -278,14 +274,14 @@ Frustum<T>::modifyNearAndFar (T n, T f)
 }
 
 template <class T>
-void
+inline void
 Frustum<T>::setOrthographic (bool ortho)
 {
     _orthographic = ortho;
 }
 
 template <class T>
-void
+inline void
 Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 {
     if (fovx != 0 && fovy != 0)
@@ -313,21 +309,21 @@ Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 }
 
 template <class T>
-constexpr T
+constexpr inline T
 Frustum<T>::fovx() const
 {
     return Math<T>::atan2 (_right, _nearPlane) - Math<T>::atan2 (_left, _nearPlane);
 }
 
 template <class T>
-constexpr T
+constexpr inline T
 Frustum<T>::fovy() const
 {
     return Math<T>::atan2 (_top, _nearPlane) - Math<T>::atan2 (_bottom, _nearPlane);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 T
+IMATH_CONSTEXPR14 inline T
 Frustum<T>::aspect() const
 {
     T rightMinusLeft = _right - _left;
@@ -343,7 +339,16 @@ Frustum<T>::aspect() const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Matrix44<T>
+IMATH_CONSTEXPR14 inline T
+Frustum<T>::aspect_noexcept() const noexcept
+{
+    T rightMinusLeft = _right - _left;
+    T topMinusBottom = _top - _bottom;
+    return rightMinusLeft / topMinusBottom;
+}
+
+template <class T>
+IMATH_CONSTEXPR14 inline Matrix44<T>
 Frustum<T>::projectionMatrix() const
 {
     T rightPlusLeft  = _right + _left;
@@ -419,14 +424,58 @@ Frustum<T>::projectionMatrix() const
 }
 
 template <class T>
-constexpr bool
+IMATH_CONSTEXPR14 inline Matrix44<T>
+Frustum<T>::projectionMatrix_noexcept() const noexcept
+{
+    T rightPlusLeft  = _right + _left;
+    T rightMinusLeft = _right - _left;
+
+    T topPlusBottom  = _top + _bottom;
+    T topMinusBottom = _top - _bottom;
+
+    T farPlusNear  = _farPlane + _nearPlane;
+    T farMinusNear = _farPlane - _nearPlane;
+
+    if (_orthographic)
+    {
+        T tx = -rightPlusLeft / rightMinusLeft;
+        T ty = -topPlusBottom / topMinusBottom;
+        T tz = -farPlusNear / farMinusNear;
+
+        T A = 2 / rightMinusLeft;
+        T B = 2 / topMinusBottom;
+        T C = -2 / farMinusNear;
+
+        return Matrix44<T> (A, 0, 0, 0, 0, B, 0, 0, 0, 0, C, 0, tx, ty, tz, 1.f);
+    }
+    else
+    {
+        T A = rightPlusLeft / rightMinusLeft;
+        T B = topPlusBottom / topMinusBottom;
+        T C = -farPlusNear / farMinusNear;
+
+        T farTimesNear = -2 * _farPlane * _nearPlane;
+
+        T D = farTimesNear / farMinusNear;
+
+        T twoTimesNear = 2 * _nearPlane;
+
+        T E = twoTimesNear / rightMinusLeft;
+        T F = twoTimesNear / topMinusBottom;
+
+        return Matrix44<T> (E, 0, 0, 0, 0, F, 0, 0, A, B, C, -1, 0, 0, D, 0);
+    }
+}
+
+template <class T>
+constexpr inline bool
 Frustum<T>::degenerate() const
 {
     return (_nearPlane == _farPlane) || (_left == _right) || (_top == _bottom);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Frustum<T>
+IMATH_CONSTEXPR14 inline Frustum<T>
 Frustum<T>::window (T l, T r, T t, T b) const
 {
     // move it to 0->1 space
@@ -438,7 +487,7 @@ Frustum<T>::window (T l, T r, T t, T b) const
 }
 
 template <class T>
-constexpr Vec2<T>
+constexpr inline Vec2<T>
 Frustum<T>::screenToLocal (const Vec2<T>& s) const
 {
     return Vec2<T> (_left + (_right - _left) * (1.f + s.x) / 2.f,
@@ -446,7 +495,7 @@ Frustum<T>::screenToLocal (const Vec2<T>& s) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec2<T>
+IMATH_CONSTEXPR14 inline Vec2<T>
 Frustum<T>::localToScreen (const Vec2<T>& p) const
 {
     T leftPlusRight  = _left - T (2) * p.x + _right;
@@ -467,7 +516,7 @@ Frustum<T>::localToScreen (const Vec2<T>& p) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Line3<T>
+IMATH_CONSTEXPR14 inline Line3<T>
 Frustum<T>::projectScreenToRay (const Vec2<T>& p) const
 {
     Vec2<T> point = screenToLocal (p);

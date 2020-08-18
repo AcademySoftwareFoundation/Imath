@@ -65,39 +65,39 @@ template <class T> class Interval
     //	Constructors - an "empty" Interval is created by default
     //-----------------------------------------------------
 
-    Interval();
-    constexpr Interval (const T& point);
-    constexpr Interval (const T& minT, const T& maxT);
+    IMATH_HOSTDEVICE Interval();
+    IMATH_HOSTDEVICE constexpr Interval (const T& point);
+    IMATH_HOSTDEVICE constexpr Interval (const T& minT, const T& maxT);
 
     //--------------------------------
     //  Operators:  we get != from STL
     //--------------------------------
 
-    constexpr bool operator== (const Interval<T>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Interval<T>& src) const;
 
     //------------------
     //	Interval manipulation
     //------------------
 
-    void makeEmpty();
-    void extendBy (const T& point);
-    void extendBy (const Interval<T>& interval);
+    IMATH_HOSTDEVICE void makeEmpty();
+    IMATH_HOSTDEVICE void extendBy (const T& point);
+    IMATH_HOSTDEVICE void extendBy (const Interval<T>& interval);
 
     //---------------------------------------------------
     //	Query functions - these compute results each time
     //---------------------------------------------------
 
-    constexpr T size() const;
-    constexpr T center() const;
-    constexpr bool intersects (const T& point) const;
-    constexpr bool intersects (const Interval<T>& interval) const;
+    IMATH_HOSTDEVICE constexpr T size() const;
+    IMATH_HOSTDEVICE constexpr T center() const;
+    IMATH_HOSTDEVICE constexpr bool intersects (const T& point) const;
+    IMATH_HOSTDEVICE constexpr bool intersects (const Interval<T>& interval) const;
 
     //----------------
     //	Classification
     //----------------
 
-    constexpr bool hasVolume() const;
-    constexpr bool isEmpty() const;
+    IMATH_HOSTDEVICE constexpr bool hasVolume() const;
+    IMATH_HOSTDEVICE constexpr bool isEmpty() const;
 };
 
 //--------------------
