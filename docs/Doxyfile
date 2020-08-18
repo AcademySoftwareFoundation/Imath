@@ -1,4 +1,4 @@
-PROJECT_NAME     = "ReadTheDocs-Breathe Barebones"
+PROJECT_NAME     = "Imath"
 XML_OUTPUT       = doxyxml
 GENERATE_LATEX   = NO
 GENERATE_MAN     = NO
