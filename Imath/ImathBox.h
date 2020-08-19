@@ -70,10 +70,10 @@ template <class T> class Box
     //  Data Members are public
     //-------------------------
 
-    /// The minimum value of the box
+    /// The minimum value of the box.
     T min;
 
-    /// The maximum value of the box
+    /// The maximum value of the box.
     T max;
 
     //-----------------------------------------------------
@@ -93,10 +93,10 @@ template <class T> class Box
     //  Operators:  ==, !=
     //--------------------
 
-    /// Compare two Box objects for equality
+    /// Compare two Box objects for equality.
     IMATH_HOSTDEVICE constexpr bool operator== (const Box<T>& src) const;
 
-    /// Compare two Box objects for inequality
+    /// Compare two Box objects for inequality.
     IMATH_HOSTDEVICE constexpr bool operator!= (const Box<T>& src) const;
 
     //------------------
@@ -114,7 +114,7 @@ template <class T> class Box
     /// Extend the Box to include the given box.
     IMATH_HOSTDEVICE void extendBy (const Box<T>& box);
 
-    /// Make the box include the entire range of T
+    /// Make the box include the entire range of T.
     IMATH_HOSTDEVICE void makeInfinite();
 
     //---------------------------------------------------
@@ -353,7 +353,7 @@ Box<T>::majorAxis() const
 template <typename T> class Box;
 
 ///
-/// The Box<Vec2<T>> template represents a 2-dimenional bounding box defined by
+/// The Box<Vec2<T>> template represents a 2D bounding box defined by
 /// minimum and maximum values of type Vec2<T>. The min and max members are
 /// public.
 ///
@@ -365,10 +365,10 @@ template <class T> class Box<Vec2<T>>
     //  Data Members are public
     //-------------------------
 
-    /// The minimum value of the box
+    /// The minimum value of the box.
     Vec2<T> min;
 
-    /// The maximum value of the box
+    /// The maximum value of the box.
     Vec2<T> max;
 
     //-----------------------------------------------------
@@ -388,10 +388,10 @@ template <class T> class Box<Vec2<T>>
     //  Operators:  ==, !=
     //--------------------
 
-    /// Compare two Box objects for equality
+    /// Compare two Box objects for equality.
     IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec2<T>>& src) const;
 
-    /// Compare two Box objects for inequality
+    /// Compare two Box objects for inequality.
     IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec2<T>>& src) const;
 
     //------------------
@@ -409,7 +409,7 @@ template <class T> class Box<Vec2<T>>
     /// Extend the Box to include the given box.
     IMATH_HOSTDEVICE void extendBy (const Box<Vec2<T>>& box);
 
-    /// Make the box include the entire range of T
+    /// Make the box include the entire range of T.
     IMATH_HOSTDEVICE void makeInfinite();
 
     //---------------------------------------------------
@@ -420,8 +420,8 @@ template <class T> class Box<Vec2<T>>
     /// box has a size of 0.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> size() const;
 
-    /// Return the center of the box. The center is defined as (max+min)/2. The
-    /// center of an empty
+    /// Return the center of the box. The center is defined as
+    /// (max+min)/2. The center of an empty.
     IMATH_HOSTDEVICE constexpr Vec2<T> center() const;
 
     /// Return true if the given point is inside the box, false otherwise.
@@ -617,7 +617,7 @@ Box<Vec2<T>>::majorAxis() const
 }
 
 ///
-/// The Box<Vec3<T>> template represents a 3-dimenional bounding box defined by
+/// The Box<Vec3<T>> template represents a 3D bounding box defined by
 /// minimum and maximum values of type Vec3<T>. The min and max members are
 /// public.
 ///
@@ -630,10 +630,10 @@ template <class T> class Box<Vec3<T>>
     //  Data Members are public
     //-------------------------
 
-    /// The minimum value of the box
+    /// The minimum value of the box.
     Vec3<T> min;
 
-    /// The maximum value of the box
+    /// The maximum value of the box.
     Vec3<T> max;
 
     //-----------------------------------------------------
@@ -653,10 +653,10 @@ template <class T> class Box<Vec3<T>>
     //  Operators:  ==, !=
     //--------------------
 
-    /// Compare two Box objects for equality
+    /// Compare two Box objects for equality.
     IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec3<T>>& src) const;
 
-    /// Compare two Box objects for inequality
+    /// Compare two Box objects for inequality.
     IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec3<T>>& src) const;
 
     //------------------
@@ -665,6 +665,7 @@ template <class T> class Box<Vec3<T>>
 
     /// Set the Box to be empty. A Box is empty if the mimimum is greater
     /// than the maximum. makeEmpty() sets mimimum to T::baseTypeMax() and
+    /// maximum to T::baseTypeMin().
     IMATH_HOSTDEVICE void makeEmpty();
 
     /// Extend the Box to include the given point.
@@ -673,7 +674,7 @@ template <class T> class Box<Vec3<T>>
     /// Extend the Box to include the given box.
     IMATH_HOSTDEVICE void extendBy (const Box<Vec3<T>>& box);
 
-    /// Make the box include the entire range of T
+    /// Make the box include the entire range of T.
     IMATH_HOSTDEVICE void makeInfinite();
 
     //---------------------------------------------------
