@@ -9,18 +9,18 @@ maximum values along each axis, which are represented by ``Vec2<T>`` for
 
 Example:
 
-::
-   Imath::V3f   a (0, 0, 0);
-   Imath::V3f   b (1, 1, 1);
-   Imath::V3f   c (2, 2, 2);
+.. code-block:
+   
+        Imath::V3f   a (0, 0, 0);
+        Imath::V3f   b (1, 1, 1);
+        Imath::V3f   c (2, 2, 2);
 
-   Imath::Box3f bbox (a);
+        Imath::Box3f bbox (a);
+    
+        bbox.extendBy (b);
 
-   bbox.extendBy (b);
-
-   if (box.intersects (c))
-       std::cout << "yes.\n";
-
+        if (box.intersects (c))
+            std::cout << "yes.\n";
        
 .. doxygentypedef:: Box2s
 
