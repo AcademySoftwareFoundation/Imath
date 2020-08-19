@@ -5,16 +5,16 @@ Vectors
 
 .. doxygentypedef:: V2f
 
-.. doxygenclass:: Vec2
+.. doxygenclass:: Imath::Vec2
    :members:
 
 .. doxygentypedef:: V3f
 
-.. doxygenclass:: Vec3
+.. doxygenclass:: Imath::Vec3
    :members:
 
 .. doxygentypedef:: V4f
 
-.. doxygenclass:: Vec4
+.. doxygenclass:: Imath::Vec4
    :members:
    

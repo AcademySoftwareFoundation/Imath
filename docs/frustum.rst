@@ -3,7 +3,7 @@ Frustum
 
 A viewing frustum of type float or double.
 
-.. doxygenclass:: Frustum
+.. doxygenclass:: Imath::Frustum
 
 .. doxygentypedef:: Frustumf
                     

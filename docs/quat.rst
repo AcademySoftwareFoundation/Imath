@@ -5,5 +5,5 @@ Quaterion
 
 .. doxygentypedef:: Quatf
 
-.. doxygenclass:: Quat
+.. doxygenclass:: Imath::Quat
    :members:
