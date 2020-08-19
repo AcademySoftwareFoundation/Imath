@@ -1,11 +1,27 @@
 Bounding Box
 ############
 
-2d and 3d bounding boxes of type short, int, float, and double.
+2D and 3D bounding boxes of type ``short``, ``int``, ``float``, and ``double``.
+
+The ``Box`` class is axis-aligned and defined in terms of minimum and
+maximum values along each axis, which are represented by ``Vec2<T>`` for
+``Box3`` and by ``Vec3<T>`` for ``Box3``.
+
+.. doxygentypedef:: Box2s
+
+.. doxygentypedef:: Box2i
 
 .. doxygentypedef:: Box2f
 
+.. doxygentypedef:: Box2d
+
+.. doxygentypedef:: Box3s
+
+.. doxygentypedef:: Box3i
+
 .. doxygentypedef:: Box3f
+
+.. doxygentypedef:: Box3d
 
 .. doxygenclass:: Box
    :members:
