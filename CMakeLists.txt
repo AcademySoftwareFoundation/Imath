@@ -41,8 +41,8 @@ include(config/LibraryDefine.cmake)
 #######################################
 
 # Include these modules without enable/disable options
-add_subdirectory(Half)
-add_subdirectory(Imath)
+add_subdirectory(src/Half)
+add_subdirectory(src/Imath)
 # Tell CMake where to find the ImathConfig.cmake file. Makes it posible to call 
 # find_package(Imath) in downstream projects
 set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
@@ -53,7 +53,7 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file
 
 option(PYTHON "Set ON to compile PyImath bindings")
 if (PYTHON)
-  add_subdirectory(python)
+  add_subdirectory(src/python)
 endif()
 
 # If you want to use ctest to configure, build and
@@ -83,8 +83,8 @@ include(CTest)
 if(BUILD_TESTING)
   enable_testing()
 
-  add_subdirectory(HalfTest)
-  add_subdirectory(ImathTest)
+  add_subdirectory(src/HalfTest)
+  add_subdirectory(src/ImathTest)
 endif()
 
 # Including this module will add a `clang-format` target to the build if
