@@ -91,6 +91,7 @@ template <class T> class Frustum
     set (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false);
 
     IMATH_HOSTDEVICE void set (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
+    IMATH_HOSTDEVICE void set_noexcept (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
 
     //------------------------------------------------------
     //	These functions modify an already valid frustum state
@@ -151,18 +152,32 @@ template <class T> class Frustum
     //----------------------------------------------------------
 
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3<T> projectScreenToRay (const Vec2<T>&) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> projectPointToScreen (const Vec3<T>&) const;
+    IMATH_CONSTEXPR14 Vec2<T> projectPointToScreen (const Vec3<T>&) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T>
+    projectPointToScreen_noexcept (const Vec3<T>&) const noexcept;
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T ZToDepth (long zval, long min, long max) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T normalizedZToDepth (T zval) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 long DepthToZ (T depth, long zmin, long zmax) const;
+    IMATH_CONSTEXPR14 T ZToDepth (long zval, long min, long max) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T ZToDepth_noexcept (long zval,
+                                                            long min,
+                                                            long max) const noexcept;
+    IMATH_CONSTEXPR14 T normalizedZToDepth (T zval) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T normalizedZToDepth_noexcept (T zval) const noexcept;
+    IMATH_CONSTEXPR14 long DepthToZ (T depth, long zmin, long zmax) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 long
+    DepthToZ_noexcept (T depth, long zmin, long zmax) const noexcept;
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T worldRadius (const Vec3<T>& p, T radius) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T screenRadius (const Vec3<T>& p, T radius) const;
+    IMATH_CONSTEXPR14 T worldRadius (const Vec3<T>& p, T radius) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T worldRadius_noexcept (const Vec3<T>& p,
+                                                               T radius) const noexcept;
+    IMATH_CONSTEXPR14 T screenRadius (const Vec3<T>& p, T radius) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T screenRadius_noexcept (const Vec3<T>& p,
+                                                                T radius) const noexcept;
 
   protected:
     IMATH_HOSTDEVICE constexpr Vec2<T> screenToLocal (const Vec2<T>&) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> localToScreen (const Vec2<T>&) const;
+    IMATH_CONSTEXPR14 Vec2<T> localToScreen (const Vec2<T>&) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T>
+    localToScreen_noexcept (const Vec2<T>&) const noexcept;
 
   protected:
     T _nearPlane;
@@ -287,6 +302,31 @@ Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
     if (fovx != 0 && fovy != 0)
         throw std::domain_error ("fovx and fovy cannot both be non-zero.");
 
+    const T two = static_cast<T> (2);
+
+    if (fovx != 0)
+    {
+        _right  = nearPlane * Math<T>::tan (fovx / two);
+        _left   = -_right;
+        _top    = ((_right - _left) / aspect) / two;
+        _bottom = -_top;
+    }
+    else
+    {
+        _top    = nearPlane * Math<T>::tan (fovy / two);
+        _bottom = -_top;
+        _right  = (_top - _bottom) * aspect / two;
+        _left   = -_right;
+    }
+    _nearPlane    = nearPlane;
+    _farPlane     = farPlane;
+    _orthographic = false;
+}
+
+template <class T>
+inline void
+Frustum<T>::set_noexcept (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept
+{
     const T two = static_cast<T> (2);
 
     if (fovx != 0)
@@ -516,6 +556,18 @@ Frustum<T>::localToScreen (const Vec2<T>& p) const
 }
 
 template <class T>
+IMATH_CONSTEXPR14 inline Vec2<T>
+Frustum<T>::localToScreen_noexcept (const Vec2<T>& p) const noexcept
+{
+    T leftPlusRight  = _left - T (2) * p.x + _right;
+    T leftMinusRight = _left - _right;
+    T bottomPlusTop  = _bottom - T (2) * p.y + _top;
+    T bottomMinusTop = _bottom - _top;
+
+    return Vec2<T> (leftPlusRight / leftMinusRight, bottomPlusTop / bottomMinusTop);
+}
+
+template <class T>
 IMATH_CONSTEXPR14 inline Line3<T>
 Frustum<T>::projectScreenToRay (const Vec2<T>& p) const
 {
@@ -534,6 +586,17 @@ Frustum<T>::projectPointToScreen (const Vec3<T>& point) const
         return localToScreen (Vec2<T> (point.x, point.y));
     else
         return localToScreen (
+            Vec2<T> (point.x * _nearPlane / -point.z, point.y * _nearPlane / -point.z));
+}
+
+template <class T>
+IMATH_CONSTEXPR14 Vec2<T>
+Frustum<T>::projectPointToScreen_noexcept (const Vec3<T>& point) const noexcept
+{
+    if (orthographic() || point.z == T (0))
+        return localToScreen_noexcept (Vec2<T> (point.x, point.y));
+    else
+        return localToScreen_noexcept (
             Vec2<T> (point.x * _nearPlane / -point.z, point.y * _nearPlane / -point.z));
 }
 
@@ -557,6 +620,19 @@ Frustum<T>::ZToDepth (long zval, long zmin, long zmax) const
 
 template <class T>
 IMATH_CONSTEXPR14 T
+Frustum<T>::ZToDepth_noexcept (long zval, long zmin, long zmax) const noexcept
+{
+    int zdiff = zmax - zmin;
+
+    if (zval > zmax + 1)
+        zval -= zdiff;
+
+    T fzval = (T (zval) - T (zmin)) / T (zdiff);
+    return normalizedZToDepth_noexcept (fzval);
+}
+
+template <class T>
+IMATH_CONSTEXPR14 T
 Frustum<T>::normalizedZToDepth (T zval) const
 {
     T Zp = zval * 2.0 - 1;
@@ -576,6 +652,25 @@ Frustum<T>::normalizedZToDepth (T zval) const
                                      "near and far clipping planes of the viewing frustum "
                                      "may be too close to each other");
         }
+
+        return farTimesNear / farMinusNear;
+    }
+}
+
+template <class T>
+IMATH_CONSTEXPR14 T
+Frustum<T>::normalizedZToDepth_noexcept (T zval) const noexcept
+{
+    T Zp = zval * 2.0 - 1;
+
+    if (_orthographic)
+    {
+        return -(Zp * (_farPlane - _nearPlane) + (_farPlane + _nearPlane)) / 2;
+    }
+    else
+    {
+        T farTimesNear = 2 * _farPlane * _nearPlane;
+        T farMinusNear = Zp * (_farPlane - _nearPlane) - _farPlane - _nearPlane;
 
         return farTimesNear / farMinusNear;
     }
@@ -627,6 +722,33 @@ Frustum<T>::DepthToZ (T depth, long zmin, long zmax) const
 }
 
 template <class T>
+IMATH_CONSTEXPR14 long
+Frustum<T>::DepthToZ_noexcept (T depth, long zmin, long zmax) const noexcept
+{
+    long zdiff     = zmax - zmin;
+    T farMinusNear = _farPlane - _nearPlane;
+
+    if (_orthographic)
+    {
+        T farPlusNear = 2 * depth + _farPlane + _nearPlane;
+
+        T Zp = -farPlusNear / farMinusNear;
+        return long (0.5 * (Zp + 1) * zdiff) + zmin;
+    }
+    else
+    {
+        // Perspective
+
+        T farTimesNear = 2 * _farPlane * _nearPlane;
+
+        T farPlusNear = farTimesNear / depth + _farPlane + _nearPlane;
+
+        T Zp = farPlusNear / farMinusNear;
+        return long (0.5 * (Zp + 1) * zdiff) + zmin;
+    }
+}
+
+template <class T>
 IMATH_CONSTEXPR14 T
 Frustum<T>::screenRadius (const Vec3<T>& p, T radius) const
 {
@@ -655,6 +777,23 @@ Frustum<T>::screenRadius (const Vec3<T>& p, T radius) const
 
 template <class T>
 IMATH_CONSTEXPR14 T
+Frustum<T>::screenRadius_noexcept (const Vec3<T>& p, T radius) const noexcept
+{
+    // Derivation:
+    // Consider X-Z plane.
+    // X coord of projection of p = xp = p.x * (-_nearPlane / p.z)
+    // Let q be p + (radius, 0, 0).
+    // X coord of projection of q = xq = (p.x - radius)  * (-_nearPlane / p.z)
+    // X coord of projection of segment from p to q = r = xp - xq
+    //         = radius * (-_nearPlane / p.z)
+    // A similar analysis holds in the Y-Z plane.
+    // So r is the quantity we want to return.
+
+    return radius * (-_nearPlane / p.z);
+}
+
+template <class T>
+IMATH_CONSTEXPR14 T
 Frustum<T>::worldRadius (const Vec3<T>& p, T radius) const
 {
     if (abs (-_nearPlane) > 1 || abs (p.z) < limits<T>::max() * abs (-_nearPlane))
@@ -666,6 +805,13 @@ Frustum<T>::worldRadius (const Vec3<T>& p, T radius) const
         throw std::domain_error ("Bad viewing frustum: "
                                  "near clipping plane is too close to zero");
     }
+}
+
+template <class T>
+IMATH_CONSTEXPR14 T
+Frustum<T>::worldRadius_noexcept (const Vec3<T>& p, T radius) const noexcept
+{
+    return radius * (p.z / -_nearPlane);
 }
 
 template <class T>

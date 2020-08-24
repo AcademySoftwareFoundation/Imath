@@ -39,6 +39,7 @@
 #include "ImathEuler.h"
 #include "ImathFrustum.h"
 #include "ImathFun.h"
+#include "ImathVec.h"
 #include <assert.h>
 #include <iostream>
 #include <testFrustum.h>
@@ -199,7 +200,8 @@ testFrustum()
             1e-6);
     cout << "1";
     assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspect() - ((r - l) / (t - b))) < 1e-6);
-    assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspect_noexcept() - ((r - l) / (t - b))) < 1e-6);
+    assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspect_noexcept() - ((r - l) / (t - b))) <
+            1e-6);
     cout << "2";
 
     IMATH_INTERNAL_NAMESPACE::M44f m = frustum.projectionMatrix();
@@ -338,6 +340,26 @@ testFrustum()
     f1 = f2;
     assert (f1 == f2);
     cout << "\npassed equality test";
+
+    long zMax  = 100;
+    long zMin  = 1;
+    float zero = 0;
+    float one  = 1;
+    IMATH_INTERNAL_NAMESPACE::Vec3<float> v3 (zero, zero, one);
+
+    f1.set_noexcept (n, f, one, zero, one);
+    f2.set (n, f, one, zero, one);
+
+    assert (f1 == f2);
+
+    assert (f1.ZToDepth_noexcept (zMin, zMin, zMax) == f1.ZToDepth (zMin, zMin, zMax));
+    assert (f1.normalizedZToDepth_noexcept (zMin) == f1.normalizedZToDepth (zMin));
+    assert (f1.DepthToZ_noexcept (n, zMin, zMax) == f1.DepthToZ (n, zMin, zMax));
+    assert (f1.worldRadius_noexcept (v3, one) == f1.worldRadius (v3, one));
+    assert (f1.screenRadius_noexcept (v3, one) == f1.screenRadius (v3, one));
+    assert (f1.projectPointToScreen_noexcept (v3) == f1.projectPointToScreen (v3));
+
+    cout << "\npassed noexcept equality verification";
 
     cout << "\nok\n\n";
 }
