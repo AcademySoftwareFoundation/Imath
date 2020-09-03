@@ -1,5 +1,5 @@
-# SPDX-License-Identifier: BSD-3-Clause
-# Copyright Contributors to the OpenEXR Project.
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 
 #include <iostream>
 
@@ -24,6 +24,8 @@ void half_example();
 int
 main (int argc, char* argv[])
 {
+    std::cout << "imath examples..." << std::endl;
+
     color3_example();
     color4_example();
     euler_example();

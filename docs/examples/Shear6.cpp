@@ -1,5 +1,5 @@
-#include <ImathShear.h>
-#include <ImathMatrix.h>
+#include <Imath/ImathShear.h>
+#include <Imath/ImathMatrix.h>
 
 void
 shear6_example()

@@ -1,4 +1,4 @@
-#include <ImathVec.h>
+#include <Imath/ImathVec.h>
 
 void
 vec3_example()
@@ -11,4 +11,9 @@ vec3_example()
     b.z = a[2];
 
     assert (a == b);
+
+    assert (a.length() == sqrt (a ^ a));
+
+    a.normalize();
+    assert (Imath::equalWithAbsError (a.length(), 1.0f, 1e-6f));
 }

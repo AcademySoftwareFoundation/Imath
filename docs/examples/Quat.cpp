@@ -1,4 +1,4 @@
-#include <ImathQuat.h>
+#include <Imath/ImathQuat.h>
 
 void
 quat_example()

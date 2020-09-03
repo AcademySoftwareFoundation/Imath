@@ -1,4 +1,4 @@
-#include <ImathSphere.h>
+#include <Imath/ImathSphere.h>
 
 void
 sphere3_example()
@@ -7,9 +7,14 @@ sphere3_example()
     float radius = 2.0f;
     Imath::Sphere3f s (center, radius);
 
-    Imath::Line3f l (Imath::V3f (0.0f, 0.0f, 0.0f),
-                     Imath::V3f (1.0f, 1.0f, 1.0f));
+    assert (s.center == center);
+    assert (s.radius == radius);
+    
+    Imath::Line3f line (Imath::V3f (0.0f, 0.0f, 0.0f),
+                        Imath::V3f (1.0f, 1.0f, 1.0f));
 
     Imath::V3f v;
-    bool ans = s.intersect (l, v);
+    assert (s.intersect (line, v));
+
+    assert (v.equalWithAbsError (Imath::V3f(2.1547f, 2.1547f, 2.1547f), 1e-6f));    
 }

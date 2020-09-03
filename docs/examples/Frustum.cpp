@@ -1,4 +1,4 @@
-#include <ImathFrustum.h>
+#include <Imath/ImathFrustum.h>
 
 void
 frustum_example()
@@ -16,4 +16,6 @@ frustum_example()
 
     Imath::V3f p (1.0f, 1.0f, 1.0f);
     Imath::V2f s = frustum.projectPointToScreen (p);
+
+    assert (s.equalWithAbsError (Imath::V2f (-0.345455f, -1.36364f), 0.0001f));
 }

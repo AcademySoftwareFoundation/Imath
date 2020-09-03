@@ -7,5 +7,9 @@ color3_example()
     Imath::C3c   g (0, 255, 0);
     Imath::C3c   b (0, 0, 255);
     
-    Imath::C3c   w = (r + g + b) / 3;
+    Imath::C3c   c = r + g + b;
+
+    assert (c.x == 255);
+    assert (c.x == 255);
+    assert (c.x == 255);
 }

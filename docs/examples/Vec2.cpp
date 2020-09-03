@@ -1,4 +1,4 @@
-#include <ImathVec.h>
+#include <Imath/ImathVec.h>
 
 void
 vec2_example()
@@ -10,4 +10,9 @@ vec2_example()
     b.y = a[1];
 
     assert (a == b);
+
+    assert (a.length() == sqrt (a ^ a));
+
+    a.normalize();
+    assert (Imath::equalWithAbsError (a.length(), 1.0f, 1e-6f));
 }
