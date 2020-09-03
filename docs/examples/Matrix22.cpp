@@ -1,14 +1,12 @@
-#include <OpenEXR/ImathMatrix.h>
+#include <ImathMatrix.h>
 
-int
-main()
+void
+matrix22_example()
 {
     Imath::M22f M; // uninitialized
 
     M.makeIdentity();
     assert (M[0][0] == 1.0f);
 
-    Imath::M33f Minv = M.inverse();
-  
-    return 0;
+    Imath::M22f Minv = M.inverse();
 }

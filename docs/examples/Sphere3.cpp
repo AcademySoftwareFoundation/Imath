@@ -1,7 +1,7 @@
-#include <OpenEXR/ImathSphere.h>
+#include <ImathSphere.h>
 
-int
-main()
+void
+sphere3_example()
 {
     Imath::V3f center (1.0f, 1.0f, 1.0f); 
     float radius = 2.0f;
@@ -12,6 +12,4 @@ main()
 
     Imath::V3f v;
     bool ans = s.intersect (l, v);
-
-    return 0;
 }

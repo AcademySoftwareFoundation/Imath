@@ -1,7 +1,7 @@
-#include <OpenEXR/ImathLine.h>
+#include <ImathLine.h>
 
-int
-main()
+void
+line3_example()
 {
     Imath::V3f   a (0.0f, 0.0f, 0.0f);
     Imath::V3f   b (1.0f, 1.0f, 1.0f);
@@ -13,6 +13,4 @@ main()
     float f = l.distanceTo (c);
 
     Imath::V3f p = l (0.5f); // midpoint, i.e. 0.5 between a and b
-
-    return 0;
 }

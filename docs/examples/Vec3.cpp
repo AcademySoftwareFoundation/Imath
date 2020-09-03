@@ -1,7 +1,7 @@
-#include <OpenEXR/ImathVec.h>
+#include <ImathVec.h>
 
-int
-main()
+void
+vec3_example()
 {
     Imath::V3f   a (1.0f, 2.0f, 3.0f);
     Imath::V3f   b; // b is uninitialized
@@ -11,6 +11,4 @@ main()
     b.z = a[2];
 
     assert (a == b);
-
-    return 0;
 }

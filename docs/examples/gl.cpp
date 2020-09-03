@@ -1,7 +1,7 @@
-#include <OpenEXR/ImathGL.h>
+#include <Imath/ImathGL.h>
 
 void
-example()
+gl_example()
 {
     Imath::M44f M;
     glPushMatrix (M);

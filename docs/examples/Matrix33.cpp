@@ -1,7 +1,7 @@
-#include <OpenEXR/ImathMatrix.h>
+#include <ImathMatrix.h>
 
-int
-main()
+void
+matrix33_example()
 {
     Imath::M33f M; // uninitialized
 
@@ -9,6 +9,4 @@ main()
     assert (M[0][0] == 1.0f);
 
     Imath::M33f Minv = M.inverse();
-  
-    return 0;
 }

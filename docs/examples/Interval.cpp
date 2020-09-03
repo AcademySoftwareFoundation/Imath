@@ -1,14 +1,12 @@
-#include <OpenEXR/ImathInterval.h>
+#include <ImathInterval.h>
 
-int
-main()
+void
+interval_example()
 {
     Imath::Intervalf v; // empty by default
 
     v.extendBy (1.0f);
     v.extendBy (2.0f);
 
-    assert (v.intersects (0.5f));
-
-    return 0;
+    assert (v.intersects (1.5f));
 }

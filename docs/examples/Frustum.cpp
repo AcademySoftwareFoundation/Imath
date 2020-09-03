@@ -1,7 +1,7 @@
-#include <OpenEXR/ImathFrustum.h>
+#include <ImathFrustum.h>
 
-int
-main()
+void
+frustum_example()
 {
     float near = 1.7f;
     float far = 567.0f;
@@ -16,6 +16,4 @@ main()
 
     Imath::V3f p (1.0f, 1.0f, 1.0f);
     Imath::V2f s = frustum.projectPointToScreen (p);
-
-    return 0;
 }

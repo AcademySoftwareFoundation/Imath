@@ -1,7 +1,7 @@
-#include <OpenEXR/ImathVec.h>
+#include <ImathVec.h>
 
-int
-main()
+void
+vec4_example()
 {
     Imath::V4f   a (1.0f, 2.0f, 3.0f, 4.0f);
     Imath::V4f   b; // b is uninitialized
@@ -12,6 +12,4 @@ main()
     b.w = a[3];
 
     assert (a == b);
-
-    return 0;
 }
