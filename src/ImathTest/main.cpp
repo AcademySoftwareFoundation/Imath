@@ -44,6 +44,7 @@
 #include <testFrustum.h>
 #include <testFrustumTest.h>
 #include <testFun.h>
+#include <testInterval.h>
 #include <testInvert.h>
 #include <testJacobiEigenSolver.h>
 #include <testLineAlgo.h>
@@ -76,6 +77,7 @@ main (int argc, char* argv[])
     TEST (testRoots);
     TEST (testFun);
     TEST (testInvert);
+    TEST (testInterval);
     TEST (testFrustum);
     TEST (testRandom);
     TEST (testExtractEuler);
@@ -90,6 +92,6 @@ main (int argc, char* argv[])
     TEST (testTinySVD);
     TEST (testJacobiEigenSolver);
     TEST (testFrustumTest);
-
+    
     return 0;
 }
