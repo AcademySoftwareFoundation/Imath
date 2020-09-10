@@ -35,7 +35,7 @@ endif()
 include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
-  VERSION ${PYIMATH_VERSION}
+  VERSION ${IMATH_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
