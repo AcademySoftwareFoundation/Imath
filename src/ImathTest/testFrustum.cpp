@@ -252,7 +252,7 @@ testFrustum()
     caught = false;
     try
     {
-        (void) badFrustum.projectionMatrix();
+        (void) badFrustum.projectionMatrixExc();
         assert (!"near == far didn't throw an exception");
     }
     catch (std::domain_error&)
@@ -266,7 +266,7 @@ testFrustum()
     caught = false;
     try
     {
-        (void) badFrustum.projectionMatrix();
+        (void) badFrustum.projectionMatrixExc();
         assert (!"left == right didn't throw an exception");
     }
     catch (std::domain_error&)
@@ -280,7 +280,7 @@ testFrustum()
     caught = false;
     try
     {
-        (void) badFrustum.projectionMatrix();
+        (void) badFrustum.projectionMatrixExc();
         assert (!"top == bottom didn't throw an exception");
     }
     catch (std::domain_error&)
