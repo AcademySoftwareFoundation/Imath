@@ -1,0 +1,23 @@
+Random Numbers
+##############
+
+Functions to compute pseudo-random numbers.
+
+.. doxygenfunction:: solidSphereRand
+
+.. doxygenfunction:: hollowSphereRand
+
+.. doxygenfunction:: gaussSphereRand
+                     
+.. doxygenfunction:: gaussRand
+                     
+.. doxygenfunction:: erand48
+                     
+.. doxygenfunction:: drand48
+                     
+.. doxygenfunction:: nrand48
+                     
+.. doxygenfunction:: lrand48
+                     
+.. doxygenfunction:: srand48
+                     

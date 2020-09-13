@@ -9,12 +9,6 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-# we include this first to parse configure.ac and extract the version
-# numbers
-include(config/version.cmake)
-
-project(PyImath VERSION ${PYIMATH_VERSION} LANGUAGES C CXX)
-
 #######################################
 #######################################
 # This declares all the configuration variables visible
@@ -27,7 +21,7 @@ project(PyImath VERSION ${PYIMATH_VERSION} LANGUAGES C CXX)
 include(config/PyImathSetup.cmake)
 
 # we have a strong dependence on Imath being an exact match
-find_package(Imath ${PYIMATH_VERSION} EXACT REQUIRED CONFIG)
+find_package(Imath ${IMATH_VERSION} EXACT REQUIRED CONFIG)
 
 # we are building a python extension, so of course we depend on
 # python as well. Except we don't know which version...

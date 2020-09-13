@@ -11,6 +11,7 @@ add_executable(ImathTest
   testFrustum.cpp
   testFrustumTest.cpp
   testFun.cpp
+  testInterval.cpp
   testInvert.cpp
   testJacobiEigenSolver.cpp
   testLineAlgo.cpp
