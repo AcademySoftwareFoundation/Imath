@@ -90,8 +90,8 @@ template <class T> class Frustum
     IMATH_HOSTDEVICE void
     set (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false);
 
-    IMATH_HOSTDEVICE void set (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
-    IMATH_HOSTDEVICE void set_noexcept (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
+    IMATH_HOSTDEVICE void set (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
+    void setExc (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
 
     //------------------------------------------------------
     //	These functions modify an already valid frustum state
@@ -131,10 +131,10 @@ template <class T> class Frustum
 
     IMATH_HOSTDEVICE constexpr T fovx() const;
     IMATH_HOSTDEVICE constexpr T fovy() const;
-    IMATH_CONSTEXPR14 T aspect() const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T aspect_noexcept() const noexcept;
-    IMATH_CONSTEXPR14 Matrix44<T> projectionMatrix() const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44<T> projectionMatrix_noexcept() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T aspect() const noexcept;
+    IMATH_CONSTEXPR14 T aspectExc() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44<T> projectionMatrix() const noexcept;
+    IMATH_CONSTEXPR14 Matrix44<T> projectionMatrixExc() const;
     IMATH_HOSTDEVICE constexpr bool degenerate() const;
 
     //-----------------------------------------------------------------------
@@ -152,32 +152,29 @@ template <class T> class Frustum
     //----------------------------------------------------------
 
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3<T> projectScreenToRay (const Vec2<T>&) const;
-    IMATH_CONSTEXPR14 Vec2<T> projectPointToScreen (const Vec3<T>&) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T>
-    projectPointToScreen_noexcept (const Vec3<T>&) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> projectPointToScreen (const Vec3<T>&) const noexcept;
+    IMATH_CONSTEXPR14 Vec2<T> projectPointToScreenExc (const Vec3<T>&) const;
 
-    IMATH_CONSTEXPR14 T ZToDepth (long zval, long min, long max) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T ZToDepth_noexcept (long zval,
-                                                            long min,
-                                                            long max) const noexcept;
-    IMATH_CONSTEXPR14 T normalizedZToDepth (T zval) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T normalizedZToDepth_noexcept (T zval) const noexcept;
-    IMATH_CONSTEXPR14 long DepthToZ (T depth, long zmin, long zmax) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T ZToDepth (long zval,
+                                                   long min,
+                                                   long max) const noexcept;
+    IMATH_CONSTEXPR14 T ZToDepthExc (long zval, long min, long max) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T normalizedZToDepth (T zval) const noexcept;
+    IMATH_CONSTEXPR14 T normalizedZToDepthExc (T zval) const;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 long
-    DepthToZ_noexcept (T depth, long zmin, long zmax) const noexcept;
-
-    IMATH_CONSTEXPR14 T worldRadius (const Vec3<T>& p, T radius) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T worldRadius_noexcept (const Vec3<T>& p,
-                                                               T radius) const noexcept;
-    IMATH_CONSTEXPR14 T screenRadius (const Vec3<T>& p, T radius) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T screenRadius_noexcept (const Vec3<T>& p,
-                                                                T radius) const noexcept;
+    DepthToZ (T depth, long zmin, long zmax) const noexcept;
+    IMATH_CONSTEXPR14 long DepthToZExc (T depth, long zmin, long zmax) const;
+    
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T worldRadius (const Vec3<T>& p, T radius) const noexcept;
+    IMATH_CONSTEXPR14 T worldRadiusExc (const Vec3<T>& p, T radius) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T screenRadius (const Vec3<T>& p, T radius) const noexcept;
+    IMATH_CONSTEXPR14 T screenRadiusExc (const Vec3<T>& p, T radius) const;
 
   protected:
     IMATH_HOSTDEVICE constexpr Vec2<T> screenToLocal (const Vec2<T>&) const;
-    IMATH_CONSTEXPR14 Vec2<T> localToScreen (const Vec2<T>&) const;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T>
-    localToScreen_noexcept (const Vec2<T>&) const noexcept;
+    localToScreen (const Vec2<T>&) const noexcept;
+    IMATH_CONSTEXPR14 Vec2<T> localToScreenExc (const Vec2<T>&) const;
 
   protected:
     T _nearPlane;
@@ -297,14 +294,14 @@ Frustum<T>::setOrthographic (bool ortho)
 
 template <class T>
 inline void
-Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
+Frustum<T>::setExc (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 {
-    if (fovx != 0 && fovy != 0)
+    if (fovx != T (0) && fovy != T (0))
         throw std::domain_error ("fovx and fovy cannot both be non-zero.");
 
     const T two = static_cast<T> (2);
 
-    if (fovx != 0)
+    if (fovx != T (0))
     {
         _right  = nearPlane * Math<T>::tan (fovx / two);
         _left   = -_right;
@@ -325,11 +322,11 @@ Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 
 template <class T>
 inline void
-Frustum<T>::set_noexcept (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept
+Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept
 {
     const T two = static_cast<T> (2);
 
-    if (fovx != 0)
+    if (fovx != T (0))
     {
         _right  = nearPlane * Math<T>::tan (fovx / two);
         _left   = -_right;
@@ -364,12 +361,12 @@ Frustum<T>::fovy() const
 
 template <class T>
 IMATH_CONSTEXPR14 inline T
-Frustum<T>::aspect() const
+Frustum<T>::aspectExc() const
 {
     T rightMinusLeft = _right - _left;
     T topMinusBottom = _top - _bottom;
 
-    if (abs (topMinusBottom) < 1 && abs (rightMinusLeft) > limits<T>::max() * abs (topMinusBottom))
+    if (abs (topMinusBottom) < T (1) && abs (rightMinusLeft) > limits<T>::max() * abs (topMinusBottom))
     {
         throw std::domain_error ("Bad viewing frustum: "
                                  "aspect ratio cannot be computed.");
@@ -380,7 +377,7 @@ Frustum<T>::aspect() const
 
 template <class T>
 IMATH_CONSTEXPR14 inline T
-Frustum<T>::aspect_noexcept() const noexcept
+Frustum<T>::aspect() const noexcept
 {
     T rightMinusLeft = _right - _left;
     T topMinusBottom = _top - _bottom;
@@ -389,7 +386,7 @@ Frustum<T>::aspect_noexcept() const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline Matrix44<T>
-Frustum<T>::projectionMatrix() const
+Frustum<T>::projectionMatrixExc() const
 {
     T rightPlusLeft  = _right + _left;
     T rightMinusLeft = _right - _left;
@@ -400,9 +397,9 @@ Frustum<T>::projectionMatrix() const
     T farPlusNear  = _farPlane + _nearPlane;
     T farMinusNear = _farPlane - _nearPlane;
 
-    if ((abs (rightMinusLeft) < 1 &&
+    if ((abs (rightMinusLeft) < T (1) &&
          abs (rightPlusLeft) > limits<T>::max() * abs (rightMinusLeft)) ||
-        (abs (topMinusBottom) < 1 &&
+        (abs (topMinusBottom) < T (1) &&
          abs (topPlusBottom) > limits<T>::max() * abs (topMinusBottom)) ||
         (abs (farMinusNear) < 1 && abs (farPlusNear) > limits<T>::max() * abs (farMinusNear)))
     {
@@ -416,17 +413,17 @@ Frustum<T>::projectionMatrix() const
         T ty = -topPlusBottom / topMinusBottom;
         T tz = -farPlusNear / farMinusNear;
 
-        if ((abs (rightMinusLeft) < 1 && 2 > limits<T>::max() * abs (rightMinusLeft)) ||
-            (abs (topMinusBottom) < 1 && 2 > limits<T>::max() * abs (topMinusBottom)) ||
-            (abs (farMinusNear) < 1 && 2 > limits<T>::max() * abs (farMinusNear)))
+        if ((abs (rightMinusLeft) < T (1) && T (2) > limits<T>::max() * abs (rightMinusLeft)) ||
+            (abs (topMinusBottom) < T (1) && T (2) > limits<T>::max() * abs (topMinusBottom)) ||
+            (abs (farMinusNear) < T (1) && T (2) > limits<T>::max() * abs (farMinusNear)))
         {
             throw std::domain_error ("Bad viewing frustum: "
                                      "projection matrix cannot be computed.");
         }
 
-        T A = 2 / rightMinusLeft;
-        T B = 2 / topMinusBottom;
-        T C = -2 / farMinusNear;
+        T A = T (2) / rightMinusLeft;
+        T B = T (2) / topMinusBottom;
+        T C = T (-2) / farMinusNear;
 
         return Matrix44<T> (A, 0, 0, 0, 0, B, 0, 0, 0, 0, C, 0, tx, ty, tz, 1.f);
     }
@@ -436,8 +433,8 @@ Frustum<T>::projectionMatrix() const
         T B = topPlusBottom / topMinusBottom;
         T C = -farPlusNear / farMinusNear;
 
-        T farTimesNear = -2 * _farPlane * _nearPlane;
-        if (abs (farMinusNear) < 1 && abs (farTimesNear) > limits<T>::max() * abs (farMinusNear))
+        T farTimesNear = T (-2) * _farPlane * _nearPlane;
+        if (abs (farMinusNear) < T (1) && abs (farTimesNear) > limits<T>::max() * abs (farMinusNear))
         {
             throw std::domain_error ("Bad viewing frustum: "
                                      "projection matrix cannot be computed.");
@@ -445,11 +442,11 @@ Frustum<T>::projectionMatrix() const
 
         T D = farTimesNear / farMinusNear;
 
-        T twoTimesNear = 2 * _nearPlane;
+        T twoTimesNear = T (2) * _nearPlane;
 
-        if ((abs (rightMinusLeft) < 1 &&
+        if ((abs (rightMinusLeft) < T (1) &&
              abs (twoTimesNear) > limits<T>::max() * abs (rightMinusLeft)) ||
-            (abs (topMinusBottom) < 1 &&
+            (abs (topMinusBottom) < T (1) &&
              abs (twoTimesNear) > limits<T>::max() * abs (topMinusBottom)))
         {
             throw std::domain_error ("Bad viewing frustum: "
@@ -465,7 +462,7 @@ Frustum<T>::projectionMatrix() const
 
 template <class T>
 IMATH_CONSTEXPR14 inline Matrix44<T>
-Frustum<T>::projectionMatrix_noexcept() const noexcept
+Frustum<T>::projectionMatrix() const noexcept
 {
     T rightPlusLeft  = _right + _left;
     T rightMinusLeft = _right - _left;
@@ -482,9 +479,9 @@ Frustum<T>::projectionMatrix_noexcept() const noexcept
         T ty = -topPlusBottom / topMinusBottom;
         T tz = -farPlusNear / farMinusNear;
 
-        T A = 2 / rightMinusLeft;
-        T B = 2 / topMinusBottom;
-        T C = -2 / farMinusNear;
+        T A = T (2) / rightMinusLeft;
+        T B = T (2) / topMinusBottom;
+        T C = T (-2) / farMinusNear;
 
         return Matrix44<T> (A, 0, 0, 0, 0, B, 0, 0, 0, 0, C, 0, tx, ty, tz, 1.f);
     }
@@ -494,11 +491,11 @@ Frustum<T>::projectionMatrix_noexcept() const noexcept
         T B = topPlusBottom / topMinusBottom;
         T C = -farPlusNear / farMinusNear;
 
-        T farTimesNear = -2 * _farPlane * _nearPlane;
+        T farTimesNear = T (-2) * _farPlane * _nearPlane;
 
         T D = farTimesNear / farMinusNear;
 
-        T twoTimesNear = 2 * _nearPlane;
+        T twoTimesNear = T (2) * _nearPlane;
 
         T E = twoTimesNear / rightMinusLeft;
         T F = twoTimesNear / topMinusBottom;
@@ -536,7 +533,7 @@ Frustum<T>::screenToLocal (const Vec2<T>& s) const
 
 template <class T>
 IMATH_CONSTEXPR14 inline Vec2<T>
-Frustum<T>::localToScreen (const Vec2<T>& p) const
+Frustum<T>::localToScreenExc (const Vec2<T>& p) const
 {
     T leftPlusRight  = _left - T (2) * p.x + _right;
     T leftMinusRight = _left - _right;
@@ -557,7 +554,7 @@ Frustum<T>::localToScreen (const Vec2<T>& p) const
 
 template <class T>
 IMATH_CONSTEXPR14 inline Vec2<T>
-Frustum<T>::localToScreen_noexcept (const Vec2<T>& p) const noexcept
+Frustum<T>::localToScreen (const Vec2<T>& p) const noexcept
 {
     T leftPlusRight  = _left - T (2) * p.x + _right;
     T leftMinusRight = _left - _right;
@@ -580,7 +577,18 @@ Frustum<T>::projectScreenToRay (const Vec2<T>& p) const
 
 template <class T>
 IMATH_CONSTEXPR14 Vec2<T>
-Frustum<T>::projectPointToScreen (const Vec3<T>& point) const
+Frustum<T>::projectPointToScreenExc (const Vec3<T>& point) const
+{
+    if (orthographic() || point.z == T (0))
+        return localToScreenExc (Vec2<T> (point.x, point.y));
+    else
+        return localToScreenExc (
+            Vec2<T> (point.x * _nearPlane / -point.z, point.y * _nearPlane / -point.z));
+}
+
+template <class T>
+IMATH_CONSTEXPR14 Vec2<T>
+Frustum<T>::projectPointToScreen (const Vec3<T>& point) const noexcept
 {
     if (orthographic() || point.z == T (0))
         return localToScreen (Vec2<T> (point.x, point.y));
@@ -590,19 +598,8 @@ Frustum<T>::projectPointToScreen (const Vec3<T>& point) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 Vec2<T>
-Frustum<T>::projectPointToScreen_noexcept (const Vec3<T>& point) const noexcept
-{
-    if (orthographic() || point.z == T (0))
-        return localToScreen_noexcept (Vec2<T> (point.x, point.y));
-    else
-        return localToScreen_noexcept (
-            Vec2<T> (point.x * _nearPlane / -point.z, point.y * _nearPlane / -point.z));
-}
-
-template <class T>
 IMATH_CONSTEXPR14 T
-Frustum<T>::ZToDepth (long zval, long zmin, long zmax) const
+Frustum<T>::ZToDepthExc (long zval, long zmin, long zmax) const
 {
     int zdiff = zmax - zmin;
 
@@ -615,12 +612,12 @@ Frustum<T>::ZToDepth (long zval, long zmin, long zmax) const
         zval -= zdiff;
 
     T fzval = (T (zval) - T (zmin)) / T (zdiff);
-    return normalizedZToDepth (fzval);
+    return normalizedZToDepthExc (fzval);
 }
 
 template <class T>
 IMATH_CONSTEXPR14 T
-Frustum<T>::ZToDepth_noexcept (long zval, long zmin, long zmax) const noexcept
+Frustum<T>::ZToDepth (long zval, long zmin, long zmax) const noexcept
 {
     int zdiff = zmax - zmin;
 
@@ -628,18 +625,18 @@ Frustum<T>::ZToDepth_noexcept (long zval, long zmin, long zmax) const noexcept
         zval -= zdiff;
 
     T fzval = (T (zval) - T (zmin)) / T (zdiff);
-    return normalizedZToDepth_noexcept (fzval);
+    return normalizedZToDepth (fzval);
 }
 
 template <class T>
 IMATH_CONSTEXPR14 T
-Frustum<T>::normalizedZToDepth (T zval) const
+Frustum<T>::normalizedZToDepthExc (T zval) const
 {
-    T Zp = zval * 2.0 - 1;
+    T Zp = zval * T (2) - T (1);
 
     if (_orthographic)
     {
-        return -(Zp * (_farPlane - _nearPlane) + (_farPlane + _nearPlane)) / 2;
+        return -(Zp * (_farPlane - _nearPlane) + (_farPlane + _nearPlane)) / T (2);
     }
     else
     {
@@ -659,13 +656,13 @@ Frustum<T>::normalizedZToDepth (T zval) const
 
 template <class T>
 IMATH_CONSTEXPR14 T
-Frustum<T>::normalizedZToDepth_noexcept (T zval) const noexcept
+Frustum<T>::normalizedZToDepth (T zval) const noexcept
 {
-    T Zp = zval * 2.0 - 1;
+    T Zp = zval * T (2) - T (1);
 
     if (_orthographic)
     {
-        return -(Zp * (_farPlane - _nearPlane) + (_farPlane + _nearPlane)) / 2;
+        return -(Zp * (_farPlane - _nearPlane) + (_farPlane + _nearPlane)) / T (2);
     }
     else
     {
@@ -678,16 +675,16 @@ Frustum<T>::normalizedZToDepth_noexcept (T zval) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 long
-Frustum<T>::DepthToZ (T depth, long zmin, long zmax) const
+Frustum<T>::DepthToZExc (T depth, long zmin, long zmax) const
 {
     long zdiff     = zmax - zmin;
     T farMinusNear = _farPlane - _nearPlane;
 
     if (_orthographic)
     {
-        T farPlusNear = 2 * depth + _farPlane + _nearPlane;
+        T farPlusNear = T (2) * depth + _farPlane + _nearPlane;
 
-        if (abs (farMinusNear) < 1 && abs (farPlusNear) > limits<T>::max() * abs (farMinusNear))
+        if (abs (farMinusNear) < T (1) && abs (farPlusNear) > limits<T>::max() * abs (farMinusNear))
         {
             throw std::domain_error ("Bad viewing frustum: "
                                      "near and far clipping planes "
@@ -701,15 +698,15 @@ Frustum<T>::DepthToZ (T depth, long zmin, long zmax) const
     {
         // Perspective
 
-        T farTimesNear = 2 * _farPlane * _nearPlane;
-        if (abs (depth) < 1 && abs (farTimesNear) > limits<T>::max() * abs (depth))
+        T farTimesNear = T (2) * _farPlane * _nearPlane;
+        if (abs (depth) < T (1) && abs (farTimesNear) > limits<T>::max() * abs (depth))
         {
             throw std::domain_error ("Bad call to DepthToZ function: "
                                      "value of `depth' is too small");
         }
 
         T farPlusNear = farTimesNear / depth + _farPlane + _nearPlane;
-        if (abs (farMinusNear) < 1 && abs (farPlusNear) > limits<T>::max() * abs (farMinusNear))
+        if (abs (farMinusNear) < T (1) && abs (farPlusNear) > limits<T>::max() * abs (farMinusNear))
         {
             throw std::domain_error ("Bad viewing frustum: "
                                      "near and far clipping planes "
@@ -723,14 +720,14 @@ Frustum<T>::DepthToZ (T depth, long zmin, long zmax) const
 
 template <class T>
 IMATH_CONSTEXPR14 long
-Frustum<T>::DepthToZ_noexcept (T depth, long zmin, long zmax) const noexcept
+Frustum<T>::DepthToZ (T depth, long zmin, long zmax) const noexcept
 {
     long zdiff     = zmax - zmin;
     T farMinusNear = _farPlane - _nearPlane;
 
     if (_orthographic)
     {
-        T farPlusNear = 2 * depth + _farPlane + _nearPlane;
+        T farPlusNear = T (2) * depth + _farPlane + _nearPlane;
 
         T Zp = -farPlusNear / farMinusNear;
         return long (0.5 * (Zp + 1) * zdiff) + zmin;
@@ -739,7 +736,7 @@ Frustum<T>::DepthToZ_noexcept (T depth, long zmin, long zmax) const noexcept
     {
         // Perspective
 
-        T farTimesNear = 2 * _farPlane * _nearPlane;
+        T farTimesNear = T (2) * _farPlane * _nearPlane;
 
         T farPlusNear = farTimesNear / depth + _farPlane + _nearPlane;
 
@@ -750,7 +747,7 @@ Frustum<T>::DepthToZ_noexcept (T depth, long zmin, long zmax) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 T
-Frustum<T>::screenRadius (const Vec3<T>& p, T radius) const
+Frustum<T>::screenRadiusExc (const Vec3<T>& p, T radius) const
 {
     // Derivation:
     // Consider X-Z plane.
@@ -762,7 +759,7 @@ Frustum<T>::screenRadius (const Vec3<T>& p, T radius) const
     // A similar analysis holds in the Y-Z plane.
     // So r is the quantity we want to return.
 
-    if (abs (p.z) > 1 || abs (-_nearPlane) < limits<T>::max() * abs (p.z))
+    if (abs (p.z) > T (1) || abs (-_nearPlane) < limits<T>::max() * abs (p.z))
     {
         return radius * (-_nearPlane / p.z);
     }
@@ -777,7 +774,7 @@ Frustum<T>::screenRadius (const Vec3<T>& p, T radius) const
 
 template <class T>
 IMATH_CONSTEXPR14 T
-Frustum<T>::screenRadius_noexcept (const Vec3<T>& p, T radius) const noexcept
+Frustum<T>::screenRadius (const Vec3<T>& p, T radius) const noexcept
 {
     // Derivation:
     // Consider X-Z plane.
@@ -794,9 +791,9 @@ Frustum<T>::screenRadius_noexcept (const Vec3<T>& p, T radius) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 T
-Frustum<T>::worldRadius (const Vec3<T>& p, T radius) const
+Frustum<T>::worldRadiusExc (const Vec3<T>& p, T radius) const
 {
-    if (abs (-_nearPlane) > 1 || abs (p.z) < limits<T>::max() * abs (-_nearPlane))
+    if (abs (-_nearPlane) > T (1) || abs (p.z) < limits<T>::max() * abs (-_nearPlane))
     {
         return radius * (p.z / -_nearPlane);
     }
@@ -809,7 +806,7 @@ Frustum<T>::worldRadius (const Vec3<T>& p, T radius) const
 
 template <class T>
 IMATH_CONSTEXPR14 T
-Frustum<T>::worldRadius_noexcept (const Vec3<T>& p, T radius) const noexcept
+Frustum<T>::worldRadius (const Vec3<T>& p, T radius) const noexcept
 {
     return radius * (p.z / -_nearPlane);
 }

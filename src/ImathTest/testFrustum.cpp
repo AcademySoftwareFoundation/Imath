@@ -199,12 +199,12 @@ testFrustum()
     assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.fovy() - (atan2 (t, n) - atan2 (b, n))) <
             1e-6);
     cout << "1";
-    assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspect() - ((r - l) / (t - b))) < 1e-6);
-    assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspect_noexcept() - ((r - l) / (t - b))) <
+    assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspectExc() - ((r - l) / (t - b))) < 1e-6);
+    assert (IMATH_INTERNAL_NAMESPACE::abs<float> (frustum.aspect() - ((r - l) / (t - b))) <
             1e-6);
     cout << "2";
 
-    IMATH_INTERNAL_NAMESPACE::M44f m = frustum.projectionMatrix();
+    IMATH_INTERNAL_NAMESPACE::M44f m = frustum.projectionMatrixExc();
     assert (IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][0] - ((2 * n) / (r - l))) < 1e-6 &&
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6 &&
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6 &&
@@ -221,7 +221,7 @@ testFrustum()
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][1]) < 1e-6 &&
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][2] - ((-2 * f * n) / (f - n))) < 1e-6 &&
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3]) < 1e-6);
-    m = frustum.projectionMatrix_noexcept();
+    m = frustum.projectionMatrix();
     assert (IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][0] - ((2 * n) / (r - l))) < 1e-6 &&
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6 &&
             IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6 &&
@@ -347,17 +347,17 @@ testFrustum()
     float one  = 1;
     IMATH_INTERNAL_NAMESPACE::Vec3<float> v3 (zero, zero, one);
 
-    f1.set_noexcept (n, f, one, zero, one);
-    f2.set (n, f, one, zero, one);
+    f1.set (n, f, one, zero, one);
+    f2.setExc (n, f, one, zero, one);
 
     assert (f1 == f2);
 
-    assert (f1.ZToDepth_noexcept (zMin, zMin, zMax) == f1.ZToDepth (zMin, zMin, zMax));
-    assert (f1.normalizedZToDepth_noexcept (zMin) == f1.normalizedZToDepth (zMin));
-    assert (f1.DepthToZ_noexcept (n, zMin, zMax) == f1.DepthToZ (n, zMin, zMax));
-    assert (f1.worldRadius_noexcept (v3, one) == f1.worldRadius (v3, one));
-    assert (f1.screenRadius_noexcept (v3, one) == f1.screenRadius (v3, one));
-    assert (f1.projectPointToScreen_noexcept (v3) == f1.projectPointToScreen (v3));
+    assert (f1.ZToDepth (zMin, zMin, zMax) == f1.ZToDepthExc (zMin, zMin, zMax));
+    assert (f1.normalizedZToDepth (zMin) == f1.normalizedZToDepthExc (zMin));
+    assert (f1.DepthToZ (n, zMin, zMax) == f1.DepthToZExc (n, zMin, zMax));
+    assert (f1.worldRadius (v3, one) == f1.worldRadiusExc (v3, one));
+    assert (f1.screenRadius (v3, one) == f1.screenRadiusExc (v3, one));
+    assert (f1.projectPointToScreen (v3) == f1.projectPointToScreenExc (v3));
 
     cout << "\npassed noexcept equality verification";
 
