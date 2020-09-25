@@ -7,8 +7,7 @@
 name: Analysis
 
 on:
-  pull_request:
-    # TODO: Stop testing on pull requests when testing is known to work!
+  push:
     # Jobs are skipped when ONLY Markdown (*.md) files are changed
     paths-ignore:
       - '**.md'
