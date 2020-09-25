@@ -7,11 +7,6 @@
 name: Analysis
 
 on:
-  pull_request:
-    # TODO: Stop testing on pull requests when testing is known to work!
-    # Jobs are skipped when ONLY Markdown (*.md) files are changed
-    paths-ignore:
-      - '**.md'
   schedule:
     # Weekly Sunday build
     - cron: "0 0 * * 0"
