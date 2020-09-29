@@ -41,7 +41,6 @@ include(config/LibraryDefine.cmake)
 #######################################
 
 # Include these modules without enable/disable options
-add_subdirectory(src/Half)
 add_subdirectory(src/Imath)
 # Tell CMake where to find the ImathConfig.cmake file. Makes it posible to call 
 # find_package(Imath) in downstream projects
@@ -83,7 +82,6 @@ include(CTest)
 if(BUILD_TESTING)
   enable_testing()
 
-  add_subdirectory(src/HalfTest)
   add_subdirectory(src/ImathTest)
 endif()
 
