@@ -10,6 +10,9 @@ imath_define_library(Imath
     ImathFun.cpp
     ImathVec.cpp
     ImathMatrixAlgo.cpp
+    toFloat.h
+    eLut.h
+    half.cpp
   HEADERS
     ImathBoxAlgo.h
     ImathBox.h
@@ -43,7 +46,8 @@ imath_define_library(Imath
     ImathSphere.h
     ImathVecAlgo.h
     ImathVec.h
-  DEPENDENCIES
-    Half
-    )
-  
+    half.h
+    halfFunction.h
+    halfExport.h
+    halfLimits.h
+  )

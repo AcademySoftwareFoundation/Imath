@@ -26,10 +26,19 @@ add_executable(ImathTest
   testShear.cpp
   testTinySVD.cpp
   testVec.cpp
+  testArithmetic.cpp
+  testBitPatterns.cpp
+  testClassification.cpp
+  testError.cpp
+  testFunction.cpp
+  testLimits.cpp
+  testSize.cpp
+  testToFloat.cpp
 )
 
 target_link_libraries(ImathTest Imath)
 set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-)
+  )
 add_test(NAME Imath COMMAND $<TARGET_FILE:ImathTest>)
+
