@@ -36,6 +36,8 @@ endif()
 ########################
 ## Build related options
 
+option(BUILD_CIMATH "Build C interface library" ON)
+
 # This is a variable here for use in install lines. Care must be taken
 # when changing this, as many things assume this is Imath
 set(IMATH_OUTPUT_SUBDIR Imath CACHE STRING "Destination sub-folder of the include path for install")
