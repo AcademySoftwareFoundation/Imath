@@ -42,6 +42,7 @@ include(config/LibraryDefine.cmake)
 
 # Include these modules without enable/disable options
 add_subdirectory(src/Imath)
+
 # Tell CMake where to find the ImathConfig.cmake file. Makes it posible to call 
 # find_package(Imath) in downstream projects
 set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
@@ -77,14 +78,17 @@ endif()
 #set(CTEST_DROP_SITE "open.cdash.org")
 #set(CTEST_DROP_LOCATION "/submit.php?project=MyProject")
 #set(CTEST_DROP_SITE_CDASH TRUE)
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  include(CTest)
 
-include(CTest)
-if(BUILD_TESTING)
-  enable_testing()
-
-  add_subdirectory(src/ImathTest)
+  if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(src/ImathTest)
+  endif()
 endif()
 
 # Including this module will add a `clang-format` target to the build if
-# the clang-format executable can be found.
-include(cmake/clang-format.cmake)
+# the clang-format executable can be found. Only do this if we are top level
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  include(cmake/clang-format.cmake)
+endif()

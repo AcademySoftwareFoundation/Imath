@@ -36,7 +36,7 @@ add_executable(ImathTest
   testToFloat.cpp
 )
 
-target_link_libraries(ImathTest Imath)
+target_link_libraries(ImathTest Imath::Imath)
 set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
   )
