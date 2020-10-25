@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#if defined(OPENEXR_DLL)
+#if defined(IMATH_DLL)
 #    if defined(IMATH_EXPORTS)
 #        define IMATH_EXPORT __declspec(dllexport)
 #        define IMATH_EXPORT_CONST extern __declspec(dllexport)

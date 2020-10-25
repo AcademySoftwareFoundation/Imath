@@ -23,7 +23,6 @@ if (IMATH_ENABLE_LARGE_STACK)
   set(IMATH_HAVE_LARGE_STACK ON)
 endif()
 configure_file(ImathConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
-configure_file(ImathConfigInternal.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfigInternal.h)
 
 add_library(ImathConfig INTERFACE)
 target_include_directories(ImathConfig INTERFACE
@@ -49,14 +48,6 @@ if(IMATH_INSTALL_PKG_CONFIG)
     set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
     set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
     set(LIB_SUFFIX_DASH ${IMATH_LIB_SUFFIX})
-    if(TARGET Threads::Threads)
-      # hrm, can't use properties as they end up as generator expressions
-      # which don't seem to evaluate
-      if(THREADS_HAVE_PTHREAD_ARG)
-        set(PTHREAD_CFLAGS "-pthread")
-      endif()
-      set(PTHREAD_LIBS ${CMAKE_THREAD_LIBS_INIT})
-    endif()
     string(REPLACE ".in" "" pcout ${pcinfile})
     configure_file(${pcinfile} ${CMAKE_CURRENT_BINARY_DIR}/${pcout} @ONLY)
     install(
