@@ -42,13 +42,16 @@ include(config/LibraryDefine.cmake)
 
 # Include these modules without enable/disable options
 add_subdirectory(src/Imath)
-# Tell CMake where to find the ImathConfig.cmake file. Makes it posible to call 
+# Tell CMake where to find the ImathConfig.cmake file. Makes it posible to call
 # find_package(Imath) in downstream projects
 set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
-# Add an empty ImathTargets.cmake file for the config to use. 
+# Add an empty ImathTargets.cmake file for the config to use.
 # Can be empty since we already defined the targets in add_subdirectory
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
 
+if (BUILD_CIMATH)
+  add_subdirectory(src/CImath)
+endif()
 
 option(PYTHON "Set ON to compile PyImath bindings")
 if (PYTHON)
@@ -59,7 +62,7 @@ endif()
 # upload the results, cmake has builtin support for
 # submitting to CDash, or any server who speaks the
 # same protocol
-# 
+#
 # These settings will need to be set for your environment,
 # and then a script such as the example in
 #
@@ -70,7 +73,7 @@ endif()
 # cmake -S cmake/SampleCTestScript.cmake
 #
 # [or whatever you name the file you edit]
-# 
+#
 #set(CTEST_PROJECT_NAME "Imath")
 #set(CTEST_NIGHTLY_START_TIME "01:01:01 UTC")
 #set(CTEST_DROP_METHOD "http") # there are others...
@@ -83,6 +86,10 @@ if(BUILD_TESTING)
   enable_testing()
 
   add_subdirectory(src/ImathTest)
+
+  if (BUILD_CIMATH)
+    add_subdirectory(src/CImathTest)
+  endif()
 endif()
 
 # Including this module will add a `clang-format` target to the build if
