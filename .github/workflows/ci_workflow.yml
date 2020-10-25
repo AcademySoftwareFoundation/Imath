@@ -200,74 +200,61 @@ jobs:
   # macOS
   # ---------------------------------------------------------------------------
   
-  macos:
+  macos_no_python:
     name: 'macOS 10.15 
       <AppleClang 11.0 
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
        cxx=${{ matrix.cxx-standard }}, 
-       python=${{ matrix.python-version }}, 
        docs=${{ matrix.build-docs }}>'
     runs-on: macos-10.15
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 5]
+        build: [1, 2, 3, 4]
         include:
-          # C++11, Python 3.7
+          # C++11
           - build: 1
             build-type: Release
             build-shared: 'ON'
             build-docs: 'ON'
             cxx-standard: 11
-            python-version: 3.7
-            exclude-tests: -E PyImath.*_Python3
+            exclude-tests:
           # Debug
           - build: 2
             build-type: Debug
             build-shared: 'ON'
             build-docs: 'OFF'
             cxx-standard: 11
-            python-version: 3.7
-            exclude-tests: -E PyImath.*_Python3
+            exclude-tests:
           # C++14
           - build: 3
             build-type: Release
             build-shared: 'ON'
             build-docs: 'OFF'
             cxx-standard: 14
-            python-version: 3.7
-            exclude-tests: -E PyImath.*_Python3
+            exclude-tests:
           # Static
           - build: 4
-            build-type: Release
+            build-type: Debug
             build-shared: 'OFF'
             build-docs: 'OFF'
             cxx-standard: 11
-            python-version: 3.7
-            exclude-tests: -E "PyImath.*_Python3|PyImath.PyImathTest_Python2"
-          # Python 2.7
-          - build: 5
-            build-type: Release
-            build-shared: 'ON'
-            build-docs: 'ON'
-            cxx-standard: 11
-            python-version: 2.7
-            exclude-tests: -E PyImath.*_Python3
+            exclude-tests:
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
+      ## - name: Setup Python
+      ##   uses: actions/setup-python@v1
+      ##   with:
+      ##     python-version: ${{ matrix.python-version }}
       - name: Checkout
         uses: actions/checkout@v2
       - name: Create build directories
         run: |
           mkdir _install
           mkdir _build
-      - name: Install Dependences
-        run: |
-          share/ci/scripts/macos/install_boost.sh 
-        shell: bash
+      ## - name: Install Dependences
+      ##   run: |
+      ##     share/ci/scripts/macos/install_boost.sh 
+      ##   shell: bash
       - name: Configure
         run: |
           cmake ../. \
@@ -276,10 +263,7 @@ jobs:
                 -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
                 -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }} \
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
-                -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
-                -DPYTHON='ON'\
-                -DPYTHON_EXECUTABLE=$(which python) \
-                -DBoost_NO_BOOST_CMAKE=ON
+                -DBUILD_SHARED_LIBS=${{ matrix.build-shared }}
         working-directory: _build
       - name: Build
         run: |
@@ -339,6 +323,13 @@ jobs:
           - build: 3
             build-type: Release
             build-shared: 'ON'
+            build-docs: 'OFF'
+            cxx-standard: 14
+            exclude-tests:
+          # C++14, Static
+          - build: 3
+            build-type: Release
+            build-shared: 'OFF'
             build-docs: 'OFF'
             cxx-standard: 14
             exclude-tests:
