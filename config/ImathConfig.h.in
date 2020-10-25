@@ -12,10 +12,6 @@
 // Options / configuration based on O.S. / compiler
 /////////////////////
 
-#cmakedefine HAVE_PTHREAD 1
-#cmakedefine HAVE_POSIX_SEMAPHORES 1
-
-
 //
 // Define and set to 1 if the target system has support for large
 // stack sizes.
