@@ -85,8 +85,8 @@
 #ifndef _HALF_H_
 #define _HALF_H_
 
-#include "../Imath/ImathNamespace.h"
-#include "halfExport.h" // for definition of HALF_EXPORT
+#include "ImathNamespace.h"
+#include "ImathExport.h"
 #include <iostream>
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -197,8 +197,8 @@ class half
     // Access to the internal representation
     //--------------------------------------
 
-    HALF_EXPORT unsigned short bits() const;
-    HALF_EXPORT void setBits (unsigned short bits);
+    IMATH_EXPORT unsigned short bits() const;
+    IMATH_EXPORT void setBits (unsigned short bits);
 
   public:
     union uif
@@ -208,13 +208,13 @@ class half
     };
 
   private:
-    HALF_EXPORT static short convert (int i);
-    HALF_EXPORT static float overflow();
+    IMATH_EXPORT static short convert (int i);
+    IMATH_EXPORT static float overflow();
 
     unsigned short _h;
 
-    HALF_EXPORT static const uif _toFloat[1 << 16];
-    HALF_EXPORT static const unsigned short _eLut[1 << 9];
+    IMATH_EXPORT static const uif _toFloat[1 << 16];
+    IMATH_EXPORT static const unsigned short _eLut[1 << 9];
 };
 
 //-------------------------------------------------------------------------
@@ -695,17 +695,17 @@ IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 // Stream I/O
 //-----------
 
-HALF_EXPORT std::ostream& operator<< (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
-HALF_EXPORT std::istream& operator>> (std::istream& is, IMATH_INTERNAL_NAMESPACE::half& h);
+IMATH_EXPORT std::ostream& operator<< (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
+IMATH_EXPORT std::istream& operator>> (std::istream& is, IMATH_INTERNAL_NAMESPACE::half& h);
 
 //----------
 // Debugging
 //----------
 
-HALF_EXPORT void printBits (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
-HALF_EXPORT void printBits (std::ostream& os, float f);
-HALF_EXPORT void printBits (char c[19], IMATH_INTERNAL_NAMESPACE::half h);
-HALF_EXPORT void printBits (char c[35], float f);
+IMATH_EXPORT void printBits (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
+IMATH_EXPORT void printBits (std::ostream& os, float f);
+IMATH_EXPORT void printBits (char c[19], IMATH_INTERNAL_NAMESPACE::half h);
+IMATH_EXPORT void printBits (char c[35], float f);
 
 #ifndef __CUDACC__
 using half = IMATH_INTERNAL_NAMESPACE::half;

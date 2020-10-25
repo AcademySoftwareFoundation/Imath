@@ -37,7 +37,7 @@
 #ifndef PYIMATHEXPORT_H
 #define PYIMATHEXPORT_H
 
-#if defined(OPENEXR_DLL)
+#if defined(IMATH_DLL)
     #if defined(PLATFORM_VISIBILITY_AVAILABLE)
         #define PYIMATH_EXPORT __attribute__((visibility("default")))
         #define PYIMATH_EXPORT __attribute__((visibility("default")))
