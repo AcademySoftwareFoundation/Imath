@@ -48,15 +48,21 @@
 
 using namespace std;
 
+#if defined(IMATH_DLL)
+#    define EXPORT_CONST __declspec(dllexport)
+#else
+#    define EXPORT_CONST
+#endif
+
 //-------------------------------------------------------------
 // Lookup tables for half-to-float and float-to-half conversion
 //-------------------------------------------------------------
 
 // clang-format off
 
-HALF_EXPORT const half::uif half::_toFloat[1 << 16] =
+EXPORT_CONST const half::uif half::_toFloat[1 << 16] =
 #include "toFloat.h"
-HALF_EXPORT const unsigned short half::_eLut[1 << 9] =
+EXPORT_CONST const unsigned short half::_eLut[1 << 9] =
 #include "eLut.h"
 
 //-----------------------------------------------
@@ -65,7 +71,7 @@ HALF_EXPORT const unsigned short half::_eLut[1 << 9] =
 // which may be trapped by the operating system.
 //-----------------------------------------------
 
-HALF_EXPORT float
+IMATH_EXPORT float
 half::overflow()
 {
     volatile float f = 1e10;
@@ -81,7 +87,7 @@ half::overflow()
 // zeroes, denormalized numbers and exponent overflows.
 //-----------------------------------------------------
 
-HALF_EXPORT short
+IMATH_EXPORT short
 half::convert (int i)
 {
     //
@@ -220,14 +226,14 @@ half::convert (int i)
 // Stream I/O operators
 //---------------------
 
-HALF_EXPORT ostream&
+IMATH_EXPORT ostream&
 operator<< (ostream& os, half h)
 {
     os << float (h);
     return os;
 }
 
-HALF_EXPORT istream&
+IMATH_EXPORT istream&
 operator>> (istream& is, half& h)
 {
     float f;
@@ -241,7 +247,7 @@ operator>> (istream& is, half& h)
 // floats and halfs, mostly for debugging
 //---------------------------------------
 
-HALF_EXPORT void
+IMATH_EXPORT void
 printBits (ostream& os, half h)
 {
     unsigned short b = h.bits();
@@ -255,7 +261,7 @@ printBits (ostream& os, half h)
     }
 }
 
-HALF_EXPORT void
+IMATH_EXPORT void
 printBits (ostream& os, float f)
 {
     half::uif x;
@@ -270,7 +276,7 @@ printBits (ostream& os, float f)
     }
 }
 
-HALF_EXPORT void
+IMATH_EXPORT void
 printBits (char c[19], half h)
 {
     unsigned short b = h.bits();
@@ -286,7 +292,7 @@ printBits (char c[19], half h)
     c[18] = 0;
 }
 
-HALF_EXPORT void
+IMATH_EXPORT void
 printBits (char c[35], float f)
 {
     half::uif x;

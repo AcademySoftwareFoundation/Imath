@@ -42,7 +42,7 @@
 #include <algorithm>
 #include <cmath>
 
-#if defined(OPENEXR_DLL)
+#if defined(IMATH_DLL)
 #    define EXPORT_CONST __declspec(dllexport)
 #else
 #    define EXPORT_CONST const

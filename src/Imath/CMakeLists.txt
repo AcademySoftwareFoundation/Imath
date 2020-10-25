@@ -48,6 +48,5 @@ imath_define_library(Imath
     ImathVec.h
     half.h
     halfFunction.h
-    halfExport.h
     halfLimits.h
   )
