@@ -11,7 +11,7 @@ extern "C"
         unsigned short _h;
     } imath_half;
 
-    imath_half imath_half_createFromFloat (float f);
+    imath_half imath_half_create (float f);
     imath_half imath_half_copy (const imath_half* h);
 
 #ifdef __cplusplus

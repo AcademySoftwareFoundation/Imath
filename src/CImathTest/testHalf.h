@@ -3,5 +3,5 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-void testHalfCreateFromFloat();
+void testHalfCreate();
 void testHalfCopy();

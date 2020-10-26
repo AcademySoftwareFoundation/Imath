@@ -26,7 +26,7 @@ union CpptoC
 };
 
 void
-testHalfCreateFromFloat()
+testHalfCreate()
 {
     cout << "Create half from float" << endl;
     cout << "h1 == h2" << endl;
@@ -34,7 +34,7 @@ testHalfCreateFromFloat()
     for (float f : test_values)
     {
         Imath::half h1 (f);
-        imath_half h2 = imath_half_createFromFloat (f);
+        imath_half h2 = imath_half_create (f);
         char* h1_c    = reinterpret_cast<char*> (&h1);
         char* h2_c    = reinterpret_cast<char*> (&h2);
 

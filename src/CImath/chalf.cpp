@@ -18,7 +18,7 @@ extern "C"
     static const unsigned short _eLut[1 << 9] =
 #include "../Imath/eLut.h"
 
-        imath_half imath_half_createFromFloat (float f)
+        imath_half imath_half_create (float f)
     {
         imath_half h;
         uif x;

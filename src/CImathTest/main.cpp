@@ -21,7 +21,7 @@ main (int argc, char* argv[])
 {
     std::cout << "\ntesting type half:\n\n" << std::flush;
 
-    TEST (testHalfCreateFromFloat);
+    TEST (testHalfCreate);
     TEST (testHalfCopy);
 
     return 0;
