@@ -12,8 +12,12 @@
 #include <assert.h>
 #include <cstring>
 #include <iostream>
-#include <testHalf.h>
+#include <string.h>
 #include <vector>
+
+#define TEST(x)                                                                                    \
+    if (argc < 2 || !strcmp (argv[1], #x))                                                         \
+        x();
 
 using namespace std;
 
@@ -63,4 +67,15 @@ testHalfCopy()
     }
 
     cout << "ok\n\n" << flush;
+}
+
+int
+main (int argc, char* argv[])
+{
+    std::cout << "\ntesting type half:\n\n" << std::flush;
+
+    TEST (testHalfCreate);
+    TEST (testHalfCopy);
+
+    return 0;
 }
