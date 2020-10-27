@@ -6,18 +6,12 @@ static_assert (sizeof (IMATH_NAMESPACE::half) == sizeof (imath_half));
 
 extern "C"
 {
-    union half_CppOrC
-    {
-        IMATH_NAMESPACE::half cpp;
-        imath_half c;
-    };
-
     imath_half imath_half_create (float f)
     {
-        half_CppOrC h;
-        h.cpp = IMATH_NAMESPACE::half (f);
+        IMATH_NAMESPACE::half h (f);
+        imath_half* c_h = reinterpret_cast<imath_half*> (&h);
 
-        return h.c;
+        return *c_h;
     }
 
     imath_half imath_half_copy (const imath_half* h)
