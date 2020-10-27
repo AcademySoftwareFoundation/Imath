@@ -27,4 +27,11 @@ extern "C"
 
         return h_copy;
     }
+
+    float imath_half_toFloat (const imath_half* h)
+    {
+        const IMATH_NAMESPACE::half* cpp_h = reinterpret_cast<const IMATH_NAMESPACE::half*> (h);
+        float f (*cpp_h);
+        return f;
+    }
 }
