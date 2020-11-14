@@ -135,7 +135,7 @@ testQuatT ()
     //
 
     {
-	T t = 10 * Math<T>::sqrt (s);
+	T t = 10 * std::sqrt (s);
 
 	Quat<T> q;
 	q.setAxisAngle (Vec3<T> (0, 0, 1), t);
@@ -153,7 +153,7 @@ testQuatT ()
     }
 
     {
-	T t = 0.001 * Math<T>::sqrt (s);
+	T t = 0.001 * std::sqrt (s);
 
 	Quat<T> q;
 	q.setAxisAngle (Vec3<T> (0, 0, 1), t);

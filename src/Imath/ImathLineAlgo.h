@@ -257,8 +257,8 @@ rotatePoint (const Vec3<T> p, Line3<T> l, T angle)
     x.normalize();
     Vec3<T> y = (x % l.dir).normalize();
 
-    T cosangle = Math<T>::cos (angle);
-    T sinangle = Math<T>::sin (angle);
+    T cosangle = std::cos (angle);
+    T sinangle = std::sin (angle);
 
     Vec3<T> r = q + x * radius * cosangle + y * radius * sinangle;
 

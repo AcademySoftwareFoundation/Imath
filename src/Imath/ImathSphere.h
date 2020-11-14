@@ -134,7 +134,7 @@ Sphere3<T>::intersectT (const Line3<T>& line, T& t) const
     {
         // t0: (-B - sqrt(B^2 - 4AC)) / 2A  (A = 1)
 
-        T sqroot = Math<T>::sqrt (discr);
+        T sqroot = std::sqrt (discr);
         t        = (-B - sqroot) * T (0.5);
 
         if (t < 0.0)
