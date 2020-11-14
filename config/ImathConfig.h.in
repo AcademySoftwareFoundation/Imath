@@ -61,4 +61,27 @@
   #define IMATH_HOSTDEVICE
 #endif
 
+
+
+//
+// Some compilers define a special intrinsic to use in conditionals that can
+// speed up extremely performance-critical spots if the conditional is
+// usually (or rarely) is true.  You use it by replacing
+//     if (x) ...
+// with
+//     if (IMATH_LIKELY(x)) ...     // if you think x will usually be true
+// or
+//     if (IMATH_UNLIKELY(x)) ...   // if you think x will rarely be true
+//
+// Caveat: Programmers are notoriously bad at guessing this, so it should be
+// used only with thorough benchmarking.
+//
+#if defined(__GNUC__) || defined(__clang__) || defined(__INTEL_COMPILER)
+#    define IMATH_LIKELY(x) (__builtin_expect(bool(x), true))
+#    define IMATH_UNLIKELY(x) (__builtin_expect(bool(x), false))
+#else
+#    define IMATH_LIKELY(x) (x)
+#    define IMATH_UNLIKELY(x) (x)
+#endif
+
 #endif // INCLUDED_IMATH_CONFIG_H
