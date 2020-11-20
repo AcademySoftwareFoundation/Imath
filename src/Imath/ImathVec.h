@@ -210,11 +210,11 @@ template <class T> class Vec2
     IMATH_HOSTDEVICE constexpr T length2() const;
 
     IMATH_HOSTDEVICE const Vec2& normalize(); // modifies *this
-    IMATH_HOSTDEVICE const Vec2& normalizeExc();
+    const Vec2& normalizeExc();
     IMATH_HOSTDEVICE const Vec2& normalizeNonNull();
 
     IMATH_HOSTDEVICE Vec2<T> normalized() const; // does not modify *this
-    IMATH_HOSTDEVICE Vec2<T> normalizedExc() const;
+    Vec2<T> normalizedExc() const;
     IMATH_HOSTDEVICE Vec2<T> normalizedNonNull() const;
 
     //--------------------------------------------------------
@@ -286,13 +286,13 @@ template <class T> class Vec3
     // if w is zero.  The result depends on how the environment
     // handles floating-point exceptions.
     //
-    // The two-argument version thows an InfPointExc exception
+    // The two-argument version throws an InfPointExc exception
     // if w is zero or if division by w would overflow.
     //---------------------------------------------------------
 
     template <class S> IMATH_HOSTDEVICE explicit IMATH_CONSTEXPR14 Vec3 (const Vec4<S>& v);
     template <class S>
-    IMATH_HOSTDEVICE explicit IMATH_CONSTEXPR14 Vec3 (const Vec4<S>& v, InfException);
+    explicit IMATH_CONSTEXPR14 Vec3 (const Vec4<S>& v, InfException);
 
     //----------------------
     // Compatibility with Sb
@@ -406,11 +406,11 @@ template <class T> class Vec3
     IMATH_HOSTDEVICE constexpr T length2() const;
 
     IMATH_HOSTDEVICE const Vec3& normalize(); // modifies *this
-    IMATH_HOSTDEVICE const Vec3& normalizeExc();
+    const Vec3& normalizeExc();
     IMATH_HOSTDEVICE const Vec3& normalizeNonNull();
 
     IMATH_HOSTDEVICE Vec3<T> normalized() const; // does not modify *this
-    IMATH_HOSTDEVICE Vec3<T> normalizedExc() const;
+    Vec3<T> normalizedExc() const;
     IMATH_HOSTDEVICE Vec3<T> normalizedNonNull() const;
 
     //--------------------------------------------------------
@@ -573,11 +573,11 @@ template <class T> class Vec4
     IMATH_HOSTDEVICE constexpr T length2() const;
 
     IMATH_HOSTDEVICE const Vec4& normalize(); // modifies *this
-    IMATH_HOSTDEVICE const Vec4& normalizeExc();
+    const Vec4& normalizeExc();
     IMATH_HOSTDEVICE const Vec4& normalizeNonNull();
 
     IMATH_HOSTDEVICE Vec4<T> normalized() const; // does not modify *this
-    IMATH_HOSTDEVICE Vec4<T> normalizedExc() const;
+    Vec4<T> normalizedExc() const;
     IMATH_HOSTDEVICE Vec4<T> normalizedNonNull() const;
 
     //--------------------------------------------------------
