@@ -59,33 +59,74 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T> struct Math
 {
-    IMATH_HOSTDEVICE static T acos (T x) { return std::acos (x); }
-    IMATH_HOSTDEVICE static T asin (T x) { return std::asin (x); }
-    IMATH_HOSTDEVICE static T atan (T x) { return std::atan (x); }
-    IMATH_HOSTDEVICE static T atan2 (T x, T y) { return std::atan2 (x, y); }
-    IMATH_HOSTDEVICE static T cos (T x) { return std::cos (x); }
-    IMATH_HOSTDEVICE static T sin (T x) { return std::sin (x); }
-    IMATH_HOSTDEVICE static T tan (T x) { return std::tan (x); }
-    IMATH_HOSTDEVICE static T cosh (T x) { return std::cosh (x); }
-    IMATH_HOSTDEVICE static T sinh (T x) { return std::sinh (x); }
-    IMATH_HOSTDEVICE static T tanh (T x) { return std::tanh (x); }
-    IMATH_HOSTDEVICE static T exp (T x) { return std::exp (x); }
-    IMATH_HOSTDEVICE static T log (T x) { return std::log (x); }
-    IMATH_HOSTDEVICE static T log10 (T x) { return std::log10 (x); }
-    IMATH_HOSTDEVICE static T modf (T x, T* iptr)
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T acos (T x) { return std::acos (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T asin (T x) { return std::asin (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T atan (T x) { return std::atan (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T atan2 (T x, T y) { return std::atan2 (x, y); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T cos (T x) { return std::cos (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T sin (T x) { return std::sin (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T tan (T x) { return std::tan (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T cosh (T x) { return std::cosh (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T sinh (T x) { return std::sinh (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T tanh (T x) { return std::tanh (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T exp (T x) { return std::exp (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T log (T x) { return std::log (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T log10 (T x) { return std::log10 (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T modf (T x, T* iptr)
     {
         T ival;
         T rval (std::modf (T (x), &ival));
         *iptr = ival;
         return rval;
     }
-    IMATH_HOSTDEVICE static T pow (T x, T y) { return std::pow (x, y); }
-    IMATH_HOSTDEVICE static T sqrt (T x) { return std::sqrt (x); }
-    IMATH_HOSTDEVICE static T ceil (T x) { return std::ceil (x); }
-    IMATH_HOSTDEVICE static T fabs (T x) { return std::fabs (x); }
-    IMATH_HOSTDEVICE static T floor (T x) { return std::floor (x); }
-    IMATH_HOSTDEVICE static T fmod (T x, T y) { return std::fmod (x, y); }
-    IMATH_HOSTDEVICE static T hypot (T x, T y) { return std::hypot (x, y); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T pow (T x, T y) { return std::pow (x, y); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T sqrt (T x) { return std::sqrt (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T ceil (T x) { return std::ceil (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T fabs (T x) { return std::fabs (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T floor (T x) { return std::floor (x); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T fmod (T x, T y) { return std::fmod (x, y); }
+
+    IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
+    static T hypot (T x, T y) { return std::hypot (x, y); }
 };
 
 

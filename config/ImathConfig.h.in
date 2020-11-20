@@ -61,4 +61,18 @@
   #define IMATH_HOSTDEVICE
 #endif
 
+
+//
+// Simple way to mark things as deprecated
+//
+#if defined(__cplusplus) && (__cplusplus >= 201402L)
+# define IMATH_DEPRECATED(msg) [[deprecated(msg)]]
+#elif defined(_MSC_VER)
+# define IMATH_DEPRECATED(msg) __declspec(deprecated(msg))
+#elif defined(__GNUC__) || defined(__clang__)
+# define IMATH_DEPRECATED(msg) __attribute__((deprecated(msg)))
+#else
+# define IMATH_DEPRECATED(msg) /* unsupported on this platform */
+#endif
+
 #endif // INCLUDED_IMATH_CONFIG_H
