@@ -54,7 +54,7 @@ template <class T>
 void
 testLength2T()
 {
-    const T s = Math<T>::sqrt (limits<T>::smallest());
+    const T s = std::sqrt (limits<T>::smallest());
     const T e = 4 * limits<T>::epsilon();
 
     Vec2<T> v;
@@ -80,7 +80,7 @@ testLength2T()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t, t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
     v = Vec2<T> (-t, -t);
-    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * Math<T>::sqrt (2), t * e));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * std::sqrt (2), t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 
     t = s / (1 << 4);
@@ -92,7 +92,7 @@ testLength2T()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t, t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
     v = Vec2<T> (-t, -t);
-    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * Math<T>::sqrt (2), t * e));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * std::sqrt (2), t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 
     t = s / (1 << 20);
@@ -104,7 +104,7 @@ testLength2T()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t, t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
     v = Vec2<T> (-t, -t);
-    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * Math<T>::sqrt (2), t * e));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * std::sqrt (2), t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 }
 
@@ -112,7 +112,7 @@ template <class T>
 void
 testLength3T()
 {
-    const T s = Math<T>::sqrt (limits<T>::smallest());
+    const T s = std::sqrt (limits<T>::smallest());
     const T e = 4 * limits<T>::epsilon();
 
     Vec3<T> v;
@@ -130,11 +130,11 @@ testLength3T()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 
     v = Vec3<T> (1, -1, 1);
-    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), 1 * Math<T>::sqrt (3), e));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), 1 * std::sqrt (3), e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 
     v = Vec3<T> (1000, -1000, 1000);
-    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), 1000 * Math<T>::sqrt (3), 1000 * e));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), 1000 * std::sqrt (3), 1000 * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 
     T t = s * (1 << 4);
@@ -149,7 +149,7 @@ testLength3T()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t, t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
     v = Vec3<T> (-t, -t, -t);
-    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * Math<T>::sqrt (3), t * e));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * std::sqrt (3), t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 
     t = s / (1 << 4);
@@ -164,7 +164,7 @@ testLength3T()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t, t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
     v = Vec3<T> (-t, -t, -t);
-    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * Math<T>::sqrt (3), t * e));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * std::sqrt (3), t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 
     t = s / (1 << 20);
@@ -179,7 +179,7 @@ testLength3T()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t, t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
     v = Vec3<T> (-t, -t, -t);
-    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * Math<T>::sqrt (3), t * e));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (v.length(), t * std::sqrt (3), t * e));
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 }
 
@@ -187,7 +187,7 @@ template <class T>
 void
 testLength4T()
 {
-    const T s = Math<T>::sqrt (limits<T>::smallest());
+    const T s = std::sqrt (limits<T>::smallest());
     const T e = 4 * limits<T>::epsilon();
 
     Vec4<T> v;
