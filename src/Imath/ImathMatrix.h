@@ -2735,12 +2735,12 @@ Matrix33<T>::setScale (T s)
     x[2][0] = 0;
     x[2][1] = 0;
     x[2][2] = s;
-    // FIXME: The old code looked like this:
-    //    memset (x, 0, sizeof (x));
-    //    x[0][0] = s;
-    //    x[1][1] = s;
-    //    x[2][2] = 1;
-    // Why is the [2][2] component 1? That seems wrong.
+    // NOTE: The OpenEXR 2.x code looked made this matrix:
+    //    s 0 0
+    //    0 s 0
+    //    0 0 1
+    // This was deemed to be unexpected odd behavior, so beginning with
+    // Imath 3.0, we make a uniform 3D scale.
     return *this;
 }
 
