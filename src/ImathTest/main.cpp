@@ -49,8 +49,8 @@
 int
 main (int argc, char* argv[])
 {
-    std::cout << "\ntesting type half:\n\n" << std::flush;
-
+    // NB: If you add a test here, make sure to enumerate it in the
+    // CMakeLists.txt so it runs as part of the test suite
     TEST (testToFloat);
     TEST (testSize);
     TEST (testArithmetic);
@@ -84,6 +84,8 @@ main (int argc, char* argv[])
     TEST (testTinySVD);
     TEST (testJacobiEigenSolver);
     TEST (testFrustumTest);
+    // NB: If you add a test here, make sure to enumerate it in the
+    // CMakeLists.txt so it runs as part of the test suite
 
     return 0;
 }
