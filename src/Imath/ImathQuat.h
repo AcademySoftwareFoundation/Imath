@@ -347,7 +347,7 @@ template <class T>
 constexpr inline T
 Quat<T>::length() const
 {
-    return Math<T>::sqrt (r * r + (v ^ v));
+    return std::sqrt (r * r + (v ^ v));
 }
 
 template <class T>
@@ -439,12 +439,12 @@ angle4D (const Quat<T>& q1, const Quat<T>& q2)
     //
 
     Quat<T> d = q1 - q2;
-    T lengthD = Math<T>::sqrt (d ^ d);
+    T lengthD = std::sqrt (d ^ d);
 
     Quat<T> s = q1 + q2;
-    T lengthS = Math<T>::sqrt (s ^ s);
+    T lengthS = std::sqrt (s ^ s);
 
-    return 2 * Math<T>::atan2 (lengthD, lengthS);
+    return 2 * std::atan2 (lengthD, lengthS);
 }
 
 template <class T>
@@ -578,12 +578,12 @@ Quat<T>::log() const
     // Rendering Techniques by Watt and Watt, Page 366:
     //
 
-    T theta = Math<T>::acos (std::min (r, (T) 1.0));
+    T theta = std::acos (std::min (r, (T) 1.0));
 
     if (theta == 0)
         return Quat<T> (0, v);
 
-    T sintheta = Math<T>::sin (theta);
+    T sintheta = std::sin (theta);
 
     T k;
     if (abs (sintheta) < 1 && abs (theta) >= limits<T>::max() * abs (sintheta))
@@ -605,7 +605,7 @@ Quat<T>::exp() const
     //
 
     T theta    = v.length();
-    T sintheta = Math<T>::sin (theta);
+    T sintheta = std::sin (theta);
 
     T k;
     if (abs (theta) < 1 && abs (sintheta) >= limits<T>::max() * abs (theta))
@@ -613,7 +613,7 @@ Quat<T>::exp() const
     else
         k = sintheta / theta;
 
-    T costheta = Math<T>::cos (theta);
+    T costheta = std::cos (theta);
 
     return Quat<T> (costheta, v.x * k, v.y * k, v.z * k);
 }
@@ -622,7 +622,7 @@ template <class T>
 constexpr inline T
 Quat<T>::angle() const
 {
-    return 2 * Math<T>::atan2 (v.length(), r);
+    return 2 * std::atan2 (v.length(), r);
 }
 
 template <class T>
@@ -636,8 +636,8 @@ template <class T>
 IMATH_CONSTEXPR14 inline Quat<T>&
 Quat<T>::setAxisAngle (const Vec3<T>& axis, T radians)
 {
-    r = Math<T>::cos (radians / 2);
-    v = axis.normalized() * Math<T>::sin (radians / 2);
+    r = std::cos (radians / 2);
+    v = axis.normalized() * std::sin (radians / 2);
     return *this;
 }
 

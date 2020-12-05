@@ -4160,8 +4160,8 @@ IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setAxisAngle (const Vec3<S>& axis, S angle)
 {
     Vec3<S> unit (axis.normalized());
-    S sine   = Math<T>::sin (angle);
-    S cosine = Math<T>::cos (angle);
+    S sine   = std::sin (angle);
+    S cosine = std::cos (angle);
 
     x[0][0] = unit.x * unit.x * (1 - cosine) + cosine;
     x[0][1] = unit.x * unit.y * (1 - cosine) + unit.z * sine;
