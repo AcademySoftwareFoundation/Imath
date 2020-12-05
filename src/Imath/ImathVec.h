@@ -1029,15 +1029,15 @@ template <class T>
 IMATH_CONSTEXPR14 inline T
 Vec2<T>::lengthTiny() const
 {
-    T absX = (x >= T (0)) ? x : -x;
-    T absY = (y >= T (0)) ? y : -y;
+    T absX = std::abs(x);
+    T absY = std::abs(y);
 
     T max = absX;
 
     if (max < absY)
         max = absY;
 
-    if (max == T (0))
+    if (IMATH_UNLIKELY(max == T (0)))
         return T (0);
 
     //
@@ -1058,7 +1058,7 @@ Vec2<T>::length() const
 {
     T length2 = dot (*this);
 
-    if (length2 < T (2) * limits<T>::smallest())
+    if (IMATH_UNLIKELY(length2 < T (2) * limits<T>::smallest()))
         return lengthTiny();
 
     return std::sqrt (length2);
@@ -1077,7 +1077,7 @@ Vec2<T>::normalize()
 {
     T l = length();
 
-    if (l != T (0))
+    if (IMATH_LIKELY(l != T (0)))
     {
         //
         // Do not replace the divisions by l with multiplications by 1/l.
@@ -1098,7 +1098,7 @@ Vec2<T>::normalizeExc()
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY(l == T (0)))
         throw std::domain_error ("Cannot normalize null vector.");
 
     x /= l;
@@ -1122,7 +1122,7 @@ Vec2<T>::normalized() const
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY(l == T (0)))
         return Vec2 (T (0));
 
     return Vec2 (x / l, y / l);
@@ -1134,7 +1134,7 @@ Vec2<T>::normalizedExc() const
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY(l == T (0)))
         throw std::domain_error ("Cannot normalize null vector.");
 
     return Vec2 (x / l, y / l);
@@ -1506,7 +1506,7 @@ Vec3<T>::lengthTiny() const
     if (max < absZ)
         max = absZ;
 
-    if (max == T (0))
+    if (IMATH_UNLIKELY(max == T (0)))
         return T (0);
 
     //
@@ -1528,7 +1528,7 @@ Vec3<T>::length() const
 {
     T length2 = dot (*this);
 
-    if (length2 < T (2) * limits<T>::smallest())
+    if (IMATH_UNLIKELY(length2 < T (2) * limits<T>::smallest()))
         return lengthTiny();
 
     return std::sqrt (length2);
@@ -1547,7 +1547,7 @@ Vec3<T>::normalize()
 {
     T l = length();
 
-    if (l != T (0))
+    if (IMATH_LIKELY(l != T (0)))
     {
         //
         // Do not replace the divisions by l with multiplications by 1/l.
@@ -1569,7 +1569,7 @@ Vec3<T>::normalizeExc()
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY(l == T (0)))
         throw std::domain_error ("Cannot normalize null vector.");
 
     x /= l;
@@ -1595,7 +1595,7 @@ Vec3<T>::normalized() const
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY((l == T (0))))
         return Vec3 (T (0));
 
     return Vec3 (x / l, y / l, z / l);
@@ -1607,7 +1607,7 @@ Vec3<T>::normalizedExc() const
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY(l == T (0)))
         throw std::domain_error ("Cannot normalize null vector.");
 
     return Vec3 (x / l, y / l, z / l);
@@ -1890,7 +1890,7 @@ Vec4<T>::lengthTiny() const
     if (max < absW)
         max = absW;
 
-    if (max == T (0))
+    if (IMATH_UNLIKELY(max == T (0)))
         return T (0);
 
     //
@@ -1913,7 +1913,7 @@ Vec4<T>::length() const
 {
     T length2 = dot (*this);
 
-    if (length2 < T (2) * limits<T>::smallest())
+    if (IMATH_UNLIKELY(length2 < T (2) * limits<T>::smallest()))
         return lengthTiny();
 
     return std::sqrt (length2);
@@ -1932,7 +1932,7 @@ Vec4<T>::normalize()
 {
     T l = length();
 
-    if (l != T (0))
+    if (IMATH_LIKELY(l != T (0)))
     {
         //
         // Do not replace the divisions by l with multiplications by 1/l.
@@ -1955,7 +1955,7 @@ Vec4<T>::normalizeExc()
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY(l == T (0)))
         throw std::domain_error ("Cannot normalize null vector.");
 
     x /= l;
@@ -1983,7 +1983,7 @@ Vec4<T>::normalized() const
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY(l == T (0)))
         return Vec4 (T (0));
 
     return Vec4 (x / l, y / l, z / l, w / l);
@@ -1995,7 +1995,7 @@ Vec4<T>::normalizedExc() const
 {
     T l = length();
 
-    if (l == T (0))
+    if (IMATH_UNLIKELY(l == T (0)))
         throw std::domain_error ("Cannot normalize null vector.");
 
     return Vec4 (x / l, y / l, z / l, w / l);
