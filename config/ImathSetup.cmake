@@ -6,6 +6,11 @@ include(GNUInstallDirs)
 ########################
 ## Target configuration
 
+if(NOT "${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
+  set(IMATH_IS_SUBPROJECT ON)
+  message(NOTICE "Imath is configuring as a cmake sub project")
+endif()
+
 # This is primarily for the halfFunction code that enables a stack
 # object (if you enable this) that contains a LUT of the function
 option(IMATH_ENABLE_LARGE_STACK "Enables code to take advantage of large stack support"     OFF)

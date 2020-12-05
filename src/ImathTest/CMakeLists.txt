@@ -40,5 +40,46 @@ target_link_libraries(ImathTest Imath::Imath)
 set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
   )
-add_test(NAME Imath COMMAND $<TARGET_FILE:ImathTest>)
+
+function(DEFINE_IMATH_TESTS)
+  foreach(curtest IN LISTS ARGN)
+    add_test(NAME Imath.${curtest} COMMAND $<TARGET_FILE:ImathTest> ${curtest})
+  endforeach()
+endfunction()
+
+define_imath_tests(
+  testToFloat
+  testSize
+  testArithmetic
+  testNormalizedConversionError
+  testDenormalizedConversionError
+  testRoundingError
+  testBitPatterns
+  testClassification
+  testLimits
+  testFunction
+  testVec
+  testColor
+  testShear
+  testMatrix
+  testMiscMatrixAlgo
+  testRoots
+  testFun
+  testInvert
+  testInterval
+  testFrustum
+  testRandom
+  testExtractEuler
+  testExtractSHRT
+  testQuat
+  testQuatSetRotation
+  testQuatSlerp
+  testLineAlgo
+  testBoxAlgo
+  testBox
+  testProcrustes
+  testTinySVD
+  testJacobiEigenSolver
+  testFrustumTest
+)
 
