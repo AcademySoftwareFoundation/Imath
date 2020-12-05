@@ -1106,7 +1106,14 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a)
 
 template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const T a[2][2])
 {
-    memcpy (x, a, sizeof (x));
+    // Function calls and aliasing issues can inhibit vectorization versus
+    // straight assignment of data members, so instead of this:
+    //     memcpy (x, a, sizeof (x));
+    // we do this:
+    x[0][0] = a[0][0];
+    x[0][1] = a[0][1];
+    x[1][0] = a[1][0];
+    x[1][1] = a[1][1];
 }
 
 template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a, T b, T c, T d)
@@ -1119,7 +1126,14 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a, T b, T c
 
 template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const Matrix22& v)
 {
-    memcpy (x, v.x, sizeof (x));
+    // Function calls and aliasing issues can inhibit vectorization versus
+    // straight assignment of data members, so we don't do this:
+    //     memcpy (x, v.x, sizeof (x));
+    // we do this:
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
 }
 
 template <class T>
@@ -1136,7 +1150,14 @@ template <class T>
 IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator= (const Matrix22& v)
 {
-    memcpy (x, v.x, sizeof (x));
+    // Function calls and aliasing issues can inhibit vectorization versus
+    // straight assignment of data members, so we don't do this:
+    //     memcpy (x, v.x, sizeof (x));
+    // we do this:
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
     return *this;
 }
 
@@ -1170,17 +1191,10 @@ template <class S>
 inline void
 Matrix22<T>::getValue (Matrix22<S>& v) const
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (v.x, x, sizeof (x));
-    }
-    else
-    {
-        v.x[0][0] = x[0][0];
-        v.x[0][1] = x[0][1];
-        v.x[1][0] = x[1][0];
-        v.x[1][1] = x[1][1];
-    }
+    v.x[0][0] = x[0][0];
+    v.x[0][1] = x[0][1];
+    v.x[1][0] = x[1][0];
+    v.x[1][1] = x[1][1];
 }
 
 template <class T>
@@ -1188,18 +1202,10 @@ template <class S>
 IMATH_CONSTEXPR14 inline Matrix22<T>&
 Matrix22<T>::setValue (const Matrix22<S>& v)
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (x, v.x, sizeof (x));
-    }
-    else
-    {
-        x[0][0] = v.x[0][0];
-        x[0][1] = v.x[0][1];
-        x[1][0] = v.x[1][0];
-        x[1][1] = v.x[1][1];
-    }
-
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
     return *this;
 }
 
@@ -1208,18 +1214,10 @@ template <class S>
 IMATH_CONSTEXPR14 inline Matrix22<T>&
 Matrix22<T>::setTheMatrix (const Matrix22<S>& v)
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (x, v.x, sizeof (x));
-    }
-    else
-    {
-        x[0][0] = v.x[0][0];
-        x[0][1] = v.x[0][1];
-        x[1][0] = v.x[1][0];
-        x[1][1] = v.x[1][1];
-    }
-
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
     return *this;
 }
 
@@ -1422,8 +1420,8 @@ Matrix22<T>::multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const
 {
     S a, b;
 
-    a = src[0] * x[0][0] + src[1] * x[1][0];
-    b = src[0] * x[0][1] + src[1] * x[1][1];
+    a = src.x * x[0][0] + src.y * x[1][0];
+    b = src.x * x[0][1] + src.y * x[1][1];
 
     dst.x = a;
     dst.y = b;
@@ -1618,10 +1616,10 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::setScale (const Vec2<S>& s)
 {
-    x[0][0] = s[0];
+    x[0][0] = s.x;
     x[0][1] = static_cast<T> (0);
     x[1][0] = static_cast<T> (0);
-    x[1][1] = s[1];
+    x[1][1] = s.y;
 
     return *this;
 }
@@ -1632,11 +1630,11 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::scale (const Vec2<S>& s)
 {
-    x[0][0] *= s[0];
-    x[0][1] *= s[0];
+    x[0][0] *= s.x;
+    x[0][1] *= s.x;
 
-    x[1][0] *= s[1];
-    x[1][1] *= s[1];
+    x[1][0] *= s.y;
+    x[1][1] *= s.y;
 
     return *this;
 }
@@ -1660,14 +1658,17 @@ Matrix33<T>::operator[] (int i) const
 }
 
 template <class T>
-inline
-
-    IMATH_CONSTEXPR14
-    Matrix33<T>::Matrix33()
+inline IMATH_CONSTEXPR14
+Matrix33<T>::Matrix33()
 {
-    memset (x, 0, sizeof (x));
     x[0][0] = 1;
+    x[0][1] = 0;
+    x[0][2] = 0;
+    x[1][0] = 0;
     x[1][1] = 1;
+    x[1][2] = 0;
+    x[2][0] = 0;
+    x[2][1] = 0;
     x[2][2] = 1;
 }
 
@@ -1686,7 +1687,19 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a)
 
 template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const T a[3][3])
 {
-    memcpy (x, a, sizeof (x));
+    // Function calls and aliasing issues can inhibit vectorization versus
+    // straight assignment of data members, so instead of this:
+    //     memcpy (x, a, sizeof (x));
+    // we do this:
+    x[0][0] = a[0][0];
+    x[0][1] = a[0][1];
+    x[0][2] = a[0][2];
+    x[1][0] = a[1][0];
+    x[1][1] = a[1][1];
+    x[1][2] = a[1][2];
+    x[2][0] = a[2][0];
+    x[2][1] = a[2][1];
+    x[2][2] = a[2][2];
 }
 
 template <class T>
@@ -1706,7 +1719,19 @@ IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a, T b, T c, T d, T e, T f, T 
 
 template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix33& v)
 {
-    memcpy (x, v.x, sizeof (x));
+    // Function calls and aliasing issues can inhibit vectorization versus
+    // straight assignment of data members, so instead of this:
+    //     memcpy (x, v.x, sizeof (x));
+    // we do this:
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[0][2] = v.x[0][2];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
+    x[1][2] = v.x[1][2];
+    x[2][0] = v.x[2][0];
+    x[2][1] = v.x[2][1];
+    x[2][2] = v.x[2][2];
 }
 
 template <class T>
@@ -1730,7 +1755,19 @@ template <class T>
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator= (const Matrix33& v)
 {
-    memcpy (x, v.x, sizeof (x));
+    // Function calls and aliasing issues can inhibit vectorization versus
+    // straight assignment of data members, so instead of this:
+    //     memcpy (x, v.x, sizeof (x));
+    // we do this:
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[0][2] = v.x[0][2];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
+    x[1][2] = v.x[1][2];
+    x[2][0] = v.x[2][0];
+    x[2][1] = v.x[2][1];
+    x[2][2] = v.x[2][2];
     return *this;
 }
 
@@ -1770,22 +1807,15 @@ template <class S>
 inline void
 Matrix33<T>::getValue (Matrix33<S>& v) const
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (v.x, x, sizeof (x));
-    }
-    else
-    {
-        v.x[0][0] = x[0][0];
-        v.x[0][1] = x[0][1];
-        v.x[0][2] = x[0][2];
-        v.x[1][0] = x[1][0];
-        v.x[1][1] = x[1][1];
-        v.x[1][2] = x[1][2];
-        v.x[2][0] = x[2][0];
-        v.x[2][1] = x[2][1];
-        v.x[2][2] = x[2][2];
-    }
+    v.x[0][0] = x[0][0];
+    v.x[0][1] = x[0][1];
+    v.x[0][2] = x[0][2];
+    v.x[1][0] = x[1][0];
+    v.x[1][1] = x[1][1];
+    v.x[1][2] = x[1][2];
+    v.x[2][0] = x[2][0];
+    v.x[2][1] = x[2][1];
+    v.x[2][2] = x[2][2];
 }
 
 template <class T>
@@ -1793,23 +1823,15 @@ template <class S>
 IMATH_CONSTEXPR14 inline Matrix33<T>&
 Matrix33<T>::setValue (const Matrix33<S>& v)
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (x, v.x, sizeof (x));
-    }
-    else
-    {
-        x[0][0] = v.x[0][0];
-        x[0][1] = v.x[0][1];
-        x[0][2] = v.x[0][2];
-        x[1][0] = v.x[1][0];
-        x[1][1] = v.x[1][1];
-        x[1][2] = v.x[1][2];
-        x[2][0] = v.x[2][0];
-        x[2][1] = v.x[2][1];
-        x[2][2] = v.x[2][2];
-    }
-
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[0][2] = v.x[0][2];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
+    x[1][2] = v.x[1][2];
+    x[2][0] = v.x[2][0];
+    x[2][1] = v.x[2][1];
+    x[2][2] = v.x[2][2];
     return *this;
 }
 
@@ -1818,23 +1840,15 @@ template <class S>
 IMATH_CONSTEXPR14 inline Matrix33<T>&
 Matrix33<T>::setTheMatrix (const Matrix33<S>& v)
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (x, v.x, sizeof (x));
-    }
-    else
-    {
-        x[0][0] = v.x[0][0];
-        x[0][1] = v.x[0][1];
-        x[0][2] = v.x[0][2];
-        x[1][0] = v.x[1][0];
-        x[1][1] = v.x[1][1];
-        x[1][2] = v.x[1][2];
-        x[2][0] = v.x[2][0];
-        x[2][1] = v.x[2][1];
-        x[2][2] = v.x[2][2];
-    }
-
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[0][2] = v.x[0][2];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
+    x[1][2] = v.x[1][2];
+    x[2][0] = v.x[2][0];
+    x[2][1] = v.x[2][1];
+    x[2][2] = v.x[2][2];
     return *this;
 }
 
@@ -1842,9 +1856,14 @@ template <class T>
 inline void
 Matrix33<T>::makeIdentity()
 {
-    memset (x, 0, sizeof (x));
     x[0][0] = 1;
+    x[0][1] = 0;
+    x[0][2] = 0;
+    x[1][0] = 0;
     x[1][1] = 1;
+    x[1][2] = 0;
+    x[2][0] = 0;
+    x[2][1] = 0;
     x[2][2] = 1;
 }
 
@@ -2063,12 +2082,21 @@ template <class T>
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator*= (const Matrix33<T>& v)
 {
-    Matrix33 tmp (T (0));
+    // Avoid initializing with 0 values before immediately overwriting them,
+    // and unroll all loops for the best autovectorization.
+    Matrix33 tmp(Imath::UNINITIALIZED);
 
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            for (int k = 0; k < 3; k++)
-                tmp.x[i][j] += x[i][k] * v.x[k][j];
+    tmp.x[0][0] = x[0][0] * v.x[0][0] + x[0][1] * v.x[1][0] + x[0][2] * v.x[2][0];
+    tmp.x[0][1] = x[0][0] * v.x[0][1] + x[0][1] * v.x[1][1] + x[0][2] * v.x[2][1];
+    tmp.x[0][2] = x[0][0] * v.x[0][2] + x[0][1] * v.x[1][2] + x[0][2] * v.x[2][2];
+
+    tmp.x[1][0] = x[1][0] * v.x[0][0] + x[1][1] * v.x[1][0] + x[1][2] * v.x[2][0];
+    tmp.x[1][1] = x[1][0] * v.x[0][1] + x[1][1] * v.x[1][1] + x[1][2] * v.x[2][1];
+    tmp.x[1][2] = x[1][0] * v.x[0][2] + x[1][1] * v.x[1][2] + x[1][2] * v.x[2][2];
+
+    tmp.x[2][0] = x[2][0] * v.x[0][0] + x[2][1] * v.x[1][0] + x[2][2] * v.x[2][0];
+    tmp.x[2][1] = x[2][0] * v.x[0][1] + x[2][1] * v.x[1][1] + x[2][2] * v.x[2][1];
+    tmp.x[2][2] = x[2][0] * v.x[0][2] + x[2][1] * v.x[1][2] + x[2][2] * v.x[2][2];
 
     *this = tmp;
     return *this;
@@ -2078,12 +2106,21 @@ template <class T>
 IMATH_CONSTEXPR14 inline Matrix33<T>
 Matrix33<T>::operator* (const Matrix33<T>& v) const
 {
-    Matrix33 tmp (T (0));
+    // Avoid initializing with 0 values before immediately overwriting them,
+    // and unroll all loops for the best autovectorization.
+    Matrix33 tmp(Imath::UNINITIALIZED);
 
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            for (int k = 0; k < 3; k++)
-                tmp.x[i][j] += x[i][k] * v.x[k][j];
+    tmp.x[0][0] = x[0][0] * v.x[0][0] + x[0][1] * v.x[1][0] + x[0][2] * v.x[2][0];
+    tmp.x[0][1] = x[0][0] * v.x[0][1] + x[0][1] * v.x[1][1] + x[0][2] * v.x[2][1];
+    tmp.x[0][2] = x[0][0] * v.x[0][2] + x[0][1] * v.x[1][2] + x[0][2] * v.x[2][2];
+
+    tmp.x[1][0] = x[1][0] * v.x[0][0] + x[1][1] * v.x[1][0] + x[1][2] * v.x[2][0];
+    tmp.x[1][1] = x[1][0] * v.x[0][1] + x[1][1] * v.x[1][1] + x[1][2] * v.x[2][1];
+    tmp.x[1][2] = x[1][0] * v.x[0][2] + x[1][1] * v.x[1][2] + x[1][2] * v.x[2][2];
+
+    tmp.x[2][0] = x[2][0] * v.x[0][0] + x[2][1] * v.x[1][0] + x[2][2] * v.x[2][0];
+    tmp.x[2][1] = x[2][0] * v.x[0][1] + x[2][1] * v.x[1][1] + x[2][2] * v.x[2][1];
+    tmp.x[2][2] = x[2][0] * v.x[0][2] + x[2][1] * v.x[1][2] + x[2][2] * v.x[2][2];
 
     return tmp;
 }
@@ -2095,9 +2132,9 @@ Matrix33<T>::multVecMatrix (const Vec2<S>& src, Vec2<S>& dst) const
 {
     S a, b, w;
 
-    a = src[0] * x[0][0] + src[1] * x[1][0] + x[2][0];
-    b = src[0] * x[0][1] + src[1] * x[1][1] + x[2][1];
-    w = src[0] * x[0][2] + src[1] * x[1][2] + x[2][2];
+    a = src.x * x[0][0] + src.y * x[1][0] + x[2][0];
+    b = src.x * x[0][1] + src.y * x[1][1] + x[2][1];
+    w = src.x * x[0][2] + src.y * x[1][2] + x[2][2];
 
     dst.x = a / w;
     dst.y = b / w;
@@ -2110,8 +2147,8 @@ Matrix33<T>::multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const
 {
     S a, b;
 
-    a = src[0] * x[0][0] + src[1] * x[1][0];
-    b = src[0] * x[0][1] + src[1] * x[1][1];
+    a = src.x * x[0][0] + src.y * x[1][0];
+    b = src.x * x[0][1] + src.y * x[1][1];
 
     dst.x = a;
     dst.y = b;
@@ -2689,11 +2726,21 @@ template <class T>
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setScale (T s)
 {
-    memset (x, 0, sizeof (x));
     x[0][0] = s;
+    x[0][1] = 0;
+    x[0][2] = 0;
+    x[1][0] = 0;
     x[1][1] = s;
-    x[2][2] = 1;
-
+    x[1][2] = 0;
+    x[2][0] = 0;
+    x[2][1] = 0;
+    x[2][2] = s;
+    // NOTE: The OpenEXR 2.x code looked made this matrix:
+    //    s 0 0
+    //    0 s 0
+    //    0 0 1
+    // This was deemed to be unexpected odd behavior, so beginning with
+    // Imath 3.0, we make a uniform 3D scale.
     return *this;
 }
 
@@ -2702,11 +2749,15 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setScale (const Vec2<S>& s)
 {
-    memset (x, 0, sizeof (x));
-    x[0][0] = s[0];
-    x[1][1] = s[1];
+    x[0][0] = s.x;
+    x[0][1] = 0;
+    x[0][2] = 0;
+    x[1][0] = 0;
+    x[1][1] = s.y;
+    x[1][2] = 0;
+    x[2][0] = 0;
+    x[2][1] = 0;
     x[2][2] = 1;
-
     return *this;
 }
 
@@ -2715,13 +2766,13 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::scale (const Vec2<S>& s)
 {
-    x[0][0] *= s[0];
-    x[0][1] *= s[0];
-    x[0][2] *= s[0];
+    x[0][0] *= s.x;
+    x[0][1] *= s.x;
+    x[0][2] *= s.x;
 
-    x[1][0] *= s[1];
-    x[1][1] *= s[1];
-    x[1][2] *= s[1];
+    x[1][0] *= s.y;
+    x[1][1] *= s.y;
+    x[1][2] *= s.y;
 
     return *this;
 }
@@ -2739,8 +2790,8 @@ Matrix33<T>::setTranslation (const Vec2<S>& t)
     x[1][1] = 1;
     x[1][2] = 0;
 
-    x[2][0] = t[0];
-    x[2][1] = t[1];
+    x[2][0] = t.x;
+    x[2][1] = t.y;
     x[2][2] = 1;
 
     return *this;
@@ -2758,9 +2809,9 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::translate (const Vec2<S>& t)
 {
-    x[2][0] += t[0] * x[0][0] + t[1] * x[1][0];
-    x[2][1] += t[0] * x[0][1] + t[1] * x[1][1];
-    x[2][2] += t[0] * x[0][2] + t[1] * x[1][2];
+    x[2][0] += t.x * x[0][0] + t.y * x[1][0];
+    x[2][1] += t.x * x[0][1] + t.y * x[1][1];
+    x[2][2] += t.x * x[0][2] + t.y * x[1][2];
 
     return *this;
 }
@@ -2791,10 +2842,10 @@ IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setShear (const Vec2<S>& h)
 {
     x[0][0] = 1;
-    x[0][1] = h[1];
+    x[0][1] = h.y;
     x[0][2] = 0;
 
-    x[1][0] = h[0];
+    x[1][0] = h.x;
     x[1][1] = 1;
     x[1][2] = 0;
 
@@ -2830,13 +2881,13 @@ Matrix33<T>::shear (const Vec2<S>& h)
 {
     Matrix33<T> P (*this);
 
-    x[0][0] = P[0][0] + h[1] * P[1][0];
-    x[0][1] = P[0][1] + h[1] * P[1][1];
-    x[0][2] = P[0][2] + h[1] * P[1][2];
+    x[0][0] = P[0][0] + h.y * P[1][0];
+    x[0][1] = P[0][1] + h.y * P[1][1];
+    x[0][2] = P[0][2] + h.y * P[1][2];
 
-    x[1][0] = P[1][0] + h[0] * P[0][0];
-    x[1][1] = P[1][1] + h[0] * P[0][1];
-    x[1][2] = P[1][2] + h[0] * P[0][2];
+    x[1][0] = P[1][0] + h.x * P[0][0];
+    x[1][1] = P[1][1] + h.x * P[0][1];
+    x[1][2] = P[1][2] + h.x * P[0][2];
 
     return *this;
 }
@@ -2861,10 +2912,21 @@ Matrix44<T>::operator[] (int i) const
 
 template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44()
 {
-    memset (x, 0, sizeof (x));
     x[0][0] = 1;
+    x[0][1] = 0;
+    x[0][2] = 0;
+    x[0][3] = 0;
+    x[1][0] = 0;
     x[1][1] = 1;
+    x[1][2] = 0;
+    x[1][3] = 0;
+    x[2][0] = 0;
+    x[2][1] = 0;
     x[2][2] = 1;
+    x[2][3] = 0;
+    x[3][0] = 0;
+    x[3][1] = 0;
+    x[3][2] = 0;
     x[3][3] = 1;
 }
 
@@ -2890,7 +2952,22 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (T a)
 
 template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const T a[4][4])
 {
-    memcpy (x, a, sizeof (x));
+    x[0][0] = a[0][0];
+    x[0][1] = a[0][1];
+    x[0][2] = a[0][2];
+    x[0][3] = a[0][3];
+    x[1][0] = a[1][0];
+    x[1][1] = a[1][1];
+    x[1][2] = a[1][2];
+    x[1][3] = a[1][3];
+    x[2][0] = a[2][0];
+    x[2][1] = a[2][1];
+    x[2][2] = a[2][2];
+    x[2][3] = a[2][3];
+    x[3][0] = a[3][0];
+    x[3][1] = a[3][1];
+    x[3][2] = a[3][2];
+    x[3][3] = a[3][3];
 }
 
 template <class T>
@@ -2929,9 +3006,9 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (Matrix33<T> r
     x[2][1] = r[2][1];
     x[2][2] = r[2][2];
     x[2][3] = 0;
-    x[3][0] = t[0];
-    x[3][1] = t[1];
-    x[3][2] = t[2];
+    x[3][0] = t.x;
+    x[3][1] = t.y;
+    x[3][2] = t.z;
     x[3][3] = 1;
 }
 
@@ -3042,29 +3119,22 @@ template <class S>
 inline void
 Matrix44<T>::getValue (Matrix44<S>& v) const
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (v.x, x, sizeof (x));
-    }
-    else
-    {
-        v.x[0][0] = x[0][0];
-        v.x[0][1] = x[0][1];
-        v.x[0][2] = x[0][2];
-        v.x[0][3] = x[0][3];
-        v.x[1][0] = x[1][0];
-        v.x[1][1] = x[1][1];
-        v.x[1][2] = x[1][2];
-        v.x[1][3] = x[1][3];
-        v.x[2][0] = x[2][0];
-        v.x[2][1] = x[2][1];
-        v.x[2][2] = x[2][2];
-        v.x[2][3] = x[2][3];
-        v.x[3][0] = x[3][0];
-        v.x[3][1] = x[3][1];
-        v.x[3][2] = x[3][2];
-        v.x[3][3] = x[3][3];
-    }
+    v.x[0][0] = x[0][0];
+    v.x[0][1] = x[0][1];
+    v.x[0][2] = x[0][2];
+    v.x[0][3] = x[0][3];
+    v.x[1][0] = x[1][0];
+    v.x[1][1] = x[1][1];
+    v.x[1][2] = x[1][2];
+    v.x[1][3] = x[1][3];
+    v.x[2][0] = x[2][0];
+    v.x[2][1] = x[2][1];
+    v.x[2][2] = x[2][2];
+    v.x[2][3] = x[2][3];
+    v.x[3][0] = x[3][0];
+    v.x[3][1] = x[3][1];
+    v.x[3][2] = x[3][2];
+    v.x[3][3] = x[3][3];
 }
 
 template <class T>
@@ -3072,30 +3142,22 @@ template <class S>
 IMATH_CONSTEXPR14 inline Matrix44<T>&
 Matrix44<T>::setValue (const Matrix44<S>& v)
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (x, v.x, sizeof (x));
-    }
-    else
-    {
-        x[0][0] = v.x[0][0];
-        x[0][1] = v.x[0][1];
-        x[0][2] = v.x[0][2];
-        x[0][3] = v.x[0][3];
-        x[1][0] = v.x[1][0];
-        x[1][1] = v.x[1][1];
-        x[1][2] = v.x[1][2];
-        x[1][3] = v.x[1][3];
-        x[2][0] = v.x[2][0];
-        x[2][1] = v.x[2][1];
-        x[2][2] = v.x[2][2];
-        x[2][3] = v.x[2][3];
-        x[3][0] = v.x[3][0];
-        x[3][1] = v.x[3][1];
-        x[3][2] = v.x[3][2];
-        x[3][3] = v.x[3][3];
-    }
-
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[0][2] = v.x[0][2];
+    x[0][3] = v.x[0][3];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
+    x[1][2] = v.x[1][2];
+    x[1][3] = v.x[1][3];
+    x[2][0] = v.x[2][0];
+    x[2][1] = v.x[2][1];
+    x[2][2] = v.x[2][2];
+    x[2][3] = v.x[2][3];
+    x[3][0] = v.x[3][0];
+    x[3][1] = v.x[3][1];
+    x[3][2] = v.x[3][2];
+    x[3][3] = v.x[3][3];
     return *this;
 }
 
@@ -3104,30 +3166,22 @@ template <class S>
 IMATH_CONSTEXPR14 inline Matrix44<T>&
 Matrix44<T>::setTheMatrix (const Matrix44<S>& v)
 {
-    if (isSameType<S, T>::value)
-    {
-        memcpy (x, v.x, sizeof (x));
-    }
-    else
-    {
-        x[0][0] = v.x[0][0];
-        x[0][1] = v.x[0][1];
-        x[0][2] = v.x[0][2];
-        x[0][3] = v.x[0][3];
-        x[1][0] = v.x[1][0];
-        x[1][1] = v.x[1][1];
-        x[1][2] = v.x[1][2];
-        x[1][3] = v.x[1][3];
-        x[2][0] = v.x[2][0];
-        x[2][1] = v.x[2][1];
-        x[2][2] = v.x[2][2];
-        x[2][3] = v.x[2][3];
-        x[3][0] = v.x[3][0];
-        x[3][1] = v.x[3][1];
-        x[3][2] = v.x[3][2];
-        x[3][3] = v.x[3][3];
-    }
-
+    x[0][0] = v.x[0][0];
+    x[0][1] = v.x[0][1];
+    x[0][2] = v.x[0][2];
+    x[0][3] = v.x[0][3];
+    x[1][0] = v.x[1][0];
+    x[1][1] = v.x[1][1];
+    x[1][2] = v.x[1][2];
+    x[1][3] = v.x[1][3];
+    x[2][0] = v.x[2][0];
+    x[2][1] = v.x[2][1];
+    x[2][2] = v.x[2][2];
+    x[2][3] = v.x[2][3];
+    x[3][0] = v.x[3][0];
+    x[3][1] = v.x[3][1];
+    x[3][2] = v.x[3][2];
+    x[3][3] = v.x[3][3];
     return *this;
 }
 
@@ -3135,10 +3189,21 @@ template <class T>
 inline void
 Matrix44<T>::makeIdentity()
 {
-    memset (x, 0, sizeof (x));
     x[0][0] = 1;
+    x[0][1] = 0;
+    x[0][2] = 0;
+    x[0][3] = 0;
+    x[1][0] = 0;
     x[1][1] = 1;
+    x[1][2] = 0;
+    x[1][3] = 0;
+    x[2][0] = 0;
+    x[2][1] = 0;
     x[2][2] = 1;
+    x[2][3] = 0;
+    x[3][0] = 0;
+    x[3][1] = 0;
+    x[3][2] = 0;
     x[3][3] = 1;
 }
 
@@ -3508,10 +3573,10 @@ Matrix44<T>::multVecMatrix (const Vec3<S>& src, Vec3<S>& dst) const
 {
     S a, b, c, w;
 
-    a = src[0] * x[0][0] + src[1] * x[1][0] + src[2] * x[2][0] + x[3][0];
-    b = src[0] * x[0][1] + src[1] * x[1][1] + src[2] * x[2][1] + x[3][1];
-    c = src[0] * x[0][2] + src[1] * x[1][2] + src[2] * x[2][2] + x[3][2];
-    w = src[0] * x[0][3] + src[1] * x[1][3] + src[2] * x[2][3] + x[3][3];
+    a = src.x * x[0][0] + src.y * x[1][0] + src.z * x[2][0] + x[3][0];
+    b = src.x * x[0][1] + src.y * x[1][1] + src.z * x[2][1] + x[3][1];
+    c = src.x * x[0][2] + src.y * x[1][2] + src.z * x[2][2] + x[3][2];
+    w = src.x * x[0][3] + src.y * x[1][3] + src.z * x[2][3] + x[3][3];
 
     dst.x = a / w;
     dst.y = b / w;
@@ -3525,9 +3590,9 @@ Matrix44<T>::multDirMatrix (const Vec3<S>& src, Vec3<S>& dst) const
 {
     S a, b, c;
 
-    a = src[0] * x[0][0] + src[1] * x[1][0] + src[2] * x[2][0];
-    b = src[0] * x[0][1] + src[1] * x[1][1] + src[2] * x[2][1];
-    c = src[0] * x[0][2] + src[1] * x[1][2] + src[2] * x[2][2];
+    a = src.x * x[0][0] + src.y * x[1][0] + src.z * x[2][0];
+    b = src.x * x[0][1] + src.y * x[1][1] + src.z * x[2][1];
+    c = src.x * x[0][2] + src.y * x[1][2] + src.z * x[2][2];
 
     dst.x = a;
     dst.y = b;
@@ -4058,13 +4123,13 @@ Matrix44<T>::setEulerAngles (const Vec3<S>& r)
 {
     S cos_rz, sin_rz, cos_ry, sin_ry, cos_rx, sin_rx;
 
-    cos_rz = cos ((T) r[2]);
-    cos_ry = cos ((T) r[1]);
-    cos_rx = cos ((T) r[0]);
+    cos_rz = cos ((T) r.z);
+    cos_ry = cos ((T) r.y);
+    cos_rx = cos ((T) r.x);
 
-    sin_rz = sin ((T) r[2]);
-    sin_ry = sin ((T) r[1]);
-    sin_rx = sin ((T) r[0]);
+    sin_rz = sin ((T) r.z);
+    sin_ry = sin ((T) r.y);
+    sin_rx = sin ((T) r.x);
 
     x[0][0] = cos_rz * cos_ry;
     x[0][1] = sin_rz * cos_ry;
@@ -4098,19 +4163,19 @@ Matrix44<T>::setAxisAngle (const Vec3<S>& axis, S angle)
     S sine   = std::sin (angle);
     S cosine = std::cos (angle);
 
-    x[0][0] = unit[0] * unit[0] * (1 - cosine) + cosine;
-    x[0][1] = unit[0] * unit[1] * (1 - cosine) + unit[2] * sine;
-    x[0][2] = unit[0] * unit[2] * (1 - cosine) - unit[1] * sine;
+    x[0][0] = unit.x * unit.x * (1 - cosine) + cosine;
+    x[0][1] = unit.x * unit.y * (1 - cosine) + unit.z * sine;
+    x[0][2] = unit.x * unit.z * (1 - cosine) - unit.y * sine;
     x[0][3] = 0;
 
-    x[1][0] = unit[0] * unit[1] * (1 - cosine) - unit[2] * sine;
-    x[1][1] = unit[1] * unit[1] * (1 - cosine) + cosine;
-    x[1][2] = unit[1] * unit[2] * (1 - cosine) + unit[0] * sine;
+    x[1][0] = unit.x * unit.y * (1 - cosine) - unit.z * sine;
+    x[1][1] = unit.y * unit.y * (1 - cosine) + cosine;
+    x[1][2] = unit.y * unit.z * (1 - cosine) + unit.x * sine;
     x[1][3] = 0;
 
-    x[2][0] = unit[0] * unit[2] * (1 - cosine) + unit[1] * sine;
-    x[2][1] = unit[1] * unit[2] * (1 - cosine) - unit[0] * sine;
-    x[2][2] = unit[2] * unit[2] * (1 - cosine) + cosine;
+    x[2][0] = unit.x * unit.z * (1 - cosine) + unit.y * sine;
+    x[2][1] = unit.y * unit.z * (1 - cosine) - unit.x * sine;
+    x[2][2] = unit.z * unit.z * (1 - cosine) + cosine;
     x[2][3] = 0;
 
     x[3][0] = 0;
@@ -4131,13 +4196,13 @@ Matrix44<T>::rotate (const Vec3<S>& r)
     S m10, m11, m12;
     S m20, m21, m22;
 
-    cos_rz = cos ((S) r[2]);
-    cos_ry = cos ((S) r[1]);
-    cos_rx = cos ((S) r[0]);
+    cos_rz = cos ((S) r.z);
+    cos_ry = cos ((S) r.y);
+    cos_rx = cos ((S) r.x);
 
-    sin_rz = sin ((S) r[2]);
-    sin_ry = sin ((S) r[1]);
-    sin_rx = sin ((S) r[0]);
+    sin_rz = sin ((S) r.z);
+    sin_ry = sin ((S) r.y);
+    sin_rx = sin ((S) r.x);
 
     m00 = cos_rz * cos_ry;
     m01 = sin_rz * cos_ry;
@@ -4173,12 +4238,22 @@ template <class T>
 IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setScale (T s)
 {
-    memset (x, 0, sizeof (x));
     x[0][0] = s;
+    x[0][1] = 0;
+    x[0][2] = 0;
+    x[0][3] = 0;
+    x[1][0] = 0;
     x[1][1] = s;
+    x[1][2] = 0;
+    x[1][3] = 0;
+    x[2][0] = 0;
+    x[2][1] = 0;
     x[2][2] = s;
+    x[2][3] = 0;
+    x[3][0] = 0;
+    x[3][1] = 0;
+    x[3][2] = 0;
     x[3][3] = 1;
-
     return *this;
 }
 
@@ -4187,12 +4262,22 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setScale (const Vec3<S>& s)
 {
-    memset (x, 0, sizeof (x));
-    x[0][0] = s[0];
-    x[1][1] = s[1];
-    x[2][2] = s[2];
+    x[0][0] = s.x;
+    x[0][1] = 0;
+    x[0][2] = 0;
+    x[0][3] = 0;
+    x[1][0] = 0;
+    x[1][1] = s.y;
+    x[1][2] = 0;
+    x[1][3] = 0;
+    x[2][0] = 0;
+    x[2][1] = 0;
+    x[2][2] = s.z;
+    x[2][3] = 0;
+    x[3][0] = 0;
+    x[3][1] = 0;
+    x[3][2] = 0;
     x[3][3] = 1;
-
     return *this;
 }
 
@@ -4201,20 +4286,20 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::scale (const Vec3<S>& s)
 {
-    x[0][0] *= s[0];
-    x[0][1] *= s[0];
-    x[0][2] *= s[0];
-    x[0][3] *= s[0];
+    x[0][0] *= s.x;
+    x[0][1] *= s.x;
+    x[0][2] *= s.x;
+    x[0][3] *= s.x;
 
-    x[1][0] *= s[1];
-    x[1][1] *= s[1];
-    x[1][2] *= s[1];
-    x[1][3] *= s[1];
+    x[1][0] *= s.y;
+    x[1][1] *= s.y;
+    x[1][2] *= s.y;
+    x[1][3] *= s.y;
 
-    x[2][0] *= s[2];
-    x[2][1] *= s[2];
-    x[2][2] *= s[2];
-    x[2][3] *= s[2];
+    x[2][0] *= s.z;
+    x[2][1] *= s.z;
+    x[2][2] *= s.z;
+    x[2][3] *= s.z;
 
     return *this;
 }
@@ -4239,9 +4324,9 @@ Matrix44<T>::setTranslation (const Vec3<S>& t)
     x[2][2] = 1;
     x[2][3] = 0;
 
-    x[3][0] = t[0];
-    x[3][1] = t[1];
-    x[3][2] = t[2];
+    x[3][0] = t.x;
+    x[3][1] = t.y;
+    x[3][2] = t.z;
     x[3][3] = 1;
 
     return *this;
@@ -4259,10 +4344,10 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::translate (const Vec3<S>& t)
 {
-    x[3][0] += t[0] * x[0][0] + t[1] * x[1][0] + t[2] * x[2][0];
-    x[3][1] += t[0] * x[0][1] + t[1] * x[1][1] + t[2] * x[2][1];
-    x[3][2] += t[0] * x[0][2] + t[1] * x[1][2] + t[2] * x[2][2];
-    x[3][3] += t[0] * x[0][3] + t[1] * x[1][3] + t[2] * x[2][3];
+    x[3][0] += t.x * x[0][0] + t.y * x[1][0] + t.z * x[2][0];
+    x[3][1] += t.x * x[0][1] + t.y * x[1][1] + t.z * x[2][1];
+    x[3][2] += t.x * x[0][2] + t.y * x[1][2] + t.z * x[2][2];
+    x[3][3] += t.x * x[0][3] + t.y * x[1][3] + t.z * x[2][3];
 
     return *this;
 }
@@ -4277,13 +4362,13 @@ Matrix44<T>::setShear (const Vec3<S>& h)
     x[0][2] = 0;
     x[0][3] = 0;
 
-    x[1][0] = h[0];
+    x[1][0] = h.x;
     x[1][1] = 1;
     x[1][2] = 0;
     x[1][3] = 0;
 
-    x[2][0] = h[1];
-    x[2][1] = h[2];
+    x[2][0] = h.y;
+    x[2][1] = h.z;
     x[2][2] = 1;
     x[2][3] = 0;
 
@@ -4336,8 +4421,8 @@ Matrix44<T>::shear (const Vec3<S>& h)
 
     for (int i = 0; i < 4; i++)
     {
-        x[2][i] += h[1] * x[0][i] + h[2] * x[1][i];
-        x[1][i] += h[0] * x[0][i];
+        x[2][i] += h.y * x[0][i] + h.z * x[1][i];
+        x[1][i] += h.x * x[0][i];
     }
 
     return *this;
