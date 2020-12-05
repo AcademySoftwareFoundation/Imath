@@ -96,95 +96,95 @@ testShear()
 
     X *= 0.001f;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.xy * 0.001f) - X.xy) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.xz * 0.001f) - X.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.yz * 0.001f) - X.yz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.yx * 0.001f) - X.yx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.zx * 0.001f) - X.zx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.zy * 0.001f) - X.zy) <= epsilon);
+    assert (std::fabs ((Y.xy * 0.001f) - X.xy) <= epsilon &&
+            std::fabs ((Y.xz * 0.001f) - X.xz) <= epsilon &&
+            std::fabs ((Y.yz * 0.001f) - X.yz) <= epsilon &&
+            std::fabs ((Y.yx * 0.001f) - X.yx) <= epsilon &&
+            std::fabs ((Y.zx * 0.001f) - X.zx) <= epsilon &&
+            std::fabs ((Y.zy * 0.001f) - X.zy) <= epsilon);
 
     X = Y = IMATH_INTERNAL_NAMESPACE::Shear6f (0.123f, -0.420f, 0.501f, 0.998f, -0.231f, -0.034f);
 
     X /= -1.001f;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.xy / -1.001f) - X.xy) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.xz / -1.001f) - X.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.yz / -1.001f) - X.yz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.yx / -1.001f) - X.yx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.zx / -1.001f) - X.zx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((Y.zy / -1.001f) - X.zy) <= epsilon);
+    assert (std::fabs ((Y.xy / -1.001f) - X.xy) <= epsilon &&
+            std::fabs ((Y.xz / -1.001f) - X.xz) <= epsilon &&
+            std::fabs ((Y.yz / -1.001f) - X.yz) <= epsilon &&
+            std::fabs ((Y.yx / -1.001f) - X.yx) <= epsilon &&
+            std::fabs ((Y.zx / -1.001f) - X.zx) <= epsilon &&
+            std::fabs ((Y.zy / -1.001f) - X.zy) <= epsilon);
 
     Y = IMATH_INTERNAL_NAMESPACE::Shear6f (0.998f, -0.001f, 0.501f, 1.001f, -0.231f, -0.034f);
     X = IMATH_INTERNAL_NAMESPACE::Shear6f (0.011f, -0.420f, -0.501f, 0.998f, -0.231f, -0.034f);
 
     tmp = X + Y;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xy + Y.xy) - tmp.xy) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz + Y.xz) - tmp.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz + Y.yz) - tmp.yz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yx + Y.yx) - tmp.yx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zx + Y.zx) - tmp.zx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zy + Y.zy) - tmp.zy) <= epsilon);
+    assert (std::fabs ((X.xy + Y.xy) - tmp.xy) <= epsilon &&
+            std::fabs ((X.xz + Y.xz) - tmp.xz) <= epsilon &&
+            std::fabs ((X.yz + Y.yz) - tmp.yz) <= epsilon &&
+            std::fabs ((X.yx + Y.yx) - tmp.yx) <= epsilon &&
+            std::fabs ((X.zx + Y.zx) - tmp.zx) <= epsilon &&
+            std::fabs ((X.zy + Y.zy) - tmp.zy) <= epsilon);
 
     tmp = X - Y;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xy - Y.xy) - tmp.xy) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz - Y.xz) - tmp.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz - Y.yz) - tmp.yz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yx - Y.yx) - tmp.yx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zx - Y.zx) - tmp.zx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zy - Y.zy) - tmp.zy) <= epsilon);
+    assert (std::fabs ((X.xy - Y.xy) - tmp.xy) <= epsilon &&
+            std::fabs ((X.xz - Y.xz) - tmp.xz) <= epsilon &&
+            std::fabs ((X.yz - Y.yz) - tmp.yz) <= epsilon &&
+            std::fabs ((X.yx - Y.yx) - tmp.yx) <= epsilon &&
+            std::fabs ((X.zx - Y.zx) - tmp.zx) <= epsilon &&
+            std::fabs ((X.zy - Y.zy) - tmp.zy) <= epsilon);
 
     tmp = X * Y;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xy * Y.xy) - tmp.xy) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz * Y.xz) - tmp.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz * Y.yz) - tmp.yz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yx * Y.yx) - tmp.yx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zx * Y.zx) - tmp.zx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zy * Y.zy) - tmp.zy) <= epsilon);
+    assert (std::fabs ((X.xy * Y.xy) - tmp.xy) <= epsilon &&
+            std::fabs ((X.xz * Y.xz) - tmp.xz) <= epsilon &&
+            std::fabs ((X.yz * Y.yz) - tmp.yz) <= epsilon &&
+            std::fabs ((X.yx * Y.yx) - tmp.yx) <= epsilon &&
+            std::fabs ((X.zx * Y.zx) - tmp.zx) <= epsilon &&
+            std::fabs ((X.zy * Y.zy) - tmp.zy) <= epsilon);
 
     tmp = X / Y;
 
     //
     // epsilon doesn't work here.
     //
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xy / Y.xy) - tmp.xy) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz / Y.xz) - tmp.xz) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz / Y.yz) - tmp.yz) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yx / Y.yx) - tmp.yx) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zx / Y.zx) - tmp.zx) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zy / Y.zy) - tmp.zy) <= 1e-5f);
+    assert (std::fabs ((X.xy / Y.xy) - tmp.xy) <= 1e-5f &&
+            std::fabs ((X.xz / Y.xz) - tmp.xz) <= 1e-5f &&
+            std::fabs ((X.yz / Y.yz) - tmp.yz) <= 1e-5f &&
+            std::fabs ((X.yx / Y.yx) - tmp.yx) <= 1e-5f &&
+            std::fabs ((X.zx / Y.zx) - tmp.zx) <= 1e-5f &&
+            std::fabs ((X.zy / Y.zy) - tmp.zy) <= 1e-5f);
 
     tmp = X;
     tmp += Y;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xy + Y.xy) - tmp.xy) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz + Y.xz) - tmp.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz + Y.yz) - tmp.yz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yx + Y.yx) - tmp.yx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zx + Y.zx) - tmp.zx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zy + Y.zy) - tmp.zy) <= epsilon);
+    assert (std::fabs ((X.xy + Y.xy) - tmp.xy) <= epsilon &&
+            std::fabs ((X.xz + Y.xz) - tmp.xz) <= epsilon &&
+            std::fabs ((X.yz + Y.yz) - tmp.yz) <= epsilon &&
+            std::fabs ((X.yx + Y.yx) - tmp.yx) <= epsilon &&
+            std::fabs ((X.zx + Y.zx) - tmp.zx) <= epsilon &&
+            std::fabs ((X.zy + Y.zy) - tmp.zy) <= epsilon);
 
     tmp = X;
     tmp -= Y;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xy - Y.xy) - tmp.xy) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz - Y.xz) - tmp.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz - Y.yz) - tmp.yz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yx - Y.yx) - tmp.yx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz - Y.xz) - tmp.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz - Y.yz) - tmp.yz) <= epsilon);
+    assert (std::fabs ((X.xy - Y.xy) - tmp.xy) <= epsilon &&
+            std::fabs ((X.xz - Y.xz) - tmp.xz) <= epsilon &&
+            std::fabs ((X.yz - Y.yz) - tmp.yz) <= epsilon &&
+            std::fabs ((X.yx - Y.yx) - tmp.yx) <= epsilon &&
+            std::fabs ((X.xz - Y.xz) - tmp.xz) <= epsilon &&
+            std::fabs ((X.yz - Y.yz) - tmp.yz) <= epsilon);
 
     tmp = X;
     tmp *= Y;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xy * Y.xy) - tmp.xy) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz * Y.xz) - tmp.xz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz * Y.yz) - tmp.yz) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yx * Y.yx) - tmp.yx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zx * Y.zx) - tmp.zx) <= epsilon &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zy * Y.zy) - tmp.zy) <= epsilon);
+    assert (std::fabs ((X.xy * Y.xy) - tmp.xy) <= epsilon &&
+            std::fabs ((X.xz * Y.xz) - tmp.xz) <= epsilon &&
+            std::fabs ((X.yz * Y.yz) - tmp.yz) <= epsilon &&
+            std::fabs ((X.yx * Y.yx) - tmp.yx) <= epsilon &&
+            std::fabs ((X.zx * Y.zx) - tmp.zx) <= epsilon &&
+            std::fabs ((X.zy * Y.zy) - tmp.zy) <= epsilon);
 
     tmp = X;
     tmp /= Y;
@@ -192,12 +192,12 @@ testShear()
     //
     // epsilon doesn't work here.
     //
-    assert (IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xy / Y.xy) - tmp.xy) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.xz / Y.xz) - tmp.xz) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yz / Y.yz) - tmp.yz) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.yx / Y.yx) - tmp.yx) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zx / Y.zx) - tmp.zx) <= 1e-5f &&
-            IMATH_INTERNAL_NAMESPACE::Math<float>::fabs ((X.zy / Y.zy) - tmp.zy) <= 1e-5f);
+    assert (std::fabs ((X.xy / Y.xy) - tmp.xy) <= 1e-5f &&
+            std::fabs ((X.xz / Y.xz) - tmp.xz) <= 1e-5f &&
+            std::fabs ((X.yz / Y.yz) - tmp.yz) <= 1e-5f &&
+            std::fabs ((X.yx / Y.yx) - tmp.yx) <= 1e-5f &&
+            std::fabs ((X.zx / Y.zx) - tmp.zx) <= 1e-5f &&
+            std::fabs ((X.zy / Y.zy) - tmp.zy) <= 1e-5f);
 
     cout << "ok\n" << endl;
 }

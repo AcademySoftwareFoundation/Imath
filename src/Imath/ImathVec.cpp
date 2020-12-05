@@ -125,7 +125,7 @@ template <>
 IMATH_EXPORT short
 Vec2<short>::length() const
 {
-    float lenF = Math<float>::sqrt ((float) dot (*this));
+    float lenF = std::sqrt ((float) dot (*this));
     short lenS = (short) (lenF + 0.5f);
     return lenS;
 }
@@ -193,7 +193,7 @@ template <>
 IMATH_EXPORT int
 Vec2<int>::length() const
 {
-    float lenF = Math<float>::sqrt ((float) dot (*this));
+    float lenF = std::sqrt ((float) dot (*this));
     int lenI   = (int) (lenF + 0.5f);
     return lenI;
 }
@@ -261,7 +261,7 @@ template <>
 IMATH_EXPORT short
 Vec3<short>::length() const
 {
-    float lenF = Math<float>::sqrt ((float) dot (*this));
+    float lenF = std::sqrt ((float) dot (*this));
     short lenS = (short) (lenF + 0.5f);
     return lenS;
 }
@@ -329,7 +329,7 @@ template <>
 IMATH_EXPORT int
 Vec3<int>::length() const
 {
-    float lenF = Math<float>::sqrt ((float) dot (*this));
+    float lenF = std::sqrt ((float) dot (*this));
     int lenI   = (int) (lenF + 0.5f);
     return lenI;
 }
@@ -397,7 +397,7 @@ template <>
 IMATH_EXPORT short
 Vec4<short>::length() const
 {
-    float lenF = Math<float>::sqrt ((float) dot (*this));
+    float lenF = std::sqrt ((float) dot (*this));
     short lenS = (short) (lenF + 0.5f);
     return lenS;
 }
@@ -465,7 +465,7 @@ template <>
 IMATH_EXPORT int
 Vec4<int>::length() const
 {
-    float lenF = Math<float>::sqrt ((float) dot (*this));
+    float lenF = std::sqrt ((float) dot (*this));
     int lenI   = (int) (lenF + 0.5f);
     return lenI;
 }

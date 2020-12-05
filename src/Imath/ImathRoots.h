@@ -129,7 +129,7 @@ solveQuadratic (T a, T b, T c, T x[2])
 
         if (D > 0)
         {
-            T s = Math<T>::sqrt (D);
+            T s = std::sqrt (D);
             T q = -(b + (b > 0 ? 1 : -1) * s) / T (2);
 
             x[0] = q / a;
