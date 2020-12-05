@@ -56,7 +56,7 @@ hsv2rgb_d (const Vec3<double>& hsv)
     else
         hue *= 6;
 
-    int i    = int (Math<double>::floor (hue));
+    int i    = int (std::floor (hue));
     double f = hue - i;
     double p = val * (1 - sat);
     double q = val * (1 - (sat * f));
@@ -113,7 +113,7 @@ hsv2rgb_d (const Color4<double>& hsv)
     else
         hue *= 6;
 
-    int i    = int (Math<double>::floor (hue));
+    int i    = int (std::floor (hue));
     double f = hue - i;
     double p = val * (1 - sat);
     double q = val * (1 - (sat * f));

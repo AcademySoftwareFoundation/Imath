@@ -523,7 +523,7 @@ extractEulerXYZ (const Matrix44<T>& mat, Vec3<T>& rot)
     // Extract the first angle, rot.x.
     //
 
-    rot.x = Math<T>::atan2 (M[1][2], M[2][2]);
+    rot.x = std::atan2 (M[1][2], M[2][2]);
 
     //
     // Remove the rot.x rotation from M, so that the remaining
@@ -539,9 +539,9 @@ extractEulerXYZ (const Matrix44<T>& mat, Vec3<T>& rot)
     // Extract the other two angles, rot.y and rot.z, from N.
     //
 
-    T cy  = Math<T>::sqrt (N[0][0] * N[0][0] + N[0][1] * N[0][1]);
-    rot.y = Math<T>::atan2 (-N[0][2], cy);
-    rot.z = Math<T>::atan2 (-N[1][0], N[1][1]);
+    T cy  = std::sqrt (N[0][0] * N[0][0] + N[0][1] * N[0][1]);
+    rot.y = std::atan2 (-N[0][2], cy);
+    rot.z = std::atan2 (-N[1][0], N[1][1]);
 }
 
 template <class T>
@@ -566,7 +566,7 @@ extractEulerZYX (const Matrix44<T>& mat, Vec3<T>& rot)
     // Extract the first angle, rot.x.
     //
 
-    rot.x = -Math<T>::atan2 (M[1][0], M[0][0]);
+    rot.x = -std::atan2 (M[1][0], M[0][0]);
 
     //
     // Remove the x rotation from M, so that the remaining
@@ -582,9 +582,9 @@ extractEulerZYX (const Matrix44<T>& mat, Vec3<T>& rot)
     // Extract the other two angles, rot.y and rot.z, from N.
     //
 
-    T cy  = Math<T>::sqrt (N[2][2] * N[2][2] + N[2][1] * N[2][1]);
-    rot.y = -Math<T>::atan2 (-N[2][0], cy);
-    rot.z = -Math<T>::atan2 (-N[1][2], N[1][1]);
+    T cy  = std::sqrt (N[2][2] * N[2][2] + N[2][1] * N[2][1]);
+    rot.y = -std::atan2 (-N[2][0], cy);
+    rot.z = -std::atan2 (-N[1][2], N[1][1]);
 }
 
 template <class T>
@@ -604,7 +604,7 @@ extractQuat (const Matrix44<T>& mat)
     // check the diagonal
     if (tr > 0.0)
     {
-        s      = Math<T>::sqrt (tr + T (1.0));
+        s      = std::sqrt (tr + T (1.0));
         quat.r = s / T (2.0);
         s      = T (0.5) / s;
 
@@ -623,7 +623,7 @@ extractQuat (const Matrix44<T>& mat)
 
         j = nxt[i];
         k = nxt[j];
-        s = Math<T>::sqrt ((mat[i][i] - (mat[j][j] + mat[k][k])) + T (1.0));
+        s = std::sqrt ((mat[i][i] - (mat[j][j] + mat[k][k])) + T (1.0));
 
         q[i] = s * T (0.5);
         if (s != T (0.0))
@@ -1152,7 +1152,7 @@ extractEuler (const Matrix22<T>& mat, T& rot)
     // Extract the angle, rot.
     //
 
-    rot = -Math<T>::atan2 (j[0], i[0]);
+    rot = -std::atan2 (j[0], i[0]);
 }
 
 template <class T>
@@ -1173,7 +1173,7 @@ extractEuler (const Matrix33<T>& mat, T& rot)
     // Extract the angle, rot.
     //
 
-    rot = -Math<T>::atan2 (j[0], i[0]);
+    rot = -std::atan2 (j[0], i[0]);
 }
 
 template <class T>

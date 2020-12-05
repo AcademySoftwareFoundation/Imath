@@ -303,14 +303,14 @@ Frustum<T>::setExc (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 
     if (fovx != T (0))
     {
-        _right  = nearPlane * Math<T>::tan (fovx / two);
+        _right  = nearPlane * std::tan (fovx / two);
         _left   = -_right;
         _top    = ((_right - _left) / aspect) / two;
         _bottom = -_top;
     }
     else
     {
-        _top    = nearPlane * Math<T>::tan (fovy / two);
+        _top    = nearPlane * std::tan (fovy / two);
         _bottom = -_top;
         _right  = (_top - _bottom) * aspect / two;
         _left   = -_right;
@@ -328,14 +328,14 @@ Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept
 
     if (fovx != T (0))
     {
-        _right  = nearPlane * Math<T>::tan (fovx / two);
+        _right  = nearPlane * std::tan (fovx / two);
         _left   = -_right;
         _top    = ((_right - _left) / aspect) / two;
         _bottom = -_top;
     }
     else
     {
-        _top    = nearPlane * Math<T>::tan (fovy / two);
+        _top    = nearPlane * std::tan (fovy / two);
         _bottom = -_top;
         _right  = (_top - _bottom) * aspect / two;
         _left   = -_right;
@@ -349,14 +349,14 @@ template <class T>
 constexpr inline T
 Frustum<T>::fovx() const
 {
-    return Math<T>::atan2 (_right, _nearPlane) - Math<T>::atan2 (_left, _nearPlane);
+    return std::atan2 (_right, _nearPlane) - std::atan2 (_left, _nearPlane);
 }
 
 template <class T>
 constexpr inline T
 Frustum<T>::fovy() const
 {
-    return Math<T>::atan2 (_top, _nearPlane) - Math<T>::atan2 (_bottom, _nearPlane);
+    return std::atan2 (_top, _nearPlane) - std::atan2 (_bottom, _nearPlane);
 }
 
 template <class T>

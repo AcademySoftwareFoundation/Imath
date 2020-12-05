@@ -496,7 +496,7 @@ Euler<T>::extract (const Matrix33<T>& M)
         // Extract the first angle, x.
         //
 
-        x = Math<T>::atan2 (M[j][i], M[k][i]);
+        x = std::atan2 (M[j][i], M[k][i]);
 
         //
         // Remove the x rotation from M, so that the remaining
@@ -530,9 +530,9 @@ Euler<T>::extract (const Matrix33<T>& M)
         // Extract the other two angles, y and z, from N.
         //
 
-        T sy = Math<T>::sqrt (N[j][i] * N[j][i] + N[k][i] * N[k][i]);
-        y    = Math<T>::atan2 (sy, N[i][i]);
-        z    = Math<T>::atan2 (N[j][k], N[j][j]);
+        T sy = std::sqrt (N[j][i] * N[j][i] + N[k][i] * N[k][i]);
+        y    = std::atan2 (sy, N[i][i]);
+        z    = std::atan2 (N[j][k], N[j][j]);
     }
     else
     {
@@ -540,7 +540,7 @@ Euler<T>::extract (const Matrix33<T>& M)
         // Extract the first angle, x.
         //
 
-        x = Math<T>::atan2 (M[j][k], M[k][k]);
+        x = std::atan2 (M[j][k], M[k][k]);
 
         //
         // Remove the x rotation from M, so that the remaining
@@ -574,9 +574,9 @@ Euler<T>::extract (const Matrix33<T>& M)
         // Extract the other two angles, y and z, from N.
         //
 
-        T cy = Math<T>::sqrt (N[i][i] * N[i][i] + N[i][j] * N[i][j]);
-        y    = Math<T>::atan2 (-N[i][k], cy);
-        z    = Math<T>::atan2 (-N[j][i], N[j][j]);
+        T cy = std::sqrt (N[i][i] * N[i][i] + N[i][j] * N[i][j]);
+        y    = std::atan2 (-N[i][k], cy);
+        z    = std::atan2 (-N[j][i], N[j][j]);
     }
 
     if (!_parityEven)
@@ -603,7 +603,7 @@ Euler<T>::extract (const Matrix44<T>& M)
         // Extract the first angle, x.
         //
 
-        x = Math<T>::atan2 (M[j][i], M[k][i]);
+        x = std::atan2 (M[j][i], M[k][i]);
 
         //
         // Remove the x rotation from M, so that the remaining
@@ -622,9 +622,9 @@ Euler<T>::extract (const Matrix44<T>& M)
         // Extract the other two angles, y and z, from N.
         //
 
-        T sy = Math<T>::sqrt (N[j][i] * N[j][i] + N[k][i] * N[k][i]);
-        y    = Math<T>::atan2 (sy, N[i][i]);
-        z    = Math<T>::atan2 (N[j][k], N[j][j]);
+        T sy = std::sqrt (N[j][i] * N[j][i] + N[k][i] * N[k][i]);
+        y    = std::atan2 (sy, N[i][i]);
+        z    = std::atan2 (N[j][k], N[j][j]);
     }
     else
     {
@@ -632,7 +632,7 @@ Euler<T>::extract (const Matrix44<T>& M)
         // Extract the first angle, x.
         //
 
-        x = Math<T>::atan2 (M[j][k], M[k][k]);
+        x = std::atan2 (M[j][k], M[k][k]);
 
         //
         // Remove the x rotation from M, so that the remaining
@@ -651,9 +651,9 @@ Euler<T>::extract (const Matrix44<T>& M)
         // Extract the other two angles, y and z, from N.
         //
 
-        T cy = Math<T>::sqrt (N[i][i] * N[i][i] + N[i][j] * N[i][j]);
-        y    = Math<T>::atan2 (-N[i][k], cy);
-        z    = Math<T>::atan2 (-N[j][i], N[j][j]);
+        T cy = std::sqrt (N[i][i] * N[i][i] + N[i][j] * N[i][j]);
+        y    = std::atan2 (-N[i][k], cy);
+        z    = std::atan2 (-N[j][i], N[j][j]);
     }
 
     if (!_parityEven)
@@ -684,12 +684,12 @@ Euler<T>::toMatrix33() const
     if (!_parityEven)
         angles *= -1.0;
 
-    T ci = Math<T>::cos (angles.x);
-    T cj = Math<T>::cos (angles.y);
-    T ch = Math<T>::cos (angles.z);
-    T si = Math<T>::sin (angles.x);
-    T sj = Math<T>::sin (angles.y);
-    T sh = Math<T>::sin (angles.z);
+    T ci = std::cos (angles.x);
+    T cj = std::cos (angles.y);
+    T ch = std::cos (angles.z);
+    T si = std::sin (angles.x);
+    T sj = std::sin (angles.y);
+    T sh = std::sin (angles.z);
 
     T cc = ci * ch;
     T cs = ci * sh;
@@ -743,12 +743,12 @@ Euler<T>::toMatrix44() const
     if (!_parityEven)
         angles *= -1.0;
 
-    T ci = Math<T>::cos (angles.x);
-    T cj = Math<T>::cos (angles.y);
-    T ch = Math<T>::cos (angles.z);
-    T si = Math<T>::sin (angles.x);
-    T sj = Math<T>::sin (angles.y);
-    T sh = Math<T>::sin (angles.z);
+    T ci = std::cos (angles.x);
+    T cj = std::cos (angles.y);
+    T ch = std::cos (angles.z);
+    T si = std::sin (angles.x);
+    T sj = std::sin (angles.y);
+    T sh = std::sin (angles.z);
 
     T cc = ci * ch;
     T cs = ci * sh;
@@ -804,12 +804,12 @@ Euler<T>::toQuat() const
     T ti = angles.x * 0.5;
     T tj = angles.y * 0.5;
     T th = angles.z * 0.5;
-    T ci = Math<T>::cos (ti);
-    T cj = Math<T>::cos (tj);
-    T ch = Math<T>::cos (th);
-    T si = Math<T>::sin (ti);
-    T sj = Math<T>::sin (tj);
-    T sh = Math<T>::sin (th);
+    T ci = std::cos (ti);
+    T cj = std::cos (tj);
+    T ch = std::cos (th);
+    T si = std::sin (ti);
+    T sj = std::sin (tj);
+    T sh = std::sin (th);
     T cc = ci * ch;
     T cs = ci * sh;
     T sc = si * ch;
