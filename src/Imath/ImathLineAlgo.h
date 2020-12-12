@@ -78,7 +78,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
 IMATH_CONSTEXPR14 bool
-closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Vec3<T>& point2)
+closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Vec3<T>& point2) noexcept
 {
     //
     // Compute point1 and point2 such that point1 is on line1, point2
@@ -117,7 +117,7 @@ intersect (const Line3<T>& line,
            const Vec3<T>& v2,
            Vec3<T>& pt,
            Vec3<T>& barycentric,
-           bool& front)
+           bool& front) noexcept
 {
     //
     // Given a line and a triangle (v0, v1, v2), the intersect() function
@@ -214,7 +214,7 @@ intersect (const Line3<T>& line,
 
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
-closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Line3<T>& l)
+closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Line3<T>& l) noexcept
 {
     Vec3<T> nearest = v0;
     T neardot       = (v0 - l.closestPointTo (v0)).length2();
@@ -239,7 +239,7 @@ closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Li
 
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
-rotatePoint (const Vec3<T> p, Line3<T> l, T angle)
+rotatePoint (const Vec3<T> p, Line3<T> l, T angle) noexcept
 {
     //
     // Rotate the point p around the line l by the given angle.

@@ -58,7 +58,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 template <class Vec,
           IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
 IMATH_CONSTEXPR14 inline Vec
-project (const Vec& s, const Vec& t)
+project (const Vec& s, const Vec& t) noexcept
 {
     Vec sNormalized = s.normalized();
     return sNormalized * (sNormalized ^ t);
@@ -72,7 +72,7 @@ project (const Vec& s, const Vec& t)
 template <class Vec,
           IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
 constexpr inline Vec
-orthogonal (const Vec& s, const Vec& t)
+orthogonal (const Vec& s, const Vec& t) noexcept
 {
     return t - project (s, t);
 }
@@ -85,7 +85,7 @@ orthogonal (const Vec& s, const Vec& t)
 template <class Vec,
           IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
 constexpr inline Vec
-reflect (const Vec& s, const Vec& t)
+reflect (const Vec& s, const Vec& t) noexcept
 {
     return s - typename Vec::BaseType (2) * (s - project (t, s));
 }
@@ -97,7 +97,7 @@ reflect (const Vec& s, const Vec& t)
 //--------------------------------------------------------------------
 
 template <class Vec>
-IMATH_CONSTEXPR14 Vec closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p);
+IMATH_CONSTEXPR14 Vec closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p) noexcept;
 
 //---------------
 // Implementation
@@ -105,7 +105,7 @@ IMATH_CONSTEXPR14 Vec closestVertex (const Vec& v0, const Vec& v1, const Vec& v2
 
 template <class Vec>
 IMATH_CONSTEXPR14 Vec
-closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p)
+closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p) noexcept
 {
     Vec nearest                    = v0;
     typename Vec::BaseType neardot = (v0 - p).length2();

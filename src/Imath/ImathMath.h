@@ -165,15 +165,15 @@ sinx_over_x (T x)
 //--------------------------------------------------------------------------
 
 template <class T>
-IMATH_HOSTDEVICE inline bool
-equalWithAbsError (T x1, T x2, T e)
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
+equalWithAbsError (T x1, T x2, T e) noexcept
 {
     return ((x1 > x2) ? x1 - x2 : x2 - x1) <= e;
 }
 
 template <class T>
-IMATH_HOSTDEVICE inline bool
-equalWithRelError (T x1, T x2, T e)
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
+equalWithRelError (T x1, T x2, T e) noexcept
 {
     return ((x1 > x2) ? x1 - x2 : x2 - x1) <= e * ((x1 > 0) ? x1 : -x1);
 }

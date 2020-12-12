@@ -65,42 +65,42 @@ template <class T> class Interval
     //	Constructors - an "empty" Interval is created by default
     //-----------------------------------------------------
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval();
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& point);
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& minT, const T& maxT);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval() noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& point) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& minT, const T& maxT) noexcept;
 
     //--------------------------------
     //  Operators:  we get != from STL
     //--------------------------------
 
-    IMATH_HOSTDEVICE constexpr bool operator== (const Interval<T>& src) const;
-    IMATH_HOSTDEVICE constexpr bool operator!= (const Interval<T>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Interval<T>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Interval<T>& src) const noexcept;
 
     //------------------
     //	Interval manipulation
     //------------------
 
-    IMATH_HOSTDEVICE void makeEmpty();
-    IMATH_HOSTDEVICE void extendBy (const T& point);
-    IMATH_HOSTDEVICE void extendBy (const Interval<T>& interval);
-    IMATH_HOSTDEVICE void makeInfinite();
+    IMATH_HOSTDEVICE void makeEmpty() noexcept;
+    IMATH_HOSTDEVICE void extendBy (const T& point) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const Interval<T>& interval) noexcept;
+    IMATH_HOSTDEVICE void makeInfinite() noexcept;
 
     //---------------------------------------------------
     //	Query functions - these compute results each time
     //---------------------------------------------------
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T size() const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T center() const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const T& point) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Interval<T>& interval) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T size() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T center() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const T& point) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Interval<T>& interval) const noexcept;
 
     //----------------
     //	Classification
     //----------------
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
 };
 
 template <class T> std::ostream& operator<< (std::ostream& s, const Interval<T>& v);
@@ -118,18 +118,18 @@ typedef Interval<int> Intervali;
 //  Implementation
 //----------------
 
-template <class T> inline IMATH_CONSTEXPR14 Interval<T>::Interval()
+template <class T> inline IMATH_CONSTEXPR14 Interval<T>::Interval() noexcept
 {
     makeEmpty();
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& point)
+template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& point) noexcept
 {
     min = point;
     max = point;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& minV, const T& maxV)
+template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& minV, const T& maxV) noexcept
 {
     min = minV;
     max = maxV;
@@ -137,21 +137,21 @@ template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& minV
 
 template <class T>
 constexpr inline bool
-Interval<T>::operator== (const Interval<T>& src) const
+Interval<T>::operator== (const Interval<T>& src) const noexcept
 {
     return (min == src.min && max == src.max);
 }
 
 template <class T>
 constexpr inline bool
-Interval<T>::operator!= (const Interval<T>& src) const
+Interval<T>::operator!= (const Interval<T>& src) const noexcept
 {
     return (min != src.min || max != src.max);
 }
 
 template <class T>
 inline void
-Interval<T>::makeEmpty()
+Interval<T>::makeEmpty() noexcept
 {
     min = limits<T>::max();
     max = limits<T>::min();
@@ -159,7 +159,7 @@ Interval<T>::makeEmpty()
 
 template <class T>
 inline void
-Interval<T>::makeInfinite()
+Interval<T>::makeInfinite() noexcept
 {
     min = limits<T>::min();
     max = limits<T>::max();
@@ -168,7 +168,7 @@ Interval<T>::makeInfinite()
 
 template <class T>
 inline void
-Interval<T>::extendBy (const T& point)
+Interval<T>::extendBy (const T& point) noexcept
 {
     if (point < min)
         min = point;
@@ -179,7 +179,7 @@ Interval<T>::extendBy (const T& point)
 
 template <class T>
 inline void
-Interval<T>::extendBy (const Interval<T>& interval)
+Interval<T>::extendBy (const Interval<T>& interval) noexcept
 {
     if (interval.min < min)
         min = interval.min;
@@ -190,21 +190,21 @@ Interval<T>::extendBy (const Interval<T>& interval)
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::intersects (const T& point) const
+Interval<T>::intersects (const T& point) const noexcept
 {
     return point >= min && point <= max;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::intersects (const Interval<T>& interval) const
+Interval<T>::intersects (const Interval<T>& interval) const noexcept
 {
     return interval.max >= min && interval.min <= max;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline T
-Interval<T>::size() const
+Interval<T>::size() const noexcept
 {
     if (isEmpty())
         return T(0);
@@ -214,28 +214,28 @@ Interval<T>::size() const
 
 template <class T>
 IMATH_CONSTEXPR14 inline T
-Interval<T>::center() const
+Interval<T>::center() const noexcept
 {
     return (max + min) / 2;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::isEmpty() const
+Interval<T>::isEmpty() const noexcept
 {
     return max < min;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::hasVolume() const
+Interval<T>::hasVolume() const noexcept
 {
     return max > min;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::isInfinite() const
+Interval<T>::isInfinite() const noexcept
 {
     if (min != limits<T>::min() || max != limits<T>::max())
         return false;

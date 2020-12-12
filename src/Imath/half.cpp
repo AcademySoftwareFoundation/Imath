@@ -72,7 +72,7 @@ EXPORT_CONST const unsigned short half::_eLut[1 << 9] =
 //-----------------------------------------------
 
 IMATH_EXPORT float
-half::overflow()
+half::overflow() noexcept
 {
     volatile float f = 1e10;
 
@@ -88,7 +88,7 @@ half::overflow()
 //-----------------------------------------------------
 
 IMATH_EXPORT short
-half::convert (int i)
+half::convert (int i) noexcept
 {
     //
     // Our floating point number, f, is represented by the bit
