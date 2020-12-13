@@ -62,47 +62,10 @@
 //
 //-----------------------------------------------------------------------------
 
-#if defined __GNUC__
-
-//
-// supports __restrict
-//
-
+#if defined(__GNUC__) || defined(__clang__) || defined(_MSC_VER) || defined(__INTEL_COMPILER)
 #    define IMATH_RESTRICT __restrict
-
-#elif defined(__INTEL_COMPILER) || defined(__ICL) || defined(__ICC) || defined(__ECC)
-
-//
-// supports restrict
-//
-
-#    define IMATH_RESTRICT restrict
-
-#elif defined __sgi
-
-//
-// supports restrict
-//
-
-#    define IMATH_RESTRICT restrict
-
-#elif defined _MSC_VER
-
-//
-// supports __restrict
-//
-
-//    #define IMATH_RESTRICT __restrict
-#    define IMATH_RESTRICT
-
 #else
-
-//
-// restrict / __restrict not supported
-//
-
 #    define IMATH_RESTRICT
-
 #endif
 
 #endif // INCLUDED_IMATHPLATFORM_H
