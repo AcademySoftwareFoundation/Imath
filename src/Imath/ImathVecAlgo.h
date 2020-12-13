@@ -55,21 +55,41 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 // Find the projection of vector t onto vector s (Vec2, Vec3, Vec4)
 //-----------------------------------------------------------------
 
-template <class Vec> IMATH_CONSTEXPR14 Vec project (const Vec& s, const Vec& t);
+template <class Vec,
+          IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
+IMATH_CONSTEXPR14 inline Vec
+project (const Vec& s, const Vec& t)
+{
+    Vec sNormalized = s.normalized();
+    return sNormalized * (sNormalized ^ t);
+}
 
 //------------------------------------------------
 // Find a vector that is perpendicular to s and
 // in the same plane as s and t (Vec2, Vec3, Vec4)
 //------------------------------------------------
 
-template <class Vec> constexpr Vec orthogonal (const Vec& s, const Vec& t);
+template <class Vec,
+          IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
+constexpr inline Vec
+orthogonal (const Vec& s, const Vec& t)
+{
+    return t - project (s, t);
+}
 
 //-----------------------------------------------
 // Find the direction of a ray s after reflection
 // off a plane with normal t (Vec2, Vec3, Vec4)
 //-----------------------------------------------
 
-template <class Vec> constexpr Vec reflect (const Vec& s, const Vec& t);
+template <class Vec,
+          IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
+constexpr inline Vec
+reflect (const Vec& s, const Vec& t)
+{
+    return s - typename Vec::BaseType (2) * (s - project (t, s));
+}
+
 
 //--------------------------------------------------------------------
 // Find the vertex of triangle (v0, v1, v2) that is closest to point p
@@ -82,28 +102,6 @@ IMATH_CONSTEXPR14 Vec closestVertex (const Vec& v0, const Vec& v1, const Vec& v2
 //---------------
 // Implementation
 //---------------
-
-template <class Vec>
-IMATH_CONSTEXPR14 inline Vec
-project (const Vec& s, const Vec& t)
-{
-    Vec sNormalized = s.normalized();
-    return sNormalized * (sNormalized ^ t);
-}
-
-template <class Vec>
-constexpr inline Vec
-orthogonal (const Vec& s, const Vec& t)
-{
-    return t - project (s, t);
-}
-
-template <class Vec>
-constexpr inline Vec
-reflect (const Vec& s, const Vec& t)
-{
-    return s - typename Vec::BaseType (2) * (s - project (t, s));
-}
 
 template <class Vec>
 IMATH_CONSTEXPR14 Vec

@@ -8,7 +8,6 @@ imath_define_library(Imath
     ImathRandom.cpp
     ImathColorAlgo.cpp
     ImathFun.cpp
-    ImathVec.cpp
     ImathMatrixAlgo.cpp
     toFloat.h
     eLut.h

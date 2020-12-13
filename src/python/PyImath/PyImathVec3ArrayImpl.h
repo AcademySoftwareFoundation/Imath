@@ -138,6 +138,25 @@ Vec3Array_bounds(const FixedArray<IMATH_NAMESPACE::Vec3<T> > &a)
     return tmp;
 }
 
+
+// Trick to register methods for float-only-based vectors
+template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
+void register_Vec3Array_floatonly(class_<FixedArray<Vec3<T>>>& vec3Array_class)
+{
+    generate_member_bindings<op_vecLength<IMATH_NAMESPACE::Vec3<T> >     >(vec3Array_class,"length","");
+    generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec3<T> >  >(vec3Array_class,"normalize","");
+    generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec3<T> > >(vec3Array_class,"normalized","");
+    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec3<T> >  >(vec3Array_class,"normalizeExc","");
+    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec3<T> > >(vec3Array_class,"normalizedExc","");
+}
+
+template <class T, IMATH_ENABLE_IF(std::is_integral<T>::value)>
+void register_Vec3Array_floatonly(class_<FixedArray<Vec3<T>>>& vec3Array_class)
+{
+}
+
+
+
 template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Vec3<T> > >
 register_Vec3Array()
@@ -159,12 +178,8 @@ register_Vec3Array()
     add_arithmetic_math_functions(vec3Array_class);
     add_comparison_functions(vec3Array_class);
 
-    generate_member_bindings<op_vecLength<IMATH_NAMESPACE::Vec3<T> >     >(vec3Array_class,"length","");
+    register_Vec3Array_floatonly(vec3Array_class);
     generate_member_bindings<op_vecLength2<IMATH_NAMESPACE::Vec3<T> >    >(vec3Array_class,"length2","");
-    generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec3<T> >  >(vec3Array_class,"normalize","");
-    generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec3<T> > >(vec3Array_class,"normalized","");
-    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec3<T> >  >(vec3Array_class,"normalizeExc","");
-    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec3<T> > >(vec3Array_class,"normalizedExc","");
 
     generate_member_bindings<op_vec3Cross<T>,           true_>(vec3Array_class,"cross","return the cross product of (self,x)",boost::python::args("x"));
     generate_member_bindings<op_vecDot<IMATH_NAMESPACE::Vec3<T> >,true_>(vec3Array_class,"dot","return the inner product of (self,x)",boost::python::args("x"));

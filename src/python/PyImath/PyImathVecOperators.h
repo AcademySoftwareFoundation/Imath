@@ -44,7 +44,8 @@ struct op_vecDot {
     static inline typename T::BaseType apply(const T &a, const T &b) { return a.dot(b); }
 };
 
-template <class T>
+template <class T,
+          IMATH_ENABLE_IF(!std::is_integral<typename T::BaseType>::value)>
 struct op_vecLength {
     static inline typename T::BaseType apply(const T &v) { return v.length(); }
 };
@@ -54,22 +55,26 @@ struct op_vecLength2 {
     static inline typename T::BaseType apply(const T &v) { return v.length2(); }
 };
 
-template <class T>
+template <class T,
+          IMATH_ENABLE_IF(!std::is_integral<typename T::BaseType>::value)>
 struct op_vecNormalize {
     static inline void apply(T &v) { v.normalize(); }
 };
 
-template <class T>
+template <class T,
+          IMATH_ENABLE_IF(!std::is_integral<typename T::BaseType>::value)>
 struct op_vecNormalized {
     static inline T apply(const T &v) { return v.normalized(); }
 };
 
-template <class T>
+template <class T,
+          IMATH_ENABLE_IF(!std::is_integral<typename T::BaseType>::value)>
 struct op_vecNormalizeExc {
     static inline void apply(T &v) { v.normalizeExc(); }
 };
 
-template <class T>
+template <class T,
+          IMATH_ENABLE_IF(!std::is_integral<typename T::BaseType>::value)>
 struct op_vecNormalizedExc {
     static inline T apply(const T &v) { return v.normalizedExc(); }
 };

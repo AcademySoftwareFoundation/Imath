@@ -47,14 +47,9 @@
                              (uint32_t(IMATH_VERSION_PATCH) <<  8))
 
 //
-// Constexpr C++14 conditional definition
+// Decorator that makes a function available for both CPU and GPU, when
+// compiling for Cuda.
 //
-#if(__cplusplus >= 201402L)
-  #define IMATH_CONSTEXPR14 constexpr
-#else
-  #define IMATH_CONSTEXPR14 /* can not be constexpr before c++14 */
-#endif
-
 #ifdef __CUDACC__
   #define IMATH_HOSTDEVICE __host__ __device__
 #else
