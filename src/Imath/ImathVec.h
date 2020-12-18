@@ -645,103 +645,62 @@ typedef Vec4<double> V4d;
 
 //-------------------------------------------
 // Specializations for VecN<short>, VecN<int>
+// Normalize and length don't make sense for integer vectors, so disable them.
 //-------------------------------------------
 
 // Vec2<short>
-
-template <> short Vec2<short>::length() const;
-
-template <> const Vec2<short>& Vec2<short>::normalize();
-
-template <> const Vec2<short>& Vec2<short>::normalizeExc();
-
-template <> const Vec2<short>& Vec2<short>::normalizeNonNull();
-
-template <> Vec2<short> Vec2<short>::normalized() const;
-
-template <> Vec2<short> Vec2<short>::normalizedExc() const;
-
-template <> Vec2<short> Vec2<short>::normalizedNonNull() const;
+template <> short Vec2<short>::length() const = delete;
+template <> const Vec2<short>& Vec2<short>::normalize() = delete;
+template <> const Vec2<short>& Vec2<short>::normalizeExc() = delete;
+template <> const Vec2<short>& Vec2<short>::normalizeNonNull() = delete;
+template <> Vec2<short> Vec2<short>::normalized() const = delete;
+template <> Vec2<short> Vec2<short>::normalizedExc() const = delete;
+template <> Vec2<short> Vec2<short>::normalizedNonNull() const = delete;
 
 // Vec2<int>
-
-template <> int Vec2<int>::length() const;
-
-template <> const Vec2<int>& Vec2<int>::normalize();
-
-template <> const Vec2<int>& Vec2<int>::normalizeExc();
-
-template <> const Vec2<int>& Vec2<int>::normalizeNonNull();
-
-template <> Vec2<int> Vec2<int>::normalized() const;
-
-template <> Vec2<int> Vec2<int>::normalizedExc() const;
-
-template <> Vec2<int> Vec2<int>::normalizedNonNull() const;
+template <> int Vec2<int>::length() const = delete;
+template <> const Vec2<int>& Vec2<int>::normalize() = delete;
+template <> const Vec2<int>& Vec2<int>::normalizeExc() = delete;
+template <> const Vec2<int>& Vec2<int>::normalizeNonNull() = delete;
+template <> Vec2<int> Vec2<int>::normalized() const = delete;
+template <> Vec2<int> Vec2<int>::normalizedExc() const = delete;
+template <> Vec2<int> Vec2<int>::normalizedNonNull() const = delete;
 
 // Vec3<short>
-
-template <> short Vec3<short>::length() const;
-
-template <> const Vec3<short>& Vec3<short>::normalize();
-
-template <> const Vec3<short>& Vec3<short>::normalizeExc();
-
-template <> const Vec3<short>& Vec3<short>::normalizeNonNull();
-
-template <> Vec3<short> Vec3<short>::normalized() const;
-
-template <> Vec3<short> Vec3<short>::normalizedExc() const;
-
-template <> Vec3<short> Vec3<short>::normalizedNonNull() const;
+template <> short Vec3<short>::length() const = delete;
+template <> const Vec3<short>& Vec3<short>::normalize() = delete;
+template <> const Vec3<short>& Vec3<short>::normalizeExc() = delete;
+template <> const Vec3<short>& Vec3<short>::normalizeNonNull() = delete;
+template <> Vec3<short> Vec3<short>::normalized() const = delete;
+template <> Vec3<short> Vec3<short>::normalizedExc() const = delete;
+template <> Vec3<short> Vec3<short>::normalizedNonNull() const = delete;
 
 // Vec3<int>
-
-template <> int Vec3<int>::length() const;
-
-template <> const Vec3<int>& Vec3<int>::normalize();
-
-template <> const Vec3<int>& Vec3<int>::normalizeExc();
-
-template <> const Vec3<int>& Vec3<int>::normalizeNonNull();
-
-template <> Vec3<int> Vec3<int>::normalized() const;
-
-template <> Vec3<int> Vec3<int>::normalizedExc() const;
-
-template <> Vec3<int> Vec3<int>::normalizedNonNull() const;
+template <> int Vec3<int>::length() const = delete;
+template <> const Vec3<int>& Vec3<int>::normalize() = delete;
+template <> const Vec3<int>& Vec3<int>::normalizeExc() = delete;
+template <> const Vec3<int>& Vec3<int>::normalizeNonNull() = delete;
+template <> Vec3<int> Vec3<int>::normalized() const = delete;
+template <> Vec3<int> Vec3<int>::normalizedExc() const = delete;
+template <> Vec3<int> Vec3<int>::normalizedNonNull() const = delete;
 
 // Vec4<short>
-
-template <> short Vec4<short>::length() const;
-
-template <> const Vec4<short>& Vec4<short>::normalize();
-
-template <> const Vec4<short>& Vec4<short>::normalizeExc();
-
-template <> const Vec4<short>& Vec4<short>::normalizeNonNull();
-
-template <> Vec4<short> Vec4<short>::normalized() const;
-
-template <> Vec4<short> Vec4<short>::normalizedExc() const;
-
-template <> Vec4<short> Vec4<short>::normalizedNonNull() const;
+template <> short Vec4<short>::length() const = delete;
+template <> const Vec4<short>& Vec4<short>::normalize() = delete;
+template <> const Vec4<short>& Vec4<short>::normalizeExc() = delete;
+template <> const Vec4<short>& Vec4<short>::normalizeNonNull() = delete;
+template <> Vec4<short> Vec4<short>::normalized() const = delete;
+template <> Vec4<short> Vec4<short>::normalizedExc() const = delete;
+template <> Vec4<short> Vec4<short>::normalizedNonNull() const = delete;
 
 // Vec4<int>
-
-template <> int Vec4<int>::length() const;
-
-template <> const Vec4<int>& Vec4<int>::normalize();
-
-template <> const Vec4<int>& Vec4<int>::normalizeExc();
-
-template <> const Vec4<int>& Vec4<int>::normalizeNonNull();
-
-template <> Vec4<int> Vec4<int>::normalized() const;
-
-template <> Vec4<int> Vec4<int>::normalizedExc() const;
-
-template <> Vec4<int> Vec4<int>::normalizedNonNull() const;
+template <> int Vec4<int>::length() const = delete;
+template <> const Vec4<int>& Vec4<int>::normalize() = delete;
+template <> const Vec4<int>& Vec4<int>::normalizeExc() = delete;
+template <> const Vec4<int>& Vec4<int>::normalizeNonNull() = delete;
+template <> Vec4<int> Vec4<int>::normalized() const = delete;
+template <> Vec4<int> Vec4<int>::normalizedExc() const = delete;
+template <> Vec4<int> Vec4<int>::normalizedNonNull() const = delete;
 
 //------------------------
 // Implementation of Vec2:

@@ -881,6 +881,36 @@ notequal(const Vec4<T> &v, const tuple &t)
         throw std::invalid_argument ("tuple of length 4 expected");    
 }
 
+
+
+// Trick to register methods for float-only-based vectors
+template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
+void register_Vec4_floatonly(class_<Vec4<T>>& vec4_class)
+{
+   vec4_class
+        .def("length", &Vec4_length<T>,"length() magnitude of the vector")
+        .def("normalize", &Vec4_normalize<T>,return_internal_reference<>(),
+             "v.normalize() destructively normalizes v and returns a reference to it")
+        .def("normalizeExc", &Vec4_normalizeExc<T>,return_internal_reference<>(),
+             "v.normalizeExc() destructively normalizes V and returns a reference to it, throwing an exception if length() == 0")
+        .def("normalizeNonNull", &Vec4_normalizeNonNull<T>,return_internal_reference<>(),
+             "v.normalizeNonNull() destructively normalizes V and returns a reference to it, faster if lngth() != 0")
+        .def("normalized", &Vec4_normalized<T>, "v.normalized() returns a normalized copy of v")
+        .def("normalizedExc", &Vec4_normalizedExc<T>, "v.normalizedExc() returns a normalized copy of v, throwing an exception if length() == 0")
+        .def("normalizedNonNull", &Vec4_normalizedNonNull<T>, "v.normalizedNonNull() returns a normalized copy of v, faster if lngth() != 0")
+        .def("orthogonal", &orthogonal<T>)
+        .def("project", &project<T>)
+        .def("reflect", &reflect<T>)
+        ;
+}
+
+template <class T, IMATH_ENABLE_IF(std::is_integral<T>::value)>
+void register_Vec4_floatonly(class_<Vec4<T>>& vec4_class)
+{
+}
+
+
+
 template <class T>
 class_<Vec4<T> >
 register_Vec4()
@@ -920,24 +950,11 @@ register_Vec4()
          "i.e., abs(v1[i] - v2[i]) <= e * abs(v1[i])")
         .def("equalWithRelError", &equalWithRelErrorObj<T>)
          
-	.def("length", &Vec4_length<T>,"length() magnitude of the vector")
 	.def("length2", &Vec4_length2<T>,"length2() square magnitude of the vector")
-	.def("normalize", &Vec4_normalize<T>,return_internal_reference<>(),
-         "v.normalize() destructively normalizes v and returns a reference to it")
-	.def("normalizeExc", &Vec4_normalizeExc<T>,return_internal_reference<>(),
-         "v.normalizeExc() destructively normalizes V and returns a reference to it, throwing an exception if length() == 0")
-	.def("normalizeNonNull", &Vec4_normalizeNonNull<T>,return_internal_reference<>(),
-         "v.normalizeNonNull() destructively normalizes V and returns a reference to it, faster if lngth() != 0")
-	.def("normalized", &Vec4_normalized<T>, "v.normalized() returns a normalized copy of v")
-	.def("normalizedExc", &Vec4_normalizedExc<T>, "v.normalizedExc() returns a normalized copy of v, throwing an exception if length() == 0")
-	.def("normalizedNonNull", &Vec4_normalizedNonNull<T>, "v.normalizedNonNull() returns a normalized copy of v, faster if lngth() != 0")
 	.def("__len__", Vec4_helper::len)
 	.def("__getitem__", Vec4_helper::getitem,return_value_policy<copy_non_const_reference>())
 	.def("__setitem__", Vec4_helper::setitem)
         .def("negate", &Vec4_negate<T>, return_internal_reference<>())
-        .def("orthogonal", &orthogonal<T>)
-        .def("project", &project<T>)
-        .def("reflect", &reflect<T>)
         .def("setValue", &setValue<T>)    
         .def("__neg__", &Vec4_neg<T>)
         .def("__mul__", &Vec4_mul<T, int>)
@@ -1017,6 +1034,8 @@ register_Vec4()
 	.def("__str__",&Vec4_str<T>)
 	.def("__repr__",&Vec4_repr<T>)
         ;
+
+    register_Vec4_floatonly<T>(vec4_class);
 
     decoratecopy(vec4_class);
 

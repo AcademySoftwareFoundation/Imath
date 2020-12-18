@@ -942,6 +942,36 @@ notequal(const Vec2<T> &v, const BoostPyType &t)
         throw std::invalid_argument ("tuple of length 2 expected");    
 }
 
+
+
+// Trick to register methods for float-only-based vectors
+template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
+void register_Vec2_floatonly(class_<Vec2<T>>& vec2_class)
+{
+   vec2_class
+        .def("length", &Vec2_length<T>,"length() magnitude of the vector")
+        .def("normalize", &Vec2_normalize<T>,return_internal_reference<>(),
+             "v.normalize() destructively normalizes v and returns a reference to it")
+        .def("normalizeExc", &Vec2_normalizeExc<T>,return_internal_reference<>(),
+             "v.normalizeExc() destructively normalizes V and returns a reference to it, throwing an exception if length() == 0")
+        .def("normalizeNonNull", &Vec2_normalizeNonNull<T>,return_internal_reference<>(),
+             "v.normalizeNonNull() destructively normalizes V and returns a reference to it, faster if lngth() != 0")
+        .def("normalized", &Vec2_normalized<T>, "v.normalized() returns a normalized copy of v")
+        .def("normalizedExc", &Vec2_normalizedExc<T>, "v.normalizedExc() returns a normalized copy of v, throwing an exception if length() == 0")
+        .def("normalizedNonNull", &Vec2_normalizedNonNull<T>, "v.normalizedNonNull() returns a normalized copy of v, faster if lngth() != 0")
+        .def("orthogonal", &orthogonal<T>)
+        .def("project", &project<T>)
+        .def("reflect", &reflect<T>)
+        ;
+}
+
+template <class T, IMATH_ENABLE_IF(std::is_integral<T>::value)>
+void register_Vec2_floatonly(class_<Vec2<T>>& vec2_class)
+{
+}
+
+
+
 template <class T>
 class_<Vec2<T> >
 register_Vec2()
@@ -981,27 +1011,12 @@ register_Vec2()
              "i.e., abs(v1[i] - v2[i]) <= e * abs(v1[i])")
         .def("equalWithRelError", &equalWithRelErrorObj<T>)
 
-        .def("length", &Vec2_length<T>,"length() magnitude of the vector")
         .def("length2", &Vec2_length2<T>,"length2() square magnitude of the vector")
-        .def("normalize", &Vec2_normalize<T>,return_internal_reference<>(),
-             "v.normalize() destructively normalizes v and returns a reference to it")
-         
-        .def("normalizeExc", &Vec2_normalizeExc<T>,return_internal_reference<>(),
-             "v.normalizeExc() destructively normalizes V and returns a reference to it, throwing an exception if length() == 0")
-         
-        .def("normalizeNonNull", &Vec2_normalizeNonNull<T>,return_internal_reference<>(),
-             "v.normalizeNonNull() destructively normalizes V and returns a reference to it, faster if lngth() != 0")
-        .def("normalized", &Vec2_normalized<T>, "v.normalized() returns a normalized copy of v")
-        .def("normalizedExc", &Vec2_normalizedExc<T>, "v.normalizedExc() returns a normalized copy of v, throwing an exception if length() == 0")
-        .def("normalizedNonNull", &Vec2_normalizedNonNull<T>, "v.normalizedNonNull() returns a normalized copy of v, faster if lngth() != 0")
         .def("__len__", Vec2_helper::len)
         .def("__getitem__", Vec2_helper::getitem,return_value_policy<copy_non_const_reference>())
         .def("__setitem__", Vec2_helper::setitem)
         .def("closestVertex", &closestVertex<T>)
         .def("negate", &Vec2_negate<T>, return_internal_reference<>())
-        .def("orthogonal", &orthogonal<T>)
-        .def("project", &project<T>)
-        .def("reflect", &reflect<T>)
         .def("setValue", &setValue<T>)
         .def("__neg__", &Vec2_neg<T>)
         .def("__mul__", &Vec2_mul<T, int>)
@@ -1088,6 +1103,8 @@ register_Vec2()
 	.def("__repr__",&Vec2_repr<T>)
         ;
 
+    register_Vec2_floatonly<T>(vec2_class);
+
     decoratecopy(vec2_class);
 
     //add_swizzle2_operators(v2f_class);
@@ -1151,6 +1168,25 @@ Vec2Array_bounds(const FixedArray<IMATH_NAMESPACE::Vec2<T> > &a)
     return tmp;
 }
 
+
+// Trick to register methods for float-only-based vectors
+template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
+void register_Vec2Array_floatonly(class_<FixedArray<Vec2<T>>>& vec2Array_class)
+{
+    generate_member_bindings<op_vecLength<IMATH_NAMESPACE::Vec2<T> >     >(vec2Array_class,"length","");
+    generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec2<T> >  >(vec2Array_class,"normalize","");
+    generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec2<T> > >(vec2Array_class,"normalized","");
+    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec2<T> >  >(vec2Array_class,"normalizeExc","");
+    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec2<T> > >(vec2Array_class,"normalizedExc","");
+}
+
+template <class T, IMATH_ENABLE_IF(std::is_integral<T>::value)>
+void register_Vec2Array_floatonly(class_<FixedArray<Vec2<T>>>& vec2Array_class)
+{
+}
+
+
+
 template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Vec2<T> > >
 register_Vec2Array()
@@ -1172,13 +1208,8 @@ register_Vec2Array()
     add_arithmetic_math_functions(vec2Array_class);
     add_comparison_functions(vec2Array_class);
 
-    generate_member_bindings<op_vecLength<IMATH_NAMESPACE::Vec2<T> >     >(vec2Array_class,"length","");
+    register_Vec2Array_floatonly(vec2Array_class);
     generate_member_bindings<op_vecLength2<IMATH_NAMESPACE::Vec2<T> >    >(vec2Array_class,"length2","");
-    generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec2<T> >  >(vec2Array_class,"normalize","");
-    generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec2<T> > >(vec2Array_class,"normalized","");
-    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec2<T> >  >(vec2Array_class,"normalizeExc","");
-    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec2<T> > >(vec2Array_class,"normalizedExc","");
-
     generate_member_bindings<op_vec2Cross<T>,           true_>(vec2Array_class,"cross","return the cross product of (self,x)",boost::python::args("x"));
     generate_member_bindings<op_vecDot<IMATH_NAMESPACE::Vec2<T> >,true_>(vec2Array_class,"dot","return the inner product of (self,x)",boost::python::args("x"));
 

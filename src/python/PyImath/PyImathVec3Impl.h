@@ -896,6 +896,36 @@ notequal(const Vec3<T> &v, const tuple &t)
         throw std::invalid_argument ("tuple of length 3 expected");    
 }
 
+
+
+// Trick to register methods for float-only-based vectors
+template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
+void register_Vec3_floatonly(class_<Vec3<T>>& vec3_class)
+{
+   vec3_class
+        .def("length", &Vec3_length<T>,"length() magnitude of the vector")
+        .def("normalize", &Vec3_normalize<T>,return_internal_reference<>(),
+             "v.normalize() destructively normalizes v and returns a reference to it")
+        .def("normalizeExc", &Vec3_normalizeExc<T>,return_internal_reference<>(),
+             "v.normalizeExc() destructively normalizes V and returns a reference to it, throwing an exception if length() == 0")
+        .def("normalizeNonNull", &Vec3_normalizeNonNull<T>,return_internal_reference<>(),
+             "v.normalizeNonNull() destructively normalizes V and returns a reference to it, faster if lngth() != 0")
+        .def("normalized", &Vec3_normalized<T>, "v.normalized() returns a normalized copy of v")
+        .def("normalizedExc", &Vec3_normalizedExc<T>, "v.normalizedExc() returns a normalized copy of v, throwing an exception if length() == 0")
+        .def("normalizedNonNull", &Vec3_normalizedNonNull<T>, "v.normalizedNonNull() returns a normalized copy of v, faster if lngth() != 0")
+        .def("orthogonal", &orthogonal<T>)
+        .def("project", &project<T>)
+        .def("reflect", &reflect<T>)
+        ;
+}
+
+template <class T, IMATH_ENABLE_IF(std::is_integral<T>::value)>
+void register_Vec3_floatonly(class_<Vec3<T>>& vec2_class)
+{
+}
+
+
+
 template <class T>
 class_<Vec3<T> >
 register_Vec3()
@@ -937,25 +967,12 @@ register_Vec3()
          "i.e., abs(v1[i] - v2[i]) <= e * abs(v1[i])")
         .def("equalWithRelError", &equalWithRelErrorObj<T>)
          
-	.def("length", &Vec3_length<T>,"length() magnitude of the vector")
 	.def("length2", &Vec3_length2<T>,"length2() square magnitude of the vector")
-	.def("normalize", &Vec3_normalize<T>,return_internal_reference<>(),
-         "v.normalize() destructively normalizes v and returns a reference to it")
-	.def("normalizeExc", &Vec3_normalizeExc<T>,return_internal_reference<>(),
-         "v.normalizeExc() destructively normalizes V and returns a reference to it, throwing an exception if length() == 0")
-	.def("normalizeNonNull", &Vec3_normalizeNonNull<T>,return_internal_reference<>(),
-         "v.normalizeNonNull() destructively normalizes V and returns a reference to it, faster if lngth() != 0")
-	.def("normalized", &Vec3_normalized<T>, "v.normalized() returns a normalized copy of v")
-	.def("normalizedExc", &Vec3_normalizedExc<T>, "v.normalizedExc() returns a normalized copy of v, throwing an exception if length() == 0")
-	.def("normalizedNonNull", &Vec3_normalizedNonNull<T>, "v.normalizedNonNull() returns a normalized copy of v, faster if lngth() != 0")
 	.def("__len__", Vec3_helper::len)
 	.def("__getitem__", Vec3_helper::getitem,return_value_policy<copy_non_const_reference>())
 	.def("__setitem__", Vec3_helper::setitem)
         .def("closestVertex", &closestVertex<T>)
         .def("negate", &Vec3_negate<T>, return_internal_reference<>())
-        .def("orthogonal", &orthogonal<T>)
-        .def("project", &project<T>)
-        .def("reflect", &reflect<T>)
         .def("setValue", &setValue<T>)    
         .def("__neg__", &Vec3_neg<T>)
         .def("__mul__", &Vec3_mul<T, int>)
@@ -1038,6 +1055,8 @@ register_Vec3()
 	.def("__str__",&Vec3_str<T>)
 	.def("__repr__",&Vec3_repr<T>)
         ;
+
+    register_Vec3_floatonly<T>(vec3_class);
 
     decoratecopy(vec3_class);
 

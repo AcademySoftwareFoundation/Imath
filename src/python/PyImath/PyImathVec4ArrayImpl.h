@@ -131,6 +131,25 @@ Vec4Array_max(const FixedArray<IMATH_NAMESPACE::Vec4<T> > &a)
     return tmp;
 }
 
+
+// Trick to register methods for float-only-based vectors
+template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
+void register_Vec4Array_floatonly(class_<FixedArray<Vec4<T>>>& vec4Array_class)
+{
+    generate_member_bindings<op_vecLength<IMATH_NAMESPACE::Vec4<T> >     >(vec4Array_class,"length","");
+    generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec4<T> >  >(vec4Array_class,"normalize","");
+    generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec4<T> > >(vec4Array_class,"normalized","");
+    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec4<T> >  >(vec4Array_class,"normalizeExc","");
+    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec4<T> > >(vec4Array_class,"normalizedExc","");
+}
+
+template <class T, IMATH_ENABLE_IF(std::is_integral<T>::value)>
+void register_Vec4Array_floatonly(class_<FixedArray<Vec4<T>>>& vec4Array_class)
+{
+}
+
+
+
 template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Vec4<T> > >
 register_Vec4Array()
@@ -151,13 +170,8 @@ register_Vec4Array()
     add_arithmetic_math_functions(vec4Array_class);
     add_comparison_functions(vec4Array_class);
 
-    generate_member_bindings<op_vecLength<IMATH_NAMESPACE::Vec4<T> >     >(vec4Array_class,"length","");
+    register_Vec4Array_floatonly(vec4Array_class);
     generate_member_bindings<op_vecLength2<IMATH_NAMESPACE::Vec4<T> >    >(vec4Array_class,"length2","");
-    generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec4<T> >  >(vec4Array_class,"normalize","");
-    generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec4<T> > >(vec4Array_class,"normalized","");
-    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec4<T> >  >(vec4Array_class,"normalizeExc","");
-    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec4<T> > >(vec4Array_class,"normalizedExc","");
-
     generate_member_bindings<op_vecDot<IMATH_NAMESPACE::Vec4<T> >,true_>(vec4Array_class,"dot","return the inner product of (self,x)",boost::python::args("x"));
     generate_member_bindings<op_mul<IMATH_NAMESPACE::Vec4<T>,T>,  true_>(vec4Array_class,"__mul__" ,"self*x", boost::python::args("x"));
     generate_member_bindings<op_mul<IMATH_NAMESPACE::Vec4<T>,T>,  true_>(vec4Array_class,"__rmul__","x*self", boost::python::args("x"));

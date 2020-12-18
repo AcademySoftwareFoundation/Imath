@@ -45,6 +45,7 @@
 #include "ImathInt64.h"
 #include "ImathLimits.h"
 #include "ImathNamespace.h"
+#include "ImathPlatform.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
