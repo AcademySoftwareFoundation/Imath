@@ -51,35 +51,35 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline T
-abs (T a)
+abs (T a) noexcept
 {
     return (a > T (0)) ? a : -a;
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline int
-sign (T a)
+sign (T a) noexcept
 {
     return (a > T (0)) ? 1 : ((a < T (0)) ? -1 : 0);
 }
 
 template <class T, class Q>
 IMATH_HOSTDEVICE constexpr inline T
-lerp (T a, T b, Q t)
+lerp (T a, T b, Q t) noexcept
 {
     return (T) (a * (1 - t) + b * t);
 }
 
 template <class T, class Q>
 IMATH_HOSTDEVICE constexpr inline T
-ulerp (T a, T b, Q t)
+ulerp (T a, T b, Q t) noexcept
 {
     return (T) ((a > b) ? (a - (a - b) * t) : (a + (b - a) * t));
 }
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
-lerpfactor (T m, T a, T b)
+lerpfactor (T m, T a, T b) noexcept
 {
     //
     // Return how far m is between a and b, that is return t such that
@@ -102,56 +102,56 @@ lerpfactor (T m, T a, T b)
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline T
-clamp (T a, T l, T h)
+clamp (T a, T l, T h) noexcept
 {
     return (a < l) ? l : ((a > h) ? h : a);
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline int
-cmp (T a, T b)
+cmp (T a, T b) noexcept
 {
     return IMATH_INTERNAL_NAMESPACE::sign (a - b);
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline int
-cmpt (T a, T b, T t)
+cmpt (T a, T b, T t) noexcept
 {
     return (IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t) ? 0 : cmp (a, b);
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline bool
-iszero (T a, T t)
+iszero (T a, T t) noexcept
 {
     return (IMATH_INTERNAL_NAMESPACE::abs (a) <= t) ? 1 : 0;
 }
 
 template <class T1, class T2, class T3>
 IMATH_HOSTDEVICE constexpr inline bool
-equal (T1 a, T2 b, T3 t)
+equal (T1 a, T2 b, T3 t) noexcept
 {
     return IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t;
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline int
-floor (T x)
+floor (T x) noexcept
 {
     return (x >= 0) ? int (x) : -(int (-x) + (-x > int (-x)));
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline int
-ceil (T x)
+ceil (T x) noexcept
 {
     return -floor (-x);
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline int
-trunc (T x)
+trunc (T x) noexcept
 {
     return (x >= 0) ? int (x) : -int (-x);
 }
@@ -165,13 +165,13 @@ trunc (T x)
 //
 
 IMATH_HOSTDEVICE constexpr inline int
-divs (int x, int y)
+divs (int x, int y) noexcept
 {
     return (x >= 0) ? ((y >= 0) ? (x / y) : -(x / -y)) : ((y >= 0) ? -(-x / y) : (-x / -y));
 }
 
 IMATH_HOSTDEVICE constexpr inline int
-mods (int x, int y)
+mods (int x, int y) noexcept
 {
     return (x >= 0) ? ((y >= 0) ? (x % y) : (x % -y)) : ((y >= 0) ? -(-x % y) : -(-x % -y));
 }
@@ -185,14 +185,14 @@ mods (int x, int y)
 //
 
 IMATH_HOSTDEVICE constexpr inline int
-divp (int x, int y)
+divp (int x, int y) noexcept
 {
     return (x >= 0) ? ((y >= 0) ? (x / y) : -(x / -y))
                     : ((y >= 0) ? -((y - 1 - x) / y) : ((-y - 1 - x) / -y));
 }
 
 IMATH_HOSTDEVICE constexpr inline int
-modp (int x, int y)
+modp (int x, int y) noexcept
 {
     return x - y * divp (x, y);
 }
@@ -218,18 +218,18 @@ modp (int x, int y)
 //
 //----------------------------------------------------------
 
-IMATH_EXPORT float succf (float f);
-IMATH_EXPORT float predf (float f);
+IMATH_EXPORT float succf (float f) noexcept;
+IMATH_EXPORT float predf (float f) noexcept;
 
-IMATH_EXPORT double succd (double d);
-IMATH_EXPORT double predd (double d);
+IMATH_EXPORT double succd (double d) noexcept;
+IMATH_EXPORT double predd (double d) noexcept;
 
 //
 // Return true if the number is not a NaN or Infinity.
 //
 
 inline bool IMATH_HOSTDEVICE
-finitef (float f)
+finitef (float f) noexcept
 {
     union
     {
@@ -242,7 +242,7 @@ finitef (float f)
 }
 
 inline bool IMATH_HOSTDEVICE
-finited (double d)
+finited (double d) noexcept
 {
     union
     {

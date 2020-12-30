@@ -37,7 +37,7 @@
 IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
 
 float
-succf (float f)
+succf (float f) noexcept
 {
     union
     {
@@ -75,7 +75,7 @@ succf (float f)
 }
 
 float
-predf (float f)
+predf (float f) noexcept
 {
     union
     {
@@ -113,7 +113,7 @@ predf (float f)
 }
 
 double
-succd (double d)
+succd (double d) noexcept
 {
     union
     {
@@ -151,7 +151,7 @@ succd (double d)
 }
 
 double
-predd (double d)
+predd (double d) noexcept
 {
     union
     {

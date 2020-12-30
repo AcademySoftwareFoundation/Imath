@@ -58,29 +58,29 @@ template <class T> class Line3
     //	Constructors - default is normalized units along direction
     //-------------------------------------------------------------
 
-    IMATH_HOSTDEVICE constexpr Line3() {}
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3 (const Vec3<T>& point1, const Vec3<T>& point2);
+    IMATH_HOSTDEVICE constexpr Line3() noexcept {}
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3 (const Vec3<T>& point1, const Vec3<T>& point2) noexcept;
 
     //------------------
     //	State Query/Set
     //------------------
 
-    IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2);
+    IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2) noexcept;
 
     //-------
     //	F(t)
     //-------
 
-    IMATH_HOSTDEVICE constexpr Vec3<T> operator() (T parameter) const;
+    IMATH_HOSTDEVICE constexpr Vec3<T> operator() (T parameter) const noexcept;
 
     //---------
     //	Query
     //---------
 
-    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>& point) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T distanceTo (const Line3<T>& line) const;
-    IMATH_HOSTDEVICE constexpr Vec3<T> closestPointTo (const Vec3<T>& point) const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> closestPointTo (const Line3<T>& line) const;
+    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>& point) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T distanceTo (const Line3<T>& line) const noexcept;
+    IMATH_HOSTDEVICE constexpr Vec3<T> closestPointTo (const Vec3<T>& point) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> closestPointTo (const Line3<T>& line) const noexcept;
 };
 
 //--------------------
@@ -94,14 +94,14 @@ typedef Line3<double> Line3d;
 // Implementation
 //---------------
 
-template <class T> IMATH_CONSTEXPR14 inline Line3<T>::Line3 (const Vec3<T>& p0, const Vec3<T>& p1)
+template <class T> IMATH_CONSTEXPR14 inline Line3<T>::Line3 (const Vec3<T>& p0, const Vec3<T>& p1) noexcept
 {
     set (p0, p1);
 }
 
 template <class T>
 inline void
-Line3<T>::set (const Vec3<T>& p0, const Vec3<T>& p1)
+Line3<T>::set (const Vec3<T>& p0, const Vec3<T>& p1) noexcept
 {
     pos = p0;
     dir = p1 - p0;
@@ -110,28 +110,28 @@ Line3<T>::set (const Vec3<T>& p0, const Vec3<T>& p1)
 
 template <class T>
 constexpr inline Vec3<T>
-Line3<T>::operator() (T parameter) const
+Line3<T>::operator() (T parameter) const noexcept
 {
     return pos + dir * parameter;
 }
 
 template <class T>
 constexpr inline T
-Line3<T>::distanceTo (const Vec3<T>& point) const
+Line3<T>::distanceTo (const Vec3<T>& point) const noexcept
 {
     return (closestPointTo (point) - point).length();
 }
 
 template <class T>
 constexpr inline Vec3<T>
-Line3<T>::closestPointTo (const Vec3<T>& point) const
+Line3<T>::closestPointTo (const Vec3<T>& point) const noexcept
 {
     return ((point - pos) ^ dir) * dir + pos;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline T
-Line3<T>::distanceTo (const Line3<T>& line) const
+Line3<T>::distanceTo (const Line3<T>& line) const noexcept
 {
     T d = (dir % line.dir) ^ (line.pos - pos);
     return (d >= 0) ? d : -d;
@@ -139,7 +139,7 @@ Line3<T>::distanceTo (const Line3<T>& line) const
 
 template <class T>
 IMATH_CONSTEXPR14 inline Vec3<T>
-Line3<T>::closestPointTo (const Line3<T>& line) const
+Line3<T>::closestPointTo (const Line3<T>& line) const noexcept
 {
     // Assumes the lines are normalized
 
@@ -173,7 +173,7 @@ operator<< (std::ostream& o, const Line3<T>& line)
 
 template <class S, class T>
 constexpr inline Line3<S>
-operator* (const Line3<S>& line, const Matrix44<T>& M)
+operator* (const Line3<S>& line, const Matrix44<T>& M) noexcept
 {
     return Line3<S> (line.pos * M, (line.pos + line.dir) * M);
 }

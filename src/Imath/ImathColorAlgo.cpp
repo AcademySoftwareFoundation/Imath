@@ -43,7 +43,7 @@
 IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
 
 Vec3<double>
-hsv2rgb_d (const Vec3<double>& hsv)
+hsv2rgb_d (const Vec3<double>& hsv) noexcept
 {
     double hue = hsv.x;
     double sat = hsv.y;
@@ -100,7 +100,7 @@ hsv2rgb_d (const Vec3<double>& hsv)
 }
 
 Color4<double>
-hsv2rgb_d (const Color4<double>& hsv)
+hsv2rgb_d (const Color4<double>& hsv) noexcept
 {
     double hue = hsv.r;
     double sat = hsv.g;
@@ -157,7 +157,7 @@ hsv2rgb_d (const Color4<double>& hsv)
 }
 
 Vec3<double>
-rgb2hsv_d (const Vec3<double>& c)
+rgb2hsv_d (const Vec3<double>& c) noexcept
 {
     const double& x = c.x;
     const double& y = c.y;
@@ -193,7 +193,7 @@ rgb2hsv_d (const Vec3<double>& c)
 }
 
 Color4<double>
-rgb2hsv_d (const Color4<double>& c)
+rgb2hsv_d (const Color4<double>& c) noexcept
 {
     const double& r = c.r;
     const double& g = c.g;

@@ -48,13 +48,13 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 //	These routines eliminate type warnings under g++.
 //
 
-IMATH_EXPORT Vec3<double> hsv2rgb_d (const Vec3<double>& hsv);
+IMATH_EXPORT Vec3<double> hsv2rgb_d (const Vec3<double>& hsv) noexcept;
 
-IMATH_EXPORT Color4<double> hsv2rgb_d (const Color4<double>& hsv);
+IMATH_EXPORT Color4<double> hsv2rgb_d (const Color4<double>& hsv) noexcept;
 
-IMATH_EXPORT Vec3<double> rgb2hsv_d (const Vec3<double>& rgb);
+IMATH_EXPORT Vec3<double> rgb2hsv_d (const Vec3<double>& rgb) noexcept;
 
-IMATH_EXPORT Color4<double> rgb2hsv_d (const Color4<double>& rgb);
+IMATH_EXPORT Color4<double> rgb2hsv_d (const Color4<double>& rgb) noexcept;
 
 //
 //	Color conversion functions and general color algorithms
@@ -65,7 +65,7 @@ IMATH_EXPORT Color4<double> rgb2hsv_d (const Color4<double>& rgb);
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
-hsv2rgb (const Vec3<T>& hsv)
+hsv2rgb (const Vec3<T>& hsv) noexcept
 {
     if (limits<T>::isIntegral())
     {
@@ -87,7 +87,7 @@ hsv2rgb (const Vec3<T>& hsv)
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4<T>
-hsv2rgb (const Color4<T>& hsv)
+hsv2rgb (const Color4<T>& hsv) noexcept
 {
     if (limits<T>::isIntegral())
     {
@@ -111,7 +111,7 @@ hsv2rgb (const Color4<T>& hsv)
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
-rgb2hsv (const Vec3<T>& rgb)
+rgb2hsv (const Vec3<T>& rgb) noexcept
 {
     if (limits<T>::isIntegral())
     {
@@ -133,7 +133,7 @@ rgb2hsv (const Vec3<T>& rgb)
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4<T>
-rgb2hsv (const Color4<T>& rgb)
+rgb2hsv (const Color4<T>& rgb) noexcept
 {
     if (limits<T>::isIntegral())
     {
@@ -157,7 +157,7 @@ rgb2hsv (const Color4<T>& rgb)
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 PackedColor
-rgb2packed (const Vec3<T>& c)
+rgb2packed (const Vec3<T>& c) noexcept
 {
     if (limits<T>::isIntegral())
     {
@@ -178,7 +178,7 @@ rgb2packed (const Vec3<T>& c)
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 PackedColor
-rgb2packed (const Color4<T>& c)
+rgb2packed (const Color4<T>& c) noexcept
 {
     if (limits<T>::isIntegral())
     {
@@ -207,7 +207,7 @@ rgb2packed (const Color4<T>& c)
 
 template <class T>
 IMATH_HOSTDEVICE void
-packed2rgb (PackedColor packed, Vec3<T>& out)
+packed2rgb (PackedColor packed, Vec3<T>& out) noexcept
 {
     if (limits<T>::isIntegral())
     {
@@ -227,7 +227,7 @@ packed2rgb (PackedColor packed, Vec3<T>& out)
 
 template <class T>
 IMATH_HOSTDEVICE void
-packed2rgb (PackedColor packed, Color4<T>& out)
+packed2rgb (PackedColor packed, Color4<T>& out) noexcept
 {
     if (limits<T>::isIntegral())
     {

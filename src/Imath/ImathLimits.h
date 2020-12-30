@@ -113,12 +113,12 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T> struct limits
 {
-    IMATH_HOSTDEVICE static T min();
-    IMATH_HOSTDEVICE static T max();
-    IMATH_HOSTDEVICE static T smallest();
-    IMATH_HOSTDEVICE static T epsilon();
-    IMATH_HOSTDEVICE static bool isIntegral();
-    IMATH_HOSTDEVICE static bool isSigned();
+    IMATH_HOSTDEVICE static constexpr T min() noexcept;
+    IMATH_HOSTDEVICE static constexpr T max() noexcept;
+    IMATH_HOSTDEVICE static constexpr T smallest() noexcept;
+    IMATH_HOSTDEVICE static constexpr T epsilon() noexcept;
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept;
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept;
 };
 
 //---------------
@@ -127,122 +127,122 @@ template <class T> struct limits
 
 template <> struct limits<char>
 {
-    IMATH_HOSTDEVICE static char min() { return CHAR_MIN; }
-    IMATH_HOSTDEVICE static char max() { return CHAR_MAX; }
-    IMATH_HOSTDEVICE static char smallest() { return 1; }
-    IMATH_HOSTDEVICE static char epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return (char) ~0 < 0; }
+    IMATH_HOSTDEVICE static constexpr char min() noexcept { return CHAR_MIN; }
+    IMATH_HOSTDEVICE static constexpr char max() noexcept { return CHAR_MAX; }
+    IMATH_HOSTDEVICE static constexpr char smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr char epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return (char) ~0 < 0; }
 };
 
 template <> struct limits<signed char>
 {
-    IMATH_HOSTDEVICE static signed char min() { return SCHAR_MIN; }
-    IMATH_HOSTDEVICE static signed char max() { return SCHAR_MAX; }
-    IMATH_HOSTDEVICE static signed char smallest() { return 1; }
-    IMATH_HOSTDEVICE static signed char epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return true; }
+    IMATH_HOSTDEVICE static constexpr signed char min() noexcept { return SCHAR_MIN; }
+    IMATH_HOSTDEVICE static constexpr signed char max() noexcept { return SCHAR_MAX; }
+    IMATH_HOSTDEVICE static constexpr signed char smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr signed char epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return true; }
 };
 
 template <> struct limits<unsigned char>
 {
-    IMATH_HOSTDEVICE static unsigned char min() { return 0; }
-    IMATH_HOSTDEVICE static unsigned char max() { return UCHAR_MAX; }
-    IMATH_HOSTDEVICE static unsigned char smallest() { return 1; }
-    IMATH_HOSTDEVICE static unsigned char epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return false; }
+    IMATH_HOSTDEVICE static constexpr unsigned char min() noexcept { return 0; }
+    IMATH_HOSTDEVICE static constexpr unsigned char max() noexcept { return UCHAR_MAX; }
+    IMATH_HOSTDEVICE static constexpr unsigned char smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr unsigned char epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return false; }
 };
 
 template <> struct limits<short>
 {
-    IMATH_HOSTDEVICE static short min() { return SHRT_MIN; }
-    IMATH_HOSTDEVICE static short max() { return SHRT_MAX; }
-    IMATH_HOSTDEVICE static short smallest() { return 1; }
-    IMATH_HOSTDEVICE static short epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return true; }
+    IMATH_HOSTDEVICE static constexpr short min() noexcept { return SHRT_MIN; }
+    IMATH_HOSTDEVICE static constexpr short max() noexcept { return SHRT_MAX; }
+    IMATH_HOSTDEVICE static constexpr short smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr short epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return true; }
 };
 
 template <> struct limits<unsigned short>
 {
-    IMATH_HOSTDEVICE static unsigned short min() { return 0; }
-    IMATH_HOSTDEVICE static unsigned short max() { return USHRT_MAX; }
-    IMATH_HOSTDEVICE static unsigned short smallest() { return 1; }
-    IMATH_HOSTDEVICE static unsigned short epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return false; }
+    IMATH_HOSTDEVICE static constexpr unsigned short min() noexcept { return 0; }
+    IMATH_HOSTDEVICE static constexpr unsigned short max() noexcept { return USHRT_MAX; }
+    IMATH_HOSTDEVICE static constexpr unsigned short smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr unsigned short epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return false; }
 };
 
 template <> struct limits<int>
 {
-    IMATH_HOSTDEVICE static int min() { return INT_MIN; }
-    IMATH_HOSTDEVICE static int max() { return INT_MAX; }
-    IMATH_HOSTDEVICE static int smallest() { return 1; }
-    IMATH_HOSTDEVICE static int epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return true; }
+    IMATH_HOSTDEVICE static constexpr int min() noexcept { return INT_MIN; }
+    IMATH_HOSTDEVICE static constexpr int max() noexcept { return INT_MAX; }
+    IMATH_HOSTDEVICE static constexpr int smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr int epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return true; }
 };
 
 template <> struct limits<unsigned int>
 {
-    IMATH_HOSTDEVICE static unsigned int min() { return 0; }
-    IMATH_HOSTDEVICE static unsigned int max() { return UINT_MAX; }
-    IMATH_HOSTDEVICE static unsigned int smallest() { return 1; }
-    IMATH_HOSTDEVICE static unsigned int epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return false; }
+    IMATH_HOSTDEVICE static constexpr unsigned int min() noexcept { return 0; }
+    IMATH_HOSTDEVICE static constexpr unsigned int max() noexcept { return UINT_MAX; }
+    IMATH_HOSTDEVICE static constexpr unsigned int smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr unsigned int epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return false; }
 };
 
 template <> struct limits<long>
 {
-    IMATH_HOSTDEVICE static long min() { return LONG_MIN; }
-    IMATH_HOSTDEVICE static long max() { return LONG_MAX; }
-    IMATH_HOSTDEVICE static long smallest() { return 1; }
-    IMATH_HOSTDEVICE static long epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return true; }
+    IMATH_HOSTDEVICE static constexpr long min() noexcept { return LONG_MIN; }
+    IMATH_HOSTDEVICE static constexpr long max() noexcept { return LONG_MAX; }
+    IMATH_HOSTDEVICE static constexpr long smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr long epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return true; }
 };
 
 template <> struct limits<unsigned long>
 {
-    IMATH_HOSTDEVICE static unsigned long min() { return 0; }
-    IMATH_HOSTDEVICE static unsigned long max() { return ULONG_MAX; }
-    IMATH_HOSTDEVICE static unsigned long smallest() { return 1; }
-    IMATH_HOSTDEVICE static unsigned long epsilon() { return 1; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return true; }
-    IMATH_HOSTDEVICE static bool isSigned() { return false; }
+    IMATH_HOSTDEVICE static constexpr unsigned long min() noexcept { return 0; }
+    IMATH_HOSTDEVICE static constexpr unsigned long max() noexcept { return ULONG_MAX; }
+    IMATH_HOSTDEVICE static constexpr unsigned long smallest() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr unsigned long epsilon() noexcept { return 1; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return true; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return false; }
 };
 
 template <> struct limits<float>
 {
-    IMATH_HOSTDEVICE static float min() { return -FLT_MAX; }
-    IMATH_HOSTDEVICE static float max() { return FLT_MAX; }
-    IMATH_HOSTDEVICE static float smallest() { return FLT_MIN; }
-    IMATH_HOSTDEVICE static float epsilon() { return FLT_EPSILON; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return false; }
-    IMATH_HOSTDEVICE static bool isSigned() { return true; }
+    IMATH_HOSTDEVICE static constexpr float min() noexcept { return -FLT_MAX; }
+    IMATH_HOSTDEVICE static constexpr float max() noexcept { return FLT_MAX; }
+    IMATH_HOSTDEVICE static constexpr float smallest() noexcept { return FLT_MIN; }
+    IMATH_HOSTDEVICE static constexpr float epsilon() noexcept { return FLT_EPSILON; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return false; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return true; }
 };
 
 template <> struct limits<double>
 {
-    IMATH_HOSTDEVICE static double min() { return -DBL_MAX; }
-    IMATH_HOSTDEVICE static double max() { return DBL_MAX; }
-    IMATH_HOSTDEVICE static double smallest() { return DBL_MIN; }
-    IMATH_HOSTDEVICE static double epsilon() { return DBL_EPSILON; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return false; }
-    IMATH_HOSTDEVICE static bool isSigned() { return true; }
+    IMATH_HOSTDEVICE static constexpr double min() noexcept { return -DBL_MAX; }
+    IMATH_HOSTDEVICE static constexpr double max() noexcept { return DBL_MAX; }
+    IMATH_HOSTDEVICE static constexpr double smallest() noexcept { return DBL_MIN; }
+    IMATH_HOSTDEVICE static constexpr double epsilon() noexcept { return DBL_EPSILON; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return false; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return true; }
 };
 
 template <> struct limits<long double>
 {
-    IMATH_HOSTDEVICE static long double min() { return -LDBL_MAX; }
-    IMATH_HOSTDEVICE static long double max() { return LDBL_MAX; }
-    IMATH_HOSTDEVICE static long double smallest() { return LDBL_MIN; }
-    IMATH_HOSTDEVICE static long double epsilon() { return LDBL_EPSILON; }
-    IMATH_HOSTDEVICE static bool isIntegral() { return false; }
-    IMATH_HOSTDEVICE static bool isSigned() { return true; }
+    IMATH_HOSTDEVICE static constexpr long double min() noexcept { return -LDBL_MAX; }
+    IMATH_HOSTDEVICE static constexpr long double max() noexcept { return LDBL_MAX; }
+    IMATH_HOSTDEVICE static constexpr long double smallest() noexcept { return LDBL_MIN; }
+    IMATH_HOSTDEVICE static constexpr long double epsilon() noexcept { return LDBL_EPSILON; }
+    IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return false; }
+    IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return true; }
 };
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
