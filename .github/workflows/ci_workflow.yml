@@ -44,8 +44,51 @@ jobs:
       image: aswf/ci-openexr:${{ matrix.vfx-cy }}
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        build: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         include:
+          # -------------------------------------------------------------------
+          # GCC, VFX CY2021
+          # -------------------------------------------------------------------
+          # C++11, Python 3.7
+          - build: 11
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 11
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: GCC 6.3.1
+            vfx-cy: 2021
+            exclude-tests: -E PyImath.*_Python2
+          # Debug
+          - build: 12
+            build-type: Debug
+            build-shared: 'ON'
+            cxx-standard: 11
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: GCC 6.3.1
+            vfx-cy: 2021
+            exclude-tests: -E PyImath.*_Python2
+          # C++14
+          - build: 13
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 14
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: GCC 6.3.1
+            vfx-cy: 2021
+            exclude-tests: -E PyImath.*_Python2
+          # Static
+          - build: 14
+            build-type: Release
+            build-shared: 'OFF'
+            cxx-standard: 11
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: GCC 6.3.1
+            vfx-cy: 2021
+            exclude-tests: -E PyImath.*_Python2
           # -------------------------------------------------------------------
           # GCC, VFX CY2020
           # -------------------------------------------------------------------
@@ -102,6 +145,49 @@ jobs:
             compiler-desc: GCC 6.3.1
             vfx-cy: 2019
             exclude-tests: 
+          # -------------------------------------------------------------------
+          # Clang, VFX CY2021
+          # -------------------------------------------------------------------
+          # C++11, Python 3.7
+          - build: 15
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 11
+            cxx-compiler: clang++
+            cc-compiler: clang
+            compiler-desc: Clang 7
+            vfx-cy: 2021
+            exclude-tests: -E PyImath.*_Python2
+          # Debug
+          - build: 16
+            build-type: Debug
+            build-shared: 'ON'
+            cxx-standard: 11
+            cxx-compiler: clang++
+            cc-compiler: clang
+            compiler-desc: Clang 7
+            vfx-cy: 2021
+            exclude-tests: -E PyImath.*_Python2
+          # C++14
+          - build: 17
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 14
+            cxx-compiler: clang++
+            cc-compiler: clang
+            compiler-desc: Clang 7
+            vfx-cy: 2021
+            exclude-tests: -E PyImath.*_Python2
+          # Static
+          - build: 18
+            build-type: Release
+            build-shared: 'OFF'
+            cxx-standard: 11
+            cxx-compiler: clang++
+            cc-compiler: clang
+            compiler-desc: Clang 7
+            vfx-cy: 2021
+            exclude-tests: -E PyImath.*_Python2
           # -------------------------------------------------------------------
           # Clang, VFX CY2020
           # -------------------------------------------------------------------
