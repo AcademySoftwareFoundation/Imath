@@ -8,6 +8,7 @@
 #endif
 
 #include "halfLimits.h"
+#include "ImathHalfLimits.h"
 #include <assert.h>
 #include <cmath>
 #include <iostream>
