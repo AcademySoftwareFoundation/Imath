@@ -8,6 +8,7 @@
 #endif
 
 #include "halfLimits.h"
+#include "ImathHalfLimits.h"
 #include <assert.h>
 #include <cmath>
 #include <iostream>
@@ -108,6 +109,21 @@ testLimits()
     assert (numeric_limits<half>::lowest() == -HALF_MAX);
 
 #endif
+
+    cout << "ok\n\n" << flush;
+}
+
+void
+testHalfLimits()
+{
+    cout << "values in Imath::limits<half>\n";
+    
+    assert (Imath::limits<half>::min() == float (-HALF_MAX)); 
+    assert (Imath::limits<half>::max() == float (HALF_MAX));
+    assert (Imath::limits<half>::smallest() == float (HALF_MIN));
+    assert (Imath::limits<half>::epsilon() == float (HALF_EPSILON));
+    assert (Imath::limits<half>::isIntegral() == false);
+    assert (Imath::limits<half>::isSigned() == true);
 
     cout << "ok\n\n" << flush;
 }
