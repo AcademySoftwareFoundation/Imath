@@ -3,6 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file  ImathFrustum.h
+///
+/// @brief A viewing frustum class
+///
+
 #ifndef INCLUDED_IMATHFRUSTUM_H
 #define INCLUDED_IMATHFRUSTUM_H
 
@@ -16,47 +22,60 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
-//
-//  template class Frustum<T>
-//
-//  The frustum is always located with the eye point at the
-//  origin facing down -Z. This makes the Frustum class
-//  compatable with OpenGL (or anything that assumes a camera
-//  looks down -Z, hence with a right-handed coordinate system)
-//  but not with RenderMan which assumes the camera looks down
-//  +Z. Additional functions are provided for conversion from
-//  and from various camera coordinate spaces.
-//
-//  nearPlane/farPlane: near/far are keywords used by Microsoft's
-//  compiler, so we use nearPlane/farPlane instead to avoid
-//  issues.
+///
+/// Template class `Frustum<T>`
+///
+/// The frustum is always located with the eye point at the origin
+/// facing down -Z. This makes the Frustum class compatable with
+/// OpenGL (or anything that assumes a camera looks down -Z, hence
+/// with a right-handed coordinate system) but not with RenderMan
+/// which assumes the camera looks down +Z. Additional functions are
+/// provided for conversion from and from various camera coordinate
+/// spaces.
+///
+/// nearPlane/farPlane: near/far are keywords used by Microsoft's
+/// compiler, so we use nearPlane/farPlane instead to avoid
+/// issues.
 
 template <class T> class Frustum
 {
   public:
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum() noexcept;
+
+    /// @{
+    /// @name Constructors, destructor, assignment
+    ///
+
+    /// Initialize with default values:
+    ///  near=0.1, far=1000.0, left=-1.0, right=1.0, top=1.0, bottom=-1.0, ortho=false
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (const Frustum&) noexcept;
+
+    /// Initialize to specific values
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Frustum (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false) noexcept;
+
+    /// Initialize with fov and aspect 
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
+
+    // Destructor
     virtual ~Frustum() noexcept;
 
-    //--------------------
-    // Assignment operator
-    //--------------------
-
+    /// Component-wise assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Frustum& operator= (const Frustum&) noexcept;
 
-    //--------------------
-    //  Operators:  ==, !=
-    //--------------------
+    /// @{
+    /// @name Comparison
 
+    /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Frustum<T>& src) const noexcept;
+
+    /// Not equal
     IMATH_HOSTDEVICE constexpr bool operator!= (const Frustum<T>& src) const noexcept;
 
-    //--------------------------------------------------------
-    //  Set functions change the entire state of the Frustum
-    //--------------------------------------------------------
+    /// @}
+    
+    ///
+    ///  Set functions change the entire state of the Frustum
+    ///
 
     IMATH_HOSTDEVICE void
     set (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false) noexcept;
@@ -64,16 +83,16 @@ template <class T> class Frustum
     IMATH_HOSTDEVICE void set (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
     void setExc (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
 
-    //------------------------------------------------------
-    //	These functions modify an already valid frustum state
-    //------------------------------------------------------
+    ///
+    ///	These functions modify an already valid frustum state
+    ///
 
     IMATH_HOSTDEVICE void modifyNearAndFar (T nearPlane, T farPlane) noexcept;
     IMATH_HOSTDEVICE void setOrthographic (bool) noexcept;
 
-    //--------------
-    //  Access
-    //--------------
+    ///
+    ///  Access
+    ///
 
     IMATH_HOSTDEVICE constexpr bool orthographic() const noexcept { return _orthographic; }
     IMATH_HOSTDEVICE constexpr T nearPlane() const noexcept { return _nearPlane; }
@@ -85,20 +104,20 @@ template <class T> class Frustum
     IMATH_HOSTDEVICE constexpr T bottom() const noexcept { return _bottom; }
     IMATH_HOSTDEVICE constexpr T top() const noexcept { return _top; }
 
-    //-----------------------------------------------------------------------
-    //  Sets the planes in p to be the six bounding planes of the frustum, in
-    //  the following order: top, right, bottom, left, near, far.
-    //  Note that the planes have normals that point out of the frustum.
-    //  The version of this routine that takes a matrix applies that matrix
-    //  to transform the frustum before setting the planes.
-    //-----------------------------------------------------------------------
+    ///
+    ///  Sets the planes in p to be the six bounding planes of the frustum, in
+    ///  the following order: top, right, bottom, left, near, far.
+    ///  Note that the planes have normals that point out of the frustum.
+    ///  The version of this routine that takes a matrix applies that matrix
+    ///  to transform the frustum before setting the planes.
+    ///
 
     IMATH_HOSTDEVICE void planes (Plane3<T> p[6]) const noexcept;
     IMATH_HOSTDEVICE void planes (Plane3<T> p[6], const Matrix44<T>& M) const noexcept;
 
-    //----------------------
-    //  Derived Quantities
-    //----------------------
+    ///
+    ///  Derived Quantities
+    ///
 
     IMATH_HOSTDEVICE constexpr T fovx() const noexcept;
     IMATH_HOSTDEVICE constexpr T fovy() const noexcept;
@@ -108,19 +127,19 @@ template <class T> class Frustum
     IMATH_CONSTEXPR14 Matrix44<T> projectionMatrixExc() const;
     IMATH_HOSTDEVICE constexpr bool degenerate() const noexcept;
 
-    //-----------------------------------------------------------------------
-    //  Takes a rectangle in the screen space (i.e., -1 <= left <= right <= 1
-    //  and -1 <= bottom <= top <= 1) of this Frustum, and returns a new
-    //  Frustum whose near clipping-plane window is that rectangle in local
-    //  space.
-    //-----------------------------------------------------------------------
+    ///
+    ///  Takes a rectangle in the screen space (i.e., -1 <= left <= right <= 1
+    ///  and -1 <= bottom <= top <= 1) of this Frustum, and returns a new
+    ///  Frustum whose near clipping-plane window is that rectangle in local
+    ///  space.
+    ///
 
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 IMATH_HOSTDEVICE Frustum<T>
     window (T left, T right, T top, T bottom) const noexcept;
 
-    //----------------------------------------------------------
-    // Projection is in screen space / Conversion from Z-Buffer
-    //----------------------------------------------------------
+    ///
+    /// Projection is in screen space / Conversion from Z-Buffer
+    ///
 
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3<T> projectScreenToRay (const Vec2<T>&) const noexcept;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> projectPointToScreen (const Vec3<T>&) const noexcept;

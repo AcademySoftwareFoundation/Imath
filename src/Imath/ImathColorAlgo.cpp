@@ -3,15 +3,19 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-//----------------------------------------------------------------------------
-//
-//	Implementation of non-template items declared in ImathColorAlgo.h
-//
-//----------------------------------------------------------------------------
+///
+/// @file  ImathColorAlgo.cpp
+///
+/// @brief Implementation of non-template items declared in ImathColorAlgo.h
+///
 
 #include "ImathColorAlgo.h"
 
 IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
+
+///
+/// Convert 3-channel hsv to rgb.
+///
 
 Vec3<double>
 hsv2rgb_d (const Vec3<double>& hsv) noexcept
@@ -70,6 +74,10 @@ hsv2rgb_d (const Vec3<double>& hsv) noexcept
     return Vec3<double> (x, y, z);
 }
 
+///
+/// Convert 4-channel hsv to rgb (with alpha).
+///
+
 Color4<double>
 hsv2rgb_d (const Color4<double>& hsv) noexcept
 {
@@ -127,6 +135,10 @@ hsv2rgb_d (const Color4<double>& hsv) noexcept
     return Color4<double> (r, g, b, hsv.a);
 }
 
+///
+/// Convert 3-channel rgb to hsv.
+///
+
 Vec3<double>
 rgb2hsv_d (const Vec3<double>& c) noexcept
 {
@@ -162,6 +174,10 @@ rgb2hsv_d (const Vec3<double>& c) noexcept
     }
     return Vec3<double> (hue, sat, val);
 }
+
+///
+/// Convert 4-channel rgb to hsv (with alpha).
+///
 
 Color4<double>
 rgb2hsv_d (const Color4<double>& c) noexcept

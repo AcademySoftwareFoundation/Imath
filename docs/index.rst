@@ -38,6 +38,8 @@ Imath Documentation
    :caption: Imath Functions
    :maxdepth: 3
 
+   functions/box
+   functions/color
    functions/frame
    functions/gl
    functions/glu

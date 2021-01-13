@@ -3,6 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file  ImathBox.h
+///
+/// @brief Axis-aligned bounding box.
+///
+
 #ifndef INCLUDED_IMATHBOX_H
 #define INCLUDED_IMATHBOX_H
 
@@ -31,19 +37,14 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 template <class V> class Box
 {
   public:
-    //-------------------------
-    //  Data Members are public
-    //-------------------------
-
     /// The minimum value of the box.
     V min;
 
     /// The maximum value of the box.
     V max;
 
-    //-----------------------------------------------------
-    //	Constructors - an "empty" box is created by default
-    //-----------------------------------------------------
+    /// @{
+    ///	@name Constructors
 
     /// Construct an empty bounding box. This initializes the mimimum to
     /// `V::baseTypeMax()` and the maximum to `V::baseTypeMin()`.
@@ -55,19 +56,21 @@ template <class V> class Box
     /// Construct a bounding box with the given minimum and maximum values.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const V& minV, const V& maxV) noexcept;
 
-    //--------------------
-    //  Operators:  ==, !=
-    //--------------------
+    /// @}
 
-    /// Compare two Box objects for equality.
+    /// @{
+    /// @name Comparison
+
+    /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Box<V>& src) const noexcept;
 
-    /// Compare two Box objects for inequality.
+    /// Not equal
     IMATH_HOSTDEVICE constexpr bool operator!= (const Box<V>& src) const noexcept;
 
-    //------------------
-    //	Box manipulation
-    //------------------
+    /// @}
+
+    /// @{
+    /// @name Editing
 
     /// Set the Box to be empty. A Box is empty if the mimimum is greater
     /// than the maximum. makeEmpty() sets the mimimum to `V::baseTypeMax()`
@@ -83,9 +86,10 @@ template <class V> class Box
     /// Make the box include the entire range of V.
     IMATH_HOSTDEVICE void makeInfinite() noexcept;
 
-    //---------------------------------------------------
-    //	Query functions - these compute results each time
-    //---------------------------------------------------
+    /// @}
+
+    /// @{
+    ///	@name Query functions
 
     /// Return the size of the box. The size is of type `V`, defined as
     /// (max-min). An empty box has a size of V(0), i.e. 0 in each dimension.
@@ -105,9 +109,10 @@ template <class V> class Box
     /// the greatest difference between maximum and minimum.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const noexcept;
 
-    //----------------
-    //	Classification
-    //----------------
+    /// @}
+
+    /// @{
+    ///	@name Classification
 
     /// Return true if the box is empty, false otherwise. An empty box's
     /// minimum is greater than its maximum.
@@ -120,6 +125,8 @@ template <class V> class Box
     /// An infinite box has a mimimum of`V::baseTypeMin()`
     /// and a maximum of `V::baseTypeMax()`.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
+
+    /// @}
 };
 
 //--------------------
@@ -344,55 +351,93 @@ template <typename V> class Box;
 template <class T> class Box<Vec2<T>>
 {
   public:
-    //-------------------------
-    //  Data Members are public
-    //-------------------------
-
+    /// The minimum value of the box.
     Vec2<T> min;
+    /// The maximum value of the box.
     Vec2<T> max;
 
-    //-----------------------------------------------------
-    //  Constructors - an "empty" box is created by default
-    //-----------------------------------------------------
+    /// @{
+    /// @name Constructors
 
+    /// Empty by default
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() noexcept;
+
+    /// Construct a bounding box that contains a single point.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& point) noexcept;
+
+    /// Construct a bounding box with the given minimum and maximum points
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& minT, const Vec2<T>& maxT) noexcept;
 
-    //--------------------
-    //  Operators:  ==, !=
-    //--------------------
+    /// @}
 
+    /// @{
+    /// @name Comparison
+
+    /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec2<T>>& src) const noexcept;
+    /// Not equal
     IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec2<T>>& src) const noexcept;
 
-    //------------------
-    //  Box manipulation
-    //------------------
+    /// @}
 
+    /// @{
+    /// @name Editing
+
+    /// Set the Box to be empty. A Box is empty if the mimimum is greater
+    /// than the maximum. makeEmpty() sets the mimimum to `Vec2<T>::baseTypeMax()`
+    /// and the maximum to `Vec2<T>::baseTypeMin()`.
     IMATH_HOSTDEVICE void makeEmpty() noexcept;
+
+    /// Extend the Box to include the given point.
     IMATH_HOSTDEVICE void extendBy (const Vec2<T>& point) noexcept;
+
+    /// Extend the Box to include the given box.
     IMATH_HOSTDEVICE void extendBy (const Box<Vec2<T>>& box) noexcept;
+
+    /// Make the box include the entire range of T.
     IMATH_HOSTDEVICE void makeInfinite() noexcept;
 
-    //---------------------------------------------------
-    //  Query functions - these compute results each time
-    //---------------------------------------------------
+    /// @}
 
+    /// @{
+    ///	@name Query functions
+
+    /// Return the size of the box. The size is of type `V`, defined as
+    /// (max-min). An empty box has a size of V(0), i.e. 0 in each dimension.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> size() const noexcept;
+
+    /// Return the center of the box. The center is defined as
+    /// (max+min)/2. The center of an empty box is undefined.
     IMATH_HOSTDEVICE constexpr Vec2<T> center() const noexcept;
+
+    /// Return true if the given point is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Vec2<T>& point) const noexcept;
+
+    /// Return true if the given box is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<Vec2<T>>& box) const noexcept;
 
+    /// Return the major axis of the box. The major axis is the dimension with
+    /// the greatest difference between maximum and minimum.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const noexcept;
 
-    //----------------
-    //  Classification
-    //----------------
+    /// @}
 
+    /// @{
+    ///	@name Classification
+
+    /// Return true if the box is empty, false otherwise. An empty box's
+    /// minimum is greater than its maximum.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const noexcept;
+
+    /// Return true if the box is larger than a single point, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+
+    /// Return true if the box contains all points, false otherwise.
+    /// An infinite box has a mimimum of`V::baseTypeMin()`
+    /// and a maximum of `V::baseTypeMax()`.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
+
+    /// @}
 };
 
 //----------------
@@ -566,60 +611,97 @@ Box<Vec2<T>>::majorAxis() const noexcept
 /// minimum and maximum values of type Vec3<T>. The min and max members are
 /// public.
 ///
-
-
 template <class T> class Box<Vec3<T>>
 {
   public:
-    //-------------------------
-    //  Data Members are public
-    //-------------------------
-
+    /// The minimum value of the box.
     Vec3<T> min;
+    /// The maximum value of the box.
     Vec3<T> max;
 
-    //-----------------------------------------------------
-    //  Constructors - an "empty" box is created by default
-    //-----------------------------------------------------
+    /// @{
+    /// @name Constructors
 
+    /// Empty by default
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() noexcept;
+
+    /// Construct a bounding box that contains a single point.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& point) noexcept;
+
+    /// Construct a bounding box with the given minimum and maximum points
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& minT, const Vec3<T>& maxT) noexcept;
 
-    //--------------------
-    //  Operators:  ==, !=
-    //--------------------
+    /// @}
 
+    /// @{
+    /// @name Comparison
+
+    /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec3<T>>& src) const noexcept;
+
+    /// Not equal
     IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec3<T>>& src) const noexcept;
 
-    //------------------
-    //  Box manipulation
-    //------------------
+    /// @}
 
+    /// @{
+    /// @name Editing
+
+    /// Set the Box to be empty. A Box is empty if the mimimum is greater
+    /// than the maximum. makeEmpty() sets the mimimum to `Vec2<T>::baseTypeMax()`
+    /// and the maximum to `Vec2<T>::baseTypeMin()`.
     IMATH_HOSTDEVICE void makeEmpty() noexcept;
+
+    /// Extend the Box to include the given point.
     IMATH_HOSTDEVICE void extendBy (const Vec3<T>& point) noexcept;
+    /// Extend the Box to include the given box.
+
     IMATH_HOSTDEVICE void extendBy (const Box<Vec3<T>>& box) noexcept;
+
+    /// Make the box include the entire range of T.
     IMATH_HOSTDEVICE void makeInfinite() noexcept;
 
-    //---------------------------------------------------
-    //  Query functions - these compute results each time
-    //---------------------------------------------------
+    /// @}
 
+    /// @{
+    ///	@name Query functions
+
+    /// Return the size of the box. The size is of type `V`, defined as
+    /// (max-min). An empty box has a size of V(0), i.e. 0 in each dimension.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> size() const noexcept;
+
+    /// Return the center of the box. The center is defined as
+    /// (max+min)/2. The center of an empty box is undefined.
     IMATH_HOSTDEVICE constexpr Vec3<T> center() const noexcept;
+
+    /// Return true if the given point is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Vec3<T>& point) const noexcept;
+
+    /// Return true if the given box is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<Vec3<T>>& box) const noexcept;
 
+    /// Return the major axis of the box. The major axis is the dimension with
+    /// the greatest difference between maximum and minimum.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const noexcept;
 
-    //----------------
-    //  Classification
-    //----------------
+    /// @}
 
+    /// @{
+    ///	@name Classification
+
+    /// Return true if the box is empty, false otherwise. An empty box's
+    /// minimum is greater than its maximum.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const noexcept;
+
+    /// Return true if the box is larger than a single point, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+
+    /// Return true if the box contains all points, false otherwise.
+    /// An infinite box has a mimimum of`V::baseTypeMin()`
+    /// and a maximum of `V::baseTypeMax()`.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
+
+    /// @}
 };
 
 //----------------

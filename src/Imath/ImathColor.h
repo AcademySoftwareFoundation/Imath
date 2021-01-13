@@ -3,14 +3,14 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file  ImathColor.h
+///
+/// @brief 3-channel and 4-channel color representations.
+///
+
 #ifndef INCLUDED_IMATHCOLOR_H
 #define INCLUDED_IMATHCOLOR_H
-
-//----------------------------------------------------
-//
-//	A three and four component color class template.
-//
-//----------------------------------------------------
 
 #include "ImathNamespace.h"
 #include "ImathVec.h"
@@ -18,216 +18,281 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+///
+/// 3-channel color class that inherits from Vec3<T>.
+///
+/// This class does not impose interpretation on the channels, which
+/// can represent either rgb or hsv color values.
+///
+
 template <class T> class Color3 : public Vec3<T>
 {
   public:
-    //-------------
-    // Constructors
-    //-------------
 
-    IMATH_HOSTDEVICE Color3() noexcept;                         // no initialization
-    IMATH_HOSTDEVICE constexpr explicit Color3 (T a) noexcept;  // (a a a)
-    IMATH_HOSTDEVICE constexpr Color3 (T a, T b, T c) noexcept; // (a b c)
+    /// @{
+    /// @name Constructors, destructor, assignment
+
+    /// No initialization by default
+    IMATH_HOSTDEVICE Color3() noexcept;                         
+
+    /// Initialize to (a a a)
+    IMATH_HOSTDEVICE constexpr explicit Color3 (T a) noexcept;  
+
+    /// Initialize to (a b c)
+    IMATH_HOSTDEVICE constexpr Color3 (T a, T b, T c) noexcept; 
+
+    /// Construct from Color3
+    IMATH_HOSTDEVICE constexpr Color3 (const Color3& c) noexcept; 
+
+    /// Construct from Vec3
+    template <class S> IMATH_HOSTDEVICE constexpr Color3 (const Vec3<S>& v) noexcept; 
+
+    /// Destructor
     ~Color3() = default;
 
-    //---------------------------------
-    // Copy constructors and assignment
-    //---------------------------------
+    /// Component-wise assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator= (const Color3& c) noexcept; 
 
-    IMATH_HOSTDEVICE constexpr Color3 (const Color3& c) noexcept;
-    template <class S> IMATH_HOSTDEVICE constexpr Color3 (const Vec3<S>& v) noexcept;
+    /// @}
+    
+    /// @{
+    /// @name Arithmetic operations
+    
+    /// Component-wise addition
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator+= (const Color3& c) noexcept; 
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator= (const Color3& c) noexcept;
+    /// Component-wise addition
+    IMATH_HOSTDEVICE constexpr Color3 operator+ (const Color3& c) const noexcept;  
 
-    //------------------------
-    // Component-wise addition
-    //------------------------
+    /// Component-wise subtraction
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator-= (const Color3& c) noexcept; 
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator+= (const Color3& c) noexcept;
-    IMATH_HOSTDEVICE constexpr Color3 operator+ (const Color3& c) const noexcept;
+    /// Component-wise subtraction
+    IMATH_HOSTDEVICE constexpr Color3 operator- (const Color3& c) const noexcept; 
 
-    //---------------------------
-    // Component-wise subtraction
-    //---------------------------
+    /// Component-wise multiplication by -1
+    IMATH_HOSTDEVICE constexpr Color3 operator-() const noexcept; 
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator-= (const Color3& c) noexcept;
-    IMATH_HOSTDEVICE constexpr Color3 operator- (const Color3& c) const noexcept;
+    /// Component-wise multiplication by -1
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& negate() noexcept; 
 
-    //------------------------------------
-    // Component-wise multiplication by -1
-    //------------------------------------
+    /// Component-wise multiplication
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator*= (const Color3& c) noexcept; 
 
-    IMATH_HOSTDEVICE constexpr Color3 operator-() const noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& negate() noexcept;
+    /// Component-wise multiplication
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator*= (T a) noexcept;  
 
-    //------------------------------
-    // Component-wise multiplication
-    //------------------------------
+    /// Component-wise multiplication
+    IMATH_HOSTDEVICE constexpr Color3 operator* (const Color3& c) const noexcept;  
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator*= (const Color3& c) noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator*= (T a) noexcept;
-    IMATH_HOSTDEVICE constexpr Color3 operator* (const Color3& c) const noexcept;
-    IMATH_HOSTDEVICE constexpr Color3 operator* (T a) const noexcept;
+    /// Component-wise multiplication
+    IMATH_HOSTDEVICE constexpr Color3 operator* (T a) const noexcept;  
 
-    //------------------------
-    // Component-wise division
-    //------------------------
+    /// Component-wise division
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator/= (const Color3& c) noexcept; 
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator/= (const Color3& c) noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator/= (T a) noexcept;
-    IMATH_HOSTDEVICE constexpr Color3 operator/ (const Color3& c) const noexcept;
-    IMATH_HOSTDEVICE constexpr Color3 operator/ (T a) const noexcept;
+    /// Component-wise division
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator/= (T a) noexcept; 
+
+    /// Component-wise division
+    IMATH_HOSTDEVICE constexpr Color3 operator/ (const Color3& c) const noexcept;  
+
+    /// Component-wise division
+    IMATH_HOSTDEVICE constexpr Color3 operator/ (T a) const noexcept;  
+
+    /// @}
 };
+
+///
+/// A 4-channel color class: 3 channels plus alpha. 
+///
+/// For convenience, the fields are named r, g, and b, although this class does not impose interpretation on the channels, which can represent either rgb or hsv color values.
+///
 
 template <class T> class Color4
 {
   public:
-    //-------------------
-    // Access to elements
-    //-------------------
+
+    /// @{
+    /// @name Access to elements
 
     T r, g, b, a;
 
-    IMATH_HOSTDEVICE T& operator[] (int i) noexcept;
-    IMATH_HOSTDEVICE const T& operator[] (int i) const noexcept;
+    /// Component-wise value
+    IMATH_HOSTDEVICE T& operator[] (int i) noexcept; 
 
-    //-------------
-    // Constructors
-    //-------------
+    /// Component-wise value
+    IMATH_HOSTDEVICE const T& operator[] (int i) const noexcept; 
 
-    IMATH_HOSTDEVICE Color4() noexcept;                                      // no initialization
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Color4 (T a) noexcept;       // (a a a a)
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (T a, T b, T c, T d) noexcept; // (a b c d)
+    /// @}
+    
+    /// @{
+    /// @name Constructors, destructor, assignment
+
+    /// No initialization by default
+    IMATH_HOSTDEVICE Color4() noexcept;                                      
+
+    /// Initialize to (a a a a)
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Color4 (T a) noexcept;       
+
+    /// Initialize to (a b c d)
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (T a, T b, T c, T d) noexcept; 
+
+    /// Construct from Color4
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (const Color4& v) noexcept; 
+
+    /// Construct from Color4
+    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (const Color4<S>& v) noexcept; 
+
+    /// Destructor
     ~Color4() = default;
 
-    //---------------------------------
-    // Copy constructors and assignment
-    //---------------------------------
+    /// Assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator= (const Color4& v) noexcept; 
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (const Color4& v) noexcept;
-    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (const Color4<S>& v) noexcept;
+    /// @}
+    
+    /// Equality
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator== (const Color4<S>& v) const noexcept; 
+    /// Equality
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator!= (const Color4<S>& v) const noexcept; 
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator= (const Color4& v) noexcept;
+    /// @{
+    /// @name Arithmetic operations
 
-    //----------------------
-    // Compatibility with Sb
-    //----------------------
+    /// Component-wise addition
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator+= (const Color4& v) noexcept; 
 
-    template <class S> IMATH_HOSTDEVICE void setValue (S a, S b, S c, S d) noexcept;
+    /// Component-wise addition
+    IMATH_HOSTDEVICE constexpr Color4 operator+ (const Color4& v) const noexcept; 
 
-    template <class S> IMATH_HOSTDEVICE void setValue (const Color4<S>& v) noexcept;
+    /// Component-wise subtraction
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator-= (const Color4& v) noexcept; 
 
-    template <class S> IMATH_HOSTDEVICE void getValue (S& a, S& b, S& c, S& d) const noexcept;
+    /// Component-wise subtraction
+    IMATH_HOSTDEVICE constexpr Color4 operator- (const Color4& v) const noexcept; 
 
-    template <class S> IMATH_HOSTDEVICE void getValue (Color4<S>& v) const noexcept;
+    /// Component-wise multiplication by -1
+    IMATH_HOSTDEVICE constexpr Color4 operator-() const noexcept; 
 
-    IMATH_HOSTDEVICE T* getValue() noexcept;
-    IMATH_HOSTDEVICE const T* getValue() const noexcept;
+    /// Component-wise multiplication by -1
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& negate() noexcept; 
 
-    //---------
-    // Equality
-    //---------
+    /// Component-wise multiplication
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator*= (const Color4& v) noexcept; 
 
-    template <class S> IMATH_HOSTDEVICE constexpr bool operator== (const Color4<S>& v) const noexcept;
+    /// Component-wise multiplication
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator*= (T a) noexcept; 
 
-    template <class S> IMATH_HOSTDEVICE constexpr bool operator!= (const Color4<S>& v) const noexcept;
+    /// Component-wise multiplication
+    IMATH_HOSTDEVICE constexpr Color4 operator* (const Color4& v) const noexcept; 
 
-    //------------------------
-    // Component-wise addition
-    //------------------------
+    /// Component-wise multiplication
+    IMATH_HOSTDEVICE constexpr Color4 operator* (T a) const noexcept; 
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator+= (const Color4& v) noexcept;
-    IMATH_HOSTDEVICE constexpr Color4 operator+ (const Color4& v) const noexcept;
+    /// Component-wise division
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator/= (const Color4& v) noexcept; 
 
-    //---------------------------
-    // Component-wise subtraction
-    //---------------------------
+    /// Component-wise division
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator/= (T a) noexcept; 
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator-= (const Color4& v) noexcept;
-    IMATH_HOSTDEVICE constexpr Color4 operator- (const Color4& v) const noexcept;
+    /// Component-wise division
+    IMATH_HOSTDEVICE constexpr Color4 operator/ (const Color4& v) const noexcept; 
 
-    //------------------------------------
-    // Component-wise multiplication by -1
-    //------------------------------------
+    /// Component-wise division
+    IMATH_HOSTDEVICE constexpr Color4 operator/ (T a) const noexcept; 
 
-    IMATH_HOSTDEVICE constexpr Color4 operator-() const noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& negate() noexcept;
-
-    //------------------------------
-    // Component-wise multiplication
-    //------------------------------
-
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator*= (const Color4& v) noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator*= (T a) noexcept;
-    IMATH_HOSTDEVICE constexpr Color4 operator* (const Color4& v) const noexcept;
-    IMATH_HOSTDEVICE constexpr Color4 operator* (T a) const noexcept;
-
-    //------------------------
-    // Component-wise division
-    //------------------------
-
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator/= (const Color4& v) noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator/= (T a) noexcept;
-    IMATH_HOSTDEVICE constexpr Color4 operator/ (const Color4& v) const noexcept;
-    IMATH_HOSTDEVICE constexpr Color4 operator/ (T a) const noexcept;
-
-    //----------------------------------------------------------
-    // Number of dimensions, i.e. number of elements in a Color4
-    //----------------------------------------------------------
-
+    /// @}
+    
+    /// Number of dimensions (channels), i.e. 4 for a Color4
     IMATH_HOSTDEVICE constexpr static unsigned int dimensions() noexcept { return 4; }
 
-    //-------------------------------------------------
-    // Limitations of type T (see also class limits<T>)
-    //-------------------------------------------------
+    /// @{
+    /// @name Limitations of type T (see also class limits)
+    
+    /// Largest possible negative value
+    IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); } 
 
-    IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
+    /// Largest possible positive value
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); } 
 
-    //--------------------------------------------------------------
-    // Base type -- in templates, which accept a parameter, V, which
-    // could be a Color4<T>, you can refer to T as
-    // V::BaseType
-    //--------------------------------------------------------------
+    /// Smallest possible positive value
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); } 
 
+    /// Smallest possible e for which 1+e != 1
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); } 
+
+    /// @}
+    
+    /// The base type: In templates that accept a parameter, `V` (could be a Color4), you can refer to `T` as `V::BaseType`
     typedef T BaseType;
+
+
+    /// @{
+    /// @name Compatibility with SGI Inventor Sb classes
+
+    /// Set the value
+    template <class S> IMATH_HOSTDEVICE void setValue (S a, S b, S c, S d) noexcept; 
+
+    /// Set the value
+    template <class S> IMATH_HOSTDEVICE void setValue (const Color4<S>& v) noexcept; 
+
+    /// Return the value
+    template <class S> IMATH_HOSTDEVICE void getValue (S& a, S& b, S& c, S& d) const noexcept; 
+
+    /// Return the value
+    template <class S> IMATH_HOSTDEVICE void getValue (Color4<S>& v) const noexcept; 
+
+    /// Return raw pointer to the value
+    IMATH_HOSTDEVICE T* getValue() noexcept; 
+
+    /// Return raw pointer to the value
+    IMATH_HOSTDEVICE const T* getValue() const noexcept; 
+
+    /// @}
 };
 
-//--------------
-// Stream output
-//--------------
-
+/// std::ostream output
 template <class T> std::ostream& operator<< (std::ostream& s, const Color4<T>& v);
 
-//----------------------------------------------------
-// Reverse multiplication: S * Color4<T>
-//----------------------------------------------------
-
+/// Reverse multiplication: S * Color4
 template <class S, class T> constexpr Color4<T> operator* (S a, const Color4<T>& v) noexcept;
 
-//-------------------------
-// Typedefs for convenience
-//-------------------------
+/// @{
+/// @name Typedefs for convenience
 
+/// 3 float channels
 typedef Color3<float> Color3f;
+/// 3 half channels
 typedef Color3<half> Color3h;
+/// 3 8-bit integer channels
 typedef Color3<unsigned char> Color3c;
+/// 3 half channels
 typedef Color3<half> C3h;
+/// 3 float channels
 typedef Color3<float> C3f;
+/// 3 8-bit integer channels
 typedef Color3<unsigned char> C3c;
+/// 4 float channels
 typedef Color4<float> Color4f;
+/// 4 half channels
 typedef Color4<half> Color4h;
+/// 4 8-bit integer channels
 typedef Color4<unsigned char> Color4c;
+/// 4 float channels
 typedef Color4<float> C4f;
+/// 4 half channels
 typedef Color4<half> C4h;
+/// 4 8-bit integer channels
 typedef Color4<unsigned char> C4c;
+/// Packed 32-bit integer
 typedef unsigned int PackedColor;
 
-//-------------------------
+/// @}
+
+//
 // Implementation of Color3
-//-------------------------
+//
 
 template <class T> inline Color3<T>::Color3() noexcept : Vec3<T>()
 {
@@ -369,9 +434,9 @@ Color3<T>::operator/ (T a) const noexcept
     return Color3 (*(Vec3<T>*) this / a);
 }
 
-//-----------------------
+//
 // Implementation of Color4
-//-----------------------
+//
 
 template <class T>
 inline T&
@@ -641,9 +706,9 @@ operator<< (std::ostream& s, const Color4<T>& v)
     return s << '(' << v.r << ' ' << v.g << ' ' << v.b << ' ' << v.a << ')';
 }
 
-//-----------------------------------------
+//
 // Implementation of reverse multiplication
-//-----------------------------------------
+//
 
 template <class S, class T>
 constexpr inline Color4<T>
