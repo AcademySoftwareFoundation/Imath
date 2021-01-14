@@ -1,5 +1,10 @@
 #!@PYTHON@
 
+#
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright Contributors to the OpenEXR Project.
+#
+
 from __future__ import print_function
 
 import sys

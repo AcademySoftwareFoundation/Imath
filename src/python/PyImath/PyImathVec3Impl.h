@@ -1,36 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 1998-2011, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
 // clang-format off
 
@@ -896,6 +867,36 @@ notequal(const Vec3<T> &v, const tuple &t)
         throw std::invalid_argument ("tuple of length 3 expected");    
 }
 
+
+
+// Trick to register methods for float-only-based vectors
+template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
+void register_Vec3_floatonly(class_<Vec3<T>>& vec3_class)
+{
+   vec3_class
+        .def("length", &Vec3_length<T>,"length() magnitude of the vector")
+        .def("normalize", &Vec3_normalize<T>,return_internal_reference<>(),
+             "v.normalize() destructively normalizes v and returns a reference to it")
+        .def("normalizeExc", &Vec3_normalizeExc<T>,return_internal_reference<>(),
+             "v.normalizeExc() destructively normalizes V and returns a reference to it, throwing an exception if length() == 0")
+        .def("normalizeNonNull", &Vec3_normalizeNonNull<T>,return_internal_reference<>(),
+             "v.normalizeNonNull() destructively normalizes V and returns a reference to it, faster if lngth() != 0")
+        .def("normalized", &Vec3_normalized<T>, "v.normalized() returns a normalized copy of v")
+        .def("normalizedExc", &Vec3_normalizedExc<T>, "v.normalizedExc() returns a normalized copy of v, throwing an exception if length() == 0")
+        .def("normalizedNonNull", &Vec3_normalizedNonNull<T>, "v.normalizedNonNull() returns a normalized copy of v, faster if lngth() != 0")
+        .def("orthogonal", &orthogonal<T>)
+        .def("project", &project<T>)
+        .def("reflect", &reflect<T>)
+        ;
+}
+
+template <class T, IMATH_ENABLE_IF(std::is_integral<T>::value)>
+void register_Vec3_floatonly(class_<Vec3<T>>& vec2_class)
+{
+}
+
+
+
 template <class T>
 class_<Vec3<T> >
 register_Vec3()
@@ -937,25 +938,12 @@ register_Vec3()
          "i.e., abs(v1[i] - v2[i]) <= e * abs(v1[i])")
         .def("equalWithRelError", &equalWithRelErrorObj<T>)
          
-	.def("length", &Vec3_length<T>,"length() magnitude of the vector")
 	.def("length2", &Vec3_length2<T>,"length2() square magnitude of the vector")
-	.def("normalize", &Vec3_normalize<T>,return_internal_reference<>(),
-         "v.normalize() destructively normalizes v and returns a reference to it")
-	.def("normalizeExc", &Vec3_normalizeExc<T>,return_internal_reference<>(),
-         "v.normalizeExc() destructively normalizes V and returns a reference to it, throwing an exception if length() == 0")
-	.def("normalizeNonNull", &Vec3_normalizeNonNull<T>,return_internal_reference<>(),
-         "v.normalizeNonNull() destructively normalizes V and returns a reference to it, faster if lngth() != 0")
-	.def("normalized", &Vec3_normalized<T>, "v.normalized() returns a normalized copy of v")
-	.def("normalizedExc", &Vec3_normalizedExc<T>, "v.normalizedExc() returns a normalized copy of v, throwing an exception if length() == 0")
-	.def("normalizedNonNull", &Vec3_normalizedNonNull<T>, "v.normalizedNonNull() returns a normalized copy of v, faster if lngth() != 0")
 	.def("__len__", Vec3_helper::len)
 	.def("__getitem__", Vec3_helper::getitem,return_value_policy<copy_non_const_reference>())
 	.def("__setitem__", Vec3_helper::setitem)
         .def("closestVertex", &closestVertex<T>)
         .def("negate", &Vec3_negate<T>, return_internal_reference<>())
-        .def("orthogonal", &orthogonal<T>)
-        .def("project", &project<T>)
-        .def("reflect", &reflect<T>)
         .def("setValue", &setValue<T>)    
         .def("__neg__", &Vec3_neg<T>)
         .def("__mul__", &Vec3_mul<T, int>)
@@ -1038,6 +1026,8 @@ register_Vec3()
 	.def("__str__",&Vec3_str<T>)
 	.def("__repr__",&Vec3_repr<T>)
         ;
+
+    register_Vec3_floatonly<T>(vec3_class);
 
     decoratecopy(vec3_class);
 

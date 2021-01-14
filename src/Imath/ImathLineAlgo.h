@@ -1,36 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
 #ifndef INCLUDED_IMATHLINEALGO_H
 #define INCLUDED_IMATHLINEALGO_H
@@ -78,7 +49,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
 IMATH_CONSTEXPR14 bool
-closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Vec3<T>& point2)
+closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Vec3<T>& point2) noexcept
 {
     //
     // Compute point1 and point2 such that point1 is on line1, point2
@@ -117,7 +88,7 @@ intersect (const Line3<T>& line,
            const Vec3<T>& v2,
            Vec3<T>& pt,
            Vec3<T>& barycentric,
-           bool& front)
+           bool& front) noexcept
 {
     //
     // Given a line and a triangle (v0, v1, v2), the intersect() function
@@ -214,7 +185,7 @@ intersect (const Line3<T>& line,
 
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
-closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Line3<T>& l)
+closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Line3<T>& l) noexcept
 {
     Vec3<T> nearest = v0;
     T neardot       = (v0 - l.closestPointTo (v0)).length2();
@@ -239,7 +210,7 @@ closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Li
 
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
-rotatePoint (const Vec3<T> p, Line3<T> l, T angle)
+rotatePoint (const Vec3<T> p, Line3<T> l, T angle) noexcept
 {
     //
     // Rotate the point p around the line l by the given angle.
@@ -257,8 +228,8 @@ rotatePoint (const Vec3<T> p, Line3<T> l, T angle)
     x.normalize();
     Vec3<T> y = (x % l.dir).normalize();
 
-    T cosangle = Math<T>::cos (angle);
-    T sinangle = Math<T>::sin (angle);
+    T cosangle = std::cos (angle);
+    T sinangle = std::sin (angle);
 
     Vec3<T> r = q + x * radius * cosangle + y * radius * sinangle;
 

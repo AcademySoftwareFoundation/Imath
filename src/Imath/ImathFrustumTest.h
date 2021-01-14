@@ -1,36 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2011-2012, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
 #ifndef INCLUDED_IMATHFRUSTUMTEST_H
 #define INCLUDED_IMATHFRUSTUMTEST_H
@@ -119,14 +90,14 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 template <class T> class FrustumTest
 {
   public:
-    FrustumTest()
+    FrustumTest() noexcept
     {
         Frustum<T> frust;
         Matrix44<T> cameraMat;
         cameraMat.makeIdentity();
         setFrustum (frust, cameraMat);
     }
-    FrustumTest (const Frustum<T>& frustum, const Matrix44<T>& cameraMat)
+    FrustumTest (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) noexcept
     {
         setFrustum (frustum, cameraMat);
     }
@@ -135,26 +106,26 @@ template <class T> class FrustumTest
     // setFrustum()
     // This updates the frustum test with a new frustum and matrix.
     // This should usually be called just once per frame.
-    void setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat);
+    void setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) noexcept;
 
     ////////////////////////////////////////////////////////////////////
     // isVisible()
     // Check to see if shapes are visible.
-    bool isVisible (const Sphere3<T>& sphere) const;
-    bool isVisible (const Box<Vec3<T>>& box) const;
-    bool isVisible (const Vec3<T>& vec) const;
+    bool isVisible (const Sphere3<T>& sphere) const noexcept;
+    bool isVisible (const Box<Vec3<T>>& box) const noexcept;
+    bool isVisible (const Vec3<T>& vec) const noexcept;
 
     ////////////////////////////////////////////////////////////////////
     // completelyContains()
     // Check to see if shapes are entirely contained.
-    bool completelyContains (const Sphere3<T>& sphere) const;
-    bool completelyContains (const Box<Vec3<T>>& box) const;
+    bool completelyContains (const Sphere3<T>& sphere) const noexcept;
+    bool completelyContains (const Box<Vec3<T>>& box) const noexcept;
 
     // These next items are kept primarily for debugging tools.
     // It's useful for drawing the culling environment, and also
     // for getting an "outside view" of the culling frustum.
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T> cameraMat() const { return cameraMatrix; }
-    IMATH_INTERNAL_NAMESPACE::Frustum<T> currentFrustum() const { return currFrustum; }
+    IMATH_INTERNAL_NAMESPACE::Matrix44<T> cameraMat() const noexcept { return cameraMatrix; }
+    IMATH_INTERNAL_NAMESPACE::Frustum<T> currentFrustum() const noexcept { return currFrustum; }
 
   protected:
     // To understand why the planes are stored this way, see
@@ -181,7 +152,7 @@ template <class T> class FrustumTest
 // often the camera moves.
 template <class T>
 void
-FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat)
+FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) noexcept
 {
     Plane3<T> frustumPlanes[6];
     frustum.planes (frustumPlanes, cameraMat);
@@ -202,15 +173,15 @@ FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& camera
                                  frustumPlanes[index + 1].normal.z,
                                  frustumPlanes[index + 2].normal.z);
 
-        planeNormAbsX[i] = Vec3<T> (IMATH_INTERNAL_NAMESPACE::abs (planeNormX[i].x),
-                                    IMATH_INTERNAL_NAMESPACE::abs (planeNormX[i].y),
-                                    IMATH_INTERNAL_NAMESPACE::abs (planeNormX[i].z));
-        planeNormAbsY[i] = Vec3<T> (IMATH_INTERNAL_NAMESPACE::abs (planeNormY[i].x),
-                                    IMATH_INTERNAL_NAMESPACE::abs (planeNormY[i].y),
-                                    IMATH_INTERNAL_NAMESPACE::abs (planeNormY[i].z));
-        planeNormAbsZ[i] = Vec3<T> (IMATH_INTERNAL_NAMESPACE::abs (planeNormZ[i].x),
-                                    IMATH_INTERNAL_NAMESPACE::abs (planeNormZ[i].y),
-                                    IMATH_INTERNAL_NAMESPACE::abs (planeNormZ[i].z));
+        planeNormAbsX[i] = Vec3<T> (std::abs (planeNormX[i].x),
+                                    std::abs (planeNormX[i].y),
+                                    std::abs (planeNormX[i].z));
+        planeNormAbsY[i] = Vec3<T> (std::abs (planeNormY[i].x),
+                                    std::abs (planeNormY[i].y),
+                                    std::abs (planeNormY[i].z));
+        planeNormAbsZ[i] = Vec3<T> (std::abs (planeNormZ[i].x),
+                                    std::abs (planeNormZ[i].y),
+                                    std::abs (planeNormZ[i].z));
 
         planeOffsetVec[i] = Vec3<T> (frustumPlanes[index + 0].distance,
                                      frustumPlanes[index + 1].distance,
@@ -228,7 +199,7 @@ FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& camera
 //
 template <typename T>
 bool
-FrustumTest<T>::isVisible (const Sphere3<T>& sphere) const
+FrustumTest<T>::isVisible (const Sphere3<T>& sphere) const noexcept
 {
     Vec3<T> center    = sphere.center;
     Vec3<T> radiusVec = Vec3<T> (sphere.radius, sphere.radius, sphere.radius);
@@ -257,7 +228,7 @@ FrustumTest<T>::isVisible (const Sphere3<T>& sphere) const
 //
 template <typename T>
 bool
-FrustumTest<T>::completelyContains (const Sphere3<T>& sphere) const
+FrustumTest<T>::completelyContains (const Sphere3<T>& sphere) const noexcept
 {
     Vec3<T> center    = sphere.center;
     Vec3<T> radiusVec = Vec3<T> (sphere.radius, sphere.radius, sphere.radius);
@@ -286,7 +257,7 @@ FrustumTest<T>::completelyContains (const Sphere3<T>& sphere) const
 //
 template <typename T>
 bool
-FrustumTest<T>::isVisible (const Box<Vec3<T>>& box) const
+FrustumTest<T>::isVisible (const Box<Vec3<T>>& box) const noexcept
 {
     if (box.isEmpty())
         return false;
@@ -320,7 +291,7 @@ FrustumTest<T>::isVisible (const Box<Vec3<T>>& box) const
 //
 template <typename T>
 bool
-FrustumTest<T>::completelyContains (const Box<Vec3<T>>& box) const
+FrustumTest<T>::completelyContains (const Box<Vec3<T>>& box) const noexcept
 {
     if (box.isEmpty())
         return false;
@@ -352,7 +323,7 @@ FrustumTest<T>::completelyContains (const Box<Vec3<T>>& box) const
 //
 template <typename T>
 bool
-FrustumTest<T>::isVisible (const Vec3<T>& vec) const
+FrustumTest<T>::isVisible (const Vec3<T>& vec) const noexcept
 {
     // This is a vertical dot-product on three vectors at once.
     Vec3<T> d0 = (planeNormX[0] * vec.x) + (planeNormY[0] * vec.y) + (planeNormZ[0] * vec.z) -

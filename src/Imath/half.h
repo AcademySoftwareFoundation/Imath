@@ -1,40 +1,13 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2002, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
-// Primary authors:
+//
+// Primary original authors:
 //     Florian Kainz <kainz@ilm.com>
 //     Rod Bogart <rgb@ilm.com>
+//
 
 //---------------------------------------------------------------------------
 //
@@ -98,44 +71,44 @@ class half
     // Constructors
     //-------------
 
-    half() = default; // no initialization
-    half (float f);
+    half() noexcept = default; // no initialization
+    half (float f) noexcept;
     // rule of 5
-    ~half()                = default;
-    half (const half&)     = default;
-    half (half&&) noexcept = default;
+    ~half() noexcept            = default;
+    half (const half&) noexcept = default;
+    half (half&&) noexcept      = default;
 
     //--------------------
     // Conversion to float
     //--------------------
 
-    operator float() const;
+    operator float() const noexcept;
 
     //------------
     // Unary minus
     //------------
 
-    half operator-() const;
+    half operator-() const noexcept;
 
     //-----------
     // Assignment
     //-----------
 
-    half& operator= (const half& h) = default;
-    half& operator= (half&& h) noexcept = default;
-    half& operator                      = (float f);
+    half& operator= (const half& h) noexcept = default;
+    half& operator= (half&& h) noexcept      = default;
+    half& operator= (float f) noexcept;
 
-    half& operator+= (half h);
-    half& operator+= (float f);
+    half& operator+= (half h) noexcept;
+    half& operator+= (float f) noexcept;
 
-    half& operator-= (half h);
-    half& operator-= (float f);
+    half& operator-= (half h) noexcept;
+    half& operator-= (float f) noexcept;
 
-    half& operator*= (half h);
-    half& operator*= (float f);
+    half& operator*= (half h) noexcept;
+    half& operator*= (float f) noexcept;
 
-    half& operator/= (half h);
-    half& operator/= (float f);
+    half& operator/= (half h) noexcept;
+    half& operator/= (float f) noexcept;
 
     //---------------------------------------------------------
     // Round to n-bit precision (n should be between 0 and 10).
@@ -143,7 +116,7 @@ class half
     // bits will be zero.
     //---------------------------------------------------------
 
-    half round (unsigned int n) const;
+    half round (unsigned int n) const noexcept;
 
     //--------------------------------------------------------------------
     // Classification:
@@ -166,13 +139,13 @@ class half
     //				is set (negative)
     //--------------------------------------------------------------------
 
-    bool isFinite() const;
-    bool isNormalized() const;
-    bool isDenormalized() const;
-    bool isZero() const;
-    bool isNan() const;
-    bool isInfinity() const;
-    bool isNegative() const;
+    bool isFinite() const noexcept;
+    bool isNormalized() const noexcept;
+    bool isDenormalized() const noexcept;
+    bool isZero() const noexcept;
+    bool isNan() const noexcept;
+    bool isInfinity() const noexcept;
+    bool isNegative() const noexcept;
 
     //--------------------------------------------
     // Special values
@@ -188,17 +161,17 @@ class half
     //			pattern 0111110111111111
     //--------------------------------------------
 
-    static half posInf();
-    static half negInf();
-    static half qNan();
-    static half sNan();
+    static half posInf() noexcept;
+    static half negInf() noexcept;
+    static half qNan() noexcept;
+    static half sNan() noexcept;
 
     //--------------------------------------
     // Access to the internal representation
     //--------------------------------------
 
-    IMATH_EXPORT unsigned short bits() const;
-    IMATH_EXPORT void setBits (unsigned short bits);
+    IMATH_EXPORT unsigned short bits() const noexcept;
+    IMATH_EXPORT void setBits (unsigned short bits) noexcept;
 
   public:
     union uif
@@ -208,8 +181,8 @@ class half
     };
 
   private:
-    IMATH_EXPORT static short convert (int i);
-    IMATH_EXPORT static float overflow();
+    IMATH_EXPORT static short convert (int i) noexcept;
+    IMATH_EXPORT static float overflow() noexcept;
 
     unsigned short _h;
 
@@ -395,7 +368,7 @@ class half
 // Half-from-float constructor
 //----------------------------
 
-inline half::half (float f)
+inline half::half (float f) noexcept
 {
     uif x;
 
@@ -457,7 +430,7 @@ inline half::half (float f)
 // Half-to-float conversion via table lookup
 //------------------------------------------
 
-inline half::operator float() const
+inline half::operator float() const noexcept
 {
     return _toFloat[_h].f;
 }
@@ -467,7 +440,7 @@ inline half::operator float() const
 //-------------------------
 
 inline half
-half::round (unsigned int n) const
+half::round (unsigned int n) const noexcept
 {
     //
     // Parameter check.
@@ -525,7 +498,7 @@ half::round (unsigned int n) const
 //-----------------------
 
 inline half
-half::operator-() const
+half::operator-() const noexcept
 {
     half h;
     h._h = _h ^ 0x8000;
@@ -533,84 +506,84 @@ half::operator-() const
 }
 
 inline half&
-half::operator= (float f)
+half::operator= (float f) noexcept
 {
     *this = half (f);
     return *this;
 }
 
 inline half&
-half::operator+= (half h)
+half::operator+= (half h) noexcept
 {
     *this = half (float (*this) + float (h));
     return *this;
 }
 
 inline half&
-half::operator+= (float f)
+half::operator+= (float f) noexcept
 {
     *this = half (float (*this) + f);
     return *this;
 }
 
 inline half&
-half::operator-= (half h)
+half::operator-= (half h) noexcept
 {
     *this = half (float (*this) - float (h));
     return *this;
 }
 
 inline half&
-half::operator-= (float f)
+half::operator-= (float f) noexcept
 {
     *this = half (float (*this) - f);
     return *this;
 }
 
 inline half&
-half::operator*= (half h)
+half::operator*= (half h) noexcept
 {
     *this = half (float (*this) * float (h));
     return *this;
 }
 
 inline half&
-half::operator*= (float f)
+half::operator*= (float f) noexcept
 {
     *this = half (float (*this) * f);
     return *this;
 }
 
 inline half&
-half::operator/= (half h)
+half::operator/= (half h) noexcept
 {
     *this = half (float (*this) / float (h));
     return *this;
 }
 
 inline half&
-half::operator/= (float f)
+half::operator/= (float f) noexcept
 {
     *this = half (float (*this) / f);
     return *this;
 }
 
 inline bool
-half::isFinite() const
+half::isFinite() const noexcept
 {
     unsigned short e = (_h >> 10) & 0x001f;
     return e < 31;
 }
 
 inline bool
-half::isNormalized() const
+half::isNormalized() const noexcept
 {
     unsigned short e = (_h >> 10) & 0x001f;
     return e > 0 && e < 31;
 }
 
 inline bool
-half::isDenormalized() const
+half::isDenormalized() const noexcept
 {
     unsigned short e = (_h >> 10) & 0x001f;
     unsigned short m = _h & 0x3ff;
@@ -618,13 +591,13 @@ half::isDenormalized() const
 }
 
 inline bool
-half::isZero() const
+half::isZero() const noexcept
 {
     return (_h & 0x7fff) == 0;
 }
 
 inline bool
-half::isNan() const
+half::isNan() const noexcept
 {
     unsigned short e = (_h >> 10) & 0x001f;
     unsigned short m = _h & 0x3ff;
@@ -632,7 +605,7 @@ half::isNan() const
 }
 
 inline bool
-half::isInfinity() const
+half::isInfinity() const noexcept
 {
     unsigned short e = (_h >> 10) & 0x001f;
     unsigned short m = _h & 0x3ff;
@@ -640,13 +613,13 @@ half::isInfinity() const
 }
 
 inline bool
-half::isNegative() const
+half::isNegative() const noexcept
 {
     return (_h & 0x8000) != 0;
 }
 
 inline half
-half::posInf()
+half::posInf() noexcept
 {
     half h;
     h._h = 0x7c00;
@@ -654,7 +627,7 @@ half::posInf()
 }
 
 inline half
-half::negInf()
+half::negInf() noexcept
 {
     half h;
     h._h = 0xfc00;
@@ -662,7 +635,7 @@ half::negInf()
 }
 
 inline half
-half::qNan()
+half::qNan() noexcept
 {
     half h;
     h._h = 0x7fff;
@@ -670,7 +643,7 @@ half::qNan()
 }
 
 inline half
-half::sNan()
+half::sNan() noexcept
 {
     half h;
     h._h = 0x7dff;
@@ -678,13 +651,13 @@ half::sNan()
 }
 
 inline unsigned short
-half::bits() const
+half::bits() const noexcept
 {
     return _h;
 }
 
 inline void
-half::setBits (unsigned short bits)
+half::setBits (unsigned short bits) noexcept
 {
     _h = bits;
 }

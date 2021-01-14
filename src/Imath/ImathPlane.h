@@ -1,36 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
 #ifndef INCLUDED_IMATHPLANE_H
 #define INCLUDED_IMATHPLANE_H
@@ -62,36 +33,36 @@ template <class T> class Plane3
     Vec3<T> normal;
     T distance;
 
-    IMATH_HOSTDEVICE constexpr Plane3() {}
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& normal, T distance);
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point, const Vec3<T>& normal);
+    IMATH_HOSTDEVICE constexpr Plane3() noexcept {}
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& normal, T distance) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point, const Vec3<T>& normal) noexcept;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point1,
                                                const Vec3<T>& point2,
-                                               const Vec3<T>& point3);
+                                               const Vec3<T>& point3) noexcept;
 
     //----------------------
     //	Various set methods
     //----------------------
 
-    IMATH_HOSTDEVICE void set (const Vec3<T>& normal, T distance);
+    IMATH_HOSTDEVICE void set (const Vec3<T>& normal, T distance) noexcept;
 
-    IMATH_HOSTDEVICE void set (const Vec3<T>& point, const Vec3<T>& normal);
+    IMATH_HOSTDEVICE void set (const Vec3<T>& point, const Vec3<T>& normal) noexcept;
 
-    IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3);
+    IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3) noexcept;
 
     //----------------------
     //	Utilities
     //----------------------
 
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-    intersect (const Line3<T>& line, Vec3<T>& intersection) const;
+    intersect (const Line3<T>& line, Vec3<T>& intersection) const noexcept;
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& line, T& parameter) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& line, T& parameter) const noexcept;
 
-    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>&) const;
+    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>&) const noexcept;
 
-    IMATH_HOSTDEVICE constexpr Vec3<T> reflectPoint (const Vec3<T>&) const;
-    IMATH_HOSTDEVICE constexpr Vec3<T> reflectVector (const Vec3<T>&) const;
+    IMATH_HOSTDEVICE constexpr Vec3<T> reflectPoint (const Vec3<T>&) const noexcept;
+    IMATH_HOSTDEVICE constexpr Vec3<T> reflectVector (const Vec3<T>&) const noexcept;
 };
 
 //--------------------
@@ -106,24 +77,24 @@ typedef Plane3<double> Plane3d;
 //---------------
 
 template <class T>
-IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p0, const Vec3<T>& p1, const Vec3<T>& p2)
+IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p0, const Vec3<T>& p1, const Vec3<T>& p2) noexcept
 {
     set (p0, p1, p2);
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& n, T d)
+template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& n, T d) noexcept
 {
     set (n, d);
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p, const Vec3<T>& n)
+template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p, const Vec3<T>& n) noexcept
 {
     set (p, n);
 }
 
 template <class T>
 inline void
-Plane3<T>::set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3)
+Plane3<T>::set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3) noexcept
 {
     normal = (point2 - point1) % (point3 - point1);
     normal.normalize();
@@ -132,7 +103,7 @@ Plane3<T>::set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& poi
 
 template <class T>
 inline void
-Plane3<T>::set (const Vec3<T>& point, const Vec3<T>& n)
+Plane3<T>::set (const Vec3<T>& point, const Vec3<T>& n) noexcept
 {
     normal = n;
     normal.normalize();
@@ -141,7 +112,7 @@ Plane3<T>::set (const Vec3<T>& point, const Vec3<T>& n)
 
 template <class T>
 inline void
-Plane3<T>::set (const Vec3<T>& n, T d)
+Plane3<T>::set (const Vec3<T>& n, T d) noexcept
 {
     normal = n;
     normal.normalize();
@@ -150,28 +121,28 @@ Plane3<T>::set (const Vec3<T>& n, T d)
 
 template <class T>
 constexpr inline T
-Plane3<T>::distanceTo (const Vec3<T>& point) const
+Plane3<T>::distanceTo (const Vec3<T>& point) const noexcept
 {
     return (point ^ normal) - distance;
 }
 
 template <class T>
 constexpr inline Vec3<T>
-Plane3<T>::reflectPoint (const Vec3<T>& point) const
+Plane3<T>::reflectPoint (const Vec3<T>& point) const noexcept
 {
     return normal * distanceTo (point) * -2.0 + point;
 }
 
 template <class T>
 constexpr inline Vec3<T>
-Plane3<T>::reflectVector (const Vec3<T>& v) const
+Plane3<T>::reflectVector (const Vec3<T>& v) const noexcept
 {
     return normal * (normal ^ v) * 2.0 - v;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Plane3<T>::intersect (const Line3<T>& line, Vec3<T>& point) const
+Plane3<T>::intersect (const Line3<T>& line, Vec3<T>& point) const noexcept
 {
     T d = normal ^ line.dir;
     if (d == 0.0)
@@ -183,7 +154,7 @@ Plane3<T>::intersect (const Line3<T>& line, Vec3<T>& point) const
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Plane3<T>::intersectT (const Line3<T>& line, T& t) const
+Plane3<T>::intersectT (const Line3<T>& line, T& t) const noexcept
 {
     T d = normal ^ line.dir;
     if (d == 0.0)
@@ -201,7 +172,7 @@ operator<< (std::ostream& o, const Plane3<T>& plane)
 
 template <class T>
 IMATH_CONSTEXPR14 Plane3<T>
-operator* (const Plane3<T>& plane, const Matrix44<T>& M)
+operator* (const Plane3<T>& plane, const Matrix44<T>& M) noexcept
 {
     //                        T
     //	                    -1
@@ -236,7 +207,7 @@ operator* (const Plane3<T>& plane, const Matrix44<T>& M)
 
 template <class T>
 constexpr inline Plane3<T>
-operator- (const Plane3<T>& plane)
+operator- (const Plane3<T>& plane) noexcept
 {
     return Plane3<T> (-plane.normal, -plane.distance);
 }

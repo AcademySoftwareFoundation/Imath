@@ -1,5 +1,10 @@
 #!@PYTHON@
 
+#
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright Contributors to the OpenEXR Project.
+#
+
 import math
 import random
 import string
@@ -529,18 +534,18 @@ def testVectorVectorMaskedArithmeticOps(f1, f2, f3, m):
 
 
 def testUnaryVecMethods(f):
-    g = f.length()
-    assert(len(g) == len(f))
-    for i in range(0, len(f)):
-        assert(equalWithRelError(g[i], f[i].length(), eps))
-
     g = f.length2()
     assert(len(g) == len(f))
     for i in range(0, len(f)):
         assert(g[i] == f[i].length2())
 
-    # Normalization only makes sense for these types
+    # Normalization and length only makes sense for these types
     if type(f) in [V2fArray, V2dArray, V3fArray, V3dArray]:
+        g = f.length()
+        assert(len(g) == len(f))
+        for i in range(0, len(f)):
+            assert(equalWithRelError(g[i], f[i].length(), eps))
+
         g = f[:]
         g.normalize()
         assert(len(g) == len(f))
@@ -1976,11 +1981,6 @@ def testV2x (Vec):
     if (Vec != V2i):
        v = Vec(1, 2)
        assert equal(v.length(), sqrt(1*1 + 2*2), v.baseTypeEpsilon())
-    else:
-        v = Vec(1, 2)
-        assert v.length() == round(sqrt(1*1 + 2*2))
-        v = Vec(2, 3)
-        assert v.length() == round(sqrt(2*2 + 3*3))
 
     v = Vec(1, 2)
     assert v.length2() == 1*1 + 2*2
@@ -2023,76 +2023,6 @@ def testV2x (Vec):
        v = Vec(1, 2)
        assert equal(v.normalizedNonNull().length(), 1, v.baseTypeEpsilon())
 
-    else:
-       v = Vec(0, 1)
-       v.normalize()
-       assert v.length() == 1
-
-       v = Vec(1, 2)
-       try:
-           v.normalize()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1)
-       v.normalizeExc()
-       assert v.length() == 1
-
-       v = Vec(1, 2)
-       try:
-           v.normalizeExc()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1)
-       v.normalizeNonNull()
-       assert v.length() == 1
-
-       v = Vec(1, 2)
-       try:
-           v.normalizeNonNull()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1)
-       assert v.normalized().length() == 1
-
-       v = Vec(1, 2)
-       try:
-           v.normalized()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1)
-       assert v.normalizedExc().length() == 1
-
-       v = Vec(1, 2)
-       try:
-           v.normalizedExc()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1)
-       assert v.normalizeNonNull().length() == 1
-
-       v = Vec(1, 2)
-       try:
-           v.normalizedNonNull()  # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                         # We shouldn't get here.
-        
 
     # Projection.
 
@@ -2543,21 +2473,22 @@ def testV2xArray (Array, Vec, Arrayx):
 
     # Length.
 
-    v0 = Vec(1, 2)
-    v1 = Vec(3, 4)
+    if (Vec != V2i):
+        v0 = Vec(1, 2)
+        v1 = Vec(3, 4)
 
-    a = Array(2)
-    a[0] = v0
-    a[1] = v1
+        a = Array(2)
+        a[0] = v0
+        a[1] = v1
 
-    l = a.length()
-    assert (l[0] == v0.length())
-    assert (l[1] == v1.length())
+        l = a.length()
+        assert (l[0] == v0.length())
+        assert (l[1] == v1.length())
 
-    l = a.length2()
-    assert (l[0] == v0.length2())
-    assert (l[1] == v1.length2())
-    
+        l = a.length2()
+        assert (l[0] == v0.length2())
+        assert (l[1] == v1.length2())
+
     # Normalizing.
 
     if (Vec != V2i):
@@ -2818,11 +2749,6 @@ def testV3x (Vec):
     if (Vec != V3i):
        v = Vec(1, 2, 3)
        assert equal(v.length(), sqrt(1*1 + 2*2 + 3*3), v.baseTypeEpsilon())
-    else:
-        v = Vec(1, 2, 3)
-        assert v.length() == round(sqrt(1*1 + 2*2 + 3*3))
-        v = Vec(2, 3, 4)
-        assert v.length() == round(sqrt(2*2 + 3*3 + 4*4))
 
     v = Vec(1, 2, 3)
     assert v.length2() == 1*1 + 2*2 + 3*3
@@ -2865,76 +2791,6 @@ def testV3x (Vec):
        v = Vec(1, 2, 3)
        assert equal(v.normalizedNonNull().length(), 1, v.baseTypeEpsilon())
 
-    else:
-       v = Vec(0, 1, 0)
-       v.normalize()
-       assert v.length() == 1
-
-       v = Vec(1, 2, 3)
-       try:
-           v.normalize()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1, 0)
-       v.normalizeExc()
-       assert v.length() == 1
-
-       v = Vec(1, 2, 3)
-       try:
-           v.normalizeExc()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1, 0)
-       v.normalizeNonNull()
-       assert v.length() == 1
-
-       v = Vec(1, 2, 3)
-       try:
-           v.normalizeNonNull()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1, 0)
-       assert v.normalized().length() == 1
-
-       v = Vec(1, 2, 3)
-       try:
-           v.normalized()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1, 0)
-       assert v.normalizedExc().length() == 1
-
-       v = Vec(1, 2, 3)
-       try:
-           v.normalizedExc()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 1, 0)
-       assert v.normalizeNonNull().length() == 1
-
-       v = Vec(1, 2, 3)
-       try:
-           v.normalizedNonNull()  # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                  # We shouldn't get here.
-        
     # Projection.
 
     if (Vec != V3i):
@@ -3402,9 +3258,10 @@ def testV3xArray (Array, Vec, Arrayx):
     a[0] = v0
     a[1] = v1
 
-    l = a.length()
-    assert (l[0] == v0.length())
-    assert (l[1] == v1.length())
+    if (Vec != V3i):
+        l = a.length()
+        assert (l[0] == v0.length())
+        assert (l[1] == v1.length())
 
     l = a.length2()
     assert (l[0] == v0.length2())
@@ -3786,11 +3643,6 @@ def testV4x (Vec):
     if (Vec != V4i):
        v = Vec(1, 2, 3, 4)
        assert equal(v.length(), sqrt(1*1 + 2*2 + 3*3 + 4*4), 10.0*v.baseTypeEpsilon())
-    else:
-        v = Vec(1, 2, 3, 4)
-        assert v.length() == round(sqrt(1*1 + 2*2 + 3*3 + 4*4))
-        v = Vec(2, 3, 4, 5)
-        assert v.length() == round(sqrt(2*2 + 3*3 + 4*4 + 5*5))
 
     v = Vec(1, 2, 3, 4)
     assert v.length2() == 1*1 + 2*2 + 3*3 + 4*4
@@ -3833,76 +3685,6 @@ def testV4x (Vec):
        v = Vec(1, 2, 3, 4)
        assert equal(v.normalizedNonNull().length(), 1, v.baseTypeEpsilon())
 
-    else:
-       v = Vec(0, 0, 0, 1)
-       v.normalize()
-       assert v.length() == 1
-
-       v = Vec(1, 2, 3, 4)
-       try:
-           v.normalize()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 0, 0, 1)
-       v.normalizeExc()
-       assert v.length() == 1
-
-       v = Vec(1, 2, 3, 4)
-       try:
-           v.normalizeExc()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 0, 0, 1)
-       v.normalizeNonNull()
-       assert v.length() == 1
-
-       v = Vec(1, 2, 3, 4)
-       try:
-           v.normalizeNonNull()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 0, 0, 1)
-       assert v.normalized().length() == 1
-
-       v = Vec(1, 2, 3, 4)
-       try:
-           v.normalized()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 0, 0, 1)
-       assert v.normalizedExc().length() == 1
-
-       v = Vec(1, 2, 3, 4)
-       try:
-           v.normalizedExc()        # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                # We shouldn't get here.
-        
-       v = Vec(0, 0, 0, 1)
-       assert v.normalizeNonNull().length() == 1
-
-       v = Vec(1, 2, 3, 4)
-       try:
-           v.normalizedNonNull()  # This should raise an exception.
-       except:
-           pass
-       else:
-           assert 0                  # We shouldn't get here.
-        
     # Projection.
 
     if (Vec != V4i):
@@ -4315,9 +4097,10 @@ def testV4xArray (Array, Vec, Arrayx):
     a[0] = v0
     a[1] = v1
 
-    l = a.length()
-    assert (l[0] == v0.length())
-    assert (l[1] == v1.length())
+    if (Vec != V4i):
+        l = a.length()
+        assert (l[0] == v0.length())
+        assert (l[1] == v1.length())
 
     l = a.length2()
     assert (l[0] == v0.length2())

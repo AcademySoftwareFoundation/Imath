@@ -1,36 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 1998-2011, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
 // clang-format off
 
@@ -131,6 +102,25 @@ Vec4Array_max(const FixedArray<IMATH_NAMESPACE::Vec4<T> > &a)
     return tmp;
 }
 
+
+// Trick to register methods for float-only-based vectors
+template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
+void register_Vec4Array_floatonly(class_<FixedArray<Vec4<T>>>& vec4Array_class)
+{
+    generate_member_bindings<op_vecLength<IMATH_NAMESPACE::Vec4<T> >     >(vec4Array_class,"length","");
+    generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec4<T> >  >(vec4Array_class,"normalize","");
+    generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec4<T> > >(vec4Array_class,"normalized","");
+    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec4<T> >  >(vec4Array_class,"normalizeExc","");
+    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec4<T> > >(vec4Array_class,"normalizedExc","");
+}
+
+template <class T, IMATH_ENABLE_IF(std::is_integral<T>::value)>
+void register_Vec4Array_floatonly(class_<FixedArray<Vec4<T>>>& vec4Array_class)
+{
+}
+
+
+
 template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Vec4<T> > >
 register_Vec4Array()
@@ -151,13 +141,8 @@ register_Vec4Array()
     add_arithmetic_math_functions(vec4Array_class);
     add_comparison_functions(vec4Array_class);
 
-    generate_member_bindings<op_vecLength<IMATH_NAMESPACE::Vec4<T> >     >(vec4Array_class,"length","");
+    register_Vec4Array_floatonly(vec4Array_class);
     generate_member_bindings<op_vecLength2<IMATH_NAMESPACE::Vec4<T> >    >(vec4Array_class,"length2","");
-    generate_member_bindings<op_vecNormalize<IMATH_NAMESPACE::Vec4<T> >  >(vec4Array_class,"normalize","");
-    generate_member_bindings<op_vecNormalized<IMATH_NAMESPACE::Vec4<T> > >(vec4Array_class,"normalized","");
-    generate_member_bindings<op_vecNormalizeExc<IMATH_NAMESPACE::Vec4<T> >  >(vec4Array_class,"normalizeExc","");
-    generate_member_bindings<op_vecNormalizedExc<IMATH_NAMESPACE::Vec4<T> > >(vec4Array_class,"normalizedExc","");
-
     generate_member_bindings<op_vecDot<IMATH_NAMESPACE::Vec4<T> >,true_>(vec4Array_class,"dot","return the inner product of (self,x)",boost::python::args("x"));
     generate_member_bindings<op_mul<IMATH_NAMESPACE::Vec4<T>,T>,  true_>(vec4Array_class,"__mul__" ,"self*x", boost::python::args("x"));
     generate_member_bindings<op_mul<IMATH_NAMESPACE::Vec4<T>,T>,  true_>(vec4Array_class,"__rmul__","x*self", boost::python::args("x"));

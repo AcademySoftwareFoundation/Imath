@@ -1,36 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
 #ifndef INCLUDED_IMATHBOXALGO_H
 #define INCLUDED_IMATHBOXALGO_H
@@ -82,7 +53,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
-clip (const T& p, const Box<T>& box)
+clip (const T& p, const Box<T>& box) noexcept
 {
     //
     // Clip the coordinates of a point, p, against a box.
@@ -106,14 +77,14 @@ clip (const T& p, const Box<T>& box)
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline T
-closestPointInBox (const T& p, const Box<T>& box)
+closestPointInBox (const T& p, const Box<T>& box) noexcept
 {
     return clip (p, box);
 }
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
-closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box)
+closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) noexcept
 {
     //
     // Find the point, q, on the surface of
@@ -155,7 +126,7 @@ closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box)
 
 template <class S, class T>
 IMATH_HOSTDEVICE Box<Vec3<S>>
-transform (const Box<Vec3<S>>& box, const Matrix44<T>& m)
+transform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 {
     //
     // Transform a 3D box by a matrix, and compute a new box that
@@ -237,7 +208,7 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m)
 
 template <class S, class T>
 IMATH_HOSTDEVICE void
-transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result)
+transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) noexcept
 {
     //
     // Transform a 3D box by a matrix, and compute a new box that
@@ -315,7 +286,7 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result)
 
 template <class S, class T>
 IMATH_HOSTDEVICE Box<Vec3<S>>
-affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m)
+affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 {
     //
     // Transform a 3D box by a matrix whose rightmost column
@@ -366,7 +337,7 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m)
 
 template <class S, class T>
 IMATH_HOSTDEVICE void
-affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result)
+affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) noexcept
 {
     //
     // Transform a 3D box by a matrix whose rightmost column
@@ -422,7 +393,7 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& re
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry, Vec3<T>& exit)
+findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry, Vec3<T>& exit) noexcept
 {
     //
     // Compute the points where a ray, r, enters and exits a box, b:
@@ -696,7 +667,7 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip)
+intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) noexcept
 {
     //
     // Intersect a ray, r, with a box, b, and compute the intersection
@@ -974,7 +945,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip)
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-intersects (const Box<Vec3<T>>& box, const Line3<T>& ray)
+intersects (const Box<Vec3<T>>& box, const Line3<T>& ray) noexcept
 {
     Vec3<T> ignored;
     return intersects (box, ray, ignored);

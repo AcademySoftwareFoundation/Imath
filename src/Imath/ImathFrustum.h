@@ -1,36 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
 #ifndef INCLUDED_IMATHFRUSTUM_H
 #define INCLUDED_IMATHFRUSTUM_H
@@ -63,32 +34,32 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 template <class T> class Frustum
 {
   public:
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum();
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (const Frustum&);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum() noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (const Frustum&) noexcept;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14
-    Frustum (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false);
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
-    virtual ~Frustum();
+    Frustum (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
+    virtual ~Frustum() noexcept;
 
     //--------------------
     // Assignment operator
     //--------------------
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Frustum& operator= (const Frustum&);
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Frustum& operator= (const Frustum&) noexcept;
 
     //--------------------
     //  Operators:  ==, !=
     //--------------------
 
-    IMATH_HOSTDEVICE constexpr bool operator== (const Frustum<T>& src) const;
-    IMATH_HOSTDEVICE constexpr bool operator!= (const Frustum<T>& src) const;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Frustum<T>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Frustum<T>& src) const noexcept;
 
     //--------------------------------------------------------
     //  Set functions change the entire state of the Frustum
     //--------------------------------------------------------
 
     IMATH_HOSTDEVICE void
-    set (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false);
+    set (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false) noexcept;
 
     IMATH_HOSTDEVICE void set (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
     void setExc (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
@@ -97,22 +68,22 @@ template <class T> class Frustum
     //	These functions modify an already valid frustum state
     //------------------------------------------------------
 
-    IMATH_HOSTDEVICE void modifyNearAndFar (T nearPlane, T farPlane);
-    IMATH_HOSTDEVICE void setOrthographic (bool);
+    IMATH_HOSTDEVICE void modifyNearAndFar (T nearPlane, T farPlane) noexcept;
+    IMATH_HOSTDEVICE void setOrthographic (bool) noexcept;
 
     //--------------
     //  Access
     //--------------
 
-    IMATH_HOSTDEVICE constexpr bool orthographic() const { return _orthographic; }
-    IMATH_HOSTDEVICE constexpr T nearPlane() const { return _nearPlane; }
-    IMATH_HOSTDEVICE constexpr T hither() const { return _nearPlane; }
-    IMATH_HOSTDEVICE constexpr T farPlane() const { return _farPlane; }
-    IMATH_HOSTDEVICE constexpr T yon() const { return _farPlane; }
-    IMATH_HOSTDEVICE constexpr T left() const { return _left; }
-    IMATH_HOSTDEVICE constexpr T right() const { return _right; }
-    IMATH_HOSTDEVICE constexpr T bottom() const { return _bottom; }
-    IMATH_HOSTDEVICE constexpr T top() const { return _top; }
+    IMATH_HOSTDEVICE constexpr bool orthographic() const noexcept { return _orthographic; }
+    IMATH_HOSTDEVICE constexpr T nearPlane() const noexcept { return _nearPlane; }
+    IMATH_HOSTDEVICE constexpr T hither() const noexcept { return _nearPlane; }
+    IMATH_HOSTDEVICE constexpr T farPlane() const noexcept { return _farPlane; }
+    IMATH_HOSTDEVICE constexpr T yon() const noexcept { return _farPlane; }
+    IMATH_HOSTDEVICE constexpr T left() const noexcept { return _left; }
+    IMATH_HOSTDEVICE constexpr T right() const noexcept { return _right; }
+    IMATH_HOSTDEVICE constexpr T bottom() const noexcept { return _bottom; }
+    IMATH_HOSTDEVICE constexpr T top() const noexcept { return _top; }
 
     //-----------------------------------------------------------------------
     //  Sets the planes in p to be the six bounding planes of the frustum, in
@@ -122,20 +93,20 @@ template <class T> class Frustum
     //  to transform the frustum before setting the planes.
     //-----------------------------------------------------------------------
 
-    IMATH_HOSTDEVICE void planes (Plane3<T> p[6]) const;
-    IMATH_HOSTDEVICE void planes (Plane3<T> p[6], const Matrix44<T>& M) const;
+    IMATH_HOSTDEVICE void planes (Plane3<T> p[6]) const noexcept;
+    IMATH_HOSTDEVICE void planes (Plane3<T> p[6], const Matrix44<T>& M) const noexcept;
 
     //----------------------
     //  Derived Quantities
     //----------------------
 
-    IMATH_HOSTDEVICE constexpr T fovx() const;
-    IMATH_HOSTDEVICE constexpr T fovy() const;
+    IMATH_HOSTDEVICE constexpr T fovx() const noexcept;
+    IMATH_HOSTDEVICE constexpr T fovy() const noexcept;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T aspect() const noexcept;
     IMATH_CONSTEXPR14 T aspectExc() const;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44<T> projectionMatrix() const noexcept;
     IMATH_CONSTEXPR14 Matrix44<T> projectionMatrixExc() const;
-    IMATH_HOSTDEVICE constexpr bool degenerate() const;
+    IMATH_HOSTDEVICE constexpr bool degenerate() const noexcept;
 
     //-----------------------------------------------------------------------
     //  Takes a rectangle in the screen space (i.e., -1 <= left <= right <= 1
@@ -145,13 +116,13 @@ template <class T> class Frustum
     //-----------------------------------------------------------------------
 
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 IMATH_HOSTDEVICE Frustum<T>
-    window (T left, T right, T top, T bottom) const;
+    window (T left, T right, T top, T bottom) const noexcept;
 
     //----------------------------------------------------------
     // Projection is in screen space / Conversion from Z-Buffer
     //----------------------------------------------------------
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3<T> projectScreenToRay (const Vec2<T>&) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3<T> projectScreenToRay (const Vec2<T>&) const noexcept;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> projectPointToScreen (const Vec3<T>&) const noexcept;
     IMATH_CONSTEXPR14 Vec2<T> projectPointToScreenExc (const Vec3<T>&) const;
 
@@ -164,14 +135,14 @@ template <class T> class Frustum
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 long
     DepthToZ (T depth, long zmin, long zmax) const noexcept;
     IMATH_CONSTEXPR14 long DepthToZExc (T depth, long zmin, long zmax) const;
-    
+
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T worldRadius (const Vec3<T>& p, T radius) const noexcept;
     IMATH_CONSTEXPR14 T worldRadiusExc (const Vec3<T>& p, T radius) const;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T screenRadius (const Vec3<T>& p, T radius) const noexcept;
     IMATH_CONSTEXPR14 T screenRadiusExc (const Vec3<T>& p, T radius) const;
 
   protected:
-    IMATH_HOSTDEVICE constexpr Vec2<T> screenToLocal (const Vec2<T>&) const;
+    IMATH_HOSTDEVICE constexpr Vec2<T> screenToLocal (const Vec2<T>&) const noexcept;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T>
     localToScreen (const Vec2<T>&) const noexcept;
     IMATH_CONSTEXPR14 Vec2<T> localToScreenExc (const Vec2<T>&) const;
@@ -186,34 +157,34 @@ template <class T> class Frustum
     bool _orthographic;
 };
 
-template <class T> IMATH_CONSTEXPR14 inline Frustum<T>::Frustum()
+template <class T> IMATH_CONSTEXPR14 inline Frustum<T>::Frustum() noexcept
 {
     set (T (0.1), T (1000.0), T (-1.0), T (1.0), T (1.0), T (-1.0), false);
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Frustum<T>::Frustum (const Frustum& f)
+template <class T> IMATH_CONSTEXPR14 inline Frustum<T>::Frustum (const Frustum& f) noexcept
 {
     *this = f;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Frustum<T>::Frustum (T n, T f, T l, T r, T t, T b, bool o)
+IMATH_CONSTEXPR14 inline Frustum<T>::Frustum (T n, T f, T l, T r, T t, T b, bool o) noexcept
 {
     set (n, f, l, r, t, b, o);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Frustum<T>::Frustum (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
+IMATH_CONSTEXPR14 inline Frustum<T>::Frustum (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept
 {
     set (nearPlane, farPlane, fovx, fovy, aspect);
 }
 
-template <class T> Frustum<T>::~Frustum()
+template <class T> Frustum<T>::~Frustum() noexcept
 {}
 
 template <class T>
 IMATH_CONSTEXPR14 inline const Frustum<T>&
-Frustum<T>::operator= (const Frustum& f)
+Frustum<T>::operator= (const Frustum& f) noexcept
 {
     _nearPlane    = f._nearPlane;
     _farPlane     = f._farPlane;
@@ -228,7 +199,7 @@ Frustum<T>::operator= (const Frustum& f)
 
 template <class T>
 constexpr inline bool
-Frustum<T>::operator== (const Frustum<T>& src) const
+Frustum<T>::operator== (const Frustum<T>& src) const noexcept
 {
     return _nearPlane == src._nearPlane && _farPlane == src._farPlane && _left == src._left &&
            _right == src._right && _top == src._top && _bottom == src._bottom &&
@@ -237,14 +208,14 @@ Frustum<T>::operator== (const Frustum<T>& src) const
 
 template <class T>
 constexpr inline bool
-Frustum<T>::operator!= (const Frustum<T>& src) const
+Frustum<T>::operator!= (const Frustum<T>& src) const noexcept
 {
     return !operator== (src);
 }
 
 template <class T>
 inline void
-Frustum<T>::set (T n, T f, T l, T r, T t, T b, bool o)
+Frustum<T>::set (T n, T f, T l, T r, T t, T b, bool o) noexcept
 {
     _nearPlane    = n;
     _farPlane     = f;
@@ -257,7 +228,7 @@ Frustum<T>::set (T n, T f, T l, T r, T t, T b, bool o)
 
 template <class T>
 inline void
-Frustum<T>::modifyNearAndFar (T n, T f)
+Frustum<T>::modifyNearAndFar (T n, T f) noexcept
 {
     if (_orthographic)
     {
@@ -287,7 +258,7 @@ Frustum<T>::modifyNearAndFar (T n, T f)
 
 template <class T>
 inline void
-Frustum<T>::setOrthographic (bool ortho)
+Frustum<T>::setOrthographic (bool ortho) noexcept
 {
     _orthographic = ortho;
 }
@@ -303,14 +274,14 @@ Frustum<T>::setExc (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 
     if (fovx != T (0))
     {
-        _right  = nearPlane * Math<T>::tan (fovx / two);
+        _right  = nearPlane * std::tan (fovx / two);
         _left   = -_right;
         _top    = ((_right - _left) / aspect) / two;
         _bottom = -_top;
     }
     else
     {
-        _top    = nearPlane * Math<T>::tan (fovy / two);
+        _top    = nearPlane * std::tan (fovy / two);
         _bottom = -_top;
         _right  = (_top - _bottom) * aspect / two;
         _left   = -_right;
@@ -328,14 +299,14 @@ Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept
 
     if (fovx != T (0))
     {
-        _right  = nearPlane * Math<T>::tan (fovx / two);
+        _right  = nearPlane * std::tan (fovx / two);
         _left   = -_right;
         _top    = ((_right - _left) / aspect) / two;
         _bottom = -_top;
     }
     else
     {
-        _top    = nearPlane * Math<T>::tan (fovy / two);
+        _top    = nearPlane * std::tan (fovy / two);
         _bottom = -_top;
         _right  = (_top - _bottom) * aspect / two;
         _left   = -_right;
@@ -347,16 +318,16 @@ Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept
 
 template <class T>
 constexpr inline T
-Frustum<T>::fovx() const
+Frustum<T>::fovx() const noexcept
 {
-    return Math<T>::atan2 (_right, _nearPlane) - Math<T>::atan2 (_left, _nearPlane);
+    return std::atan2 (_right, _nearPlane) - std::atan2 (_left, _nearPlane);
 }
 
 template <class T>
 constexpr inline T
-Frustum<T>::fovy() const
+Frustum<T>::fovy() const noexcept
 {
-    return Math<T>::atan2 (_top, _nearPlane) - Math<T>::atan2 (_bottom, _nearPlane);
+    return std::atan2 (_top, _nearPlane) - std::atan2 (_bottom, _nearPlane);
 }
 
 template <class T>
@@ -506,14 +477,14 @@ Frustum<T>::projectionMatrix() const noexcept
 
 template <class T>
 constexpr inline bool
-Frustum<T>::degenerate() const
+Frustum<T>::degenerate() const noexcept
 {
     return (_nearPlane == _farPlane) || (_left == _right) || (_top == _bottom);
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline Frustum<T>
-Frustum<T>::window (T l, T r, T t, T b) const
+Frustum<T>::window (T l, T r, T t, T b) const noexcept
 {
     // move it to 0->1 space
 
@@ -525,7 +496,7 @@ Frustum<T>::window (T l, T r, T t, T b) const
 
 template <class T>
 constexpr inline Vec2<T>
-Frustum<T>::screenToLocal (const Vec2<T>& s) const
+Frustum<T>::screenToLocal (const Vec2<T>& s) const noexcept
 {
     return Vec2<T> (_left + (_right - _left) * (1.f + s.x) / 2.f,
                     _bottom + (_top - _bottom) * (1.f + s.y) / 2.f);
@@ -566,7 +537,7 @@ Frustum<T>::localToScreen (const Vec2<T>& p) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline Line3<T>
-Frustum<T>::projectScreenToRay (const Vec2<T>& p) const
+Frustum<T>::projectScreenToRay (const Vec2<T>& p) const noexcept
 {
     Vec2<T> point = screenToLocal (p);
     if (orthographic())
@@ -813,7 +784,7 @@ Frustum<T>::worldRadius (const Vec3<T>& p, T radius) const noexcept
 
 template <class T>
 void
-Frustum<T>::planes (Plane3<T> p[6]) const
+Frustum<T>::planes (Plane3<T> p[6]) const noexcept
 {
     //
     //        Plane order: Top, Right, Bottom, Left, Near, Far.
@@ -846,7 +817,7 @@ Frustum<T>::planes (Plane3<T> p[6]) const
 
 template <class T>
 void
-Frustum<T>::planes (Plane3<T> p[6], const Matrix44<T>& M) const
+Frustum<T>::planes (Plane3<T> p[6], const Matrix44<T>& M) const noexcept
 {
     //
     //  Plane order: Top, Right, Bottom, Left, Near, Far.

@@ -1,36 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2002-2012, Industrial Light & Magic, a division of Lucas
-// Digital Ltd. LLC
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
 //
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-// *       Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-// *       Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-// *       Neither the name of Industrial Light & Magic nor the names of
-// its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-///////////////////////////////////////////////////////////////////////////
 
 #ifndef INCLUDED_IMATHMATRIXALGO_H
 #define INCLUDED_IMATHMATRIXALGO_H
@@ -523,7 +494,7 @@ extractEulerXYZ (const Matrix44<T>& mat, Vec3<T>& rot)
     // Extract the first angle, rot.x.
     //
 
-    rot.x = Math<T>::atan2 (M[1][2], M[2][2]);
+    rot.x = std::atan2 (M[1][2], M[2][2]);
 
     //
     // Remove the rot.x rotation from M, so that the remaining
@@ -539,9 +510,9 @@ extractEulerXYZ (const Matrix44<T>& mat, Vec3<T>& rot)
     // Extract the other two angles, rot.y and rot.z, from N.
     //
 
-    T cy  = Math<T>::sqrt (N[0][0] * N[0][0] + N[0][1] * N[0][1]);
-    rot.y = Math<T>::atan2 (-N[0][2], cy);
-    rot.z = Math<T>::atan2 (-N[1][0], N[1][1]);
+    T cy  = std::sqrt (N[0][0] * N[0][0] + N[0][1] * N[0][1]);
+    rot.y = std::atan2 (-N[0][2], cy);
+    rot.z = std::atan2 (-N[1][0], N[1][1]);
 }
 
 template <class T>
@@ -566,7 +537,7 @@ extractEulerZYX (const Matrix44<T>& mat, Vec3<T>& rot)
     // Extract the first angle, rot.x.
     //
 
-    rot.x = -Math<T>::atan2 (M[1][0], M[0][0]);
+    rot.x = -std::atan2 (M[1][0], M[0][0]);
 
     //
     // Remove the x rotation from M, so that the remaining
@@ -582,9 +553,9 @@ extractEulerZYX (const Matrix44<T>& mat, Vec3<T>& rot)
     // Extract the other two angles, rot.y and rot.z, from N.
     //
 
-    T cy  = Math<T>::sqrt (N[2][2] * N[2][2] + N[2][1] * N[2][1]);
-    rot.y = -Math<T>::atan2 (-N[2][0], cy);
-    rot.z = -Math<T>::atan2 (-N[1][2], N[1][1]);
+    T cy  = std::sqrt (N[2][2] * N[2][2] + N[2][1] * N[2][1]);
+    rot.y = -std::atan2 (-N[2][0], cy);
+    rot.z = -std::atan2 (-N[1][2], N[1][1]);
 }
 
 template <class T>
@@ -604,7 +575,7 @@ extractQuat (const Matrix44<T>& mat)
     // check the diagonal
     if (tr > 0.0)
     {
-        s      = Math<T>::sqrt (tr + T (1.0));
+        s      = std::sqrt (tr + T (1.0));
         quat.r = s / T (2.0);
         s      = T (0.5) / s;
 
@@ -623,7 +594,7 @@ extractQuat (const Matrix44<T>& mat)
 
         j = nxt[i];
         k = nxt[j];
-        s = Math<T>::sqrt ((mat[i][i] - (mat[j][j] + mat[k][k])) + T (1.0));
+        s = std::sqrt ((mat[i][i] - (mat[j][j] + mat[k][k])) + T (1.0));
 
         q[i] = s * T (0.5);
         if (s != T (0.0))
@@ -1152,7 +1123,7 @@ extractEuler (const Matrix22<T>& mat, T& rot)
     // Extract the angle, rot.
     //
 
-    rot = -Math<T>::atan2 (j[0], i[0]);
+    rot = -std::atan2 (j[0], i[0]);
 }
 
 template <class T>
@@ -1173,7 +1144,7 @@ extractEuler (const Matrix33<T>& mat, T& rot)
     // Extract the angle, rot.
     //
 
-    rot = -Math<T>::atan2 (j[0], i[0]);
+    rot = -std::atan2 (j[0], i[0]);
 }
 
 template <class T>
