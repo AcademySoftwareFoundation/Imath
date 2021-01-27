@@ -31,8 +31,10 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+/// @cond Doxygen_Suppress
 template <class T> class Vec3;
 template <class T> class Matrix44;
+/// @endcond
 
 template <class T>
 Matrix44<T> constexpr firstFrame (const Vec3<T>&,  // First point

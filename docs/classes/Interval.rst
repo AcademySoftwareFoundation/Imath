@@ -21,7 +21,7 @@ Example:
 .. doxygentypedef:: Intervald
 
 .. doxygenclass:: Imath::Interval
-   :members:
    :undoc-members:
+   :members:
 
                     

@@ -3,18 +3,18 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file ImathVecAlgo.h
+///
+/// @brief Algorithms applied to or in conjunction
+/// with points (Imath::Vec2 and Imath::Vec3).
+///
+/// The assumption made is that these functions are called much
+/// less often than the basic point functions or these functions
+/// require more support classes.
+
 #ifndef INCLUDED_IMATHVECALGO_H
 #define INCLUDED_IMATHVECALGO_H
-
-//-------------------------------------------------------------------------
-//
-//      This file contains algorithms applied to or in conjunction
-//      with points (Imath::Vec2 and Imath::Vec3).
-//      The assumption made is that these functions are called much
-//      less often than the basic point functions or these functions
-//      require more support classes.
-//
-//-------------------------------------------------------------------------
 
 #include "ImathLimits.h"
 #include "ImathNamespace.h"
@@ -22,10 +22,9 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
-//-----------------------------------------------------------------
-// Find the projection of vector t onto vector s (Vec2, Vec3, Vec4)
-//-----------------------------------------------------------------
-
+/// Find the projection of vector `t` onto vector `s` (`Vec2`, `Vec3`, `Vec4`)
+///
+/// Only defined for floating-point types, e.g. `V2f`, `V3d`, etc.
 template <class Vec,
           IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
 IMATH_CONSTEXPR14 inline Vec
@@ -35,11 +34,10 @@ project (const Vec& s, const Vec& t) noexcept
     return sNormalized * (sNormalized ^ t);
 }
 
-//------------------------------------------------
-// Find a vector that is perpendicular to s and
-// in the same plane as s and t (Vec2, Vec3, Vec4)
-//------------------------------------------------
-
+/// Find a vector that is perpendicular to `s` and
+/// in the same plane as `s` and `t` (`Vec2`, `Vec3`, `Vec4`)
+///
+/// Only defined for floating-point types, e.g. `V2f`, `V3d`, etc.
 template <class Vec,
           IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
 constexpr inline Vec
@@ -48,11 +46,10 @@ orthogonal (const Vec& s, const Vec& t) noexcept
     return t - project (s, t);
 }
 
-//-----------------------------------------------
-// Find the direction of a ray s after reflection
-// off a plane with normal t (Vec2, Vec3, Vec4)
-//-----------------------------------------------
-
+/// Find the direction of a ray `s` after reflection
+/// off a plane with normal `t` (`Vec2`, `Vec3`, `Vec4`)
+///
+/// Only defined for floating-point types, e.g. `V2f`, `V3d`, etc.
 template <class Vec,
           IMATH_ENABLE_IF(!std::is_integral<typename Vec::BaseType>::value)>
 constexpr inline Vec
@@ -61,12 +58,8 @@ reflect (const Vec& s, const Vec& t) noexcept
     return s - typename Vec::BaseType (2) * (s - project (t, s));
 }
 
-
-//--------------------------------------------------------------------
-// Find the vertex of triangle (v0, v1, v2) that is closest to point p
-// (Vec2, Vec3, Vec4)
-//--------------------------------------------------------------------
-
+/// Find the vertex of triangle `(v0, v1, v2)` that is closest to point `p`
+/// (`Vec2`, `Vec3`, `Vec4`)
 template <class Vec>
 IMATH_CONSTEXPR14 Vec closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p) noexcept;
 

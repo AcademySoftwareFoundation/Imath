@@ -42,11 +42,14 @@ template <class T> class Frustum
   public:
 
     /// @{
-    /// @name Constructors, destructor, assignment
+    /// @name Constructors and Assignment
     ///
 
     /// Initialize with default values:
     ///  near=0.1, far=1000.0, left=-1.0, right=1.0, top=1.0, bottom=-1.0, ortho=false
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum() noexcept;
+
+    /// Copy constructor
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (const Frustum&) noexcept;
 
     /// Initialize to specific values
@@ -56,11 +59,13 @@ template <class T> class Frustum
     /// Initialize with fov and aspect 
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Frustum (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
 
-    // Destructor
+    /// Destructor
     virtual ~Frustum() noexcept;
 
     /// Component-wise assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Frustum& operator= (const Frustum&) noexcept;
+
+    /// @}
 
     /// @{
     /// @name Comparison
@@ -68,105 +73,174 @@ template <class T> class Frustum
     /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Frustum<T>& src) const noexcept;
 
-    /// Not equal
+    /// Inequality
     IMATH_HOSTDEVICE constexpr bool operator!= (const Frustum<T>& src) const noexcept;
 
     /// @}
     
-    ///
-    ///  Set functions change the entire state of the Frustum
-    ///
+    /// @{
+    /// @name Query
+    
+    /// Return true if the frustum is orthographic, false if perspective
+    IMATH_HOSTDEVICE constexpr bool orthographic() const noexcept { return _orthographic; }
 
+    /// Return the near clipping plane
+    IMATH_HOSTDEVICE constexpr T nearPlane() const noexcept { return _nearPlane; }
+
+    /// Return the near clipping plane
+    IMATH_HOSTDEVICE constexpr T hither() const noexcept { return _nearPlane; }
+
+    /// Return the far clipping plane
+    IMATH_HOSTDEVICE constexpr T farPlane() const noexcept { return _farPlane; }
+
+    /// Return the far clipping plane
+    IMATH_HOSTDEVICE constexpr T yon() const noexcept { return _farPlane; }
+
+    /// Return the left of the frustum
+    IMATH_HOSTDEVICE constexpr T left() const noexcept { return _left; }
+
+    /// Return the right of the frustum
+    IMATH_HOSTDEVICE constexpr T right() const noexcept { return _right; }
+
+    /// Return the bottom of the frustum
+    IMATH_HOSTDEVICE constexpr T bottom() const noexcept { return _bottom; }
+
+    /// Return the top of the frustum
+    IMATH_HOSTDEVICE constexpr T top() const noexcept { return _top; }
+
+    /// Return the field of view in X
+    IMATH_HOSTDEVICE constexpr T fovx() const noexcept;
+
+    /// Return the field of view in Y
+    IMATH_HOSTDEVICE constexpr T fovy() const noexcept;
+
+    /// Return the aspect ratio
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T aspect() const noexcept;
+
+    /// Return the aspect ratio. Throw an exception if the aspect
+    /// ratio is undefined.
+    IMATH_CONSTEXPR14 T aspectExc() const;
+
+    /// Return the project matrix that the frustum defines
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44<T> projectionMatrix() const noexcept;
+
+    /// Return the project matrix that the frustum defines. Throw an
+    /// exception if the frustum is degenerate.
+    IMATH_CONSTEXPR14 Matrix44<T> projectionMatrixExc() const;
+
+    /// Return true if the frustum is degenerate.
+    IMATH_HOSTDEVICE constexpr bool degenerate() const noexcept;
+
+    /// @}
+    
+    /// @{
+    /// @name Set Value
+    
+    /// Set functions change the entire state of the Frustum
     IMATH_HOSTDEVICE void
     set (T nearPlane, T farPlane, T left, T right, T top, T bottom, bool ortho = false) noexcept;
 
+    /// Set functions change the entire state of the Frustum using
+    /// field of view and aspect ratio
     IMATH_HOSTDEVICE void set (T nearPlane, T farPlane, T fovx, T fovy, T aspect) noexcept;
+
+    /// Set functions change the entire state of the Frustum using
+    /// field of view and aspect ratio. Throw an exception if `fovx`
+    /// and/or `fovy` are invalid.
     void setExc (T nearPlane, T farPlane, T fovx, T fovy, T aspect);
 
-    ///
-    ///	These functions modify an already valid frustum state
-    ///
-
+    /// Set the near and far clipping planes
     IMATH_HOSTDEVICE void modifyNearAndFar (T nearPlane, T farPlane) noexcept;
+
+    /// Set the ortographic state
     IMATH_HOSTDEVICE void setOrthographic (bool) noexcept;
 
-    ///
-    ///  Access
-    ///
-
-    IMATH_HOSTDEVICE constexpr bool orthographic() const noexcept { return _orthographic; }
-    IMATH_HOSTDEVICE constexpr T nearPlane() const noexcept { return _nearPlane; }
-    IMATH_HOSTDEVICE constexpr T hither() const noexcept { return _nearPlane; }
-    IMATH_HOSTDEVICE constexpr T farPlane() const noexcept { return _farPlane; }
-    IMATH_HOSTDEVICE constexpr T yon() const noexcept { return _farPlane; }
-    IMATH_HOSTDEVICE constexpr T left() const noexcept { return _left; }
-    IMATH_HOSTDEVICE constexpr T right() const noexcept { return _right; }
-    IMATH_HOSTDEVICE constexpr T bottom() const noexcept { return _bottom; }
-    IMATH_HOSTDEVICE constexpr T top() const noexcept { return _top; }
-
-    ///
-    ///  Sets the planes in p to be the six bounding planes of the frustum, in
-    ///  the following order: top, right, bottom, left, near, far.
-    ///  Note that the planes have normals that point out of the frustum.
-    ///  The version of this routine that takes a matrix applies that matrix
-    ///  to transform the frustum before setting the planes.
-    ///
-
+    /// Set the planes in p to be the six bounding planes of the frustum, in
+    /// the following order: top, right, bottom, left, near, far.
+    /// Note that the planes have normals that point out of the frustum.
     IMATH_HOSTDEVICE void planes (Plane3<T> p[6]) const noexcept;
+
+    /// Set the planes in p to be the six bounding planes of the
+    /// frustum, in the following order: top, right, bottom, left,
+    /// near, far.  Note that the planes have normals that point out
+    /// of the frustum.  Apply the given matrix to transform the
+    /// frustum before setting the planes.
     IMATH_HOSTDEVICE void planes (Plane3<T> p[6], const Matrix44<T>& M) const noexcept;
 
-    ///
-    ///  Derived Quantities
-    ///
-
-    IMATH_HOSTDEVICE constexpr T fovx() const noexcept;
-    IMATH_HOSTDEVICE constexpr T fovy() const noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T aspect() const noexcept;
-    IMATH_CONSTEXPR14 T aspectExc() const;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44<T> projectionMatrix() const noexcept;
-    IMATH_CONSTEXPR14 Matrix44<T> projectionMatrixExc() const;
-    IMATH_HOSTDEVICE constexpr bool degenerate() const noexcept;
-
-    ///
-    ///  Takes a rectangle in the screen space (i.e., -1 <= left <= right <= 1
-    ///  and -1 <= bottom <= top <= 1) of this Frustum, and returns a new
-    ///  Frustum whose near clipping-plane window is that rectangle in local
-    ///  space.
-    ///
-
+    /// Takes a rectangle in the screen space (i.e., -1 <= left <= right <= 1
+    /// and -1 <= bottom <= top <= 1) of this Frustum, and returns a new
+    /// Frustum whose near clipping-plane window is that rectangle in local
+    /// space.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 IMATH_HOSTDEVICE Frustum<T>
     window (T left, T right, T top, T bottom) const noexcept;
 
-    ///
-    /// Projection is in screen space / Conversion from Z-Buffer
-    ///
+    /// @}
 
+    /// @{
+    /// @name Utility Methods
+    
+    /// Project a point in screen spaced to 3d ray
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3<T> projectScreenToRay (const Vec2<T>&) const noexcept;
+
+    /// Project a 3D point into screen coordinates
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> projectPointToScreen (const Vec3<T>&) const noexcept;
+
+    /// Project a 3D point into screen coordinates. Throw an
+    /// exception if the point cannot be projected.
     IMATH_CONSTEXPR14 Vec2<T> projectPointToScreenExc (const Vec3<T>&) const;
 
+    /// Map a z value to its depth in the frustum.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T ZToDepth (long zval,
                                                    long min,
                                                    long max) const noexcept;
+    /// Map a z value to its depth in the frustum.
     IMATH_CONSTEXPR14 T ZToDepthExc (long zval, long min, long max) const;
+
+    /// Map a normalized z value to its depth in the frustum.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T normalizedZToDepth (T zval) const noexcept;
+
+    /// Map a normalized z value to its depth in the frustum. Throw an
+    /// exception on error.
     IMATH_CONSTEXPR14 T normalizedZToDepthExc (T zval) const;
+
+    /// Map depth to z value.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 long
     DepthToZ (T depth, long zmin, long zmax) const noexcept;
+
+    /// Map depth to z value. Throw an exception on error.
     IMATH_CONSTEXPR14 long DepthToZExc (T depth, long zmin, long zmax) const;
 
+    /// Compute worldRadius
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T worldRadius (const Vec3<T>& p, T radius) const noexcept;
+
+    /// Compute worldRadius. Throw an exception on error.
     IMATH_CONSTEXPR14 T worldRadiusExc (const Vec3<T>& p, T radius) const;
+
+    /// Compute screen radius
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T screenRadius (const Vec3<T>& p, T radius) const noexcept;
+
+    /// Compute screen radius. Throw an exception on error.
     IMATH_CONSTEXPR14 T screenRadiusExc (const Vec3<T>& p, T radius) const;
 
+    /// @}
+    
   protected:
+
+    /// Map point from screen space to local space
     IMATH_HOSTDEVICE constexpr Vec2<T> screenToLocal (const Vec2<T>&) const noexcept;
+
+    /// Map point from local space to screen space
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T>
     localToScreen (const Vec2<T>&) const noexcept;
+
+    /// Map point from local space to screen space. Throw an exception
+    /// on error.
     IMATH_CONSTEXPR14 Vec2<T> localToScreenExc (const Vec2<T>&) const;
 
   protected:
+
+    /// @cond Doxygen_Suppress
+
     T _nearPlane;
     T _farPlane;
     T _left;
@@ -174,6 +248,8 @@ template <class T> class Frustum
     T _top;
     T _bottom;
     bool _orthographic;
+
+    /// @endcond
 };
 
 template <class T> IMATH_CONSTEXPR14 inline Frustum<T>::Frustum() noexcept
@@ -880,7 +956,10 @@ Frustum<T>::planes (Plane3<T> p[6], const Matrix44<T>& M) const noexcept
     }
 }
 
+/// Frustum of type float
 typedef Frustum<float> Frustumf;
+
+/// Frustum of type double
 typedef Frustum<double> Frustumd;
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT

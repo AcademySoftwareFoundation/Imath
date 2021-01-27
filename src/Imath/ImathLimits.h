@@ -3,14 +3,14 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file ImathLimits.h
+///
+/// @brief Limitations of the basic C++ numerical data types
+///
+
 #ifndef INCLUDED_IMATHLIMITS_H
 #define INCLUDED_IMATHLIMITS_H
-
-//----------------------------------------------------------------
-//
-//	Limitations of the basic C++ numerical data types
-//
-//----------------------------------------------------------------
 
 #include "ImathNamespace.h"
 #include <float.h>
@@ -31,7 +31,6 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
-//-----------------------------------------------------------------
 //
 // Template class limits<T> returns information about the limits
 // of numerical data type T:
@@ -80,21 +79,34 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 // are implemented as inlines.  No objects of type limits<T> are
 // ever created.
 //
-//-----------------------------------------------------------------
+
+///
+/// Template class limits<T> returns information about the limits
+/// of numerical data type T.
+///
 
 template <class T> struct limits
 {
+    /// Largest possible negative value
     IMATH_HOSTDEVICE static constexpr T min() noexcept;
+
+    /// Largest possible positive value
     IMATH_HOSTDEVICE static constexpr T max() noexcept;
+
+    /// Smallest possible positive value
     IMATH_HOSTDEVICE static constexpr T smallest() noexcept;
+
+    /// Smallest possible e for which 1+e != 1
     IMATH_HOSTDEVICE static constexpr T epsilon() noexcept;
+
+    /// Return true if the type is integral.
     IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept;
+
+    /// Return true if the type is signed.
     IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept;
 };
 
-//---------------
-// Implementation
-//---------------
+/// @cond Doxygen_Suppress
 
 template <> struct limits<char>
 {
@@ -215,6 +227,8 @@ template <> struct limits<long double>
     IMATH_HOSTDEVICE static constexpr bool isIntegral() noexcept { return false; }
     IMATH_HOSTDEVICE static constexpr bool isSigned() noexcept { return true; }
 };
+
+/// @endcond
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

@@ -20,8 +20,8 @@ Example:
 .. doxygentypedef:: Eulerd
 
 .. doxygenclass:: Imath::Euler
-   :members:
    :undoc-members:
+   :members:
 
 
    

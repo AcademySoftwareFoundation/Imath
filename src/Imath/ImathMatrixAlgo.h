@@ -3,20 +3,15 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file  ImathMatrixAlgo.h
+///
+/// @brief Functions operating on Matrix22, Matrix33, and Matrix44 types.
+///        This file also defines a few predefined constant matrices.
+///
+
 #ifndef INCLUDED_IMATHMATRIXALGO_H
 #define INCLUDED_IMATHMATRIXALGO_H
-
-//-------------------------------------------------------------------------
-//
-//  This file contains algorithms applied to or in conjunction with
-//  transformation matrices (Imath::Matrix33 and Imath::Matrix44).
-//  The assumption made is that these functions are called much less
-//  often than the basic point functions or these functions require
-//  more support classes.
-//
-//  This file also defines a few predefined constant matrices.
-//
-//-------------------------------------------------------------------------
 
 #include "ImathEuler.h"
 #include "ImathExport.h"
@@ -33,11 +28,17 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 // Identity matrices
 //------------------
 
+/// M22f identity matrix
 IMATH_EXPORT_CONST M22f identity22f;
+/// M33f identity matrix
 IMATH_EXPORT_CONST M33f identity33f;
+/// M44f identity matrix
 IMATH_EXPORT_CONST M44f identity44f;
+/// M22d identity matrix
 IMATH_EXPORT_CONST M22d identity22d;
+/// M33d identity matrix
 IMATH_EXPORT_CONST M33d identity33d;
+/// M44d identity matrix
 IMATH_EXPORT_CONST M44d identity44d;
 
 //----------------------------------------------------------------------
@@ -87,32 +88,106 @@ IMATH_EXPORT_CONST M44d identity44d;
 // Declarations for 4x4 matrix.
 //
 
+/// Extract the scaling component of the given 4x4 matrix. 
+///
+/// @param[in] mat The input matrix
+/// @param[out] scl The extracted scale, i.e. the output value
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T> bool extractScaling (const Matrix44<T>& mat, Vec3<T>& scl, bool exc = true);
 
+/// Return the given 4x4 matrix with scaling removed.
+///
+/// @param[in] mat The input matrix
+/// @param[in] exc If true, throw an exception if the scaling in `mat`
 template <class T> Matrix44<T> sansScaling (const Matrix44<T>& mat, bool exc = true);
 
+/// Remove scaling from the given 4x4 matrix in place.  Return true if the
+/// scale could be successfully extracted, false if the matrix is
+/// degenerate.
+//
+/// @param[in] mat The matrix to operate on
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T> bool removeScaling (Matrix44<T>& mat, bool exc = true);
 
-template <class T>
-bool extractScalingAndShear (const Matrix44<T>& mat, Vec3<T>& scl, Vec3<T>& shr, bool exc = true);
+/// Extract the scaling and shear components of the given 4x4 matrix.
+/// Return true if the scale could be successfully extracted, false if
+/// the matrix is degenerate.
+///
+/// @param[in] mat The input matrix
+/// @param[out] scl The extracted scale
+/// @param[out] shr The extracted shear
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
+template <class T> bool extractScalingAndShear (const Matrix44<T>& mat, Vec3<T>& scl, Vec3<T>& shr, bool exc = true);
 
+/// Return the given 4x4 matrix with scaling and shear removed.
+///
+/// @param[in] mat The input matrix
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
 template <class T> Matrix44<T> sansScalingAndShear (const Matrix44<T>& mat, bool exc = true);
 
+/// Extract scaling and shear from the given 4x4 matrix in-place.
+///
+/// @param[in,out] result The output matrix
+/// @param[in] mat The return value if `result` is degenerate
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
 template <class T>
 void sansScalingAndShear (Matrix44<T>& result, const Matrix44<T>& mat, bool exc = true);
 
+/// Remove scaling and shear from the given 4x4 matrix in place.
+//
+/// @param[in,out] mat The matrix to operate on
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T> bool removeScalingAndShear (Matrix44<T>& mat, bool exc = true);
 
+/// Remove scaling and shear from the given 4x4 matrix in place, returning
+/// the extracted values.
+//
+/// @param[in,out] mat The matrix to operate on
+/// @param[out] scl The extracted scale
+/// @param[out] shr The extracted shear
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T>
 bool
 extractAndRemoveScalingAndShear (Matrix44<T>& mat, Vec3<T>& scl, Vec3<T>& shr, bool exc = true);
 
+/// Extract the rotation from the given 4x4 matrix in the form of XYZ
+/// euler angles.
+///
+/// @param[in] mat The input matrix
+/// @param[out] rot The extracted XYZ euler angle vector
 template <class T> void extractEulerXYZ (const Matrix44<T>& mat, Vec3<T>& rot);
 
+/// Extract the rotation from the given 4x4 matrix in the form of ZYX
+/// euler angles.
+///
+/// @param[in] mat The input matrix
+/// @param[out] rot The extracted ZYX euler angle vector
 template <class T> void extractEulerZYX (const Matrix44<T>& mat, Vec3<T>& rot);
 
+/// Extract the rotation from the given 4x4 matrix in the form of a quaternion.
+///
+/// @param[in] mat The input matrix
+/// @return The extracted quaternion
 template <class T> Quat<T> extractQuat (const Matrix44<T>& mat);
 
+/// Extract the scaling, shear, rotation, and translation components
+/// of the given 4x4 matrix. The values are such that:
+///
+///     M = S * H * R * T
+///
+/// @param[in] mat The input matrix
+/// @param[out] s The extracted scale
+/// @param[out] h The extracted shear
+/// @param[out] r The extracted rotation
+/// @param[out] t The extracted translation
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @param[in] rOrder The order with which to extract the rotation 
+/// @return True if the values could be extracted, false if the matrix is degenerate.
 template <class T>
 bool extractSHRT (const Matrix44<T>& mat,
                   Vec3<T>& s,
@@ -122,6 +197,16 @@ bool extractSHRT (const Matrix44<T>& mat,
                   bool exc /*= true*/,
                   typename Euler<T>::Order rOrder);
 
+/// Extract the scaling, shear, rotation, and translation components
+/// of the given 4x4 matrix.
+///
+/// @param[in] mat The input matrix
+/// @param[out] s The extracted scale
+/// @param[out] h The extracted shear
+/// @param[out] r The extracted rotation, in XYZ euler angles
+/// @param[out] t The extracted translation
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the values could be extracted, false if the matrix is degenerate.
 template <class T>
 bool extractSHRT (const Matrix44<T>& mat,
                   Vec3<T>& s,
@@ -130,6 +215,16 @@ bool extractSHRT (const Matrix44<T>& mat,
                   Vec3<T>& t,
                   bool exc = true);
 
+/// Extract the scaling, shear, rotation, and translation components
+/// of the given 4x4 matrix.
+///
+/// @param[in] mat The input matrix
+/// @param[out] s The extracted scale
+/// @param[out] h The extracted shear
+/// @param[out] r The extracted rotation, in Euler angles
+/// @param[out] t The extracted translation
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the values could be extracted, false if the matrix is degenerate.
 template <class T>
 bool extractSHRT (const Matrix44<T>& mat,
                   Vec3<T>& s,
@@ -138,68 +233,66 @@ bool extractSHRT (const Matrix44<T>& mat,
                   Vec3<T>& t,
                   bool exc = true);
 
-//
-// Internal utility function.
-//
-
+/// Return true if the given scale can be removed from the given row
+/// matrix, false if `scl` is small enough that the operation would
+/// overflow. If `exc` is true, throw an exception on overflow.
 template <class T> bool checkForZeroScaleInRow (const T& scl, const Vec3<T>& row, bool exc = true);
 
+/// Return the 4x4 outer product two 4-vectors
 template <class T> Matrix44<T> outerProduct (const Vec4<T>& a, const Vec4<T>& b);
 
-//
-// Returns a matrix that rotates "fromDirection" vector to "toDirection"
-// vector.
-//
-
+///
+/// Return a 4x4 matrix that rotates the vector `fromDirection` to `toDirection`
+///
 template <class T>
 Matrix44<T> rotationMatrix (const Vec3<T>& fromDirection, const Vec3<T>& toDirection);
 
-//
-// Returns a matrix that rotates the "fromDir" vector
-// so that it points towards "toDir".  You may also
-// specify that you want the up vector to be pointing
-// in a certain direction "upDir".
-//
-
+///
+/// Return a 4x4 matrix that rotates the `fromDir` vector
+/// so that it points towards `toDir1.  You may also
+/// specify that you want the up vector to be pointing
+/// in a certain direction 1upDir`.
 template <class T>
 Matrix44<T>
 rotationMatrixWithUpDir (const Vec3<T>& fromDir, const Vec3<T>& toDir, const Vec3<T>& upDir);
 
-//
-// Constructs a matrix that rotates the z-axis so that it
-// points towards "targetDir".  You must also specify
-// that you want the up vector to be pointing in a
-// certain direction "upDir".
-//
-// Notes: The following degenerate cases are handled:
-//        (a) when the directions given by "toDir" and "upDir"
-//            are parallel or opposite;
-//            (the direction vectors must have a non-zero cross product)
-//        (b) when any of the given direction vectors have zero length
-//
-
+///
+/// Construct a 4x4 matrix that rotates the z-axis so that it points
+/// towards `targetDir`.  You must also specify that you want the up
+/// vector to be pointing in a certain direction `upDir`.
+///
+/// Notes: The following degenerate cases are handled:
+/// (a) when the directions given by `toDir` and `upDir`
+/// are parallel or opposite (the direction vectors must have a non-zero cross product);
+/// (b) when any of the given direction vectors have zero length
+///
+/// @param[out] result The output matrix
+/// @param[in] targetDir The target direction vector
+/// @param[in] upDir The up direction vector
 template <class T>
 void alignZAxisWithTargetDir (Matrix44<T>& result, Vec3<T> targetDir, Vec3<T> upDir);
 
-// Compute an orthonormal direct frame from : a position, an x axis direction and a normal to the y axis
-// If the x axis and normal are perpendicular, then the normal will have the same direction as the z axis.
-// Inputs are :
-//     -the position of the frame
-//     -the x axis direction of the frame
-//     -a normal to the y axis of the frame
-// Return is the orthonormal frame
+/// Compute an orthonormal direct 4x4 frame from a position, an x axis
+/// direction and a normal to the y axis. If the x axis and normal are
+/// perpendicular, then the normal will have the same direction as the
+/// z axis.
+///
+/// @param[in] p The position of the frame
+/// @param[in] xDir The x axis direction of the frame
+/// @param[in] normal A normal to the y axis of the frame
+/// @return The orthonormal frame
 template <class T>
 Matrix44<T> computeLocalFrame (const Vec3<T>& p, const Vec3<T>& xDir, const Vec3<T>& normal);
 
-// Add a translate/rotate/scale offset to an input frame
-// and put it in another frame of reference
-// Inputs are :
-//     - input frame
-//     - translate offset
-//     - rotate    offset in degrees
-//     - scale     offset
-//     - frame of reference
-// Output is the offsetted frame
+/// Add a translate/rotate/scale offset to a 4x4 input frame
+/// and put it in another frame of reference
+/// 
+/// @param[in] inMat Input frame
+/// @param[in] tOffset Translation offset
+/// @param[in] rOffset Rotation offset in degrees
+/// @param[in] sOffset Scale offset
+/// @param[in] ref Frame of reference
+/// @return The offsetted frame
 template <class T>
 Matrix44<T> addOffset (const Matrix44<T>& inMat,
                        const Vec3<T>& tOffset,
@@ -207,51 +300,118 @@ Matrix44<T> addOffset (const Matrix44<T>& inMat,
                        const Vec3<T>& sOffset,
                        const Vec3<T>& ref);
 
-// Compute Translate/Rotate/Scale matrix from matrix A with the Rotate/Scale of Matrix B
-// Inputs are :
-//      -keepRotateA : if true keep rotate from matrix A, use B otherwise
-//      -keepScaleA  : if true keep scale  from matrix A, use B otherwise
-//      -Matrix A
-//      -Matrix B
-// Return Matrix A with tweaked rotation/scale
+/// Compute 4x4 translate/rotate/scale matrix from `A` with the
+/// rotate/scale of `B`.
+/// 
+/// @param[in] keepRotateA If true, keep rotate from matrix `A`, use `B` otherwise
+/// @param[in] keepScaleA If true, keep scale  from matrix `A`, use `B` otherwise
+/// @param[in] A Matrix A
+/// @param[in] B Matrix B
+/// @return Matrix `A` with tweaked rotation/scale
 template <class T>
 Matrix44<T>
 computeRSMatrix (bool keepRotateA, bool keepScaleA, const Matrix44<T>& A, const Matrix44<T>& B);
-
-//----------------------------------------------------------------------
 
 //
 // Declarations for 3x3 matrix.
 //
 
+/// Extract the scaling component of the given 3x3 matrix. 
+///
+/// @param[in] mat The input matrix
+/// @param[out] scl The extracted scale, i.e. the output value
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T> bool extractScaling (const Matrix33<T>& mat, Vec2<T>& scl, bool exc = true);
 
+/// Return the given 3x3 matrix with scaling removed.
+///
+/// @param[in] mat The input matrix
+/// @param[in] exc If true, throw an exception if the scaling in `mat`
 template <class T> Matrix33<T> sansScaling (const Matrix33<T>& mat, bool exc = true);
 
+/// Remove scaling from the given 3x3 matrix in place.  Return true if the
+/// scale could be successfully extracted, false if the matrix is
+/// degenerate.
+//
+/// @param[in] mat The matrix to operate on
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T> bool removeScaling (Matrix33<T>& mat, bool exc = true);
 
+/// Extract the scaling and shear components of the given 3x3 matrix.
+/// Return true if the scale could be successfully extracted, false if
+/// the matrix is degenerate.
+///
+/// @param[in] mat The input matrix
+/// @param[out] scl The extracted scale
+/// @param[out] shr The extracted shear
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T>
-bool extractScalingAndShear (const Matrix33<T>& mat, Vec2<T>& scl, T& h, bool exc = true);
+bool extractScalingAndShear (const Matrix33<T>& mat, Vec2<T>& scl, T& shr, bool exc = true);
 
+/// Return the given 3x3 matrix with scaling and shear removed.
+///
+/// @param[in] mat The input matrix
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
 template <class T> Matrix33<T> sansScalingAndShear (const Matrix33<T>& mat, bool exc = true);
 
+
+/// Remove scaling and shear from the given 3x3e matrix in place.
+//
+/// @param[in,out] mat The matrix to operate on
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T> bool removeScalingAndShear (Matrix33<T>& mat, bool exc = true);
 
+/// Remove scaling and shear from the given 3x3 matrix in place, returning
+/// the extracted values.
+//
+/// @param[in,out] mat The matrix to operate on
+/// @param[out] scl The extracted scale
+/// @param[out] shr The extracted shear
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the scale could be extracted, false if the matrix is degenerate.
 template <class T>
 bool extractAndRemoveScalingAndShear (Matrix33<T>& mat, Vec2<T>& scl, T& shr, bool exc = true);
 
+/// Extract the rotation from the given 2x2 matrix
+///
+/// @param[in] mat The input matrix
+/// @param[out] rot The extracted rotation value
 template <class T> void extractEuler (const Matrix22<T>& mat, T& rot);
 
+/// Extract the rotation from the given 3x3 matrix
+///
+/// @param[in] mat The input matrix
+/// @param[out] rot The extracted rotation value
 template <class T> void extractEuler (const Matrix33<T>& mat, T& rot);
 
+/// Extract the scaling, shear, rotation, and translation components
+/// of the given 3x3 matrix. The values are such that:
+///
+///     M = S * H * R * T
+///
+/// @param[in] mat The input matrix
+/// @param[out] s The extracted scale
+/// @param[out] h The extracted shear
+/// @param[out] r The extracted rotation
+/// @param[out] t The extracted translation
+/// @param[in] exc If true, throw an exception if the scaling in `mat` is very close to zero.
+/// @return True if the values could be extracted, false if the matrix is degenerate.
 template <class T>
 bool extractSHRT (const Matrix33<T>& mat, Vec2<T>& s, T& h, T& r, Vec2<T>& t, bool exc = true);
 
+/// Return true if the given scale can be removed from the given row
+/// matrix, false if `scl` is small enough that the operation would
+/// overflow. If `exc` is true, throw an exception on overflow.
 template <class T> bool checkForZeroScaleInRow (const T& scl, const Vec2<T>& row, bool exc = true);
 
+/// Return the 3xe outer product two 3-vectors
 template <class T> Matrix33<T> outerProduct (const Vec3<T>& a, const Vec3<T>& b);
 
-//-----------------------------------------------------------------------------
+//------------------------------
 // Implementation for 4x4 Matrix
 //------------------------------
 
@@ -637,8 +797,8 @@ extractSHRT (const Matrix44<T>& mat,
 
     if (rOrder != Euler<T>::XYZ)
     {
-        IMATH_INTERNAL_NAMESPACE::Euler<T> eXYZ (r, IMATH_INTERNAL_NAMESPACE::Euler<T>::XYZ);
-        IMATH_INTERNAL_NAMESPACE::Euler<T> e (eXYZ, rOrder);
+        Euler<T> eXYZ (r, Euler<T>::XYZ);
+        Euler<T> e (eXYZ, rOrder);
         r = e.toXYZVector();
     }
 
@@ -649,7 +809,7 @@ template <class T>
 bool
 extractSHRT (const Matrix44<T>& mat, Vec3<T>& s, Vec3<T>& h, Vec3<T>& r, Vec3<T>& t, bool exc)
 {
-    return extractSHRT (mat, s, h, r, t, exc, IMATH_INTERNAL_NAMESPACE::Euler<T>::XYZ);
+    return extractSHRT (mat, s, h, r, t, exc, Euler<T>::XYZ);
 }
 
 template <class T>
@@ -732,12 +892,12 @@ rotationMatrixWithUpDir (const Vec3<T>& fromDir, const Vec3<T>& toDir, const Vec
 
     else
     {
-        Matrix44<T> zAxis2FromDir (IMATH_INTERNAL_NAMESPACE::UNINITIALIZED);
+        Matrix44<T> zAxis2FromDir (UNINITIALIZED);
         alignZAxisWithTargetDir (zAxis2FromDir, fromDir, Vec3<T> (0, 1, 0));
 
         Matrix44<T> fromDir2zAxis = zAxis2FromDir.transposed();
 
-        Matrix44<T> zAxis2ToDir (IMATH_INTERNAL_NAMESPACE::UNINITIALIZED);
+        Matrix44<T> zAxis2ToDir (UNINITIALIZED);
         alignZAxisWithTargetDir (zAxis2ToDir, toDir, upDir);
 
         return fromDir2zAxis * zAxis2ToDir;
@@ -854,15 +1014,15 @@ computeLocalFrame (const Vec3<T>& p, const Vec3<T>& xDir, const Vec3<T>& normal)
     return L;
 }
 
-// Add a translate/rotate/scale offset to an input frame
-// and put it in another frame of reference
-// Inputs are :
-//     - input frame
-//     - translate offset
-//     - rotate    offset in degrees
-//     - scale     offset
-//     - frame of reference
-// Output is the offsetted frame
+/// Add a translate/rotate/scale offset to an input frame and put it
+/// in another frame of reference.
+///
+/// @param inMat input frame
+/// @param tOffset translate offset
+/// @param rOffset rotate offset in degrees
+/// @param sOffset scale offset
+/// @param ref Frame of reference
+/// @return The offsetted frame
 template <class T>
 Matrix44<T>
 addOffset (const Matrix44<T>& inMat,
@@ -1165,6 +1325,7 @@ extractSHRT (const Matrix33<T>& mat, Vec2<T>& s, T& h, T& r, Vec2<T>& t, bool ex
     return true;
 }
 
+/// @cond Doxygen_Suppress
 template <class T>
 bool
 checkForZeroScaleInRow (const T& scl, const Vec2<T>& row, bool exc /* = true */)
@@ -1182,6 +1343,7 @@ checkForZeroScaleInRow (const T& scl, const Vec2<T>& row, bool exc /* = true */)
 
     return true;
 }
+/// @endcond
 
 template <class T>
 Matrix33<T>
@@ -1198,74 +1360,116 @@ outerProduct (const Vec3<T>& a, const Vec3<T>& b)
                         a.z * b.z);
 }
 
-// Computes the translation and rotation that brings the 'from' points
-// as close as possible to the 'to' points under the Frobenius norm.
-// To be more specific, let x be the matrix of 'from' points and y be
-// the matrix of 'to' points, we want to find the matrix A of the form
-//    [ R t ]
-//    [ 0 1 ]
-// that minimizes
-//     || (A*x - y)^T * W * (A*x - y) ||_F
-// If doScaling is true, then a uniform scale is allowed also.
+/// Computes the translation and rotation that brings the 'from' points
+/// as close as possible to the 'to' points under the Frobenius norm.
+/// To be more specific, let x be the matrix of 'from' points and y be
+/// the matrix of 'to' points, we want to find the matrix A of the form
+///    [ R t ]
+///    [ 0 1 ]
+/// that minimizes
+///     || (A*x - y)^T * W * (A*x - y) ||_F
+/// If doScaling is true, then a uniform scale is allowed also.
+/// @param A From points
+/// @param B To points
+/// @param weights Per-point weights
+/// @param numPoints The number of points in `A`, `B`, and `weights` (must be equal)
+/// @param doScaling If true, include a scaling transformation
+/// @return The procrustes transformation
 template <typename T>
-IMATH_INTERNAL_NAMESPACE::M44d
-procrustesRotationAndTranslation (const IMATH_INTERNAL_NAMESPACE::Vec3<T>* A, // From these
-                                  const IMATH_INTERNAL_NAMESPACE::Vec3<T>* B, // To these
+M44d
+procrustesRotationAndTranslation (const Vec3<T>* A,
+                                  const Vec3<T>* B,
                                   const T* weights,
                                   const size_t numPoints,
                                   const bool doScaling = false);
 
-// Unweighted:
+/// Computes the translation and rotation that brings the 'from' points
+/// as close as possible to the 'to' points under the Frobenius norm.
+/// To be more specific, let x be the matrix of 'from' points and y be
+/// the matrix of 'to' points, we want to find the matrix A of the form
+///    [ R t ]
+///    [ 0 1 ]
+/// that minimizes
+///     || (A*x - y)^T * W * (A*x - y) ||_F
+/// If doScaling is true, then a uniform scale is allowed also.
+/// @param A From points
+/// @param B To points
+/// @param numPoints The number of points in `A` and `B` (must be equal)
+/// @param doScaling If true, include a scaling transformation
+/// @return The procrustes transformation
 template <typename T>
-IMATH_INTERNAL_NAMESPACE::M44d
-procrustesRotationAndTranslation (const IMATH_INTERNAL_NAMESPACE::Vec3<T>* A,
-                                  const IMATH_INTERNAL_NAMESPACE::Vec3<T>* B,
+M44d
+procrustesRotationAndTranslation (const Vec3<T>* A,
+                                  const Vec3<T>* B,
                                   const size_t numPoints,
                                   const bool doScaling = false);
 
-// Compute the SVD of a 3x3 matrix using Jacobi transformations.  This method
-// should be quite accurate (competitive with LAPACK) even for poorly
-// conditioned matrices, and because it has been written specifically for the
-// 3x3/4x4 case it is much faster than calling out to LAPACK.
-//
-// The SVD of a 3x3/4x4 matrix A is defined as follows:
-//     A = U * S * V^T
-// where S is the diagonal matrix of singular values and both U and V are
-// orthonormal.  By convention, the entries S are all positive and sorted from
-// the largest to the smallest.  However, some uses of this function may
-// require that the matrix U*V^T have positive determinant; in this case, we
-// may make the smallest singular value negative to ensure that this is
-// satisfied.
-//
-// Currently only available for single- and double-precision matrices.
+/// Compute the SVD of a 3x3 matrix using Jacobi transformations.  This method
+/// should be quite accurate (competitive with LAPACK) even for poorly
+/// conditioned matrices, and because it has been written specifically for the
+/// 3x3/4x4 case it is much faster than calling out to LAPACK.
+///
+/// The SVD of a 3x3/4x4 matrix A is defined as follows:
+///     A = U * S * V^T
+/// where S is the diagonal matrix of singular values and both U and V are
+/// orthonormal.  By convention, the entries S are all positive and sorted from
+/// the largest to the smallest.  However, some uses of this function may
+/// require that the matrix U*V^T have positive determinant; in this case, we
+/// may make the smallest singular value negative to ensure that this is
+/// satisfied.
+///
+/// Currently only available for single- and double-precision matrices.
 template <typename T>
-void jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A,
-                IMATH_INTERNAL_NAMESPACE::Matrix33<T>& U,
-                IMATH_INTERNAL_NAMESPACE::Vec3<T>& S,
-                IMATH_INTERNAL_NAMESPACE::Matrix33<T>& V,
-                const T tol = IMATH_INTERNAL_NAMESPACE::limits<T>::epsilon(),
+void jacobiSVD (const Matrix33<T>& A,
+                Matrix33<T>& U,
+                Vec3<T>& S,
+                Matrix33<T>& V,
+                const T tol = limits<T>::epsilon(),
                 const bool forcePositiveDeterminant = false);
 
+/// Compute the SVD of a 3x3 matrix using Jacobi transformations.  This method
+/// should be quite accurate (competitive with LAPACK) even for poorly
+/// conditioned matrices, and because it has been written specifically for the
+/// 3x3/4x4 case it is much faster than calling out to LAPACK.
+///
+/// The SVD of a 3x3/4x4 matrix A is defined as follows:
+///     A = U * S * V^T
+/// where S is the diagonal matrix of singular values and both U and V are
+/// orthonormal.  By convention, the entries S are all positive and sorted from
+/// the largest to the smallest.  However, some uses of this function may
+/// require that the matrix U*V^T have positive determinant; in this case, we
+/// may make the smallest singular value negative to ensure that this is
+/// satisfied.
+///
+/// Currently only available for single- and double-precision matrices.
 template <typename T>
-void jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A,
-                IMATH_INTERNAL_NAMESPACE::Matrix44<T>& U,
-                IMATH_INTERNAL_NAMESPACE::Vec4<T>& S,
-                IMATH_INTERNAL_NAMESPACE::Matrix44<T>& V,
-                const T tol = IMATH_INTERNAL_NAMESPACE::limits<T>::epsilon(),
+void jacobiSVD (const Matrix44<T>& A,
+                Matrix44<T>& U,
+                Vec4<T>& S,
+                Matrix44<T>& V,
+                const T tol = limits<T>::epsilon(),
                 const bool forcePositiveDeterminant = false);
 
-// Compute the eigenvalues (S) and the eigenvectors (V) of
-// a real symmetric matrix using Jacobi transformation.
-//
-// Jacobi transformation of a 3x3/4x4 matrix A outputs S and V:
-// 	A = V * S * V^T
-// where V is orthonormal and S is the diagonal matrix of eigenvalues.
-// Input matrix A must be symmetric. A is also modified during
-// the computation so that upper diagonal entries of A become zero.
-//
+/// Compute the eigenvalues (S) and the eigenvectors (V) of a real
+/// symmetric matrix using Jacobi transformation, using a given
+/// tolerance `tol`.
+///
+/// Jacobi transformation of a 3x3/4x4 matrix A outputs S and V:
+/// 	A = V * S * V^T
+/// where V is orthonormal and S is the diagonal matrix of eigenvalues.
+/// Input matrix A must be symmetric. A is also modified during
+/// the computation so that upper diagonal entries of A become zero.
 template <typename T>
 void jacobiEigenSolver (Matrix33<T>& A, Vec3<T>& S, Matrix33<T>& V, const T tol);
 
+/// Compute the eigenvalues (S) and the eigenvectors (V) of
+/// a real symmetric matrix using Jacobi transformation.
+///
+/// Jacobi transformation of a 3x3/4x4 matrix A outputs S and V:
+/// 	A = V * S * V^T
+/// where V is orthonormal and S is the diagonal matrix of eigenvalues.
+/// Input matrix A must be symmetric. A is also modified during
+/// the computation so that upper diagonal entries of A become zero.
 template <typename T>
 inline void
 jacobiEigenSolver (Matrix33<T>& A, Vec3<T>& S, Matrix33<T>& V)
@@ -1273,9 +1477,26 @@ jacobiEigenSolver (Matrix33<T>& A, Vec3<T>& S, Matrix33<T>& V)
     jacobiEigenSolver (A, S, V, limits<T>::epsilon());
 }
 
+/// Compute the eigenvalues (S) and the eigenvectors (V) of a real
+/// symmetric matrix using Jacobi transformation, using a given
+/// tolerance `tol`.
+///
+/// Jacobi transformation of a 3x3/4x4 matrix A outputs S and V:
+/// 	A = V * S * V^T
+/// where V is orthonormal and S is the diagonal matrix of eigenvalues.
+/// Input matrix A must be symmetric. A is also modified during
+/// the computation so that upper diagonal entries of A become zero.
 template <typename T>
 void jacobiEigenSolver (Matrix44<T>& A, Vec4<T>& S, Matrix44<T>& V, const T tol);
 
+/// Compute the eigenvalues (S) and the eigenvectors (V) of
+/// a real symmetric matrix using Jacobi transformation.
+///
+/// Jacobi transformation of a 3x3/4x4 matrix A outputs S and V:
+/// 	A = V * S * V^T
+/// where V is orthonormal and S is the diagonal matrix of eigenvalues.
+/// Input matrix A must be symmetric. A is also modified during
+/// the computation so that upper diagonal entries of A become zero.
 template <typename T>
 inline void
 jacobiEigenSolver (Matrix44<T>& A, Vec4<T>& S, Matrix44<T>& V)
@@ -1283,9 +1504,12 @@ jacobiEigenSolver (Matrix44<T>& A, Vec4<T>& S, Matrix44<T>& V)
     jacobiEigenSolver (A, S, V, limits<T>::epsilon());
 }
 
-// Compute a eigenvector corresponding to the abs max/min eigenvalue
-// of a real symmetric matrix using Jacobi transformation.
+/// Compute a eigenvector corresponding to the abs max eigenvalue
+/// of a real symmetric matrix using Jacobi transformation.
 template <typename TM, typename TV> void maxEigenVector (TM& A, TV& S);
+
+/// Compute a eigenvector corresponding to the abs min eigenvalue
+/// of a real symmetric matrix using Jacobi transformation.
 template <typename TM, typename TV> void minEigenVector (TM& A, TV& S);
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT

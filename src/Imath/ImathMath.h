@@ -3,6 +3,13 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file  ImathMath.h
+///
+/// @brief Obsolete functions provided for compatibility, deprecated
+/// in favor of std:: functions.
+///
+
 #ifndef INCLUDED_IMATHMATH_H
 #define INCLUDED_IMATHMATH_H
 
@@ -28,6 +35,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 //
 //----------------------------------------------------------------------------
 
+/// @cond Doxygen_Suppress
 template <class T> struct Math
 {
     IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
@@ -99,13 +107,11 @@ template <class T> struct Math
     IMATH_HOSTDEVICE IMATH_DEPRECATED("use std::math functions")
     static T hypot (T x, T y) { return std::hypot (x, y); }
 };
+/// @endcond
 
 
-//--------------------------------------------------------------------------
-// Don Hatch's version of sin(x)/x, which is accurate for very small x.
-// Returns 1 for x == 0.
-//--------------------------------------------------------------------------
-
+/// Don Hatch's version of sin(x)/x, which is accurate for very small x.
+/// Returns 1 for x == 0.
 template <class T>
 IMATH_HOSTDEVICE inline T
 sinx_over_x (T x)
@@ -116,25 +122,12 @@ sinx_over_x (T x)
         return std::sin (x) / x;
 }
 
-//--------------------------------------------------------------------------
-// Compare two numbers and test if they are "approximately equal":
-//
-// equalWithAbsError (x1, x2, e)
-//
-//	Returns true if x1 is the same as x2 with an absolute error of
-//	no more than e,
-//
-//	abs (x1 - x2) <= e
-//
-// equalWithRelError (x1, x2, e)
-//
-//	Returns true if x1 is the same as x2 with an relative error of
-//	no more than e,
-//
-//	abs (x1 - x2) <= e * x1
-//
-//--------------------------------------------------------------------------
-
+/// Compare two numbers and test if they are "approximately equal":
+///
+/// @return Ttrue if x1 is the same as x2 with an absolute error of
+/// no more than e:
+///
+///	abs (x1 - x2) <= e
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 equalWithAbsError (T x1, T x2, T e) noexcept
@@ -142,6 +135,12 @@ equalWithAbsError (T x1, T x2, T e) noexcept
     return ((x1 > x2) ? x1 - x2 : x2 - x1) <= e;
 }
 
+/// Compare two numbers and test if they are "approximately equal":
+///
+/// @return True if x1 is the same as x2 with an relative error of
+/// no more than e,
+///
+/// abs (x1 - x2) <= e * x1
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 equalWithRelError (T x1, T x2, T e) noexcept

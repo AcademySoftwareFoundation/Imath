@@ -19,18 +19,20 @@
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 ///
-/// 3-channel color class that inherits from Vec3<T>.
+/// 3-channel color class that inherits from Vec3.
 ///
 /// This class does not impose interpretation on the channels, which
 /// can represent either rgb or hsv color values.
 ///
+/// Note: because Color3 inherits from Vec3, its member fields are
+/// called `x`, `y`, and `z`.
 
 template <class T> class Color3 : public Vec3<T>
 {
   public:
 
     /// @{
-    /// @name Constructors, destructor, assignment
+    /// @name Constructors and Assignemt
 
     /// No initialization by default
     IMATH_HOSTDEVICE Color3() noexcept;                         
@@ -56,7 +58,7 @@ template <class T> class Color3 : public Vec3<T>
     /// @}
     
     /// @{
-    /// @name Arithmetic operations
+    /// @name Arithmetic
     
     /// Component-wise addition
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator+= (const Color3& c) noexcept; 
@@ -106,7 +108,9 @@ template <class T> class Color3 : public Vec3<T>
 ///
 /// A 4-channel color class: 3 channels plus alpha. 
 ///
-/// For convenience, the fields are named r, g, and b, although this class does not impose interpretation on the channels, which can represent either rgb or hsv color values.
+/// For convenience, the fields are named `r`, `g`, and `b`, although
+/// this class does not impose interpretation on the channels, which
+/// can represent either rgb or hsv color values.
 ///
 
 template <class T> class Color4
@@ -114,28 +118,22 @@ template <class T> class Color4
   public:
 
     /// @{
-    /// @name Access to elements
+    /// @name Direct access to elements
 
     T r, g, b, a;
 
-    /// Component-wise value
-    IMATH_HOSTDEVICE T& operator[] (int i) noexcept; 
-
-    /// Component-wise value
-    IMATH_HOSTDEVICE const T& operator[] (int i) const noexcept; 
-
     /// @}
-    
+
     /// @{
-    /// @name Constructors, destructor, assignment
+    /// @name Constructors and Assignment
 
     /// No initialization by default
     IMATH_HOSTDEVICE Color4() noexcept;                                      
 
-    /// Initialize to (a a a a)
+    /// Initialize to `(a a a a)`
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Color4 (T a) noexcept;       
 
-    /// Initialize to (a b c d)
+    /// Initialize to `(a b c d)`
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (T a, T b, T c, T d) noexcept; 
 
     /// Construct from Color4
@@ -150,15 +148,22 @@ template <class T> class Color4
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator= (const Color4& v) noexcept; 
 
+    /// Component-wise value
+    IMATH_HOSTDEVICE T& operator[] (int i) noexcept; 
+
+    /// Component-wise value
+    IMATH_HOSTDEVICE const T& operator[] (int i) const noexcept; 
+
     /// @}
+    
+    /// @{
+    /// @name Arithmetic and Comparison
     
     /// Equality
     template <class S> IMATH_HOSTDEVICE constexpr bool operator== (const Color4<S>& v) const noexcept; 
-    /// Equality
-    template <class S> IMATH_HOSTDEVICE constexpr bool operator!= (const Color4<S>& v) const noexcept; 
 
-    /// @{
-    /// @name Arithmetic operations
+    /// Inequality
+    template <class S> IMATH_HOSTDEVICE constexpr bool operator!= (const Color4<S>& v) const noexcept; 
 
     /// Component-wise addition
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator+= (const Color4& v) noexcept; 
@@ -203,13 +208,13 @@ template <class T> class Color4
     IMATH_HOSTDEVICE constexpr Color4 operator/ (T a) const noexcept; 
 
     /// @}
+
+    /// @{
+    /// @name Numeric Limits
     
     /// Number of dimensions (channels), i.e. 4 for a Color4
     IMATH_HOSTDEVICE constexpr static unsigned int dimensions() noexcept { return 4; }
 
-    /// @{
-    /// @name Limitations of type T (see also class limits)
-    
     /// Largest possible negative value
     IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); } 
 
@@ -224,12 +229,12 @@ template <class T> class Color4
 
     /// @}
     
-    /// The base type: In templates that accept a parameter, `V` (could be a Color4), you can refer to `T` as `V::BaseType`
+    /// The base type: In templates that accept a parameter `V` (could
+    /// be a Color4), you can refer to `T` as `V::BaseType`
     typedef T BaseType;
 
-
     /// @{
-    /// @name Compatibility with SGI Inventor Sb classes
+    /// @name Compatibilty with Sb
 
     /// Set the value
     template <class S> IMATH_HOSTDEVICE void setValue (S a, S b, S c, S d) noexcept; 
@@ -258,37 +263,44 @@ template <class T> std::ostream& operator<< (std::ostream& s, const Color4<T>& v
 /// Reverse multiplication: S * Color4
 template <class S, class T> constexpr Color4<T> operator* (S a, const Color4<T>& v) noexcept;
 
-/// @{
-/// @name Typedefs for convenience
-
 /// 3 float channels
 typedef Color3<float> Color3f;
+
 /// 3 half channels
 typedef Color3<half> Color3h;
+
 /// 3 8-bit integer channels
 typedef Color3<unsigned char> Color3c;
+
 /// 3 half channels
 typedef Color3<half> C3h;
+
 /// 3 float channels
 typedef Color3<float> C3f;
+
 /// 3 8-bit integer channels
 typedef Color3<unsigned char> C3c;
+
 /// 4 float channels
 typedef Color4<float> Color4f;
+
 /// 4 half channels
 typedef Color4<half> Color4h;
+
 /// 4 8-bit integer channels
 typedef Color4<unsigned char> Color4c;
+
 /// 4 float channels
 typedef Color4<float> C4f;
+
 /// 4 half channels
 typedef Color4<half> C4h;
+
 /// 4 8-bit integer channels
 typedef Color4<unsigned char> C4c;
+
 /// Packed 32-bit integer
 typedef unsigned int PackedColor;
-
-/// @}
 
 //
 // Implementation of Color3

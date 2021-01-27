@@ -3,6 +3,8 @@ Color
 
 Functions that operate on colors.
 
+.. doxygenfunction:: hsv2rgb
+
 .. doxygenfunction:: template<class T> constexpr Color4<T> hsv2rgb(const Color4<T> &hsv) noexcept
 
 .. doxygenfunction:: template<class T> constexpr Vec3<T> hsv2rgb(const Vec3<T> &hsv) noexcept

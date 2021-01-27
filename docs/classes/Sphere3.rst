@@ -12,6 +12,6 @@ Example:
 .. doxygentypedef:: Sphere3f
 
 .. doxygenclass:: Imath::Sphere3
-   :members:
    :undoc-members:
+   :members:
 

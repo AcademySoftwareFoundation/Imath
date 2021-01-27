@@ -3,18 +3,18 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file ImathPlatform.h
+///
+/// This file contains functions and constants which aren't
+/// provided by the system libraries, compilers, or includes on
+/// certain platforms.
+///
+
 #ifndef INCLUDED_IMATHPLATFORM_H
 #define INCLUDED_IMATHPLATFORM_H
 
-//----------------------------------------------------------------------------
-//
-//	ImathPlatform.h
-//
-//	This file contains functions and constants which aren't
-//	provided by the system libraries, compilers, or includes on
-//	certain platforms.
-//
-//----------------------------------------------------------------------------
+/// @cond Doxygen_Suppress
 
 #include <math.h>
 #include <type_traits>
@@ -22,7 +22,6 @@
 #include "ImathNamespace.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
-
 
 //
 // Helpful macros for checking which C++ standard we are compiling with.
@@ -93,5 +92,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+
+/// @endcond
 
 #endif // INCLUDED_IMATHPLATFORM_H

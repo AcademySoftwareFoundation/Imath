@@ -3,14 +3,14 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file ImathMatrix.h
+///
+/// @brief 2x2, 3x3, and 4x4 transformation matrix templates
+///
+
 #ifndef INCLUDED_IMATHMATRIX_H
 #define INCLUDED_IMATHMATRIX_H
-
-//----------------------------------------------------------------
-//
-//      2D (3x3) and 3D (4x4) transformation matrix templates.
-//
-//----------------------------------------------------------------
 
 #include "ImathFun.h"
 #include "ImathNamespace.h"
@@ -30,237 +30,254 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+/// Enum used to indicate uninitialized construction of Matrix22,
+/// Matrix33, Matrix44
 enum Uninitialized
 {
     UNINITIALIZED
 };
 
+///
+/// 2x2 transformation matrix
+///
+
 template <class T> class Matrix22
 {
   public:
-    //-------------------
-    // Access to elements
-    //-------------------
 
+    /// @{
+    /// @name Direct access to elements
+    
+    /// Matrix elements
     T x[2][2];
 
+    /// @}
+    
+    /// Row access
     IMATH_HOSTDEVICE T* operator[] (int i) noexcept;
+
+    /// Row access
     IMATH_HOSTDEVICE const T* operator[] (int i) const noexcept;
 
-    //-------------
-    // Constructors
-    //-------------
+    /// @{
+    ///	@name Constructors and Assignment
 
+    /// Uninitialized
     IMATH_HOSTDEVICE Matrix22 (Uninitialized) noexcept {}
 
+    /// Default constructor: initialize to identity
+    ///
+    ///   1 0
+    ///   0 1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22() noexcept;
-    // 1 0
-    // 0 1
 
+    /// Initialize to scalar constant:
+    ///
+    ///   a a
+    ///   a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (T a) noexcept;
-    // a a
-    // a a
 
+    /// Construct from 2x2 array:
+    ///
+    ///   a[0][0] a[0][1]
+    ///   a[1][0] a[1][1]
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const T a[2][2]) noexcept;
-    // a[0][0] a[0][1]
-    // a[1][0] a[1][1]
 
+    /// Construct from given scalar values:
+    ///
+    ///   a b
+    ///   c d
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (T a, T b, T c, T d) noexcept;
-    // a b
-    // c d
 
-    //--------------------------------
-    // Copy constructor and assignment
-    //--------------------------------
-
+    /// Copy constructor
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const Matrix22& v) noexcept;
+
+    /// Construct from Matrix22 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix22 (const Matrix22<S>& v) noexcept;
 
+    /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator= (const Matrix22& v) noexcept;
+
+    /// Assignment from scalar
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator= (T a) noexcept;
 
-    //------------
-    // Destructor
-    //------------
-
+    /// Destructor
     ~Matrix22() noexcept = default;
 
-    //----------------------
-    // Compatibility with Sb
-    //----------------------
+    /// @}
 
+    /// @{
+    /// @name Compatibility with Sb
+
+    /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE T* getValue() noexcept;
+
+    /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE const T* getValue() const noexcept;
 
+    /// Return the value in `v`
     template <class S> IMATH_HOSTDEVICE void getValue (Matrix22<S>& v) const noexcept;
+
+    /// Set the value
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22& setValue (const Matrix22<S>& v) noexcept;
 
+    /// Set the value
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22& setTheMatrix (const Matrix22<S>& v) noexcept;
 
-    //---------
-    // Identity
-    //---------
+    /// @}
 
-    IMATH_HOSTDEVICE void makeIdentity() noexcept;
-
-    //---------
-    // Equality
-    //---------
-
+    /// @{
+    /// @name Arithmetic and Comparison
+    
+    /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Matrix22& v) const noexcept;
+
+    /// Inequality
     IMATH_HOSTDEVICE constexpr bool operator!= (const Matrix22& v) const noexcept;
 
-    //-----------------------------------------------------------------------
-    // Compare two matrices and test if they are "approximately equal":
-    //
-    // equalWithAbsError (m, e)
-    //
-    //      Returns true if the coefficients of this and m are the same with
-    //      an absolute error of no more than e, i.e., for all i, j
-    //
-    //      abs (this[i][j] - m[i][j]) <= e
-    //
-    // equalWithRelError (m, e)
-    //
-    //      Returns true if the coefficients of this and m are the same with
-    //      a relative error of no more than e, i.e., for all i, j
-    //
-    //      abs (this[i] - v[i][j]) <= e * abs (this[i][j])
-    //-----------------------------------------------------------------------
-
+    /// Compare two matrices and test if they are "approximately equal":
+    /// @return True if the coefficients of this and `m` are the same
+    /// with an absolute error of no more than e, i.e., for all i, j:
+    ///
+    ///   abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix22<T>& v, T e) const noexcept;
+
+    /// Compare two matrices and test if they are "approximately equal":
+    /// @return True if the coefficients of this and m are the same with
+    /// a relative error of no more than e, i.e., for all i, j:
+    ///
+    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix22<T>& v, T e) const noexcept;
 
-    //------------------------
-    // Component-wise addition
-    //------------------------
-
+    /// Component-wise addition
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator+= (const Matrix22& v) noexcept;
+
+    /// Component-wise addition
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator+= (T a) noexcept;
+
+    /// Component-wise addition
     IMATH_HOSTDEVICE constexpr Matrix22 operator+ (const Matrix22& v) const noexcept;
 
-    //---------------------------
-    // Component-wise subtraction
-    //---------------------------
-
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator-= (const Matrix22& v) noexcept;
+
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator-= (T a) noexcept;
+
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE constexpr Matrix22 operator- (const Matrix22& v) const noexcept;
 
-    //------------------------------------
-    // Component-wise multiplication by -1
-    //------------------------------------
-
+    /// Component-wise multiplication by -1
     IMATH_HOSTDEVICE constexpr Matrix22 operator-() const noexcept;
+
+    /// Component-wise multiplication by -1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& negate() noexcept;
 
-    //------------------------------
-    // Component-wise multiplication
-    //------------------------------
-
+    /// Component-wise multiplication
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator*= (T a) noexcept;
+
+    /// Component-wise multiplication
     IMATH_HOSTDEVICE constexpr Matrix22 operator* (T a) const noexcept;
 
-    //-----------------------------------
-    // Matrix-times-matrix multiplication
-    //-----------------------------------
-
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator*= (const Matrix22& v) noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 operator* (const Matrix22& v) const noexcept;
-
-    //-----------------------------------------------------------------
-    // Vector-times-matrix multiplication; see also the "operator *"
-    // functions defined below.
-    //
-    // m.multDirMatrix(src,dst) multiplies src by the matrix m.
-    //-----------------------------------------------------------------
-
-    template <class S> IMATH_HOSTDEVICE void multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const noexcept;
-
-    //------------------------
-    // Component-wise division
-    //------------------------
-
+    /// Component-wise division
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator/= (T a) noexcept;
+
+    /// Component-wise division
     IMATH_HOSTDEVICE constexpr Matrix22 operator/ (T a) const noexcept;
 
-    //------------------
-    // Transposed matrix
-    //------------------
+    /// Matrix-matrix multiplication
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator*= (const Matrix22& v) noexcept;
 
+    /// Matrix-matrix multiplication
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 operator* (const Matrix22& v) const noexcept;
+
+    /// Vector * matrix multiplication
+    /// @param[in] src Input vector
+    /// @param[out] dst transformed vector
+    template <class S> IMATH_HOSTDEVICE void multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const noexcept;
+
+    /// @}
+
+    /// @{
+    /// @name Maniplation
+
+    /// Set to the identity
+    IMATH_HOSTDEVICE void makeIdentity() noexcept;
+
+    /// Transpose
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& transpose() noexcept;
+
+    /// Return the transpose
     IMATH_HOSTDEVICE constexpr Matrix22 transposed() const noexcept;
 
-    //------------------------------------------------------------
-    // Inverse matrix: If singExc is false, inverting a singular
-    // matrix produces an identity matrix.  If singExc is true,
-    // inverting a singular matrix throws std::invalid_argument.
-    //
-    // inverse() and invert() invert matrices using determinants.
-    //
-    //------------------------------------------------------------
-
+    /// Invert in place
+    /// @param singExc If true, throw an exception if the matrix cannot be inverted.
+    /// @return const reference to this
     IMATH_CONSTEXPR14 const Matrix22& invert (bool singExc);
+
+    /// Invert in place
+    /// @return const reference to this
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& invert() noexcept;
 
+    /// Return the inverse, leaving this unmodified.
+    /// @param singExc If true, throw an exception if the matrix cannot be inverted.
     IMATH_CONSTEXPR14 Matrix22<T> inverse (bool singExc) const;
+
+    /// Return the inverse, leaving this unmodified.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22<T> inverse() const noexcept;
 
-    //------------
-    // Determinant
-    //------------
-
+    /// Determinant
     IMATH_HOSTDEVICE constexpr T determinant() const noexcept;
 
-    //-----------------------------------------
-    // Set matrix to rotation by r (in radians)
-    //-----------------------------------------
-
+    /// Set matrix to rotation by r (in radians)
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE const Matrix22& setRotation (S r) noexcept;
 
-    //-----------------------------
-    // Rotate the given matrix by r
-    //-----------------------------
-
+    /// Rotate the given matrix by r (in radians)
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& rotate (S r) noexcept;
 
-    //--------------------------------------------
-    // Set matrix to scale by given uniform factor
-    //--------------------------------------------
-
+    /// Set matrix to scale by given uniform factor
+    /// @return const referenced to this
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& setScale (T s) noexcept;
 
-    //------------------------------------
-    // Set matrix to scale by given vector
-    //------------------------------------
-
+    /// Set matrix to scale by given vector
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& setScale (const Vec2<S>& s) noexcept;
 
-    //----------------------
     // Scale the matrix by s
-    //----------------------
-
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& scale (const Vec2<S>& s) noexcept;
 
-    //--------------------------------------------------------
-    // Number of the row and column dimensions, since
-    // Matrix22 is a square matrix.
-    //--------------------------------------------------------
-
-    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() noexcept { return 2; }
-
-    //-------------------------------------------------
-    // Limitations of type T (see also class limits<T>)
-    //-------------------------------------------------
-
+    /// @}
+    
+    /// @{
+    /// @name Numeric Limits
+    
+    /// Largest possible negative value
     IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+
+    /// Largest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+
+    /// Smallest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+
+    /// Smallest possible e for which 1+e != 1
     IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
 
+    /// @}
+    
+    /// Return the number of the row and column dimensions, i.e. 2.
+    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() noexcept { return 2; }
+
+    /// The base type: In templates that accept a parameter `V`, you
+    /// can refer to `T` as `V::BaseType`
     typedef T BaseType;
+
+    /// The base vector type
     typedef Vec2<T> BaseVecType;
 
   private:
@@ -281,314 +298,312 @@ template <class T> class Matrix22
     };
 };
 
+///
+/// 3x3 transformation matrix
+///
+
 template <class T> class Matrix33
 {
   public:
-    //-------------------
-    // Access to elements
-    //-------------------
 
+    /// @{
+    /// @name Direct access to elements
+    
+    /// Matrix elements
     T x[3][3];
 
+    /// @}
+    
+    /// Row access
     IMATH_HOSTDEVICE T* operator[] (int i) noexcept;
+
+    /// Row access
     IMATH_HOSTDEVICE const T* operator[] (int i) const noexcept;
 
-    //-------------
-    // Constructors
-    //-------------
+    /// @{
+    ///	@name Constructors and Assignment
 
+    /// Uninitialized
     IMATH_HOSTDEVICE Matrix33 (Uninitialized) noexcept {}
 
+    /// Default constructor: initialize to identity
+    ///   1 0 0
+    ///   0 1 0
+    ///   0 0 1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33() noexcept;
-    // 1 0 0
-    // 0 1 0
-    // 0 0 1
 
+    /// Initialize to scalar constant
+    ///   a a a
+    ///   a a a
+    ///   a a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (T a) noexcept;
-    // a a a
-    // a a a
-    // a a a
 
+    /// Construct from 3x3 array 
+    ///   a[0][0] a[0][1] a[0][2]
+    ///   a[1][0] a[1][1] a[1][2]
+    ///   a[2][0] a[2][1] a[2][2]
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const T a[3][3]) noexcept;
-    // a[0][0] a[0][1] a[0][2]
-    // a[1][0] a[1][1] a[1][2]
-    // a[2][0] a[2][1] a[2][2]
 
+    /// Construct from given scalar values
+    ///   a b c
+    ///   d e f
+    ///   g h i
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (T a, T b, T c, T d, T e, T f, T g, T h, T i) noexcept;
-    // a b c
-    // d e f
-    // g h i
 
-    //--------------------------------
-    // Copy constructor and assignment
-    //--------------------------------
-
+    /// Copy constructor
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const Matrix33& v) noexcept;
+
+    /// Construct from Matrix33 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix33 (const Matrix33<S>& v) noexcept;
 
+    /// Assignment operator
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (const Matrix33& v) noexcept;
+
+    /// Assignment from scalar
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (T a) noexcept;
 
-    //------------
-    // Destructor
-    //------------
-
+    /// Destructor
     ~Matrix33() noexcept = default;
 
-    //----------------------
-    // Compatibility with Sb
-    //----------------------
+    /// @}
+    
+    /// @{
+    /// @name Compatibility with Sb
 
+    /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE T* getValue() noexcept;
+
+    /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE const T* getValue() const noexcept;
 
+    /// Return the value in `v`
     template <class S> IMATH_HOSTDEVICE void getValue (Matrix33<S>& v) const noexcept;
+
+    /// Set the value
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33& setValue (const Matrix33<S>& v) noexcept;
 
+    /// Set the value
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33& setTheMatrix (const Matrix33<S>& v) noexcept;
 
-    //---------
-    // Identity
-    //---------
-
-    IMATH_HOSTDEVICE void makeIdentity() noexcept;
-
-    //---------
-    // Equality
-    //---------
-
+    /// @}
+    
+    /// @{
+    /// @name Arithmetic and Comparison
+    
+    /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Matrix33& v) const noexcept;
+
+    /// Inequality
     IMATH_HOSTDEVICE constexpr bool operator!= (const Matrix33& v) const noexcept;
 
-    //-----------------------------------------------------------------------
-    // Compare two matrices and test if they are "approximately equal":
-    //
-    // equalWithAbsError (m, e)
-    //
-    //      Returns true if the coefficients of this and m are the same with
-    //      an absolute error of no more than e, i.e., for all i, j
-    //
-    //      abs (this[i][j] - m[i][j]) <= e
-    //
-    // equalWithRelError (m, e)
-    //
-    //      Returns true if the coefficients of this and m are the same with
-    //      a relative error of no more than e, i.e., for all i, j
-    //
-    //      abs (this[i] - v[i][j]) <= e * abs (this[i][j])
-    //-----------------------------------------------------------------------
-
+    /// Compare two matrices and test if they are "approximately equal":
+    /// @return True if the coefficients of this and `m` are the same
+    /// with an absolute error of no more than e, i.e., for all i, j:
+    ///
+    ///   abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix33<T>& v, T e) const noexcept;
+
+    /// Compare two matrices and test if they are "approximately equal":
+    /// @return True if the coefficients of this and m are the same with
+    /// a relative error of no more than e, i.e., for all i, j:
+    ///
+    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix33<T>& v, T e) const noexcept;
 
-    //------------------------
-    // Component-wise addition
-    //------------------------
-
+    /// Component-wise addition
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator+= (const Matrix33& v) noexcept;
+
+    /// Component-wise addition
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator+= (T a) noexcept;
+
+    /// Component-wise addition
     IMATH_HOSTDEVICE constexpr Matrix33 operator+ (const Matrix33& v) const noexcept;
 
-    //---------------------------
-    // Component-wise subtraction
-    //---------------------------
-
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator-= (const Matrix33& v) noexcept;
+
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator-= (T a) noexcept;
+
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE constexpr Matrix33 operator- (const Matrix33& v) const noexcept;
 
-    //------------------------------------
-    // Component-wise multiplication by -1
-    //------------------------------------
-
+    /// Component-wise multiplication by -1
     IMATH_HOSTDEVICE constexpr Matrix33 operator-() const noexcept;
+
+    /// Component-wise multiplication by -1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& negate() noexcept;
 
-    //------------------------------
-    // Component-wise multiplication
-    //------------------------------
-
+    /// Component-wise multiplication
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator*= (T a) noexcept;
+
+    /// Component-wise multiplication
     IMATH_HOSTDEVICE constexpr Matrix33 operator* (T a) const noexcept;
 
-    //-----------------------------------
-    // Matrix-times-matrix multiplication
-    //-----------------------------------
-
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator*= (const Matrix33& v) noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 operator* (const Matrix33& v) const noexcept;
-
-    //-----------------------------------------------------------------
-    // Vector-times-matrix multiplication; see also the "operator *"
-    // functions defined below.
-    //
-    // m.multVecMatrix(src,dst) implements a homogeneous transformation
-    // by computing Vec3 (src.x, src.y, 1) * m and dividing by the
-    // result's third element.
-    //
-    // m.multDirMatrix(src,dst) multiplies src by the upper left 2x2
-    // submatrix, ignoring the rest of matrix m.
-    //-----------------------------------------------------------------
-
-    template <class S> IMATH_HOSTDEVICE void multVecMatrix (const Vec2<S>& src, Vec2<S>& dst) const noexcept;
-
-    template <class S> IMATH_HOSTDEVICE void multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const noexcept;
-
-    //------------------------
-    // Component-wise division
-    //------------------------
-
+    /// Component-wise division
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator/= (T a) noexcept;
+
+    /// Component-wise division
     IMATH_HOSTDEVICE constexpr Matrix33 operator/ (T a) const noexcept;
 
-    //------------------
-    // Transposed matrix
-    //------------------
+    /// Matrix-matrix multiplication
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator*= (const Matrix33& v) noexcept;
 
+    /// Matrix-matrix multiplication
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 operator* (const Matrix33& v) const noexcept;
+
+    /// Vector-matrix multiplication: a homogeneous transformation
+    /// by computing Vec3 (src.x, src.y, 1) * m and dividing by the
+    /// result's third element.
+    /// @param[in] src The input vector
+    /// @param[out] dst The output vector
+    template <class S> IMATH_HOSTDEVICE void multVecMatrix (const Vec2<S>& src, Vec2<S>& dst) const noexcept;
+
+    /// Vector-matrix multiplication: multiply `src` by the upper left 2x2
+    /// submatrix, ignoring the rest of matrix.
+    /// @param[in] src The input vector
+    /// @param[out] dst The output vector
+    template <class S> IMATH_HOSTDEVICE void multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const noexcept;
+
+    /// @}
+
+    /// @{
+    /// @name Maniplation
+
+    /// Set to the identity matrix
+    IMATH_HOSTDEVICE void makeIdentity() noexcept;
+
+    /// Transpose
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& transpose() noexcept;
+
+    /// Return the transpose
     IMATH_HOSTDEVICE constexpr Matrix33 transposed() const noexcept;
 
-    //------------------------------------------------------------
-    // Inverse matrix: If singExc is false, inverting a singular
-    // matrix produces an identity matrix.  If singExc is true,
-    // inverting a singular matrix throws a std::invalid_argument.
-    //
-    // inverse() and invert() invert matrices using determinants;
-    // gjInverse() and gjInvert() use the Gauss-Jordan method.
-    //
-    // inverse() and invert() are significantly faster than
-    // gjInverse() and gjInvert(), but the results may be slightly
-    // less accurate.
-    //
-    //------------------------------------------------------------
-
+    /// Invert in place using the determinant.
+    /// @param singExc If true, throw an exception if the matrix cannot be inverted.
+    /// @return const reference to this
     IMATH_CONSTEXPR14 const Matrix33& invert (bool singExc);
+
+    /// Invert in place using the determinant.
+    /// @return const reference to this
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& invert() noexcept;
 
+    /// Return the inverse using the determinant, leaving this unmodified.
+    /// @param singExc If true, throw an exception if the matrix cannot be inverted.
     IMATH_CONSTEXPR14 Matrix33<T> inverse (bool singExc) const;
+
+    /// Return the inverse using the determinant, leaving this unmodified.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33<T> inverse() const noexcept;
 
+    /// Invert in place using the Gauss-Jordan method. Significantly slower
+    /// but more accurate than invert().
+    /// @param singExc If true, throw an exception if the matrix cannot be inverted.
+    /// @return const reference to this
     const Matrix33& gjInvert (bool singExc);
+    
+    /// Invert in place using the Gauss-Jordan method. Significantly slower
+    /// but more accurate than invert().
+    /// @return const reference to this
     IMATH_HOSTDEVICE const Matrix33& gjInvert() noexcept;
 
+    /// Return the inverse using the Gauss-Jordan method, leaving this
+    /// unmodified. Significantly slower but more accurate than inverse().
     Matrix33<T> gjInverse (bool singExc) const;
+
+    /// Return the inverse using the Gauss-Jordan method. Significantly slower,
+    /// leaving this unmodified. Slower but more accurate than inverse().
     IMATH_HOSTDEVICE Matrix33<T> gjInverse() const noexcept;
 
-    //------------------------------------------------
-    // Calculate the matrix minor of the (r,c) element
-    //------------------------------------------------
-
+    /// Calculate the matrix minor of the (r,c) element
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T minorOf (const int r, const int c) const noexcept;
 
-    //---------------------------------------------------
-    // Build a minor using the specified rows and columns
-    //---------------------------------------------------
-
+    /// Build a minor using the specified rows and columns
     IMATH_HOSTDEVICE
     constexpr T fastMinor (const int r0, const int r1, const int c0, const int c1) const noexcept;
 
-    //------------
-    // Determinant
-    //------------
-
+    /// Determinant
     IMATH_HOSTDEVICE constexpr T determinant() const noexcept;
 
-    //-----------------------------------------
-    // Set matrix to rotation by r (in radians)
-    //-----------------------------------------
-
+    /// Set matrix to rotation by r (in radians)
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE const Matrix33& setRotation (S r) noexcept;
 
-    //-----------------------------
-    // Rotate the given matrix by r
-    //-----------------------------
-
+    // Rotate the given matrix by r (in radians)
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& rotate (S r) noexcept;
 
-    //--------------------------------------------
-    // Set matrix to scale by given uniform factor
-    //--------------------------------------------
-
+    /// Set matrix to scale by given uniform factor
+    /// @return const referenced to this
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setScale (T s) noexcept;
 
-    //------------------------------------
-    // Set matrix to scale by given vector
-    //------------------------------------
-
+    /// Set matrix to scale by given vector
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setScale (const Vec2<S>& s) noexcept;
 
-    //----------------------
-    // Scale the matrix by s
-    //----------------------
-
+    /// Scale the matrix by s
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& scale (const Vec2<S>& s) noexcept;
 
-    //------------------------------------------
-    // Set matrix to translation by given vector
-    //------------------------------------------
-
+    /// Set matrix to translation by given vector
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setTranslation (const Vec2<S>& t) noexcept;
 
-    //-----------------------------
-    // Return translation component
-    //-----------------------------
-
+    /// Return the translation component
     IMATH_HOSTDEVICE constexpr Vec2<T> translation() const noexcept;
 
-    //--------------------------
-    // Translate the matrix by t
-    //--------------------------
-
+    /// Translate the matrix by t
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& translate (const Vec2<S>& t) noexcept;
 
-    //-----------------------------------------------------------
-    // Set matrix to shear x for each y coord. by given factor xy
-    //-----------------------------------------------------------
-
+    /// Set matrix to shear x for each y coord. by given factor xy
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setShear (const S& h) noexcept;
 
-    //-------------------------------------------------------------
-    // Set matrix to shear x for each y coord. by given factor h[0]
-    // and to shear y for each x coord. by given factor h[1]
-    //-------------------------------------------------------------
-
+    /// Set matrix to shear x for each y coord. by given factor h[0]
+    /// and to shear y for each x coord. by given factor h[1]
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& setShear (const Vec2<S>& h) noexcept;
 
-    //-----------------------------------------------------------
-    // Shear the matrix in x for each y coord. by given factor xy
-    //-----------------------------------------------------------
-
+    /// Shear the matrix in x for each y coord. by given factor xy
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& shear (const S& xy) noexcept;
 
-    //-----------------------------------------------------------
-    // Shear the matrix in x for each y coord. by given factor xy
-    // and shear y for each x coord. by given factor yx
-    //-----------------------------------------------------------
-
+    /// Shear the matrix in x for each y coord. by given factor xy
+    /// and shear y for each x coord. by given factor yx
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& shear (const Vec2<S>& h) noexcept;
 
-    //--------------------------------------------------------
-    // Number of the row and column dimensions, since
-    // Matrix33 is a square matrix.
-    //--------------------------------------------------------
-
-    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() noexcept { return 3; }
-
-    //-------------------------------------------------
-    // Limitations of type T (see also class limits<T>)
-    //-------------------------------------------------
-
+    /// @}
+    
+    /// @{
+    /// @name Numeric Limits
+    
+    /// Largest possible negative value
     IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+
+    /// Largest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+
+    /// Smallest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+
+    /// Smallest possible e for which 1+e != 1
     IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
 
+    /// @}
+    
+    /// Return the number of the row and column dimensions, i.e. 3.
+    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() noexcept { return 3; }
+
+    /// The base type: In templates that accept a parameter `V` (could be a Color4), you can refer to `T` as `V::BaseType`
     typedef T BaseType;
+
+    /// The base vector type
     typedef Vec3<T> BaseVecType;
 
   private:
@@ -609,227 +624,246 @@ template <class T> class Matrix33
     };
 };
 
+///
+/// 4x4 transformation matrix
+///
+
 template <class T> class Matrix44
 {
   public:
-    //-------------------
-    // Access to elements
-    //-------------------
 
+    /// @{
+    /// @name Direct access to elements
+    
+    /// Matrix elements
     T x[4][4];
 
+    /// @}
+    
+    /// Row access
     IMATH_HOSTDEVICE T* operator[] (int i) noexcept;
+
+    /// Row access
     IMATH_HOSTDEVICE const T* operator[] (int i) const noexcept;
 
-    //-------------
-    // Constructors
-    //-------------
+    /// @{
+    ///	@name Constructors and Assignment
 
+    /// Uninitialized
     IMATH_HOSTDEVICE constexpr Matrix44 (Uninitialized) noexcept {}
 
+    /// Default constructor: initialize to identity
+    ///   1 0 0 0
+    ///   0 1 0 0
+    ///   0 0 1 0
+    ///   0 0 0 1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44() noexcept;
-    // 1 0 0 0
-    // 0 1 0 0
-    // 0 0 1 0
-    // 0 0 0 1
 
+    /// Initialize to scalar constant
+    ///   a a a a
+    ///   a a a a
+    ///   a a a a
+    ///   a a a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (T a) noexcept;
-    // a a a a
-    // a a a a
-    // a a a a
-    // a a a a
 
+    /// Construct from 4x4 array 
+    ///   a[0][0] a[0][1] a[0][2] a[0][3]
+    ///   a[1][0] a[1][1] a[1][2] a[1][3]
+    ///   a[2][0] a[2][1] a[2][2] a[2][3]
+    ///   a[3][0] a[3][1] a[3][2] a[3][3]
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const T a[4][4]) noexcept;
-    // a[0][0] a[0][1] a[0][2] a[0][3]
-    // a[1][0] a[1][1] a[1][2] a[1][3]
-    // a[2][0] a[2][1] a[2][2] a[2][3]
-    // a[3][0] a[3][1] a[3][2] a[3][3]
 
+    /// Construct from given scalar values
+    ///   a b c d
+    ///   e f g h
+    ///   i j k l
+    ///   m n o p
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Matrix44 (T a, T b, T c, T d, T e, T f, T g, T h, T i, T j, T k, T l, T m, T n, T o, T p) noexcept;
 
-    // a b c d
-    // e f g h
-    // i j k l
-    // m n o p
 
+    /// Construct from a 3x3 rotation matrix and a translation vector
+    ///   r r r 0
+    ///   r r r 0
+    ///   r r r 0
+    ///   t t t 1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (Matrix33<T> r, Vec3<T> t) noexcept;
-    // r r r 0
-    // r r r 0
-    // r r r 0
-    // t t t 1
 
-    //------------
-    // Destructor
-    //------------
-
-    ~Matrix44() noexcept = default;
-
-    //--------------------------------
-    // Copy constructor and assignment
-    //--------------------------------
-
+    /// Copy constructor
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const Matrix44& v) noexcept;
+
+    /// Construct from Matrix44 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix44 (const Matrix44<S>& v) noexcept;
 
+    /// Assignment operator
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (const Matrix44& v) noexcept;
+
+    /// Assignment from scalar
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (T a) noexcept;
 
-    //----------------------
-    // Compatibility with Sb
-    //----------------------
+    /// Destructor
+    ~Matrix44() noexcept = default;
 
+    /// @}
+    
+    /// @{
+    /// @name Compatibility with Sb
+
+    /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE T* getValue() noexcept;
+
+    /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE const T* getValue() const noexcept;
 
+    /// Return the value in `v`
     template <class S> IMATH_HOSTDEVICE void getValue (Matrix44<S>& v) const noexcept;
+
+    /// Set the value
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44& setValue (const Matrix44<S>& v) noexcept;
 
+    /// Set the value
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44& setTheMatrix (const Matrix44<S>& v) noexcept;
 
-    //---------
-    // Identity
-    //---------
+    /// @}
 
-    IMATH_HOSTDEVICE void makeIdentity() noexcept;
-
-    //---------
-    // Equality
-    //---------
-
+    /// @{
+    /// @name Arithmetic and Comparison
+    
+    /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Matrix44& v) const noexcept;
+
+    /// Inequality
     IMATH_HOSTDEVICE constexpr bool operator!= (const Matrix44& v) const noexcept;
 
-    //-----------------------------------------------------------------------
-    // Compare two matrices and test if they are "approximately equal":
-    //
-    // equalWithAbsError (m, e)
-    //
-    //      Returns true if the coefficients of this and m are the same with
-    //      an absolute error of no more than e, i.e., for all i, j
-    //
-    //      abs (this[i][j] - m[i][j]) <= e
-    //
-    // equalWithRelError (m, e)
-    //
-    //      Returns true if the coefficients of this and m are the same with
-    //      a relative error of no more than e, i.e., for all i, j
-    //
-    //      abs (this[i] - v[i][j]) <= e * abs (this[i][j])
-    //-----------------------------------------------------------------------
-
+    /// Compare two matrices and test if they are "approximately equal":
+    /// @return True if the coefficients of this and `m` are the same
+    /// with an absolute error of no more than e, i.e., for all i, j:
+    ///
+    ///   abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix44<T>& v, T e) const noexcept;
+
+    /// Compare two matrices and test if they are "approximately equal":
+    /// @return True if the coefficients of this and m are the same with
+    /// a relative error of no more than e, i.e., for all i, j:
+    ///
+    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix44<T>& v, T e) const noexcept;
 
-    //------------------------
-    // Component-wise addition
-    //------------------------
-
+    /// Component-wise addition
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator+= (const Matrix44& v) noexcept;
+
+    /// Component-wise addition
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator+= (T a) noexcept;
+
+    /// Component-wise addition
     IMATH_HOSTDEVICE constexpr Matrix44 operator+ (const Matrix44& v) const noexcept;
 
-    //---------------------------
-    // Component-wise subtraction
-    //---------------------------
-
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator-= (const Matrix44& v) noexcept;
+
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator-= (T a) noexcept;
+
+    /// Component-wise subtraction
     IMATH_HOSTDEVICE constexpr Matrix44 operator- (const Matrix44& v) const noexcept;
 
-    //------------------------------------
-    // Component-wise multiplication by -1
-    //------------------------------------
-
+    /// Component-wise multiplication by -1
     IMATH_HOSTDEVICE constexpr Matrix44 operator-() const noexcept;
+
+    /// Component-wise multiplication by -1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& negate() noexcept;
 
-    //------------------------------
-    // Component-wise multiplication
-    //------------------------------
-
+    /// Component-wise multiplication
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator*= (T a) noexcept;
+
+    /// Component-wise multiplication
     IMATH_HOSTDEVICE constexpr Matrix44 operator* (T a) const noexcept;
 
-    //-----------------------------------
-    // Matrix-times-matrix multiplication
-    //-----------------------------------
+    /// Component-wise division
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator/= (T a) noexcept;
 
+    /// Component-wise division
+    IMATH_HOSTDEVICE constexpr Matrix44 operator/ (T a) const noexcept;
+
+    /// Matrix-matrix multiplication
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator*= (const Matrix44& v) noexcept;
+
+    /// Matrix-matrix multiplication
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 operator* (const Matrix44& v) const noexcept;
 
+    /// Matrix-matrix multiplication: compute c = a * b
     IMATH_HOSTDEVICE
     static void multiply (const Matrix44& a,     // assumes that
                           const Matrix44& b,     // &a != &c and
                           Matrix44& c) noexcept; // &b != &c.
 
-    //-----------------------------------------------------------------
-    // Vector-times-matrix multiplication; see also the "operator *"
-    // functions defined below.
-    //
-    // m.multVecMatrix(src,dst) implements a homogeneous transformation
-    // by computing Vec4 (src.x, src.y, src.z, 1) * m and dividing by
-    // the result's third element.
-    //
-    // m.multDirMatrix(src,dst) multiplies src by the upper left 3x3
-    // submatrix, ignoring the rest of matrix m.
-    //-----------------------------------------------------------------
-
+    /// Vector-matrix multiplication: a homogeneous transformation
+    /// by computing Vec3 (src.x, src.y, src.z, 1) * m and dividing by the
+    /// result's third element.
+    /// @param[in] src The input vector
+    /// @param[out] dst The output vector
     template <class S> IMATH_HOSTDEVICE void multVecMatrix (const Vec3<S>& src, Vec3<S>& dst) const noexcept;
 
+    /// Vector-matrix multiplication: multiply `src` by the upper left 2x2
+    /// submatrix, ignoring the rest of matrix.
+    /// @param[in] src The input vector
+    /// @param[out] dst The output vector
     template <class S> IMATH_HOSTDEVICE void multDirMatrix (const Vec3<S>& src, Vec3<S>& dst) const noexcept;
 
-    //------------------------
-    // Component-wise division
-    //------------------------
+    /// @}
 
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator/= (T a) noexcept;
-    IMATH_HOSTDEVICE constexpr Matrix44 operator/ (T a) const noexcept;
+    /// @{
+    /// @name Maniplation
 
-    //------------------
-    // Transposed matrix
-    //------------------
+    /// Set to the identity matrix
+    IMATH_HOSTDEVICE void makeIdentity() noexcept;
 
+    /// Transpose
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& transpose() noexcept;
+
+    /// Return the transpose
     IMATH_HOSTDEVICE constexpr Matrix44 transposed() const noexcept;
 
-    //------------------------------------------------------------
-    // Inverse matrix: If singExc is false, inverting a singular
-    // matrix produces an identity matrix.  If singExc is true,
-    // inverting a singular matrix throws a std::invalid_argument.
-    //
-    // inverse() and invert() invert matrices using determinants;
-    // gjInverse() and gjInvert() use the Gauss-Jordan method.
-    //
-    // inverse() and invert() are significantly faster than
-    // gjInverse() and gjInvert(), but the results may be slightly
-    // less accurate.
-    //
-    //------------------------------------------------------------
-
+    /// Invert in place using the determinant.
+    /// @param singExc If true, throw an exception if the matrix cannot be inverted.
+    /// @return const reference to this
     IMATH_CONSTEXPR14 const Matrix44& invert (bool singExc);
+
+    /// Invert in place using the determinant.
+    /// @return const reference to this
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& invert() noexcept;
 
+    /// Return the inverse using the determinant, leaving this unmodified.
+    /// @param singExc If true, throw an exception if the matrix cannot be inverted.
     IMATH_CONSTEXPR14 Matrix44<T> inverse (bool singExc) const;
+
+    /// Return the inverse using the determinant, leaving this unmodified.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44<T> inverse() const noexcept;
 
+    /// Invert in place using the Gauss-Jordan method. Significantly slower
+    /// but more accurate than invert().
+    /// @param singExc If true, throw an exception if the matrix cannot be inverted.
+    /// @return const reference to this
     IMATH_CONSTEXPR14 const Matrix44& gjInvert (bool singExc);
+
+    /// Invert in place using the Gauss-Jordan method. Significantly slower
+    /// but more accurate than invert().
+    /// @return const reference to this
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& gjInvert() noexcept;
 
+    /// Return the inverse using the Gauss-Jordan method, leaving this
+    /// unmodified. Significantly slower but more accurate than inverse().
     Matrix44<T> gjInverse (bool singExc) const;
+
+    /// Return the inverse using the Gauss-Jordan method, leaving this
+    /// unmodified Significantly slower but more accurate than inverse().
     IMATH_HOSTDEVICE Matrix44<T> gjInverse() const noexcept;
 
-    //------------------------------------------------
-    // Calculate the matrix minor of the (r,c) element
-    //------------------------------------------------
-
+    /// Calculate the matrix minor of the (r,c) element
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T minorOf (const int r, const int c) const noexcept;
 
-    //---------------------------------------------------
-    // Build a minor using the specified rows and columns
-    //---------------------------------------------------
-
+    /// Build a minor using the specified rows and columns
     IMATH_HOSTDEVICE
     constexpr T fastMinor (const int r0,
                            const int r1,
@@ -838,134 +872,113 @@ template <class T> class Matrix44
                            const int c1,
                            const int c2) const noexcept;
 
-    //------------
-    // Determinant
-    //------------
-
+    /// Determinant
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T determinant() const noexcept;
 
-    //--------------------------------------------------------
-    // Set matrix to rotation by XYZ euler angles (in radians)
-    //--------------------------------------------------------
-
+    /// Set matrix to rotation by XYZ euler angles (in radians)
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE const Matrix44& setEulerAngles (const Vec3<S>& r) noexcept;
 
-    //--------------------------------------------------------
-    // Set matrix to rotation around given axis by given angle
-    //--------------------------------------------------------
-
+    /// Set matrix to rotation around given axis by given angle (in radians)
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setAxisAngle (const Vec3<S>& ax, S ang) noexcept;
 
-    //-------------------------------------------
-    // Rotate the matrix by XYZ euler angles in r
-    //-------------------------------------------
-
+    /// Rotate the matrix by XYZ euler angles in r (in radians)
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE const Matrix44& rotate (const Vec3<S>& r) noexcept;
 
-    //--------------------------------------------
-    // Set matrix to scale by given uniform factor
-    //--------------------------------------------
-
+    /// Set matrix to scale by given uniform factor
+    /// @return const referenced to this
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setScale (T s) noexcept;
 
-    //------------------------------------
-    // Set matrix to scale by given vector
-    //------------------------------------
-
+    /// Set matrix to scale by given vector
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setScale (const Vec3<S>& s) noexcept;
 
-    //----------------------
-    // Scale the matrix by s
-    //----------------------
-
+    /// Scale the matrix by s
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& scale (const Vec3<S>& s) noexcept;
 
-    //------------------------------------------
-    // Set matrix to translation by given vector
-    //------------------------------------------
-
+    /// Set matrix to translation by given vector
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setTranslation (const Vec3<S>& t) noexcept;
 
-    //-----------------------------
-    // Return translation component
-    //-----------------------------
-
+    /// Return translation component
     IMATH_HOSTDEVICE constexpr const Vec3<T> translation() const noexcept;
 
-    //--------------------------
-    // Translate the matrix by t
-    //--------------------------
-
+    /// Translate the matrix by t
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& translate (const Vec3<S>& t) noexcept;
 
-    //-------------------------------------------------------------
-    // Set matrix to shear by given vector h.  The resulting matrix
-    //    will shear x for each y coord. by a factor of h[0] ;
-    //    will shear x for each z coord. by a factor of h[1] ;
-    //    will shear y for each z coord. by a factor of h[2] .
-    //-------------------------------------------------------------
-
+    /// Set matrix to shear by given vector h.  The resulting matrix
+    ///   - will shear x for each y coord. by a factor of h[0] ;
+    ///   - will shear x for each z coord. by a factor of h[1] ;
+    ///   - will shear y for each z coord. by a factor of h[2] .
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setShear (const Vec3<S>& h) noexcept;
 
-    //------------------------------------------------------------
-    // Set matrix to shear by given factors.  The resulting matrix
-    //    will shear x for each y coord. by a factor of h.xy ;
-    //    will shear x for each z coord. by a factor of h.xz ;
-    //    will shear y for each z coord. by a factor of h.yz ;
-    //    will shear y for each x coord. by a factor of h.yx ;
-    //    will shear z for each x coord. by a factor of h.zx ;
-    //    will shear z for each y coord. by a factor of h.zy .
-    //------------------------------------------------------------
-
+    /// Set matrix to shear by given factors.  The resulting matrix
+    ///   - will shear x for each y coord. by a factor of h.xy ;
+    ///   - will shear x for each z coord. by a factor of h.xz ;
+    ///   - will shear y for each z coord. by a factor of h.yz ;
+    ///   - will shear y for each x coord. by a factor of h.yx ;
+    ///   - will shear z for each x coord. by a factor of h.zx ;
+    ///   - will shear z for each y coord. by a factor of h.zy .
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setShear (const Shear6<S>& h) noexcept;
 
-    //--------------------------------------------------------
-    // Shear the matrix by given vector.  The composed matrix
-    // will be <shear> * <this>, where the shear matrix ...
-    //    will shear x for each y coord. by a factor of h[0] ;
-    //    will shear x for each z coord. by a factor of h[1] ;
-    //    will shear y for each z coord. by a factor of h[2] .
-    //--------------------------------------------------------
-
+    /// Shear the matrix by given vector.  The composed matrix
+    /// will be `shear` * `this`, where the shear matrix ...
+    ///   - will shear x for each y coord. by a factor of h[0] ;
+    ///   - will shear x for each z coord. by a factor of h[1] ;
+    ///   - will shear y for each z coord. by a factor of h[2] .
+    /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& shear (const Vec3<S>& h) noexcept;
 
-    //--------------------------------------------------------
-    // Number of the row and column dimensions, since
-    // Matrix44 is a square matrix.
-    //--------------------------------------------------------
-
-    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() noexcept { return 4; }
-
-    //------------------------------------------------------------
-    // Shear the matrix by the given factors.  The composed matrix
-    // will be <shear> * <this>, where the shear matrix ...
-    //    will shear x for each y coord. by a factor of h.xy ;
-    //    will shear x for each z coord. by a factor of h.xz ;
-    //    will shear y for each z coord. by a factor of h.yz ;
-    //    will shear y for each x coord. by a factor of h.yx ;
-    //    will shear z for each x coord. by a factor of h.zx ;
-    //    will shear z for each y coord. by a factor of h.zy .
-    //------------------------------------------------------------
-
+    /// Shear the matrix by the given factors.  The composed matrix
+    /// will be `shear` * `this`, where the shear matrix ...
+    ///   - will shear x for each y coord. by a factor of h.xy ;
+    ///   - will shear x for each z coord. by a factor of h.xz ;
+    ///   - will shear y for each z coord. by a factor of h.yz ;
+    ///   - will shear y for each x coord. by a factor of h.yx ;
+    ///   - will shear z for each x coord. by a factor of h.zx ;
+    ///   - will shear z for each y coord. by a factor of h.zy .
+    /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& shear (const Shear6<S>& h) noexcept;
 
-    //-------------------------------------------------
-    // Limitations of type T (see also class limits<T>)
-    //-------------------------------------------------
-
+    /// @}
+    
+    /// @{
+    /// @name Numeric Limits
+    
+    /// Largest possible negative value
     IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+
+    /// Largest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+
+    /// Smallest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+
+    /// Smallest possible e for which 1+e != 1
     IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
 
+    /// @}
+    
+    /// Return the number of the row and column dimensions, i.e. 4
+    IMATH_HOSTDEVICE constexpr static unsigned int dimensions() noexcept { return 4; }
+
+    /// The base type: In templates that accept a parameter `V` (could be a Color4), you can refer to `T` as `V::BaseType`
     typedef T BaseType;
+
+    /// The base vector type
     typedef Vec4<T> BaseVecType;
 
   private:
@@ -986,47 +999,56 @@ template <class T> class Matrix44
     };
 };
 
-//--------------
-// Stream output
-//--------------
-
+/// Stream output
 template <class T> std::ostream& operator<< (std::ostream& s, const Matrix22<T>& m);
 
+/// Stream output
 template <class T> std::ostream& operator<< (std::ostream& s, const Matrix33<T>& m);
 
+/// Stream output
 template <class T> std::ostream& operator<< (std::ostream& s, const Matrix44<T>& m);
 
 //---------------------------------------------
 // Vector-times-matrix multiplication operators
 //---------------------------------------------
 
+/// Vector-matrix multiplication: v *= m
 template <class S, class T>
 IMATH_HOSTDEVICE inline const Vec2<S>& operator*= (Vec2<S>& v, const Matrix22<T>& m) noexcept;
 
+/// Vector-matrix multiplication: r = v * m
 template <class S, class T>
 IMATH_HOSTDEVICE inline Vec2<S> operator* (const Vec2<S>& v, const Matrix22<T>& m) noexcept;
 
+/// Vector-matrix multiplication: v *= m
 template <class S, class T>
 IMATH_HOSTDEVICE inline const Vec2<S>& operator*= (Vec2<S>& v, const Matrix33<T>& m) noexcept;
 
+/// Vector-matrix multiplication: r = v * m
 template <class S, class T>
 IMATH_HOSTDEVICE inline Vec2<S> operator* (const Vec2<S>& v, const Matrix33<T>& m) noexcept;
 
+/// Vector-matrix multiplication: v *= m
 template <class S, class T>
 IMATH_HOSTDEVICE inline const Vec3<S>& operator*= (Vec3<S>& v, const Matrix33<T>& m) noexcept;
 
+/// Vector-matrix multiplication: r = v * m
 template <class S, class T>
 IMATH_HOSTDEVICE inline Vec3<S> operator* (const Vec3<S>& v, const Matrix33<T>& m) noexcept;
 
+/// Vector-matrix multiplication: v *= m
 template <class S, class T>
 IMATH_HOSTDEVICE inline const Vec3<S>& operator*= (Vec3<S>& v, const Matrix44<T>& m) noexcept;
 
+/// Vector-matrix multiplication: r = v * m
 template <class S, class T>
 IMATH_HOSTDEVICE inline Vec3<S> operator* (const Vec3<S>& v, const Matrix44<T>& m) noexcept;
 
+/// Vector-matrix multiplication: v *= m
 template <class S, class T>
 IMATH_HOSTDEVICE inline const Vec4<S>& operator*= (Vec4<S>& v, const Matrix44<T>& m) noexcept;
 
+/// Vector-matrix multiplication: r = v * m
 template <class S, class T>
 IMATH_HOSTDEVICE inline Vec4<S> operator* (const Vec4<S>& v, const Matrix44<T>& m) noexcept;
 
@@ -1034,11 +1056,22 @@ IMATH_HOSTDEVICE inline Vec4<S> operator* (const Vec4<S>& v, const Matrix44<T>& 
 // Typedefs for convenience
 //-------------------------
 
+/// 2x2 matrix of float
 typedef Matrix22<float> M22f;
+
+/// 2x2 matrix of double
 typedef Matrix22<double> M22d;
+
+/// 3x3 matrix of float
 typedef Matrix33<float> M33f;
+
+/// 3x3 matrix of double
 typedef Matrix33<double> M33d;
+
+/// 4x4 matrix of float
 typedef Matrix44<float> M44f;
+
+/// 4x4 matrix of double
 typedef Matrix44<double> M44d;
 
 //---------------------------
@@ -1348,6 +1381,7 @@ Matrix22<T>::operator* (T a) const noexcept
     return Matrix22 (x[0][0] * a, x[0][1] * a, x[1][0] * a, x[1][1] * a);
 }
 
+/// Matrix-scalar multiplication
 template <class T>
 inline Matrix22<T>
 operator* (T a, const Matrix22<T>& v) noexcept
@@ -2042,6 +2076,7 @@ Matrix33<T>::operator* (T a) const noexcept
                      x[2][2] * a);
 }
 
+/// Matrix-scalar multiplication
 template <class T>
 inline Matrix33<T> constexpr
 operator* (T a, const Matrix33<T>& v) noexcept
@@ -3458,6 +3493,7 @@ Matrix44<T>::operator* (T a) const noexcept
                      x[3][3] * a);
 }
 
+/// Matrix-scalar multiplication
 template <class T>
 inline Matrix44<T>
 operator* (T a, const Matrix44<T>& v) noexcept

@@ -3,18 +3,27 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file  ImathRoots.h
+///
+/// @brief Functions to solve linear, quadratic or cubic equations
+///
+/// Note: It is possible that an equation has real solutions, but that
+/// the solutions (or some intermediate result) are not representable.
+/// In this case, either some of the solutions returned are invalid
+/// (nan or infinity), or, if floating-point exceptions have been
+/// enabled, an exception is thrown.
+///
+
 #ifndef INCLUDED_IMATHROOTS_H
 #define INCLUDED_IMATHROOTS_H
-
-//---------------------------------------------------------------------
-//
-//	Functions to solve linear, quadratic or cubic equations
-//
-//---------------------------------------------------------------------
 
 #include "ImathMath.h"
 #include "ImathNamespace.h"
 #include <complex>
+
+/// @cond Doxygen_Suppress
+
 #ifdef __CUDACC__
 #    include <thrust/complex.h>
 #    define COMPLEX_NAMESPACE thrust
@@ -22,45 +31,54 @@
 #    define COMPLEX_NAMESPACE std
 #endif
 
+/// @endcond
+
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
-//--------------------------------------------------------------------------
-// Find the real solutions of a linear, quadratic or cubic equation:
-//
-//   	function				   equation solved
-//
-//   solveLinear (a, b, x)		                      a * x + b == 0
-//   solveQuadratic (a, b, c, x)	            a * x*x + b * x + c == 0
-//   solveNormalizedCubic (r, s, t, x)	    x*x*x + r * x*x + s * x + t == 0
-//   solveCubic (a, b, c, d, x)		a * x*x*x + b * x*x + c * x + d == 0
-//
-// Return value:
-//
-//	 3	three real solutions, stored in x[0], x[1] and x[2]
-//	 2	two real solutions, stored in x[0] and x[1]
-//	 1	one real solution, stored in x[1]
-//	 0	no real solutions
-//	-1	all real numbers are solutions
-//
-// Notes:
-//
-//    * It is possible that an equation has real solutions, but that the
-//	solutions (or some intermediate result) are not representable.
-//	In this case, either some of the solutions returned are invalid
-//	(nan or infinity), or, if floating-point exceptions have been
-//	enabled with Iex::mathExcOn(), an Iex::MathExc exception is
-//	thrown.
-//
-//    * Cubic equations are solved using Cardano's Formula; even though
-//	only real solutions are produced, some intermediate results are
-//	complex (std::complex<T>).
-//
-//--------------------------------------------------------------------------
-
+///
+/// Solve for x in the linear equation:
+///
+///   a * x + b == 0
+///
+/// @return 1 if the equation has a solution, 0 if there is no
+/// solution, and -1 if all real numbers are solutions.
 template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveLinear (T a, T b, T& x);
+
+///
+/// Solve for x in the quadratic equation:
+///
+///   a * x*x + b * x + c == 0
+///
+/// @return 2 if the equation has two solutions, 1 if the equation has
+/// a single solution, 0 if there is no solution, and -1 if all real
+/// numbers are solutions.
 template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveQuadratic (T a, T b, T c, T x[2]);
 template <class T>
+
+///
+/// Solve for x in the normalized cubic equation:
+///
+///   x*x*x + r * x*x + s * x + t == 0
+///
+/// The equation is solved using Cardano's Formula; even though only
+/// real solutions are produced, some intermediate results are complex
+/// (std::complex<T>).
+///
+/// @return 0 if there is no solution, and -1 if all real
+/// numbers are solutions, otherwise return the number of solutions.
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveNormalizedCubic (T r, T s, T t, T x[3]);
+
+///
+/// Solve for x in the cubic equation:
+///
+///   a * x*x*x + b * x*x + c * x + d == 0
+///
+/// The equation is solved using Cardano's Formula; even though only
+/// real solutions are produced, some intermediate results are complex
+/// (std::complex<T>).
+///
+/// @return 0 if there is no solution, and -1 if all real
+/// numbers are solutions, otherwise return the number of solutions.
 template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveCubic (T a, T b, T c, T d, T x[3]);
 
 //---------------

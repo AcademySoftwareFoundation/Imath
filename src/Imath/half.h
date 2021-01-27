@@ -58,6 +58,8 @@
 #ifndef _HALF_H_
 #define _HALF_H_
 
+/// @cond Doxygen_Suppress
+
 #include "ImathNamespace.h"
 #include "ImathExport.h"
 #include <iostream>
@@ -686,4 +688,8 @@ using half = IMATH_INTERNAL_NAMESPACE::half;
 #    include <cuda_fp16.h>
 #endif
 
+/// @endcond
+
 #endif
+
+

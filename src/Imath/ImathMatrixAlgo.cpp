@@ -3,11 +3,14 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-//----------------------------------------------------------------------------
-//
-//	Implementation of non-template items declared in ImathMatrixAlgo.h
-//
-//----------------------------------------------------------------------------
+///
+/// @file  ImathMatrixAlgo.cpp
+///
+/// @brief Functions operating on Matrix22, Matrix33, and Matrix44 types.
+///
+
+// clang-format off
+/// @cond Doxygen_Suppress
 
 #include "ImathMatrixAlgo.h"
 #include <algorithm>
@@ -21,27 +24,20 @@
 
 IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
 
-// clang-format off
-
 EXPORT_CONST M22f identity22f ( 1, 0,
 				0, 1);
-
 EXPORT_CONST M22d identity22d ( 1, 0,
 				0, 1);
-
 EXPORT_CONST M33f identity33f ( 1, 0, 0,
 				0, 1, 0,
 				0, 0, 1);
-
 EXPORT_CONST M33d identity33d ( 1, 0, 0,
 				0, 1, 0,
 				0, 0, 1);
-
 EXPORT_CONST M44f identity44f ( 1, 0, 0, 0,
 				0, 1, 0, 0,
 				0, 0, 1, 0,
 				0, 0, 0, 1);
-
 EXPORT_CONST M44d identity44d ( 1, 0, 0, 0,
 				0, 1, 0, 0,
 				0, 0, 1, 0,
@@ -230,6 +226,13 @@ procrustesRotationAndTranslation (const Vec3<T>* A,
                  T (1));
 } // procrustesRotationAndTranslation
 
+///
+/// Return the procrustes transformation of a set of points: the
+/// rotation, translation, and optionally the scale that comes closest
+/// in a least squares sense to transforming the `A` points into
+/// `B`.
+///
+
 template <typename T>
 M44d
 procrustesRotationAndTranslation (const Vec3<T>* A,
@@ -240,19 +243,23 @@ procrustesRotationAndTranslation (const Vec3<T>* A,
     return procrustesRotationAndTranslation (A, B, (const T*) 0, numPoints, doScale);
 } // procrustesRotationAndTranslation
 
+/// TODO
 template IMATH_EXPORT M44d procrustesRotationAndTranslation (const V3d* from,
                                                              const V3d* to,
                                                              const size_t numPoints,
                                                              const bool doScale);
+/// TODO
 template IMATH_EXPORT M44d procrustesRotationAndTranslation (const V3f* from,
                                                              const V3f* to,
                                                              const size_t numPoints,
                                                              const bool doScale);
+/// TODO
 template IMATH_EXPORT M44d procrustesRotationAndTranslation (const V3d* from,
                                                              const V3d* to,
                                                              const double* weights,
                                                              const size_t numPoints,
                                                              const bool doScale);
+/// TODO
 template IMATH_EXPORT M44d procrustesRotationAndTranslation (const V3f* from,
                                                              const V3f* to,
                                                              const float* weights,
@@ -900,6 +907,7 @@ twoSidedJacobiSVD (IMATH_INTERNAL_NAMESPACE::Matrix44<T> A,
 
 } // namespace
 
+/// TODO
 template <typename T>
 void
 jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A,
@@ -912,6 +920,7 @@ jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A,
     twoSidedJacobiSVD (A, U, S, V, tol, forcePositiveDeterminant);
 }
 
+/// TODO
 template <typename T>
 void
 jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A,
@@ -924,24 +933,28 @@ jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A,
     twoSidedJacobiSVD (A, U, S, V, tol, forcePositiveDeterminant);
 }
 
+/// TODO
 template IMATH_EXPORT void jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix33<float>& A,
                                       IMATH_INTERNAL_NAMESPACE::Matrix33<float>& U,
                                       IMATH_INTERNAL_NAMESPACE::Vec3<float>& S,
                                       IMATH_INTERNAL_NAMESPACE::Matrix33<float>& V,
                                       const float tol,
                                       const bool forcePositiveDeterminant);
+/// TODO
 template IMATH_EXPORT void jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix33<double>& A,
                                       IMATH_INTERNAL_NAMESPACE::Matrix33<double>& U,
                                       IMATH_INTERNAL_NAMESPACE::Vec3<double>& S,
                                       IMATH_INTERNAL_NAMESPACE::Matrix33<double>& V,
                                       const double tol,
                                       const bool forcePositiveDeterminant);
+/// TODO
 template IMATH_EXPORT void jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix44<float>& A,
                                       IMATH_INTERNAL_NAMESPACE::Matrix44<float>& U,
                                       IMATH_INTERNAL_NAMESPACE::Vec4<float>& S,
                                       IMATH_INTERNAL_NAMESPACE::Matrix44<float>& V,
                                       const float tol,
                                       const bool forcePositiveDeterminant);
+/// TODO
 template IMATH_EXPORT void jacobiSVD (const IMATH_INTERNAL_NAMESPACE::Matrix44<double>& A,
                                       IMATH_INTERNAL_NAMESPACE::Matrix44<double>& U,
                                       IMATH_INTERNAL_NAMESPACE::Vec4<double>& S,
@@ -1227,4 +1240,7 @@ template IMATH_EXPORT void minEigenVector (Matrix44<float>& A, Vec4<float>& S);
 template IMATH_EXPORT void minEigenVector (Matrix33<double>& A, Vec3<double>& S);
 template IMATH_EXPORT void minEigenVector (Matrix44<double>& A, Vec4<double>& S);
 
+
 IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT
+
+/// @endcond

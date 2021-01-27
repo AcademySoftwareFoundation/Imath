@@ -106,9 +106,8 @@ closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) noexcept
 /// method as described in "Graphics Gems", Academic Press, 1990,
 /// pp. 548-550.
 ///
-///
 /// A transformed empty box is still empty, and a transformed infinite box
-/// is still infinite
+/// is still infinite.
 ///
 
 template <class S, class T>
@@ -257,14 +256,14 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) 
 }
 
 ///
-/// Transform a 3D box by a matrix whose rightmost column is (0 0 0
-/// 1), and compute a new box that tightly encloses the transformed
+/// Transform a 3D box by a matrix whose rightmost column `(0 0 0 1)`,
+/// and compute a new box that tightly encloses the transformed
 /// box. Return the transformed box.
 ///
 /// As in the transform() function, use James Arvo's fast method if
 /// possible.
 ///
-/// A transformed empty or infinite box is still empty or infinite
+/// A transformed empty or infinite box is still empty or infinite.
 ///
 
 template <class S, class T>
@@ -304,9 +303,10 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 }
 
 ///
-/// Transform a 3D box by a matrix whose rightmost column is (0 0 0
-/// 1), and compute a new box that tightly encloses the transformed
-/// box. Return the transformed box in the `result` argument.
+/// Transform a 3D box by a matrix whose rightmost column is
+/// `(0 0 0 1)`, and compute a new box that tightly encloses 
+/// the transformed box. Return the transformed box in the `result`
+/// argument.
 ///
 /// As in the transform() function, use James Arvo's fast method if
 /// possible.
@@ -358,9 +358,9 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& re
 ///
 /// Compute the points where a ray, `r`, enters and exits a 3D box, `b`:
 ///
-/// Return `true` if the ray starts inside the box or if the ray
-/// starts outside and intersects the box, `false` otherwise (that is,
-/// if the ray does not intersect the box).
+/// Return true if the ray starts inside the box or if the ray starts
+/// outside and intersects the box, or return false otherwise (that
+/// is, if the ray does not intersect the box).
 ///
 /// The entry and exit points are the points on two of the faces of
 /// the box when the function returns true (the entry end exit points

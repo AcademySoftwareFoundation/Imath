@@ -18,5 +18,6 @@ Example:
 .. doxygentypedef:: V3d
                     
 .. doxygenclass:: Imath::Vec3
+   :undoc-members:
    :members:
 

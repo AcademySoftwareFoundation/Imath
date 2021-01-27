@@ -32,16 +32,16 @@ Example:
 .. doxygentypedef:: Box3d
 
 .. doxygenclass:: Imath::Box
-   :members:
    :undoc-members:
+   :members:
 
 .. doxygenclass:: Imath::Box< Vec2< T > >
-   :members:
    :undoc-members:
+   :members:
       
 .. doxygenclass:: Imath::Box< Vec3< T > >
-   :members:
    :undoc-members:
+   :members:
 
 
 

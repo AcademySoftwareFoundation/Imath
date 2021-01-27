@@ -28,12 +28,20 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 // These routines eliminate type warnings under g++.
 //
 
+///
+/// Convert 3-channel hsv to rgb. Non-templated helper routine.
 IMATH_EXPORT Vec3<double> hsv2rgb_d (const Vec3<double>& hsv) noexcept;
 
+///
+/// Convert 4-channel hsv to rgb (with alpha). Non-templated helper routine.
 IMATH_EXPORT Color4<double> hsv2rgb_d (const Color4<double>& hsv) noexcept;
 
+///
+/// Convert 3-channel rgb to hsv. Non-templated helper routine.
 IMATH_EXPORT Vec3<double> rgb2hsv_d (const Vec3<double>& rgb) noexcept;
 
+///
+/// Convert 4-channel rgb to hsv. Non-templated helper routine.
 IMATH_EXPORT Color4<double> rgb2hsv_d (const Color4<double>& rgb) noexcept;
 
 ///

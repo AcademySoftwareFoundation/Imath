@@ -3,14 +3,14 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+///
+/// @file  ImathLine.h
+///
+/// @brief A 3D line class template
+///
+
 #ifndef INCLUDED_IMATHLINE_H
 #define INCLUDED_IMATHLINE_H
-
-//-------------------------------------
-//
-//	A 3D line class template
-//
-//-------------------------------------
 
 #include "ImathLimits.h"
 #include "ImathMatrix.h"
@@ -19,51 +19,73 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+///
+/// The `Line3` class represents a 3D line, defined by a point and a
+/// direction vector.
+///
+
 template <class T> class Line3
 {
   public:
+
+    /// @{
+    /// @name Direct access to member fields
+    
+    /// A point on the line
     Vec3<T> pos;
+
+    /// The direction of the line
     Vec3<T> dir;
 
-    //-------------------------------------------------------------
-    //	Constructors - default is normalized units along direction
-    //-------------------------------------------------------------
+    /// @}
 
+    /// @{
+    ///	@name Constructors
+
+    /// Uninitialized by default
     IMATH_HOSTDEVICE constexpr Line3() noexcept {}
+
+    /// Initialize with two points. The direction is the difference
+    /// between the points.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Line3 (const Vec3<T>& point1, const Vec3<T>& point2) noexcept;
 
-    //------------------
-    //	State Query/Set
-    //------------------
-
+    /// @}
+    
+    /// @{
+    /// @name Manipulation
+    
+    /// Set the line defined by two points. The direction is the difference
+    /// between the points.
     IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2) noexcept;
 
-    //-------
-    //	F(t)
-    //-------
+    /// @}
 
+    /// @{
+    /// @name Utility Methods
+    
+    /// Return the point on the line at the given parameter value,
+    ///	e.g. L(t)
     IMATH_HOSTDEVICE constexpr Vec3<T> operator() (T parameter) const noexcept;
 
-    //---------
-    //	Query
-    //---------
-
+    /// Return the distance to the given point
     IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>& point) const noexcept;
+    /// Return the distance to the given line
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T distanceTo (const Line3<T>& line) const noexcept;
+
+    /// Return the point on the line closest to the given point
     IMATH_HOSTDEVICE constexpr Vec3<T> closestPointTo (const Vec3<T>& point) const noexcept;
+
+    /// Return the point on the line closest to the given line
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> closestPointTo (const Line3<T>& line) const noexcept;
+
+    /// @}
 };
 
-//--------------------
-// Convenient typedefs
-//--------------------
-
+/// Line of type float
 typedef Line3<float> Line3f;
-typedef Line3<double> Line3d;
 
-//---------------
-// Implementation
-//---------------
+/// Line of type double
+typedef Line3<double> Line3d;
 
 template <class T> IMATH_CONSTEXPR14 inline Line3<T>::Line3 (const Vec3<T>& p0, const Vec3<T>& p1) noexcept
 {
@@ -135,6 +157,7 @@ Line3<T>::closestPointTo (const Line3<T>& line) const noexcept
     return pos + dir * (num / denom);
 }
 
+/// Stream output
 template <class T>
 std::ostream&
 operator<< (std::ostream& o, const Line3<T>& line)
@@ -142,6 +165,7 @@ operator<< (std::ostream& o, const Line3<T>& line)
     return o << "(" << line.pos << ", " << line.dir << ")";
 }
 
+/// Transform a line by a matrix
 template <class S, class T>
 constexpr inline Line3<S>
 operator* (const Line3<S>& line, const Matrix44<T>& M) noexcept
