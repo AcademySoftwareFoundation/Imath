@@ -78,7 +78,7 @@ testDenormalizedConversionError()
 
     for (int i = 0; i < 20000000; i++)
     {
-        float f (drand() * (HALF_NRM_MIN - HALF_MIN));
+        float f (drand() * (HALF_NRM_MIN - HALF_DENORM_MIN));
 
         if (i & 1)
             f = -f;
@@ -89,7 +89,7 @@ testDenormalizedConversionError()
         if (e < 0)
             e = -e;
 
-        if (e > HALF_MIN * 0.5)
+        if (e > HALF_DENORM_MIN * 0.5)
         {
             cout << "float = " << f << ", half = " << h << ", error = " << e << endl;
 
@@ -101,7 +101,7 @@ testDenormalizedConversionError()
     }
 
     cout << "max error          = " << eMax << endl;
-    cout << "max expected error = " << HALF_MIN * 0.5 << endl;
+    cout << "max expected error = " << HALF_DENORM_MIN * 0.5 << endl;
     cout << "ok\n\n" << flush;
 }
 
@@ -159,12 +159,12 @@ testDenormalizedRounding (int n)
 {
     cout << "rounding denormalized numbers to " << n << "-bit precision\n";
 
-    float eExpected = (n < 10) ? HALF_MIN * 0.5f * (1 << (10 - n)) : 0;
+    float eExpected = (n < 10) ? HALF_DENORM_MIN * 0.5f * (1 << (10 - n)) : 0;
     float eMax      = 0;
 
     for (int i = 0; i < 200000; i++)
     {
-        half h (drand() * (HALF_NRM_MIN - HALF_MIN));
+        half h (drand() * (HALF_NRM_MIN - HALF_DENORM_MIN));
 
         if (i & 1)
             h = -h;

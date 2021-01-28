@@ -43,7 +43,7 @@ testEntryAndExitPoints (const Box3f& box)
 {
     Rand48 random (2007);
 
-    float e = 50 * limits<float>::epsilon();
+    float e = 50 * std::numeric_limits<float>::epsilon();
 
     if (box.isEmpty())
     {
@@ -222,7 +222,7 @@ testEntryAndExitPoints (const Box3f& box)
                 m = max (abs (r[j]), m);
             }
 
-            float err = 30 * m * limits<float>::epsilon();
+            float err = 30 * m * std::numeric_limits<float>::epsilon();
             assert (p3.equalWithAbsError (r, err));
         }
 
@@ -236,7 +236,7 @@ testEntryAndExitPoints (const Box3f& box)
                 m = max (abs (s[j]), m);
             }
 
-            float err = 30 * m * limits<float>::epsilon();
+            float err = 30 * m * std::numeric_limits<float>::epsilon();
             assert (p3.equalWithAbsError (s, err));
         }
     }
@@ -414,7 +414,7 @@ testRayBoxIntersection (const Box3f& box)
 {
     Rand48 random (2007);
 
-    float e = 50 * limits<float>::epsilon();
+    float e = 50 * std::numeric_limits<float>::epsilon();
 
     if (box.isEmpty())
     {
@@ -587,7 +587,7 @@ testRayBoxIntersection (const Box3f& box)
             m = max (abs (ip[j]), m);
         }
 
-        float err = 30 * m * limits<float>::epsilon();
+        float err = 30 * m * std::numeric_limits<float>::epsilon();
         assert (p3.equalWithAbsError (ip, err));
 
         //
@@ -791,7 +791,7 @@ boxMatrixTransform()
 {
     cout << "  transform box by matrix" << endl;
 
-    const float e = 5 * limits<float>::epsilon();
+    const float e = 5 * std::numeric_limits<float>::epsilon();
 
     Box3f b1 (V3f (4, 5, 6), V3f (7, 8, 9));
 

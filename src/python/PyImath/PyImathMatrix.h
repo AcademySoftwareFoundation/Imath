@@ -170,7 +170,7 @@ jacobiEigensolve(const Matrix& m)
 
     // Give a fairly generous tolerance to account for possible epsilon drift:
     const int d = Matrix::dimensions();
-    const T tol = std::sqrt(IMATH_NAMESPACE::limits<T>::epsilon());
+    const T tol = std::sqrt(std::numeric_limits<T>::epsilon());
     for (int i = 0; i < d; ++i)
     {
         for (int j = i+1; j < d; ++j)

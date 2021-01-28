@@ -159,16 +159,16 @@ template <class T>
 inline void
 Interval<T>::makeEmpty() noexcept
 {
-    min = limits<T>::max();
-    max = limits<T>::min();
+    min = std::numeric_limits<T>::max();
+    max = std::numeric_limits<T>::lowest();
 }
 
 template <class T>
 inline void
 Interval<T>::makeInfinite() noexcept
 {
-    min = limits<T>::min();
-    max = limits<T>::max();
+    min = std::numeric_limits<T>::lowest();
+    max = std::numeric_limits<T>::max();
 }
 
 
@@ -243,7 +243,7 @@ template <class T>
 IMATH_CONSTEXPR14 inline bool
 Interval<T>::isInfinite() const noexcept
 {
-    if (min != limits<T>::min() || max != limits<T>::max())
+    if (min != std::numeric_limits<T>::lowest() || max != std::numeric_limits<T>::max())
         return false;
 
     return true;

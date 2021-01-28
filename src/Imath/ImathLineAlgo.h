@@ -39,7 +39,7 @@ closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Ve
     T d       = 1 - d1d2 * d1d2;
     T absD    = abs (d);
 
-    if ((absD > 1) || (abs (n1) < limits<T>::max() * absD && abs (n2) < limits<T>::max() * absD))
+    if ((absD > 1) || (abs (n1) < std::numeric_limits<T>::max() * absD && abs (n2) < std::numeric_limits<T>::max() * absD))
     {
         point1 = line1 (n1 / d);
         point2 = line2 (n2 / d);
@@ -104,7 +104,7 @@ intersect (const Line3<T>& line,
     T d  = normal ^ (v0 - line.pos);
     T nd = normal ^ line.dir;
 
-    if (abs (nd) > 1 || abs (d) < limits<T>::max() * abs (nd))
+    if (abs (nd) > 1 || abs (d) < std::numeric_limits<T>::max() * abs (nd))
         pt = line (d / nd);
     else
         return false; // line and plane are nearly parallel

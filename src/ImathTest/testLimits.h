@@ -4,3 +4,4 @@
 //
 
 void testLimits();
+void testHalfLimits();

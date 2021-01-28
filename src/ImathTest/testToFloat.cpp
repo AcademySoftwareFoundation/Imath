@@ -94,11 +94,7 @@ halfToFloat (unsigned short y)
     return (s << 31) | (e << 23) | m;
 }
 
-union HalfShort
-{
-    half h;
-    unsigned short s;
-};
+
 
 void
 testToFloat()
@@ -111,17 +107,17 @@ testToFloat()
     // for each 16-bit bit pattern...
     //
 
-    for (int s = 0; s < iMax; s++)
+    for (unsigned int s = 0; s < iMax; s++)
     {
-        HalfShort hs;
-        hs.s = s;
+        half hs(half::FromBits, static_cast<unsigned short>(s));
+        assert (hs.bits() == s);
 
         //
         // cast these bits to a float, using the cast-to-float
         // operator.
         //
 
-        float f = float (hs.h); // = _toFloat[s]
+        float f = float (hs); // = _toFloat[s]
 
         //
         // Cast that float back to a half.
@@ -155,7 +151,6 @@ testToFloat()
         }
         else
         {
-            assert (h == hs.h);
             assert (f == uif.f);
         }
     }

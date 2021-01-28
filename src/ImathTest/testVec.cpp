@@ -8,7 +8,6 @@
 #endif
 
 #include "ImathFun.h"
-#include "ImathLimits.h"
 #include "ImathVec.h"
 #include <cassert>
 #include <cmath>
@@ -25,8 +24,8 @@ template <class T>
 void
 testLength2T()
 {
-    const T s = std::sqrt (limits<T>::smallest());
-    const T e = 4 * limits<T>::epsilon();
+    const T s = std::sqrt (std::numeric_limits<T>::min());
+    const T e = 4 * std::numeric_limits<T>::epsilon();
 
     Vec2<T> v;
 
@@ -83,8 +82,8 @@ template <class T>
 void
 testLength3T()
 {
-    const T s = std::sqrt (limits<T>::smallest());
-    const T e = 4 * limits<T>::epsilon();
+    const T s = std::sqrt (std::numeric_limits<T>::min());
+    const T e = 4 * std::numeric_limits<T>::epsilon();
 
     Vec3<T> v;
 
@@ -158,8 +157,8 @@ template <class T>
 void
 testLength4T()
 {
-    const T s = std::sqrt (limits<T>::smallest());
-    const T e = 4 * limits<T>::epsilon();
+    const T s = std::sqrt (std::numeric_limits<T>::min());
+    const T e = 4 * std::numeric_limits<T>::epsilon();
 
     Vec4<T> v;
 

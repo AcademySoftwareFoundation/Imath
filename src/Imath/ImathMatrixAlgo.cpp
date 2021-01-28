@@ -139,7 +139,7 @@ procrustesRotationAndTranslation (const Vec3<T>* A,
 
     M33d U, V;
     V3d S;
-    jacobiSVD (C, U, S, V, IMATH_INTERNAL_NAMESPACE::limits<double>::epsilon(), true);
+    jacobiSVD (C, U, S, V, std::numeric_limits<double>::epsilon(), true);
 
     // We want Q.transposed() here since we are going to be using it in the
     // Imath style (multiplying vectors on the right, v' = v*A^T):
@@ -1050,7 +1050,7 @@ jacobiRotation (Matrix44<T>& A, Matrix44<T>& V, Vec4<T>& Z, const T tol)
 
     // Let's see if rho^(-1) = mu2 / mu1 is less than tol
     // This test also checks if rho^2 will overflow
-    // when tol^(-1) < sqrt(limits<T>::max()).
+    // when tol^(-1) < sqrt(std::numeric_limits<T>::max()).
     if (std::abs (mu2) <= tol * std::abs (mu1))
     {
         A[j][k] = 0;

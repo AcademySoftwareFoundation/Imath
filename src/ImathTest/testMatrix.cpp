@@ -8,7 +8,6 @@
 #endif
 
 #include "ImathInt64.h"
-#include "ImathLimits.h"
 #include "ImathMath.h"
 #include "ImathMatrix.h"
 #include "ImathMatrixAlgo.h"

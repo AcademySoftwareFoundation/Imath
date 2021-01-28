@@ -88,7 +88,7 @@ half::convert (int i) noexcept
         {
             //
             // E is less than -10.  The absolute value of f is
-            // less than HALF_MIN (f may be a small normalized
+            // less than HALF_DENORM_MIN (f may be a small normalized
             // float, a denormalized float or a zero).
             //
             // We convert f to a half zero with the same sign as f.

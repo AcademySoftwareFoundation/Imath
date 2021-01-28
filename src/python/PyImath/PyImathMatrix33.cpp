@@ -782,7 +782,7 @@ singularValueDecomposition33(const Matrix33<T>& m, bool forcePositiveDeterminant
 {
     IMATH_NAMESPACE::Matrix33<T> U, V;
     IMATH_NAMESPACE::Vec3<T> S;
-    IMATH_NAMESPACE::jacobiSVD (m, U, S, V, IMATH_NAMESPACE::limits<T>::epsilon(), forcePositiveDeterminant);
+    IMATH_NAMESPACE::jacobiSVD (m, U, S, V, std::numeric_limits<T>::epsilon(), forcePositiveDeterminant);
     return make_tuple (U, S, V);
 }
 
@@ -854,8 +854,8 @@ register_Matrix33()
         .staticmethod("baseTypeEpsilon")
         .def("baseTypeMax", &Matrix33<T>::baseTypeMax,"baseTypeMax() max value of the base type of the vector")
         .staticmethod("baseTypeMax")
-        .def("baseTypeMin", &Matrix33<T>::baseTypeMin,"baseTypeMin() min value of the base type of the vector")
-        .staticmethod("baseTypeMin")
+        .def("baseTypeLowest", &Matrix33<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the vector")
+        .staticmethod("baseTypeLowest")
         .def("baseTypeSmallest", &Matrix33<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the vector")
         .staticmethod("baseTypeSmallest")
         .def("equalWithAbsError", &Matrix33<T>::equalWithAbsError,"m1.equalWithAbsError(m2,e) true if the elements "

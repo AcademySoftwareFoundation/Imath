@@ -11,10 +11,10 @@
 #ifndef INCLUDED_IMATHMATH_H
 #define INCLUDED_IMATHMATH_H
 
-#include "ImathLimits.h"
 #include "ImathNamespace.h"
 #include "ImathPlatform.h"
 #include <cmath>
+#include <limits>
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
@@ -114,7 +114,7 @@ template <class T>
 IMATH_HOSTDEVICE inline T
 sinx_over_x (T x)
 {
-    if (x * x < limits<T>::epsilon())
+    if (x * x < std::numeric_limits<T>::epsilon())
         return T (1);
     else
         return std::sin (x) / x;

@@ -65,8 +65,8 @@ testSlerp (const Quatf q1, const Quatf q2, int m, int n)
     Quatf q3   = q1.inverse() * q2;
     Quatf q1q2 = slerp (q1, q2, float (m) / float (n));
     Quatf qiq3 = slerp (qi, q3, float (m) / float (n));
-    float e1   = 60 * limits<float>::epsilon();
-    float e2   = 600 * limits<float>::epsilon();
+    float e1   = 60 * std::numeric_limits<float>::epsilon();
+    float e2   = 600 * std::numeric_limits<float>::epsilon();
 
     compareQuats (q1q2, q1 * qiq3, e1);
     compareQuats (pow (qiq3, n), pow (q3, m), e2);

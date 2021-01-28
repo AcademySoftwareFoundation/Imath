@@ -7,7 +7,6 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathLimits.h"
 #include "ImathMath.h"
 #include "ImathShear.h"
 #include <assert.h>
@@ -23,7 +22,7 @@ testShear()
 
     cout << "Imath::Shear6 constructors" << endl;
 
-    const float epsilon = IMATH_INTERNAL_NAMESPACE::limits<float>::epsilon();
+    const float epsilon = std::numeric_limits<float>::epsilon();
 
     IMATH_INTERNAL_NAMESPACE::Shear6f testConstructor1;
     IMATH_INTERNAL_NAMESPACE::Shear6f testConstructor2 (testConstructor1);

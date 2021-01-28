@@ -414,20 +414,20 @@ BOOST_PYTHON_MODULE(imath)
     scope().attr("EULER_Y_AXIS") = IMATH_NAMESPACE::Eulerf::Y;
     scope().attr("EULER_Z_AXIS") = IMATH_NAMESPACE::Eulerf::Z;
     
-    scope().attr("INT_MIN")      = IMATH_NAMESPACE::limits<int>::min();
-    scope().attr("INT_MAX")      = IMATH_NAMESPACE::limits<int>::max();
-    scope().attr("INT_SMALLEST") = IMATH_NAMESPACE::limits<int>::smallest();
-    scope().attr("INT_EPS")      = IMATH_NAMESPACE::limits<int>::epsilon();
+    scope().attr("INT_MIN")      = std::numeric_limits<int>::min();
+    scope().attr("INT_MAX")      = std::numeric_limits<int>::max();
+    scope().attr("INT_LOWEST")   = std::numeric_limits<int>::lowest();
+    scope().attr("INT_EPS")      = std::numeric_limits<int>::epsilon();
 
-    scope().attr("FLT_MIN")      = IMATH_NAMESPACE::limits<float>::min();
-    scope().attr("FLT_MAX")      = IMATH_NAMESPACE::limits<float>::max();
-    scope().attr("FLT_SMALLEST") = IMATH_NAMESPACE::limits<float>::smallest();
-    scope().attr("FLT_EPS")      = IMATH_NAMESPACE::limits<float>::epsilon();
+    scope().attr("FLT_MIN")      = std::numeric_limits<float>::min();
+    scope().attr("FLT_MAX")      = std::numeric_limits<float>::max();
+    scope().attr("FLT_LOWEST")   = std::numeric_limits<float>::lowest();
+    scope().attr("FLT_EPS")      = std::numeric_limits<float>::epsilon();
 
-    scope().attr("DBL_MIN")      = IMATH_NAMESPACE::limits<double>::min();
-    scope().attr("DBL_MAX")      = IMATH_NAMESPACE::limits<double>::max();
-    scope().attr("DBL_SMALLEST") = IMATH_NAMESPACE::limits<double>::smallest();
-    scope().attr("DBL_EPS")      = IMATH_NAMESPACE::limits<double>::epsilon();
+    scope().attr("DBL_MIN")      = std::numeric_limits<double>::min();
+    scope().attr("DBL_MAX")      = std::numeric_limits<double>::max();
+    scope().attr("DBL_LOWEST")   = std::numeric_limits<double>::lowest();
+    scope().attr("DBL_EPS")      = std::numeric_limits<double>::epsilon();
 
     def("computeBoundingBox", &computeBoundingBox<float>,
         "computeBoundingBox(position) -- computes the bounding box from the position array.");

@@ -57,6 +57,7 @@ define_imath_tests(
   testBitPatterns
   testClassification
   testLimits
+  testHalfLimits
   testFunction
   testVec
   testColor

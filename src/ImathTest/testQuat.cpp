@@ -8,7 +8,6 @@
 #endif
 
 #include "ImathFun.h"
-#include "ImathLimits.h"
 #include "ImathMatrixAlgo.h"
 #include "ImathPlatform.h" /* [i_a] M_PI_2 */
 #include "ImathQuat.h"
@@ -27,8 +26,8 @@ template <class T>
 void
 testQuatT ()
 {
-    const T s = limits<T>::smallest();
-    const T e = 4 * limits<T>::epsilon();
+    const T s = std::numeric_limits<T>::min();
+    const T e = 4 * std::numeric_limits<T>::epsilon();
 
     //
     // constructors, r(), v()

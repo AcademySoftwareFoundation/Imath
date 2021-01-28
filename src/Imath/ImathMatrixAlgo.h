@@ -15,7 +15,6 @@
 
 #include "ImathEuler.h"
 #include "ImathExport.h"
-#include "ImathLimits.h"
 #include "ImathMatrix.h"
 #include "ImathNamespace.h"
 #include "ImathQuat.h"
@@ -830,7 +829,7 @@ checkForZeroScaleInRow (const T& scl, const Vec3<T>& row, bool exc /* = true */)
 {
     for (int i = 0; i < 3; i++)
     {
-        if ((abs (scl) < 1 && abs (row[i]) >= limits<T>::max() * abs (scl)))
+        if ((abs (scl) < 1 && abs (row[i]) >= std::numeric_limits<T>::max() * abs (scl)))
         {
             if (exc)
                 throw std::domain_error ("Cannot remove zero scaling "
@@ -1332,7 +1331,7 @@ checkForZeroScaleInRow (const T& scl, const Vec2<T>& row, bool exc /* = true */)
 {
     for (int i = 0; i < 2; i++)
     {
-        if ((abs (scl) < 1 && abs (row[i]) >= limits<T>::max() * abs (scl)))
+        if ((abs (scl) < 1 && abs (row[i]) >= std::numeric_limits<T>::max() * abs (scl)))
         {
             if (exc)
                 throw std::domain_error ("Cannot remove zero scaling from matrix.");
@@ -1424,7 +1423,7 @@ void jacobiSVD (const Matrix33<T>& A,
                 Matrix33<T>& U,
                 Vec3<T>& S,
                 Matrix33<T>& V,
-                const T tol = limits<T>::epsilon(),
+                const T tol = std::numeric_limits<T>::epsilon(),
                 const bool forcePositiveDeterminant = false);
 
 /// Compute the SVD of a 3x3 matrix using Jacobi transformations.  This method
@@ -1447,7 +1446,7 @@ void jacobiSVD (const Matrix44<T>& A,
                 Matrix44<T>& U,
                 Vec4<T>& S,
                 Matrix44<T>& V,
-                const T tol = limits<T>::epsilon(),
+                const T tol = std::numeric_limits<T>::epsilon(),
                 const bool forcePositiveDeterminant = false);
 
 /// Compute the eigenvalues (S) and the eigenvectors (V) of a real
@@ -1474,7 +1473,7 @@ template <typename T>
 inline void
 jacobiEigenSolver (Matrix33<T>& A, Vec3<T>& S, Matrix33<T>& V)
 {
-    jacobiEigenSolver (A, S, V, limits<T>::epsilon());
+    jacobiEigenSolver (A, S, V, std::numeric_limits<T>::epsilon());
 }
 
 /// Compute the eigenvalues (S) and the eigenvectors (V) of a real
@@ -1501,7 +1500,7 @@ template <typename T>
 inline void
 jacobiEigenSolver (Matrix44<T>& A, Vec4<T>& S, Matrix44<T>& V)
 {
-    jacobiEigenSolver (A, S, V, limits<T>::epsilon());
+    jacobiEigenSolver (A, S, V, std::numeric_limits<T>::epsilon());
 }
 
 /// Compute a eigenvector corresponding to the abs max eigenvalue

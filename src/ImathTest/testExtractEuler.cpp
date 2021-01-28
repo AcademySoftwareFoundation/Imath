@@ -177,7 +177,7 @@ testRandomAngles33()
 {
     Rand48 r (0);
 
-    float eps = 8.0 * limits<float>::epsilon();
+    float eps = 8.0 * std::numeric_limits<float>::epsilon();
 
     for (int i = 0; i < 100000; ++i)
     {

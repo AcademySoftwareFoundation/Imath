@@ -60,6 +60,7 @@ main (int argc, char* argv[])
     TEST (testBitPatterns);
     TEST (testClassification);
     TEST (testLimits);
+    TEST (testHalfLimits);
     TEST (testFunction);
     TEST (testVec);
     TEST (testColor);

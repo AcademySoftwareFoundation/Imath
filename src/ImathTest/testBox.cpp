@@ -80,7 +80,7 @@ testConstructors (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Box<T> b;
-        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeMin()));
+        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeLowest()));
     }
 
     //
@@ -124,7 +124,7 @@ testMakeEmpty (const char* type)
     {
         IMATH_INTERNAL_NAMESPACE::Box<T> b;
         b.makeEmpty();
-        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeMin()));
+        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeLowest()));
     }
 
     //
@@ -133,7 +133,7 @@ testMakeEmpty (const char* type)
     {
         IMATH_INTERNAL_NAMESPACE::Box<T> b (T (-1), T (1));
         b.makeEmpty();
-        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeMin()));
+        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeLowest()));
     }
 
     //
@@ -150,7 +150,7 @@ testMakeEmpty (const char* type)
 
         IMATH_INTERNAL_NAMESPACE::Box<T> b (min, max);
         b.makeEmpty();
-        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeMin()));
+        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeLowest()));
     }
 }
 
@@ -166,7 +166,7 @@ testMakeInfinite (const char* type)
     {
         IMATH_INTERNAL_NAMESPACE::Box<T> b;
         b.makeInfinite();
-        assert (b.min == T (T::baseTypeMin()) && b.max == T (T::baseTypeMax()));
+        assert (b.min == T (T::baseTypeLowest()) && b.max == T (T::baseTypeMax()));
     }
 
     //
@@ -175,7 +175,7 @@ testMakeInfinite (const char* type)
     {
         IMATH_INTERNAL_NAMESPACE::Box<T> b (T (-1), T (1));
         b.makeInfinite();
-        assert (b.min == T (T::baseTypeMin()) && b.max == T (T::baseTypeMax()));
+        assert (b.min == T (T::baseTypeLowest()) && b.max == T (T::baseTypeMax()));
     }
 
     //
@@ -192,7 +192,7 @@ testMakeInfinite (const char* type)
 
         IMATH_INTERNAL_NAMESPACE::Box<T> b (min, max);
         b.makeInfinite();
-        assert (b.min == T (T::baseTypeMin()) && b.max == T (T::baseTypeMax()));
+        assert (b.min == T (T::baseTypeLowest()) && b.max == T (T::baseTypeMax()));
     }
 }
 
@@ -267,7 +267,7 @@ testExtendByBox (const char* type)
     {
         IMATH_INTERNAL_NAMESPACE::Box<T> b;
         b.extendBy (IMATH_INTERNAL_NAMESPACE::Box<T>());
-        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeMin()));
+        assert (b.min == T (T::baseTypeMax()) && b.max == T (T::baseTypeLowest()));
     }
 
     //

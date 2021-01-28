@@ -34,7 +34,7 @@ testRotation (const V3f& from, const V3f& to)
     // Verify that the quaternion rotates vector from into vector to.
     //
 
-    float e = 20 * limits<float>::epsilon();
+    float e = 20 * std::numeric_limits<float>::epsilon();
 
     V3f fromM = from * M;
     V3f fromQ = from * Q;
@@ -128,7 +128,7 @@ nearlyEqualVectors()
     cout << "  nearly equal from and to vectors" << endl;
 
     Rand48 rand (19);
-    float e = 100 * limits<float>::epsilon();
+    float e = 100 * std::numeric_limits<float>::epsilon();
 
     for (int i = 0; i < 500000; ++i)
     {
@@ -144,7 +144,7 @@ nearlyOppositeVectors()
     cout << "  nearly opposite from and to vectors" << endl;
 
     Rand48 rand (19);
-    float e = 100 * limits<float>::epsilon();
+    float e = 100 * std::numeric_limits<float>::epsilon();
 
     for (int i = 0; i < 500000; ++i)
     {
