@@ -8,7 +8,7 @@ include(GNUInstallDirs)
 
 if(NOT "${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
   set(IMATH_IS_SUBPROJECT ON)
-  message(NOTICE "Imath is configuring as a cmake sub project")
+  message(STATUS "Imath is configuring as a cmake sub project")
 endif()
 
 # This is primarily for the halfFunction code that enables a stack
