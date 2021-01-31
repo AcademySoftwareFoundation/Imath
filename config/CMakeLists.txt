@@ -57,7 +57,7 @@ if(IMATH_INSTALL_PKG_CONFIG)
   endfunction()
   imath_pkg_config_help(../Imath.pc.in)
 else()
-  message(STATUS "-- WARNING pkg-config generation disabled")
+  message(STATUS "pkg-config generation disabled")
 endif()
 
 # The main export of the configuration - This is the
