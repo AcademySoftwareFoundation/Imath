@@ -3,19 +3,17 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathRandom.h
-///
-/// @brief Generators for uniformly distributed pseudo-random numbers
-///	   and functions that use those generators to generate numbers
-///	   with non-uniform distributions
-///
-/// Note: class Rand48() calls erand48() and nrand48(), which are not
-/// available on all operating systems.  For compatibility we include
-/// our own versions of erand48() and nrand48().  Our functions
-/// have been reverse-engineered from the corresponding Unix/Linux
-/// man page.
-///
+//
+// Generators for uniformly distributed pseudo-random numbers and
+// functions that use those generators to generate numbers with
+// non-uniform distributions
+//
+// Note: class Rand48() calls erand48() and nrand48(), which are not
+// available on all operating systems.  For compatibility we include
+// our own versions of erand48() and nrand48().  Our functions
+// have been reverse-engineered from the corresponding Unix/Linux
+// man page.
+//
 
 #ifndef INCLUDED_IMATHRANDOM_H
 #define INCLUDED_IMATHRANDOM_H

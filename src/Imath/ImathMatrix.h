@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathMatrix.h
-///
-/// @brief 2x2, 3x3, and 4x4 transformation matrix templates
-///
+//
+// 2x2, 3x3, and 4x4 transformation matrix templates
+//
 
 #ifndef INCLUDED_IMATHMATRIX_H
 #define INCLUDED_IMATHMATRIX_H

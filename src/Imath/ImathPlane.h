@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathPlane.h
-///
-/// @brief A 3D plane class template
-///
+//
+// A 3D plane class template
+//
 
 #ifndef INCLUDED_IMATHPLANE_H
 #define INCLUDED_IMATHPLANE_H

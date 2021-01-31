@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathColor.h
-///
-/// @brief 3-channel and 4-channel color representations.
-///
+//
+// 3-channel and 4-channel color representations
+//
 
 #ifndef INCLUDED_IMATHCOLOR_H
 #define INCLUDED_IMATHCOLOR_H

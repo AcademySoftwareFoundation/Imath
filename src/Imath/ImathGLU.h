@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathGLU.h
-///
-/// @brief Convenience functions that call GLU with Imath types
-///
+//
+// Convenience functions that call GLU with Imath types
+//
 
 #ifndef INCLUDED_IMATHGLU_H
 #define INCLUDED_IMATHGLU_H

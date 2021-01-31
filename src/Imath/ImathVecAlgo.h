@@ -3,15 +3,14 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathVecAlgo.h
-///
-/// @brief Algorithms applied to or in conjunction
-/// with points (Imath::Vec2 and Imath::Vec3).
-///
-/// The assumption made is that these functions are called much
-/// less often than the basic point functions or these functions
-/// require more support classes.
+//
+// Algorithms applied to or in conjunction with points (Imath::Vec2
+// and Imath::Vec3).
+//
+// The assumption made is that these functions are called much
+// less often than the basic point functions or these functions
+// require more support classes.
+//
 
 #ifndef INCLUDED_IMATHVECALGO_H
 #define INCLUDED_IMATHVECALGO_H

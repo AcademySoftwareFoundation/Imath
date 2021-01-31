@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathShear.h
-///
-/// @brief A representation of a shear transformation
-///
+//
+// A representation of a shear transformation
+//
 
 #ifndef INCLUDED_IMATHSHEAR_H
 #define INCLUDED_IMATHSHEAR_H

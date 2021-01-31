@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathEuler.h
-///
-/// @brief Euler angle representation of rotation/orientation.
-///
+//
+// Euler angle representation of rotation/orientation
+//
 
 #ifndef INCLUDED_IMATHEULER_H
 #define INCLUDED_IMATHEULER_H
@@ -159,7 +157,7 @@ template <class T> class Euler : public Vec3<T>
         ZXZr = 0x0010,
         //       ||||
         //       VVVV
-        ///      ABCD
+        //       ABCD
         // Legend: 
         //  A -> Initial Axis (0==x, 1==y, 2==z)
         //  B -> Parity Even (1==true)
@@ -259,6 +257,12 @@ template <class T> class Euler : public Vec3<T>
     /// Return initialAxis 
     IMATH_HOSTDEVICE constexpr Axis initialAxis() const { return _initialAxis; }
 
+    /// Unpack angles from ijk form
+    IMATH_HOSTDEVICE void angleOrder (int& i, int& j, int& k) const noexcept;
+
+    /// Determine mapping from xyz to ijk (reshuffle the xyz to match the order)
+    IMATH_HOSTDEVICE void angleMapping (int& i, int& j, int& k) const noexcept;
+
     /// @}
 
     /// @{
@@ -314,12 +318,10 @@ template <class T> class Euler : public Vec3<T>
     
     /// @{
     /// @name Utility Methods
-    
-    /// Unpack angles from ijk form
-    IMATH_HOSTDEVICE void angleOrder (int& i, int& j, int& k) const noexcept;
-
-    /// Determine mapping from xyz to ijk (reshuffle the xyz to match the order)
-    IMATH_HOSTDEVICE void angleMapping (int& i, int& j, int& k) const noexcept;
+    ///
+    ///  Utility methods for getting continuous rotations. None of these
+    ///  methods change the orientation given by its inputs (or at least
+    ///  that is the intent).
 
     /// Convert an angle to its equivalent in [-PI, PI]
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 static float angleMod (T angle) noexcept;

@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathInt64.h
-///
-/// @brief 64-bit integer types
-///
+//
+// 64-bit integer types
+//
 
 #ifndef INCLUDED_IMATH_INT64_H
 #define INCLUDED_IMATH_INT64_H

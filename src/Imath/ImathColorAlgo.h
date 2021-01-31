@@ -3,14 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathColorAlgo.h
-///
-/// @brief Color conversion functions and general color algorithms
-///
-/// hsv2rgb(), rgb2hsv(), rgb2packed(), packed2rgb()
-/// See each funtion definition for details.
-///
+//
+// Color conversion functions and general color algorithms
+//
 
 #ifndef INCLUDED_IMATHCOLORALGO_H
 #define INCLUDED_IMATHCOLORALGO_H

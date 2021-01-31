@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 // 
 
-///
-/// @file ImathVec.h
-///
-/// @brief 2D, 3D and 4D point/vector class templates
-///
+//
+// 2D, 3D and 4D point/vector class templates
+//
 
 #ifndef INCLUDED_IMATHVEC_H
 #define INCLUDED_IMATHVEC_H

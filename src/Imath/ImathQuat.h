@@ -3,18 +3,16 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathQuat.h
-///
-/// @brief A quaternion
-///
-/// "Quaternions came from Hamilton ... and have been an unmixed
-/// evil to those who have touched them in any way. Vector is a
-/// useless survival ... and has never been of the slightest use
-/// to any creature."
-///
-///   - Lord Kelvin
-///
+//
+// A quaternion
+//
+// "Quaternions came from Hamilton ... and have been an unmixed
+// evil to those who have touched them in any way. Vector is a
+// useless survival ... and has never been of the slightest use
+// to any creature."
+//
+//   - Lord Kelvin
+//
 
 #ifndef INCLUDED_IMATHQUAT_H
 #define INCLUDED_IMATHQUAT_H
@@ -257,7 +255,7 @@ template <class T> constexpr inline Quat<T>::Quat() noexcept : r (1), v (0, 0, 0
 
 template <class T>
 template <class S>
-constexpr inline Quat<T>::Quat (const Quat<S>& q) noexcept : r (q.r), v (q.v)
+IMATH_CONSTEXPR inline Quat<T>::Quat (const Quat<S>& q) noexcept : r (q.r), v (q.v)
 {
     // empty
 }

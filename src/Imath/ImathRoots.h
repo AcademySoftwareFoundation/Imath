@@ -3,17 +3,15 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathRoots.h
-///
-/// @brief Functions to solve linear, quadratic or cubic equations
-///
-/// Note: It is possible that an equation has real solutions, but that
-/// the solutions (or some intermediate result) are not representable.
-/// In this case, either some of the solutions returned are invalid
-/// (nan or infinity), or, if floating-point exceptions have been
-/// enabled, an exception is thrown.
-///
+//
+// Functions to solve linear, quadratic or cubic equations
+//
+// Note: It is possible that an equation has real solutions, but that
+// the solutions (or some intermediate result) are not representable.
+// In this case, either some of the solutions returned are invalid
+// (nan or infinity), or, if floating-point exceptions have been
+// enabled, an exception is thrown.
+//
 
 #ifndef INCLUDED_IMATHROOTS_H
 #define INCLUDED_IMATHROOTS_H

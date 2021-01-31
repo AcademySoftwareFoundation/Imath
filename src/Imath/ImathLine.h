@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathLine.h
-///
-/// @brief A 3D line class template
-///
+//
+// A 3D line class template
+//
 
 #ifndef INCLUDED_IMATHLINE_H
 #define INCLUDED_IMATHLINE_H

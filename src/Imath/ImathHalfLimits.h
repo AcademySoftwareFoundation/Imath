@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathHalfLimits.h
-///
-/// @brief Imath-style limits for class half.
-///
+//
+// Imath-style limits for class half.
+//
 
 #ifndef INCLUDED_IMATHHALFLIMITS_H
 #define INCLUDED_IMATHHALFLIMITS_H

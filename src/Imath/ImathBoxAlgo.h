@@ -2,12 +2,10 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright Contributors to the OpenEXR Project.
 //
-///
-/// @file  ImathBoxAlgo.h
-///
-/// @brief Axis-aligned bounding box utility functions.
-///
 
+//
+// Axis-aligned bounding box utility functions
+//
 
 #ifndef INCLUDED_IMATHBOXALGO_H
 #define INCLUDED_IMATHBOXALGO_H

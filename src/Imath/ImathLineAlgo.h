@@ -3,12 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathLineAlgo.h
-///
-/// @brief Algorithms applied to or in conjunction with Imath::Line
-/// class.
-///
+//
+// Algorithms applied to or in conjunction with Imath::Line class
+//
 
 #ifndef INCLUDED_IMATHLINEALGO_H
 #define INCLUDED_IMATHLINEALGO_H

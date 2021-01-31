@@ -3,13 +3,11 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathPlatform.h
-///
-/// This file contains functions and constants which aren't
-/// provided by the system libraries, compilers, or includes on
-/// certain platforms.
-///
+//
+// This file contains functions and constants which aren't
+// provided by the system libraries, compilers, or includes on
+// certain platforms.
+//
 
 #ifndef INCLUDED_IMATHPLATFORM_H
 #define INCLUDED_IMATHPLATFORM_H

@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathSphere.h
-///
-/// @brief A 3D sphere class template
-///
+//
+// A 3D sphere class template
+//
 
 #ifndef INCLUDED_IMATHSPHERE_H
 #define INCLUDED_IMATHSPHERE_H

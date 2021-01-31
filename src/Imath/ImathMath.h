@@ -3,12 +3,10 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathMath.h
-///
-/// @brief Obsolete functions provided for compatibility, deprecated
-/// in favor of std:: functions.
-///
+//
+// Obsolete functions provided for compatibility, deprecated in favor
+// of std:: functions.
+//
 
 #ifndef INCLUDED_IMATHMATH_H
 #define INCLUDED_IMATHMATH_H

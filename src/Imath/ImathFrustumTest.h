@@ -3,16 +3,14 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathFrustumTest.h
-///
-/// @brief A viewing frustum class
-///
-/// This file contains algorithms applied to or in conjunction with
-/// Frustum visibility testing (Imath::Frustum).
-///
-/// Methods for frustum-based rejection of primitives are contained here.
-///
+//
+// A viewing frustum class
+//
+// This file contains algorithms applied to or in conjunction with
+// Frustum visibility testing (Imath::Frustum).
+//
+// Methods for frustum-based rejection of primitives are contained here.
+//
 
 #ifndef INCLUDED_IMATHFRUSTUMTEST_H
 #define INCLUDED_IMATHFRUSTUMTEST_H

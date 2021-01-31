@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathGL.h
-///
-/// @brief Convenience functions that call GL with Imath types
-///
+//
+// Convenience functions that call GL with Imath types
+//
 
 #ifndef INCLUDED_IMATHGL_H
 #define INCLUDED_IMATHGL_H

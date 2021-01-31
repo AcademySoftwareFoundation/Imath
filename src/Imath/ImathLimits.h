@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file ImathLimits.h
-///
-/// @brief Limitations of the basic C++ numerical data types
-///
+//
+// Limitations of the basic C++ numerical data types
+//
 
 #ifndef INCLUDED_IMATHLIMITS_H
 #define INCLUDED_IMATHLIMITS_H

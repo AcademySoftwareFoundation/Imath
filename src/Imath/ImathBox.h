@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathBox.h
-///
-/// @brief Axis-aligned bounding box.
-///
+//
+// Axis-aligned bounding box
+//
 
 #ifndef INCLUDED_IMATHBOX_H
 #define INCLUDED_IMATHBOX_H

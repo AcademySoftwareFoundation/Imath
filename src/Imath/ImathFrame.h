@@ -3,10 +3,25 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// Functions for computing reference frames.
+//
+
+#ifndef INCLUDED_IMATHFRAME_H
+#define INCLUDED_IMATHFRAME_H
+
+#include "ImathNamespace.h"
+
+IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+
+/// @cond Doxygen_Suppress
+template <class T> class Vec3;
+template <class T> class Matrix44;
+/// @endcond
+
 ///
-/// @file  ImathFrame.h
-///
-/// @brief Functions for computing reference frames.
+/// @{
+/// @name Functions for computing reference frames
 ///
 /// These methods compute a set of reference frames, defined by their
 /// transformation matrix, along a curve. It is designed so that the
@@ -24,17 +39,6 @@
 ///
 ///  See Graphics Gems I for the underlying algorithm.
 
-#ifndef INCLUDED_IMATHFRAME_H
-#define INCLUDED_IMATHFRAME_H
-
-#include "ImathNamespace.h"
-
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
-
-/// @cond Doxygen_Suppress
-template <class T> class Vec3;
-template <class T> class Matrix44;
-/// @endcond
 
 template <class T>
 Matrix44<T> constexpr firstFrame (const Vec3<T>&,  // First point
@@ -204,6 +208,8 @@ Matrix44<T> constexpr lastFrame (const Matrix44<T>& Mi, // Previous matrix
 
     return Mi * Tr;
 }
+
+/// @}
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

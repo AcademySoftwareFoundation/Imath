@@ -3,11 +3,9 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathFrustum.h
-///
-/// @brief A viewing frustum class
-///
+//
+// A viewing frustum class
+//
 
 #ifndef INCLUDED_IMATHFRUSTUM_H
 #define INCLUDED_IMATHFRUSTUM_H

@@ -3,12 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-///
-/// @file  ImathMatrixAlgo.h
-///
-/// @brief Functions operating on Matrix22, Matrix33, and Matrix44 types.
-///        This file also defines a few predefined constant matrices.
-///
+//
+//
+// Functions operating on Matrix22, Matrix33, and Matrix44 types
+//
+// This file also defines a few predefined constant matrices.
+//
 
 #ifndef INCLUDED_IMATHMATRIXALGO_H
 #define INCLUDED_IMATHMATRIXALGO_H
