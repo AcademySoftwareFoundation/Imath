@@ -255,7 +255,7 @@ template <class T> constexpr inline Quat<T>::Quat() noexcept : r (1), v (0, 0, 0
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR inline Quat<T>::Quat (const Quat<S>& q) noexcept : r (q.r), v (q.v)
+IMATH_CONSTEXPR14 inline Quat<T>::Quat (const Quat<S>& q) noexcept : r (q.r), v (q.v)
 {
     // empty
 }
