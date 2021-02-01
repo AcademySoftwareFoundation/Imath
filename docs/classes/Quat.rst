@@ -13,5 +13,5 @@ Example:
 .. doxygentypedef:: Quatf
 
 .. doxygenclass:: Imath::Quat
-   :members:
    :undoc-members:
+   :members:

@@ -3,14 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// 64-bit integer types
+//
+
 #ifndef INCLUDED_IMATH_INT64_H
 #define INCLUDED_IMATH_INT64_H
-
-//----------------------------------------------------------------------------
-//
-//	Int64 -- unsigned 64-bit integers
-//
-//----------------------------------------------------------------------------
 
 #include "ImathNamespace.h"
 #include <limits.h>
@@ -18,13 +16,19 @@
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 #if (defined _WIN32 || defined _WIN64) && _MSC_VER >= 1300
+/// Int64 - unsigned 64-bit integer
 typedef unsigned __int64 Int64;
+/// SInt64 - signed 64-bit integer
 typedef __int64 SInt64;
 #elif ULONG_MAX == 18446744073709551615LU
+/// Int64 - unsigned 64-bit integer
 typedef long unsigned int Int64;
+/// SInt64 - signed 64-bit integer
 typedef long int SInt64;
 #else
+/// Int64 - unsigned 64-bit integer
 typedef long long unsigned int Int64;
+/// SInt64 - signed 64-bit integer
 typedef long long int SInt64;
 #endif
 

@@ -3,6 +3,10 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// Functions for computing reference frames.
+//
+
 #ifndef INCLUDED_IMATHFRAME_H
 #define INCLUDED_IMATHFRAME_H
 
@@ -10,26 +14,31 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+/// @cond Doxygen_Suppress
 template <class T> class Vec3;
 template <class T> class Matrix44;
+/// @endcond
 
-//
-//  These methods compute a set of reference frames, defined by their
-//  transformation matrix, along a curve. It is designed so that the
-//  array of points and the array of matrices used to fetch these routines
-//  don't need to be ordered as the curve.
-//
-//  A typical usage would be :
-//
-//      m[0] = IMATH_INTERNAL_NAMESPACE::firstFrame( p[0], p[1], p[2] );
-//      for( int i = 1; i < n - 1; i++ )
-//      {
-//          m[i] = IMATH_INTERNAL_NAMESPACE::nextFrame( m[i-1], p[i-1], p[i], t[i-1], t[i] );
-//      }
-//      m[n-1] = IMATH_INTERNAL_NAMESPACE::lastFrame( m[n-2], p[n-2], p[n-1] );
-//
-//  See Graphics Gems I for the underlying algorithm.
-//
+///
+/// @{
+/// @name Functions for computing reference frames
+///
+/// These methods compute a set of reference frames, defined by their
+/// transformation matrix, along a curve. It is designed so that the
+/// array of points and the array of matrices used to fetch these
+/// routines don't need to be ordered as the curve.
+///
+/// A typical usage would be :
+///
+///      m[0] = IMATH_INTERNAL_NAMESPACE::firstFrame( p[0], p[1], p[2] );
+///      for( int i = 1; i < n - 1; i++ )
+///      {
+///          m[i] = IMATH_INTERNAL_NAMESPACE::nextFrame( m[i-1], p[i-1], p[i], t[i-1], t[i] );
+///      }
+///      m[n-1] = IMATH_INTERNAL_NAMESPACE::lastFrame( m[n-2], p[n-2], p[n-1] );
+///
+///  See Graphics Gems I for the underlying algorithm.
+
 
 template <class T>
 Matrix44<T> constexpr firstFrame (const Vec3<T>&,  // First point
@@ -48,21 +57,27 @@ Matrix44<T> constexpr lastFrame (const Matrix44<T>&, // Previous matrix
                                  const Vec3<T>&,     // Previous point
                                  const Vec3<T>&) noexcept;    // Last point
 
-//
-//  firstFrame - Compute the first reference frame along a curve.
-//
-//  This function returns the transformation matrix to the reference frame
-//  defined by the three points 'pi', 'pj' and 'pk'. Note that if the two
-//  vectors <pi,pj> and <pi,pk> are colinears, an arbitrary twist value will
-//  be choosen.
-//
-//  Throw 'NullVecExc' if 'pi' and 'pj' are equals.
-//
-
+///
+/// Compute the first reference frame along a curve.
+///
+/// This function returns the transformation matrix to the reference
+/// frame defined by the three points `pi`, `pj` and `pk`. Note that
+/// if the two vectors <`pi`,`pj`> and <`pi`,`pk`> are colinears, an
+/// arbitrary twist value will be choosen.
+///
+/// Throw `std::domain_error` if `pi` and `pj` are equal.
+///
+/// @param pi
+///      First point
+/// @param pj
+///      Second point
+/// @param pk
+///      Third point
+/// 
 template <class T>
-Matrix44<T> constexpr firstFrame (const Vec3<T>& pi, // First point
-                                  const Vec3<T>& pj, // Second point
-                                  const Vec3<T>& pk) noexcept // Third point
+Matrix44<T> constexpr firstFrame (const Vec3<T>& pi, // first point
+                                  const Vec3<T>& pj, // secont point
+                                  const Vec3<T>& pk) noexcept // third point
 {
     Vec3<T> t = pj - pi;
     t.normalizeExc();
@@ -102,13 +117,23 @@ Matrix44<T> constexpr firstFrame (const Vec3<T>& pi, // First point
     return M;
 }
 
-//
-//  nextFrame - Compute the next reference frame along a curve.
-//
-//  This function returns the transformation matrix to the next reference
-//  frame defined by the previously computed transformation matrix and the
-//  new point and tangent vector along the curve.
-//
+///
+/// Compute the next reference frame along a curve.
+///
+/// This function returns the transformation matrix to the next reference
+/// frame defined by the previously computed transformation matrix and the
+/// new point and tangent vector along the curve.
+///
+/// @param Mi
+///      The previous matrix
+/// @param pi
+///      The previous point
+/// @param pj
+///      The current point
+/// @param ti
+///      The previous tangent vector
+/// @param tj
+///      The current tangent vector
 
 template <class T>
 Matrix44<T> constexpr nextFrame (const Matrix44<T>& Mi, // Previous matrix
@@ -117,7 +142,7 @@ Matrix44<T> constexpr nextFrame (const Matrix44<T>& Mi, // Previous matrix
                                  Vec3<T>& ti,           // Previous tangent vector
                                  Vec3<T>& tj) noexcept  // Current tangent vector
 {
-    Vec3<T> a (0.0, 0.0, 0.0); // Rotation axis.
+    Vec3<T> a (0.0, 0.0, 0.0); /// Rotation axis.
     T r = 0.0;                 // Rotation angle.
 
     if (ti.length() != 0.0 && tj.length() != 0.0)
@@ -159,13 +184,19 @@ Matrix44<T> constexpr nextFrame (const Matrix44<T>& Mi, // Previous matrix
     }
 }
 
-//
-//  lastFrame - Compute the last reference frame along a curve.
-//
-//  This function returns the transformation matrix to the last reference
-//  frame defined by the previously computed transformation matrix and the
-//  last point along the curve.
-//
+///
+/// Compute the last reference frame along a curve.
+///
+/// This function returns the transformation matrix to the last reference
+/// frame defined by the previously computed transformation matrix and the
+/// last point along the curve.
+///
+/// @param Mi
+///      The previous matrix
+/// @param pi
+///      The previous point
+/// @param pj
+///      The last point
 
 template <class T>
 Matrix44<T> constexpr lastFrame (const Matrix44<T>& Mi, // Previous matrix
@@ -177,6 +208,8 @@ Matrix44<T> constexpr lastFrame (const Matrix44<T>& Mi, // Previous matrix
 
     return Mi * Tr;
 }
+
+/// @}
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

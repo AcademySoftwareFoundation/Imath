@@ -9,5 +9,5 @@ Example:
    :language: c++
               
 .. doxygenclass:: Imath::half
-   :members:
    :undoc-members:
+   :members:

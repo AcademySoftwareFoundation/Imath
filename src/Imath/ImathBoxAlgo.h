@@ -3,45 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// Axis-aligned bounding box utility functions
+//
+
 #ifndef INCLUDED_IMATHBOXALGO_H
 #define INCLUDED_IMATHBOXALGO_H
-
-//---------------------------------------------------------------------------
-//
-//	This file contains algorithms applied to or in conjunction
-//	with bounding boxes (Imath::Box). These algorithms require
-//	more headers to compile. The assumption made is that these
-//	functions are called much less often than the basic box
-//	functions or these functions require more support classes.
-//
-//	Contains:
-//
-//	T clip<T>(const T& in, const Box<T>& box)
-//
-//	Vec3<T> closestPointOnBox(const Vec3<T>&, const Box<Vec3<T>>& )
-//
-//	Vec3<T> closestPointInBox(const Vec3<T>&, const Box<Vec3<T>>& )
-//
-//	Box< Vec3<S> > transform(const Box<Vec3<S>>&, const Matrix44<T>&)
-//	Box< Vec3<S> > affineTransform(const Box<Vec3<S>>&, const Matrix44<T>&)
-//
-//	void transform(const Box<Vec3<S>>&, const Matrix44<T>&, Box<V3ec3<S>>&)
-//	void affineTransform(const Box<Vec3<S>>&,
-//                           const Matrix44<T>&,
-//                           Box<V3ec3<S>>&)
-//
-//	bool findEntryAndExitPoints(const Line<T> &line,
-//				    const Box< Vec3<T> > &box,
-//				    Vec3<T> &enterPoint,
-//				    Vec3<T> &exitPoint)
-//
-//	bool intersects(const Box<Vec3<T>> &box,
-//			const Line3<T> &ray,
-//			Vec3<T> intersectionPoint)
-//
-//	bool intersects(const Box<Vec3<T>> &box, const Line3<T> &ray)
-//
-//---------------------------------------------------------------------------
 
 #include "ImathBox.h"
 #include "ImathLineAlgo.h"
@@ -51,15 +18,15 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+///
+/// Clip the coordinates of a point, `p`, against a `Box<T>`, `box`.
+/// Return the closest point to `p` that is inside the box.
+///
+
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 clip (const T& p, const Box<T>& box) noexcept
 {
-    //
-    // Clip the coordinates of a point, p, against a box.
-    // The result, q, is the closest point to p that is inside the box.
-    //
-
     T q;
 
     for (int i = 0; i < int (box.min.dimensions()); i++)
@@ -75,6 +42,11 @@ clip (const T& p, const Box<T>& box) noexcept
     return q;
 }
 
+///
+/// Return the point in or on the `Box<T>`, `box`, that is closesest to
+/// the point, `p`.
+///
+
 template <class T>
 IMATH_HOSTDEVICE constexpr inline T
 closestPointInBox (const T& p, const Box<T>& box) noexcept
@@ -82,17 +54,17 @@ closestPointInBox (const T& p, const Box<T>& box) noexcept
     return clip (p, box);
 }
 
+///
+/// Return the point on the surface of the `Box<T>`, `box`, that is
+/// closest to point `p`.
+///
+/// If the box is empty, return `p`.
+///
+
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
 closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) noexcept
 {
-    //
-    // Find the point, q, on the surface of
-    // the box, that is closest to point p.
-    //
-    // If the box is empty, return p.
-    //
-
     if (box.isEmpty())
         return p;
 
@@ -124,24 +96,22 @@ closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) noexcept
     return q;
 }
 
+///
+/// Transform a 3D box by a matrix, and compute a new box that
+/// tightly encloses the transformed box. Return the transformed box.
+///
+/// If `m` is an affine transform, then we use James Arvo's fast
+/// method as described in "Graphics Gems", Academic Press, 1990,
+/// pp. 548-550.
+///
+/// A transformed empty box is still empty, and a transformed infinite box
+/// is still infinite.
+///
+
 template <class S, class T>
 IMATH_HOSTDEVICE Box<Vec3<S>>
 transform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 {
-    //
-    // Transform a 3D box by a matrix, and compute a new box that
-    // tightly encloses the transformed box.
-    //
-    // If m is an affine transform, then we use James Arvo's fast
-    // method as described in "Graphics Gems", Academic Press, 1990,
-    // pp. 548-550.
-    //
-
-    //
-    // A transformed empty box is still empty, and a transformed infinite box
-    // is still infinite
-    //
-
     if (box.isEmpty() || box.isInfinite())
         return box;
 
@@ -206,24 +176,23 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
     return newBox;
 }
 
+///
+/// Transform a 3D box by a matrix, and compute a new box that
+/// tightly encloses the transformed box. The transformed box is
+/// returned in the `result` argument.
+///
+/// If m is an affine transform, then we use James Arvo's fast
+/// method as described in "Graphics Gems", Academic Press, 1990,
+/// pp. 548-550.
+///
+/// A transformed empty box is still empty, and a transformed infinite
+/// box is still infinite
+///
+
 template <class S, class T>
 IMATH_HOSTDEVICE void
 transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) noexcept
 {
-    //
-    // Transform a 3D box by a matrix, and compute a new box that
-    // tightly encloses the transformed box.
-    //
-    // If m is an affine transform, then we use James Arvo's fast
-    // method as described in "Graphics Gems", Academic Press, 1990,
-    // pp. 548-550.
-    //
-
-    //
-    // A transformed empty box is still empty, and a transformed infinite
-    // box is still infinite
-    //
-
     if (box.isEmpty() || box.isInfinite())
     {
         return;
@@ -284,27 +253,23 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) 
         result.extendBy (points[i] * m);
 }
 
+///
+/// Transform a 3D box by a matrix whose rightmost column `(0 0 0 1)`,
+/// and compute a new box that tightly encloses the transformed
+/// box. Return the transformed box.
+///
+/// As in the transform() function, use James Arvo's fast method if
+/// possible.
+///
+/// A transformed empty or infinite box is still empty or infinite.
+///
+
 template <class S, class T>
 IMATH_HOSTDEVICE Box<Vec3<S>>
 affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 {
-    //
-    // Transform a 3D box by a matrix whose rightmost column
-    // is (0 0 0 1), and compute a new box that tightly encloses
-    // the transformed box.
-    //
-    // As in the transform() function, above, we use James Arvo's
-    // fast method.
-    //
-
     if (box.isEmpty() || box.isInfinite())
-    {
-        //
-        // A transformed empty or infinite box is still empty or infinite
-        //
-
         return box;
-    }
 
     Box<Vec3<S>> newBox;
 
@@ -335,33 +300,30 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
     return newBox;
 }
 
+///
+/// Transform a 3D box by a matrix whose rightmost column is
+/// `(0 0 0 1)`, and compute a new box that tightly encloses 
+/// the transformed box. Return the transformed box in the `result`
+/// argument.
+///
+/// As in the transform() function, use James Arvo's fast method if
+/// possible.
+///
+/// A transformed empty or infinite box is still empty or infinite.
+///
+
 template <class S, class T>
 IMATH_HOSTDEVICE void
 affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) noexcept
 {
-    //
-    // Transform a 3D box by a matrix whose rightmost column
-    // is (0 0 0 1), and compute a new box that tightly encloses
-    // the transformed box.
-    //
-    // As in the transform() function, above, we use James Arvo's
-    // fast method.
-    //
-
     if (box.isEmpty())
     {
-        //
-        // A transformed empty box is still empty
-        //
         result.makeEmpty();
         return;
     }
 
     if (box.isInfinite())
     {
-        //
-        // A transformed infinite box is still infinite
-        //
         result.makeInfinite();
         return;
     }
@@ -391,32 +353,23 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& re
     }
 }
 
+///
+/// Compute the points where a ray, `r`, enters and exits a 3D box, `b`:
+///
+/// Return true if the ray starts inside the box or if the ray starts
+/// outside and intersects the box, or return false otherwise (that
+/// is, if the ray does not intersect the box).
+///
+/// The entry and exit points are the points on two of the faces of
+/// the box when the function returns true (the entry end exit points
+/// may be on either side of the ray's origin), or undefined if the
+/// the function returns false.
+///
+
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
 findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry, Vec3<T>& exit) noexcept
 {
-    //
-    // Compute the points where a ray, r, enters and exits a box, b:
-    //
-    // findEntryAndExitPoints() returns
-    //
-    //     - true if the ray starts inside the box or if the
-    //       ray starts outside and intersects the box
-    //
-    //	   - false otherwise (that is, if the ray does not
-    //       intersect the box)
-    //
-    // The entry and exit points are
-    //
-    //     - points on two of the faces of the box when
-    //       findEntryAndExitPoints() returns true
-    //       (The entry end exit points may be on either
-    //       side of the ray's origin)
-    //
-    //     - undefined when findEntryAndExitPoints()
-    //       returns false
-    //
-
     if (b.isEmpty())
     {
         //
@@ -665,34 +618,34 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
     return tFrontMax <= tBackMin;
 }
 
+///
+/// Intersect a ray, `r`, with a 3D box, `b, and compute the intersection
+/// point, returned in `ip`.
+///
+/// intersect() returns:
+///
+///     - true if the ray starts inside the box or if the
+///       ray starts outside and intersects the box
+///
+///     - false if the ray starts outside the box and intersects it,
+///       but the intersection is behind the ray's origin.
+///
+///     - false if the ray starts outside and does not intersect it
+///
+/// The intersection point is
+///
+///     - the ray's origin if the ray starts inside the box
+///
+///     - a point on one of the faces of the box if the ray
+///       starts outside the box
+///
+///     - undefined when intersect() returns false
+///
+
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
 intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) noexcept
 {
-    //
-    // Intersect a ray, r, with a box, b, and compute the intersection
-    // point, ip:
-    //
-    // intersect() returns
-    //
-    //     - true if the ray starts inside the box or if the
-    //       ray starts outside and intersects the box
-    //
-    //     - false if the ray starts outside the box and intersects it,
-    //       but the intersection is behind the ray's origin.
-    //
-    //     - false if the ray starts outside and does not intersect it
-    //
-    // The intersection point is
-    //
-    //     - the ray's origin if the ray starts inside the box
-    //
-    //     - a point on one of the faces of the box if the ray
-    //       starts outside the box
-    //
-    //     - undefined when intersect() returns false
-    //
-
     if (b.isEmpty())
     {
         //
@@ -942,6 +895,10 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) noexcept
 
     return tFrontMax <= tBackMin;
 }
+
+///
+/// Return whether the the ray `ray` interects the 3D box `box`.
+///
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool

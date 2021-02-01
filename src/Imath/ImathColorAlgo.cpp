@@ -3,11 +3,11 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-//----------------------------------------------------------------------------
-//
-//	Implementation of non-template items declared in ImathColorAlgo.h
-//
-//----------------------------------------------------------------------------
+///
+/// @file  ImathColorAlgo.cpp
+///
+/// @brief Implementation of non-template items declared in ImathColorAlgo.h
+///
 
 #include "ImathColorAlgo.h"
 

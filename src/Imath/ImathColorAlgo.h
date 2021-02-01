@@ -3,6 +3,10 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// Color conversion functions and general color algorithms
+//
+
 #ifndef INCLUDED_IMATHCOLORALGO_H
 #define INCLUDED_IMATHCOLORALGO_H
 
@@ -15,24 +19,29 @@
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 //
-//	Non-templated helper routines for color conversion.
-//	These routines eliminate type warnings under g++.
+// Non-templated helper routines for color conversion.
+// These routines eliminate type warnings under g++.
 //
 
+///
+/// Convert 3-channel hsv to rgb. Non-templated helper routine.
 IMATH_EXPORT Vec3<double> hsv2rgb_d (const Vec3<double>& hsv) noexcept;
 
+///
+/// Convert 4-channel hsv to rgb (with alpha). Non-templated helper routine.
 IMATH_EXPORT Color4<double> hsv2rgb_d (const Color4<double>& hsv) noexcept;
 
+///
+/// Convert 3-channel rgb to hsv. Non-templated helper routine.
 IMATH_EXPORT Vec3<double> rgb2hsv_d (const Vec3<double>& rgb) noexcept;
 
+///
+/// Convert 4-channel rgb to hsv. Non-templated helper routine.
 IMATH_EXPORT Color4<double> rgb2hsv_d (const Color4<double>& rgb) noexcept;
 
-//
-//	Color conversion functions and general color algorithms
-//
-//	hsv2rgb(), rgb2hsv(), rgb2packed(), packed2rgb()
-//	see each funtion definition for details.
-//
+///
+/// Convert 3-channel hsv to rgb.
+///
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
@@ -55,6 +64,10 @@ hsv2rgb (const Vec3<T>& hsv) noexcept
         return Vec3<T> ((T) c.x, (T) c.y, (T) c.z);
     }
 }
+
+///
+/// Convert 4-channel hsv to rgb (with alpha).
+///
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4<T>
@@ -80,6 +93,10 @@ hsv2rgb (const Color4<T>& hsv) noexcept
     }
 }
 
+///
+/// Convert 3-channel rgb to hsv.
+///
+
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
 rgb2hsv (const Vec3<T>& rgb) noexcept
@@ -101,6 +118,10 @@ rgb2hsv (const Vec3<T>& rgb) noexcept
         return Vec3<T> ((T) c.x, (T) c.y, (T) c.z);
     }
 }
+
+///
+/// Convert 4-channel rgb to hsv (with alpha).
+///
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4<T>
@@ -126,6 +147,10 @@ rgb2hsv (const Color4<T>& rgb) noexcept
     }
 }
 
+///
+/// Convert 3-channel rgb to PackedColor
+///
+
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 PackedColor
 rgb2packed (const Vec3<T>& c) noexcept
@@ -146,6 +171,10 @@ rgb2packed (const Vec3<T>& c) noexcept
         // clang-format on
     }
 }
+
+///
+/// Convert 4-channel rgb to PackedColor (with alpha)
+///
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 PackedColor
@@ -170,11 +199,10 @@ rgb2packed (const Color4<T>& c) noexcept
     }
 }
 
-//
-//	This guy can't return the result because the template
-//	parameter would not be in the function signiture. So instead,
-//	its passed in as an argument.
-//
+///
+/// Convert PackedColor to 3-channel rgb. Return the result in the
+/// `out` parameter.
+///
 
 template <class T>
 IMATH_HOSTDEVICE void
@@ -195,6 +223,11 @@ packed2rgb (PackedColor packed, Vec3<T>& out) noexcept
         out.z = ((packed & 0xFF0000) >> 16) * f;
     }
 }
+
+///
+/// Convert PackedColor to 4-channel rgb (with alpha). Return the
+/// result in the `out` parameter.
+///
 
 template <class T>
 IMATH_HOSTDEVICE void

@@ -12,6 +12,6 @@ Example:
 .. doxygentypedef:: Shear6f
 
 .. doxygenclass:: Imath::Shear6
-   :members:
    :undoc-members:
+   :members:
 

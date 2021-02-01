@@ -10,6 +10,8 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+/// @cond Doxygen_Suppress
+
 //
 // Basic template type declarations.
 //
@@ -37,6 +39,8 @@ template <class T> class Vec4;
 
 class Rand32;
 class Rand48;
+
+/// @endcond
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

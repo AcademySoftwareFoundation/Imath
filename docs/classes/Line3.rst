@@ -14,8 +14,8 @@ Example:
 .. doxygentypedef:: Line3d
    
 .. doxygenclass:: Imath::Line3
-   :members:
    :undoc-members:
+   :members:
 
 
 

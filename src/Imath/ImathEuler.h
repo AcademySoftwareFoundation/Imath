@@ -3,95 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// Euler angle representation of rotation/orientation
+//
+
 #ifndef INCLUDED_IMATHEULER_H
 #define INCLUDED_IMATHEULER_H
-
-//----------------------------------------------------------------------
-//
-//	template class Euler<T>
-//
-//      This class represents euler angle orientations. The class
-//	inherits from Vec3 to it can be freely cast. The additional
-//	information is the euler priorities rep. This class is
-//	essentially a rip off of Ken Shoemake's GemsIV code. It has
-//	been modified minimally to make it more understandable, but
-//	hardly enough to make it easy to grok completely.
-//
-//	There are 24 possible combonations of Euler angle
-//	representations of which 12 are common in CG and you will
-//	probably only use 6 of these which in this scheme are the
-//	non-relative-non-repeating types.
-//
-//	The representations can be partitioned according to two
-//	criteria:
-//
-//	   1) Are the angles measured relative to a set of fixed axis
-//	      or relative to each other (the latter being what happens
-//	      when rotation matrices are multiplied together and is
-//	      almost ubiquitous in the cg community)
-//
-//	   2) Is one of the rotations repeated (ala XYX rotation)
-//
-//	When you construct a given representation from scratch you
-//	must order the angles according to their priorities. So, the
-//	easiest is a softimage or aerospace (yaw/pitch/roll) ordering
-//	of ZYX.
-//
-//	    float x_rot = 1;
-//	    float y_rot = 2;
-//	    float z_rot = 3;
-//
-//	    Eulerf angles(z_rot, y_rot, x_rot, Eulerf::ZYX);
-//		-or-
-//	    Eulerf angles( V3f(z_rot,y_rot,z_rot), Eulerf::ZYX );
-//
-//	If instead, the order was YXZ for instance you would have to
-//	do this:
-//
-//	    float x_rot = 1;
-//	    float y_rot = 2;
-//	    float z_rot = 3;
-//
-//	    Eulerf angles(y_rot, x_rot, z_rot, Eulerf::YXZ);
-//		-or-
-//	    Eulerf angles( V3f(y_rot,x_rot,z_rot), Eulerf::YXZ );
-//
-//	Notice how the order you put the angles into the three slots
-//	should correspond to the enum (YXZ) ordering. The input angle
-//	vector is called the "ijk" vector -- not an "xyz" vector. The
-//	ijk vector order is the same as the enum. If you treat the
-//	Euler<> as a Vec<> (which it inherts from) you will find the
-//	angles are ordered in the same way, i.e.:
-//
-//	    V3f v = angles;
-//	    // v.x == y_rot, v.y == x_rot, v.z == z_rot
-//
-//	If you just want the x, y, and z angles stored in a vector in
-//	that order, you can do this:
-//
-//	    V3f v = angles.toXYZVector()
-//	    // v.x == x_rot, v.y == y_rot, v.z == z_rot
-//
-//	If you want to set the Euler with an XYZVector use the
-//	optional layout argument:
-//
-//	    Eulerf angles(x_rot, y_rot, z_rot,
-//			  Eulerf::YXZ,
-//		          Eulerf::XYZLayout);
-//
-//	This is the same as:
-//
-//	    Eulerf angles(y_rot, x_rot, z_rot, Eulerf::YXZ);
-//
-//	Note that this won't do anything intelligent if you have a
-//	repeated axis in the euler angles (e.g. XYX)
-//
-//	If you need to use the "relative" versions of these, you will
-//	need to use the "r" enums.
-//
-//      The units of the rotation angles are assumed to be radians.
-//
-//----------------------------------------------------------------------
 
 #include "ImathLimits.h"
 #include "ImathMath.h"
@@ -109,6 +26,95 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 #    pragma warning(disable : 4244)
 #endif
 
+///
+/// Template class `Euler<T>`
+///
+/// This class represents euler angle orientations. The class
+/// inherits from Vec3 to it can be freely cast. The additional
+/// information is the euler priorities rep. This class is
+/// essentially a rip off of Ken Shoemake's GemsIV code. It has
+/// been modified minimally to make it more understandable, but
+/// hardly enough to make it easy to grok completely.
+///
+/// There are 24 possible combonations of Euler angle
+/// representations of which 12 are common in CG and you will
+/// probably only use 6 of these which in this scheme are the
+/// non-relative-non-repeating types.
+///
+/// The representations can be partitioned according to two
+/// criteria:
+///
+///    1) Are the angles measured relative to a set of fixed axis
+///       or relative to each other (the latter being what happens
+///       when rotation matrices are multiplied together and is
+///       almost ubiquitous in the cg community)
+///
+///    2) Is one of the rotations repeated (ala XYX rotation)
+///
+/// When you construct a given representation from scratch you
+/// must order the angles according to their priorities. So, the
+/// easiest is a softimage or aerospace (yaw/pitch/roll) ordering
+/// of ZYX.
+///
+///     float x_rot = 1;
+///     float y_rot = 2;
+///     float z_rot = 3;
+///
+///     Eulerf angles(z_rot, y_rot, x_rot, Eulerf::ZYX);
+///
+/// or:
+///
+///     Eulerf angles( V3f(z_rot,y_rot,z_rot), Eulerf::ZYX );
+///
+///
+/// If instead, the order was YXZ for instance you would have to
+/// do this:
+///
+///     float x_rot = 1;
+///     float y_rot = 2;
+///     float z_rot = 3;
+///
+///     Eulerf angles(y_rot, x_rot, z_rot, Eulerf::YXZ);
+///
+/// or:
+///
+///
+///     Eulerf angles( V3f(y_rot,x_rot,z_rot), Eulerf::YXZ );
+///
+/// Notice how the order you put the angles into the three slots
+/// should correspond to the enum (YXZ) ordering. The input angle
+/// vector is called the "ijk" vector -- not an "xyz" vector. The
+/// ijk vector order is the same as the enum. If you treat the
+/// Euler as a Vec3 (which it inherts from) you will find the
+/// angles are ordered in the same way, i.e.:
+///
+///     V3f v = angles;
+///     v.x == y_rot, v.y == x_rot, v.z == z_rot
+///
+/// If you just want the x, y, and z angles stored in a vector in
+/// that order, you can do this:
+///
+///     V3f v = angles.toXYZVector()
+///     v.x == x_rot, v.y == y_rot, v.z == z_rot
+///
+/// If you want to set the Euler with an XYZVector use the
+/// optional layout argument:
+///
+///     Eulerf angles(x_rot, y_rot, z_rot, Eulerf::YXZ, Eulerf::XYZLayout);
+///
+/// This is the same as:
+///
+///     Eulerf angles(y_rot, x_rot, z_rot, Eulerf::YXZ);
+///
+/// Note that this won't do anything intelligent if you have a
+/// repeated axis in the euler angles (e.g. XYX)
+///
+/// If you need to use the "relative" versions of these, you will
+/// need to use the "r" enums.
+///
+/// The units of the rotation angles are assumed to be radians.
+///
+
 template <class T> class Euler : public Vec3<T>
 {
   public:
@@ -116,12 +122,12 @@ template <class T> class Euler : public Vec3<T>
     using Vec3<T>::y;
     using Vec3<T>::z;
 
+    
+    ///
+    ///  All 24 possible orderings
+    ///
     enum Order
     {
-        //
-        //  All 24 possible orderings
-        //
-
         XYZ = 0x0101, // "usual" orderings
         XZY = 0x0001,
         YZX = 0x1101,
@@ -149,9 +155,10 @@ template <class T> class Euler : public Vec3<T>
         YZYr = 0x1010,
         ZYZr = 0x0110,
         ZXZr = 0x0010,
-        //          ||||
-        //          VVVV
-        //  Legend: ABCD
+        //       ||||
+        //       VVVV
+        //       ABCD
+        // Legend: 
         //  A -> Initial Axis (0==x, 1==y, 2==z)
         //  B -> Parity Even (1==true)
         //  C -> Initial Repeated (1==true)
@@ -166,6 +173,9 @@ template <class T> class Euler : public Vec3<T>
         Default = XYZ
     };
 
+    ///
+    /// Axes
+    ///
     enum Axis
     {
         X = 0,
@@ -173,156 +183,199 @@ template <class T> class Euler : public Vec3<T>
         Z = 2
     };
 
+    ///
+    /// Layout
+    ///
+    
     enum InputLayout
     {
         XYZLayout,
         IJKLayout
     };
 
-    //--------------------------------------------------------------------
-    //	Constructors -- all default to ZYX non-relative ala softimage
-    //			(where there is no argument to specify it)
-    //
-    // The Euler-from-matrix constructors assume that the matrix does
-    // not include shear or non-uniform scaling, but the constructors
-    // do not examine the matrix to verify this assumption.  If necessary,
-    // you can adjust the matrix by calling the removeScalingAndShear()
-    // function, defined in ImathMatrixAlgo.h.
-    //--------------------------------------------------------------------
+    /// @{
+    /// @name Constructors
+    ///
+    /// All default to `ZYX` non-relative (ala Softimage 3D/Maya),
+    /// where there is no argument to specify it.
+    ///
+    /// The Euler-from-matrix constructors assume that the matrix does
+    /// not include shear or non-uniform scaling, but the constructors
+    /// do not examine the matrix to verify this assumption.  If necessary,
+    /// you can adjust the matrix by calling the removeScalingAndShear()
+    /// function, defined in ImathMatrixAlgo.h.
 
+    /// No initialization by default
     IMATH_HOSTDEVICE constexpr Euler() noexcept;
+
+    /// Copy constructor
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Euler&) noexcept;
+
+    /// Construct from given Order
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (Order p) noexcept;
+
+    /// Construct from vector, order, layout
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Vec3<T>& v,
                                               Order o       = Default,
                                               InputLayout l = IJKLayout) noexcept;
+    /// Construct from explicit axes, order, layout
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Euler (T i, T j, T k, Order o = Default, InputLayout l = IJKLayout) noexcept;
+
+    /// Copy constructor with new Order
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Euler<T>& euler, Order newp) noexcept;
+
+    /// Construct from Matrix33
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Matrix33<T>&, Order o = Default) noexcept;
+
+    /// Construct from Matrix44
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Matrix44<T>&, Order o = Default) noexcept;
 
-    //-------------
-    //  Destructor
-    //-------------
-
+    /// Destructor
     ~Euler() = default;
 
-    //---------------------------------
-    //  Algebraic functions/ Operators
-    //---------------------------------
-
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>& operator= (const Euler<T>&) noexcept;
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>& operator= (const Vec3<T>&) noexcept;
-
-    //--------------------------------------------------------
-    //	Set the euler value
-    //  This does NOT convert the angles, but setXYZVector()
-    //	does reorder the input vector.
-    //--------------------------------------------------------
-
+    /// @}
+    
+    /// @{
+    /// @name Query
+    
+    /// Return whether the given value is a legal Order
     IMATH_HOSTDEVICE constexpr static bool legal (Order) noexcept;
 
-    IMATH_HOSTDEVICE void setXYZVector (const Vec3<T>&) noexcept;
-
+    /// Return the order
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Order order() const noexcept;
-    IMATH_HOSTDEVICE void setOrder (Order) noexcept;
 
-    IMATH_HOSTDEVICE void set (Axis initial, bool relative, bool parityEven, bool firstRepeats) noexcept;
+    /// Return frameStatic
+    IMATH_HOSTDEVICE constexpr bool frameStatic() const { return _frameStatic; }
 
-    //------------------------------------------------------------
-    //	Conversions, toXYZVector() reorders the angles so that
-    //  the X rotation comes first, followed by the Y and Z
-    //  in cases like XYX ordering, the repeated angle will be
-    //	in the "z" component
-    //
-    // The Euler-from-matrix extract() functions assume that the
-    // matrix does not include shear or non-uniform scaling, but
-    // the extract() functions do not examine the matrix to verify
-    // this assumption.  If necessary, you can adjust the matrix
-    // by calling the removeScalingAndShear() function, defined
-    // in ImathMatrixAlgo.h.
-    //------------------------------------------------------------
+    /// Return intialRepeated
+    IMATH_HOSTDEVICE constexpr bool initialRepeated() const { return _initialRepeated; }
 
-    IMATH_HOSTDEVICE void extract (const Matrix33<T>&) noexcept;
-    IMATH_HOSTDEVICE void extract (const Matrix44<T>&) noexcept;
-    IMATH_HOSTDEVICE void extract (const Quat<T>&) noexcept;
-    IMATH_HOSTDEVICE Matrix33<T> toMatrix33() const noexcept;
-    IMATH_HOSTDEVICE Matrix44<T> toMatrix44() const noexcept;
-    IMATH_HOSTDEVICE Quat<T> toQuat() const noexcept;
-    IMATH_HOSTDEVICE Vec3<T> toXYZVector() const noexcept;
+    /// Return partityEven
+    IMATH_HOSTDEVICE constexpr bool parityEven() const { return _parityEven; }
 
-    //---------------------------------------------------
-    //	Use this function to unpack angles from ijk form
-    //---------------------------------------------------
+    /// Return initialAxis 
+    IMATH_HOSTDEVICE constexpr Axis initialAxis() const { return _initialAxis; }
 
+    /// Unpack angles from ijk form
     IMATH_HOSTDEVICE void angleOrder (int& i, int& j, int& k) const noexcept;
 
-    //---------------------------------------------------
-    //	Use this function to determine mapping from xyz to ijk
-    // - reshuffles the xyz to match the order
-    //---------------------------------------------------
-
+    /// Determine mapping from xyz to ijk (reshuffle the xyz to match the order)
     IMATH_HOSTDEVICE void angleMapping (int& i, int& j, int& k) const noexcept;
 
-    //----------------------------------------------------------------------
-    //
-    //  Utility methods for getting continuous rotations. None of these
-    //  methods change the orientation given by its inputs (or at least
-    //  that is the intent).
-    //
-    //    angleMod() converts an angle to its equivalent in [-PI, PI]
-    //
-    //    simpleXYZRotation() adjusts xyzRot so that its components differ
-    //                        from targetXyzRot by no more than +-PI
-    //
-    //    nearestRotation() adjusts xyzRot so that its components differ
-    //                      from targetXyzRot by as little as possible.
-    //                      Note that xyz here really means ijk, because
-    //                      the order must be provided.
-    //
-    //    makeNear() adjusts "this" Euler so that its components differ
-    //               from target by as little as possible. This method
-    //               might not make sense for Eulers with different order
-    //               and it probably doesn't work for repeated axis and
-    //               relative orderings (TODO).
-    //
-    //-----------------------------------------------------------------------
+    /// @}
 
+    /// @{
+    /// @name Set Value
+    
+    /// Set the order. This does NOT convert the angles, but it
+    /// does reorder the input vector.
+    IMATH_HOSTDEVICE void setOrder (Order) noexcept;
+
+    /// Set the euler value: set the first angle to `v[0]`, the second to
+    /// `v[1]`, the third to `v[2]`.
+    IMATH_HOSTDEVICE void setXYZVector (const Vec3<T>&) noexcept;
+
+    /// Set the value.
+    IMATH_HOSTDEVICE void set (Axis initial, bool relative, bool parityEven, bool firstRepeats) noexcept;
+
+    /// @}
+    
+    /// @{
+    /// @name Assignments and Conversions
+    ///
+
+    /// Assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>& operator= (const Euler<T>&) noexcept;
+
+    /// Assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>& operator= (const Vec3<T>&) noexcept;
+
+    /// Assign from Matrix33, assumed to be affine
+    IMATH_HOSTDEVICE void extract (const Matrix33<T>&) noexcept;
+
+    /// Assign from Matrix44, assumed to be affine
+    IMATH_HOSTDEVICE void extract (const Matrix44<T>&) noexcept;
+
+    /// Assign from Quaternion
+    IMATH_HOSTDEVICE void extract (const Quat<T>&) noexcept;
+
+    /// Convert to Matrix33
+    IMATH_HOSTDEVICE Matrix33<T> toMatrix33() const noexcept;
+
+    /// Convert to Matrix44
+    IMATH_HOSTDEVICE Matrix44<T> toMatrix44() const noexcept;
+
+    /// Convert to Quat
+    IMATH_HOSTDEVICE Quat<T> toQuat() const noexcept;
+
+    /// Reorder the angles so that the X rotation comes first,
+    ///  followed by the Y and Z in cases like XYX ordering, the
+    ///  repeated angle will be in the "z" component
+    IMATH_HOSTDEVICE Vec3<T> toXYZVector() const noexcept;
+
+    /// @}
+    
+    /// @{
+    /// @name Utility Methods
+    ///
+    ///  Utility methods for getting continuous rotations. None of these
+    ///  methods change the orientation given by its inputs (or at least
+    ///  that is the intent).
+
+    /// Convert an angle to its equivalent in [-PI, PI]
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 static float angleMod (T angle) noexcept;
 
+    /// Adjust xyzRot so that its components differ from targetXyzRot by no more than +/-PI
     IMATH_HOSTDEVICE static void simpleXYZRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot) noexcept;
+
+    /// Adjust xyzRot so that its components differ from targetXyzRot by as little as possible.
+    /// Note that xyz here really means ijk, because the order must be provided.
     IMATH_HOSTDEVICE static void
     nearestRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot, Order order = XYZ) noexcept;
 
+    /// Adjusts "this" Euler so that its components differ from target
+    /// by as little as possible. This method might not make sense for
+    /// Eulers with different order and it probably doesn't work for
+    /// repeated axis and relative orderings (TODO).
     IMATH_HOSTDEVICE void makeNear (const Euler<T>& target) noexcept;
 
-    IMATH_HOSTDEVICE constexpr bool frameStatic() const { return _frameStatic; }
-    IMATH_HOSTDEVICE constexpr bool initialRepeated() const { return _initialRepeated; }
-    IMATH_HOSTDEVICE constexpr bool parityEven() const { return _parityEven; }
-    IMATH_HOSTDEVICE constexpr Axis initialAxis() const { return _initialAxis; }
+    /// @}
 
   protected:
-    bool _frameStatic : 1;     // relative or static rotations
-    bool _initialRepeated : 1; // init axis repeated as last
-    bool _parityEven : 1;      // "parity of axis permutation"
+
+    /// relative or static rotations
+    bool _frameStatic : 1;     
+
+    /// init axis repeated as last
+    bool _initialRepeated : 1; 
+
+    /// "parity of axis permutation"
+    bool _parityEven : 1;      
+
 #if defined _WIN32 || defined _WIN64
-    Axis _initialAxis; // First axis of rotation
+    /// First axis of rotation
+    Axis _initialAxis; 
 #else
-    Axis _initialAxis : 2; // First axis of rotation
+    /// First axis of rotation
+    Axis _initialAxis : 2; 
 #endif
 };
 
-//--------------------
+//
 // Convenient typedefs
-//--------------------
+//
 
+/// Euler of type float
 typedef Euler<float> Eulerf;
+/// Euler of type double
 typedef Euler<double> Eulerd;
 
-//---------------
+//
 // Implementation
-//---------------
+//
+
+/// @cond Doxygen_Suppress
 
 template <class T>
 inline void
@@ -878,6 +931,7 @@ Euler<T>::operator= (const Vec3<T>& v) noexcept
     return *this;
 }
 
+/// Stream ouput
 template <class T>
 std::ostream&
 operator<< (std::ostream& o, const Euler<T>& euler) noexcept
@@ -972,6 +1026,8 @@ Euler<T>::makeNear (const Euler<T>& target) noexcept
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 #    pragma warning(default : 4244)
 #endif
+
+/// @endcond
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

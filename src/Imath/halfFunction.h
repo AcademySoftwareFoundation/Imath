@@ -49,6 +49,8 @@
 #ifndef _HALF_FUNCTION_H_
 #define _HALF_FUNCTION_H_
 
+/// @cond Doxygen_Suppress
+
 #include "half.h"
 
 #include "ImathConfig.h"
@@ -137,5 +139,9 @@ halfFunction<T>::operator() (half x) const
 {
     return _lut[x.bits()];
 }
+
+
+/// @endcond
+
 
 #endif

@@ -4,7 +4,7 @@ Color3
 The ``Color3`` class template represents a 3-component color, with
 pre-defined typedefs of ``unsigned char``, ``half``, and ``float``.
 
-The ``Color3`` class is derived from ``Imath::Vec3`` and thus has
+The ``Color3`` class inherits from ``Vec3`` and thus has
 fields named ``x``, ``y``, and ``z``. The class itself implies no
 specific interpretation of the values.
 
@@ -26,6 +26,6 @@ Example:
 .. doxygentypedef:: C3f
                     
 .. doxygenclass:: Imath::Color3
-   :members:
    :undoc-members:
+   :members:
 

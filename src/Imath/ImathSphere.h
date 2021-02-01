@@ -3,14 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// A 3D sphere class template
+//
+
 #ifndef INCLUDED_IMATHSPHERE_H
 #define INCLUDED_IMATHSPHERE_H
-
-//-------------------------------------
-//
-//	A 3D sphere class template
-//
-//-------------------------------------
 
 #include "ImathBox.h"
 #include "ImathLine.h"
@@ -19,53 +17,74 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+///
+/// A 3D sphere
+///
+
 template <class T> class Sphere3
 {
   public:
+
+    /// @{
+    /// @name Direct access to member fields
+    
+    /// Center
     Vec3<T> center;
+
+    /// Radius
     T radius;
 
-    //---------------
-    //	Constructors
-    //---------------
+    /// @}
 
+    /// @{
+    ///	@name Constructors
+
+    /// Default is center at (0,0,0) and radius of 0.
     IMATH_HOSTDEVICE constexpr Sphere3() : center (0, 0, 0), radius (0) {}
+
+    /// Initialize to a given center and radius
     IMATH_HOSTDEVICE constexpr Sphere3 (const Vec3<T>& c, T r) : center (c), radius (r) {}
 
-    //-------------------------------------------------------------------
-    //	Utilities:
-    //
-    //	s.circumscribe(b)	sets center and radius of sphere s
-    //				so that the s tightly encloses box b.
-    //
-    //	s.intersectT (l, t)	If sphere s and line l intersect, then
-    //				intersectT() computes the smallest t,
-    //				t >= 0, so that l(t) is a point on the
-    //				sphere.  intersectT() then returns true.
-    //
-    //				If s and l do not intersect, intersectT()
-    //				returns false.
-    //
-    //	s.intersect (l, i)	If sphere s and line l intersect, then
-    //				intersect() calls s.intersectT(l,t) and
-    //				computes i = l(t).
-    //
-    //				If s and l do not intersect, intersect()
-    //				returns false.
-    //
-    //-------------------------------------------------------------------
-
+    /// @}
+    
+    /// @{
+    /// @name Manipulation
+    
+    ///	Set the center and radius of the sphere so that it tightly
+    ///	encloses Box b.
     IMATH_HOSTDEVICE void circumscribe (const Box<Vec3<T>>& box);
+
+    /// @}
+    
+    /// @{
+    /// @name Utility Methods
+    
+    ///	If the sphere and line `l` intersect, then compute the
+    /// smallest `t` with `t>=0` so that `l(t)` is a point on the sphere.
+    ///
+    /// @param[in] l The line
+    /// @param[out] intersection The point of intersection
+    /// @return True if the sphere and line intersect, false if they
+    ///	do not.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
     intersect (const Line3<T>& l, Vec3<T>& intersection) const;
+
+    ///	If the sphere and line `l` intersect, then compute the
+    /// smallest `t` with `t>=0` so that `l(t)` is a point on the sphere.
+    ///
+    /// @param[in] l The line
+    /// @param[out] t The parameter of the line at the intersection point
+    /// @return True if the sphere and line intersect, false if they
+    ///	do not.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& l, T& t) const;
+
+    /// @}
 };
 
-//--------------------
-// Convenient typedefs
-//--------------------
-
+/// Sphere of type float
 typedef Sphere3<float> Sphere3f;
+
+/// Sphere of type double
 typedef Sphere3<double> Sphere3d;
 
 //---------------
