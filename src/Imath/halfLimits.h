@@ -21,6 +21,8 @@
 #include "half.h"
 #include <limits>
 
+/// @cond Doxygen_Suppress
+
 namespace std
 {
 
@@ -70,6 +72,8 @@ template <> class numeric_limits<half>
     // currently not able to be because half is not completedly plumbed for
     // constexpr (and my not be able to be in C++11).
 };
+
+/// @endcond
 
 } // namespace std
 

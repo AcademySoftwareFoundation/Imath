@@ -3,6 +3,10 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// Convenience functions that call GL with Imath types
+//
+
 #ifndef INCLUDED_IMATHGL_H
 #define INCLUDED_IMATHGL_H
 
@@ -13,42 +17,49 @@
 #include "ImathNamespace.h"
 #include "ImathVec.h"
 
+/// Call glVertex3f
 inline void
 glVertex (const IMATH_INTERNAL_NAMESPACE::V3f& v)
 {
     glVertex3f (v.x, v.y, v.z);
 }
 
+/// Call glVertex2f
 inline void
 glVertex (const IMATH_INTERNAL_NAMESPACE::V2f& v)
 {
     glVertex2f (v.x, v.y);
 }
 
+/// Call glNormal3f
 inline void
 glNormal (const IMATH_INTERNAL_NAMESPACE::V3f& n)
 {
     glNormal3f (n.x, n.y, n.z);
 }
 
+/// Call glColor3f
 inline void
 glColor (const IMATH_INTERNAL_NAMESPACE::V3f& c)
 {
     glColor3f (c.x, c.y, c.z);
 }
 
+/// Call glTranslatef
 inline void
 glTranslate (const IMATH_INTERNAL_NAMESPACE::V3f& t)
 {
     glTranslatef (t.x, t.y, t.z);
 }
 
+/// Call glTexCoord2f
 inline void
 glTexCoord (const IMATH_INTERNAL_NAMESPACE::V2f& t)
 {
     glTexCoord2f (t.x, t.y);
 }
 
+/// Disable GL textures
 inline void
 glDisableTexture()
 {
@@ -72,6 +83,7 @@ badFloat (float f)
 
 } // namespace
 
+/// Throw an exception if m is not a valid matrix for GL
 inline void
 throwBadMatrix (const IMATH_INTERNAL_NAMESPACE::M44f& m)
 {
@@ -82,6 +94,7 @@ throwBadMatrix (const IMATH_INTERNAL_NAMESPACE::M44f& m)
         throw IEX_NAMESPACE::OverflowExc ("GL matrix overflow");
 }
 
+/// Call glMultmatrixf. Throw an exception if m is not a valid matrix for GL.
 inline void
 glMultMatrix (const IMATH_INTERNAL_NAMESPACE::M44f& m)
 {
@@ -89,6 +102,7 @@ glMultMatrix (const IMATH_INTERNAL_NAMESPACE::M44f& m)
     glMultMatrixf ((GLfloat*) m[0]);
 }
 
+/// Call glMultmatrixf. Throw an exception if m is not a valid matrix for GL.
 inline void
 glMultMatrix (const IMATH_INTERNAL_NAMESPACE::M44f* m)
 {
@@ -96,6 +110,7 @@ glMultMatrix (const IMATH_INTERNAL_NAMESPACE::M44f* m)
     glMultMatrixf ((GLfloat*) (*m)[0]);
 }
 
+/// Call glLoadmatrixf. Throw an exception if m is not a valid matrix for GL.
 inline void
 glLoadMatrix (const IMATH_INTERNAL_NAMESPACE::M44f& m)
 {
@@ -103,6 +118,7 @@ glLoadMatrix (const IMATH_INTERNAL_NAMESPACE::M44f& m)
     glLoadMatrixf ((GLfloat*) m[0]);
 }
 
+/// Call glLoadmatrixf. Throw an exception if m is not a valid matrix for GL.
 inline void
 glLoadMatrix (const IMATH_INTERNAL_NAMESPACE::M44f* m)
 {
@@ -112,10 +128,10 @@ glLoadMatrix (const IMATH_INTERNAL_NAMESPACE::M44f* m)
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
-//
-// Class objects that push/pop the GL state. These objects assist with
-// proper cleanup of the state when exceptions are thrown.
-//
+///
+/// A class object that pushes/pops the GL matrix. This object assists with
+/// proper cleanup of the state when exceptions are thrown.
+///
 
 class GLPushMatrix
 {
@@ -124,17 +140,34 @@ class GLPushMatrix
     ~GLPushMatrix() { glPopMatrix(); }
 };
 
+///
+/// A class object that pushes/pops the current GL attribute state. This object assists with
+/// proper cleanup of the state when exceptions are thrown.
+///
+
 class GLPushAttrib
 {
   public:
+    /// call glPushAttrib()
     GLPushAttrib (GLbitfield mask) { glPushAttrib (mask); }
+
+    /// call glPopAttrib()
     ~GLPushAttrib() { glPopAttrib(); }
 };
+
+///
+/// A class object that wraps glBegin/glEnd. The constructor calls
+/// glBegin(). The destructor calls glEnd().
+///
 
 class GLBegin
 {
   public:
+
+    /// Call glBegin()
     GLBegin (GLenum mode) { glBegin (mode); }
+
+    /// Call glEnd()
     ~GLBegin() { glEnd(); }
 };
 

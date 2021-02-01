@@ -3,91 +3,126 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// An interval class
+//
+
 #ifndef INCLUDED_IMATHINTERVAL_H
 #define INCLUDED_IMATHINTERVAL_H
-
-//-------------------------------------------------------------------
-//
-//	class Imath::Interval<class T>
-//	--------------------------------
-//
-//	An Interval has a min and a max and some miscellaneous
-//	functions. It is basically a Box<T> that allows T to be
-//	a scalar.
-//
-//-------------------------------------------------------------------
 
 #include "ImathNamespace.h"
 #include "ImathVec.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+///
+/// An Interval has a min and a max and some miscellaneous
+/// functions. It is basically a Box<T> that allows T to be a scalar.
+///
+
 template <class T> class Interval
 {
   public:
-    //-------------------------
-    //  Data Members are public
-    //-------------------------
 
+    /// @{
+    /// @name Direct access to bounds
+    
+    /// The minimum value of the interval
     T min;
+
+    /// The minimum value of the interval
     T max;
 
-    //-----------------------------------------------------
-    //	Constructors - an "empty" Interval is created by default
-    //-----------------------------------------------------
+    /// @}
+    
+    /// @{
+    /// @name Constructors
 
+    /// Initialize to the empty interval
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval() noexcept;
+
+    /// Intitialize to a single point
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& point) noexcept;
+
+    /// Intitialize to a given (min,max)
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& minT, const T& maxT) noexcept;
 
-    //--------------------------------
-    //  Operators:  we get != from STL
-    //--------------------------------
+    /// @}
 
+    /// @{
+    /// @name Comparison
+
+    /// Equality
     IMATH_HOSTDEVICE constexpr bool operator== (const Interval<T>& src) const noexcept;
+    /// Inequality
     IMATH_HOSTDEVICE constexpr bool operator!= (const Interval<T>& src) const noexcept;
 
-    //------------------
-    //	Interval manipulation
-    //------------------
+    /// @}
 
+    /// @{
+    /// @name Manipulation
+
+    /// Set the interval to be empty. An interval is empty if the
+    /// minimum is greater than the maximum.
     IMATH_HOSTDEVICE void makeEmpty() noexcept;
+
+    /// Extend the interval to include the given point.
     IMATH_HOSTDEVICE void extendBy (const T& point) noexcept;
+
+    /// Extend the interval to include the given interval
     IMATH_HOSTDEVICE void extendBy (const Interval<T>& interval) noexcept;
+
+    /// Make the interval include the entire range of the base type.
     IMATH_HOSTDEVICE void makeInfinite() noexcept;
 
-    //---------------------------------------------------
-    //	Query functions - these compute results each time
-    //---------------------------------------------------
+    /// @}
 
+    /// @{
+    ///	@name Query
+
+    /// Return the size of the interval. The size is (max-min). An empty box has a size of 0.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T size() const noexcept;
+
+    /// Return the center of the interval. The center is defined as
+    /// (max+min)/2. The center of an empty interval is undefined.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T center() const noexcept;
+
+    /// Return true if the given point is inside the interval, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const T& point) const noexcept;
+
+    /// Return true if the given interval is inside the interval, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Interval<T>& interval) const noexcept;
 
-    //----------------
-    //	Classification
-    //----------------
-
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+    /// Return true if the interval is empty, false otherwise. An
+    /// empty interval's minimum is greater than its maximum.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const noexcept;
+
+    /// Return true if the interval is larger than a single point,
+    /// false otherwise.
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+
+    /// Return true if the interval contains all points, false
+    /// otherwise.  An infinite box has a mimimum of `limits<t>::min`
+    /// and a maximum of `limits<T>::max`
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
+
+    /// @}
 };
 
+/// Stream output
 template <class T> std::ostream& operator<< (std::ostream& s, const Interval<T>& v);
 
-//--------------------
-// Convenient typedefs
-//--------------------
-
+/// Interval of type float
 typedef Interval<float> Intervalf;
-typedef Interval<double> Intervald;
-typedef Interval<short> Intervals;
-typedef Interval<int> Intervali;
 
-//----------------
-//  Implementation
-//----------------
+/// Interval of type double
+typedef Interval<double> Intervald;
+
+/// Interval of type short
+typedef Interval<short> Intervals;
+
+/// Interval of type integer
+typedef Interval<int> Intervali;
 
 template <class T> inline IMATH_CONSTEXPR14 Interval<T>::Interval() noexcept
 {
@@ -214,6 +249,7 @@ Interval<T>::isInfinite() const noexcept
     return true;
 }
 
+/// Stream output
 template <class T>
 std::ostream&
 operator<< (std::ostream& s, const Interval<T>& v)

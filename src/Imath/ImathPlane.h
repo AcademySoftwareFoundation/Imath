@@ -3,23 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// A 3D plane class template
+//
+
 #ifndef INCLUDED_IMATHPLANE_H
 #define INCLUDED_IMATHPLANE_H
-
-//----------------------------------------------------------------------
-//
-//	template class Plane3
-//
-//	The Imath::Plane3<> class represents a half space, so the
-//	normal may point either towards or away from origin.  The
-//	plane P can be represented by Imath::Plane3 as either p or -p
-//	corresponding to the two half-spaces on either side of the
-//	plane. Any function which computes a distance will return
-//	either negative or positive values for the distance indicating
-//	which half-space the point is in. Note that reflection, and
-//	intersection functions will operate as expected.
-//
-//----------------------------------------------------------------------
 
 #include "ImathLine.h"
 #include "ImathNamespace.h"
@@ -27,49 +16,96 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+///
+/// The `Plane3` class represents a half space in 3D, so the normal
+/// may point either towards or away from origin.  The plane `P` can
+/// be represented by Plane3 as either `p` or `-p` corresponding to
+/// the two half-spaces on either side of the plane. Any function
+/// which computes a distance will return either negative or positive
+/// values for the distance indicating which half-space the point is
+/// in. Note that reflection, and intersection functions will operate
+/// as expected.
+
 template <class T> class Plane3
 {
   public:
+
+    /// @{
+    /// @name Direct access to member fields
+    
+    /// The normal to the plane
     Vec3<T> normal;
+    
+    /// The distance from the origin to the plane
     T distance;
 
+    /// @}
+
+    /// @{
+    ///	@name Constructors
+
+    /// Uninitialized by default
     IMATH_HOSTDEVICE constexpr Plane3() noexcept {}
+
+    /// Initialize with a normal and distance
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& normal, T distance) noexcept;
+
+    /// Initialize with a point and a normal
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point, const Vec3<T>& normal) noexcept;
+    
+    /// Initialize with three points
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point1,
                                                const Vec3<T>& point2,
                                                const Vec3<T>& point3) noexcept;
 
-    //----------------------
-    //	Various set methods
-    //----------------------
-
+    /// @}
+    
+    /// @{
+    /// @name Manipulation
+    
+    /// Set via a given normal and distance
     IMATH_HOSTDEVICE void set (const Vec3<T>& normal, T distance) noexcept;
 
+    /// Set via a given point and normal
     IMATH_HOSTDEVICE void set (const Vec3<T>& point, const Vec3<T>& normal) noexcept;
 
+    /// Set via three points
     IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3) noexcept;
 
-    //----------------------
-    //	Utilities
-    //----------------------
-
+    /// @}
+    
+    /// @{
+    /// @name Utility Methods
+    
+    /// Determine if a line intersects the plane.
+    /// @param line The line
+    /// @param[out] intersection The point of intersection
+    /// @return True if the line intersects the plane.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
     intersect (const Line3<T>& line, Vec3<T>& intersection) const noexcept;
 
+    /// Determine if a line intersects the plane.
+    /// @param line The line
+    /// @param[out] parameter The parametric value of the point of intersection
+    /// @return True if the line intersects the plane.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& line, T& parameter) const noexcept;
 
-    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>&) const noexcept;
+    /// Return the distance from a point to the plane.
+    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>& point) const noexcept;
 
-    IMATH_HOSTDEVICE constexpr Vec3<T> reflectPoint (const Vec3<T>&) const noexcept;
-    IMATH_HOSTDEVICE constexpr Vec3<T> reflectVector (const Vec3<T>&) const noexcept;
+    /// Reflect the given point around the plane.
+    IMATH_HOSTDEVICE constexpr Vec3<T> reflectPoint (const Vec3<T>& point) const noexcept;
+
+    /// Reflect the direction vector around the plane
+    IMATH_HOSTDEVICE constexpr Vec3<T> reflectVector (const Vec3<T>& vec) const noexcept;
+
+    /// @}
 };
 
-//--------------------
-// Convenient typedefs
-//--------------------
-
+/// Plane of type float
 typedef Plane3<float> Plane3f;
+
+/// Plane of type double
 typedef Plane3<double> Plane3d;
 
 //---------------
@@ -163,6 +199,7 @@ Plane3<T>::intersectT (const Line3<T>& line, T& t) const noexcept
     return true;
 }
 
+/// Stream output
 template <class T>
 std::ostream&
 operator<< (std::ostream& o, const Plane3<T>& plane)
@@ -170,6 +207,7 @@ operator<< (std::ostream& o, const Plane3<T>& plane)
     return o << "(" << plane.normal << ", " << plane.distance << ")";
 }
 
+/// Transform a plane by a matrix
 template <class T>
 IMATH_CONSTEXPR14 Plane3<T>
 operator* (const Plane3<T>& plane, const Matrix44<T>& M) noexcept
@@ -205,6 +243,7 @@ operator* (const Plane3<T>& plane, const Matrix44<T>& M) noexcept
     return Plane3<T> (point * M, (point + dir2) * M, (point + dir1) * M);
 }
 
+/// Reflect the pla
 template <class T>
 constexpr inline Plane3<T>
 operator- (const Plane3<T>& plane) noexcept

@@ -3,9 +3,8 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-#ifndef INCLUDED_IMATHNAMESPACE_H
-#define INCLUDED_IMATHNAMESPACE_H
-
+//
+// The Imath library namespace
 //
 // The purpose of this file is to make it possible to specify an
 // IMATH_INTERNAL_NAMESPACE as a preprocessor definition and have all of the
@@ -42,10 +41,11 @@
 // }
 //
 
-//
-// Open Source version of this file pulls in the IlmBaseConfig.h file
-// for the configure time options.
-//
+#ifndef INCLUDED_IMATHNAMESPACE_H
+#define INCLUDED_IMATHNAMESPACE_H
+
+/// @cond Doxygen_Suppress
+
 #include "ImathConfig.h"
 
 #ifndef IMATH_NAMESPACE
@@ -86,5 +86,7 @@ using namespace IMATH_INTERNAL_NAMESPACE;
     namespace IMATH_INTERNAL_NAMESPACE                                                             \
     {
 #define IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT }
+
+/// @endcond
 
 #endif /* INCLUDED_IMATHNAMESPACE_H */

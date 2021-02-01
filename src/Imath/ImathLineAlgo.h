@@ -3,42 +3,12 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+//
+// Algorithms applied to or in conjunction with Imath::Line class
+//
+
 #ifndef INCLUDED_IMATHLINEALGO_H
 #define INCLUDED_IMATHLINEALGO_H
-
-//------------------------------------------------------------------
-//
-//	This file contains algorithms applied to or in conjunction
-//	with lines (Imath::Line). These algorithms may require
-//	more headers to compile. The assumption made is that these
-//	functions are called much less often than the basic line
-//	functions or these functions require more support classes
-//
-//	Contains:
-//
-//	bool closestPoints(const Line<T>& line1,
-//			   const Line<T>& line2,
-//			   Vec3<T>& point1,
-//			   Vec3<T>& point2)
-//
-//	bool intersect( const Line3<T> &line,
-//			const Vec3<T> &v0,
-//			const Vec3<T> &v1,
-//			const Vec3<T> &v2,
-//			Vec3<T> &pt,
-//			Vec3<T> &barycentric,
-//			bool &front)
-//
-//      V3f
-//      closestVertex(const Vec3<T> &v0,
-//                    const Vec3<T> &v1,
-//                    const Vec3<T> &v2,
-//                    const Line3<T> &l)
-//
-//	V3f
-//	rotatePoint(const Vec3<T> p, Line3<T> l, float angle)
-//
-//------------------------------------------------------------------
 
 #include "ImathFun.h"
 #include "ImathLine.h"
@@ -47,18 +17,19 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+///
+/// Compute point1 and point2 such that point1 is on line1, point2
+/// is on line2 and the distance between point1 and point2 is minimal.
+///
+/// This function returns true if point1 and point2 can be computed,
+/// or false if line1 and line2 are parallel or nearly parallel.
+/// This function assumes that line1.dir and line2.dir are normalized.
+///
+
 template <class T>
 IMATH_CONSTEXPR14 bool
 closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Vec3<T>& point2) noexcept
 {
-    //
-    // Compute point1 and point2 such that point1 is on line1, point2
-    // is on line2 and the distance between point1 and point2 is minimal.
-    // This function returns true if point1 and point2 can be computed,
-    // or false if line1 and line2 are parallel or nearly parallel.
-    // This function assumes that line1.dir and line2.dir are normalized.
-    //
-
     Vec3<T> w = line1.pos - line2.pos;
     T d1w     = line1.dir ^ w;
     T d2w     = line2.dir ^ w;
@@ -80,6 +51,30 @@ closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Ve
     }
 }
 
+///
+/// Given a line and a triangle (v0, v1, v2), the intersect() function
+/// finds the intersection of the line and the plane that contains the
+/// triangle.
+///
+/// If the intersection point cannot be computed, either because the
+/// line and the triangle's plane are nearly parallel or because the
+/// triangle's area is very small, intersect() returns false.
+///
+/// If the intersection point is outside the triangle, intersect
+/// returns false.
+///
+/// If the intersection point, pt, is inside the triangle, intersect()
+/// computes a front-facing flag and the barycentric coordinates of
+/// the intersection point, and returns true.
+///
+/// The front-facing flag is true if the dot product of the triangle's
+/// normal, (v2-v1)%(v1-v0), and the line's direction is negative.
+///
+/// The barycentric coordinates have the following property:
+///
+///     pt = v0 * barycentric.x + v1 * barycentric.y + v2 * barycentric.z
+///
+
 template <class T>
 IMATH_CONSTEXPR14 bool
 intersect (const Line3<T>& line,
@@ -90,30 +85,6 @@ intersect (const Line3<T>& line,
            Vec3<T>& barycentric,
            bool& front) noexcept
 {
-    //
-    // Given a line and a triangle (v0, v1, v2), the intersect() function
-    // finds the intersection of the line and the plane that contains the
-    // triangle.
-    //
-    // If the intersection point cannot be computed, either because the
-    // line and the triangle's plane are nearly parallel or because the
-    // triangle's area is very small, intersect() returns false.
-    //
-    // If the intersection point is outside the triangle, intersect
-    // returns false.
-    //
-    // If the intersection point, pt, is inside the triangle, intersect()
-    // computes a front-facing flag and the barycentric coordinates of
-    // the intersection point, and returns true.
-    //
-    // The front-facing flag is true if the dot product of the triangle's
-    // normal, (v2-v1)%(v1-v0), and the line's direction is negative.
-    //
-    // The barycentric coordinates have the following property:
-    //
-    //     pt = v0 * barycentric.x + v1 * barycentric.y + v2 * barycentric.z
-    //
-
     Vec3<T> edge0  = v1 - v0;
     Vec3<T> edge1  = v2 - v1;
     Vec3<T> normal = edge1 % edge0;
@@ -183,6 +154,11 @@ intersect (const Line3<T>& line,
     return true;
 }
 
+///
+/// Return the vertex that is closest to the given line. The returned
+/// point is either v0, v1, or v2.
+///
+
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
 closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Line3<T>& l) noexcept
@@ -208,14 +184,14 @@ closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Li
     return nearest;
 }
 
+///
+/// Rotate the point p around the line l by the given angle.
+///
+
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
 rotatePoint (const Vec3<T> p, Line3<T> l, T angle) noexcept
 {
-    //
-    // Rotate the point p around the line l by the given angle.
-    //
-
     //
     // Form a coordinate frame with <x,y,a>. The rotation is the in xy
     // plane.

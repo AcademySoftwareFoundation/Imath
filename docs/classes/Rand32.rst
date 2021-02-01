@@ -6,8 +6,8 @@ generates a uniformly distributed sequence with a period length of
 2^32.
 
 .. doxygenclass:: Imath::Rand32
-   :members:
    :undoc-members:
+   :members:
 
 
    

@@ -14,6 +14,6 @@ Example:
 .. doxygentypedef:: M44d
 
 .. doxygenclass:: Imath::Matrix44
-   :members:
    :undoc-members:
+   :members:
 

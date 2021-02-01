@@ -14,6 +14,6 @@ Example:
 .. doxygentypedef:: M22d
 
 .. doxygenclass:: Imath::Matrix22
-   :members:
    :undoc-members:
+   :members:
 

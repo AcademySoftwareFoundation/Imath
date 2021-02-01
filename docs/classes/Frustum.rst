@@ -14,7 +14,7 @@ Example:
 .. doxygentypedef:: Frustumd
                     
 .. doxygenclass:: Imath::Frustum
-   :members:
    :undoc-members:
+   :members:
 
                     

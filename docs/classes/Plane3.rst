@@ -14,8 +14,8 @@ Example:
 .. doxygentypedef:: Plane3d
 
 .. doxygenclass:: Imath::Plane3
-   :members:
    :undoc-members:
+   :members:
 
 
                     
