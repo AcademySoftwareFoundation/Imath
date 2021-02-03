@@ -12,9 +12,10 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <limits>
+
 #include "ImathExport.h"
 #include "ImathInt64.h"
-#include "ImathLimits.h"
 #include "ImathNamespace.h"
 #include "ImathPlatform.h"
 
@@ -65,7 +66,7 @@ lerpfactor (T m, T a, T b) noexcept
     T d = b - a;
     T n = m - a;
 
-    if (abs (d) > T (1) || abs (n) < limits<T>::max() * abs (d))
+    if (abs (d) > T (1) || abs (n) < std::numeric_limits<T>::max() * abs (d))
         return n / d;
 
     return T (0);

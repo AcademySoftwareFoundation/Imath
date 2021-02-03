@@ -10,7 +10,6 @@
 #ifndef INCLUDED_IMATHSHEAR_H
 #define INCLUDED_IMATHSHEAR_H
 
-#include "ImathLimits.h"
 #include "ImathMath.h"
 #include "ImathNamespace.h"
 #include "ImathVec.h"
@@ -262,16 +261,16 @@ template <class T> class Shear6
     /// @name Numerical Limits
     
     /// Largest possible negative value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMin() { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() noexcept { return std::numeric_limits<T>::lowest(); }
 
     /// Largest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return std::numeric_limits<T>::max(); }
 
     /// Smallest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return std::numeric_limits<T>::min(); }
 
     /// Smallest possible e for which 1+e != 1
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return std::numeric_limits<T>::epsilon(); }
 
     /// @}
 

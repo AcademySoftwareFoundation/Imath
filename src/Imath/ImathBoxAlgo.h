@@ -397,7 +397,7 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
     // exit point.
     //
 
-    const T TMAX = limits<T>::max();
+    const T TMAX = std::numeric_limits<T>::max();
 
     T tFrontMax = -TMAX;
     T tBackMin  = TMAX;
@@ -678,7 +678,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) noexcept
     // intersection is the ray-box intersection.
     //
 
-    const T TMAX = limits<T>::max();
+    const T TMAX = std::numeric_limits<T>::max();
 
     T tFrontMax = -1;
     T tBackMin  = TMAX;

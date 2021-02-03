@@ -135,11 +135,11 @@ testClassification()
 
     testClass (1.0, 1, 1, 0, 0, 0, 0, 0);
     testClass (1.0f + HALF_EPSILON, 1, 1, 0, 0, 0, 0, 0);
-    testClass (HALF_MIN, 1, 0, 1, 0, 0, 0, 0);
-    testClass (HALF_MIN + HALF_MIN, 1, 0, 1, 0, 0, 0, 0);
+    testClass (HALF_DENORM_MIN, 1, 0, 1, 0, 0, 0, 0);
+    testClass (HALF_DENORM_MIN + HALF_DENORM_MIN, 1, 0, 1, 0, 0, 0, 0);
     testClass (HALF_NRM_MIN, 1, 1, 0, 0, 0, 0, 0);
-    testClass (HALF_NRM_MIN + HALF_MIN, 1, 1, 0, 0, 0, 0, 0);
-    testClass (HALF_NRM_MIN - HALF_MIN, 1, 0, 1, 0, 0, 0, 0);
+    testClass (HALF_NRM_MIN + HALF_DENORM_MIN, 1, 1, 0, 0, 0, 0, 0);
+    testClass (HALF_NRM_MIN - HALF_DENORM_MIN, 1, 0, 1, 0, 0, 0, 0);
     testClass (2.0f, 1, 1, 0, 0, 0, 0, 0);
     testClass (3.0f, 1, 1, 0, 0, 0, 0, 0);
     testClass (0.1f, 1, 1, 0, 0, 0, 0, 0);
@@ -152,11 +152,11 @@ testClassification()
 
     testClass (-1.0f, 1, 1, 0, 0, 0, 0, 1);
     testClass (-1.0f - HALF_EPSILON, 1, 1, 0, 0, 0, 0, 1);
-    testClass (-HALF_MIN, 1, 0, 1, 0, 0, 0, 1);
-    testClass (-HALF_MIN - HALF_MIN, 1, 0, 1, 0, 0, 0, 1);
+    testClass (-HALF_DENORM_MIN, 1, 0, 1, 0, 0, 0, 1);
+    testClass (-HALF_DENORM_MIN - HALF_DENORM_MIN, 1, 0, 1, 0, 0, 0, 1);
     testClass (-HALF_NRM_MIN, 1, 1, 0, 0, 0, 0, 1);
-    testClass (-HALF_NRM_MIN - HALF_MIN, 1, 1, 0, 0, 0, 0, 1);
-    testClass (-HALF_NRM_MIN + HALF_MIN, 1, 0, 1, 0, 0, 0, 1);
+    testClass (-HALF_NRM_MIN - HALF_DENORM_MIN, 1, 1, 0, 0, 0, 0, 1);
+    testClass (-HALF_NRM_MIN + HALF_DENORM_MIN, 1, 0, 1, 0, 0, 0, 1);
     testClass (-2.0f, 1, 1, 0, 0, 0, 0, 1);
     testClass (-3.0f, 1, 1, 0, 0, 0, 0, 1);
     testClass (-0.1f, 1, 1, 0, 0, 0, 0, 1);

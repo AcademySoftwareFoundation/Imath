@@ -10,7 +10,6 @@
 #ifndef INCLUDED_IMATHEULER_H
 #define INCLUDED_IMATHEULER_H
 
-#include "ImathLimits.h"
 #include "ImathMath.h"
 #include "ImathMatrix.h"
 #include "ImathNamespace.h"

@@ -34,7 +34,7 @@ testClosestPoints (const Line3f& line1,
 
     if (rv)
     {
-        float e = 10 * limits<float>::epsilon();
+        float e = 10 * std::numeric_limits<float>::epsilon();
         assert (point1.equalWithAbsError (p1, e));
         assert (point2.equalWithAbsError (p2, e));
     }
@@ -114,7 +114,7 @@ testClosestPoints()
             // close to parallel.
             //
 
-            float e = 2000 * limits<float>::epsilon();
+            float e = 2000 * std::numeric_limits<float>::epsilon();
             float d = 1 - (line1.dir ^ line2.dir) * (line1.dir ^ line2.dir);
             V3f n   = point1 - point2;
 
@@ -141,7 +141,7 @@ testIntersect (const Line3f& line,
 
     assert (rv == returnValue);
 
-    float e = 10 * limits<float>::epsilon();
+    float e = 10 * std::numeric_limits<float>::epsilon();
 
     if (rv)
     {
@@ -366,7 +366,7 @@ testIntersect()
             assert (rv == true);
 
             float nd = abs (normal.normalized() ^ (p1 - p0).normalized());
-            float ep = 20 * limits<float>::epsilon() / nd;
+            float ep = 20 * std::numeric_limits<float>::epsilon() / nd;
 
             assert (point.equalWithAbsError (p1, ep));
         }

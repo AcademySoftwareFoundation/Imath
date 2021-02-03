@@ -26,10 +26,8 @@ imath_define_library(Imath
     ImathFun.h
     ImathGL.h
     ImathGLU.h
-    ImathHalfLimits.h
     ImathInt64.h
     ImathInterval.h
-    ImathLimits.h
     ImathLineAlgo.h
     ImathLine.h
     ImathMath.h

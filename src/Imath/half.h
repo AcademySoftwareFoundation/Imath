@@ -62,6 +62,7 @@
 
 #include "ImathNamespace.h"
 #include "ImathExport.h"
+#include "ImathPlatform.h"
 #include <iostream>
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -69,12 +70,19 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 class half
 {
   public:
+    // Make a special tag that lets us initialize a half from the raw bits.
+    enum FromBitsTag
+    {
+        FromBits
+    };
+
     //-------------
     // Constructors
     //-------------
 
-    half() noexcept = default; // no initialization
+    half() noexcept = default; // no initialization, but not constexpr
     half (float f) noexcept;
+    constexpr half(FromBitsTag, unsigned short bits) noexcept;
     // rule of 5
     ~half() noexcept            = default;
     half (const half&) noexcept = default;
@@ -172,8 +180,8 @@ class half
     // Access to the internal representation
     //--------------------------------------
 
-    IMATH_EXPORT unsigned short bits() const noexcept;
-    IMATH_EXPORT void setBits (unsigned short bits) noexcept;
+    IMATH_EXPORT constexpr unsigned short bits() const noexcept;
+    IMATH_EXPORT IMATH_CONSTEXPR14 void setBits (unsigned short bits) noexcept;
 
   public:
     union uif
@@ -195,16 +203,18 @@ class half
 //-------------------------------------------------------------------------
 // Limits
 //
-// Visual C++ will complain if HALF_MIN, HALF_NRM_MIN etc. are not float
+// Visual C++ will complain if HALF_DENORM_MIN, HALF_NRM_MIN etc. are not float
 // constants, but at least one other compiler (gcc 2.96) produces incorrect
 // results if they are.
 //-------------------------------------------------------------------------
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 
-#    define HALF_MIN 5.96046448e-08f // Smallest positive half
+#    define HALF_DENORM_MIN 5.96046448e-08f // Smallest positive denormalized positive half
 
 #    define HALF_NRM_MIN 6.10351562e-05f // Smallest positive normalized half
+
+#    define HALF_MIN 6.10351562e-05f // Smallest positive normalized half
 
 #    define HALF_MAX 65504.0f // Largest positive half
 
@@ -212,9 +222,11 @@ class half
                                      // half (1.0 + e) != half (1.0)
 #else
 
-#    define HALF_MIN 5.96046448e-08 // Smallest positive half
+#    define HALF_DENORM_MIN 5.96046448e-08 // Smallest positive half
 
 #    define HALF_NRM_MIN 6.10351562e-05 // Smallest positive normalized half
+
+#    define HALF_MIN 6.10351562e-05f // Smallest positive normalized half
 
 #    define HALF_MAX 65504.0 // Largest positive half
 
@@ -237,7 +249,7 @@ class half
 
 #define HALF_RADIX 2 // Base of the exponent
 
-#define HALF_MIN_EXP -13 // Minimum negative integer such that
+#define HALF_DENORM_MIN_EXP -13 // Minimum negative integer such that
                          // HALF_RADIX raised to the power of
                          // one less than that integer is a
                          // normalized half
@@ -247,7 +259,7 @@ class half
                         // one less than that integer is a
                         // normalized half
 
-#define HALF_MIN_10_EXP -4 // Minimum positive integer such
+#define HALF_DENORM_MIN_10_EXP -4 // Minimum positive integer such
                            // that 10 raised to that power is
                            // a normalized half
 
@@ -426,6 +438,17 @@ inline half::half (float f) noexcept
             _h = convert (x.i);
         }
     }
+}
+
+
+//------------------------------------------
+// Half from raw bits constructor
+//------------------------------------------
+
+inline constexpr
+half::half(FromBitsTag, unsigned short bits) noexcept
+    : _h(bits)
+{
 }
 
 //------------------------------------------
@@ -652,17 +675,19 @@ half::sNan() noexcept
     return h;
 }
 
-inline unsigned short
+inline constexpr unsigned short
 half::bits() const noexcept
 {
     return _h;
 }
 
-inline void
+inline IMATH_CONSTEXPR14 void
 half::setBits (unsigned short bits) noexcept
 {
     _h = bits;
 }
+
+
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

@@ -10,11 +10,11 @@
 #ifndef INCLUDED_IMATHVEC_H
 #define INCLUDED_IMATHVEC_H
 
-#include "ImathLimits.h"
 #include "ImathMath.h"
 #include "ImathNamespace.h"
 
 #include <iostream>
+#include <limits>
 #include <stdexcept>
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
@@ -227,16 +227,16 @@ template <class T> class Vec2
     /// @name Numeric Limits
     
     /// Largest possible negative value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() noexcept { return std::numeric_limits<T>::lowest(); }
 
     /// Largest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return std::numeric_limits<T>::max(); }
 
     /// Smallest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return std::numeric_limits<T>::min(); }
 
     /// Smallest possible e for which 1+e != 1
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return std::numeric_limits<T>::epsilon(); }
 
     /// @}
     
@@ -454,16 +454,16 @@ template <class T> class Vec3
     /// @name Numeric Limits
 
     /// Largest possible negative value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() noexcept { return std::numeric_limits<T>::lowest(); }
 
     /// Largest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return std::numeric_limits<T>::max(); }
 
     /// Smallest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return std::numeric_limits<T>::min(); }
 
     /// Smallest possible e for which 1+e != 1
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return std::numeric_limits<T>::epsilon(); }
 
     /// @}
     
@@ -641,16 +641,16 @@ template <class T> class Vec4
     /// @name Numeric Limits
     
     /// Largest possible negative value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() noexcept { return std::numeric_limits<T>::lowest(); }
 
     /// Largest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return std::numeric_limits<T>::max(); }
 
     /// Smallest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return std::numeric_limits<T>::min(); }
 
     /// Smallest possible e for which 1+e != 1
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return std::numeric_limits<T>::epsilon(); }
 
     /// @}
     
@@ -1099,7 +1099,7 @@ Vec2<T>::length() const noexcept
 {
     T length2 = dot (*this);
 
-    if (IMATH_UNLIKELY(length2 < T (2) * limits<T>::smallest()))
+    if (IMATH_UNLIKELY(length2 < T (2) * std::numeric_limits<T>::min()))
         return lengthTiny();
 
     return std::sqrt (length2);
@@ -1569,7 +1569,7 @@ Vec3<T>::length() const noexcept
 {
     T length2 = dot (*this);
 
-    if (IMATH_UNLIKELY(length2 < T (2) * limits<T>::smallest()))
+    if (IMATH_UNLIKELY(length2 < T (2) * std::numeric_limits<T>::min()))
         return lengthTiny();
 
     return std::sqrt (length2);
@@ -1954,7 +1954,7 @@ Vec4<T>::length() const noexcept
 {
     T length2 = dot (*this);
 
-    if (IMATH_UNLIKELY(length2 < T (2) * limits<T>::smallest()))
+    if (IMATH_UNLIKELY(length2 < T (2) * std::numeric_limits<T>::min()))
         return lengthTiny();
 
     return std::sqrt (length2);

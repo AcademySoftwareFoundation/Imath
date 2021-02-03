@@ -19,6 +19,7 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <string.h>
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
@@ -255,16 +256,16 @@ template <class T> class Matrix22
     /// @name Numeric Limits
     
     /// Largest possible negative value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() noexcept { return std::numeric_limits<T>::lowest(); }
 
     /// Largest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return std::numeric_limits<T>::max(); }
 
     /// Smallest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return std::numeric_limits<T>::min(); }
 
     /// Smallest possible e for which 1+e != 1
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return std::numeric_limits<T>::epsilon(); }
 
     /// @}
     
@@ -582,16 +583,16 @@ template <class T> class Matrix33
     /// @name Numeric Limits
     
     /// Largest possible negative value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() noexcept { return std::numeric_limits<T>::lowest(); }
 
     /// Largest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return std::numeric_limits<T>::max(); }
 
     /// Smallest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return std::numeric_limits<T>::min(); }
 
     /// Smallest possible e for which 1+e != 1
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return std::numeric_limits<T>::epsilon(); }
 
     /// @}
     
@@ -957,16 +958,16 @@ template <class T> class Matrix44
     /// @name Numeric Limits
     
     /// Largest possible negative value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMin() noexcept { return limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() noexcept { return std::numeric_limits<T>::lowest(); }
 
     /// Largest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return std::numeric_limits<T>::max(); }
 
     /// Smallest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return limits<T>::smallest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return std::numeric_limits<T>::min(); }
 
     /// Smallest possible e for which 1+e != 1
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return std::numeric_limits<T>::epsilon(); }
 
     /// @}
     
@@ -1501,7 +1502,7 @@ Matrix22<T>::inverse (bool singExc) const
     }
     else
     {
-        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min();
 
         for (int i = 0; i < 2; ++i)
         {
@@ -1544,7 +1545,7 @@ Matrix22<T>::inverse() const noexcept
     }
     else
     {
-        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min();
 
         for (int i = 0; i < 2; ++i)
         {
@@ -2480,7 +2481,7 @@ Matrix33<T>::inverse (bool singExc) const
         }
         else
         {
-            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min();
 
             for (int i = 0; i < 3; ++i)
             {
@@ -2531,7 +2532,7 @@ Matrix33<T>::inverse (bool singExc) const
         }
         else
         {
-            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min();
 
             for (int i = 0; i < 2; ++i)
             {
@@ -2591,7 +2592,7 @@ Matrix33<T>::inverse() const noexcept
         }
         else
         {
-            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min();
 
             for (int i = 0; i < 3; ++i)
             {
@@ -2639,7 +2640,7 @@ Matrix33<T>::inverse() const noexcept
         }
         else
         {
-            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min();
 
             for (int i = 0; i < 2; ++i)
             {
@@ -3971,7 +3972,7 @@ Matrix44<T>::inverse (bool singExc) const
     }
     else
     {
-        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min();
 
         for (int i = 0; i < 3; ++i)
         {
@@ -4040,7 +4041,7 @@ Matrix44<T>::inverse() const noexcept
     }
     else
     {
-        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / limits<T>::smallest();
+        T mr = IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min();
 
         for (int i = 0; i < 3; ++i)
         {

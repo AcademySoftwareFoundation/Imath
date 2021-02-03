@@ -10,7 +10,6 @@
 #ifndef INCLUDED_IMATHLINE_H
 #define INCLUDED_IMATHLINE_H
 
-#include "ImathLimits.h"
 #include "ImathMatrix.h"
 #include "ImathNamespace.h"
 #include "ImathVec.h"
@@ -148,7 +147,7 @@ Line3<T>::closestPointTo (const Line3<T>& line) const noexcept
     {
         T absNum = ((num >= 0) ? num : -num);
 
-        if (absNum >= absDenom * limits<T>::max())
+        if (absNum >= absDenom * std::numeric_limits<T>::max())
             return pos;
     }
 

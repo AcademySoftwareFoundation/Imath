@@ -15,7 +15,6 @@
 #ifndef INCLUDED_IMATHVECALGO_H
 #define INCLUDED_IMATHVECALGO_H
 
-#include "ImathLimits.h"
 #include "ImathNamespace.h"
 #include "ImathVec.h"
 

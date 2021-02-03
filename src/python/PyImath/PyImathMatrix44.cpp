@@ -869,7 +869,7 @@ singularValueDecomposition44(const Matrix44<T>& m, bool forcePositiveDeterminant
 {
     IMATH_NAMESPACE::Matrix44<T> U, V;
     IMATH_NAMESPACE::Vec4<T> S;
-    IMATH_NAMESPACE::jacobiSVD (m, U, S, V, IMATH_NAMESPACE::limits<T>::epsilon(), forcePositiveDeterminant);
+    IMATH_NAMESPACE::jacobiSVD (m, U, S, V, std::numeric_limits<T>::epsilon(), forcePositiveDeterminant);
     return make_tuple (U, S, V);
 }
 
@@ -950,8 +950,8 @@ register_Matrix44()
         .staticmethod("baseTypeEpsilon")
         .def("baseTypeMax", &Matrix44<T>::baseTypeMax,"baseTypeMax() max value of the base type of the vector")
         .staticmethod("baseTypeMax")
-        .def("baseTypeMin", &Matrix44<T>::baseTypeMin,"baseTypeMin() min value of the base type of the vector")
-        .staticmethod("baseTypeMin")
+        .def("baseTypeLowest", &Matrix44<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the vector")
+        .staticmethod("baseTypeLowest")
         .def("baseTypeSmallest", &Matrix44<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the vector")
         .staticmethod("baseTypeSmallest")
         .def("equalWithAbsError", &Matrix44<T>::equalWithAbsError,

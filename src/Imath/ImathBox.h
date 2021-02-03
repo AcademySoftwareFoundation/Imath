@@ -51,7 +51,8 @@ template <class V> class Box
     ///	@name Constructors
 
     /// Construct an empty bounding box. This initializes the mimimum to
-    /// `V::baseTypeMax()` and the maximum to `V::baseTypeMin()`.
+    /// `std::numeric_limits<V::baseType>::max()` and the maximum to
+    /// `std::numeric_limits<V::baseType>::lowest()`.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() noexcept;
 
     /// Construct a bounding box that contains a single point.
@@ -78,7 +79,7 @@ template <class V> class Box
 
     /// Set the box to be empty. A box is empty if the mimimum is greater
     /// than the maximum. makeEmpty() sets the mimimum to `V::baseTypeMax()`
-    /// and the maximum to `V::baseTypeMin()`.
+    /// and the maximum to `V::baseTypeLowest()`.
     IMATH_HOSTDEVICE void makeEmpty() noexcept;
 
     /// Extend the box to include the given point.
@@ -122,7 +123,7 @@ template <class V> class Box
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
 
     /// Return true if the box contains all points, false otherwise.
-    /// An infinite box has a mimimum of`V::baseTypeMin()`
+    /// An infinite box has a mimimum of`V::baseTypeLowest()`
     /// and a maximum of `V::baseTypeMax()`.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
 
@@ -193,14 +194,14 @@ inline void
 Box<V>::makeEmpty() noexcept
 {
     min = V (V::baseTypeMax());
-    max = V (V::baseTypeMin());
+    max = V (V::baseTypeLowest());
 }
 
 template <class V>
 inline void
 Box<V>::makeInfinite() noexcept
 {
-    min = V (V::baseTypeMin());
+    min = V (V::baseTypeLowest());
     max = V (V::baseTypeMax());
 }
 
@@ -294,7 +295,7 @@ Box<V>::isInfinite() const noexcept
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
     {
-        if (min[i] != V::baseTypeMin() || max[i] != V::baseTypeMax())
+        if (min[i] != V::baseTypeLowest() || max[i] != V::baseTypeMax())
             return false;
     }
 
@@ -480,14 +481,14 @@ inline void
 Box<Vec2<T>>::makeEmpty() noexcept
 {
     min = Vec2<T> (Vec2<T>::baseTypeMax());
-    max = Vec2<T> (Vec2<T>::baseTypeMin());
+    max = Vec2<T> (Vec2<T>::baseTypeLowest());
 }
 
 template <class T>
 inline void
 Box<Vec2<T>>::makeInfinite() noexcept
 {
-    min = Vec2<T> (Vec2<T>::baseTypeMin());
+    min = Vec2<T> (Vec2<T>::baseTypeLowest());
     max = Vec2<T> (Vec2<T>::baseTypeMax());
 }
 
@@ -576,8 +577,10 @@ template <class T>
 IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T>>::isInfinite() const noexcept
 {
-    if (min[0] != limits<T>::min() || max[0] != limits<T>::max() || min[1] != limits<T>::min() ||
-        max[1] != limits<T>::max())
+    if (min[0] != std::numeric_limits<T>::lowest() ||
+        max[0] != std::numeric_limits<T>::max() ||
+        min[1] != std::numeric_limits<T>::lowest() ||
+        max[1] != std::numeric_limits<T>::max())
         return false;
 
     return true;
@@ -731,14 +734,14 @@ inline void
 Box<Vec3<T>>::makeEmpty() noexcept
 {
     min = Vec3<T> (Vec3<T>::baseTypeMax());
-    max = Vec3<T> (Vec3<T>::baseTypeMin());
+    max = Vec3<T> (Vec3<T>::baseTypeLowest());
 }
 
 template <class T>
 inline void
 Box<Vec3<T>>::makeInfinite() noexcept
 {
-    min = Vec3<T> (Vec3<T>::baseTypeMin());
+    min = Vec3<T> (Vec3<T>::baseTypeLowest());
     max = Vec3<T> (Vec3<T>::baseTypeMax());
 }
 
@@ -841,8 +844,12 @@ template <class T>
 IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T>>::isInfinite() const noexcept
 {
-    if (min[0] != limits<T>::min() || max[0] != limits<T>::max() || min[1] != limits<T>::min() ||
-        max[1] != limits<T>::max() || min[2] != limits<T>::min() || max[2] != limits<T>::max())
+    if (min[0] != std::numeric_limits<T>::lowest() ||
+        max[0] != std::numeric_limits<T>::max() ||
+        min[1] != std::numeric_limits<T>::lowest() ||
+        max[1] != std::numeric_limits<T>::max() ||
+        min[2] != std::numeric_limits<T>::lowest() ||
+        max[2] != std::numeric_limits<T>::max())
         return false;
 
     return true;

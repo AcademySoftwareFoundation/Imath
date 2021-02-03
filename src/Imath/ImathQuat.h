@@ -608,7 +608,7 @@ Quat<T>::log() const noexcept
     T sintheta = std::sin (theta);
 
     T k;
-    if (std::abs(sintheta) < 1 && std::abs(theta) >= limits<T>::max() * std::abs(sintheta))
+    if (std::abs(sintheta) < 1 && std::abs(theta) >= std::numeric_limits<T>::max() * std::abs(sintheta))
         k = 1;
     else
         k = theta / sintheta;
@@ -630,7 +630,7 @@ Quat<T>::exp() const noexcept
     T sintheta = std::sin (theta);
 
     T k;
-    if (abs (theta) < 1 && abs (sintheta) >= limits<T>::max() * abs (theta))
+    if (abs (theta) < 1 && abs (sintheta) >= std::numeric_limits<T>::max() * abs (theta))
         k = 1;
     else
         k = sintheta / theta;

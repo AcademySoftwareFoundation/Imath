@@ -9,7 +9,6 @@
 
 #include "ImathColor.h"
 #include "ImathColorAlgo.h"
-#include "ImathLimits.h"
 #include "ImathMath.h"
 #include <assert.h>
 #include <iostream>
@@ -24,7 +23,7 @@ testColor()
 
     cout << "rgb2packed -> packed2rgb" << endl;
 
-    const float epsilon = IMATH_INTERNAL_NAMESPACE::limits<float>::epsilon();
+    const float epsilon = std::numeric_limits<float>::epsilon();
 
     IMATH_INTERNAL_NAMESPACE::PackedColor packed;
     IMATH_INTERNAL_NAMESPACE::C3c in3 (52, 128, 254);
