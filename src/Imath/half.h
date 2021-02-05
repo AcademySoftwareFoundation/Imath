@@ -85,8 +85,8 @@ class half
     constexpr half(FromBitsTag, unsigned short bits) noexcept;
     // rule of 5
     ~half() noexcept            = default;
-    half (const half&) noexcept = default;
-    half (half&&) noexcept      = default;
+    constexpr half (const half&) noexcept = default;
+    constexpr half (half&&) noexcept      = default;
 
     //--------------------
     // Conversion to float
@@ -98,7 +98,7 @@ class half
     // Unary minus
     //------------
 
-    half operator-() const noexcept;
+    constexpr half operator-() const noexcept;
 
     //-----------
     // Assignment
@@ -126,7 +126,7 @@ class half
     // bits will be zero.
     //---------------------------------------------------------
 
-    half round (unsigned int n) const noexcept;
+    IMATH_CONSTEXPR14 half round (unsigned int n) const noexcept;
 
     //--------------------------------------------------------------------
     // Classification:
@@ -149,13 +149,13 @@ class half
     //				is set (negative)
     //--------------------------------------------------------------------
 
-    bool isFinite() const noexcept;
-    bool isNormalized() const noexcept;
-    bool isDenormalized() const noexcept;
-    bool isZero() const noexcept;
-    bool isNan() const noexcept;
-    bool isInfinity() const noexcept;
-    bool isNegative() const noexcept;
+    constexpr bool isFinite() const noexcept;
+    constexpr bool isNormalized() const noexcept;
+    constexpr bool isDenormalized() const noexcept;
+    constexpr bool isZero() const noexcept;
+    constexpr bool isNan() const noexcept;
+    constexpr bool isInfinity() const noexcept;
+    constexpr bool isNegative() const noexcept;
 
     //--------------------------------------------
     // Special values
@@ -171,10 +171,10 @@ class half
     //			pattern 0111110111111111
     //--------------------------------------------
 
-    static half posInf() noexcept;
-    static half negInf() noexcept;
-    static half qNan() noexcept;
-    static half sNan() noexcept;
+    static constexpr half posInf() noexcept;
+    static constexpr half negInf() noexcept;
+    static constexpr half qNan() noexcept;
+    static constexpr half sNan() noexcept;
 
     //--------------------------------------
     // Access to the internal representation
@@ -193,6 +193,8 @@ class half
   private:
     IMATH_EXPORT static short convert (int i) noexcept;
     IMATH_EXPORT static float overflow() noexcept;
+    constexpr unsigned short mantissa() const noexcept;
+    constexpr unsigned short exponent() const noexcept;
 
     unsigned short _h;
 
@@ -464,7 +466,7 @@ inline half::operator float() const noexcept
 // Round to n-bit precision
 //-------------------------
 
-inline half
+inline IMATH_CONSTEXPR14 half
 half::round (unsigned int n) const noexcept
 {
     //
@@ -512,8 +514,7 @@ half::round (unsigned int n) const noexcept
     // Put the original sign bit back.
     //
 
-    half h;
-    h._h = s | e;
+    half h(FromBits, s | e);
 
     return h;
 }
@@ -522,12 +523,10 @@ half::round (unsigned int n) const noexcept
 // Other inline functions
 //-----------------------
 
-inline half
+inline constexpr half
 half::operator-() const noexcept
 {
-    half h;
-    h._h = _h ^ 0x8000;
-    return h;
+    return half(FromBits, bits() ^ 0x8000);
 }
 
 inline half&
@@ -593,86 +592,82 @@ half::operator/= (float f) noexcept
     return *this;
 }
 
-inline bool
+inline constexpr unsigned short
+half::mantissa() const noexcept
+{
+    return _h & 0x3ff;
+}
+
+inline constexpr unsigned short
+half::exponent() const noexcept
+{
+    return (_h >> 10) & 0x001f;
+}
+
+inline constexpr bool
 half::isFinite() const noexcept
 {
-    unsigned short e = (_h >> 10) & 0x001f;
-    return e < 31;
+    return exponent() < 31;
 }
 
-inline bool
+inline constexpr bool
 half::isNormalized() const noexcept
 {
-    unsigned short e = (_h >> 10) & 0x001f;
-    return e > 0 && e < 31;
+    return exponent() > 0 && exponent() < 31;
 }
 
-inline bool
+inline constexpr bool
 half::isDenormalized() const noexcept
 {
-    unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m = _h & 0x3ff;
-    return e == 0 && m != 0;
+    return exponent() == 0 && mantissa() != 0;
 }
 
-inline bool
+inline constexpr bool
 half::isZero() const noexcept
 {
     return (_h & 0x7fff) == 0;
 }
 
-inline bool
+inline constexpr bool
 half::isNan() const noexcept
 {
-    unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m = _h & 0x3ff;
-    return e == 31 && m != 0;
+    return exponent() == 31 && mantissa() != 0;
 }
 
-inline bool
+inline constexpr bool
 half::isInfinity() const noexcept
 {
-    unsigned short e = (_h >> 10) & 0x001f;
-    unsigned short m = _h & 0x3ff;
-    return e == 31 && m == 0;
+    return exponent() == 31 && mantissa() == 0;
 }
 
-inline bool
+inline constexpr bool
 half::isNegative() const noexcept
 {
     return (_h & 0x8000) != 0;
 }
 
-inline half
+inline constexpr half
 half::posInf() noexcept
 {
-    half h;
-    h._h = 0x7c00;
-    return h;
+    return half(FromBits, 0x7c00);
 }
 
-inline half
+inline constexpr half
 half::negInf() noexcept
 {
-    half h;
-    h._h = 0xfc00;
-    return h;
+    return half(FromBits, 0xfc00);
 }
 
-inline half
+inline constexpr half
 half::qNan() noexcept
 {
-    half h;
-    h._h = 0x7fff;
-    return h;
+    return half(FromBits, 0x7fff);
 }
 
-inline half
+inline constexpr half
 half::sNan() noexcept
 {
-    half h;
-    h._h = 0x7dff;
-    return h;
+    return half(FromBits, 0x7dff);
 }
 
 inline constexpr unsigned short
