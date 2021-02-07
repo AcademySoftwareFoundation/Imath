@@ -9,9 +9,9 @@ libdir=@libdir@
 includedir=@includedir@
 libsuffix=@LIB_SUFFIX_DASH@
 Name: Imath
-Description: Base half data type and math libraries.
+Description: Imath library: vector/matrix and math operations, plus the half type.
 Version: @IMATH_VERSION@
 Requires:
 Conflicts:
-Libs: -L${libdir} -lImath${libsuffix} -lHalf${libsuffix}
+Libs: -L${libdir} -lImath${libsuffix}
 Cflags: -I${includedir} -I${includedir}/Imath
