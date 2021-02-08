@@ -78,7 +78,7 @@ Finding either/both packages:
 
 
 To link against them, we use CMake generator expressions so that we can
-referencing *both* sets of targets, but it will only use the ones
+reference *both* sets of targets, but it will only use the ones
 corresponding to the package version that was found.
 
     target_link_libraries (my_target
@@ -181,7 +181,7 @@ standard way, we should not define our own equivalent function (and
 especially not define it in a way that doesn't match the standard behavior).
 
 `Vec<T>::normalize()` and `length()` methods, for integer `T` types, have
-been removed. Also the standalone `projec()` and `orthogonal()` functions
+been removed. Also the standalone `project()` and `orthogonal()` functions
 are no longer defined for vectors made of integer elements. These all had
 behavior that was hard to understand and probably useless. They still work
 as expected for vectors of floating-point types.
