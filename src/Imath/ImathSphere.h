@@ -145,7 +145,7 @@ template <class T>
 IMATH_CONSTEXPR14 bool
 Sphere3<T>::intersect (const Line3<T>& line, Vec3<T>& intersection) const
 {
-    T t;
+    T t (0);
 
     if (intersectT (line, t))
     {

@@ -185,6 +185,10 @@ template <class T> class Quat
 
     /// @}
     
+    /// The base type: In templates that accept a parameter `V`, you
+    /// can refer to `T` as `V::BaseType`
+    typedef T BaseType;
+
   private:
     IMATH_HOSTDEVICE void setRotationInternal (const Vec3<T>& f0, const Vec3<T>& t0, Quat<T>& q) noexcept;
 };
