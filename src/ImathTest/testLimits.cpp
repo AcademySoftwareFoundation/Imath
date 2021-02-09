@@ -115,7 +115,7 @@ testLimits()
 void
 testHalfLimits()
 {
-    cout << "values in Imath::limits<half>\n";
+    cout << "values in std::numeric_limits<half>\n";
 
     // For reference:
     printf("HALF_DENORM_MIN %g -> 0x%04x\n", (float)HALF_DENORM_MIN, half(HALF_DENORM_MIN).bits());
