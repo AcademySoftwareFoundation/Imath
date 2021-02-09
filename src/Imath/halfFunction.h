@@ -54,7 +54,7 @@
 #include "half.h"
 
 #include "ImathConfig.h"
-#ifndef ILMBASE_HAVE_LARGE_STACK
+#ifndef IMATH_HAVE_LARGE_STACK
 #    include <string.h> // need this for memset
 #else
 #endif
@@ -77,7 +77,7 @@ template <class T> class halfFunction
                   T negInfValue  = 0,
                   T nanValue     = 0);
 
-#ifndef ILMBASE_HAVE_LARGE_STACK
+#ifndef IMATH_HAVE_LARGE_STACK
     ~halfFunction() { delete[] _lut; }
     halfFunction (const halfFunction&) = delete;
     halfFunction& operator= (const halfFunction&) = delete;
@@ -92,7 +92,7 @@ template <class T> class halfFunction
     T operator() (half x) const;
 
   private:
-#ifdef ILMBASE_HAVE_LARGE_STACK
+#ifdef IMATH_HAVE_LARGE_STACK
     T _lut[1 << 16];
 #else
     T* _lut;
@@ -113,7 +113,7 @@ halfFunction<T>::halfFunction (Function f,
                                T negInfValue,
                                T nanValue)
 {
-#ifndef ILMBASE_HAVE_LARGE_STACK
+#ifndef IMATH_HAVE_LARGE_STACK
     _lut = new T[1 << 16];
 #endif
 
