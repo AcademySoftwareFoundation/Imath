@@ -7,10 +7,10 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-PyIlmBase_includedir=@includedir@/OpenEXR
+libsuffix=@LIB_SUFFIX_DASH@
 
-Name: PyIlmBase
-Description: Python bindings for the IlmBase libraries
-Version: @PYILMBASE_VERSION@
-Libs: -L${libdir} @ILMBASE_LDFLAGS@ -lIlmImf -lz @ILMBASE_LIBS@
-Cflags: @ILMBASE_CXXFLAGS@ -I${PyIlmBase_includedir}
+Name: PyImath
+Description: Python bindings for the Imath libraries
+Version: @IMATH_VERSION@
+Libs: -L${libdir} -lImath${libsuffix} -lPyImath${libsuffix}
+Cflags: -I${includedir} -I${includedir}/Imath
