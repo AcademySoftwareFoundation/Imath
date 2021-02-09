@@ -43,8 +43,8 @@ set(PYIMATH_LIB_PYTHONVER_ROOT "_Python" CACHE STRING "String added as a root to
 
 # This is a variable here for use in install lines when creating
 # libraries (otherwise ignored). Care must be taken when changing this,
-# as many things assume this is OpenEXR
-set(PYIMATH_OUTPUT_SUBDIR OpenEXR CACHE STRING "Destination sub-folder of the include path for install")
+# as many things assume this is "Imath"
+set(PYIMATH_OUTPUT_SUBDIR Imath CACHE STRING "Destination sub-folder of the include path for install")
 
 # This does not seem to be available as a per-target property,
 # but is pretty harmless to set globally
