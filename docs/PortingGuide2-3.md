@@ -330,23 +330,24 @@ as expected for vectors of floating-point types.
 Akin to the `Vec` classes, there are now seperate API calls for
 throwing and non-throwing functions:
 
-These functions previously threw exceptions but **now do not**:
+These functions previously threw exceptions but now do not throw and
+are marked `noexcept`:
 
-* `Frustum<T>::projectionMatrix()`
+* `Frustum<T>::projectionMatrix() noexcept`
 
-* `Frustum<T>::aspect()`
+* `Frustum<T>::aspect() noexcept`
 
-* `Frustum<T>::set()`
+* `Frustum<T>::set() noexcept`
 
-* `Frustum<T>::projectPointToScreen()`
+* `Frustum<T>::projectPointToScreen() noexcept`
 
-* `Frustum<T>::ZToDepth()`
+* `Frustum<T>::ZToDepth() noexcept`
 
-* `Frustum<T>::DepthToZ()`
+* `Frustum<T>::DepthToZ() noexcept`
 
-* `Frustum<T>::screenRadius()`
+* `Frustum<T>::screenRadius() noexcept`
 
-* `Frustum<T>::localToScreen()`
+* `Frustum<T>::localToScreen() noexcept`
 
 These functions throw `std::domain_error` exceptions when the
 associated frustum is degenerate:
@@ -381,7 +382,7 @@ New methods/functions:
 
 ### ImathMatrixAlgo.h
 
-* `checkForZeroScaleInRow() and `extractAndRemoveScalingAndShear()`
+* `checkForZeroScaleInRow()` and `extractAndRemoveScalingAndShear()`
    throw `std::domain_error` exceptions instead of `Iex::ZeroScale`
 
 ### `Matrix22<T>`, `Matrix33<T>`, `Matrix44<T>` in ImathMatrix.h
@@ -390,27 +391,31 @@ New methods/functions:
 
 * `invert(bool singExc = false)` is replace by:
 
-  - invert() noexcept
+  - `invert() noexcept`
 
-  - invert(bool) which optionally throws an `std::invalid_argument` exception.
+  - `invert(bool)` which optionally throws an `std::invalid_argument`
+    exception.
 
 * `inverse(bool singExc = false)` is replace by:
 
-  - inverse() noexcept
+  - `inverse() noexcept`
 
-  - inverse(bool) which optionally throws an `std::invalid_argument` exception.
+  - `inverse(bool)` which optionally throws an `std::invalid_argument`
+    exception.
 
 * `gjInvert(bool singExc = false)` is replace by:
 
-  - gjInvert() noexcept
+  - `gjInvert()` noexcept
 
-  - gjInvert(bool) which optionally throws an `std::invalid_argument` exception.
+  - `gjInvert(bool)` which optionally throws an
+    `std::invalid_argument` exception.
 
 * `gJinverse(bool singExc = false)` is replace by:
 
-  - gjInverse() noexcept
+  - `gjInverse()` noexcept
 
-  - gjInverse(bool) which optionally throws an `std::invalid_argument` exception.
+  - `gjInverse(bool)` which optionally throws an
+    `std::invalid_argument` exception.
 
 New functions:
 
@@ -428,7 +433,8 @@ Other changes:
 
 ### ImathRoots.h
 
-* When compiling for CUDA, use `complex` type from `thrust` rather than `std`
+* When compiling for CUDA, the `complex` type comes from `thrust`
+  rather than `std`
 
 ### ImathVecAlgo.h
 
