@@ -12,6 +12,7 @@
 
 #include "ImathMath.h"
 #include "ImathNamespace.h"
+#include "ImathTypeTraits.h"
 
 #include <iostream>
 #include <limits>
@@ -24,17 +25,6 @@
 #endif
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
-
-
-/// Does type V appear to be equivalent to an Imath::VecN<Base>? We assume
-/// that it is if it has a subscript operator that returns a Base, and its
-/// size is large enough to contain N elements of type Base.
-#define IMATH_VECTOR_EQUIVALENT(V,Base,N) \
-    (std::is_same<typename std::decay<decltype(V()[0])>::type, Base>::value \
-     && sizeof(V) >= N*sizeof(Base))
-
-
-
 
 template <class T> class Vec2;
 template <class T> class Vec3;
@@ -304,7 +294,12 @@ template <class T> class Vec3
 
     /// Interoperability constructor from another type that behaves as if it
     /// were an equivalent vector.
-    template<typename V, IMATH_ENABLE_IF(IMATH_VECTOR_EQUIVALENT(V, T, 3))>
+    template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3 (const V& v) noexcept
+        : Vec3(v.x, v.y, v.z) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
+                                         && !has_xyz<V,T>::value)>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3 (const V& v) noexcept
         : Vec3(v[0], v[1], v[2]) { }
 
@@ -323,7 +318,16 @@ template <class T> class Vec3
 
     /// Interoperability assignment from another type that behaves as if it
     /// were an equivalent vector.
-    template<typename V, IMATH_ENABLE_IF(IMATH_VECTOR_EQUIVALENT(V, T, 3))>
+    template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3& operator= (const V& v) noexcept {
+        x = v.x;
+        y = v.y;
+        z = v.z;
+        return *this;
+    }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
+                                         && !has_xyz<V,T>::value)>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3& operator= (const V& v) noexcept {
         x = v[0];
         y = v[1];

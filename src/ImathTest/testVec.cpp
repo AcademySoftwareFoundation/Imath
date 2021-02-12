@@ -9,11 +9,9 @@
 
 #include "ImathFun.h"
 #include "ImathVec.h"
-#include <array>
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <vector>
 #include <testVec.h>
 
 using namespace std;
@@ -239,92 +237,6 @@ testLength4T()
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized().length(), 1, e));
 }
 
-
-
-// Extra simple vector that does nothing but allow element access, as an
-// example of a vector type that an app might use and want interop with
-// our vectors.
-template <typename T, int N>
-struct SimpleVec {
-    T elements[N];
-
-    SimpleVec(T val = T(0)) {
-        for (int i = 0; i < N; ++i)
-            elements[i] = val;
-    }
-    ~SimpleVec() = default;
-    constexpr T operator[](int i) const { return elements[i]; }
-    T& operator[](int i) { return elements[i]; }
-};
-
-
-
-void
-testInteropPass3(const Vec3<float>& v, float a, float b, float c)
-{
-    assert(v[0] == a && v[1] == b && v[2] == c);
-}
-
-void
-testInteropCtr3()
-{
-    // Test construction/assignment/paramater pass of a different vector type
-    {
-        SimpleVec<float,3> s;
-        s[0] = 1;
-        s[1] = 2;
-        s[2] = 3;
-        Vec3<float> v(s);
-        assert(v[0] == 1 && v[1] == 2 && v[2] == 3);
-        s[1] = 42;
-        v = s;
-        assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-
-        testInteropPass3(s, 1, 42, 3);
-    }
-    // Test construction/assignment/paramater pass of a std::vector of length 3
-    {
-        std::vector<float> s { 1, 2, 3 };
-        Vec3<float> v(s);
-        assert(v[0] == 1 && v[1] == 2 && v[2] == 3);
-        s[1] = 42;
-        v = s;
-        assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testInteropPass3(s, 1, 42, 3);
-    }
-    // Test construction/assignment/paramater pass of a std::array of length 3
-    {
-        std::array<float, 3> s { 1, 2, 3 };
-        Vec3<float> v(s);
-        assert(v[0] == 1 && v[1] == 2 && v[2] == 3);
-        s[1] = 42;
-        v = s;
-        assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testInteropPass3(s, 1, 42, 3);
-    }
-    // Test construction/assignment/paramater pass of initializer lists.
-    {
-        Vec3<float> v({ 1.0f, 2.0f, 3.0f });
-        assert(v[0] == 1 && v[1] == 2 && v[2] == 3);
-        v = { 1.0f, 42.0f, 3.0f };
-        assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testInteropPass3({ 1.0f, 42.0f, 3.0f }, 1, 42, 3);
-    }
-#if 0
-    // Test construction/assignment/paramater pass of a C array
-    {
-        float s[3] = { 1, 2, 3 };
-        Vec3<float> v(s);
-        assert(v[0] == 1 && v[1] == 2 && v[2] == 3);
-        s[1] = 42;
-        v = s;
-        assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testInteropPass3(s, 1, 42, 3);
-    }
-#endif
-}
-
-
 } // namespace
 
 void
@@ -338,8 +250,6 @@ testVec()
     testLength3T<double>();
     testLength4T<float>();
     testLength4T<double>();
-
-    testInteropCtr3();
 
     cout << "ok\n" << endl;
 }

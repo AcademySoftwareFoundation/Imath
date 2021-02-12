@@ -41,6 +41,7 @@ imath_define_library(Imath
     ImathRoots.h
     ImathShear.h
     ImathSphere.h
+    ImathTypeTraits.h
     ImathVecAlgo.h
     ImathVec.h
     half.h
