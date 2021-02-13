@@ -1628,8 +1628,8 @@ Matrix22<T>::setScale (const Vec2<S>& s) noexcept
 {
     //
     // Set the matrix to:
-    //  | s.x 0   |
-    //  | 0   s.y |
+    //  | s.x  0  |
+    //  |  0  s.y |
     //
 
     x[0][0] = s.x;
@@ -2744,7 +2744,7 @@ IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setScale (T s) noexcept
 {
     //
-    // Set the matrix to a 2D- affine transform scale:
+    // Set the matrix to a 2D homogeneous transform scale:
     //  | s 0 0 |
     //  | 0 s 0 |
     //  | 0 0 1 |
@@ -2768,10 +2768,10 @@ IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setScale (const Vec2<S>& s) noexcept
 {
     //
-    // Set the matrix to a 2D- affine transform scale:
-    //  | s.x 0   0 |
-    //  | 0   s.y 0 |
-    //  | 0   0   1 |
+    // Set the matrix to a 2D homogeneous transform scale:
+    //  | s.x  0   0 |
+    //  |  0  s.y  0 |
+    //  |  0   0   1 |
     //
 
     x[0][0] = s.x;
@@ -4264,6 +4264,14 @@ template <class T>
 IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setScale (T s) noexcept
 {
+    //
+    // Set the matrix to a 3D homogeneous transform scale:
+    //  | s 0 0 0 |
+    //  | 0 s 0 0 |
+    //  | 0 0 s 0 |
+    //  | 0 0 0 1 |
+    //
+
     x[0][0] = s;
     x[0][1] = 0;
     x[0][2] = 0;
@@ -4288,6 +4296,14 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setScale (const Vec3<S>& s) noexcept
 {
+    //
+    // Set the matrix to a 3D homogeneous transform scale:
+    //  | s.x  0   0   0 |
+    //  |  0  s.y  0   0 |
+    //  |  0   0  s.z  0 |
+    //  |  0   0   0   1 |
+    //
+
     x[0][0] = s.x;
     x[0][1] = 0;
     x[0][2] = 0;
