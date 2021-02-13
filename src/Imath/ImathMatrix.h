@@ -1606,6 +1606,12 @@ template <class T>
 IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::setScale (T s) noexcept
 {
+    //
+    // Set the matrix to:
+    //  | s 0 |
+    //  | 0 s |
+    //
+
     x[0][0] = s;
     x[0][1] = static_cast<T> (0);
     x[1][0] = static_cast<T> (0);
@@ -1620,6 +1626,12 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::setScale (const Vec2<S>& s) noexcept
 {
+    //
+    // Set the matrix to:
+    //  | s.x 0   |
+    //  | 0   s.y |
+    //
+
     x[0][0] = s.x;
     x[0][1] = static_cast<T> (0);
     x[1][0] = static_cast<T> (0);
@@ -2731,6 +2743,13 @@ template <class T>
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setScale (T s) noexcept
 {
+    //
+    // Set the matrix to a 2D- affine transform scale:
+    //  | s 0 0 |
+    //  | 0 s 0 |
+    //  | 0 0 1 |
+    //
+
     x[0][0] = s;
     x[0][1] = 0;
     x[0][2] = 0;
@@ -2739,13 +2758,7 @@ Matrix33<T>::setScale (T s) noexcept
     x[1][2] = 0;
     x[2][0] = 0;
     x[2][1] = 0;
-    x[2][2] = s;
-    // NOTE: The OpenEXR 2.x code looked made this matrix:
-    //    s 0 0
-    //    0 s 0
-    //    0 0 1
-    // This was deemed to be unexpected odd behavior, so beginning with
-    // Imath 3.0, we make a uniform 3D scale.
+    x[2][2] = 1;
     return *this;
 }
 
@@ -2754,6 +2767,13 @@ template <class S>
 IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setScale (const Vec2<S>& s) noexcept
 {
+    //
+    // Set the matrix to a 2D- affine transform scale:
+    //  | s.x 0   0 |
+    //  | 0   s.y 0 |
+    //  | 0   0   1 |
+    //
+
     x[0][0] = s.x;
     x[0][1] = 0;
     x[0][2] = 0;
