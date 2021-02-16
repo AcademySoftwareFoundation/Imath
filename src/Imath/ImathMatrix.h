@@ -94,11 +94,27 @@ template <class T> class Matrix22
     /// Construct from Matrix22 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix22 (const Matrix22<S>& v) noexcept;
 
+    /// Interoperability constructor from another type that behaves as if it
+    /// were an equivalent matrix.
+    template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,2,2>::value)>
+    IMATH_HOSTDEVICE Matrix22 (const M& m)
+        : Matrix22(T(m[0][0]), T(m[0][1]), T(m[1][0]), T(m[1][1]))
+    { }
+
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator= (const Matrix22& v) noexcept;
 
     /// Assignment from scalar
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator= (T a) noexcept;
+
+    /// Interoperability assignment from another type that behaves as if it
+    /// were an equivalent matrix.
+    template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,2,2>::value)>
+    IMATH_HOSTDEVICE const Matrix22& operator= (const M& m)
+    {
+        *this = Matrix22(T(m[0][0]), T(m[0][1]), T(m[1][0]), T(m[1][1]));
+        return *this;
+    }
 
     /// Destructor
     ~Matrix22() noexcept = default;
@@ -278,23 +294,6 @@ template <class T> class Matrix22
 
     /// The base vector type
     typedef Vec2<T> BaseVecType;
-
-  private:
-    template <typename R, typename S> struct isSameType
-    {
-        enum
-        {
-            value = 0
-        };
-    };
-
-    template <typename R> struct isSameType<R, R>
-    {
-        enum
-        {
-            value = 1
-        };
-    };
 };
 
 ///
@@ -355,11 +354,31 @@ template <class T> class Matrix33
     /// Construct from Matrix33 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix33 (const Matrix33<S>& v) noexcept;
 
+    /// Interoperability constructor from another type that behaves as if it
+    /// were an equivalent matrix.
+    template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,3,3>::value)>
+    IMATH_HOSTDEVICE Matrix33 (const M& m)
+        : Matrix33(T(m[0][0]), T(m[0][1]), T(m[0][2]),
+                   T(m[1][0]), T(m[1][1]), T(m[1][2]),
+                   T(m[2][0]), T(m[2][1]), T(m[2][2]))
+    { }
+
     /// Assignment operator
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (const Matrix33& v) noexcept;
 
     /// Assignment from scalar
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (T a) noexcept;
+
+    /// Interoperability assignment from another type that behaves as if it
+    /// were an equivalent matrix.
+    template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,3,3>::value)>
+    IMATH_HOSTDEVICE const Matrix33& operator= (const M& m)
+    {
+        *this = Matrix33(T(m[0][0]), T(m[0][1]), T(m[0][2]),
+                         T(m[1][0]), T(m[1][1]), T(m[1][2]),
+                         T(m[2][0]), T(m[2][1]), T(m[2][2]));
+        return *this;
+    }
 
     /// Destructor
     ~Matrix33() noexcept = default;
@@ -604,23 +623,6 @@ template <class T> class Matrix33
 
     /// The base vector type
     typedef Vec3<T> BaseVecType;
-
-  private:
-    template <typename R, typename S> struct isSameType
-    {
-        enum
-        {
-            value = 0
-        };
-    };
-
-    template <typename R> struct isSameType<R, R>
-    {
-        enum
-        {
-            value = 1
-        };
-    };
 };
 
 ///
@@ -694,11 +696,33 @@ template <class T> class Matrix44
     /// Construct from Matrix44 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix44 (const Matrix44<S>& v) noexcept;
 
+    /// Interoperability constructor from another type that behaves as if it
+    /// were an equivalent matrix.
+    template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,4,4>::value)>
+    IMATH_HOSTDEVICE Matrix44 (const M& m)
+        : Matrix44(T(m[0][0]), T(m[0][1]), T(m[0][2]), T(m[0][3]),
+                   T(m[1][0]), T(m[1][1]), T(m[1][2]), T(m[1][3]),
+                   T(m[2][0]), T(m[2][1]), T(m[2][2]), T(m[2][3]),
+                   T(m[3][0]), T(m[3][1]), T(m[3][2]), T(m[3][3]))
+    { }
+
     /// Assignment operator
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (const Matrix44& v) noexcept;
 
     /// Assignment from scalar
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (T a) noexcept;
+
+    /// Interoperability assignment from another type that behaves as if it
+    /// were an equivalent matrix.
+    template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,4,4>::value)>
+    IMATH_HOSTDEVICE const Matrix44& operator= (const M& m)
+    {
+        *this = Matrix44(T(m[0][0]), T(m[0][1]), T(m[0][2]), T(m[0][3]),
+                         T(m[1][0]), T(m[1][1]), T(m[1][2]), T(m[1][3]),
+                         T(m[2][0]), T(m[2][1]), T(m[2][2]), T(m[2][3]),
+                         T(m[3][0]), T(m[3][1]), T(m[3][2]), T(m[3][3]));
+        return *this;
+    }
 
     /// Destructor
     ~Matrix44() noexcept = default;
@@ -979,23 +1003,6 @@ template <class T> class Matrix44
 
     /// The base vector type
     typedef Vec4<T> BaseVecType;
-
-  private:
-    template <typename R, typename S> struct isSameType
-    {
-        enum
-        {
-            value = 0
-        };
-    };
-
-    template <typename R> struct isSameType<R, R>
-    {
-        enum
-        {
-            value = 1
-        };
-    };
 };
 
 /// Stream output

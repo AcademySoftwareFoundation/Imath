@@ -151,10 +151,10 @@ public:
 
 
 
-/// `has_subscript<T,Base,N>::value` will be true if type `T` has
+/// `has_subscript<T,Base,Nelem>::value` will be true if type `T` has
 /// subscripting syntax, a `T[int]` returns a `Base`, and the size of a `T`
-/// is exactly big enough to hold `N` `Base` values.
-template <typename T, typename Base, int N>
+/// is exactly big enough to hold `Nelem` `Base` values.
+template <typename T, typename Base, int Nelem>
 struct has_subscript {
 private:
     typedef char Yes[1];
@@ -169,14 +169,43 @@ private:
     template<typename C> static No& test(...);
 public:
     enum { value = (sizeof(test<T>(0)) == sizeof(Yes)
-                    && sizeof(T) == N*sizeof(Base))
+                    && sizeof(T) == Nelem*sizeof(Base))
       };
 };
 
 
 /// C arrays of just the right length also are qualified for has_subscript.
-template<typename Base, int N>
-struct has_subscript<Base[N], Base, N> : public std::true_type { };
+template<typename Base, int Nelem>
+struct has_subscript<Base[Nelem], Base, Nelem> : public std::true_type { };
+
+
+
+/// `has_double_subscript<T,Base,Rows,Cols>::value` will be true if type `T`
+/// has 2-level subscripting syntax, a `T[int][int]` returns a `Base`, and
+/// the size of a `T` is exactly big enough to hold `R*C` `Base` values.
+template <typename T, typename Base, int Rows, int Cols>
+struct has_double_subscript {
+private:
+    typedef char Yes[1];
+    typedef char No[2];
+
+    // Valid only if T[][] is possible and is the right type: return a Yes.
+    template<typename C,
+             IMATH_ENABLE_IF(std::is_same<typename std::decay<decltype(C()[0][0])>::type, Base>::value)>
+    static Yes& test(int);
+
+    // Fallback, default to returning a No.
+    template<typename C> static No& test(...);
+public:
+    enum { value = (sizeof(test<T>(0)) == sizeof(Yes)
+                    && sizeof(T) == (Rows*Cols)*sizeof(Base))
+      };
+};
+
+
+/// C arrays of just the right length also are qualified for has_double_subscript.
+template<typename Base, int Rows, int Cols>
+struct has_double_subscript<Base[Rows][Cols], Base, Rows, Cols> : public std::true_type { };
 
 /// @}
 
