@@ -78,7 +78,7 @@ template <class T> class Vec2
     /// Interoperability constructor from another type that behaves as if it
     /// were an equivalent vector.
     template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2 (const V& v) noexcept
+    IMATH_HOSTDEVICE constexpr Vec2 (const V& v) noexcept
         : Vec2(T(v.x), T(v.y)) { }
 
     template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,2>::value
@@ -322,7 +322,7 @@ template <class T> class Vec3
     /// Interoperability constructor from another type that behaves as if it
     /// were an equivalent vector.
     template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3 (const V& v) noexcept
+    IMATH_HOSTDEVICE constexpr Vec3 (const V& v) noexcept
         : Vec3(T(v.x), T(v.y), T(v.z)) { }
 
     template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
@@ -580,7 +580,7 @@ template <class T> class Vec4
     /// Interoperability constructor from another type that behaves as if it
     /// were an equivalent vector.
     template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4 (const V& v) noexcept
+    IMATH_HOSTDEVICE constexpr Vec4 (const V& v) noexcept
         : Vec4(T(v.x), T(v.y), T(v.z), T(v.w)) { }
 
     template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,4>::value
