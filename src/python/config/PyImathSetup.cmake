@@ -21,10 +21,6 @@ set(PYIMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "String added to the
 # the version of python being compiled for
 set(PYIMATH_LIB_PYTHONVER_ROOT "_Python" CACHE STRING "String added as a root to the identifier of the python version in the libraries")
 
-# This does not seem to be available as a per-target property,
-# but is pretty harmless to set globally
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 # rpath related setup
 #
 # NB: This is global behavior. This can be made to be
