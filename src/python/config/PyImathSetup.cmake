@@ -21,42 +21,6 @@ set(PYIMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "String added to the
 # the version of python being compiled for
 set(PYIMATH_LIB_PYTHONVER_ROOT "_Python" CACHE STRING "String added as a root to the identifier of the python version in the libraries")
 
-# rpath related setup
-#
-# NB: This is global behavior. This can be made to be
-# set on a per-target basis, but that places a larger burden
-# on the cmake add_library / add_executable call sites
-#
-# make sure we force an rpath to the rpath we're compiling
-set(CMAKE_SKIP_BUILD_RPATH FALSE)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-# adds the automatically determined parts of the rpath
-# which point to directories outside the build tree to the install RPATH
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-if(APPLE)
-  set(CMAKE_MACOSX_RPATH ON)
-endif()
-# if the user sets an install rpath
-# then just use that, or otherwise set one for them
-if(NOT CMAKE_INSTALL_RPATH)
-  list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
-  if("${isSystemDir}" STREQUAL "-1")
-    if("${CMAKE_SYSTEM}" MATCHES "Linux")
-      get_filename_component(tmpSysPath "${CMAKE_INSTALL_FULL_LIBDIR}" NAME)
-      if(NOT tmpSysPath)
-        set(tmpSysPath "lib")
-      endif()
-      set(CMAKE_INSTALL_RPATH "\\\$ORIGIN/../${tmpSysPath};${CMAKE_INSTALL_FULL_LIBDIR}")
-      set(tmpSysPath)
-    elseif(APPLE)
-      set(CMAKE_INSTALL_RPATH "@loader_path/../lib;@executable_path/../lib;${CMAKE_INSTALL_FULL_LIBDIR}")
-    else()
-      set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
-    endif()
-  endif()
-  set(isSystemDir)
-endif()
-
 ########################
 
 # set a default build type if not set
