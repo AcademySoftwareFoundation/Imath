@@ -22,7 +22,7 @@ function(PYIMATH_ADD_LIBRARY_PRIV libname)
   set_target_properties(${libname} PROPERTIES
     OUTPUT_NAME "${PYIMATH_CURLIB_OUTROOT}${libname}${PYIMATH_LIB_SUFFIX}"
   )
-  target_compile_features(${libname} PUBLIC cxx_std_${OPENEXR_CXX_STANDARD})
+  target_compile_features(${libname} PUBLIC cxx_std_${IMATH_CXX_STANDARD})
   # we are always building shared, so don't check for that
   if(PYIMATH_CURLIB_PRIV_EXPORT)
     target_compile_definitions(${libname} PRIVATE ${PYIMATH_CURLIB_PRIV_EXPORT})

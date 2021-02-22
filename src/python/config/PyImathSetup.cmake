@@ -10,15 +10,6 @@ include(GNUInstallDirs)
 set(PYIMATH_OVERRIDE_PYTHON2_INSTALL_DIR "" CACHE STRING "Override the install location for any python 2.x modules compiled")
 set(PYIMATH_OVERRIDE_PYTHON3_INSTALL_DIR "" CACHE STRING "Override the install location for any python 3.x modules compiled")
 
-# What C++ standard to compile for
-# VFX Platform 18 is c++14, so let's enable that by default
-set(tmp 14)
-if(CMAKE_CXX_STANDARD)
-  set(tmp ${CMAKE_CXX_STANDARD})
-endif()
-set(OPENEXR_CXX_STANDARD "${tmp}" CACHE STRING "C++ standard to compile against")
-set(tmp)
-
 # Whether to generate and install a pkg-config file PyImath.pc
 if (WIN32)
 option(PYIMATH_INSTALL_PKG_CONFIG "Install PyImath.pc file" OFF)
