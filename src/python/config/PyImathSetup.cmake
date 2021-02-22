@@ -21,11 +21,6 @@ set(PYIMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "String added to the
 # the version of python being compiled for
 set(PYIMATH_LIB_PYTHONVER_ROOT "_Python" CACHE STRING "String added as a root to the identifier of the python version in the libraries")
 
-# This is a variable here for use in install lines when creating
-# libraries (otherwise ignored). Care must be taken when changing this,
-# as many things assume this is "Imath"
-set(PYIMATH_OUTPUT_SUBDIR Imath CACHE STRING "Destination sub-folder of the include path for install")
-
 # This does not seem to be available as a per-target property,
 # but is pretty harmless to set globally
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
