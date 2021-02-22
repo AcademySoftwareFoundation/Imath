@@ -15,8 +15,8 @@ function(PYIMATH_ADD_LIBRARY_PRIV libname)
   add_library(${libname} SHARED ${PYIMATH_CURLIB_SOURCE})
   #if(BUILD_SHARED_LIBS)
   set_target_properties(${libname} PROPERTIES
-  SOVERSION ${PYIMATH_SOVERSION}
-  VERSION ${PYIMATH_LIB_VERSION}
+  SOVERSION ${IMATH_SOVERSION}
+  VERSION ${IMATH_LIB_VERSION}
   )
   #endif()
   set_target_properties(${libname} PROPERTIES
