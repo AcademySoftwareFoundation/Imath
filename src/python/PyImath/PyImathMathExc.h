@@ -8,10 +8,14 @@
 #ifndef _PyImathMathExc_h_
 #define _PyImathMathExc_h_
 
-#ifdef PYIMATH_ENABLE_EXCEPTIONS
+//
+// Note: when PyImath from the v2 release of OpenEXR depended on Iex,
+// the MATH_EXC_ON macro enabled float-point exceptions via the
+// MathExcOn class. This was a compile-time option based on the
+// setting of PYIMATH_ENABLE_EXCEPTIONS. This behavior is now
+// deprecated, hence the empty macro.
+//
 
-#else
-# define MATH_EXC_ON
-#endif
+#define MATH_EXC_ON
 
 #endif
