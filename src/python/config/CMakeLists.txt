@@ -11,14 +11,14 @@ target_include_directories(PyImathConfig INTERFACE
 install(TARGETS PyImathConfig EXPORT ${PROJECT_NAME})
 add_library(PyImath::Config ALIAS PyImathConfig)
 
-if(PYIMATH_INSTALL_PKG_CONFIG)
+if(IMATH_INSTALL_PKG_CONFIG)
   # use a helper function to avoid variable pollution, but pretty simple
   function(pyimath_pkg_config_help pcinfile)
     set(prefix ${CMAKE_INSTALL_PREFIX})
-    set(exec_prefix ${CMAKE_INSTALL_BINDIR})
-    set(libdir ${CMAKE_INSTALL_LIBDIR})
-    set(includedir ${CMAKE_INSTALL_INCLUDEDIR})
-    set(LIB_SUFFIX_DASH ${OPENEXR_LIB_SUFFIX})
+    set(exec_prefix "\${prefix}")
+    set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+    set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+    set(LIB_SUFFIX_DASH ${IMATH_LIB_SUFFIX})
     string(REPLACE ".in" "" pcout ${pcinfile})
     configure_file(${pcinfile} ${CMAKE_CURRENT_BINARY_DIR}/${pcout} @ONLY)
     install(
@@ -27,6 +27,8 @@ if(PYIMATH_INSTALL_PKG_CONFIG)
     )
   endfunction()
   pyimath_pkg_config_help(../PyImath.pc.in)
+else()
+  message(STATUS "pkg-config generation disabled")
 endif()
 
 # The main export of the configuration - This is the
