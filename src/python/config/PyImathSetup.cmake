@@ -10,13 +10,6 @@ include(GNUInstallDirs)
 set(PYIMATH_OVERRIDE_PYTHON2_INSTALL_DIR "" CACHE STRING "Override the install location for any python 2.x modules compiled")
 set(PYIMATH_OVERRIDE_PYTHON3_INSTALL_DIR "" CACHE STRING "Override the install location for any python 3.x modules compiled")
 
-# Whether to generate and install a pkg-config file PyImath.pc
-if (WIN32)
-option(PYIMATH_INSTALL_PKG_CONFIG "Install PyImath.pc file" OFF)
-else()
-option(PYIMATH_INSTALL_PKG_CONFIG "Install PyImath.pc file" ON)
-endif()
-
 ########################
 ## Build related options
 
