@@ -29,6 +29,7 @@ template<typename T, int N>
 struct has_subscript<std::vector<T>, T, N> : public std::true_type { };
 IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT
 
+#if IMATH_FOREIGN_VECTOR_INTEROP
 
 
 namespace
@@ -511,7 +512,7 @@ testInteropVec4()
         s.y = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3 && v[3] == 4);
-        testVecVal4f(s, 1.0f, 42.0f, 3.0f, 4.0f);
+        testVecVal4f(V4f(s), 1.0f, 42.0f, 3.0f, 4.0f);
     }
     // Test construction/assignment/paramater pass of a std::vector of length 3
     {
@@ -689,16 +690,16 @@ testInteropMx4()
     }
 }
 
-
-
-
 } // namespace
+#endif
+
 
 void
 testInterop()
 {
     cout << "Testing interoperability with foreign types" << endl;
 
+#if IMATH_FOREIGN_VECTOR_INTEROP
     testInteropVec2();
     testInteropVec3();
     testInteropVec4();
@@ -708,4 +709,7 @@ testInterop()
     testInteropMx4();
 
     cout << "ok\n" << endl;
+#else
+    cout << "Foreign vector type interopability is disabled.\n";
+#endif
 }

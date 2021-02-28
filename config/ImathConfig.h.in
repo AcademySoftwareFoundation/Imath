@@ -46,6 +46,25 @@
                              (uint32_t(IMATH_VERSION_MINOR) << 16) | \
                              (uint32_t(IMATH_VERSION_PATCH) <<  8))
 
+
+//
+// By default, opt into the interoparability constructors and assignments.
+// If this causes problems, it can be disabled by defining this symbol to
+// be 0 prior to including any Imath headers.
+//
+// If no such definition is found, we enable automatically unless we are
+// using gcc 4.x, which appears to have bugs that prevent the interop
+// templates from compiling correctly.
+//
+#ifndef IMATH_FOREIGN_VECTOR_INTEROP
+#  if defined(__GNUC__) && __GNUC__ == 4
+#    define IMATH_FOREIGN_VECTOR_INTEROP 0
+#  else
+#    define IMATH_FOREIGN_VECTOR_INTEROP 1
+#  endif
+#endif
+
+
 //
 // Decorator that makes a function available for both CPU and GPU, when
 // compiling for Cuda.

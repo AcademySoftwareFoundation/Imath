@@ -94,32 +94,45 @@ template <class T> class Matrix22
     /// Construct from Matrix22 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix22 (const Matrix22<S>& v) noexcept;
 
-    /// Interoperability constructor from another type that behaves as if it
-    /// were an equivalent matrix.
-    template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,2,2>::value)>
-    IMATH_HOSTDEVICE Matrix22 (const M& m)
-        : Matrix22(T(m[0][0]), T(m[0][1]), T(m[1][0]), T(m[1][1]))
-    { }
-
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator= (const Matrix22& v) noexcept;
 
     /// Assignment from scalar
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix22& operator= (T a) noexcept;
 
-    /// Interoperability assignment from another type that behaves as if it
-    /// were an equivalent matrix.
+    /// Destructor
+    ~Matrix22() noexcept = default;
+
+    /// @}
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other matrix types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent matrix types, provided that they support
+    /// double-subscript (i.e., `m[j][i]`) giving the same type as the
+    /// elements of this matrix, and their total size appears to be the
+    /// right number of matrix elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+    template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,2,2>::value)>
+    IMATH_HOSTDEVICE Matrix22 (const M& m)
+        : Matrix22(T(m[0][0]), T(m[0][1]), T(m[1][0]), T(m[1][1]))
+    { }
+
     template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,2,2>::value)>
     IMATH_HOSTDEVICE const Matrix22& operator= (const M& m)
     {
         *this = Matrix22(T(m[0][0]), T(m[0][1]), T(m[1][0]), T(m[1][1]));
         return *this;
     }
-
-    /// Destructor
-    ~Matrix22() noexcept = default;
-
     /// @}
+#endif
 
     /// @{
     /// @name Compatibility with Sb
@@ -354,20 +367,38 @@ template <class T> class Matrix33
     /// Construct from Matrix33 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix33 (const Matrix33<S>& v) noexcept;
 
-    /// Interoperability constructor from another type that behaves as if it
-    /// were an equivalent matrix.
+    /// Assignment operator
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (const Matrix33& v) noexcept;
+
+    /// Assignment from scalar
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (T a) noexcept;
+
+    /// Destructor
+    ~Matrix33() noexcept = default;
+
+    /// @}
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other matrix types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent matrix types, provided that they support
+    /// double-subscript (i.e., `m[j][i]`) giving the same type as the
+    /// elements of this matrix, and their total size appears to be the
+    /// right number of matrix elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
     template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,3,3>::value)>
     IMATH_HOSTDEVICE Matrix33 (const M& m)
         : Matrix33(T(m[0][0]), T(m[0][1]), T(m[0][2]),
                    T(m[1][0]), T(m[1][1]), T(m[1][2]),
                    T(m[2][0]), T(m[2][1]), T(m[2][2]))
     { }
-
-    /// Assignment operator
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (const Matrix33& v) noexcept;
-
-    /// Assignment from scalar
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix33& operator= (T a) noexcept;
 
     /// Interoperability assignment from another type that behaves as if it
     /// were an equivalent matrix.
@@ -379,12 +410,9 @@ template <class T> class Matrix33
                          T(m[2][0]), T(m[2][1]), T(m[2][2]));
         return *this;
     }
-
-    /// Destructor
-    ~Matrix33() noexcept = default;
-
     /// @}
-    
+#endif
+
     /// @{
     /// @name Compatibility with Sb
 
@@ -696,8 +724,32 @@ template <class T> class Matrix44
     /// Construct from Matrix44 of another base type
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Matrix44 (const Matrix44<S>& v) noexcept;
 
-    /// Interoperability constructor from another type that behaves as if it
-    /// were an equivalent matrix.
+    /// Assignment operator
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (const Matrix44& v) noexcept;
+
+    /// Assignment from scalar
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (T a) noexcept;
+
+    /// Destructor
+    ~Matrix44() noexcept = default;
+
+    /// @}
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other matrix types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent matrix types, provided that they support
+    /// double-subscript (i.e., `m[j][i]`) giving the same type as the
+    /// elements of this matrix, and their total size appears to be the
+    /// right number of matrix elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
     template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,4,4>::value)>
     IMATH_HOSTDEVICE Matrix44 (const M& m)
         : Matrix44(T(m[0][0]), T(m[0][1]), T(m[0][2]), T(m[0][3]),
@@ -705,12 +757,6 @@ template <class T> class Matrix44
                    T(m[2][0]), T(m[2][1]), T(m[2][2]), T(m[2][3]),
                    T(m[3][0]), T(m[3][1]), T(m[3][2]), T(m[3][3]))
     { }
-
-    /// Assignment operator
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (const Matrix44& v) noexcept;
-
-    /// Assignment from scalar
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& operator= (T a) noexcept;
 
     /// Interoperability assignment from another type that behaves as if it
     /// were an equivalent matrix.
@@ -723,12 +769,9 @@ template <class T> class Matrix44
                          T(m[3][0]), T(m[3][1]), T(m[3][2]), T(m[3][3]));
         return *this;
     }
-
-    /// Destructor
-    ~Matrix44() noexcept = default;
-
     /// @}
-    
+#endif
+
     /// @{
     /// @name Compatibility with Sb
 

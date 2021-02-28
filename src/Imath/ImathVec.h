@@ -75,8 +75,31 @@ template <class T> class Vec2
     /// Construct from Vec2 of another base type
     template <class S> IMATH_HOSTDEVICE constexpr Vec2 (const Vec2<S>& v) noexcept;
 
-    /// Interoperability constructor from another type that behaves as if it
-    /// were an equivalent vector.
+
+    /// Assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const Vec2& v) noexcept;
+
+    /// Destructor
+    ~Vec2() noexcept = default;
+
+    /// @}
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x and .y, that are of the
+    /// same type as the elements of this vector, and their size appears to
+    /// be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
     template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
     IMATH_HOSTDEVICE constexpr Vec2 (const V& v) noexcept
         : Vec2(T(v.x), T(v.y)) { }
@@ -85,11 +108,6 @@ template <class T> class Vec2
                                          && !has_xy<V,T>::value)>
     IMATH_HOSTDEVICE Vec2 (const V& v) : Vec2(T(v[0]), T(v[1])) { }
 
-    /// Assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const Vec2& v) noexcept;
-
-    /// Interoperability assignment from another type that behaves as if it
-    /// were an equivalent vector.
     template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const V& v) noexcept {
         x = T(v.x);
@@ -104,12 +122,8 @@ template <class T> class Vec2
         y = T(v[1]);
         return *this;
     }
+#endif
 
-    /// Destructor
-    ~Vec2() noexcept = default;
-
-    /// @}
-    
     /// @{
     /// @name Compatibility with Sb
 
@@ -319,16 +333,6 @@ template <class T> class Vec3
     /// Construct from Vec3 of another base type
     template <class S> IMATH_HOSTDEVICE constexpr Vec3 (const Vec3<S>& v) noexcept;
 
-    /// Interoperability constructor from another type that behaves as if it
-    /// were an equivalent vector.
-    template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
-    IMATH_HOSTDEVICE constexpr Vec3 (const V& v) noexcept
-        : Vec3(T(v.x), T(v.y), T(v.z)) { }
-
-    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
-                                         && !has_xyz<V,T>::value)>
-    IMATH_HOSTDEVICE Vec3 (const V& v) : Vec3(T(v[0]), T(v[1]), T(v[2])) { }
-
     /// Vec4 to Vec3 conversion: divide x, y and z by w, even if w is
     /// 0.  The result depends on how the environment handles
     /// floating-point exceptions.
@@ -341,6 +345,35 @@ template <class T> class Vec3
 
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3& operator= (const Vec3& v) noexcept;
+
+    /// Destructor
+    ~Vec3() noexcept = default;
+
+    /// @}
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x, .y, .z, that are of the
+    /// same type as the elements of this vector, and their size appears to
+    /// be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
+    template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE constexpr Vec3 (const V& v) noexcept
+        : Vec3(T(v.x), T(v.y), T(v.z)) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
+                                         && !has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE Vec3 (const V& v) : Vec3(T(v[0]), T(v[1]), T(v[2])) { }
 
     /// Interoperability assignment from another type that behaves as if it
     /// were an equivalent vector.
@@ -360,12 +393,9 @@ template <class T> class Vec3
         z = T(v[2]);
         return *this;
     }
-
-    /// Destructor
-    ~Vec3() noexcept = default;
-
     /// @}
-    
+#endif
+
     /// @{
     /// @name Compatibility with Sb
 
@@ -577,8 +607,30 @@ template <class T> class Vec4
     /// Vec3 to Vec4 conversion, sets w to 1.
     template <class S> IMATH_HOSTDEVICE explicit constexpr Vec4 (const Vec3<S>& v) noexcept;
 
-    /// Interoperability constructor from another type that behaves as if it
-    /// were an equivalent vector.
+    /// Assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4& operator= (const Vec4& v) noexcept;
+
+    /// Destructor
+    ~Vec4() noexcept = default;
+
+    /// @}
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x, .y, .z, .w that are of
+    /// the same type as the elements of this vector, and their size appears
+    /// to be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
     template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
     IMATH_HOSTDEVICE constexpr Vec4 (const V& v) noexcept
         : Vec4(T(v.x), T(v.y), T(v.z), T(v.w)) { }
@@ -587,11 +639,6 @@ template <class T> class Vec4
                                          && !has_xyzw<V,T>::value)>
     IMATH_HOSTDEVICE Vec4 (const V& v) : Vec4(T(v[0]), T(v[1]), T(v[2]), T(v[3])) { }
 
-    /// Assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4& operator= (const Vec4& v) noexcept;
-
-    /// Interoperability assignment from another type that behaves as if it
-    /// were an equivalent vector.
     template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4& operator= (const V& v) noexcept {
         x = T(v.x);
@@ -610,12 +657,9 @@ template <class T> class Vec4
         w = T(v[3]);
         return *this;
     }
-
-    /// Destructor
-    ~Vec4() noexcept = default;
-
     /// @}
-    
+#endif
+
     /// @{
     /// @name Arithmetic and Comparison
     
