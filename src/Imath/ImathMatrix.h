@@ -121,7 +121,7 @@ template <class T> class Matrix22
     /// including any Imath header files.
     ///
     template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,2,2>::value)>
-    IMATH_HOSTDEVICE Matrix22 (const M& m)
+    IMATH_HOSTDEVICE explicit Matrix22 (const M& m)
         : Matrix22(T(m[0][0]), T(m[0][1]), T(m[1][0]), T(m[1][1]))
     { }
 
@@ -394,7 +394,7 @@ template <class T> class Matrix33
     /// including any Imath header files.
     ///
     template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,3,3>::value)>
-    IMATH_HOSTDEVICE Matrix33 (const M& m)
+    IMATH_HOSTDEVICE explicit Matrix33 (const M& m)
         : Matrix33(T(m[0][0]), T(m[0][1]), T(m[0][2]),
                    T(m[1][0]), T(m[1][1]), T(m[1][2]),
                    T(m[2][0]), T(m[2][1]), T(m[2][2]))
@@ -751,7 +751,7 @@ template <class T> class Matrix44
     /// including any Imath header files.
     ///
     template<typename M, IMATH_ENABLE_IF(has_double_subscript<M,T,4,4>::value)>
-    IMATH_HOSTDEVICE Matrix44 (const M& m)
+    IMATH_HOSTDEVICE explicit Matrix44 (const M& m)
         : Matrix44(T(m[0][0]), T(m[0][1]), T(m[0][2]), T(m[0][3]),
                    T(m[1][0]), T(m[1][1]), T(m[1][2]), T(m[1][3]),
                    T(m[2][0]), T(m[2][1]), T(m[2][2]), T(m[2][3]),

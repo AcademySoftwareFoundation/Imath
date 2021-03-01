@@ -57,7 +57,7 @@
 // templates from compiling correctly.
 //
 #ifndef IMATH_FOREIGN_VECTOR_INTEROP
-#  if defined(__GNUC__) && __GNUC__ == 4
+#  if defined(__GNUC__) && __GNUC__ == 4 && !defined(__clang__)
 #    define IMATH_FOREIGN_VECTOR_INTEROP 0
 #  else
 #    define IMATH_FOREIGN_VECTOR_INTEROP 1

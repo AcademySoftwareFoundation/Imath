@@ -242,7 +242,7 @@ testInteropVec2()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42);
-        testVecVal2f(s, 1.0f, 42.0f);
+        testVecVal2f(V2f(s), 1.0f, 42.0f);
     }
     // Test construction/assignment/paramater pass of a vector type with
     // explicit .y, .y, .z components but no subscripting.
@@ -253,7 +253,7 @@ testInteropVec2()
         s.y = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42);
-        testVecVal2f(s, 1.0f, 42.0f);
+        testVecVal2f(V2f(s), 1.0f, 42.0f);
     }
     // Test construction/assignment/paramater pass of a std::vector of length 3
     {
@@ -263,7 +263,7 @@ testInteropVec2()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42);
-        testVecVal2f(s, 1.0f, 42.0f);
+        testVecVal2f(V2f(s), 1.0f, 42.0f);
     }
     // Test construction/assignment/paramater pass of a std::array of length 3
     {
@@ -273,7 +273,7 @@ testInteropVec2()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42);
-        testVecVal2f(s, 1.0f, 42.0f);
+        testVecVal2f(V2f(s), 1.0f, 42.0f);
     }
     // Test construction/assignment/paramater pass of initializer lists.
     {
@@ -291,7 +291,7 @@ testInteropVec2()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42);
-        testVecVal2f(s, 1.0f, 42.0f);
+        testVecVal2f(V2f(s), 1.0f, 42.0f);
     }
 }
 
@@ -371,7 +371,7 @@ testInteropVec3()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testVecVal3f(s, 1.0f, 42.0f, 3.0f);
+        testVecVal3f(V3f(s), 1.0f, 42.0f, 3.0f);
     }
     // Test construction/assignment/paramater pass of a vector type with
     // explicit .y, .y, .z components but no subscripting.
@@ -382,7 +382,7 @@ testInteropVec3()
         s.y = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testVecVal3f(s, 1.0f, 42.0f, 3.0f);
+        testVecVal3f(V3f(s), 1.0f, 42.0f, 3.0f);
     }
     // Test construction/assignment/paramater pass of a std::vector of length 3
     {
@@ -392,7 +392,7 @@ testInteropVec3()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testVecVal3f(s, 1.0f, 42.0f, 3.0f);
+        testVecVal3f(V3f(s), 1.0f, 42.0f, 3.0f);
     }
     // Test construction/assignment/paramater pass of a std::array of length 3
     {
@@ -402,7 +402,7 @@ testInteropVec3()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testVecVal3f(s, 1.0f, 42.0f, 3.0f);
+        testVecVal3f(V3f(s), 1.0f, 42.0f, 3.0f);
     }
     // Test construction/assignment/paramater pass of initializer lists.
     {
@@ -420,7 +420,7 @@ testInteropVec3()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3);
-        testVecVal3f(s, 1.0f, 42.0f, 3.0f);
+        testVecVal3f(V3f(s), 1.0f, 42.0f, 3.0f);
     }
 }
 
@@ -501,7 +501,7 @@ testInteropVec4()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3 && v[3] == 4);
-        testVecVal4f(s, 1.0f, 42.0f, 3.0f, 4.0f);
+        testVecVal4f(V4f(s), 1.0f, 42.0f, 3.0f, 4.0f);
     }
     // Test construction/assignment/paramater pass of a vector type with
     // explicit .y, .y, .z components but no subscripting.
@@ -522,7 +522,7 @@ testInteropVec4()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3 && v[3] == 4);
-        testVecVal4f(s, 1.0f, 42.0f, 3.0f, 4.0f);
+        testVecVal4f(V4f(s), 1.0f, 42.0f, 3.0f, 4.0f);
     }
     // Test construction/assignment/paramater pass of a std::array of length 3
     {
@@ -532,7 +532,7 @@ testInteropVec4()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3 && v[3] == 4);
-        testVecVal4f(s, 1.0f, 42.0f, 3.0f, 4.0f);
+        testVecVal4f(V4f(s), 1.0f, 42.0f, 3.0f, 4.0f);
     }
     // Test construction/assignment/paramater pass of initializer lists.
     {
@@ -550,7 +550,7 @@ testInteropVec4()
         s[1] = 42;
         v = s;
         assert(v[0] == 1 && v[1] == 42 && v[2] == 3 && v[3] == 4);
-        testVecVal4f(s, 1.0f, 42.0f, 3.0f, 4.0f);
+        testVecVal4f(V4f(s), 1.0f, 42.0f, 3.0f, 4.0f);
     }
 }
 

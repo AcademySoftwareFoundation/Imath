@@ -101,12 +101,12 @@ template <class T> class Vec2
     ///
 
     template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
-    IMATH_HOSTDEVICE constexpr Vec2 (const V& v) noexcept
+    IMATH_HOSTDEVICE explicit constexpr Vec2 (const V& v) noexcept
         : Vec2(T(v.x), T(v.y)) { }
 
     template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,2>::value
                                          && !has_xy<V,T>::value)>
-    IMATH_HOSTDEVICE Vec2 (const V& v) : Vec2(T(v[0]), T(v[1])) { }
+    IMATH_HOSTDEVICE explicit Vec2 (const V& v) : Vec2(T(v[0]), T(v[1])) { }
 
     template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const V& v) noexcept {
@@ -368,12 +368,12 @@ template <class T> class Vec3
     ///
 
     template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
-    IMATH_HOSTDEVICE constexpr Vec3 (const V& v) noexcept
+    IMATH_HOSTDEVICE explicit constexpr Vec3 (const V& v) noexcept
         : Vec3(T(v.x), T(v.y), T(v.z)) { }
 
     template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
                                          && !has_xyz<V,T>::value)>
-    IMATH_HOSTDEVICE Vec3 (const V& v) : Vec3(T(v[0]), T(v[1]), T(v[2])) { }
+    IMATH_HOSTDEVICE explicit Vec3 (const V& v) : Vec3(T(v[0]), T(v[1]), T(v[2])) { }
 
     /// Interoperability assignment from another type that behaves as if it
     /// were an equivalent vector.
@@ -632,12 +632,12 @@ template <class T> class Vec4
     ///
 
     template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
-    IMATH_HOSTDEVICE constexpr Vec4 (const V& v) noexcept
+    IMATH_HOSTDEVICE explicit constexpr Vec4 (const V& v) noexcept
         : Vec4(T(v.x), T(v.y), T(v.z), T(v.w)) { }
 
     template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,4>::value
                                          && !has_xyzw<V,T>::value)>
-    IMATH_HOSTDEVICE Vec4 (const V& v) : Vec4(T(v[0]), T(v[1]), T(v[2]), T(v[3])) { }
+    IMATH_HOSTDEVICE explicit Vec4 (const V& v) : Vec4(T(v[0]), T(v[1]), T(v[2]), T(v[3])) { }
 
     template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4& operator= (const V& v) noexcept {
