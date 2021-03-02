@@ -299,7 +299,7 @@ template <class T> class Vec3
     /// Vec4 to Vec3 conversion: divide x, y and z by w.  Throws an
     /// exception if w is zero or if division by w would overflow.
     template <class S>
-    explicit constexpr Vec3 (const Vec4<S>& v, InfException);
+    explicit IMATH_CONSTEXPR14 Vec3 (const Vec4<S>& v, InfException);
 
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3& operator= (const Vec3& v) noexcept;
