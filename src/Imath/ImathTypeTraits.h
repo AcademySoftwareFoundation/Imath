@@ -84,7 +84,7 @@ private:
     typedef char Yes[1];
     typedef char No[2];
 
-    // Valid only if .x, .y, .z exist and are the right type: return a Yes.
+    // Valid only if .x, .y exist and are the right type: return a Yes.
     template<typename C,
              IMATH_ENABLE_IF(std::is_same<decltype(C().x), Base>::value),
              IMATH_ENABLE_IF(std::is_same<decltype(C().y), Base>::value)>
@@ -133,7 +133,7 @@ private:
     typedef char Yes[1];
     typedef char No[2];
 
-    // Valid only if .x, .y, .z exist and are the right type: return a Yes.
+    // Valid only if .x, .y, .z, .w exist and are the right type: return a Yes.
     template<typename C,
              IMATH_ENABLE_IF(std::is_same<decltype(C().x), Base>::value),
              IMATH_ENABLE_IF(std::is_same<decltype(C().y), Base>::value),
