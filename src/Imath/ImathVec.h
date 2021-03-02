@@ -277,7 +277,7 @@ template <class T> class Vec3
     ///	@name Constructors and Assignment
 
     /// Uninitialized by default
-    IMATH_HOSTDEVICE constexpr Vec3() noexcept;
+    IMATH_HOSTDEVICE Vec3() noexcept;
     
     /// Initialize to a scalar `(a,a,a)`
     IMATH_HOSTDEVICE constexpr explicit Vec3 (T a) noexcept;
@@ -503,13 +503,13 @@ template <class T> class Vec4
     ///	@name Constructors and Assignment
 
     /// Uninitialized by default
-    IMATH_HOSTDEVICE constexpr Vec4() noexcept;                            // no initialization
+    IMATH_HOSTDEVICE Vec4() noexcept;
 
     /// Initialize to a scalar `(a,a,a,a)`
-    IMATH_HOSTDEVICE constexpr explicit Vec4 (T a) noexcept;       // (a a a a)
+    IMATH_HOSTDEVICE constexpr explicit Vec4 (T a) noexcept;
 
     /// Initialize to given elements `(a,b,c,d)`
-    IMATH_HOSTDEVICE constexpr Vec4 (T a, T b, T c, T d) noexcept; // (a b c d)
+    IMATH_HOSTDEVICE constexpr Vec4 (T a, T b, T c, T d) noexcept;
 
     /// Copy constructor
     IMATH_HOSTDEVICE constexpr Vec4 (const Vec4& v) noexcept;
@@ -803,7 +803,7 @@ Vec2<T>::operator[] (int i) const noexcept
 
 template <class T> inline Vec2<T>::Vec2() noexcept
 {
-    // empty
+    // empty, and not constexpr because data is uninitialized.
 }
 
 template <class T> constexpr inline Vec2<T>::Vec2 (T a) noexcept
@@ -1204,9 +1204,9 @@ Vec3<T>::operator[] (int i) const noexcept
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> constexpr inline Vec3<T>::Vec3() noexcept
+template <class T> inline Vec3<T>::Vec3() noexcept
 {
-    // empty
+    // empty, and not constexpr because data is uninitialized.
 }
 
 template <class T> constexpr inline Vec3<T>::Vec3 (T a) noexcept
@@ -1669,9 +1669,9 @@ Vec4<T>::operator[] (int i) const noexcept
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> constexpr inline Vec4<T>::Vec4() noexcept
+template <class T> inline Vec4<T>::Vec4() noexcept
 {
-    // empty
+    // empty, and not constexpr because data is uninitialized.
 }
 
 template <class T> constexpr inline Vec4<T>::Vec4 (T a) noexcept
