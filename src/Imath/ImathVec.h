@@ -503,7 +503,7 @@ template <class T> class Vec4
     ///	@name Constructors and Assignment
 
     /// Uninitialized by default
-    IMATH_HOSTDEVICE Vec4() noexcept;
+    IMATH_HOSTDEVICE Vec4() noexcept;                            // no initialization
 
     /// Initialize to a scalar `(a,a,a,a)`
     IMATH_HOSTDEVICE constexpr explicit Vec4 (T a) noexcept;
