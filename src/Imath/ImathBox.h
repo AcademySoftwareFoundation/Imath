@@ -139,7 +139,7 @@ typedef Box<V2s> Box2s;
 
 /// 2D box of base type `int`.
 typedef Box<V2i> Box2i;
-typedef Box<V2si64> Box2si64;
+typedef Box<V2i64> Box2i64;
 
 /// 2D box of base type `float`.
 typedef Box<V2f> Box2f;
@@ -152,7 +152,7 @@ typedef Box<V3s> Box3s;
 
 /// 3D box of base type `int`.
 typedef Box<V3i> Box3i;
-typedef Box<V3si64> Box3si64;
+typedef Box<V3i64> Box3i64;
 
 /// 3D box of base type `float`.
 typedef Box<V3f> Box3f;

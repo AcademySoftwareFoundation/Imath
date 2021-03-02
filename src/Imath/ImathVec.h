@@ -693,7 +693,7 @@ typedef Vec2<short> V2s;
 
 /// Vec2 of integer
 typedef Vec2<int> V2i;
-typedef Vec2<SInt64> V2si64;
+typedef Vec2<SInt64> V2i64;
 
 /// Vec2 of float
 typedef Vec2<float> V2f;
@@ -706,7 +706,7 @@ typedef Vec3<short> V3s;
 
 /// Vec3 of integer
 typedef Vec3<int> V3i;
-typedef Vec3<SInt64> V3si64;
+typedef Vec3<SInt64> V3i64;
 
 /// Vec3 of float
 typedef Vec3<float> V3f;
@@ -719,7 +719,7 @@ typedef Vec4<short> V4s;
 
 /// Vec4 of integer
 typedef Vec4<int> V4i;
-typedef Vec4<SInt64> V4si64;
+typedef Vec4<SInt64> V4i64;
 
 /// Vec4 of float
 typedef Vec4<float> V4f;

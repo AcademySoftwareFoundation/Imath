@@ -934,19 +934,19 @@ testBox()
     //
     testConstructors<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testConstructors<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testConstructors<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testConstructors<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testConstructors<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testConstructors<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testConstructors<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testConstructors<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testConstructors<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testConstructors<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -955,19 +955,19 @@ testBox()
     //
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testMakeEmpty<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -976,19 +976,19 @@ testBox()
     //
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testMakeInfinite<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -997,19 +997,19 @@ testBox()
     //
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testExtendByPoint<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -1018,19 +1018,19 @@ testBox()
     //
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testExtendByBox<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testExtendByBox<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testExtendByBox<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testExtendByBox<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testExtendByBox<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testExtendByBox<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testExtendByBox<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -1039,19 +1039,19 @@ testBox()
     //
     testComparators<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testComparators<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testComparators<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testComparators<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testComparators<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testComparators<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testComparators<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testComparators<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testComparators<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testComparators<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testComparators<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testComparators<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testComparators<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testComparators<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testComparators<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testComparators<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testComparators<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testComparators<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -1060,19 +1060,19 @@ testBox()
     //
     testSize<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testSize<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testSize<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testSize<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testSize<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testSize<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testSize<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testSize<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testSize<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testSize<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testSize<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testSize<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testSize<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testSize<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testSize<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testSize<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testSize<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testSize<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -1081,19 +1081,19 @@ testBox()
     //
     testCenter<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testCenter<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testCenter<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testCenter<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testCenter<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testCenter<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testCenter<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testCenter<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testCenter<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testCenter<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testCenter<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testCenter<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testCenter<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testCenter<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testCenter<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testCenter<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testCenter<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testCenter<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -1102,19 +1102,19 @@ testBox()
     //
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testIsEmpty<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testIsEmpty<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testIsEmpty<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testIsEmpty<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testIsEmpty<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testIsEmpty<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testIsEmpty<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -1123,19 +1123,19 @@ testBox()
     //
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testIsInfinite<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testIsInfinite<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testIsInfinite<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testIsInfinite<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testIsInfinite<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testIsInfinite<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testIsInfinite<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -1144,19 +1144,19 @@ testBox()
     //
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testHasVolume<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testHasVolume<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testHasVolume<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testHasVolume<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testHasVolume<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testHasVolume<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testHasVolume<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
@@ -1165,19 +1165,19 @@ testBox()
     //
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V2s> ("V2s");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V2i> ("V2i");
-    testMajorAxis<IMATH_INTERNAL_NAMESPACE::V2si64> ("V2si64");
+    testMajorAxis<IMATH_INTERNAL_NAMESPACE::V2i64> ("V2i64");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V2f> ("V2f");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V2d> ("V2d");
 
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V3s> ("V3s");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V3i> ("V3i");
-    testMajorAxis<IMATH_INTERNAL_NAMESPACE::V3si64> ("V3si64");
+    testMajorAxis<IMATH_INTERNAL_NAMESPACE::V3i64> ("V3i64");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V3f> ("V3f");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V3d> ("V3d");
 
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V4s> ("V4s");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V4i> ("V4i");
-    testMajorAxis<IMATH_INTERNAL_NAMESPACE::V4si64> ("V4si64");
+    testMajorAxis<IMATH_INTERNAL_NAMESPACE::V4i64> ("V4i64");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V4f> ("V4f");
     testMajorAxis<IMATH_INTERNAL_NAMESPACE::V4d> ("V4d");
 
