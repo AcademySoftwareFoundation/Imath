@@ -22,6 +22,7 @@ if(TARGET Python2::Python AND
     LIBRARY_OUTPUT_NAME "imathnumpy"
     DEBUG_POSTFIX ""
   )
+  install(TARGETS imathnumpy_python2 DESTINATION ${PyImath_Python2_SITEARCH_REL})
 endif()
 
 if(TARGET Python3::Python AND
@@ -47,4 +48,5 @@ if(TARGET Python3::Python AND
     LIBRARY_OUTPUT_NAME "imathnumpy"
     DEBUG_POSTFIX ""
   )
+  install(TARGETS imathnumpy_python3 DESTINATION ${PyImath_Python3_SITEARCH_REL})
 endif()

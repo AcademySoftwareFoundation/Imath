@@ -15,12 +15,17 @@
 #include <iostream>
 #include "PyImathUtil.h"
 
-#ifdef PYIMATH_ENABLE_EXCEPTIONS
-# define PY_IMATH_RETURN_PYTHON mathexcon.handleOutstandingExceptions()
-#else
-# define PY_IMATH_LEAVE_PYTHON PyImath::PyReleaseLock pyunlock;
-# define PY_IMATH_RETURN_PYTHON
-#endif
+//
+// Note: when PyImath from the v2 release of OpenEXR depended on Iex,
+// the PY_IMATH_LEAVE/RETURN_PYTHON macros bracketed calls that
+// enabled/disabled float-point exceptions via via the MathExcOn
+// class. This was a compile-time option based on the setting of
+// PYIMATH_ENABLE_EXCEPTIONS. This behavior is now deprecated, hence
+// the empty macros.
+//
+
+#define PY_IMATH_LEAVE_PYTHON PyImath::PyReleaseLock pyunlock;
+#define PY_IMATH_RETURN_PYTHON
 
 namespace PyImath {
 

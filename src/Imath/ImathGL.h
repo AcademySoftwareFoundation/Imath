@@ -91,7 +91,7 @@ throwBadMatrix (const IMATH_INTERNAL_NAMESPACE::M44f& m)
         badFloat (m[1][0]) || badFloat (m[1][1]) || badFloat (m[1][2]) || badFloat (m[1][3]) ||
         badFloat (m[2][0]) || badFloat (m[2][1]) || badFloat (m[2][2]) || badFloat (m[2][3]) ||
         badFloat (m[3][0]) || badFloat (m[3][1]) || badFloat (m[3][2]) || badFloat (m[3][3]))
-        throw IEX_NAMESPACE::OverflowExc ("GL matrix overflow");
+        throw std::invalid_argument ("GL matrix overflow");
 }
 
 /// Call glMultmatrixf. Throw an exception if m is not a valid matrix for GL.

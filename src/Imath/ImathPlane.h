@@ -45,7 +45,7 @@ template <class T> class Plane3
     ///	@name Constructors
 
     /// Uninitialized by default
-    IMATH_HOSTDEVICE constexpr Plane3() noexcept {}
+    IMATH_HOSTDEVICE Plane3() noexcept {}
 
     /// Initialize with a normal and distance
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& normal, T distance) noexcept;
