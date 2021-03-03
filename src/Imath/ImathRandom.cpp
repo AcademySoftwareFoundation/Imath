@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "ImathRandom.h"
-#include "ImathInt64.h"
+#include <cstdint>
 
 IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
 namespace
@@ -35,8 +35,8 @@ rand48Next (unsigned short state[3])
     // where a and c are as specified below, and m == (1 << 48)
     //
 
-    static const Int64 a = Int64 (0x5deece66dLL);
-    static const Int64 c = Int64 (0xbLL);
+    static const uint64_t a = uint64_t (0x5deece66dLL);
+    static const uint64_t c = uint64_t (0xbLL);
 
     //
     // Assemble the 48-bit value x[n] from the
@@ -44,9 +44,9 @@ rand48Next (unsigned short state[3])
     //
 
     // clang-format off
-    Int64 x = (Int64 (state[2]) << 32) |
-	      (Int64 (state[1]) << 16) |
-	       Int64 (state[0]);
+    uint64_t x = (uint64_t (state[2]) << 32) |
+	      (uint64_t (state[1]) << 16) |
+	       uint64_t (state[0]);
     // clang-format on
 
     //
@@ -91,15 +91,15 @@ erand48 (unsigned short state[3])
     union
     {
         double d;
-        Int64 i;
+        uint64_t i;
     } u;
 
     // clang-format off
-    u.i = (Int64 (0x3ff)    << 52) |	// sign and exponent
-	  (Int64 (state[2]) << 36) |	// significand
-	  (Int64 (state[1]) << 20) |
-	  (Int64 (state[0]) <<  4) |
-	  (Int64 (state[2]) >> 12);
+    u.i = (uint64_t (0x3ff)    << 52) |	// sign and exponent
+	  (uint64_t (state[2]) << 36) |	// significand
+	  (uint64_t (state[1]) << 20) |
+	  (uint64_t (state[0]) <<  4) |
+	  (uint64_t (state[2]) >> 12);
     // clang-format on
 
     return u.d - 1;
