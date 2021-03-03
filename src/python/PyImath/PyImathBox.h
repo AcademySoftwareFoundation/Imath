@@ -21,15 +21,17 @@ template <class T> boost::python::class_<IMATH_NAMESPACE::Box<T> > register_Box3
 
 template <class T> boost::python::class_<FixedArray<IMATH_NAMESPACE::Box<T> > > register_BoxArray();
 
-typedef FixedArray<IMATH_NAMESPACE::Box2s> Box2sArray;
-typedef FixedArray<IMATH_NAMESPACE::Box2i> Box2iArray;
-typedef FixedArray<IMATH_NAMESPACE::Box2f> Box2fArray;
-typedef FixedArray<IMATH_NAMESPACE::Box2d> Box2dArray;
+typedef FixedArray<IMATH_NAMESPACE::Box2s>   Box2sArray;
+typedef FixedArray<IMATH_NAMESPACE::Box2i>   Box2iArray;
+typedef FixedArray<IMATH_NAMESPACE::Box2i64> Box2i64Array;
+typedef FixedArray<IMATH_NAMESPACE::Box2f>   Box2fArray;
+typedef FixedArray<IMATH_NAMESPACE::Box2d>   Box2dArray;
 
-typedef FixedArray<IMATH_NAMESPACE::Box3s> Box3sArray;
-typedef FixedArray<IMATH_NAMESPACE::Box3i> Box3iArray;
-typedef FixedArray<IMATH_NAMESPACE::Box3f> Box3fArray;
-typedef FixedArray<IMATH_NAMESPACE::Box3d> Box3dArray;
+typedef FixedArray<IMATH_NAMESPACE::Box3s>   Box3sArray;
+typedef FixedArray<IMATH_NAMESPACE::Box3i>   Box3iArray;
+typedef FixedArray<IMATH_NAMESPACE::Box3i64> Box3i64Array;
+typedef FixedArray<IMATH_NAMESPACE::Box3f>   Box3fArray;
+typedef FixedArray<IMATH_NAMESPACE::Box3d>   Box3dArray;
 
 //
 
@@ -190,10 +192,12 @@ Box3<T>::convert (PyObject *p, IMATH_NAMESPACE::Box< IMATH_NAMESPACE::Vec3<T> > 
 }
 
 typedef Box2<int>	Box2i;
+typedef Box2<int64_t>	Box2i64;
 typedef Box2<float>	Box2f;
 typedef Box2<double>	Box2d;
 
 typedef Box3<int>	Box3i;
+typedef Box3<int64_t>	Box3i64;
 typedef Box3<float>	Box3f;
 typedef Box3<double>	Box3d;
 

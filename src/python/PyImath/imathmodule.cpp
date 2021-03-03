@@ -182,18 +182,30 @@ BOOST_PYTHON_MODULE(imath)
     //
     register_Vec2<short>();
     register_Vec2<int>();
+    register_Vec2<int64_t>();
     register_Vec2<float>();
     register_Vec2<double>();
     class_<FixedArray<IMATH_NAMESPACE::V2s> > v2s_class = register_Vec2Array<short>();
     class_<FixedArray<IMATH_NAMESPACE::V2i> > v2i_class = register_Vec2Array<int>();
+    class_<FixedArray<IMATH_NAMESPACE::V2i64> > v2i64_class = register_Vec2Array<int64_t>();
     class_<FixedArray<IMATH_NAMESPACE::V2f> > v2f_class = register_Vec2Array<float>();
     class_<FixedArray<IMATH_NAMESPACE::V2d> > v2d_class = register_Vec2Array<double>();
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V2f>(v2i_class);
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2i_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2i>(v2i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2i>(v2f_class);
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2f_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2i>(v2d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2i64>(v2i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2i64>(v2f_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2i64>(v2d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2f>(v2i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2f>(v2i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2f>(v2d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2i64_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2f_class);
 
 
     //
@@ -202,18 +214,30 @@ BOOST_PYTHON_MODULE(imath)
     register_Vec3<unsigned char>();
     register_Vec3<short>();
     register_Vec3<int>();
+    register_Vec3<int64_t>();
     register_Vec3<float>();
     register_Vec3<double>();
     class_<FixedArray<IMATH_NAMESPACE::V3s> > v3s_class = register_Vec3Array<short>();
     class_<FixedArray<IMATH_NAMESPACE::V3i> > v3i_class = register_Vec3Array<int>();
+    class_<FixedArray<IMATH_NAMESPACE::V3i64> > v3i64_class = register_Vec3Array<int64_t>();
     class_<FixedArray<IMATH_NAMESPACE::V3f> > v3f_class = register_Vec3Array<float>();
     class_<FixedArray<IMATH_NAMESPACE::V3d> > v3d_class = register_Vec3Array<double>();
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V3f>(v3i_class);
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3i_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3i>(v3i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3i>(v3f_class);
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3f_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3i>(v3d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3i64>(v3i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3i64>(v3f_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3i64>(v3d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3f>(v3i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3f>(v3i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3f>(v3d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3i64_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3f_class);
 
     //
     //  Vec4
@@ -221,17 +245,26 @@ BOOST_PYTHON_MODULE(imath)
     register_Vec4<unsigned char>();
     register_Vec4<short>();
     register_Vec4<int>();
+    register_Vec4<int64_t>();
     register_Vec4<float>();
     register_Vec4<double>();
     class_<FixedArray<IMATH_NAMESPACE::V4s> > v4s_class = register_Vec4Array<short>();
     class_<FixedArray<IMATH_NAMESPACE::V4i> > v4i_class = register_Vec4Array<int>();
+    class_<FixedArray<IMATH_NAMESPACE::V4i64> > v4i64_class = register_Vec4Array<int64_t>();
     class_<FixedArray<IMATH_NAMESPACE::V4f> > v4f_class = register_Vec4Array<float>();
     class_<FixedArray<IMATH_NAMESPACE::V4d> > v4d_class = register_Vec4Array<double>();
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V4f>(v4i_class);
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4i_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4i>(v4i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4i>(v4f_class);
-    add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4f_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4i>(v4d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4f>(v4i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4f>(v4i64_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4f>(v4d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4i64_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4f_class);
 
     //
     //  Quat
@@ -258,10 +291,12 @@ BOOST_PYTHON_MODULE(imath)
     //
     register_Box2<IMATH_NAMESPACE::V2s>();
     register_Box2<IMATH_NAMESPACE::V2i>();
+    register_Box2<IMATH_NAMESPACE::V2i64>();
     register_Box2<IMATH_NAMESPACE::V2f>();
     register_Box2<IMATH_NAMESPACE::V2d>();
     class_<FixedArray<IMATH_NAMESPACE::Box2s> > b2s_class = register_BoxArray<IMATH_NAMESPACE::V2s>();
     class_<FixedArray<IMATH_NAMESPACE::Box2i> > b2i_class = register_BoxArray<IMATH_NAMESPACE::V2i>();
+    class_<FixedArray<IMATH_NAMESPACE::Box2i64> > b2i64_class = register_BoxArray<IMATH_NAMESPACE::V2i64>();
     class_<FixedArray<IMATH_NAMESPACE::Box2f> > b2f_class = register_BoxArray<IMATH_NAMESPACE::V2f>();
     class_<FixedArray<IMATH_NAMESPACE::Box2d> > b2d_class = register_BoxArray<IMATH_NAMESPACE::V2d>();
 
@@ -270,10 +305,12 @@ BOOST_PYTHON_MODULE(imath)
     //
     register_Box3<IMATH_NAMESPACE::V3s>();
     register_Box3<IMATH_NAMESPACE::V3i>();
+    register_Box3<IMATH_NAMESPACE::V3i64>();
     register_Box3<IMATH_NAMESPACE::V3f>();
     register_Box3<IMATH_NAMESPACE::V3d>();
     class_<FixedArray<IMATH_NAMESPACE::Box3s> > b3s_class = register_BoxArray<IMATH_NAMESPACE::V3s>();
     class_<FixedArray<IMATH_NAMESPACE::Box3i> > b3i_class = register_BoxArray<IMATH_NAMESPACE::V3i>();
+    class_<FixedArray<IMATH_NAMESPACE::Box3i64> > b3i64_class = register_BoxArray<IMATH_NAMESPACE::V3i64>();
     class_<FixedArray<IMATH_NAMESPACE::Box3f> > b3f_class = register_BoxArray<IMATH_NAMESPACE::V3f>();
     class_<FixedArray<IMATH_NAMESPACE::Box3d> > b3d_class = register_BoxArray<IMATH_NAMESPACE::V3d>();
 

@@ -18,10 +18,11 @@ namespace PyImath {
 
 template <class T> boost::python::class_<IMATH_NAMESPACE::Vec2<T> > register_Vec2();
 template <class T> boost::python::class_<FixedArray<IMATH_NAMESPACE::Vec2<T> > > register_Vec2Array();
-typedef FixedArray<IMATH_NAMESPACE::V2s>  V2sArray;
-typedef FixedArray<IMATH_NAMESPACE::V2i>  V2iArray;
-typedef FixedArray<IMATH_NAMESPACE::V2f>  V2fArray;
-typedef FixedArray<IMATH_NAMESPACE::V2d>  V2dArray;
+typedef FixedArray<IMATH_NAMESPACE::V2s>   V2sArray;
+typedef FixedArray<IMATH_NAMESPACE::V2i>   V2iArray;
+typedef FixedArray<IMATH_NAMESPACE::V2i64> V2i64Array;
+typedef FixedArray<IMATH_NAMESPACE::V2f>   V2fArray;
+typedef FixedArray<IMATH_NAMESPACE::V2d>   V2dArray;
 
 // TODO: template <class T> class Vec2Array : public FixedArray<IMATH_NAMESPACE::Vec2<T> >
 
@@ -63,10 +64,11 @@ namespace PyImath {
 template <class T> boost::python::class_<IMATH_NAMESPACE::Vec3<T> > register_Vec3();
 template <class T> boost::python::class_<FixedArray<IMATH_NAMESPACE::Vec3<T> > > register_Vec3Array();
 typedef FixedArray<IMATH_NAMESPACE::Vec3<unsigned char> >  V3cArray;
-typedef FixedArray<IMATH_NAMESPACE::V3s>  V3sArray;
-typedef FixedArray<IMATH_NAMESPACE::V3i>  V3iArray;
-typedef FixedArray<IMATH_NAMESPACE::V3f>  V3fArray;
-typedef FixedArray<IMATH_NAMESPACE::V3d>  V3dArray;
+typedef FixedArray<IMATH_NAMESPACE::V3s>   V3sArray;
+typedef FixedArray<IMATH_NAMESPACE::V3i>   V3iArray;
+typedef FixedArray<IMATH_NAMESPACE::V3i64> V3i64Array;
+typedef FixedArray<IMATH_NAMESPACE::V3f>   V3fArray;
+typedef FixedArray<IMATH_NAMESPACE::V3d>   V3dArray;
 
 // TODO: template <class T> class Vec3Array : public FixedArray<IMATH_NAMESPACE::Vec3<T> >
 }
@@ -117,10 +119,11 @@ namespace PyImath {
 template <class T> boost::python::class_<IMATH_NAMESPACE::Vec4<T> > register_Vec4();
 template <class T> boost::python::class_<PyImath::FixedArray<IMATH_NAMESPACE::Vec4<T> > > register_Vec4Array();
 typedef FixedArray<IMATH_NAMESPACE::Vec4<unsigned char> >  V4cArray;
-typedef FixedArray<IMATH_NAMESPACE::V4s>  V4sArray;
-typedef FixedArray<IMATH_NAMESPACE::V4i>  V4iArray;
-typedef FixedArray<IMATH_NAMESPACE::V4f>  V4fArray;
-typedef FixedArray<IMATH_NAMESPACE::V4d>  V4dArray;
+typedef FixedArray<IMATH_NAMESPACE::V4s>   V4sArray;
+typedef FixedArray<IMATH_NAMESPACE::V4i>   V4iArray;
+typedef FixedArray<IMATH_NAMESPACE::V4i64> V4i64Array;
+typedef FixedArray<IMATH_NAMESPACE::V4f>   V4fArray;
+typedef FixedArray<IMATH_NAMESPACE::V4d>   V4dArray;
 
 // TODO: template <class T> class Vec3Array : public FixedArray<IMATH_NAMESPACE::Vec3<T> >
 }
@@ -239,6 +242,14 @@ V2<T>::convert (PyObject *p, IMATH_NAMESPACE::Vec2<T> *v)
         return 1;
     }
 
+    boost::python::extract <IMATH_NAMESPACE::V2i64> extractorV2i64 (p);
+    if (extractorV2i64.check())
+    {
+        IMATH_NAMESPACE::V2i64 v2i64 = extractorV2i64();
+        v->setValue (T(v2i64[0]), T(v2i64[1]));
+        return 1;
+    }
+
     boost::python::extract <IMATH_NAMESPACE::V2f> extractorV2f (p);
     if (extractorV2f.check())
     {
@@ -304,6 +315,14 @@ V3<T>::convert (PyObject *p, IMATH_NAMESPACE::Vec3<T> *v)
     {
         IMATH_NAMESPACE::V3i v3i = extractorV3i();
         v->setValue (T(v3i[0]), T(v3i[1]), T(v3i[2]));
+        return 1;
+    }
+
+    boost::python::extract <IMATH_NAMESPACE::V3i64> extractorV3i64 (p);
+    if (extractorV3i64.check())
+    {
+        IMATH_NAMESPACE::V3i64 v3i64 = extractorV3i64();
+        v->setValue (T(v3i64[0]), T(v3i64[1]), T(v3i64[2]));
         return 1;
     }
 
