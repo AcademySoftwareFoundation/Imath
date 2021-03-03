@@ -63,16 +63,16 @@ template <class T> class Vec2
     IMATH_HOSTDEVICE Vec2() noexcept;
 
     /// Initialize to a scalar `(a,a)`
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Vec2 (T a) noexcept;
+    IMATH_HOSTDEVICE constexpr explicit Vec2 (T a) noexcept;
 
     /// Initialize to given elements `(a,b)`
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2 (T a, T b) noexcept;
+    IMATH_HOSTDEVICE constexpr Vec2 (T a, T b) noexcept;
 
     /// Copy constructor
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2 (const Vec2& v) noexcept;
+    IMATH_HOSTDEVICE constexpr Vec2 (const Vec2& v) noexcept;
 
     /// Construct from Vec2 of another base type
-    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2 (const Vec2<S>& v) noexcept;
+    template <class S> IMATH_HOSTDEVICE constexpr Vec2 (const Vec2<S>& v) noexcept;
 
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const Vec2& v) noexcept;
@@ -280,21 +280,21 @@ template <class T> class Vec3
     IMATH_HOSTDEVICE Vec3() noexcept;
     
     /// Initialize to a scalar `(a,a,a)`
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Vec3 (T a) noexcept;
+    IMATH_HOSTDEVICE constexpr explicit Vec3 (T a) noexcept;
 
     /// Initialize to given elements `(a,b,c)`
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3 (T a, T b, T c) noexcept;
+    IMATH_HOSTDEVICE constexpr Vec3 (T a, T b, T c) noexcept;
 
     /// Copy constructor
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3 (const Vec3& v) noexcept;
+    IMATH_HOSTDEVICE constexpr Vec3 (const Vec3& v) noexcept;
 
     /// Construct from Vec3 of another base type
-    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3 (const Vec3<S>& v) noexcept;
+    template <class S> IMATH_HOSTDEVICE constexpr Vec3 (const Vec3<S>& v) noexcept;
 
     /// Vec4 to Vec3 conversion: divide x, y and z by w, even if w is
     /// 0.  The result depends on how the environment handles
     /// floating-point exceptions.
-    template <class S> IMATH_HOSTDEVICE explicit IMATH_CONSTEXPR14 Vec3 (const Vec4<S>& v) noexcept;
+    template <class S> IMATH_HOSTDEVICE explicit constexpr Vec3 (const Vec4<S>& v) noexcept;
 
     /// Vec4 to Vec3 conversion: divide x, y and z by w.  Throws an
     /// exception if w is zero or if division by w would overflow.
@@ -506,19 +506,19 @@ template <class T> class Vec4
     IMATH_HOSTDEVICE Vec4() noexcept;                            // no initialization
 
     /// Initialize to a scalar `(a,a,a,a)`
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 explicit Vec4 (T a) noexcept;       // (a a a a)
+    IMATH_HOSTDEVICE constexpr explicit Vec4 (T a) noexcept;
 
     /// Initialize to given elements `(a,b,c,d)`
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4 (T a, T b, T c, T d) noexcept; // (a b c d)
+    IMATH_HOSTDEVICE constexpr Vec4 (T a, T b, T c, T d) noexcept;
 
     /// Copy constructor
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4 (const Vec4& v) noexcept;
+    IMATH_HOSTDEVICE constexpr Vec4 (const Vec4& v) noexcept;
 
     /// Construct from Vec4 of another base type
-    template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4 (const Vec4<S>& v) noexcept;
+    template <class S> IMATH_HOSTDEVICE constexpr Vec4 (const Vec4<S>& v) noexcept;
 
     /// Vec3 to Vec4 conversion, sets w to 1.
-    template <class S> IMATH_HOSTDEVICE explicit IMATH_CONSTEXPR14 Vec4 (const Vec3<S>& v) noexcept;
+    template <class S> IMATH_HOSTDEVICE explicit constexpr Vec4 (const Vec3<S>& v) noexcept;
 
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4& operator= (const Vec4& v) noexcept;
@@ -803,30 +803,27 @@ Vec2<T>::operator[] (int i) const noexcept
 
 template <class T> inline Vec2<T>::Vec2() noexcept
 {
-    // empty
+    // empty, and not constexpr because data is uninitialized.
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec2<T>::Vec2 (T a) noexcept
+template <class T> constexpr inline Vec2<T>::Vec2 (T a) noexcept
+    : x(a), y(a)
 {
-    x = y = a;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec2<T>::Vec2 (T a, T b) noexcept
+template <class T> constexpr inline Vec2<T>::Vec2 (T a, T b) noexcept
+    : x(a), y(b)
 {
-    x = a;
-    y = b;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec2<T>::Vec2 (const Vec2& v) noexcept
+template <class T> constexpr inline Vec2<T>::Vec2 (const Vec2& v) noexcept
+    : x(v.x), y(v.y)
 {
-    x = v.x;
-    y = v.y;
 }
 
-template <class T> template <class S> IMATH_CONSTEXPR14 inline Vec2<T>::Vec2 (const Vec2<S>& v) noexcept
+template <class T> template <class S> constexpr inline Vec2<T>::Vec2 (const Vec2<S>& v) noexcept
+    : x(T(v.x)), y(T(v.y))
 {
-    x = T (v.x);
-    y = T (v.y);
 }
 
 template <class T>
@@ -1209,33 +1206,27 @@ Vec3<T>::operator[] (int i) const noexcept
 
 template <class T> inline Vec3<T>::Vec3() noexcept
 {
-    // empty
+    // empty, and not constexpr because data is uninitialized.
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (T a) noexcept
+template <class T> constexpr inline Vec3<T>::Vec3 (T a) noexcept
+    : x(a), y(a), z(a)
 {
-    x = y = z = a;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (T a, T b, T c) noexcept
+template <class T> constexpr inline Vec3<T>::Vec3 (T a, T b, T c) noexcept
+    : x(a), y(b), z(c)
 {
-    x = a;
-    y = b;
-    z = c;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec3& v) noexcept
+template <class T> constexpr inline Vec3<T>::Vec3 (const Vec3& v) noexcept
+    : x(v.x), y(v.y), z(v.z)
 {
-    x = v.x;
-    y = v.y;
-    z = v.z;
 }
 
-template <class T> template <class S> IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec3<S>& v) noexcept
+template <class T> template <class S> constexpr inline Vec3<T>::Vec3 (const Vec3<S>& v) noexcept
+    : x(T(v.x)), y(T(v.y)), z(T(v.z))
 {
-    x = T (v.x);
-    y = T (v.y);
-    z = T (v.z);
 }
 
 template <class T>
@@ -1248,11 +1239,9 @@ Vec3<T>::operator= (const Vec3& v) noexcept
     return *this;
 }
 
-template <class T> template <class S> IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec4<S>& v) noexcept
+template <class T> template <class S> constexpr inline Vec3<T>::Vec3 (const Vec4<S>& v) noexcept
+    : x(T(v.x/v.w)), y(T(v.y/v.w)), z(T(v.z/v.w))
 {
-    x = T (v.x / v.w);
-    y = T (v.y / v.w);
-    z = T (v.z / v.w);
 }
 
 template <class T>
@@ -1682,36 +1671,27 @@ Vec4<T>::operator[] (int i) const noexcept
 
 template <class T> inline Vec4<T>::Vec4() noexcept
 {
-    // empty
+    // empty, and not constexpr because data is uninitialized.
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec4<T>::Vec4 (T a) noexcept
+template <class T> constexpr inline Vec4<T>::Vec4 (T a) noexcept
+    : x(a), y(a), z(a), w(a)
 {
-    x = y = z = w = a;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec4<T>::Vec4 (T a, T b, T c, T d) noexcept
+template <class T> constexpr inline Vec4<T>::Vec4 (T a, T b, T c, T d) noexcept
+    : x(a), y(b), z(c), w(d)
 {
-    x = a;
-    y = b;
-    z = c;
-    w = d;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Vec4<T>::Vec4 (const Vec4& v) noexcept
+template <class T> constexpr inline Vec4<T>::Vec4 (const Vec4& v) noexcept
+    : x(v.x), y(v.y), z(v.z), w(v.w)
 {
-    x = v.x;
-    y = v.y;
-    z = v.z;
-    w = v.w;
 }
 
-template <class T> template <class S> IMATH_CONSTEXPR14 inline Vec4<T>::Vec4 (const Vec4<S>& v) noexcept
+template <class T> template <class S> constexpr inline Vec4<T>::Vec4 (const Vec4<S>& v) noexcept
+    : x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(v.w))
 {
-    x = T (v.x);
-    y = T (v.y);
-    z = T (v.z);
-    w = T (v.w);
 }
 
 template <class T>
@@ -1725,12 +1705,9 @@ Vec4<T>::operator= (const Vec4& v) noexcept
     return *this;
 }
 
-template <class T> template <class S> IMATH_CONSTEXPR14 inline Vec4<T>::Vec4 (const Vec3<S>& v) noexcept
+template <class T> template <class S> constexpr inline Vec4<T>::Vec4 (const Vec3<S>& v) noexcept
+    : x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(1))
 {
-    x = T (v.x);
-    y = T (v.y);
-    z = T (v.z);
-    w = T (1);
 }
 
 template <class T>
