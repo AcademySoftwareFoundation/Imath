@@ -13,9 +13,9 @@
 //-----------------------------------------------------------------------------
 
 #include <limits>
+#include <cstdint>
 
 #include "ImathExport.h"
-#include "ImathInt64.h"
 #include "ImathNamespace.h"
 #include "ImathPlatform.h"
 
@@ -219,7 +219,7 @@ finited (double d) noexcept
     union
     {
         double d;
-        Int64 i;
+        uint64_t i;
     } u;
     u.d = d;
 
