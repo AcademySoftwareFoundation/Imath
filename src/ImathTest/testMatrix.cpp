@@ -45,7 +45,7 @@ testMatrix()
     union
     {
         double d;
-        Int64 i;
+        uint64_t i;
     } nand;
     nand.i = 0x7ff0000000000001ULL; //  NAN
 

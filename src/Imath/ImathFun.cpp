@@ -89,7 +89,7 @@ succd (double d) noexcept
     union
     {
         double d;
-        Int64 i;
+        uint64_t i;
     } u;
     u.d = d;
 
@@ -127,7 +127,7 @@ predd (double d) noexcept
     union
     {
         double d;
-        Int64 i;
+        uint64_t i;
     } u;
     u.d = d;
 
