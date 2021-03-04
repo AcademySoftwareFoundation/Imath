@@ -26,21 +26,25 @@ using namespace PyImath;
 template <class T> struct BoxName { static const char *value; };
 template <> const char *BoxName<IMATH_NAMESPACE::V2s>::value = "Box2s";
 template <> const char *BoxName<IMATH_NAMESPACE::V2i>::value = "Box2i";
+template <> const char *BoxName<IMATH_NAMESPACE::V2i64>::value = "Box2i64";
 template <> const char *BoxName<IMATH_NAMESPACE::V2f>::value = "Box2f";
 template <> const char *BoxName<IMATH_NAMESPACE::V2d>::value = "Box2d";
 template <> const char *BoxName<IMATH_NAMESPACE::V3s>::value = "Box3s";
 template <> const char *BoxName<IMATH_NAMESPACE::V3i>::value = "Box3i";
+template <> const char *BoxName<IMATH_NAMESPACE::V3i64>::value = "Box3i64";
 template <> const char *BoxName<IMATH_NAMESPACE::V3f>::value = "Box3f";
 template <> const char *BoxName<IMATH_NAMESPACE::V3d>::value = "Box3d";
 
-template <> PYIMATH_EXPORT const char *PyImath::Box2sArray::name() { return "Box2sArray"; }
-template <> PYIMATH_EXPORT const char *PyImath::Box2iArray::name() { return "Box2iArray"; }
-template <> PYIMATH_EXPORT const char *PyImath::Box2fArray::name() { return "Box2fArray"; }
-template <> PYIMATH_EXPORT const char *PyImath::Box2dArray::name() { return "Box2dArray"; }
-template <> PYIMATH_EXPORT const char *PyImath::Box3sArray::name() { return "Box3sArray"; }
-template <> PYIMATH_EXPORT const char *PyImath::Box3iArray::name() { return "Box3iArray"; }
-template <> PYIMATH_EXPORT const char *PyImath::Box3fArray::name() { return "Box3fArray"; }
-template <> PYIMATH_EXPORT const char *PyImath::Box3dArray::name() { return "Box3dArray"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box2sArray::name()   { return "Box2sArray"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box2iArray::name()   { return "Box2iArray"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box2i64Array::name() { return "Box2i64Array"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box2fArray::name()   { return "Box2fArray"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box2dArray::name()   { return "Box2dArray"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box3sArray::name()   { return "Box3sArray"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box3iArray::name()   { return "Box3iArray"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box3i64Array::name() { return "Box3i64Array"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box3fArray::name()   { return "Box3fArray"; }
+template <> PYIMATH_EXPORT const char *PyImath::Box3dArray::name()   { return "Box3dArray"; }
 
 template <class T>
 static Box<T> * box2TupleConstructor1(const tuple &t)
@@ -326,6 +330,7 @@ register_Box2()
         .def("__init__", make_constructor(boxConstructor<T, IMATH_NAMESPACE::V2f>))
         .def("__init__", make_constructor(boxConstructor<T, IMATH_NAMESPACE::V2d>))
         .def("__init__", make_constructor(boxConstructor<T, IMATH_NAMESPACE::V2i>))
+        .def("__init__", make_constructor(boxConstructor<T, IMATH_NAMESPACE::V2i64>))
         .def_readwrite("min",&Box<T>::min)
         .def_readwrite("max",&Box<T>::max)
         .def("min", &boxMin<T>)
@@ -388,6 +393,7 @@ register_Box3()
         .def("__init__", make_constructor(boxConstructor<T, IMATH_NAMESPACE::V3f>))
         .def("__init__", make_constructor(boxConstructor<T, IMATH_NAMESPACE::V3d>))
         .def("__init__", make_constructor(boxConstructor<T, IMATH_NAMESPACE::V3i>))
+        .def("__init__", make_constructor(boxConstructor<T, IMATH_NAMESPACE::V3i64>))
         .def_readwrite("min",&Box<T>::min)
         .def_readwrite("max",&Box<T>::max)
         .def(self == self) // NOSONAR - suppress SonarCloud bug report.
@@ -425,10 +431,12 @@ register_Box3()
 
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2s> > register_Box2<IMATH_NAMESPACE::V2s>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2i> > register_Box2<IMATH_NAMESPACE::V2i>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2i64> > register_Box2<IMATH_NAMESPACE::V2i64>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2f> > register_Box2<IMATH_NAMESPACE::V2f>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2d> > register_Box2<IMATH_NAMESPACE::V2d>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3s> > register_Box3<IMATH_NAMESPACE::V3s>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3i> > register_Box3<IMATH_NAMESPACE::V3i>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3i64> > register_Box3<IMATH_NAMESPACE::V3i64>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3f> > register_Box3<IMATH_NAMESPACE::V3f>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3d> > register_Box3<IMATH_NAMESPACE::V3d>();
 
