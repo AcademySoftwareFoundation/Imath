@@ -100,59 +100,61 @@ function(PYIMATH_DEFINE_MODULE modname)
   # NB: make this one last so we can cheat and add the python and boost
   # libs as private deps at the end regardless of whether it was provided
   list(APPEND libarglist PRIVATE_DEPS ${PYIMATH_CURMOD_PRIVATE_DEPS})
-  if(TARGET Python2::Python AND TARGET Boost::${PYIMATH_BOOST_PY2_COMPONENT})
-    set(libname "${PYIMATH_CURMOD_LIBNAME}${PYIMATH_LIB_PYTHONVER_ROOT}${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}")
-    set(extraDeps ${PYIMATH_CURMOD_MODULE_DEPS})
-    list(TRANSFORM extraDeps APPEND ${PYIMATH_LIB_PYTHONVER_ROOT}${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR})
+  if(USE_PYTHON2)
+    if(TARGET Python2::Python AND TARGET Boost::${PYIMATH_BOOST_PY_COMPONENT})
+      set(libname "${PYIMATH_CURMOD_LIBNAME}${PYIMATH_LIB_PYTHONVER_ROOT}${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}")
+      set(extraDeps ${PYIMATH_CURMOD_MODULE_DEPS})
+      list(TRANSFORM extraDeps APPEND ${PYIMATH_LIB_PYTHONVER_ROOT}${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR})
 
-    pyimath_add_library_priv(${libname}
-      ${libarglist}
-      ${extraDeps}
-      Python2::Python
-      Boost::${PYIMATH_BOOST_PY2_COMPONENT}
-    )
-
-    Python2_add_library(${modname}_python2 MODULE ${PYIMATH_CURMOD_MODSOURCE})
-    target_link_libraries(${modname}_python2
-      PRIVATE
-        ${libname}
+      pyimath_add_library_priv(${libname}
+        ${libarglist}
         ${extraDeps}
-        ${PYIMATH_CURMOD_DEPENDENCIES}
-        ${PYIMATH_CURMOD_PRIVATE_DEPS}
-        Boost::${PYIMATH_BOOST_PY2_COMPONENT}
+        Python2::Python
+        Boost::${PYIMATH_BOOST_PY_COMPONENT}
       )
-    set_target_properties(${modname}_python2 PROPERTIES
-      LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}/"
-      LIBRARY_OUTPUT_NAME "${modname}"
-      DEBUG_POSTFIX ""
-    )
-    install(TARGETS ${modname}_python2 DESTINATION ${PyImath_Python2_SITEARCH_REL})
-  endif()
 
-  if(TARGET Python3::Python AND TARGET Boost::${PYIMATH_BOOST_PY3_COMPONENT})
-    set(libname "${PYIMATH_CURMOD_LIBNAME}${PYIMATH_LIB_PYTHONVER_ROOT}${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}")
-    set(extraDeps ${PYIMATH_CURMOD_MODULE_DEPS})
-    list(TRANSFORM extraDeps APPEND ${PYIMATH_LIB_PYTHONVER_ROOT}${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR})
-
-    pyimath_add_library_priv(${libname}
-      ${libarglist}
-      ${extraDeps}
-      Python3::Python
-      Boost::${PYIMATH_BOOST_PY3_COMPONENT}
-    )
-    Python3_add_library(${modname}_python3 MODULE ${PYIMATH_CURMOD_MODSOURCE})
-    target_link_libraries(${modname}_python3
-      PRIVATE
-        ${libname} ${extraDeps}
-        ${PYIMATH_CURMOD_DEPENDENCIES}
-        ${PYIMATH_CURMOD_PRIVATE_DEPS}
-        Boost::${PYIMATH_BOOST_PY3_COMPONENT}
+      Python2_add_library(${modname}_python2 MODULE ${PYIMATH_CURMOD_MODSOURCE})
+      target_link_libraries(${modname}_python2
+        PRIVATE
+          ${libname}
+          ${extraDeps}
+          ${PYIMATH_CURMOD_DEPENDENCIES}
+          ${PYIMATH_CURMOD_PRIVATE_DEPS}
+          Boost::${PYIMATH_BOOST_PY_COMPONENT}
+        )
+      set_target_properties(${modname}_python2 PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}/"
+        LIBRARY_OUTPUT_NAME "${modname}"
+        DEBUG_POSTFIX ""
       )
-    set_target_properties(${modname}_python3 PROPERTIES
-      LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}/"
-      LIBRARY_OUTPUT_NAME "${modname}"
-      DEBUG_POSTFIX ""
-    )
-    install(TARGETS ${modname}_python3 DESTINATION ${PyImath_Python3_SITEARCH_REL})
+      install(TARGETS ${modname}_python2 DESTINATION ${PyImath_Python2_SITEARCH_REL})
+    endif()
+  else()
+    if(TARGET Python3::Python AND TARGET Boost::${PYIMATH_BOOST_PY_COMPONENT})
+      set(libname "${PYIMATH_CURMOD_LIBNAME}${PYIMATH_LIB_PYTHONVER_ROOT}${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}")
+      set(extraDeps ${PYIMATH_CURMOD_MODULE_DEPS})
+      list(TRANSFORM extraDeps APPEND ${PYIMATH_LIB_PYTHONVER_ROOT}${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR})
+
+      pyimath_add_library_priv(${libname}
+        ${libarglist}
+        ${extraDeps}
+        Python3::Python
+        Boost::${PYIMATH_BOOST_PY_COMPONENT}
+      )
+      Python3_add_library(${modname}_python3 MODULE ${PYIMATH_CURMOD_MODSOURCE})
+      target_link_libraries(${modname}_python3
+        PRIVATE
+          ${libname} ${extraDeps}
+          ${PYIMATH_CURMOD_DEPENDENCIES}
+          ${PYIMATH_CURMOD_PRIVATE_DEPS}
+          Boost::${PYIMATH_BOOST_PY_COMPONENT}
+        )
+      set_target_properties(${modname}_python3 PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}/"
+        LIBRARY_OUTPUT_NAME "${modname}"
+        DEBUG_POSTFIX ""
+      )
+      install(TARGETS ${modname}_python3 DESTINATION ${PyImath_Python3_SITEARCH_REL})
+    endif()
   endif()
 endfunction()

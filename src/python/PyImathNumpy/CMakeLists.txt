@@ -2,7 +2,7 @@
 # Copyright Contributors to the OpenEXR Project.
 
 if(TARGET Python2::Python AND
-   TARGET Boost::${PYIMATH_BOOST_PY2_COMPONENT} AND
+   TARGET Boost::${PYIMATH_BOOST_PY_COMPONENT} AND
    TARGET Python2::ImathNumPy)
   set(moddeps_p2 PyImath)
   list(TRANSFORM moddeps_p2 APPEND ${PYIMATH_LIB_PYTHONVER_ROOT}${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR})
@@ -14,7 +14,7 @@ if(TARGET Python2::Python AND
       Imath
       ${moddeps_p2}
       Python2::Python
-      Boost::${PYIMATH_BOOST_PY2_COMPONENT}
+      Boost::${PYIMATH_BOOST_PY_COMPONENT}
       Python2::ImathNumPy
     )
   set_target_properties(imathnumpy_python2 PROPERTIES
@@ -26,7 +26,7 @@ if(TARGET Python2::Python AND
 endif()
 
 if(TARGET Python3::Python AND
-   TARGET Boost::${PYIMATH_BOOST_PY3_COMPONENT} AND
+   TARGET Boost::${PYIMATH_BOOST_PY_COMPONENT} AND
    TARGET Python3::ImathNumPy)
 
   set(moddeps_p3 PyImath)
@@ -40,7 +40,7 @@ if(TARGET Python3::Python AND
       Imath
       ${moddeps_p3}
       Python3::Python
-      Boost::${PYIMATH_BOOST_PY3_COMPONENT}
+      Boost::${PYIMATH_BOOST_PY_COMPONENT}
       Python3::ImathNumPy
     )
   set_target_properties(imathnumpy_python3 PROPERTIES
