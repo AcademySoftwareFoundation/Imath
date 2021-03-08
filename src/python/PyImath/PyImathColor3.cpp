@@ -11,8 +11,6 @@
 
 // clang-format off
 
-#include "PyImathConfigInternal.h"
-
 #include "PyImathColor.h"
 #include "PyImathVec.h"
 #include "PyImathDecorators.h"

@@ -5,8 +5,6 @@
 
 // clang-format off
 
-#include "PyImathConfigInternal.h"
-
 #include "PyImathFixedVArray.h"
 
 #include <boost/python.hpp>

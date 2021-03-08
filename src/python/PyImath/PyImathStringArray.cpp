@@ -5,8 +5,6 @@
 
 // clang-format off
 
-#include "PyImathConfigInternal.h"
-
 #include "PyImathStringArrayRegister.h"
 #include "PyImathStringArray.h"
 #include "PyImathExport.h"
