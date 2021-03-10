@@ -21,7 +21,7 @@ project(Imath VERSION ${IMATH_VERSION} LANGUAGES C CXX)
 
 # ImathSetup.cmake declares all the configuration variables visible
 # in cmake-gui or similar and the rest of the global
-# project setup. Check the context to see what is configurable
+# project setup. Check the context to see what is configurable.
 include(config/ImathSetup.cmake)
 
 # Config headers and package config files
@@ -33,13 +33,12 @@ include(config/LibraryDefine.cmake)
 # Source code is in src/Imath
 add_subdirectory(src/Imath)
 
-# Tell CMake where to find the ImathConfig.cmake file.  This makes it
-# posible to call find_package(Imath) in downstream projects
+# Imath_DIR points to the location of ImathConfig.cmake, which tells
+# downstream projects where to find Imath, via find_package(Imath).
 set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
 
-# Add an empty ImathTargets.cmake file for the config to use.  This
-# can be empty since we already defined the targets in
-# add_subdirectory()
+# Add an empty ImathTargets.cmake file for the config to use. It can
+# be empty since we already defined the targets in add_subdirectory().
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
 
 option(PYTHON "Set ON to compile PyImath bindings")
