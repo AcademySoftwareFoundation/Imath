@@ -692,6 +692,8 @@ typedef Vec2<short> V2s;
 
 /// Vec2 of integer
 typedef Vec2<int> V2i;
+
+/// Vec2 of int64_t
 typedef Vec2<int64_t> V2i64;
 
 /// Vec2 of float
@@ -705,6 +707,8 @@ typedef Vec3<short> V3s;
 
 /// Vec3 of integer
 typedef Vec3<int> V3i;
+
+/// Vec3 of int64_t
 typedef Vec3<int64_t> V3i64;
 
 /// Vec3 of float
@@ -718,6 +722,8 @@ typedef Vec4<short> V4s;
 
 /// Vec4 of integer
 typedef Vec4<int> V4i;
+
+/// Vec4 of int64_t
 typedef Vec4<int64_t> V4i64;
 
 /// Vec4 of float
@@ -750,6 +756,15 @@ template <> Vec2<int> Vec2<int>::normalized() const noexcept = delete;
 template <> Vec2<int> Vec2<int>::normalizedExc() const = delete;
 template <> Vec2<int> Vec2<int>::normalizedNonNull() const noexcept = delete;
 
+// Vec2<int64_t>
+template <> int64_t Vec2<int64_t>::length() const noexcept = delete;
+template <> const Vec2<int64_t>& Vec2<int64_t>::normalize() noexcept = delete;
+template <> const Vec2<int64_t>& Vec2<int64_t>::normalizeExc() = delete;
+template <> const Vec2<int64_t>& Vec2<int64_t>::normalizeNonNull() noexcept = delete;
+template <> Vec2<int64_t> Vec2<int64_t>::normalized() const noexcept = delete;
+template <> Vec2<int64_t> Vec2<int64_t>::normalizedExc() const = delete;
+template <> Vec2<int64_t> Vec2<int64_t>::normalizedNonNull() const noexcept = delete;
+
 // Vec3<short>
 template <> short Vec3<short>::length() const noexcept = delete;
 template <> const Vec3<short>& Vec3<short>::normalize() noexcept = delete;
@@ -768,6 +783,15 @@ template <> Vec3<int> Vec3<int>::normalized() const noexcept = delete;
 template <> Vec3<int> Vec3<int>::normalizedExc() const = delete;
 template <> Vec3<int> Vec3<int>::normalizedNonNull() const noexcept = delete;
 
+// Vec3<int64_t>
+template <> int64_t Vec3<int64_t>::length() const noexcept = delete;
+template <> const Vec3<int64_t>& Vec3<int64_t>::normalize() noexcept = delete;
+template <> const Vec3<int64_t>& Vec3<int64_t>::normalizeExc() = delete;
+template <> const Vec3<int64_t>& Vec3<int64_t>::normalizeNonNull() noexcept = delete;
+template <> Vec3<int64_t> Vec3<int64_t>::normalized() const noexcept = delete;
+template <> Vec3<int64_t> Vec3<int64_t>::normalizedExc() const = delete;
+template <> Vec3<int64_t> Vec3<int64_t>::normalizedNonNull() const noexcept = delete;
+
 // Vec4<short>
 template <> short Vec4<short>::length() const noexcept = delete;
 template <> const Vec4<short>& Vec4<short>::normalize() noexcept = delete;
@@ -785,6 +809,15 @@ template <> const Vec4<int>& Vec4<int>::normalizeNonNull() noexcept = delete;
 template <> Vec4<int> Vec4<int>::normalized() const noexcept = delete;
 template <> Vec4<int> Vec4<int>::normalizedExc() const = delete;
 template <> Vec4<int> Vec4<int>::normalizedNonNull() const noexcept = delete;
+
+// Vec4<int64_t>
+template <> int64_t Vec4<int64_t>::length() const noexcept = delete;
+template <> const Vec4<int64_t>& Vec4<int64_t>::normalize() noexcept = delete;
+template <> const Vec4<int64_t>& Vec4<int64_t>::normalizeExc() = delete;
+template <> const Vec4<int64_t>& Vec4<int64_t>::normalizeNonNull() noexcept = delete;
+template <> Vec4<int64_t> Vec4<int64_t>::normalized() const noexcept = delete;
+template <> Vec4<int64_t> Vec4<int64_t>::normalizedExc() const = delete;
+template <> Vec4<int64_t> Vec4<int64_t>::normalizedNonNull() const noexcept = delete;
 
 //------------------------
 // Implementation of Vec2:
