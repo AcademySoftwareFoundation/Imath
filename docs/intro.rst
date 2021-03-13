@@ -74,9 +74,7 @@ Matrices Are Row-Major
 ----------------------
 
 Imath stores matrices in row-major layout, originally inspired by
-compatibility with OpenGL matrices. A matrix representing a
-homogeneous transform has 0's in the right-name column and the
-translation component across the bottom row.
+compatibility with OpenGL matrices. 
 
 A matrix described as:
 
@@ -126,6 +124,10 @@ is laid out in memory as:
      - :math:`m_{31}`
      - :math:`m_{32}`
      - :math:`m_{33}`
+
+A matrix representing a homogeneous transform has a right-hand column
+of :math:`\begin{bmatrix} 0 & 0 & 0 & 1\end{bmatrix}` and the
+translation component across the bottom row.
 
 As a result, it is best to think of Imath vectors as row-vectors, and
 vector-matrix multiplication with the vector on the left and matrix on
