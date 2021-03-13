@@ -12,6 +12,7 @@
 
 #include "ImathMath.h"
 #include "ImathNamespace.h"
+#include "ImathTypeTraits.h"
 
 #include <iostream>
 #include <limits>
@@ -74,6 +75,7 @@ template <class T> class Vec2
     /// Construct from Vec2 of another base type
     template <class S> IMATH_HOSTDEVICE constexpr Vec2 (const Vec2<S>& v) noexcept;
 
+
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const Vec2& v) noexcept;
 
@@ -81,7 +83,47 @@ template <class T> class Vec2
     ~Vec2() noexcept = default;
 
     /// @}
-    
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x and .y, that are of the
+    /// same type as the elements of this vector, and their size appears to
+    /// be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
+    template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
+    IMATH_HOSTDEVICE explicit constexpr Vec2 (const V& v) noexcept
+        : Vec2(T(v.x), T(v.y)) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,2>::value
+                                         && !has_xy<V,T>::value)>
+    IMATH_HOSTDEVICE explicit Vec2 (const V& v) : Vec2(T(v[0]), T(v[1])) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const V& v) noexcept {
+        x = T(v.x);
+        y = T(v.y);
+        return *this;
+    }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,2>::value
+                                         && !has_xy<V,T>::value)>
+    IMATH_HOSTDEVICE const Vec2& operator= (const V& v) {
+        x = T(v[0]);
+        y = T(v[1]);
+        return *this;
+    }
+#endif
+
     /// @{
     /// @name Compatibility with Sb
 
@@ -308,7 +350,52 @@ template <class T> class Vec3
     ~Vec3() noexcept = default;
 
     /// @}
-    
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x, .y, .z, that are of the
+    /// same type as the elements of this vector, and their size appears to
+    /// be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
+    template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE explicit constexpr Vec3 (const V& v) noexcept
+        : Vec3(T(v.x), T(v.y), T(v.z)) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
+                                         && !has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE explicit Vec3 (const V& v) : Vec3(T(v[0]), T(v[1]), T(v[2])) { }
+
+    /// Interoperability assignment from another type that behaves as if it
+    /// were an equivalent vector.
+    template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE const Vec3& operator= (const V& v) noexcept {
+        x = T(v.x);
+        y = T(v.y);
+        z = T(v.z);
+        return *this;
+    }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
+                                         && !has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3& operator= (const V& v) {
+        x = T(v[0]);
+        y = T(v[1]);
+        z = T(v[2]);
+        return *this;
+    }
+    /// @}
+#endif
+
     /// @{
     /// @name Compatibility with Sb
 
@@ -527,7 +614,52 @@ template <class T> class Vec4
     ~Vec4() noexcept = default;
 
     /// @}
-    
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x, .y, .z, .w that are of
+    /// the same type as the elements of this vector, and their size appears
+    /// to be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
+    template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
+    IMATH_HOSTDEVICE explicit constexpr Vec4 (const V& v) noexcept
+        : Vec4(T(v.x), T(v.y), T(v.z), T(v.w)) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,4>::value
+                                         && !has_xyzw<V,T>::value)>
+    IMATH_HOSTDEVICE explicit Vec4 (const V& v) : Vec4(T(v[0]), T(v[1]), T(v[2]), T(v[3])) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4& operator= (const V& v) noexcept {
+        x = T(v.x);
+        y = T(v.y);
+        z = T(v.z);
+        w = T(v.w);
+        return *this;
+    }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,4>::value
+                                         && !has_xyzw<V,T>::value)>
+    IMATH_HOSTDEVICE const Vec4& operator= (const V& v) {
+        x = T(v[0]);
+        y = T(v[1]);
+        z = T(v[2]);
+        w = T(v[3]);
+        return *this;
+    }
+    /// @}
+#endif
+
     /// @{
     /// @name Arithmetic and Comparison
     
