@@ -59,13 +59,6 @@ reflect (const Vec& s, const Vec& t) noexcept
 /// Find the vertex of triangle `(v0, v1, v2)` that is closest to point `p`
 /// (`Vec2`, `Vec3`, `Vec4`)
 template <class Vec>
-IMATH_CONSTEXPR14 Vec closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p) noexcept;
-
-//---------------
-// Implementation
-//---------------
-
-template <class Vec>
 IMATH_CONSTEXPR14 Vec
 closestVertex (const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p) noexcept
 {
