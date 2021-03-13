@@ -9,12 +9,6 @@ Vector Functions
 
 Functions that operate on vectors.
 
-.. doxygenfunction:: project
-                     
-.. doxygenfunction:: orthogonal
-                     
-.. doxygenfunction:: reflect
-                     
 .. doxygenfunction:: closestVertex(const Vec& v0, const Vec& v1, const Vec& v2, const Vec& p) noexcept
 
                      
