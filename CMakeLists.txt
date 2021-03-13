@@ -14,6 +14,11 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
+if(POLICY CMP0077)
+  # enable variables set outside to override options
+  cmake_policy(SET CMP0077 NEW)
+endif()
+
 # Version numbers are maintained in config/version.cmake
 include(config/version.cmake)
 
