@@ -622,24 +622,18 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
 /// Intersect a ray, `r`, with a 3D box, `b, and compute the intersection
 /// point, returned in `ip`.
 ///
-/// intersect() returns:
-///
-///     - true if the ray starts inside the box or if the
-///       ray starts outside and intersects the box
-///
-///     - false if the ray starts outside the box and intersects it,
-///       but the intersection is behind the ray's origin.
-///
-///     - false if the ray starts outside and does not intersect it
-///
 /// The intersection point is
+/// - the ray's origin if the ray starts inside the box
+/// - a point on one of the faces of the box if the ray
+///   starts outside the box
+/// - undefined when intersect() returns false
 ///
-///     - the ray's origin if the ray starts inside the box
-///
-///     - a point on one of the faces of the box if the ray
-///       starts outside the box
-///
-///     - undefined when intersect() returns false
+/// @return
+/// - true if the ray starts inside the box or if the
+///   ray starts outside and intersects the box
+/// - false if the ray starts outside the box and intersects it,
+///   but the intersection is behind the ray's origin.
+/// - false if the ray starts outside and does not intersect it
 ///
 
 template <class T>

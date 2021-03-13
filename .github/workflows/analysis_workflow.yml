@@ -10,14 +10,6 @@ on:
   schedule:
     # Weekly Sunday build
     - cron: "0 0 * * 0"
-  push:
-    # Temporary - for testing coverage analysis
-    paths-ignore:
-      - '**.md'
-  pull_request:
-    # Temporary - for testing coverage analysis
-    paths-ignore:
-      - '**.md'
 
 jobs:
 

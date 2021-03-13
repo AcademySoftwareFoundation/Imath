@@ -3,9 +3,4 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-#pragma once
-
-//
-// Dealing with FPEs
-//
-#cmakedefine PYIMATH_ENABLE_EXCEPTIONS 0
+void testInterop();
