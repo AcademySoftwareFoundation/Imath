@@ -20,6 +20,12 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+/// @cond Doxygen_Suppress
+//
+//  Note: doxygen doesn't understand these templates, so omit these
+//  functions from the docs.
+//
+
 /// Find the projection of vector `t` onto vector `s` (`Vec2`, `Vec3`, `Vec4`)
 ///
 /// Only defined for floating-point types, e.g. `V2f`, `V3d`, etc.
@@ -55,6 +61,8 @@ reflect (const Vec& s, const Vec& t) noexcept
 {
     return s - typename Vec::BaseType (2) * (s - project (t, s));
 }
+
+/// @endcond
 
 /// Find the vertex of triangle `(v0, v1, v2)` that is closest to point `p`
 /// (`Vec2`, `Vec3`, `Vec4`)
