@@ -1,6 +1,10 @@
 Euler
 #####
 
+.. code-block::
+
+   #include <Imath/ImathEuler.h>
+   
 The ``Euler`` class template represents an euler angle rotation/orientation,
 with predefined typedefs of type ``float`` and ``double``.
 

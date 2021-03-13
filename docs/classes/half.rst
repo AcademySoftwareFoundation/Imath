@@ -1,6 +1,11 @@
 half
 ####
 
+.. code-block::
+
+   #include <Imath/half.h>
+   
+
 ``half`` is a 16-bit floating point number.
 
 Example:

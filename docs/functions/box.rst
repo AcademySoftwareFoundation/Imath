@@ -1,19 +1,26 @@
-Box
-###
+.. _box-functions:
 
-Functions to operate on bounding boxes.
+Box Functions
+#############
+
+Functions that operate on bounding boxes.
+
+.. code-block::
+
+   #include <Imath/ImathBoxAlgo.h>
 
 .. doxygenfunction:: clip
                      
 .. doxygenfunction:: closestPointInBox
                      
-.. doxygenfunction:: transform
+.. doxygenfunction:: transform(const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 
-.. doxygenfunction:: affineTransform
+.. doxygenfunction:: affineTransform(const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 
 .. doxygenfunction:: findEntryAndExitPoints
 
-.. doxygenfunction:: intersects
+.. doxygenfunction:: intersects(const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) noexcept
+
 
 
    

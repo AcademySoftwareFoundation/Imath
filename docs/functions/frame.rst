@@ -1,7 +1,13 @@
-Frame
-#####
+.. _frame-functions:
 
-Functions to compute coordinate frames
+Frame Functions
+###############
+
+Functions to compute coordinate frames.
+
+.. code-block::
+
+   #include <Imath/ImathFrame.h>
 
 .. doxygenfunction:: firstFrame
                      

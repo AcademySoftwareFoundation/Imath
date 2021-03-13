@@ -43,9 +43,11 @@ Imath Documentation
    functions/frame
    functions/gl
    functions/glu
-   functions/limits
+   functions/line
+   functions/matrix
    functions/random
    functions/roots
+   functions/vec
    
 :ref:`genindex`
 
