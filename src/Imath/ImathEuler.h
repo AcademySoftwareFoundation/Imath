@@ -28,7 +28,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 ///
 /// Template class `Euler<T>`
 ///
-/// This class represents euler angle orientations. The class
+/// The Euler class represents euler angle orientations. The class
 /// inherits from Vec3 to it can be freely cast. The additional
 /// information is the euler priorities rep. This class is
 /// essentially a rip off of Ken Shoemake's GemsIV code. It has

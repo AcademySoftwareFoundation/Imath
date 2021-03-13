@@ -9,56 +9,8 @@
 //     Rod Bogart <rgb@ilm.com>
 //
 
-//---------------------------------------------------------------------------
-//
-//	half -- a 16-bit floating point number class:
-//
-//	Type half can represent positive and negative numbers whose
-//	magnitude is between roughly 6.1e-5 and 6.5e+4 with a relative
-//	error of 9.8e-4; numbers smaller than 6.1e-5 can be represented
-//	with an absolute error of 6.0e-8.  All integers from -2048 to
-//	+2048 can be represented exactly.
-//
-//	Type half behaves (almost) like the built-in C++ floating point
-//	types.  In arithmetic expressions, half, float and double can be
-//	mixed freely.  Here are a few examples:
-//
-//	    half a (3.5);
-//	    float b (a + sqrt (a));
-//	    a += b;
-//	    b += a;
-//	    b = a + 7;
-//
-//	Conversions from half to float are lossless; all half numbers
-//	are exactly representable as floats.
-//
-//	Conversions from float to half may not preserve a float's value
-//	exactly.  If a float is not representable as a half, then the
-//	float value is rounded to the nearest representable half.  If a
-//	float value is exactly in the middle between the two closest
-//	representable half values, then the float value is rounded to
-//	the closest half whose least significant bit is zero.
-//
-//	Overflows during float-to-half conversions cause arithmetic
-//	exceptions.  An overflow occurs when the float value to be
-//	converted is too large to be represented as a half, or if the
-//	float value is an infinity or a NAN.
-//
-//	The implementation of type half makes the following assumptions
-//	about the implementation of the built-in C++ types:
-//
-//	    float is an IEEE 754 single-precision number
-//	    sizeof (float) == 4
-//	    sizeof (unsigned int) == sizeof (float)
-//	    alignof (unsigned int) == alignof (float)
-//	    sizeof (unsigned short) == 2
-//
-//---------------------------------------------------------------------------
-
 #ifndef _HALF_H_
 #define _HALF_H_
-
-/// @cond Doxygen_Suppress
 
 #include "ImathNamespace.h"
 #include "ImathExport.h"
@@ -67,123 +19,191 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+///
+///
+/// class half -- 16-bit floating point number
+///
+/// Type half can represent positive and negative numbers whose
+/// magnitude is between roughly 6.1e-5 and 6.5e+4 with a relative
+/// error of 9.8e-4; numbers smaller than 6.1e-5 can be represented
+/// with an absolute error of 6.0e-8.  All integers from -2048 to
+/// +2048 can be represented exactly.
+///
+/// Type half behaves (almost) like the built-in C++ floating point
+/// types.  In arithmetic expressions, half, float and double can be
+/// mixed freely.  Here are a few examples:
+///
+///     half a (3.5);
+///     float b (a + sqrt (a));
+///     a += b;
+///     b += a;
+///     b = a + 7;
+///
+/// Conversions from half to float are lossless; all half numbers
+/// are exactly representable as floats.
+///
+/// Conversions from float to half may not preserve a float's value
+/// exactly.  If a float is not representable as a half, then the
+/// float value is rounded to the nearest representable half.  If a
+/// float value is exactly in the middle between the two closest
+/// representable half values, then the float value is rounded to
+/// the closest half whose least significant bit is zero.
+///
+/// Overflows during float-to-half conversions cause arithmetic
+/// exceptions.  An overflow occurs when the float value to be
+/// converted is too large to be represented as a half, or if the
+/// float value is an infinity or a NAN.
+///
+/// The implementation of type half makes the following assumptions
+/// about the implementation of the built-in C++ types:
+///
+/// * float is an IEEE 754 single-precision number
+/// * sizeof (float) == 4
+/// * sizeof (unsigned int) == sizeof (float)
+/// * alignof (unsigned int) == alignof (float)
+/// * sizeof (unsigned short) == 2
+///
+
 class half
 {
   public:
-    // Make a special tag that lets us initialize a half from the raw bits.
+
+    /// A special tag that lets us initialize a half from the raw bits.
     enum FromBitsTag
     {
         FromBits
     };
 
-    //-------------
-    // Constructors
-    //-------------
+    /// @{
+    ///	@name Constructors
 
-    half() noexcept = default; // no initialization, but not constexpr
+    /// Default construction provides no initialization (hence it is
+    /// not constexpr).
+    half() noexcept = default; 
+
+    /// Construct from float
     half (float f) noexcept;
+    
+    /// Construct from bit-vector
     constexpr half(FromBitsTag, unsigned short bits) noexcept;
-    // rule of 5
-    ~half() noexcept            = default;
+
+    /// Copy constructor
     constexpr half (const half&) noexcept = default;
+
+    /// Move constructor
     constexpr half (half&&) noexcept      = default;
 
-    //--------------------
-    // Conversion to float
-    //--------------------
+    /// Destructor
+    ~half() noexcept            = default;
 
+    /// @}
+
+    /// Conversion to float
     operator float() const noexcept;
 
-    //------------
-    // Unary minus
-    //------------
+    /// @{
+    /// @name Basic Algebra 
 
+    /// Unary minus
     constexpr half operator-() const noexcept;
 
-    //-----------
-    // Assignment
-    //-----------
-
+    /// Assignment
     half& operator= (const half& h) noexcept = default;
+
+    /// Move assignment
     half& operator= (half&& h) noexcept      = default;
+
+    /// Assignment from float
     half& operator= (float f) noexcept;
 
+    /// Addition assignment
     half& operator+= (half h) noexcept;
+
+    /// Addition assignment from float
     half& operator+= (float f) noexcept;
 
+    /// Subtraction assignment
     half& operator-= (half h) noexcept;
+
+    /// Subtraction assignment from float
     half& operator-= (float f) noexcept;
 
+    /// Multiplication assignment
     half& operator*= (half h) noexcept;
+
+    /// Multiplication assignment from float
     half& operator*= (float f) noexcept;
 
+    /// Division assignment
     half& operator/= (half h) noexcept;
+
+    /// Division assignment from float
     half& operator/= (float f) noexcept;
 
-    //---------------------------------------------------------
-    // Round to n-bit precision (n should be between 0 and 10).
-    // After rounding, the significand's 10-n least significant
-    // bits will be zero.
-    //---------------------------------------------------------
-
+    /// @}
+    
+    /// Round to n-bit precision (n should be between 0 and 10).
+    /// After rounding, the significand's 10-n least significant
+    /// bits will be zero.
     IMATH_CONSTEXPR14 half round (unsigned int n) const noexcept;
 
-    //--------------------------------------------------------------------
-    // Classification:
-    //
-    //	h.isFinite()		returns true if h is a normalized number,
-    //				a denormalized number or zero
-    //
-    //	h.isNormalized()	returns true if h is a normalized number
-    //
-    //	h.isDenormalized()	returns true if h is a denormalized number
-    //
-    //	h.isZero()		returns true if h is zero
-    //
-    //	h.isNan()		returns true if h is a NAN
-    //
-    //	h.isInfinity()		returns true if h is a positive
-    //				or a negative infinity
-    //
-    //	h.isNegative()		returns true if the sign bit of h
-    //				is set (negative)
-    //--------------------------------------------------------------------
+    /// @{
+    /// @name Classification
 
+    /// Return true if a normalized number, a denormalized number, or
+    /// zero.
     constexpr bool isFinite() const noexcept;
+
+    /// Return true if a normalized number.
     constexpr bool isNormalized() const noexcept;
+
+    /// Return true if a denormalized number.
     constexpr bool isDenormalized() const noexcept;
+
+    /// Return true if zero.
     constexpr bool isZero() const noexcept;
+
+    /// Return true if NAN.
     constexpr bool isNan() const noexcept;
+
+    /// Return true if a positive or a negative infinity
     constexpr bool isInfinity() const noexcept;
+
+    /// Return true if the sign bit is set (negative)
     constexpr bool isNegative() const noexcept;
 
-    //--------------------------------------------
-    // Special values
-    //
-    //	posInf()	returns +infinity
-    //
-    //	negInf()	returns -infinity
-    //
-    //	qNan()		returns a NAN with the bit
-    //			pattern 0111111111111111
-    //
-    //	sNan()		returns a NAN with the bit
-    //			pattern 0111110111111111
-    //--------------------------------------------
+    /// @}
+    
+    /// @{
+    /// @name Special values
 
+    /// Return +infinity
     static constexpr half posInf() noexcept;
+
+    /// Return -infinity
     static constexpr half negInf() noexcept;
+
+    /// Returns a NAN with the bit pattern 0111111111111111
     static constexpr half qNan() noexcept;
+
+    /// Return a NAN with the bit pattern 0111110111111111
     static constexpr half sNan() noexcept;
 
-    //--------------------------------------
-    // Access to the internal representation
-    //--------------------------------------
+    /// @}
+    
+    /// @{
+    /// @name Access to the internal representation
 
+    /// Return the bit pattern
     IMATH_EXPORT constexpr unsigned short bits() const noexcept;
+
+    /// Set the bit pattern
     IMATH_EXPORT IMATH_CONSTEXPR14 void setBits (unsigned short bits) noexcept;
 
+    /// @}
+
   public:
+
     union uif
     {
         unsigned int i;
@@ -191,6 +211,7 @@ class half
     };
 
   private:
+
     IMATH_EXPORT static short convert (int i) noexcept;
     IMATH_EXPORT static float overflow() noexcept;
     constexpr unsigned short mantissa() const noexcept;
@@ -212,7 +233,8 @@ class half
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 
-#    define HALF_DENORM_MIN 5.96046448e-08f // Smallest positive denormalized positive half
+/// Smallest positive denormalized half
+#    define HALF_DENORM_MIN 5.96046448e-08f 
 
 #    define HALF_NRM_MIN 6.10351562e-05f // Smallest positive normalized half
 
@@ -275,110 +297,109 @@ class half
 //
 // Representation of a float:
 //
-//	We assume that a float, f, is an IEEE 754 single-precision
-//	floating point number, whose bits are arranged as follows:
+// We assume that a float, f, is an IEEE 754 single-precision
+// floating point number, whose bits are arranged as follows:
 //
-//	    31 (msb)
-//	    |
-//	    | 30     23
-//	    | |      |
-//	    | |      | 22                    0 (lsb)
-//	    | |      | |                     |
-//	    X XXXXXXXX XXXXXXXXXXXXXXXXXXXXXXX
+//     31 (msb)
+//     |
+//     | 30     23
+//     | |      |
+//     | |      | 22                    0 (lsb)
+//     | |      | |                     |
+//     X XXXXXXXX XXXXXXXXXXXXXXXXXXXXXXX
 //
-//	    s e        m
+//     s e        m
 //
-//	S is the sign-bit, e is the exponent and m is the significand.
+// S is the sign-bit, e is the exponent and m is the significand.
 //
-//	If e is between 1 and 254, f is a normalized number:
+// If e is between 1 and 254, f is a normalized number:
 //
-//	            s    e-127
-//	    f = (-1)  * 2      * 1.m
+//             s    e-127
+//     f = (-1)  * 2      * 1.m
 //
-//	If e is 0, and m is not zero, f is a denormalized number:
+// If e is 0, and m is not zero, f is a denormalized number:
 //
-//	            s    -126
-//	    f = (-1)  * 2      * 0.m
+//             s    -126
+//     f = (-1)  * 2      * 0.m
 //
-//	If e and m are both zero, f is zero:
+// If e and m are both zero, f is zero:
 //
-//	    f = 0.0
+//     f = 0.0
 //
-//	If e is 255, f is an "infinity" or "not a number" (NAN),
-//	depending on whether m is zero or not.
+// If e is 255, f is an "infinity" or "not a number" (NAN),
+// depending on whether m is zero or not.
 //
-//	Examples:
+// Examples:
 //
-//	    0 00000000 00000000000000000000000 = 0.0
-//	    0 01111110 00000000000000000000000 = 0.5
-//	    0 01111111 00000000000000000000000 = 1.0
-//	    0 10000000 00000000000000000000000 = 2.0
-//	    0 10000000 10000000000000000000000 = 3.0
-//	    1 10000101 11110000010000000000000 = -124.0625
-//	    0 11111111 00000000000000000000000 = +infinity
-//	    1 11111111 00000000000000000000000 = -infinity
-//	    0 11111111 10000000000000000000000 = NAN
-//	    1 11111111 11111111111111111111111 = NAN
+//     0 00000000 00000000000000000000000 = 0.0
+//     0 01111110 00000000000000000000000 = 0.5
+//     0 01111111 00000000000000000000000 = 1.0
+//     0 10000000 00000000000000000000000 = 2.0
+//     0 10000000 10000000000000000000000 = 3.0
+//     1 10000101 11110000010000000000000 = -124.0625
+//     0 11111111 00000000000000000000000 = +infinity
+//     1 11111111 00000000000000000000000 = -infinity
+//     0 11111111 10000000000000000000000 = NAN
+//     1 11111111 11111111111111111111111 = NAN
 //
 // Representation of a half:
 //
-//	Here is the bit-layout for a half number, h:
+// Here is the bit-layout for a half number, h:
 //
-//	    15 (msb)
-//	    |
-//	    | 14  10
-//	    | |   |
-//	    | |   | 9        0 (lsb)
-//	    | |   | |        |
-//	    X XXXXX XXXXXXXXXX
+//     15 (msb)
+//     |
+//     | 14  10
+//     | |   |
+//     | |   | 9        0 (lsb)
+//     | |   | |        |
+//     X XXXXX XXXXXXXXXX
 //
-//	    s e     m
+//     s e     m
 //
-//	S is the sign-bit, e is the exponent and m is the significand.
+// S is the sign-bit, e is the exponent and m is the significand.
 //
-//	If e is between 1 and 30, h is a normalized number:
+// If e is between 1 and 30, h is a normalized number:
 //
-//	            s    e-15
-//	    h = (-1)  * 2     * 1.m
+//             s    e-15
+//     h = (-1)  * 2     * 1.m
 //
-//	If e is 0, and m is not zero, h is a denormalized number:
+// If e is 0, and m is not zero, h is a denormalized number:
 //
-//	            S    -14
-//	    h = (-1)  * 2     * 0.m
+//             S    -14
+//     h = (-1)  * 2     * 0.m
 //
-//	If e and m are both zero, h is zero:
+// If e and m are both zero, h is zero:
 //
-//	    h = 0.0
+//     h = 0.0
 //
-//	If e is 31, h is an "infinity" or "not a number" (NAN),
-//	depending on whether m is zero or not.
+// If e is 31, h is an "infinity" or "not a number" (NAN),
+// depending on whether m is zero or not.
 //
-//	Examples:
+// Examples:
 //
-//	    0 00000 0000000000 = 0.0
-//	    0 01110 0000000000 = 0.5
-//	    0 01111 0000000000 = 1.0
-//	    0 10000 0000000000 = 2.0
-//	    0 10000 1000000000 = 3.0
-//	    1 10101 1111000001 = -124.0625
-//	    0 11111 0000000000 = +infinity
-//	    1 11111 0000000000 = -infinity
-//	    0 11111 1000000000 = NAN
-//	    1 11111 1111111111 = NAN
+//     0 00000 0000000000 = 0.0
+//     0 01110 0000000000 = 0.5
+//     0 01111 0000000000 = 1.0
+//     0 10000 0000000000 = 2.0
+//     0 10000 1000000000 = 3.0
+//     1 10101 1111000001 = -124.0625
+//     0 11111 0000000000 = +infinity
+//     1 11111 0000000000 = -infinity
+//     0 11111 1000000000 = NAN
+//     1 11111 1111111111 = NAN
 //
 // Conversion:
 //
-//	Converting from a float to a half requires some non-trivial bit
-//	manipulations.  In some cases, this makes conversion relatively
-//	slow, but the most common case is accelerated via table lookups.
+// Converting from a float to a half requires some non-trivial bit
+// manipulations.  In some cases, this makes conversion relatively
+// slow, but the most common case is accelerated via table lookups.
 //
-//	Converting back from a half to a float is easier because we don't
-//	have to do any rounding.  In addition, there are only 65536
-//	different half numbers; we can convert each of those numbers once
-//	and store the results in a table.  Later, all conversions can be
-//	done using only simple table lookups.
+// Converting back from a half to a float is easier because we don't
+// have to do any rounding.  In addition, there are only 65536
+// different half numbers; we can convert each of those numbers once
+// and store the results in a table.  Later, all conversions can be
+// done using only simple table lookups.
 //
-//---------------------------------------------------------------------------
 
 //----------------------------
 // Half-from-float constructor
@@ -707,8 +728,6 @@ using half = IMATH_INTERNAL_NAMESPACE::half;
 #else
 #    include <cuda_fp16.h>
 #endif
-
-/// @endcond
 
 #endif
 

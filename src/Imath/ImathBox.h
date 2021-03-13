@@ -139,6 +139,8 @@ typedef Box<V2s> Box2s;
 
 /// 2D box of base type `int`.
 typedef Box<V2i> Box2i;
+
+/// 2D box of base type `int64_t`.
 typedef Box<V2i64> Box2i64;
 
 /// 2D box of base type `float`.
@@ -152,6 +154,8 @@ typedef Box<V3s> Box3s;
 
 /// 3D box of base type `int`.
 typedef Box<V3i> Box3i;
+
+/// 3D box of base type `int64_t`.
 typedef Box<V3i64> Box3i64;
 
 /// 3D box of base type `float`.
@@ -390,9 +394,10 @@ template <class T> class Box<Vec2<T>>
     /// @{
     /// @name Manipulation
 
-    /// Set the Box to be empty. A Box is empty if the mimimum is greater
-    /// than the maximum. makeEmpty() sets the mimimum to `limits<T>::max()'
-    /// and the maximum to `limits<T>::min()`.
+    /// Set the Box to be empty. A Box is empty if the mimimum is
+    /// greater than the maximum. makeEmpty() sets the mimimum to
+    /// `numeric_limits<T>::max()' and the maximum to
+    /// `numeric_limits<T>::lowest()`.
     IMATH_HOSTDEVICE void makeEmpty() noexcept;
 
     /// Extend the Box to include the given point.
@@ -650,9 +655,10 @@ template <class T> class Box<Vec3<T>>
     /// Inequality
     IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec3<T>>& src) const noexcept;
 
-    /// Set the Box to be empty. A Box is empty if the mimimum is greater
-    /// than the maximum. makeEmpty() sets the mimimum to `limits<T>::max()`
-    /// and the maximum to `limits<T>::min()`.
+    /// Set the Box to be empty. A Box is empty if the mimimum is
+    /// greater than the maximum. makeEmpty() sets the mimimum to
+    /// `numeric_limits<T>::max()` and the maximum to
+    /// `numeric_limits<T>::lowest()`.
     IMATH_HOSTDEVICE void makeEmpty() noexcept;
 
     /// Extend the Box to include the given point.
