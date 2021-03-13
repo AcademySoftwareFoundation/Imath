@@ -106,8 +106,8 @@ configuration files included with find_package should set this up.
 ## Custom Namespaces
 
 Normally, all Imath symbols are in the ``Imath`` namespace, but you
-can control this at cmake time via the ``IMATH_IMATH_NAMESPACE`` and
-``IMATH_INTERNAL_IMATH_NAMESPACE`` cmake settings.
+can control this at cmake time via the ``IMATH_NAMESPACE`` and
+``IMATH_INTERNAL_NAMESPACE`` cmake settings.
 
 These settings specify an ``IMATH_INTERNAL_NAMESPACE`` preprocessor
 definition that places all of the Imath symbols within the given
@@ -129,7 +129,7 @@ is possible to use an internal namespace to prevent collisions between
 the older versions of Imath symbols and the newer ones.  To do this,
 the following could be defined at build time:
 
-    cmake -DIMATH_INTERNAL_IMATH_NAMESPACE=Imath_v2 $source_directory
+    cmake -DIMATH_INTERNAL_NAMESPACE=Imath_v2 $source_directory
 
 This means that declarations inside Imath headers look like this (after
 the preprocessor has done its work):
@@ -203,10 +203,10 @@ Common cmake configuration settings:
 * ``IMATH_INSTALL_PKG_CONFIG`` - Install Imath.pc file. Default is
   ``ON``.
 
-* ``IMATH_IMATH_NAMESPACE`` - Public namespace alias for
+* ``IMATH_NAMESPACE`` - Public namespace alias for
   Imath. Default is ``Imath``.
 
-* ``IMATH_INTERNAL_IMATH_NAMESPACE`` - Real namespace for Imath that
+* ``IMATH_INTERNAL_NAMESPACE`` - Real namespace for Imath that
   will end up in compiled symbols. Default is ``Imath_<major>_<minor>``.
 
 * ``IMATH_NAMESPACE_CUSTOM`` - Whether the namespace has been
