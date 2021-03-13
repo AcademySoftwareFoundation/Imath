@@ -14,42 +14,32 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
-# we include this first to obtain version numbers from version.cmake
+# Version numbers are maintained in config/version.cmake
 include(config/version.cmake)
 
-#set up our project
 project(Imath VERSION ${IMATH_VERSION} LANGUAGES C CXX)
 
-#######################################
-#######################################
-# This declares all the configuration variables visible
+# ImathSetup.cmake declares all the configuration variables visible
 # in cmake-gui or similar and the rest of the global
-# project setup
-#
-# Please look at this file to see what is configurable
-#######################################
-#######################################
+# project setup. Check the context to see what is configurable.
 include(config/ImathSetup.cmake)
 
-# generates config headers, package config files
+# Config headers and package config files
 add_subdirectory(config)
 
-# utility function for the repeated boilerplate of defining
-# the libraries
+# Utility function for the repeated boilerplate of defining the libraries
 include(config/LibraryDefine.cmake)
 
-#######################################
-
-# Include these modules without enable/disable options
+# Source code is in src/Imath
 add_subdirectory(src/Imath)
 
-# Tell CMake where to find the ImathConfig.cmake file. Makes it posible to call 
-# find_package(Imath) in downstream projects
+# Imath_DIR points to the location of ImathConfig.cmake, which tells
+# downstream projects where to find Imath, via find_package(Imath).
 set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
-# Add an empty ImathTargets.cmake file for the config to use. 
-# Can be empty since we already defined the targets in add_subdirectory
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
 
+# Add an empty ImathTargets.cmake file for the config to use. It can
+# be empty since we already defined the targets in add_subdirectory().
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
 
 option(PYTHON "Set ON to compile PyImath bindings")
 if (PYTHON)
@@ -79,14 +69,14 @@ endif()
 #set(CTEST_DROP_LOCATION "/submit.php?project=MyProject")
 #set(CTEST_DROP_SITE_CDASH TRUE)
 include(CTest)
-
 if(BUILD_TESTING AND NOT IMATH_IS_SUBPROJECT)
   enable_testing()
   add_subdirectory(src/ImathTest)
 endif()
 
-# Including this module will add a `clang-format` target to the build if
-# the clang-format executable can be found. Only do this if we are top level
+# Including this module will add a `clang-format` target to the build
+# if the clang-format executable can be found. Only do this if we are
+# top level.
 if(NOT IMATH_IS_SUBPROJECT)
   include(cmake/clang-format.cmake)
 endif()

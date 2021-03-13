@@ -3,9 +3,7 @@
 
 include(GNUInstallDirs)
 
-########################
-## Target configuration
-
+# Target configuration
 if(NOT "${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
   set(IMATH_IS_SUBPROJECT ON)
   message(STATUS "Imath is configuring as a cmake sub project")
@@ -15,8 +13,8 @@ endif()
 # object (if you enable this) that contains a LUT of the function
 option(IMATH_ENABLE_LARGE_STACK "Enables code to take advantage of large stack support"     OFF)
 
-# What C++ standard to compile for
-# VFX Platform 18 is c++14, so let's enable that by default
+# What C++ standard to compile for.  VFX Platform 18 is c++14, so
+# that's the default.
 set(tmp 14)
 if(CMAKE_CXX_STANDARD)
   set(tmp ${CMAKE_CXX_STANDARD})
@@ -24,8 +22,8 @@ endif()
 set(IMATH_CXX_STANDARD "${tmp}" CACHE STRING "C++ standard to compile against")
 set(tmp)
 
-# Namespace-related settings, allows one to customize the
-# namespace generated, and to version the namespaces
+# Namespace-related settings: allows one to customize the namespace
+# generated, and to version the namespaces.
 set(IMATH_NAMESPACE_CUSTOM "0" CACHE STRING "Whether the namespace has been customized (so external users know)")
 set(IMATH_INTERNAL_IMATH_NAMESPACE "Imath_${IMATH_VERSION_API}" CACHE STRING "Real namespace for Imath that will end up in compiled symbols")
 set(IMATH_IMATH_NAMESPACE "Imath" CACHE STRING "Public namespace alias for Imath")
@@ -40,49 +38,54 @@ option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" ON)
 option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" ON)
 endif()
 
-########################
-## Build related options
+#
+# Build related options
+#
 
-# This is a variable here for use in install lines. Care must be taken
-# when changing this, as many things assume this is Imath
+# This variable is for use in install lines. Care must be taken when
+# changing this, as many things assume this is "Imath".
 set(IMATH_OUTPUT_SUBDIR Imath CACHE STRING "Destination sub-folder of the include path for install")
 
-# This does not seem to be available as a per-target property,
-# but is pretty harmless to set globally
+# This does not seem to be available as a per-target property, but is
+# pretty harmless to set globally.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Suffix for debug configuration libraries
-# (if you should choose to install those)
+# Suffix for debug configuration libraries (if you should choose to
+# install those)
 set(CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "Suffix for debug builds")
 
 # Usual cmake option to build shared libraries or not
 option(BUILD_SHARED_LIBS "Build shared library" ON)
+
 # This allows a "double library" setup, where we compile both
 # a dynamic and shared library
 option(IMATH_BUILD_BOTH_STATIC_SHARED  "Build both static and shared libraries in one step (otherwise follows BUILD_SHARED_LIBS)" OFF)
 if (IMATH_BUILD_BOTH_STATIC_SHARED)
   set(BUILD_SHARED_LIBS ON)
 endif()
+
 # Suffix to append to root name, this helps with version management
 # but can be turned off if you don't care, or otherwise customized
 set(IMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "string added to the end of all the libraries")
-# when building both dynamic and static, the additional string to
-# add to the library name, such that to get static linkage, you
-# would use -lImath_static (or target_link_libraries(xxx Imath::Imath_static))
+
+# When building both dynamic and static, the additional string to add
+# to the library name, such that to get static linkage, you would use
+# -lImath_static (or target_link_libraries(xxx Imath::Imath_static))
 set(IMATH_STATIC_LIB_SUFFIX "_static" CACHE STRING "When building both static and shared, name to append to static library (in addition to normal suffix)")
 
-# rpath related setup
-# make sure we force an rpath to the rpath we're compiling
+# rpath related setup. Make sure we force an rpath to the rpath we're compiling
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-# adds the automatically determined parts of the rpath
-# which point to directories outside the build tree to the install RPATH
+
+# Add the automatically determined parts of the rpath which point to
+# directories outside the build tree to the install RPATH
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 if(APPLE)
   set(CMAKE_MACOSX_RPATH ON)
 endif()
-# if the user sets an install rpath
-# then just use that, or otherwise set one for them
+
+# If the user sets an install rpath then just use that, or otherwise
+# set one for them.
 if(NOT CMAKE_INSTALL_RPATH)
   list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
   if("${isSystemDir}" STREQUAL "-1")
@@ -102,9 +105,7 @@ if(NOT CMAKE_INSTALL_RPATH)
   set(isSystemDir)
 endif()
 
-########################
-
-# set a default build type if not set
+# Set a default build type if not set
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Setting build type to 'Release' as none was specified.")
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
@@ -128,10 +129,11 @@ if(IMATH_USE_CLANG_TIDY)
   )
 endif()
 
-###############################
+#
 # Dependent libraries
+#
 
-# so we know how to link / use threads and don't have to have a -pthread
+# So we know how to link / use threads and don't have to have a -pthread
 # everywhere...
 if(NOT TARGET Threads::Threads)
   set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
