@@ -17,8 +17,10 @@
 #ifndef INCLUDED_IMATHQUAT_H
 #define INCLUDED_IMATHQUAT_H
 
-#include "ImathMatrix.h"
+#include "ImathExport.h"
 #include "ImathNamespace.h"
+
+#include "ImathMatrix.h"
 
 #include <iostream>
 
@@ -36,7 +38,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// should probably use Imath::Euler<> for that.
 ///
 
-template <class T> class Quat
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Quat
 {
   public:
 

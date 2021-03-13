@@ -10,10 +10,12 @@
 #ifndef INCLUDED_IMATHFRUSTUM_H
 #define INCLUDED_IMATHFRUSTUM_H
 
+#include "ImathExport.h"
+#include "ImathNamespace.h"
+
 #include "ImathFun.h"
 #include "ImathLine.h"
 #include "ImathMatrix.h"
-#include "ImathNamespace.h"
 #include "ImathPlane.h"
 #include "ImathVec.h"
 
@@ -34,7 +36,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// compiler, so we use nearPlane/farPlane instead to avoid
 /// issues.
 
-template <class T> class Frustum
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Frustum
 {
   public:
 

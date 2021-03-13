@@ -15,10 +15,12 @@
 #ifndef INCLUDED_IMATHFRUSTUMTEST_H
 #define INCLUDED_IMATHFRUSTUMTEST_H
 
+#include "ImathExport.h"
+#include "ImathNamespace.h"
+
 #include "ImathBox.h"
 #include "ImathFrustum.h"
 #include "ImathMatrix.h"
-#include "ImathNamespace.h"
 #include "ImathSphere.h"
 #include "ImathVec.h"
 
@@ -80,7 +82,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 ///     form, with the X components grouped into an X vector, etc.
 ///
 
-template <class T> class FrustumTest
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
 {
   public:
     /// @{

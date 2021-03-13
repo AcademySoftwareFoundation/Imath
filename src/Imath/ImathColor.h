@@ -10,7 +10,9 @@
 #ifndef INCLUDED_IMATHCOLOR_H
 #define INCLUDED_IMATHCOLOR_H
 
+#include "ImathExport.h"
 #include "ImathNamespace.h"
+
 #include "ImathVec.h"
 #include "half.h"
 
@@ -25,7 +27,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// Note: because Color3 inherits from Vec3, its member fields are
 /// called `x`, `y`, and `z`.
 
-template <class T> class Color3 : public Vec3<T>
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Color3 : public Vec3<T>
 {
   public:
 
@@ -111,7 +113,7 @@ template <class T> class Color3 : public Vec3<T>
 /// can represent either rgb or hsv color values.
 ///
 
-template <class T> class Color4
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Color4
 {
   public:
 

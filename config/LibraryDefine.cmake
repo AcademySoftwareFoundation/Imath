@@ -35,6 +35,9 @@ function(IMATH_DEFINE_LIBRARY libname)
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
     POSITION_INDEPENDENT_CODE ON
+    C_VISIBILITY_PRESET hidden
+    CXX_VISIBILITY_PRESET hidden
+    VISIBILITY_INLINES_HIDDEN ON
   )
   if (_imath_extra_flags)
     target_compile_options(${objlib} PUBLIC ${_imath_extra_flags})

@@ -12,8 +12,8 @@
 #ifndef _HALF_H_
 #define _HALF_H_
 
-#include "ImathNamespace.h"
 #include "ImathExport.h"
+#include "ImathNamespace.h"
 #include "ImathPlatform.h"
 #include <iostream>
 
@@ -64,12 +64,12 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// * sizeof (unsigned short) == 2
 ///
 
-class half
+class IMATH_EXPORT_TYPE half
 {
   public:
 
     /// A special tag that lets us initialize a half from the raw bits.
-    enum FromBitsTag
+    enum IMATH_EXPORT_ENUM FromBitsTag
     {
         FromBits
     };

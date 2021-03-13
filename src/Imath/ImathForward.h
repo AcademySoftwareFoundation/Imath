@@ -7,6 +7,7 @@
 #define INCLUDED_IMATHFORWARD_H
 
 #include "ImathNamespace.h"
+#include "ImathExport.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
@@ -16,26 +17,26 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 // Basic template type declarations.
 //
 
-template <class T> class Box;
-template <class T> class Color3;
-template <class T> class Color4;
-template <class T> class Euler;
-template <class T> class Frustum;
-template <class T> class FrustumTest;
-template <class T> class Interval;
-template <class T> class Line3;
-template <class T> class Matrix33;
-template <class T> class Matrix44;
-template <class T> class Plane3;
-template <class T> class Quat;
-template <class T> class Shear6;
-template <class T> class Sphere3;
-template <class T> class TMatrix;
-template <class T> class TMatrixBase;
-template <class T> class TMatrixData;
-template <class T> class Vec2;
-template <class T> class Vec3;
-template <class T> class Vec4;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Color3;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Color4;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Frustum;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Interval;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Line3;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix33;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Plane3;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Quat;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Shear6;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Sphere3;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE TMatrix;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE TMatrixBase;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE TMatrixData;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec2;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec3;
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec4;
 
 class Rand32;
 class Rand48;
