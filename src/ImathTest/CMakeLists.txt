@@ -34,6 +34,7 @@ add_executable(ImathTest
   testLimits.cpp
   testSize.cpp
   testToFloat.cpp
+  testInterop.cpp
 )
 
 target_link_libraries(ImathTest Imath::Imath)

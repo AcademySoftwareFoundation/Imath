@@ -23,6 +23,7 @@
 #include <testFrustum.h>
 #include <testFrustumTest.h>
 #include <testFun.h>
+#include <testInterop.h>
 #include <testInterval.h>
 #include <testInvert.h>
 #include <testJacobiEigenSolver.h>
@@ -85,6 +86,7 @@ main (int argc, char* argv[])
     TEST (testTinySVD);
     TEST (testJacobiEigenSolver);
     TEST (testFrustumTest);
+    TEST (testInterop);
     // NB: If you add a test here, make sure to enumerate it in the
     // CMakeLists.txt so it runs as part of the test suite
 
