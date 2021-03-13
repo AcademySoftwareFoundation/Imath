@@ -102,8 +102,8 @@ template <class T> class Interval
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
 
     /// Return true if the interval contains all points, false
-    /// otherwise.  An infinite box has a mimimum of `limits<t>::min`
-    /// and a maximum of `limits<T>::max`
+    /// otherwise.  An infinite box has a mimimum of `numeric_limits<T>::lowest()`
+    /// and a maximum of `numeric_limits<T>::max()`
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
 
     /// @}
