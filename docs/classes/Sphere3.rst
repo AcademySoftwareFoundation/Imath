@@ -18,4 +18,3 @@ Example:
 .. doxygenclass:: Imath::Sphere3
    :undoc-members:
    :members:
-

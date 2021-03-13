@@ -16,9 +16,3 @@ Functions to compute roots of simple equations.
 .. doxygenfunction:: solveNormalizedCubic
                      
 .. doxygenfunction:: solveCubic
-
-                     
-
-                     
-
-                     

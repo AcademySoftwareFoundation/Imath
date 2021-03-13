@@ -177,8 +177,3 @@ as pre-multiplication:
   0 & 0 & 1 & 0 \\
   tx & ty & tz & 1 \\
   \end{bmatrix}
-  
-
-
-
-

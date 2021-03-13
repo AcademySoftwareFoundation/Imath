@@ -20,6 +20,3 @@ Example:
 .. doxygenclass:: Imath::Plane3
    :undoc-members:
    :members:
-
-
-                    

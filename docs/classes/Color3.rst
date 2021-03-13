@@ -36,4 +36,3 @@ Example:
 .. doxygenclass:: Imath::Color3
    :undoc-members:
    :members:
-

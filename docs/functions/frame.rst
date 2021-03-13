@@ -14,7 +14,3 @@ Functions to compute coordinate frames.
 .. doxygenfunction:: nextFrame
                      
 .. doxygenfunction:: lastFrame
-                     
-                     
-
-                     

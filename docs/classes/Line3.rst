@@ -24,6 +24,3 @@ Example:
 .. doxygenclass:: Imath::Line3
    :undoc-members:
    :members:
-
-
-

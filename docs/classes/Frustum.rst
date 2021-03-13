@@ -20,5 +20,3 @@ Example:
 .. doxygenclass:: Imath::Frustum
    :undoc-members:
    :members:
-
-                    

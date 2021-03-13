@@ -36,4 +36,3 @@ Example:
 .. doxygenclass:: Imath::Vec3
    :undoc-members:
    :members:
-

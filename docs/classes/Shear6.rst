@@ -18,4 +18,3 @@ Example:
 .. doxygenclass:: Imath::Shear6
    :undoc-members:
    :members:
-

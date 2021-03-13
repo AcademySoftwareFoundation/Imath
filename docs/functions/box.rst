@@ -20,8 +20,3 @@ Functions that operate on bounding boxes.
 .. doxygenfunction:: findEntryAndExitPoints
 
 .. doxygenfunction:: intersects(const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) noexcept
-
-
-
-   
-                     

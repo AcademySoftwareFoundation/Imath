@@ -12,5 +12,3 @@ generates a uniformly distributed sequence.
 .. doxygenclass:: Imath::Rand48
    :undoc-members:
    :members:
-
-   

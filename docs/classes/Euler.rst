@@ -26,6 +26,3 @@ Example:
 .. doxygenclass:: Imath::Euler
    :undoc-members:
    :members:
-
-
-   

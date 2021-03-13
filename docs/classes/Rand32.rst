@@ -12,6 +12,3 @@ generates a uniformly distributed sequence with a period length of
 .. doxygenclass:: Imath::Rand32
    :undoc-members:
    :members:
-
-
-   

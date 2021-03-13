@@ -47,9 +47,3 @@ Example:
 .. doxygenclass:: Imath::GLBegin
    :members:
    :undoc-members:
-                     
-
-                     
-                     
-
-                     

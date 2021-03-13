@@ -24,4 +24,3 @@ Example:
 .. doxygenclass:: Imath::Matrix44
    :undoc-members:
    :members:
-

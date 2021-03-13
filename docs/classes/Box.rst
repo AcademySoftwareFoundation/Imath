@@ -53,6 +53,3 @@ Example:
 .. doxygenclass:: Imath::Box< Vec3< T > >
    :undoc-members:
    :members:
-
-
-

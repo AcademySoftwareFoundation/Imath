@@ -16,8 +16,3 @@ Functions that operate on the ``Line3`` object.
 .. doxygenfunction:: closestVertex(const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Line3<T>& l) noexcept
 
 .. doxygenfunction:: rotatePoint
-                     
-
-                     
-
-                     

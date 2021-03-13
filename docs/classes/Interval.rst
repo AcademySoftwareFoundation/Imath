@@ -27,5 +27,3 @@ Example:
 .. doxygenclass:: Imath::Interval
    :undoc-members:
    :members:
-
-                    
