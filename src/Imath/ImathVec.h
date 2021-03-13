@@ -12,6 +12,7 @@
 
 #include "ImathMath.h"
 #include "ImathNamespace.h"
+#include "ImathTypeTraits.h"
 
 #include <iostream>
 #include <limits>
@@ -74,6 +75,7 @@ template <class T> class Vec2
     /// Construct from Vec2 of another base type
     template <class S> IMATH_HOSTDEVICE constexpr Vec2 (const Vec2<S>& v) noexcept;
 
+
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const Vec2& v) noexcept;
 
@@ -81,7 +83,47 @@ template <class T> class Vec2
     ~Vec2() noexcept = default;
 
     /// @}
-    
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x and .y, that are of the
+    /// same type as the elements of this vector, and their size appears to
+    /// be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
+    template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
+    IMATH_HOSTDEVICE explicit constexpr Vec2 (const V& v) noexcept
+        : Vec2(T(v.x), T(v.y)) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,2>::value
+                                         && !has_xy<V,T>::value)>
+    IMATH_HOSTDEVICE explicit Vec2 (const V& v) : Vec2(T(v[0]), T(v[1])) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_xy<V,T>::value)>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2& operator= (const V& v) noexcept {
+        x = T(v.x);
+        y = T(v.y);
+        return *this;
+    }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,2>::value
+                                         && !has_xy<V,T>::value)>
+    IMATH_HOSTDEVICE const Vec2& operator= (const V& v) {
+        x = T(v[0]);
+        y = T(v[1]);
+        return *this;
+    }
+#endif
+
     /// @{
     /// @name Compatibility with Sb
 
@@ -308,7 +350,52 @@ template <class T> class Vec3
     ~Vec3() noexcept = default;
 
     /// @}
-    
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x, .y, .z, that are of the
+    /// same type as the elements of this vector, and their size appears to
+    /// be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
+    template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE explicit constexpr Vec3 (const V& v) noexcept
+        : Vec3(T(v.x), T(v.y), T(v.z)) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
+                                         && !has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE explicit Vec3 (const V& v) : Vec3(T(v[0]), T(v[1]), T(v[2])) { }
+
+    /// Interoperability assignment from another type that behaves as if it
+    /// were an equivalent vector.
+    template<typename V, IMATH_ENABLE_IF(has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE const Vec3& operator= (const V& v) noexcept {
+        x = T(v.x);
+        y = T(v.y);
+        z = T(v.z);
+        return *this;
+    }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,3>::value
+                                         && !has_xyz<V,T>::value)>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3& operator= (const V& v) {
+        x = T(v[0]);
+        y = T(v[1]);
+        z = T(v[2]);
+        return *this;
+    }
+    /// @}
+#endif
+
     /// @{
     /// @name Compatibility with Sb
 
@@ -527,7 +614,52 @@ template <class T> class Vec4
     ~Vec4() noexcept = default;
 
     /// @}
-    
+
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    /// @{
+    /// @name Interoperability with other vector types
+    ///
+    /// Construction and assignment are allowed from other classes that
+    /// appear to be equivalent vector types, provided that they have either
+    /// a subscripting operator, or data members .x, .y, .z, .w that are of
+    /// the same type as the elements of this vector, and their size appears
+    /// to be the right number of elements.
+    ///
+    /// This functionality is disabled for gcc 4.x, which seems to have a
+    /// compiler bug that results in spurious errors. It can also be
+    /// disabled by defining IMATH_FOREIGN_VECTOR_INTEROP to be 0 prior to
+    /// including any Imath header files.
+    ///
+
+    template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
+    IMATH_HOSTDEVICE explicit constexpr Vec4 (const V& v) noexcept
+        : Vec4(T(v.x), T(v.y), T(v.z), T(v.w)) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,4>::value
+                                         && !has_xyzw<V,T>::value)>
+    IMATH_HOSTDEVICE explicit Vec4 (const V& v) : Vec4(T(v[0]), T(v[1]), T(v[2]), T(v[3])) { }
+
+    template<typename V, IMATH_ENABLE_IF(has_xyzw<V,T>::value)>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4& operator= (const V& v) noexcept {
+        x = T(v.x);
+        y = T(v.y);
+        z = T(v.z);
+        w = T(v.w);
+        return *this;
+    }
+
+    template<typename V, IMATH_ENABLE_IF(has_subscript<V,T,4>::value
+                                         && !has_xyzw<V,T>::value)>
+    IMATH_HOSTDEVICE const Vec4& operator= (const V& v) {
+        x = T(v[0]);
+        y = T(v[1]);
+        z = T(v[2]);
+        w = T(v[3]);
+        return *this;
+    }
+    /// @}
+#endif
+
     /// @{
     /// @name Arithmetic and Comparison
     
@@ -692,6 +824,8 @@ typedef Vec2<short> V2s;
 
 /// Vec2 of integer
 typedef Vec2<int> V2i;
+
+/// Vec2 of int64_t
 typedef Vec2<int64_t> V2i64;
 
 /// Vec2 of float
@@ -705,6 +839,8 @@ typedef Vec3<short> V3s;
 
 /// Vec3 of integer
 typedef Vec3<int> V3i;
+
+/// Vec3 of int64_t
 typedef Vec3<int64_t> V3i64;
 
 /// Vec3 of float
@@ -718,6 +854,8 @@ typedef Vec4<short> V4s;
 
 /// Vec4 of integer
 typedef Vec4<int> V4i;
+
+/// Vec4 of int64_t
 typedef Vec4<int64_t> V4i64;
 
 /// Vec4 of float
@@ -750,6 +888,15 @@ template <> Vec2<int> Vec2<int>::normalized() const noexcept = delete;
 template <> Vec2<int> Vec2<int>::normalizedExc() const = delete;
 template <> Vec2<int> Vec2<int>::normalizedNonNull() const noexcept = delete;
 
+// Vec2<int64_t>
+template <> int64_t Vec2<int64_t>::length() const noexcept = delete;
+template <> const Vec2<int64_t>& Vec2<int64_t>::normalize() noexcept = delete;
+template <> const Vec2<int64_t>& Vec2<int64_t>::normalizeExc() = delete;
+template <> const Vec2<int64_t>& Vec2<int64_t>::normalizeNonNull() noexcept = delete;
+template <> Vec2<int64_t> Vec2<int64_t>::normalized() const noexcept = delete;
+template <> Vec2<int64_t> Vec2<int64_t>::normalizedExc() const = delete;
+template <> Vec2<int64_t> Vec2<int64_t>::normalizedNonNull() const noexcept = delete;
+
 // Vec3<short>
 template <> short Vec3<short>::length() const noexcept = delete;
 template <> const Vec3<short>& Vec3<short>::normalize() noexcept = delete;
@@ -768,6 +915,15 @@ template <> Vec3<int> Vec3<int>::normalized() const noexcept = delete;
 template <> Vec3<int> Vec3<int>::normalizedExc() const = delete;
 template <> Vec3<int> Vec3<int>::normalizedNonNull() const noexcept = delete;
 
+// Vec3<int64_t>
+template <> int64_t Vec3<int64_t>::length() const noexcept = delete;
+template <> const Vec3<int64_t>& Vec3<int64_t>::normalize() noexcept = delete;
+template <> const Vec3<int64_t>& Vec3<int64_t>::normalizeExc() = delete;
+template <> const Vec3<int64_t>& Vec3<int64_t>::normalizeNonNull() noexcept = delete;
+template <> Vec3<int64_t> Vec3<int64_t>::normalized() const noexcept = delete;
+template <> Vec3<int64_t> Vec3<int64_t>::normalizedExc() const = delete;
+template <> Vec3<int64_t> Vec3<int64_t>::normalizedNonNull() const noexcept = delete;
+
 // Vec4<short>
 template <> short Vec4<short>::length() const noexcept = delete;
 template <> const Vec4<short>& Vec4<short>::normalize() noexcept = delete;
@@ -785,6 +941,15 @@ template <> const Vec4<int>& Vec4<int>::normalizeNonNull() noexcept = delete;
 template <> Vec4<int> Vec4<int>::normalized() const noexcept = delete;
 template <> Vec4<int> Vec4<int>::normalizedExc() const = delete;
 template <> Vec4<int> Vec4<int>::normalizedNonNull() const noexcept = delete;
+
+// Vec4<int64_t>
+template <> int64_t Vec4<int64_t>::length() const noexcept = delete;
+template <> const Vec4<int64_t>& Vec4<int64_t>::normalize() noexcept = delete;
+template <> const Vec4<int64_t>& Vec4<int64_t>::normalizeExc() = delete;
+template <> const Vec4<int64_t>& Vec4<int64_t>::normalizeNonNull() noexcept = delete;
+template <> Vec4<int64_t> Vec4<int64_t>::normalized() const noexcept = delete;
+template <> Vec4<int64_t> Vec4<int64_t>::normalizedExc() const = delete;
+template <> Vec4<int64_t> Vec4<int64_t>::normalizedNonNull() const noexcept = delete;
 
 //------------------------
 // Implementation of Vec2:
