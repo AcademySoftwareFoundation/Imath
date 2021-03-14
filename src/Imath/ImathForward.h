@@ -31,15 +31,12 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Plane3;
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Quat;
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Shear6;
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Sphere3;
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE TMatrix;
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE TMatrixBase;
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE TMatrixData;
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec2;
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec3;
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec4;
 
-class Rand32;
-class Rand48;
+class IMATH_EXPORT_TYPE Rand32;
+class IMATH_EXPORT_TYPE Rand48;
 
 /// @endcond
 
