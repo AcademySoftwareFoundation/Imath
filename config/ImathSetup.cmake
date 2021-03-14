@@ -31,11 +31,11 @@ set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}" CACHE STRING "Public string / la
 
 # Whether to generate and install a pkg-config file Imath.pc on
 if(WIN32)
-option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" OFF)
-option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" OFF)
+  option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" OFF)
+  option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" OFF)
 else()
-option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" ON)
-option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" ON)
+  option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" ON)
+  option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" ON)
 endif()
 
 #
@@ -57,21 +57,15 @@ set(CMAKE_DEBUG_POSTFIX "_d" CACHE STRING "Suffix for debug builds")
 # Usual cmake option to build shared libraries or not
 option(BUILD_SHARED_LIBS "Build shared library" ON)
 
-# This allows a "double library" setup, where we compile both
-# a dynamic and shared library
-option(IMATH_BUILD_BOTH_STATIC_SHARED  "Build both static and shared libraries in one step (otherwise follows BUILD_SHARED_LIBS)" OFF)
-if (IMATH_BUILD_BOTH_STATIC_SHARED)
-  set(BUILD_SHARED_LIBS ON)
-endif()
-
 # Suffix to append to root name, this helps with version management
 # but can be turned off if you don't care, or otherwise customized
 set(IMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "string added to the end of all the libraries")
 
-# When building both dynamic and static, the additional string to add
-# to the library name, such that to get static linkage, you would use
+# When building static, the additional string to add to the library name such
+# that a static build of Imath is easily distinguishable.
+# To use the static library, you would use
 # -lImath_static (or target_link_libraries(xxx Imath::Imath_static))
-set(IMATH_STATIC_LIB_SUFFIX "_static" CACHE STRING "When building both static and shared, name to append to static library (in addition to normal suffix)")
+set(IMATH_STATIC_LIB_SUFFIX "_static" CACHE STRING "name to append to static library (in addition to normal suffix)")
 
 # rpath related setup. Make sure we force an rpath to the rpath we're compiling
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
@@ -140,6 +134,6 @@ if(NOT TARGET Threads::Threads)
   set(THREADS_PREFER_PTHREAD_FLAG TRUE)
   find_package(Threads)
   if(NOT Threads_FOUND)
-    message(FATAL_ERROR "Unable to find a threading library which is required for PyImathTask")
+    message(FATAL_ERROR "Unable to find a threading library, required for PyImathTask")
   endif()
 endif()

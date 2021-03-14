@@ -1,14 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-if(IMATH_BUILD_BOTH_STATIC_SHARED)
-  if (${CMAKE_VERSION} VERSION_LESS "3.12.0")
-    message(FATAL_ERROR "CMake 3.12 or newer is required for object library support when building both static and shared libraries")
-  endif()
-  cmake_minimum_required(VERSION 3.12)
-else()
-  cmake_minimum_required(VERSION 3.10)
-endif()
+cmake_minimum_required(VERSION 3.12)
 
 if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
