@@ -263,6 +263,15 @@ using a more complicated idiom:
     #endif
 
 
+## Symbols Are Hidden by Default
+
+To reduce library size and make linkage behavior similar across
+platforms, Imath and OpenEXR now build with directives that make
+symbol visibility hidden by default, with specific externally-visible
+symbols explicitly marked for export. See the [Symbol
+Visibility](https://github.com/AcademySoftwareFoundation/openexr/blob/master/docs/SymbolVisibility.md)
+doc and the appropriate ``*Export.h`` header file for more details.
+
 ## Imath Now Uses Standard C++ Exceptions and `noexcept`
 
 In OpenEXR 2.x, the Imath functions that threw exceptions used to throw
