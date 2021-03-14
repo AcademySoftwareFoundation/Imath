@@ -26,12 +26,12 @@ geometric data representation, primarily for 2D images and 3D scenes
 and coordinate transformations, along with an accompanying set of
 utility methods and functions.
 
-Quick Links:
-------------
+Quick Links
+-----------
 
 - Download: https://github.com/AcademySoftwareFoundation/Imath
 - License: `BSD License <https://github.com/OpenImageIO/oiio/blob/master/LICENSE.md>`_
-
+- `Imath/OpenEXR Version 2->3 Porting Guide <https://github.com/AcademySoftwareFoundation/Imath/blob/master/docs/PortingGuide2-3.md>`_
 
 History
 -------
