@@ -1,6 +1,10 @@
 Quat
 ####
 
+.. code-block::
+
+   #include <Imath/ImathQuat.h>
+   
 The ``Quat`` class template represents a quaterion
 rotation/orientation, with predefined typedefs for ``float`` and
 ``double``.
