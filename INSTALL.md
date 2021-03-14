@@ -190,9 +190,8 @@ ways:
 
 Common cmake configuration settings:
 
-* ``IMATH_BUILD_BOTH_STATIC_SHARED`` - Build both static and shared
-  libraries in one step (otherwise follows BUILD_SHARED_LIBS). Default
-  is ``OFF``.
+* ``BUILD_SHARED_LIBS`` - CMake standard variable to select a static or shared
+  build. Default is ``ON``.
 
 * ``IMATH_CXX_STANDARD`` - C++ standard to compile against. Default is
   ``14``.
