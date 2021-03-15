@@ -203,6 +203,22 @@ corresponding to the package version that was found.
 Again, you can eliminate the references to any of the individual libaries
 that you don't actually need for your application.
 
+### Simultaneous Static/Shared Build
+
+The OpenEXR 2.x CMake configuration had options to simultaneously
+build both shared and statically linked libraries. This has been
+deprecated. A CMake configuration setting specifics whether to build
+static or shared, but if you want both, you will need to run cmake and
+build twice.
+
+### Simultaneous Python 2/3 Build
+
+The PyIlmBase 2.x CMake configuration had options to simultaneously
+build both both python2 and python3 bindings. This has been
+deprecated. A CMake configuration setting specifics whether to build
+for python 2 or python 3, but if you want both, you will need to run
+cmake and build twice.
+
 ## Imath Include Files Are in a Different Subdirectory
 
 Imath 3.0 will copy its headers to some `include/Imath` subdirectory
@@ -247,6 +263,15 @@ using a more complicated idiom:
     #endif
 
 
+## Symbols Are Hidden by Default
+
+To reduce library size and make linkage behavior similar across
+platforms, Imath and OpenEXR now build with directives that make
+symbol visibility hidden by default, with specific externally-visible
+symbols explicitly marked for export. See the [Symbol
+Visibility](https://github.com/AcademySoftwareFoundation/openexr/blob/master/docs/SymbolVisibility.md)
+doc and the appropriate ``*Export.h`` header file for more details.
+
 ## Imath Now Uses Standard C++ Exceptions and `noexcept`
 
 In OpenEXR 2.x, the Imath functions that threw exceptions used to throw
@@ -266,26 +291,32 @@ that do not throw exceptions are now marked `noexcept`.
 
 ## Some Headers and Classes Have Been Removed from Imath 3.x
 
-The `Math<T>` class (and `ImathMath.h` header file) are deprecated. All of
-the `Math<T>` functionality is subsumed by C++11 `std::` math functions. For
-example, calls to `Imath::Math<T>::abs(x)` should be replaced with
-`std::abs(x)`.
+* The `Math<T>` class (and `ImathMath.h` header file) are
+  deprecated. All of the `Math<T>` functionality is subsumed by C++11
+  `std::` math functions. For example, calls to
+  `Imath::Math<T>::abs(x)` should be replaced with `std::abs(x)`.
 
-The `Limits<T>` class (and the `ImathLimits.h` and `ImathHalfLimits.h`
-headers) have been removed entirely. All uses of `Limits<>` should be
-replaced with the appropriate `std::numeric_limits<>` method call. The
-Imath-specific versions predated C++11, and were not only redundant in a
-C++11 world, but also potentially confusing because some of their functions
-behaved quite differently than the `std::numeric_limits` method with the
-same name. We are following the precept that if C++11 does something in a
-standard way, we should not define our own equivalent function (and
-especially not define it in a way that doesn't match the standard behavior).
+* The `Limits<T>` class (and the `ImathLimits.h` and
+  `ImathHalfLimits.h` headers) have been removed entirely. All uses of
+  `Limits<>` should be replaced with the appropriate
+  `std::numeric_limits<>` method call. The Imath-specific versions
+  predated C++11, and were not only redundant in a C++11 world, but
+  also potentially confusing because some of their functions behaved
+  quite differently than the `std::numeric_limits` method with the
+  same name. We are following the precept that if C++11 does something
+  in a standard way, we should not define our own equivalent function
+  (and especially not define it in a way that doesn't match the
+  standard behavior).
 
-`Vec<T>::normalize()` and `length()` methods, for integer `T` types, have
-been removed. Also the standalone `project()` and `orthogonal()` functions
-are no longer defined for vectors made of integer elements. These all had
-behavior that was hard to understand and probably useless. They still work
-as expected for vectors of floating-point types.
+* `Vec<T>::normalize()` and `length()` methods, for integer `T` types,
+  have been removed. Also the standalone `project()` and
+  `orthogonal()` functions are no longer defined for vectors made of
+  integer elements. These all had behavior that was hard to understand
+  and probably useless. They still work as expected for vectors of
+  floating-point types.
+
+* The ``Int64`` and ``SInt64`` types are deprecated in favor of the
+  now-standard ``int64_t`` and ``uint64_t``.
 
 ## File/Class-specific changes:
 
@@ -295,11 +326,11 @@ as expected for vectors of floating-point types.
   option puts it in the global namespace, except when compiling for
   CUDA, in which case the 'half' type refers to the CUDA type:
 
-    #ifndef __CUDACC__
-    using half = IMATH_INTERNAL_NAMESPACE::half;
-    #else
-    #include <cuda_fp16.h>
-    #endif
+      #ifndef __CUDACC__
+      using half = IMATH_INTERNAL_NAMESPACE::half;
+      #else
+      #include <cuda_fp16.h>
+      #endif
 
   If you desire to use Imath::half inside a CUDA kernal, you can refer
   to it via the namespace, or define `CUDA_NO_HALF` to avoid the CUDA
@@ -310,12 +341,12 @@ as expected for vectors of floating-point types.
 
 * New constructor from a bit pattern:
 
-    enum FromBitsTag
-    {
-        FromBits
-    };
+      enum FromBitsTag
+      {
+          FromBits
+      };
 
-    constexpr half(FromBitsTag, unsigned short bits) noexcept;
+      constexpr half(FromBitsTag, unsigned short bits) noexcept;
 
 ### `Imath::Box<T>` in ImathBox.h
 
@@ -471,3 +502,9 @@ vecgtors, because such behavior is not clearly defined:
 
   - `normalizedNonNull()`
   
+* Interoperability Constructors: The Vec and Matrix classes now have
+  constructors that take as an argument any data object of similar
+  size and layout.
+
+
+
