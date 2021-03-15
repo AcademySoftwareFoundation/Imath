@@ -9,6 +9,8 @@ if(NOT "${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
   message(STATUS "Imath is configuring as a cmake sub project")
 endif()
 
+option(IMATH_USE_DEFAULT_VISIBILITY "Makes the compile use default visibility (by default compiles tidy, hidden-by-default)"     OFF)
+
 # This is primarily for the halfFunction code that enables a stack
 # object (if you enable this) that contains a LUT of the function
 option(IMATH_ENABLE_LARGE_STACK "Enables code to take advantage of large stack support"     OFF)

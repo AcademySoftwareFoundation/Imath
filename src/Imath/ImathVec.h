@@ -10,9 +10,11 @@
 #ifndef INCLUDED_IMATHVEC_H
 #define INCLUDED_IMATHVEC_H
 
-#include "ImathMath.h"
+#include "ImathExport.h"
 #include "ImathNamespace.h"
 #include "ImathTypeTraits.h"
+
+#include "ImathMath.h"
 
 #include <iostream>
 #include <limits>
@@ -31,7 +33,7 @@ template <class T> class Vec3;
 template <class T> class Vec4;
 
 /// Enum for the Vec4 to Vec3 conversion constructor
-enum InfException
+enum IMATH_EXPORT_ENUM InfException
 {
     INF_EXCEPTION
 };
@@ -40,7 +42,7 @@ enum InfException
 /// 2-element vector
 ///
 
-template <class T> class Vec2
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec2
 {
   public:
 
@@ -298,7 +300,7 @@ template <class T> class Vec2
 /// 3-element vector
 ///
 
-template <class T> class Vec3
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec3
 {
   public:
 
@@ -569,7 +571,7 @@ template <class T> class Vec3
 /// 4-element vector
 ///
 
-template <class T> class Vec4
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec4
 {
   public:
 

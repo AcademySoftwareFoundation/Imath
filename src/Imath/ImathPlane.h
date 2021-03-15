@@ -10,8 +10,10 @@
 #ifndef INCLUDED_IMATHPLANE_H
 #define INCLUDED_IMATHPLANE_H
 
-#include "ImathLine.h"
+#include "ImathExport.h"
 #include "ImathNamespace.h"
+
+#include "ImathLine.h"
 #include "ImathVec.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -26,7 +28,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// in. Note that reflection, and intersection functions will operate
 /// as expected.
 
-template <class T> class Plane3
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Plane3
 {
   public:
 

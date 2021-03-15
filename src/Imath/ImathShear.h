@@ -10,8 +10,10 @@
 #ifndef INCLUDED_IMATHSHEAR_H
 #define INCLUDED_IMATHSHEAR_H
 
-#include "ImathMath.h"
+#include "ImathExport.h"
 #include "ImathNamespace.h"
+
+#include "ImathMath.h"
 #include "ImathVec.h"
 #include <iostream>
 
@@ -110,7 +112,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// construction to ensure that.  
 /// 
 
-template <class T> class Shear6
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Shear6
 {
   public:
 
