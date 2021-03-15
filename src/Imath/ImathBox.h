@@ -10,7 +10,9 @@
 #ifndef INCLUDED_IMATHBOX_H
 #define INCLUDED_IMATHBOX_H
 
+#include "ImathExport.h"
 #include "ImathNamespace.h"
+
 #include "ImathVec.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -32,7 +34,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// preferably, this returns a constant expression, typically 2 or 3.
 ///
 
-template <class V> class Box
+template <class V> class IMATH_EXPORT_TEMPLATE_TYPE Box
 {
   public:
 
@@ -351,7 +353,7 @@ template <typename V> class Box;
 /// public.
 ///
 
-template <class T> class Box<Vec2<T>>
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
 {
   public:
 
@@ -620,7 +622,7 @@ Box<Vec2<T>>::majorAxis() const noexcept
 /// The Box<Vec3> template represents a 3D bounding box defined by
 /// minimum and maximum values of type Vec3. 
 ///
-template <class T> class Box<Vec3<T>>
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec3<T>>
 {
   public:
 

@@ -4,6 +4,11 @@
 if (IMATH_ENABLE_LARGE_STACK)
   set(IMATH_HAVE_LARGE_STACK ON)
 endif()
+if (IMATH_USE_DEFAULT_VISIBILITY)
+  set(IMATH_ENABLE_API_VISIBILITY OFF)
+else()
+  set(IMATH_ENABLE_API_VISIBILITY ON)
+endif()
 
 configure_file(ImathConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
 

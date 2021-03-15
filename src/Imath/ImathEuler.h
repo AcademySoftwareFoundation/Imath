@@ -10,9 +10,11 @@
 #ifndef INCLUDED_IMATHEULER_H
 #define INCLUDED_IMATHEULER_H
 
+#include "ImathExport.h"
+#include "ImathNamespace.h"
+
 #include "ImathMath.h"
 #include "ImathMatrix.h"
-#include "ImathNamespace.h"
 #include "ImathQuat.h"
 #include "ImathVec.h"
 
@@ -114,7 +116,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// The units of the rotation angles are assumed to be radians.
 ///
 
-template <class T> class Euler : public Vec3<T>
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
 {
   public:
     using Vec3<T>::x;
@@ -125,7 +127,7 @@ template <class T> class Euler : public Vec3<T>
     ///
     ///  All 24 possible orderings
     ///
-    enum Order
+    enum IMATH_EXPORT_ENUM Order
     {
         XYZ = 0x0101, // "usual" orderings
         XZY = 0x0001,
@@ -175,7 +177,7 @@ template <class T> class Euler : public Vec3<T>
     ///
     /// Axes
     ///
-    enum Axis
+    enum IMATH_EXPORT_ENUM Axis
     {
         X = 0,
         Y = 1,
@@ -186,7 +188,7 @@ template <class T> class Euler : public Vec3<T>
     /// Layout
     ///
     
-    enum InputLayout
+    enum IMATH_EXPORT_ENUM InputLayout
     {
         XYZLayout,
         IJKLayout

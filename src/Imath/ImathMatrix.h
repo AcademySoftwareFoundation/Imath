@@ -10,8 +10,10 @@
 #ifndef INCLUDED_IMATHMATRIX_H
 #define INCLUDED_IMATHMATRIX_H
 
-#include "ImathFun.h"
+#include "ImathExport.h"
 #include "ImathNamespace.h"
+
+#include "ImathFun.h"
 #include "ImathPlatform.h"
 #include "ImathShear.h"
 #include "ImathVec.h"
@@ -31,7 +33,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 /// Enum used to indicate uninitialized construction of Matrix22,
 /// Matrix33, Matrix44
-enum Uninitialized
+enum IMATH_EXPORT_ENUM Uninitialized
 {
     UNINITIALIZED
 };
@@ -40,7 +42,7 @@ enum Uninitialized
 /// 2x2 transformation matrix
 ///
 
-template <class T> class Matrix22
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix22
 {
   public:
 
@@ -313,7 +315,7 @@ template <class T> class Matrix22
 /// 3x3 transformation matrix
 ///
 
-template <class T> class Matrix33
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix33
 {
   public:
 
@@ -657,7 +659,7 @@ template <class T> class Matrix33
 /// 4x4 transformation matrix
 ///
 
-template <class T> class Matrix44
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
 {
   public:
 

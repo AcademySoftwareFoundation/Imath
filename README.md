@@ -24,9 +24,9 @@ or numerical analysis package.
 ### Features
 
 * half: 16-bit floating-point type
-* Vector: V2s, V2i, V2f, V2d, V3s, V3i, V3f, V3d, V4s, V4i, V4f, V4d 
+* Vector: V2s, V2i, V2i64, V2f, V2d, V3s, V3i, V4i64, V3f, V3d, V4s, V4i, V4i64, V4f, V4d 
 * Matrix: M22f, M22d, M33f, M33d, M44f, M44d 
-* Bounding box: Box2s, Box2i, Box2f, Box2d, Box3s, Box3i, Box3f, Box3d
+* Bounding box: Box2s, Box2i, Box2i64, Box2f, Box2d, Box3s, Box3i, Box3i64, Box3f, Box3d
 * Color: C3h, C3f, C3c, C4f, C4h, C4c 
 * Euler angles: Eulerf, Eulerd
 * Quaternion: Quatf, Quatd
@@ -63,6 +63,14 @@ community. Read our [code of conduct](CODE_OF_CONDUCT.md).
 
 See [INSTALL.md](INSTALL.md) for instructions on downloading and building Imath
 from source.
+
+Documentation for the Imath classes and functions can be found at
+[imath.readthedocs.io](https://imath.readthedocs.io).
+
+If you encounter problems compiling code or building projects written
+with an earlier release of Imath, the [porting
+guide](https://github.com/AcademySoftwareFoundation/Imath/blob/master/docs/PortingGuide2-3.md)
+explains some of the differences and how to address them.
 
 ### A Note about Versioning
 

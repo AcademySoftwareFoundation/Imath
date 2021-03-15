@@ -10,7 +10,9 @@
 #ifndef INCLUDED_IMATHINTERVAL_H
 #define INCLUDED_IMATHINTERVAL_H
 
+#include "ImathExport.h"
 #include "ImathNamespace.h"
+
 #include "ImathVec.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -20,7 +22,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// functions. It is basically a Box<T> that allows T to be a scalar.
 ///
 
-template <class T> class Interval
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Interval
 {
   public:
 

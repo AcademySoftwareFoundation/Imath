@@ -10,10 +10,11 @@
 #ifndef INCLUDED_IMATHBOXALGO_H
 #define INCLUDED_IMATHBOXALGO_H
 
+#include "ImathNamespace.h"
+
 #include "ImathBox.h"
 #include "ImathLineAlgo.h"
 #include "ImathMatrix.h"
-#include "ImathNamespace.h"
 #include "ImathPlane.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER

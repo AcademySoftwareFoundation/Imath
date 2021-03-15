@@ -10,10 +10,11 @@
 #ifndef INCLUDED_IMATHCOLORALGO_H
 #define INCLUDED_IMATHCOLORALGO_H
 
-#include "ImathColor.h"
-#include "ImathExport.h"
-#include "ImathMath.h"
 #include "ImathNamespace.h"
+#include "ImathExport.h"
+
+#include "ImathColor.h"
+#include "ImathMath.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 

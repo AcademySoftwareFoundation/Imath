@@ -33,15 +33,15 @@ Why is this happening? Here is the relevant history.
 The OpenEXR project has historically consisted of four separate subprojects:
 
 * OpenEXR - the Imf image format
-* IlmBase - supporint utilities (Imath, Half, Iex, IlmThread)
+* IlmBase - supporting utilities (Imath, Half, Iex, IlmThread)
 * PyIlmBase - python bindings for the IlmBase libraries
 * OpenEXR_Viewers - code for an example EXR image viewer 
 
 Prior to the 2.4 release in 2019, OpenEXR relied primarily on the Gnu
 autotools build system and was released as four separate tarballs
 (ilmbase, pyilmbase, openexr, openexr_viewers) that were constructed
-via the Gnug tools. This gave direct access to the "IlmBase" libraries
-indepdendent of the OpenEXR format library. The project also included
+via the Gnu tools. This gave direct access to the "IlmBase" libraries
+independent of the OpenEXR format library. The project also included
 CMake files but CMake support was incomplete.
 
 With the adoption of OpenEXR by the Academy Software Foundation in
@@ -49,7 +49,7 @@ With the adoption of OpenEXR by the Academy Software Foundation in
 
 1. Drop support for autotools in favor of CMake. A significant portion
    of the OpenEXR user base uses Windows, which the Gnu autotools does
-   no support.  Supporting two build systems is a maintenance burden
+   not support.  Supporting two build systems is a maintenance burden
    that the TSC opted to avoid. We now assume that all modern users of
    OpenEXR can reasonably be expected to rely on CMake.
 
@@ -59,7 +59,7 @@ With the adoption of OpenEXR by the Academy Software Foundation in
    autotools setup.
 
 3. Deprecate the OpenEXR_Viewers code. It was impossibly out of date
-   and of litle modern value.
+   and of little modern value.
 
 Thus, with the 2.4 release, the "IlmBase" libraries are no longer
 distributed in a form that is readily separable from the rest of
@@ -68,11 +68,11 @@ project is complicated by the fact it consists of four separate
 projects, which added signifcant complexity to the CMake setup.
 
 Because Imath is generally useful to the community, the TSC decided to
-simply the configuration by separating Imath into its own indepdent
+simplify the configuration by separating Imath into its own independent
 project, maintained and released independently of OpenEXR, and
 introducing it as a new external dependency of OpenEXR.
 
-To further simply matters, the new Imath library includes the half
+To further simplify matters, the new Imath library includes the half
 data type directly, rather than maintaining it in a separate
 library. Also, the community at large has a strong desire for simple
 vector/matrix utilities that are unencumbered by Iex, the IlmBase
@@ -83,7 +83,7 @@ support for Iex has been removed from Imath, and the Iex library is
 now packaged as a component of OpenEXR.
 
 The Imath python bindings are a part of Imath as a configuration
-option, although support is off by default to simply the build process
+option, although support is off by default to simplify the build process
 for most users.
 
 ## New Library Names and Repository Structures
@@ -181,7 +181,6 @@ Finding either/both packages:
     endif ()
     find_package(OpenEXR CONFIG)
 
-
 To link against them, we use CMake generator expressions so that we can
 reference *both* sets of targets, but it will only use the ones
 corresponding to the package version that was found.
@@ -202,6 +201,22 @@ corresponding to the package version that was found.
 
 Again, you can eliminate the references to any of the individual libaries
 that you don't actually need for your application.
+
+### Simultaneous Static/Shared Build
+
+The OpenEXR 2.x CMake configuration had options to simultaneously
+build both shared and statically linked libraries. This has been
+deprecated. A CMake configuration setting specifies whether to build
+static or shared, but if you want both, you will need to run cmake and
+build twice.
+
+### Simultaneous Python 2/3 Build
+
+The PyIlmBase 2.x CMake configuration had options to simultaneously
+build both python2 and python3 bindings. This has been deprecated.
+A CMake configuration setting specifies whether to build for
+python 2 or python 3, but if you want both, you will need to run
+cmake and build twice.
 
 ## Imath Include Files Are in a Different Subdirectory
 
@@ -246,6 +261,14 @@ using a more complicated idiom:
     #   include <OpenEXR/half.h>
     #endif
 
+## Symbols Are Hidden by Default
+
+To reduce library size and make linkage behavior similar across
+platforms, Imath and OpenEXR now build with directives that make
+symbol visibility hidden by default, with specific externally-visible
+symbols explicitly marked for export. See the [Symbol
+Visibility](https://github.com/AcademySoftwareFoundation/openexr/blob/master/docs/SymbolVisibility.md)
+doc and the appropriate ``*Export.h`` header file for more details.
 
 ## Imath Now Uses Standard C++ Exceptions and `noexcept`
 
@@ -258,34 +281,39 @@ correspond to the failure (e.g., `std::invalid_argument`,
 now only part of the OpenEXR library (where they are still used in the same
 manner they were for OpenEXR 2.x).
 
-Imath 3.x has very few functions that throw exceptions. Each is are clearly
+Imath 3.x has very few functions that throw exceptions. Each is clearly
 marked as such, and each has a version that does not throw exceptions (so
 that it may be used from code where exceptions are avoided). The functions
 that do not throw exceptions are now marked `noexcept`.
 
-
 ## Some Headers and Classes Have Been Removed from Imath 3.x
 
-The `Math<T>` class (and `ImathMath.h` header file) are deprecated. All of
-the `Math<T>` functionality is subsumed by C++11 `std::` math functions. For
-example, calls to `Imath::Math<T>::abs(x)` should be replaced with
-`std::abs(x)`.
+* The `Math<T>` class (and `ImathMath.h` header file) are
+  deprecated. All of the `Math<T>` functionality is subsumed by C++11
+  `std::` math functions. For example, calls to
+  `Imath::Math<T>::abs(x)` should be replaced with `std::abs(x)`.
 
-The `Limits<T>` class (and the `ImathLimits.h` and `ImathHalfLimits.h`
-headers) have been removed entirely. All uses of `Limits<>` should be
-replaced with the appropriate `std::numeric_limits<>` method call. The
-Imath-specific versions predated C++11, and were not only redundant in a
-C++11 world, but also potentially confusing because some of their functions
-behaved quite differently than the `std::numeric_limits` method with the
-same name. We are following the precept that if C++11 does something in a
-standard way, we should not define our own equivalent function (and
-especially not define it in a way that doesn't match the standard behavior).
+* The `Limits<T>` class (and the `ImathLimits.h` and
+  `ImathHalfLimits.h` headers) have been removed entirely. All uses of
+  `Limits<>` should be replaced with the appropriate
+  `std::numeric_limits<>` method call. The Imath-specific versions
+  predated C++11, and were not only redundant in a C++11 world, but
+  also potentially confusing because some of their functions behaved
+  quite differently than the `std::numeric_limits` method with the
+  same name. We are following the precept that if C++11 does something
+  in a standard way, we should not define our own equivalent function
+  (and especially not define it in a way that doesn't match the
+  standard behavior).
 
-`Vec<T>::normalize()` and `length()` methods, for integer `T` types, have
-been removed. Also the standalone `project()` and `orthogonal()` functions
-are no longer defined for vectors made of integer elements. These all had
-behavior that was hard to understand and probably useless. They still work
-as expected for vectors of floating-point types.
+* `Vec<T>::normalize()` and `length()` methods, for integer `T` types,
+  have been removed. Also the standalone `project()` and
+  `orthogonal()` functions are no longer defined for vectors made of
+  integer elements. These all had behavior that was hard to understand
+  and probably useless. They still work as expected for vectors of
+  floating-point types.
+
+* The ``Int64`` and ``SInt64`` types are deprecated in favor of the
+  now-standard ``int64_t`` and ``uint64_t``.
 
 ## File/Class-specific changes:
 
@@ -295,11 +323,11 @@ as expected for vectors of floating-point types.
   option puts it in the global namespace, except when compiling for
   CUDA, in which case the 'half' type refers to the CUDA type:
 
-    #ifndef __CUDACC__
-    using half = IMATH_INTERNAL_NAMESPACE::half;
-    #else
-    #include <cuda_fp16.h>
-    #endif
+      #ifndef __CUDACC__
+      using half = IMATH_INTERNAL_NAMESPACE::half;
+      #else
+      #include <cuda_fp16.h>
+      #endif
 
   If you desire to use Imath::half inside a CUDA kernal, you can refer
   to it via the namespace, or define `CUDA_NO_HALF` to avoid the CUDA
@@ -310,12 +338,12 @@ as expected for vectors of floating-point types.
 
 * New constructor from a bit pattern:
 
-    enum FromBitsTag
-    {
-        FromBits
-    };
+      enum FromBitsTag
+      {
+          FromBits
+      };
 
-    constexpr half(FromBitsTag, unsigned short bits) noexcept;
+      constexpr half(FromBitsTag, unsigned short bits) noexcept;
 
 ### `Imath::Box<T>` in ImathBox.h
 
@@ -439,7 +467,7 @@ Other changes:
 ### ImathVecAlgo.h
 
 The following functions are no longer defined for integer-based
-vecgtors, because such behavior is not clearly defined:
+vectors, because such behavior is not clearly defined:
 
 * `project (const Vec& s, const Vec& t)`
 
@@ -470,4 +498,10 @@ vecgtors, because such behavior is not clearly defined:
   - `normalizedExc()`
 
   - `normalizedNonNull()`
-  
+ 
+* Interoperability Constructors: The Vec and Matrix classes now have
+  constructors that take as an argument any data object of similar
+  size and layout.
+
+
+

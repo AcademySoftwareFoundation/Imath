@@ -10,9 +10,11 @@
 #ifndef INCLUDED_IMATHSPHERE_H
 #define INCLUDED_IMATHSPHERE_H
 
+#include "ImathExport.h"
+#include "ImathNamespace.h"
+
 #include "ImathBox.h"
 #include "ImathLine.h"
-#include "ImathNamespace.h"
 #include "ImathVec.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -21,7 +23,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// A 3D sphere
 ///
 
-template <class T> class Sphere3
+template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Sphere3
 {
   public:
 
