@@ -1,6 +1,10 @@
 Sphere3
 #######
 
+.. code-block::
+
+   #include <Imath/ImathSphere.h>
+   
 The ``Sphere3`` class template represents a sphere in 3D space, with
 predefined typedefs for lines of type ``float`` and ``double``.
 
@@ -14,4 +18,3 @@ Example:
 .. doxygenclass:: Imath::Sphere3
    :undoc-members:
    :members:
-

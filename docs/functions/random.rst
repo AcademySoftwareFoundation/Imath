@@ -1,7 +1,13 @@
+.. _random-number-functions:
+
 Random Numbers
 ##############
 
 Functions to compute pseudo-random numbers.
+
+.. code-block::
+
+   #include <Imath/ImathRandom.h>
 
 .. doxygenfunction:: solidSphereRand
 

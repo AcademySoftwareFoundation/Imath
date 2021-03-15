@@ -1,8 +1,16 @@
 Line3
 #####
 
+.. code-block::
+
+   #include <Imath/ImathLine.h>
+   
 The ``Line3`` class template represents a line in 3D space, with
 predefined typedefs for lines of type ``float`` and ``double``.
+
+There are also various utility functions that operate on ``Line3``
+objects defined in ``ImathLineAlgo.h`` and described in :ref:`Line
+Functions <line-functions>`.
 
 Example:
 
@@ -16,6 +24,3 @@ Example:
 .. doxygenclass:: Imath::Line3
    :undoc-members:
    :members:
-
-
-

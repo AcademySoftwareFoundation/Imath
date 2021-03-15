@@ -7,7 +7,7 @@ interval_example()
 
     assert (v.isEmpty());
     assert (!v.hasVolume());
-    //    assert (!v.isInfinite());
+    assert (!v.isInfinite());
 
     v.extendBy (1.0f);
     assert (!v.isEmpty());

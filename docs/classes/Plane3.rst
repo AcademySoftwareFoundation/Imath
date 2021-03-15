@@ -1,6 +1,10 @@
 Plane3
 ######
 
+.. code-block::
+
+   #include <Imath/ImathPlane.h>
+   
 The ``Plane3`` class template represents a plane in 3D space, with
 predefined typedefs for planes of type ``float`` and ``double``.
 
@@ -16,6 +20,3 @@ Example:
 .. doxygenclass:: Imath::Plane3
    :undoc-members:
    :members:
-
-
-                    

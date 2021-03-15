@@ -1,7 +1,13 @@
-GL
-##
+.. _gl-functions:
 
-Functions that wrap OpenGL calls to accept Imath vectors and matrices
+GL Functions
+############
+
+Functions that wrap OpenGL calls to accept Imath vectors and matrices.
+
+.. code-block::
+
+   #include <Imath/ImathGL.h>
 
 Example:
 
@@ -41,9 +47,3 @@ Example:
 .. doxygenclass:: Imath::GLBegin
    :members:
    :undoc-members:
-                     
-
-                     
-                     
-
-                     

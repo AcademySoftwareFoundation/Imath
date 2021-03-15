@@ -1,6 +1,10 @@
 Interval
 ########
 
+.. code-block::
+
+   #include <Imath/ImathInterval.h>
+   
 The ``Interval`` class template represents a scalar interval, with
 predefined typedefs for ``short``, ``int``, ``float``, and ``double``.
 
@@ -23,5 +27,3 @@ Example:
 .. doxygenclass:: Imath::Interval
    :undoc-members:
    :members:
-
-                    
