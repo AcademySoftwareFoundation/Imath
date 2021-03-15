@@ -1,11 +1,9 @@
 # Imath Release Notes
 
-# OpenEXR Release Notes
-
-* [Version 3.0.0-beta](#version-300-Mar-15-2021) March 15, 2021
+* [Version 3.0.0-beta](#version-300-beta-Mar-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
 
-  ## Version 3.0.0-beta (March 15, 2021)
+## Version 3.0.0-beta (March 15, 2021)
 
 First release of Imath independent of OpenEXR.
 
