@@ -27,7 +27,7 @@ directory of the source code tree as ``$source_directory``.
 
 Make sure these are installed on your system before building Imath:
 
-* Imath requires CMake version 3.10 or newer 
+* Imath requires CMake version 3.12 or newer 
 * C++ compiler that supports C++11
 
 ## Linux/macOS Quick Start
@@ -190,8 +190,9 @@ ways:
 
 Common cmake configuration settings:
 
-* ``BUILD_SHARED_LIBS`` - CMake standard variable to select a static or shared
-  build. Default is ``ON``.
+* ``IMATH_BUILD_BOTH_STATIC_SHARED`` - Build both static and shared
+  libraries in one step (otherwise follows BUILD_SHARED_LIBS). Default
+  is ``OFF``.
 
 * ``IMATH_CXX_STANDARD`` - C++ standard to compile against. Default is
   ``14``.

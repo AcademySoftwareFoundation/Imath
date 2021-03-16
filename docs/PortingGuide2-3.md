@@ -261,6 +261,20 @@ using a more complicated idiom:
     #   include <OpenEXR/half.h>
     #endif
 
+## Include Files Include Fewer Other Headers
+
+Extraneous ``#include`` statements have been removed from some header
+files, which can lead to compile failures in application code that
+previously included certain headers indirectly.
+
+For example, the Imath header files no longer include ``float.h``, so
+application code that references symbols such as ``FLT_MAX`` may need
+to add an explicit ``#include <float.h>`` or equivalent.
+
+If your application code reports compile errors due to undefined or
+incompletely-defined Imath or OpenEXR data types, locate the Imath or
+OpenEXR header file that defines the type and include it explicitly.
+
 ## Symbols Are Hidden by Default
 
 To reduce library size and make linkage behavior similar across
