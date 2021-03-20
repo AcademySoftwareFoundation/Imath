@@ -15,6 +15,9 @@
 #include <iostream>
 #include <testRandom.h>
 
+// Include ImathForward *after* other headers to validate forward declarations
+#include "ImathForward.h"
+
 using namespace std;
 using IMATH_INTERNAL_NAMESPACE::abs;
 

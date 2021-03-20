@@ -14,6 +14,9 @@
 #include <iostream>
 #include <testColor.h>
 
+// Include ImathForward *after* other headers to validate forward declarations
+#include "ImathForward.h"
+
 using namespace std;
 
 void

@@ -17,6 +17,9 @@
 #include <iostream>
 #include <testMatrix.h>
 
+// Include ImathForward *after* other headers to validate forward declarations
+#include "ImathForward.h"
+
 using namespace std;
 using IMATH_INTERNAL_NAMESPACE::Int64;
 
