@@ -16,6 +16,9 @@
 #include <iostream>
 #include <testQuat.h>
 
+// Include ImathForward *after* other headers to validate forward declarations
+#include "ImathForward.h"
+
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
