@@ -1,7 +1,16 @@
 # Imath Release Notes
 
-* [Version 3.0.0-beta](#version-300-beta-Mar-15-2021) March 15, 2021
+* [Version 3.0.1-beta](#version-301-beta-march-26-2021) March 26, 2021
+* [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.0.1-beta (March 26, 2021)
+
+Beta patch release:
+
+* \[[#131](https://github.com/AcademySoftwareFoundation/Imath/pull/131)\] #if IMATH_FOREIGN_VECTOR_INTEROP around type detectors
+
+* \[[#130](https://github.com/AcademySoftwareFoundation/Imath/pull/130)\] Forward declarations only if header is not included
 
 ## Version 3.0.0-beta (March 15, 2021)
 
