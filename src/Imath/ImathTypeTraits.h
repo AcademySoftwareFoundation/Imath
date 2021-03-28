@@ -32,6 +32,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 #define IMATH_ENABLE_IF(...) Imath::enable_if_t<(__VA_ARGS__), int> = 0
 
 
+#if IMATH_FOREIGN_VECTOR_INTEROP
 
 /// @{
 /// @name Detecting interoperable types.
@@ -209,6 +210,7 @@ struct has_double_subscript<Base[Rows][Cols], Base, Rows, Cols> : public std::tr
 
 /// @}
 
+#endif
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 
