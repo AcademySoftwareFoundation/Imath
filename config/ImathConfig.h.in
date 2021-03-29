@@ -42,11 +42,12 @@
 #define IMATH_VERSION_MINOR @IMATH_VERSION_MINOR@
 #define IMATH_VERSION_PATCH @IMATH_VERSION_PATCH@
 
-#define IMATH_LIB_VERSION_STRING "@IMATH_LIB_VERSION@"
-
 #define IMATH_VERSION_HEX ((uint32_t(IMATH_VERSION_MAJOR) << 24) | \
                              (uint32_t(IMATH_VERSION_MINOR) << 16) | \
                              (uint32_t(IMATH_VERSION_PATCH) <<  8))
+
+// IMATH_LIB_VERSION is the library API version: SOCURRENT.SOAGE.SOREVISION
+#define IMATH_LIB_VERSION_STRING "@IMATH_LIB_VERSION@"
 
 
 //
