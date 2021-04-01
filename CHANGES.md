@@ -1,8 +1,33 @@
 # Imath Release Notes
 
+* [Version 3.0.1](#version-301-april-1-2021) April 1, 2021
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.0.1 (April 1, 2021)
+
+First release of Imath independent of OpenEXR.
+
+See the [porting guide](docs/PortingGuide2-3.md) for details about
+differences from previous releases.
+
+Summary:
+
+* Imath includes the half type, formerly in a separate Half library.
+* Headers are installed in ``Imath/`` subdirectory.
+* All appropriate methods are marked constexpr, noexcept
+* Appropriate declaration include CUDA ``__host__`` and ``__device__``
+  directives.
+* Throwing methods throw std exceptions instead of ``Iex``.
+* New Vec and Matrix interoperability constructors for conversion from
+  other similar type objects.
+* Symbol linkage visibility is limited to specific public symbols.
+* python bindings are off by default, available by setting ``PYTHON=ON``.
+* Deprecated features:
+  - ``std::numeric_limits`` replaces ``Imath::limits``.
+  - ``Int64`` and ``SInt64`` are deprecated in favor of ``uint64_t``
+    and ``int64_t``.
 
 ## Version 3.0.1-beta (March 28, 2021)
 
