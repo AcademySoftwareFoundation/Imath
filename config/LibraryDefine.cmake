@@ -14,7 +14,16 @@ function(IMATH_DEFINE_LIBRARY libname)
     ${IMATH_CURLIB_HEADERS}
     ${IMATH_CURLIB_SOURCES})
 
-  target_compile_features(${objlib} PUBLIC cxx_std_${IMATH_CXX_STANDARD})
+  # Use ${IMATH_CXX_STANDARD} to determine the standard we use to compile
+  # Imath itself. But the headers only require C++11 features, so that's
+  # all we need to pass on as interface reqirements to downstream projects.
+  # For example, it's fine for an Imath built with C++14 to be called from
+  # an app that is compiled with C++11; Imath needn't force the app to
+  # also use C++14.
+  target_compile_features(${objlib}
+                          PRIVATE cxx_std_${IMATH_CXX_STANDARD}
+                          INTERFACE cxx_std_11 )
+
   if(IMATH_CURLIB_PRIV_EXPORT AND BUILD_SHARED_LIBS)
     target_compile_definitions(${objlib} PRIVATE ${IMATH_CURLIB_PRIV_EXPORT})
     if(WIN32)
