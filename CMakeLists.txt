@@ -12,10 +12,28 @@ if(POLICY CMP0077)
   cmake_policy(SET CMP0077 NEW)
 endif()
 
-# Version numbers are maintained in config/version.cmake
-include(config/version.cmake)
+# Imath version
 
-project(Imath VERSION ${IMATH_VERSION} LANGUAGES C CXX)
+project(Imath VERSION 3.0.2 LANGUAGES C CXX)
+
+set(IMATH_VERSION_EXTRA "dev" CACHE STRING "Extra version tag string for Imath build")
+
+# See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+set(IMATH_SOVERSION 27)
+set(IMATH_SOAGE 0) 
+set(IMATH_SOREVISION 0) 
+set(IMATH_LIB_VERSION "${IMATH_SOVERSION}.${IMATH_SOAGE}.${IMATH_SOREVISION}")
+
+set(IMATH_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
+set(IMATH_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
+set(IMATH_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
+set(IMATH_VERSION ${CMAKE_PROJECT_VERSION})
+if (NOT IMATH_VERSION_EXTRA STREQUAL "")
+  set(IMATH_VERSION "${CMAKE_PROJECT_VERSION}-${IMATH_VERSION_EXTRA}")
+endif()
+set(IMATH_VERSION_API "${IMATH_VERSION_MAJOR}_${IMATH_VERSION_MINOR}")
+
+message(STATUS "Configure Imath Version: ${IMATH_VERSION} Lib API: ${IMATH_LIB_VERSION}")
 
 # ImathSetup.cmake declares all the configuration variables visible
 # in cmake-gui or similar and the rest of the global
