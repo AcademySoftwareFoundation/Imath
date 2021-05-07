@@ -21,7 +21,7 @@ endif()
 include(config/PyImathSetup.cmake)
 
 # we have a strong dependence on Imath being an exact match
-find_package(Imath ${IMATH_VERSION} EXACT REQUIRED CONFIG)
+find_package(Imath ${CMAKE_PROJECT_VERSION} REQUIRED CONFIG)
 
 # we are building a python extension, so of course we depend on
 # python as well. Except we don't know which version...
