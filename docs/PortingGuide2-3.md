@@ -478,6 +478,10 @@ Other changes:
 * When compiling for CUDA, the `complex` type comes from `thrust`
   rather than `std`
 
+### `Shear6` in ImathShear.h
+
+* `baseTypeMin()` is replaced with `baseTypeLowest()`
+
 ### ImathVecAlgo.h
 
 The following functions are no longer defined for integer-based
@@ -517,5 +521,27 @@ vectors, because such behavior is not clearly defined:
   constructors that take as an argument any data object of similar
   size and layout.
 
+## Python Changes:
 
+In general, the changes at the C++ level are reflected in the python
+bindings. In particular:
+
+* The following methods are removed for integer-based
+  vector and matrix objects and arrays:
+
+  - `length()`
+  - `normalize()`
+  - `normalizeExc()`
+  - `normalizeNonNull()`
+  - `normalized()`
+  - `normalizedExc()`
+  - `normalizedNonNull()`
+
+* `baseTypeMin()` is replaced with `baseTypeLowest()` for:
+
+   - `Vec2`, `Vec3`, `Vec4`
+   - `Color3`, `Color4`
+   - `Matrix22`, `Matrix33`, `Matrix44`
+   - `Box`
+   - `Shear6`
 

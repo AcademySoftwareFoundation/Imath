@@ -46,6 +46,9 @@
                              (uint32_t(IMATH_VERSION_MINOR) << 16) | \
                              (uint32_t(IMATH_VERSION_PATCH) <<  8))
 
+// IMATH_LIB_VERSION is the library API version: SOCURRENT.SOAGE.SOREVISION
+#define IMATH_LIB_VERSION_STRING "@IMATH_LIB_VERSION@"
+
 
 //
 // By default, opt into the interoparability constructors and assignments.
