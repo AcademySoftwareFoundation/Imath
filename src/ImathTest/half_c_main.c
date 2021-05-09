@@ -7,9 +7,9 @@
 //#define IMATH_HALF_EXCEPTIONS_ENABLED
 
 #include <half.h>
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
 
 typedef union
 {
@@ -20,10 +20,10 @@ typedef union
 static const c_half_uif half_to_float[1 << 16] =
 #include "../Imath/toFloat.h"
 
-static const unsigned short half_eLut[1 << 9] =
+    static const unsigned short half_eLut[1 << 9] =
 #include "../Imath/eLut.h"
 
-static short old_convert (int i)
+        static short old_convert (int i)
 {
     int s = (i >> 16) & 0x00008000;
     int e = ((i >> 23) & 0x000000ff) - (127 - 15);
@@ -169,7 +169,7 @@ main (int argc, char* argv[])
 
 #ifdef __F16C__
             // the intel instructions do something different w/ NaN values than the original half library
-            if (he == 0x1f && isnanf (conv.f))
+            if (he == 0x1f && isnan (conv.f))
             {
                 ++diffcount;
                 continue;

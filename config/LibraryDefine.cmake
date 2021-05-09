@@ -15,6 +15,9 @@ function(IMATH_DEFINE_LIBRARY libname)
   set(multiValueArgs SOURCES HEADERS DEPENDENCIES PRIVATE_DEPS)
   cmake_parse_arguments(IMATH_CURLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
+  if (MSVC)
+    set(_imath_extra_flags "/EHsc")
+  endif()
   set(objlib ${libname})
   add_library(${objlib}
     ${IMATH_CURLIB_HEADERS}
