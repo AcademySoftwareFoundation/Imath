@@ -9,7 +9,6 @@
 //     Rod Bogart <rgb@ilm.com>
 //
 
-
 //---------------------------------------------------------------------------
 //
 //	class half --
@@ -34,11 +33,23 @@ using namespace std;
 
 // clang-format off
 
-EXPORT_CONST const half::uif half::_toFloat[1 << 16] =
+#ifdef IMATH_ENABLE_HALF_LOOKUP_TABLES
+const imath_half_uif_t imath_half_to_float_table_data[1 << 16] =
 #include "toFloat.h"
-EXPORT_CONST const unsigned short half::_eLut[1 << 9] =
+
+const uint16_t imath_float_half_exp_table_data[1 << 9] =
 #include "eLut.h"
 
+extern "C" {
+EXPORT_CONST const imath_half_uif_t *imath_half_to_float_table = imath_half_to_float_table_data;
+EXPORT_CONST const uint16_t *imath_float_half_exp_table = imath_float_half_exp_table_data;
+} // extern "C"
+
+#endif
+
+// clang-format on
+
+//#ifdef IMATH_USE_ORIGINAL_HALF_IMPLEMENTATION
 //-----------------------------------------------
 // Overflow handler for float-to-half conversion;
 // generates a hardware floating-point overflow,
@@ -195,6 +206,8 @@ half::convert (int i) noexcept
         return s | (e << 10) | (m >> 13);
     }
 }
+
+//#endif
 
 //---------------------
 // Stream I/O operators

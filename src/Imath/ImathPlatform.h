@@ -15,9 +15,10 @@
 /// @cond Doxygen_Suppress
 
 #include <math.h>
-#include <type_traits>
 
 #include "ImathNamespace.h"
+
+#ifdef __cplusplus
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
@@ -46,6 +47,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
   #define IMATH_CONSTEXPR14 /* can not be constexpr before c++14 */
 #endif
 
+#endif // __cplusplus
 
 #ifndef M_PI
 #    define M_PI 3.14159265358979323846
@@ -68,8 +70,11 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 #    define IMATH_RESTRICT
 #endif
 
+#ifdef __cplusplus
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+
+#endif // __cplusplus
 
 /// @endcond
 

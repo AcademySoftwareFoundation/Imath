@@ -42,6 +42,27 @@ set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
   )
 
+add_executable(ImathHalfCTest half_c_main.c)
+target_link_libraries(ImathHalfCTest Imath::Config)
+target_include_directories(ImathHalfCTest PRIVATE "../Imath")
+#target_compile_options(ImathHalfCTest PRIVATE -mavx2 -mf16c)
+if (IMATH_USE_HALF_LOOKUP_TABLES)
+  target_link_libraries(ImathHalfCTest Imath::Imath)
+endif()
+
+set_target_properties(ImathHalfCTest PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+  )
+add_test(NAME Imath.half_c_only COMMAND $<TARGET_FILE:ImathHalfCTest>)
+
+add_executable(ImathHalfPerfTest half_perf_test.cpp)
+target_include_directories(ImathHalfPerfTest PRIVATE "../Imath")
+#target_compile_options(ImathHalfPerfTest PRIVATE -mavx2 -mf16c)
+set_target_properties(ImathHalfPerfTest PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+  )
+target_link_libraries(ImathHalfPerfTest Imath::Imath)
+
 function(DEFINE_IMATH_TESTS)
   foreach(curtest IN LISTS ARGN)
     add_test(NAME Imath.${curtest} COMMAND $<TARGET_FILE:ImathTest> ${curtest})

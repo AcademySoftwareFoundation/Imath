@@ -1,6 +1,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
+include(CheckLibraryExists)
+check_library_exists(m sin "" HAVE_LIB_M)
+if (HAVE_LIB_M)
+  set(IMATH_EXTRA_LIBS m)
+endif()
+
 # NB: This function has a number if Imath specific names / variables
 # in it, so be careful copying...
 function(IMATH_DEFINE_LIBRARY libname)
@@ -65,6 +71,10 @@ function(IMATH_DEFINE_LIBRARY libname)
       VERSION ${IMATH_LIB_VERSION}
     )
   endif()
+  if(IMATH_EXTRA_LIBS)
+    target_link_libraries(${libname} PUBLIC ${IMATH_EXTRA_LIBS})
+  endif()
+
   set_target_properties(${libname} PROPERTIES
       OUTPUT_NAME "${libname}${IMATH_LIB_SUFFIX}"
       RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
