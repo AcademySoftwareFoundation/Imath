@@ -38,6 +38,7 @@ add_executable(ImathTest
 )
 
 target_link_libraries(ImathTest Imath::Imath)
+#target_compile_options(ImathTest PRIVATE -mavx2 -mf16c)
 set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
   )
@@ -45,7 +46,7 @@ set_target_properties(ImathTest PROPERTIES
 add_executable(ImathHalfCTest half_c_main.c)
 target_link_libraries(ImathHalfCTest Imath::Config)
 target_include_directories(ImathHalfCTest PRIVATE "../Imath")
-#target_compile_options(ImathHalfCTest PRIVATE -mavx2 -mf16c)
+target_compile_options(ImathHalfCTest PRIVATE -mavx2 -mf16c)
 if (IMATH_USE_HALF_LOOKUP_TABLES)
   target_link_libraries(ImathHalfCTest Imath::Imath)
 endif()

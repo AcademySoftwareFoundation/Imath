@@ -10,42 +10,65 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
+#ifdef _MSC_VER
+#    include <windows.h>
+#else
+#    include <time.h>
+#endif
+
 #include <memory>
 
 using namespace IMATH_NAMESPACE;
 
+uint64_t get_ticks( void )
+{
+#ifdef _MSC_VER
+    static uint64_t scale = 0;
+    if ( scale == 0 )
+    {
+        LARGE_INTEGER freq;
+        QueryPerformanceFrequency ( &freq );
+        scale = (1000000000 / freq.QuadPart);
+    }
+
+    LARGE_INTEGER ticks;
+    QueryPerformanceCounter ( &ticks );
+    return ticks.QuadPart * scale;
+#else
+    struct timespec t;
+    uint64_t nsecs;
+
+    static uint64_t start = 0;
+    if ( start == 0 )
+    {
+        clock_gettime (CLOCK_MONOTONIC, &t);
+        start = t.tv_sec;
+    }
+
+    clock_gettime (CLOCK_MONOTONIC, &t);
+    nsecs = (t.tv_sec - start) * 1000000000;
+    nsecs += t.tv_nsec;
+    return nsecs;
+#endif
+}
+
 void
 perf_test_half_to_float (float *floats, const uint16_t *halfs, int numentries)
 {
-    struct timespec startn, endn;
     const half *halfvals = reinterpret_cast<const half *>( halfs );
 
-    clock_gettime (CLOCK_MONOTONIC, &startn);
+    uint64_t st = get_ticks();
     for (int i = 0; i < numentries; ++i)
         floats[i] = imath_half_to_float (halfs[i]);
-    clock_gettime (CLOCK_MONOTONIC, &endn);
+    uint64_t et = get_ticks();
 
-    struct timespec starto, endo;
-    clock_gettime (CLOCK_MONOTONIC, &starto);
+    uint64_t ost = get_ticks();
     for (int i = 0; i < numentries; ++i)
         floats[i] = static_cast<float>( halfvals[i] );
-    clock_gettime (CLOCK_MONOTONIC, &endo);
+    uint64_t oet = get_ticks();
 
-    uint64_t nnanos, onanos;
-    if (endn.tv_nsec < startn.tv_nsec)
-    {
-        endn.tv_nsec += 1000000000;
-        endn.tv_sec -= 1;
-    }
-    if (endo.tv_nsec < starto.tv_nsec)
-    {
-        endo.tv_nsec += 1000000000;
-        endo.tv_sec -= 1;
-    }
-
-    onanos = (endo.tv_nsec - starto.tv_nsec) + 1000000000 * (endo.tv_sec - starto.tv_sec);
-    nnanos = (endn.tv_nsec - startn.tv_nsec) + 1000000000 * (endn.tv_sec - startn.tv_sec);
+    uint64_t onanos = (oet - ost);
+    uint64_t nnanos = (et - st);
     fprintf (stderr,
              "half -> float Old: %10lu (%g ns) New: %10lu (%g ns) (%10ld)\n",
              onanos,
@@ -58,34 +81,20 @@ perf_test_half_to_float (float *floats, const uint16_t *halfs, int numentries)
 void
 perf_test_float_to_half (uint16_t *halfs, const float *floats, int numentries)
 {
-    struct timespec startn, endn;
     half *halfvals = reinterpret_cast<half *>( halfs );
 
-    clock_gettime (CLOCK_MONOTONIC, &startn);
+    uint64_t st = get_ticks();
     for (int i = 0; i < numentries; ++i)
         halfs[i] = imath_float_to_half (floats[i]);
-    clock_gettime (CLOCK_MONOTONIC, &endn);
+    uint64_t et = get_ticks();
 
-    struct timespec starto, endo;
-    clock_gettime (CLOCK_MONOTONIC, &starto);
+    uint64_t ost = get_ticks();
     for (int i = 0; i < numentries; ++i)
         halfvals[i] = half (floats[i]);
-    clock_gettime (CLOCK_MONOTONIC, &endo);
+    uint64_t oet = get_ticks();
 
-    uint64_t nnanos, onanos;
-    if (endn.tv_nsec < startn.tv_nsec)
-    {
-        endn.tv_nsec += 1000000000;
-        endn.tv_sec -= 1;
-    }
-    if (endo.tv_nsec < starto.tv_nsec)
-    {
-        endo.tv_nsec += 1000000000;
-        endo.tv_sec -= 1;
-    }
-
-    onanos = (endo.tv_nsec - starto.tv_nsec) + 1000000000 * (endo.tv_sec - starto.tv_sec);
-    nnanos = (endn.tv_nsec - startn.tv_nsec) + 1000000000 * (endn.tv_sec - startn.tv_sec);
+    uint64_t onanos = (oet - ost);
+    uint64_t nnanos = (et - st);
     fprintf (stderr,
              "float -> half Old: %10lu (%g ns) New: %10lu (%g ns) (%10ld)\n",
              onanos,
