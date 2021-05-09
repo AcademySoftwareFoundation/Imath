@@ -9,7 +9,7 @@
 #include <half.h>
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
+#include <math.h>
 
 typedef union
 {

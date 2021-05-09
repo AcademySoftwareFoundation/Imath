@@ -20,7 +20,7 @@
 
 using namespace IMATH_NAMESPACE;
 
-uint64_t get_ticks( void )
+int64_t get_ticks( void )
 {
 #ifdef _MSC_VER
     static uint64_t scale = 0;
@@ -57,25 +57,25 @@ perf_test_half_to_float (float *floats, const uint16_t *halfs, int numentries)
 {
     const half *halfvals = reinterpret_cast<const half *>( halfs );
 
-    uint64_t st = get_ticks();
+    int64_t st = get_ticks();
     for (int i = 0; i < numentries; ++i)
         floats[i] = imath_half_to_float (halfs[i]);
-    uint64_t et = get_ticks();
+    int64_t et = get_ticks();
 
-    uint64_t ost = get_ticks();
+    int64_t ost = get_ticks();
     for (int i = 0; i < numentries; ++i)
         floats[i] = static_cast<float>( halfvals[i] );
-    uint64_t oet = get_ticks();
+    int64_t oet = get_ticks();
 
-    uint64_t onanos = (oet - ost);
-    uint64_t nnanos = (et - st);
+    int64_t onanos = (oet - ost);
+    int64_t nnanos = (et - st);
     fprintf (stderr,
-             "half -> float Old: %10lu (%g ns) New: %10lu (%g ns) (%10ld)\n",
-             onanos,
+             "half -> float Old: %10lld (%g ns) New: %10lld (%g ns) (%10lld)\n",
+             (long long)onanos,
              (double) onanos / ((double) numentries),
-             nnanos,
+             (long long)nnanos,
              (double) nnanos / ((double) numentries),
-             (int64_t) onanos - (int64_t) nnanos);
+             ((long long)(onanos - nnanos)));
 }
 
 void
@@ -83,25 +83,25 @@ perf_test_float_to_half (uint16_t *halfs, const float *floats, int numentries)
 {
     half *halfvals = reinterpret_cast<half *>( halfs );
 
-    uint64_t st = get_ticks();
+    int64_t st = get_ticks();
     for (int i = 0; i < numentries; ++i)
         halfs[i] = imath_float_to_half (floats[i]);
-    uint64_t et = get_ticks();
+    int64_t et = get_ticks();
 
-    uint64_t ost = get_ticks();
+    int64_t ost = get_ticks();
     for (int i = 0; i < numentries; ++i)
         halfvals[i] = half (floats[i]);
-    uint64_t oet = get_ticks();
+    int64_t oet = get_ticks();
 
-    uint64_t onanos = (oet - ost);
-    uint64_t nnanos = (et - st);
+    int64_t onanos = (oet - ost);
+    int64_t nnanos = (et - st);
     fprintf (stderr,
-             "float -> half Old: %10lu (%g ns) New: %10lu (%g ns) (%10ld)\n",
-             onanos,
+             "float -> half Old: %10lld (%g ns) New: %10lld (%g ns) (%10lld)\n",
+             (long long)onanos,
              (double) onanos / ((double) numentries),
-             nnanos,
+             (long long)nnanos,
              (double) nnanos / ((double) numentries),
-             (int64_t) onanos - (int64_t) nnanos);
+             ((long long)(onanos - nnanos)));
 }
 
 int
