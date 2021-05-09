@@ -149,6 +149,7 @@ main (int argc, char* argv[])
             {
                 rand_s( &rv );
                 floats[i] = 65504.0 * (((double) rand() / (double) UINT_MAX) * 2.0 - 1.0);
+            }
 #else
             for (int i = 0; i < numentries; ++i)
                 floats[i] = 65504.0 * (drand48() * 2.0 - 1.0);
