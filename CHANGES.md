@@ -1,9 +1,20 @@
 # Imath Release Notes
 
+* [Version 3.0.2](#version-302-may-13-2021) May 13, 2021
 * [Version 3.0.1](#version-301-april-1-2021) April 1, 2021
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.0.2 (May 13, 2021)
+
+Patch release with miscellaneous bug/build fixes:
+
+* \[[#140](https://github.com/AcademySoftwareFoundation/Imath/pull/140)\] Fix regression in succf()/predf()          
+* \[[#139](https://github.com/AcademySoftwareFoundation/Imath/pull/139)\] Clean up setting of Imath version          
+* \[[#137](https://github.com/AcademySoftwareFoundation/Imath/pull/137)\] Don't impose C++14 on downstream projects  
+* \[[#135](https://github.com/AcademySoftwareFoundation/Imath/pull/135)\] Add section on python bindings             
+* \[[#133](https://github.com/AcademySoftwareFoundation/Imath/pull/133)\] Lib version                                
 
 ## Version 3.0.1 (April 1, 2021)
 
