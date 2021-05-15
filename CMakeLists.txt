@@ -14,7 +14,7 @@ endif()
 
 # Imath version
 
-project(Imath VERSION 3.0.3 LANGUAGES C CXX)
+project(Imath VERSION 3.1.0 LANGUAGES C CXX)
 
 set(IMATH_VERSION_EXTRA "dev" CACHE STRING "Extra version tag string for Imath build")
 
