@@ -14,12 +14,12 @@ endif()
 
 # Imath version
 
-project(Imath VERSION 3.0.2 LANGUAGES C CXX)
+project(Imath VERSION 3.0.3 LANGUAGES C CXX)
 
 set(IMATH_VERSION_EXTRA "dev" CACHE STRING "Extra version tag string for Imath build")
 
 # See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
-set(IMATH_SOVERSION 28)
+set(IMATH_SOVERSION 29)
 set(IMATH_SOREVISION 0) 
 set(IMATH_SOAGE 0) 
 set(IMATH_LIB_VERSION "${IMATH_SOVERSION}.${IMATH_SOREVISION}.${IMATH_SOAGE}")
