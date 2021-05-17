@@ -20,21 +20,25 @@
 /// The conversion routines here have been extended to use the hardware
 /// instructions when enabled by the compiler.
 ///
-/// Further, Additional control is possible for embedded systems. First, the library can be configured to disable generation of the half to float table. This table is faster on x86 hardware, but for embedded systems may artificially bloat the executable. Without this, a smaller table is used for acceleration. An implementation can add a preprocessor #define IMATH_HALF_NO_TABLES_AT_ALL, which will eliminate all tables.
+/// Further, Additional control is possible for embedded
+/// systems. First, the library can be configured to disable
+/// generation of the half to float table. This table is faster on x86
+/// hardware, but for embedded systems may artificially bloat the
+/// executable. Without this, a smaller table is used for
+/// acceleration. An implementation can add a preprocessor #define
+/// IMATH_HALF_NO_TABLES_AT_ALL, which will eliminate all tables.
 ///
 /// Testing on a Core i9, the timings are approximately:
 ///
-/// half to float table: 0.69 ns / call
-/// small table: 0.93 ns / call
-/// no table: 1.36 ns / call
+/// half to float table: 0.71 ns / call
+/// no table: 1.06 ns / call
 /// f16c: 0.45 ns / call
 ///
 /// original: 5.2 ns / call
-/// float to half: 4.57 ns / call**
-/// no table: 1.48 ns / call**
+/// no exp table + opt: 1.27 ns / call
 /// f16c: 0.45 ns / call
 ///
-/// ** - this depends on the distribution of the floats in question
+/// ** - the above depend on the distribution of the floats in question
 ///
 /// Further, an implementation wishing to receive floating point
 /// exceptions on underflow / overflow when converting float to half
@@ -46,6 +50,13 @@
 #    elif __has_include(<intrin.h>)
 #        include <intrin.h>
 #    endif
+#endif
+
+#include <stdint.h>
+#include <stdio.h>
+
+#ifdef IMATH_HALF_EXCEPTIONS_ENABLED
+#    include <fenv.h>
 #endif
 
 //-------------------------------------------------------------------------
@@ -60,89 +71,67 @@
 
 /// Smallest positive denormalized half
 #    define HALF_DENORM_MIN 5.96046448e-08f
-
-#    define HALF_NRM_MIN 6.10351562e-05f // Smallest positive normalized half
-
-#    define HALF_MIN 6.10351562e-05f // Smallest positive normalized half
-
-#    define HALF_MAX 65504.0f // Largest positive half
-
-#    define HALF_EPSILON                                                                           \
-        0.00097656f // Smallest positive e for which                                               \
-                    // half (1.0 + e) != half (1.0)
+/// Smallest positive normalized half
+#    define HALF_NRM_MIN 6.10351562e-05f
+/// Smallest positive normalized half
+#    define HALF_MIN 6.10351562e-05f
+/// Largest positive half
+#    define HALF_MAX 65504.0f
+/// Smallest positive e for which
+/// half (1.0 + e) != half (1.0)
+#    define HALF_EPSILON 0.00097656f
 #else
-
-#    define HALF_DENORM_MIN 5.96046448e-08 // Smallest positive half
-
-#    define HALF_NRM_MIN 6.10351562e-05 // Smallest positive normalized half
-
-#    define HALF_MIN 6.10351562e-05f // Smallest positive normalized half
-
-#    define HALF_MAX 65504.0 // Largest positive half
-
-#    define HALF_EPSILON 0.00097656 // Smallest positive e for which
-// half (1.0 + e) != half (1.0)
+// Smallest positive half
+#    define HALF_DENORM_MIN 5.96046448e-08
+/// Smallest positive normalized half
+#    define HALF_NRM_MIN 6.10351562e-05
+/// Smallest positive normalized half
+#    define HALF_MIN 6.10351562e-05f
+/// Largest positive half
+#    define HALF_MAX 65504.0
+/// Smallest positive e for which
+/// half (1.0 + e) != half (1.0)
+#    define HALF_EPSILON 0.00097656
 #endif
 
-#define HALF_MANT_DIG                                                                              \
-    11 // Number of digits in mantissa                                                            \
-        // (significand + hidden leading 1)
+/// Number of digits in mantissa (significand + hidden leading 1)
+#define HALF_MANT_DIG 11
+/// Number of base 10 digits that can be represented without change
+///
+/// floor( (HALF_MANT_DIG - 1) * log10(2) ) => 3.01... -> 3
+#define HALF_DIG 3
+/// Number of base-10 digits that are necessary to uniquely represent
+/// all distinct values
+///
+/// ceil(HALF_MANT_DIG * log10(2) + 1) => 4.31... -> 5
+#define HALF_DECIMAL_DIG 5
+/// Base of the exponent
+#define HALF_RADIX 2
+/// Minimum negative integer such that HALF_RADIX raised to the power
+/// of one less than that integer is a normalized half
+#define HALF_DENORM_MIN_EXP -13
+/// Maximum positive integer such that HALF_RADIX raised to the power
+/// of one less than that integer is a normalized half
+#define HALF_MAX_EXP 16
+/// Minimum positive integer such that 10 raised to that power is a
+/// normalized half
+#define HALF_DENORM_MIN_10_EXP -4
+/// Maximum positive integer such that 10 raised to that power is a
+/// normalized half
+#define HALF_MAX_10_EXP 4
 
-//
-// floor( (HALF_MANT_DIG - 1) * log10(2) ) => 3.01... -> 3
-#define HALF_DIG                                                                                   \
-    3 // Number of base 10 digits that                                                           \
-        // can be represented without change
-
-// ceil(HALF_MANT_DIG * log10(2) + 1) => 4.31... -> 5
-#define HALF_DECIMAL_DIG                                                                           \
-    5 // Number of base-10 digits that are                                                       \
-        // necessary to uniquely represent all                                                     \
-        // distinct values
-
-#define HALF_RADIX 2 // Base of the exponent
-
-#define HALF_DENORM_MIN_EXP                                                                        \
-    -13 // Minimum negative integer such that                                                      \
-        // HALF_RADIX raised to the power of                                                       \
-        // one less than that integer is a                                                         \
-        // normalized half
-
-#define HALF_MAX_EXP                                                                               \
-    16 // Maximum positive integer such that                                                      \
-        // HALF_RADIX raised to the power of                                                       \
-        // one less than that integer is a                                                         \
-        // normalized half
-
-#define HALF_DENORM_MIN_10_EXP                                                                     \
-    -4 // Minimum positive integer such                                                           \
-        // that 10 raised to that power is                                                         \
-        // a normalized half
-
-#define HALF_MAX_10_EXP                                                                            \
-    4 // Maximum positive integer such                                                           \
-        // that 10 raised to that power is                                                         \
-        // a normalized half
-
-#include <stdint.h>
-#include <stdio.h>
-
-#ifdef IMATH_HALF_EXCEPTIONS_ENABLED
-#    include <fenv.h>
-#endif
-
-/** a type for both C-only programs and C++ to use the same utilities */
+/// a type for both C-only programs and C++ to use the same utilities
 typedef union imath_half_uif
 {
     uint32_t i;
     float f;
 } imath_half_uif_t;
 
-/** a type for both C-only programs and C++ to use the same utilities */
+/// a type for both C-only programs and C++ to use the same utilities
 typedef uint16_t imath_half_bits_t;
 
 #if !defined(__cplusplus) && !defined(__CUDACC__)
-/** if we're in a C-only context, alias the half bits type to half */
+/// if we're in a C-only context, alias the half bits type to half
 typedef imath_half_bits_t half;
 #endif
 
@@ -155,12 +144,14 @@ extern
 #    endif
     IMATH_EXPORT const imath_half_uif_t* imath_half_to_float_table;
 
-// TODO: Can disappear once we remove original half conversion methods from the class
-#        if defined(__cplusplus)
+// This is still exposed as a symbol, but is no longer actively used
+// other than within the performance test @sa half_perf_test.cpp
+// TODO: consider deprecating and removing it
+#    if defined(__cplusplus)
 extern "C"
-#        else
+#    else
 extern
-#        endif
+#    endif
     IMATH_EXPORT const uint16_t* imath_float_half_exp_table;
 #endif
 
@@ -181,147 +172,81 @@ imath_half_to_float (imath_half_bits_t h)
 #    else
     return _cvtsh_ss (h);
 #    endif
-#elif defined(IMATH_HALF_NO_TABLES_AT_ALL)
-    imath_half_uif_t v;
-
-    uint32_t hu32 = ((uint32_t) h) << 13;
-    uint32_t sign = (hu32 & 0x10000000) << 3;
-    uint32_t hexp = hu32 & 0x0f800000;
-    uint32_t mant = hu32 & 0x007fe000;
-
-    if (hexp == 0)
-    {
-        if (mant != 0)
-        {
-            // convert subnormal into normal float
-
-            // 0x03ff << 13 is going to mean the first 9 bits are
-            // meaningless in the count-the-leading-zero op below since
-            // that's where the sign and exponent go, so those will be 0
-            // but we want to get the mantissa / significand to the point
-            // where it is no longer at 0.xxx but 1.xxx in radix 2, so we
-            // need to add a digit of shifting so from 9 -> 8 to give us
-            // one more shift
-#    if defined(__GNUC__) || defined(__clang__)
-            int lc = (int) __builtin_clz (mant);
-            lc -= 8;
-            hexp = (0x71 - lc) << 23;
-            mant = (mant << lc);
-#    else
-            uint32_t xbit;
-            hexp = 0x71 << 23;
-            do
-            {
-                xbit = mant & 0x400000;
-                mant <<= 1;
-                hexp -= (1 << 23);
-            } while (xbit == 0);
-#    endif
-            mant &= ~0x00800000;
-        }
-    }
-    else if (hexp == 0x0f800000)
-    {
-        // inf or nan
-        hexp = 0x7f800000; // 0xff << 23
-        // set all the bits for NaN?
-        //if ( mant != 0 )
-        //    mant = 0x007fffff;
-    }
-    else
-    {
-        hexp += 0x38000000; // (0x70 << 23)
-    }
-
-    v.i = sign | hexp | mant;
-    return v.f;
-#elif defined(IMATH_ENABLE_HALF_LOOKUP_TABLES)
+#elif defined(IMATH_ENABLE_HALF_LOOKUP_TABLES) && !defined(IMATH_HALF_NO_TABLES_AT_ALL)
     return imath_half_to_float_table[h].f;
 #else
-    // clang-format off
-#    define _IM_NEG(x) (((uint32_t)(1 << 31))|((uint32_t)x))
-    static const uint32_t exps[64] = {
-        0,
-        ((127 - 14) << 23), ((127 - 13) << 23), ((127 - 12) << 23), ((127 - 11) << 23),
-        ((127 - 10) << 23), ((127 - 9) << 23),  ((127 - 8) << 23), ((127 - 7) << 23),
-        ((127 - 6) << 23), ((127 - 5) << 23), ((127 - 4) << 23), ((127 - 3) << 23),
-        ((127 - 2) << 23), ((127 - 1) << 23), ((127 - 0) << 23), ((127 + 1) << 23),
-        ((127 + 2) << 23), ((127 + 3) << 23), ((127 + 4) << 23), ((127 + 5) << 23),
-        ((127 + 6) << 23), ((127 + 7) << 23), ((127 + 8) << 23), ((127 + 9) << 23),
-        ((127 + 10) << 23), ((127 + 11) << 23), ((127 + 12) << 23), ((127 + 13) << 23),
-        ((127 + 14) << 23), ((127 + 15) << 23),
-        (0x000000ffU << 23),
-        _IM_NEG(0),
-        _IM_NEG((127 - 14) << 23), _IM_NEG((127 - 13) << 23), _IM_NEG((127 - 12) << 23), _IM_NEG((127 - 11) << 23),
-        _IM_NEG((127 - 10) << 23), _IM_NEG((127 - 9) << 23), _IM_NEG((127 - 8) << 23), _IM_NEG((127 - 7) << 23),
-        _IM_NEG((127 - 6) << 23), _IM_NEG((127 - 5) << 23), _IM_NEG((127 - 4) << 23), _IM_NEG((127 - 3) << 23),
-        _IM_NEG((127 - 2) << 23), _IM_NEG((127 - 1) << 23), _IM_NEG((127 - 0) << 23), _IM_NEG((127 + 1) << 23),
-        _IM_NEG((127 + 2) << 23), _IM_NEG((127 + 3) << 23), _IM_NEG((127 + 4) << 23), _IM_NEG((127 + 5) << 23),
-        _IM_NEG((127 + 6) << 23), _IM_NEG((127 + 7) << 23), _IM_NEG((127 + 8) << 23), _IM_NEG((127 + 9) << 23),
-        _IM_NEG((127 + 10) << 23), _IM_NEG((127 + 11) << 23), _IM_NEG((127 + 12) << 23), _IM_NEG((127 + 13) << 23),
-        _IM_NEG((127 + 14) << 23), _IM_NEG((127 + 15) << 23),
-        (0x000001ffU << 23)
-    };
-#    undef _IM_NEG
-    // clang-format on
     imath_half_uif_t v;
-    uint16_t he = (h >> 10);
-    uint32_t m  = ((uint32_t) (h & 0x03ff)) << 13;
+    // this code would be clearer, although it does appear to be faster
+    // (1.06 vs 1.08 ns/call) to avoid the constants and just do 4
+    // shifts.
+    //
+    //uint32_t hexpmant = (h & ~0x8000) << 13;
+    //v.i = (h & 0x8000) << 16;
+    uint32_t hexpmant = ( (uint32_t)(h) << 17 ) >> 4;
+    v.i = ((uint32_t)(h >> 15)) << 31;
 
-    // subnormal or zero
-    if ((he & 0x1f) == 0)
+    // the likely really does help if most of your numbers are "normal" half numbers
+    if (IMATH_LIKELY ((hexpmant >= 0x00800000)))
     {
-        // convert subnormal to normal
-        if (m != 0)
-        {
-            uint32_t hexp;
-            // 0x03ff << 13 is going to mean the first 9 bits are
-            // meaningless in the count-the-leading-zero op below since
-            // that's where the sign and exponent go, so those will be 0
-            // but we want to get the mantissa / significand to the point
-            // where it is no longer at 0.xxx but 1.xxx in radix 2, so we
-            // need to add a digit of shifting so from 9 -> 8 to give us
-            // one more shift
-#    if defined(__GNUC__) || defined(__clang__)
-            int lc = (int) __builtin_clz (m);
-            lc -= 8;
-            hexp = (0x71 - lc) << 23;
-            m    = (m << lc);
-#    else
-            uint32_t xbit;
-            hexp = 0x71 << 23;
-            do
-            {
-                xbit = m & 0x400000;
-                m <<= 1;
-                hexp -= (1 << 23);
-            } while (xbit == 0);
-#    endif
-            m &= ~0x00800000;
-            v.i = (((uint32_t) (h & 0x8000)) << 16) | hexp | m;
-        }
+        v.i |= hexpmant;
+        // either we are a normal number, in which case add in the bias difference
+        // otherwise make sure all exponent bits are set
+        if (IMATH_LIKELY ((hexpmant < 0x0f800000)))
+            v.i += 0x38000000;
+        else
+            v.i |= 0x7f800000;
     }
-    else
+    else if (hexpmant != 0)
     {
-        v.i = exps[he] | m;
+        // exponent is 0 because we're denormal, don't have to extract
+        // the mantissa, can just use as is
+        //
+        //
+        // other compilers may provide count-leading-zeros primitives,
+        // but we need the community to inform us of the variants
+        uint32_t lc;
+#    if defined(_MSC_VER)
+        lc = __lzcnt (hexpmant);
+#    elif defined(__GNUC__) || defined(__clang__)
+        lc = (uint32_t) __builtin_clz (hexpmant);
+#    else
+        lc = 0;
+        while (0 == ((hexpmant << lc) & 0x80000000))
+            ++lc;
+#    endif
+        lc -= 8;
+        // so nominally we want to remove that extra bit we shifted
+        // up, but we are going to add that bit back in, then subtract
+        // from it with the 0x38800000 - (lc << 23)....
+        //
+        // by combining, this allows us to skip the & operation (and
+        // remove a constant)
+        //
+        // hexpmant &= ~0x00800000;
+        v.i |= 0x38800000;
+        // lc is now x, where the desired exponent is then
+        // -14 - lc
+        // + 127 -> new exponent
+        v.i |= (hexpmant << lc);
+        v.i -= (lc << 23);
     }
     return v.f;
 #endif
 }
 
-/** NB: This only supports the one rounding mode which was present in
- * the original exr library (round to even) */
+/// NB: This only supports the one rounding mode which was present in
+/// the original exr library (round to even)
 static inline imath_half_bits_t
 imath_float_to_half (float f)
 {
 #if defined(__F16C__)
 #    ifdef _MSC_VER
-    /* msvc does not seem to have cvtsh_ss :( */
+    // msvc does not seem to have cvtsh_ss :(
     return _mm_extract_epi16 (
         _mm_cvtps_ph (_mm_set_ss (f), (_MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC)),
         0);
 #    else
-    /* preserve the fixed rounding mode to nearest */
+    // preserve the fixed rounding mode to nearest
     return _cvtss_sh (f, (_MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC));
 #    endif
 #else
@@ -331,59 +256,46 @@ imath_float_to_half (float f)
 
     v.f = f;
 
-    // TBD: This no longer seems faster...
-//#    if !defined(IMATH_HALF_NO_TABLES_AT_ALL)
-//#        if defined(IMATH_ENABLE_HALF_LOOKUP_TABLES)
-//    e = imath_float_half_exp_table[(v.i >> 23)];
-//    if (e != 0)
-//    {
-//        m = (v.i & 0x007fffff);
-//        return e + ((m + 0x00000fff + ((m >> 13) & 1)) >> 13);
-//    }
-//#        endif
-//#    endif
     ui  = (v.i & ~0x80000000);
     ret = ((v.i >> 16) & 0x8000);
-
-    // zero or flush to 0
-#    ifdef IMATH_HALF_EXCEPTIONS_ENABLED
-    if (ui == 0)
-        return ret;
-    if (ui < 0x33000001)
-    {
-        feraiseexcept (FE_UNDERFLOW);
-        return ret;
-    }
-#    else
-    if (ui < 0x33000001)
-        return ret;
-#    endif
-
-    if (ui >= 0x7f800000)
-    {
-        ret |= 0x7c00;
-        if (ui == 0x7f800000)
-            return ret;
-        m = (ui & 0x7fffff) >> 13;
-        // make sure we have at least one bit after shift to preserve nan-ness
-        return ret | m | (m == 0);
-    }
-
-    // round to infinity
-    if (ui > 0x477fefff)
-    {
-#    ifdef IMATH_HALF_EXCEPTIONS_ENABLED
-        feraiseexcept (FE_OVERFLOW);
-#    endif
-        return ret | 0x7c00;
-    }
 
     // exponent large enough to result in a normal number, round and return
     if (ui >= 0x38800000)
     {
+        // inf or nan
+        if (IMATH_UNLIKELY (ui >= 0x7f800000))
+        {
+            ret |= 0x7c00;
+            if (ui == 0x7f800000)
+                return ret;
+            m = (ui & 0x7fffff) >> 13;
+            // make sure we have at least one bit after shift to preserve nan-ness
+            return ret | m | (m == 0);
+        }
+
+        // too large, round to infinity
+        if (IMATH_UNLIKELY (ui > 0x477fefff))
+        {
+#    ifdef IMATH_HALF_EXCEPTIONS_ENABLED
+            feraiseexcept (FE_OVERFLOW);
+#    endif
+            return ret | 0x7c00;
+        }
+
         ui -= 0x38000000;
         ui = ((ui + 0x00000fff + ((ui >> 13) & 1)) >> 13);
         return ret | ui;
+    }
+
+    // zero or flush to 0
+    if (ui < 0x33000001)
+    {
+#    ifdef IMATH_HALF_EXCEPTIONS_ENABLED
+        if (ui == 0)
+            return ret;
+        feraiseexcept (FE_UNDERFLOW);
+#    endif
+        return ret;
     }
 
     // produce a denormalized half
@@ -593,11 +505,10 @@ class IMATH_EXPORT_TYPE half
                    "Assumption about the size of floats correct");
     using uif = imath_half_uif;
 
+    // preserved for legacy conversion
+    IMATH_EXPORT static uint16_t long_convert ( int i ) noexcept;
   private:
-    //#ifdef IMATH_USE_ORIGINAL_HALF_IMPLEMENTATION
-    IMATH_EXPORT static short convert (int i) noexcept;
-    IMATH_EXPORT static float overflow() noexcept;
-    //#endif
+
     constexpr uint16_t mantissa() const noexcept;
     constexpr uint16_t exponent() const noexcept;
 
@@ -721,66 +632,8 @@ class IMATH_EXPORT_TYPE half
 //----------------------------
 
 inline half::half (float f) noexcept
-#    ifndef IMATH_USE_ORIGINAL_HALF_IMPLEMENTATION
     : _h (imath_float_to_half (f))
-#    endif
 {
-#    ifdef IMATH_USE_ORIGINAL_HALF_IMPLEMENTATION
-    uif x;
-
-    x.f = f;
-
-    if (f == 0)
-    {
-        //
-        // Common special case - zero.
-        // Preserve the zero's sign bit.
-        //
-
-        _h = (x.i >> 16);
-    }
-    else
-    {
-        //
-        // We extract the combined sign and exponent, e, from our
-        // floating-point number, f.  Then we convert e to the sign
-        // and exponent of the half number via a table lookup.
-        //
-        // For the most common case, where a normalized half is produced,
-        // the table lookup returns a non-zero value; in this case, all
-        // we have to do is round f's significand to 10 bits and combine
-        // the result with e.
-        //
-        // For all other cases (overflow, zeroes, denormalized numbers
-        // resulting from underflow, infinities and NANs), the table
-        // lookup returns zero, and we call a longer, non-inline function
-        // to do the float-to-half conversion.
-        //
-
-        int e = (x.i >> 23) & 0x000001ff;
-
-        e = imath_float_half_exp_table[e];
-
-        if (e)
-        {
-            //
-            // Simple case - round the significand, m, to 10
-            // bits and combine it with the sign and exponent.
-            //
-
-            int m = x.i & 0x007fffff;
-            _h    = e + ((m + 0x00000fff + ((m >> 13) & 1)) >> 13);
-        }
-        else
-        {
-            //
-            // Difficult case - call a function.
-            //
-
-            _h = convert (x.i);
-        }
-    }
-#    endif
 }
 
 //------------------------------------------
@@ -796,11 +649,7 @@ inline constexpr half::half (FromBitsTag, uint16_t bits) noexcept : _h (bits)
 
 inline half::operator float() const noexcept
 {
-#    ifdef IMATH_USE_ORIGINAL_HALF_IMPLEMENTATION
-    return imath_half_to_float_table[_h].f;
-#    else
     return imath_half_to_float (_h);
-#    endif
 }
 
 //-------------------------

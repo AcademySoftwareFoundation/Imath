@@ -56,10 +56,10 @@ EXPORT_CONST const uint16_t *imath_float_half_exp_table = imath_float_half_exp_t
 // which may be trapped by the operating system.
 //-----------------------------------------------
 
-IMATH_EXPORT float
-half::overflow() noexcept
+static float
+half_overflow() noexcept
 {
-    volatile float f = 1e10;
+    float f = 1e10;
 
     for (int i = 0; i < 10; i++)
         f *= f; // this will overflow before the for loop terminates
@@ -72,8 +72,8 @@ half::overflow() noexcept
 // zeroes, denormalized numbers and exponent overflows.
 //-----------------------------------------------------
 
-IMATH_EXPORT short
-half::convert (int i) noexcept
+IMATH_EXPORT uint16_t
+half::long_convert (int i) noexcept
 {
     //
     // Our floating point number, f, is represented by the bit
@@ -195,7 +195,7 @@ half::convert (int i) noexcept
 
         if (e > 30)
         {
-            overflow();        // Cause a hardware floating point overflow;
+            half_overflow ();        // Cause a hardware floating point overflow;
             return s | 0x7c00; // if this returns, the half becomes an
         }                      // infinity with the same sign as f.
 

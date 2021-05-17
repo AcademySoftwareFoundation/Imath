@@ -9,7 +9,7 @@
 #    define _CRT_RAND_S
 #endif
 
-#define IMATH_USE_ORIGINAL_HALF_IMPLEMENTATION
+#include <ImathConfig.h>
 #include <half.h>
 
 #include <stdio.h>
@@ -25,6 +25,85 @@
 #include <memory>
 
 using namespace IMATH_NAMESPACE;
+
+#ifdef IMATH_ENABLE_HALF_LOOKUP_TABLES
+static inline float table_half_cast(const half &h)
+{
+    return imath_half_to_float_table[h.bits()].f;
+}
+
+static inline half exptable_half_constructor(float f)
+{
+    half ret;
+    imath_half_uif x;
+
+    x.f = f;
+
+    if (f == 0)
+    {
+        //
+        // Common special case - zero.
+        // Preserve the zero's sign bit.
+        //
+
+        ret.setBits( (x.i >> 16) );
+    }
+    else
+    {
+        //
+        // We extract the combined sign and exponent, e, from our
+        // floating-point number, f.  Then we convert e to the sign
+        // and exponent of the half number via a table lookup.
+        //
+        // For the most common case, where a normalized half is produced,
+        // the table lookup returns a non-zero value; in this case, all
+        // we have to do is round f's significand to 10 bits and combine
+        // the result with e.
+        //
+        // For all other cases (overflow, zeroes, denormalized numbers
+        // resulting from underflow, infinities and NANs), the table
+        // lookup returns zero, and we call a longer, non-inline function
+        // to do the float-to-half conversion.
+        //
+
+        int e = (x.i >> 23) & 0x000001ff;
+
+        e = imath_float_half_exp_table[e];
+
+        if (e)
+        {
+            //
+            // Simple case - round the significand, m, to 10
+            // bits and combine it with the sign and exponent.
+            //
+
+            int m = x.i & 0x007fffff;
+            ret.setBits (e + ((m + 0x00000fff + ((m >> 13) & 1)) >> 13));
+        }
+        else
+        {
+            //
+            // Difficult case - call a function.
+            //
+
+            ret.setBits (half::long_convert (x.i));
+        }
+    }
+    return ret;
+}
+#else
+// ummm, kind of meaningless
+static inline float table_half_cast(const half &h)
+{
+    return static_cast<float>( h );
+}
+
+static inline half exptable_half_constructor(float f)
+{
+    return half {f};
+}
+
+#endif
 
 int64_t
 get_ticks (void)
@@ -71,7 +150,7 @@ perf_test_half_to_float (float* floats, const uint16_t* halfs, int numentries)
 
     int64_t ost = get_ticks();
     for (int i = 0; i < numentries; ++i)
-        floats[i] = static_cast<float> (halfvals[i]);
+        floats[i] = table_half_cast (halfvals[i]);
     int64_t oet = get_ticks();
 
     int64_t onanos = (oet - ost);
@@ -97,7 +176,7 @@ perf_test_float_to_half (uint16_t* halfs, const float* floats, int numentries)
 
     int64_t ost = get_ticks();
     for (int i = 0; i < numentries; ++i)
-        halfvals[i] = half (floats[i]);
+        halfvals[i] = exptable_half_constructor (floats[i]);
     int64_t oet = get_ticks();
 
     int64_t onanos = (oet - ost);

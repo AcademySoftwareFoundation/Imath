@@ -3,7 +3,7 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-//#define IMATH_HALF_NO_TABLES_AT_ALL
+#define IMATH_HALF_NO_TABLES_AT_ALL
 //#define IMATH_HALF_EXCEPTIONS_ENABLED
 
 #include <half.h>
@@ -20,10 +20,10 @@ typedef union
 static const c_half_uif half_to_float[1 << 16] =
 #include "../Imath/toFloat.h"
 
-    static const unsigned short half_eLut[1 << 9] =
+static const unsigned short half_eLut[1 << 9] =
 #include "../Imath/eLut.h"
 
-        static short old_convert (int i)
+static short exp_long_convert (int i)
 {
     int s = (i >> 16) & 0x00008000;
     int e = ((i >> 23) & 0x000000ff) - (127 - 15);
@@ -78,7 +78,7 @@ static const c_half_uif half_to_float[1 << 16] =
 }
 
 static uint16_t
-old_method (float f)
+exptable_method (float f)
 {
     c_half_uif x;
     uint16_t _h = 0;
@@ -130,7 +130,7 @@ old_method (float f)
             //
             // Difficult case - call a function.
             //
-            _h = old_convert (x.i);
+            _h = exp_long_convert (x.i);
         }
     }
     return _h;
@@ -144,7 +144,7 @@ main (int argc, char* argv[])
     half test, test2;
     conv.f = HALF_DENORM_MIN + HALF_DENORM_MIN * 0.5f;
     test   = imath_float_to_half (conv.f);
-    test2  = old_method (conv.f);
+    test2  = exptable_method (conv.f);
     if (test != test2)
     {
         fprintf (stderr,
