@@ -16,7 +16,10 @@ endif()
 
 project(Imath VERSION 3.0.2 LANGUAGES C CXX)
 
-set(IMATH_VERSION_EXTRA "" CACHE STRING "Extra version tag string for Imath build")
+set(IMATH_VERSION_RELEASE_TYPE "-dev" CACHE STRING "Extra version tag string for Imath build, such as -dev, -beta1, etc.")
+
+set(IMATH_VERSION ${Imath_VERSION})
+set(IMATH_VERSION_API "${Imath_VERSION_MAJOR}_${Imath_VERSION_MINOR}")
 
 # See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 set(IMATH_SOVERSION 28)
@@ -24,21 +27,12 @@ set(IMATH_SOREVISION 0)
 set(IMATH_SOAGE 0) 
 set(IMATH_LIB_VERSION "${IMATH_SOVERSION}.${IMATH_SOREVISION}.${IMATH_SOAGE}")
 
-set(IMATH_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
-set(IMATH_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
-set(IMATH_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
-set(IMATH_VERSION ${CMAKE_PROJECT_VERSION})
-if (NOT IMATH_VERSION_EXTRA STREQUAL "")
-  set(IMATH_VERSION "${CMAKE_PROJECT_VERSION}-${IMATH_VERSION_EXTRA}")
-endif()
-set(IMATH_VERSION_API "${IMATH_VERSION_MAJOR}_${IMATH_VERSION_MINOR}")
-
-message(STATUS "Configure Imath Version: ${IMATH_VERSION} Lib API: ${IMATH_LIB_VERSION}")
-
 # ImathSetup.cmake declares all the configuration variables visible
 # in cmake-gui or similar and the rest of the global
 # project setup. Check the context to see what is configurable.
 include(config/ImathSetup.cmake)
+
+message(STATUS "Configure ${IMATH_PACKAGE_NAME}, library API version: ${IMATH_LIB_VERSION}")
 
 # Config headers and package config files
 add_subdirectory(config)
