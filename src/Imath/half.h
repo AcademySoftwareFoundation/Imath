@@ -623,7 +623,7 @@ class IMATH_EXPORT_TYPE half
 // different half numbers; we can convert each of those numbers once
 // and store the results in a table.  Later, all conversions can be
 // done using only simple table lookups. (Although this is
-// questionably the fastest way to do this, and it is implemented in
+// arguably the fastest way to do this, and Imath has an implementation in
 // hardware now)
 //
 

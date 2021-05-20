@@ -92,7 +92,7 @@ static inline half exptable_half_constructor(float f)
     return ret;
 }
 #else
-// ummm, kind of meaningless
+// provide a wrapping function for consistency/readability
 static inline float table_half_cast(const half &h)
 {
     return static_cast<float>( h );
