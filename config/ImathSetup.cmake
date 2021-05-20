@@ -29,7 +29,7 @@ set(tmp)
 set(IMATH_NAMESPACE_CUSTOM "0" CACHE STRING "Whether the namespace has been customized (so external users know)")
 set(IMATH_INTERNAL_NAMESPACE "Imath_${IMATH_VERSION_API}" CACHE STRING "Real namespace for Imath that will end up in compiled symbols")
 set(IMATH_NAMESPACE "Imath" CACHE STRING "Public namespace alias for Imath")
-set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}" CACHE STRING "Public string / label for displaying package")
+set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}${IMATH_VERSION_RELEASE_TYPE}" CACHE STRING "Public string / label for displaying package")
 
 # Whether to generate and install a pkg-config file Imath.pc on
 if(WIN32)
