@@ -16,7 +16,7 @@ endif()
 
 project(Imath VERSION 3.0.4 LANGUAGES C CXX)
 
-set(IMATH_VERSION_RELEASE_TYPE "-dev" CACHE STRING "Extra version tag string for Imath build, such as -dev, -beta1, etc.")
+set(IMATH_VERSION_RELEASE_TYPE "" CACHE STRING "Extra version tag string for Imath build, such as -dev, -beta1, etc.")
 
 set(IMATH_VERSION ${Imath_VERSION})
 set(IMATH_VERSION_API "${Imath_VERSION_MAJOR}_${Imath_VERSION_MINOR}")
