@@ -273,8 +273,6 @@ jobs:
           #./bin/ImathTest
           # Confirm the python module loads. Query the site-packages directory and substitute ../_install
           export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`          
-          echo "PYTHONPATH=$PYTHONPATH"
-          echo "matrix.python-version=${{ matrix.python-version }}"
           python -c "import imath;print(imath.__version__)"
         working-directory: _examples 
       - name: Test
