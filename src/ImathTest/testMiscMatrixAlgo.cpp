@@ -7,13 +7,13 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathMatrixAlgo.h"
-#include "ImathRandom.h"
+#include <ImathMatrixAlgo.h>
+#include <ImathRandom.h>
 #include <assert.h>
 #include <exception>
 #include <iostream>
 #include <stdio.h>
-#include <testMiscMatrixAlgo.h>
+#include "testMiscMatrixAlgo.h"
 
 #if 0
 #    define debug(x) (printf x, fflush (stdout))

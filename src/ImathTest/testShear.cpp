@@ -7,14 +7,14 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathMath.h"
-#include "ImathShear.h"
+#include <ImathMath.h>
+#include <ImathShear.h>
 #include <assert.h>
 #include <iostream>
-#include <testShear.h>
+#include "testShear.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
-#include "ImathForward.h"
+#include <ImathForward.h>
 
 using namespace std;
 

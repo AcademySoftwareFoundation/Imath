@@ -7,9 +7,9 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathEuler.h"
-#include "ImathMatrixAlgo.h"
-#include "ImathRandom.h"
+#include <ImathEuler.h>
+#include <ImathMatrixAlgo.h>
+#include <ImathRandom.h>
 #include <assert.h>
 #include <cmath>
 #include <iostream>

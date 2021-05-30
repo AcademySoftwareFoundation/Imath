@@ -1,6 +1,15 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
+if("${CMAKE_PROJECT_NAME}" STREQUAL "")
+  message(STATUS "Configuring ImathTest")
+  cmake_minimum_required(VERSION 3.12)
+  project(ImathTest)
+  find_package(Imath)
+else()
+  message(STATUS "ImathTest is a sub-project of ${CMAKE_PROJECT_NAME}")
+endif()
+
 add_executable(ImathTest 
   main.cpp
   testBox.cpp

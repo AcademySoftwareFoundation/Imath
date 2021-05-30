@@ -7,15 +7,15 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathFun.h"
-#include "ImathVec.h"
-#include "ImathMatrix.h"
+#include <ImathFun.h>
+#include <ImathVec.h>
+#include <ImathMatrix.h>
 #include <array>
 #include <cassert>
 #include <cmath>
 #include <iostream>
 #include <vector>
-#include <testVec.h>
+#include "testVec.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
