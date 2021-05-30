@@ -134,7 +134,8 @@ FixedArray2D<int> rangeY(int sizeX, int sizeY)
 
 BOOST_PYTHON_MODULE(imath)
 {
-    
+    scope().attr("__version__") = IMATH_VERSION_STRING;
+        
     register_basicTypes();
 
     class_<IntArray2D> iclass2D = IntArray2D::register_("IntArray2D","Fixed length array of ints");
