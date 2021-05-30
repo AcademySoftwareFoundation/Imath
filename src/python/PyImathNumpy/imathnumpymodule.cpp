@@ -113,6 +113,8 @@ static void *apply_import()
 #endif
 BOOST_PYTHON_MODULE(imathnumpy)
 {
+    scope().attr("__version__") = IMATH_VERSION_STRING;
+
     handle<> imath(PyImport_ImportModule("imath"));
     if (PyErr_Occurred()) throw_error_already_set();
     scope().attr("imath") = imath;
