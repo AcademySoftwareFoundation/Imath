@@ -13,6 +13,11 @@
 /////////////////////
 
 //
+// Define if the half implementation should compile / enable the half lookup tables
+//
+#cmakedefine IMATH_ENABLE_HALF_LOOKUP_TABLES
+
+//
 // Define if the target system has support for large
 // stack sizes.
 //
@@ -94,8 +99,13 @@
 // used only with thorough benchmarking.
 //
 #if defined(__GNUC__) || defined(__clang__) || defined(__INTEL_COMPILER)
-#    define IMATH_LIKELY(x) (__builtin_expect(bool(x), true))
-#    define IMATH_UNLIKELY(x) (__builtin_expect(bool(x), false))
+#    ifdef __cplusplus
+#        define IMATH_LIKELY(x) (__builtin_expect(static_cast<bool>(x), true))
+#        define IMATH_UNLIKELY(x) (__builtin_expect(static_cast<bool>(x), false))
+#    else
+#        define IMATH_LIKELY(x) (__builtin_expect((x), 1))
+#        define IMATH_UNLIKELY(x) (__builtin_expect((x), 0))
+#    endif
 #else
 #    define IMATH_LIKELY(x) (x)
 #    define IMATH_UNLIKELY(x) (x)
