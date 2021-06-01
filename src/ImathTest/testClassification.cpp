@@ -7,11 +7,11 @@
 #    undef NDEBUG
 #endif
 
-#include "half.h"
+#include <half.h>
 #include <assert.h>
 #include <iostream>
-#include <testClassification.h>
 #include <type_traits>
+#include "testClassification.h"
 
 using namespace std;
 

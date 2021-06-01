@@ -12,7 +12,7 @@
 #include <iostream>
 #include <random>
 #include <stdlib.h>
-#include <testError.h>
+#include "testError.h"
 
 using namespace std;
 

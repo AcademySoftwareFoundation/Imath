@@ -7,11 +7,11 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathMatrix.h"
-#include "ImathMatrixAlgo.h"
+#include <ImathMatrix.h>
+#include <ImathMatrixAlgo.h>
 #include <assert.h>
 #include <iostream>
-#include <testInvert.h>
+#include "testInvert.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;

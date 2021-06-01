@@ -7,8 +7,8 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathInterval.h"
-#include "ImathRandom.h"
+#include <ImathInterval.h>
+#include <ImathRandom.h>
 #include <algorithm>
 #include <assert.h>
 #include <iostream>
@@ -17,7 +17,7 @@
 #include <vector>
 
 // Include ImathForward *after* other headers to validate forward declarations
-#include "ImathForward.h"
+#include <ImathForward.h>
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;

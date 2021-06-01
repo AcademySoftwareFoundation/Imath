@@ -7,18 +7,18 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathInt64.h"
-#include "ImathMath.h"
-#include "ImathMatrix.h"
-#include "ImathMatrixAlgo.h"
-#include "ImathRandom.h"
-#include "ImathVec.h"
+#include <ImathInt64.h>
+#include <ImathMath.h>
+#include <ImathMatrix.h>
+#include <ImathMatrixAlgo.h>
+#include <ImathRandom.h>
+#include <ImathVec.h>
 #include <assert.h>
 #include <iostream>
-#include <testMatrix.h>
+#include "testMatrix.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
-#include "ImathForward.h"
+#include <ImathForward.h>
 
 using namespace std;
 using IMATH_INTERNAL_NAMESPACE::Int64;

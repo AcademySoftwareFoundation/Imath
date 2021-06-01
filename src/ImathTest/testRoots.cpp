@@ -7,13 +7,13 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathFun.h"
-#include "ImathRoots.h"
+#include <ImathFun.h>
+#include <ImathRoots.h>
 #include <algorithm>
 #include <assert.h>
 #include <iomanip>
 #include <iostream>
-#include <testRoots.h>
+#include "testRoots.h"
 
 using namespace std;
 

@@ -58,7 +58,6 @@ jobs:
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2021
-            exclude-tests: -E PyImath.*_Python2
           # Debug
           - build: 12
             build-type: Debug
@@ -68,7 +67,6 @@ jobs:
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2021
-            exclude-tests: -E PyImath.*_Python2
           # C++14
           - build: 13
             build-type: Release
@@ -78,7 +76,6 @@ jobs:
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2021
-            exclude-tests: -E PyImath.*_Python2
           # Static
           - build: 14
             build-type: Release
@@ -88,7 +85,6 @@ jobs:
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2021
-            exclude-tests: -E PyImath.*_Python2
           # -------------------------------------------------------------------
           # GCC, VFX CY2020
           # -------------------------------------------------------------------
@@ -101,7 +97,6 @@ jobs:
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2020
-            exclude-tests: -E PyImath.*_Python2
           # Debug
           - build: 2
             build-type: Debug
@@ -111,7 +106,6 @@ jobs:
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2020
-            exclude-tests: -E PyImath.*_Python2
           # C++14
           - build: 3
             build-type: Release
@@ -121,7 +115,6 @@ jobs:
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2020
-            exclude-tests: -E PyImath.*_Python2
           # Static
           - build: 4
             build-type: Release
@@ -131,7 +124,6 @@ jobs:
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2020
-            exclude-tests: -E PyImath.*_Python2
           # -------------------------------------------------------------------
           # GCC, VFX CY2019
           # -------------------------------------------------------------------
@@ -139,12 +131,12 @@ jobs:
           - build: 5
             build-type: Release
             build-shared: 'ON'
+            use-python2: 'ON'
             cxx-standard: 11
             cxx-compiler: g++
             cc-compiler: gcc
             compiler-desc: GCC 6.3.1
             vfx-cy: 2019
-            exclude-tests: 
           # -------------------------------------------------------------------
           # Clang, VFX CY2021
           # -------------------------------------------------------------------
@@ -157,7 +149,6 @@ jobs:
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2021
-            exclude-tests: -E PyImath.*_Python2
           # Debug
           - build: 16
             build-type: Debug
@@ -167,7 +158,6 @@ jobs:
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2021
-            exclude-tests: -E PyImath.*_Python2
           # C++14
           - build: 17
             build-type: Release
@@ -177,7 +167,6 @@ jobs:
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2021
-            exclude-tests: -E PyImath.*_Python2
           # Static
           - build: 18
             build-type: Release
@@ -187,7 +176,6 @@ jobs:
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2021
-            exclude-tests: -E PyImath.*_Python2
           # -------------------------------------------------------------------
           # Clang, VFX CY2020
           # -------------------------------------------------------------------
@@ -200,7 +188,6 @@ jobs:
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2020
-            exclude-tests: -E PyImath.*_Python2
           # Debug
           - build: 7
             build-type: Debug
@@ -210,7 +197,6 @@ jobs:
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2020
-            exclude-tests: -E PyImath.*_Python2
           # C++14
           - build: 8
             build-type: Release
@@ -220,7 +206,6 @@ jobs:
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2020
-            exclude-tests: -E PyImath.*_Python2
           # Static
           - build: 9
             build-type: Release
@@ -230,7 +215,6 @@ jobs:
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2020
-            exclude-tests: -E PyImath.*_Python2
           # -------------------------------------------------------------------
           # Clang, VFX CY2019
           # -------------------------------------------------------------------
@@ -238,12 +222,12 @@ jobs:
           - build: 10
             build-type: Release
             build-shared: 'ON'
+            use-python2: 'ON'
             cxx-standard: 11
             cxx-compiler: clang++
             cc-compiler: clang
             compiler-desc: Clang 7
             vfx-cy: 2019
-            exclude-tests:
     env:
       CXX: ${{ matrix.cxx-compiler }}
       CC: ${{ matrix.cc-compiler }}
@@ -254,25 +238,43 @@ jobs:
         run: |
           mkdir _install
           mkdir _build
+          mkdir _examples
       - name: Configure
         run: |
-          cmake ../. \
+          cmake .. \
                 -DCMAKE_INSTALL_PREFIX=../_install \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
                 -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
                 -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }} \
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
                 -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
-                -DPYTHON='ON'\
-                -DPYTHON_EXECUTABLE=$(which python) 
+                -DPYTHON='ON' \
+                -DUSE_PYTHON2=${{ matrix.use-python2 }}
         working-directory: _build
       - name: Build
         run: |
           cmake --build . \
                 --target install \
-                --config ${{ matrix.build-type }} \
-                -- -j4
+                --config ${{ matrix.build-type }}
         working-directory: _build
+      - name: Examples
+        run: |
+          # Make sure we can build the tests when configured as a
+          # standalone application linking against the just-installed
+          # Imath library.
+          cmake ../src/ImathTest \
+                -DCMAKE_PREFIX_PATH=../../_install \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
+                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
+                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }}
+          cmake --build . \
+                --config ${{ matrix.build-type }}
+          # Confirm the tests run
+          #./bin/ImathTest
+          # Confirm the python module loads. Query the site-packages directory and substitute ../_install
+          export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`          
+          python -c "import imath;print(imath.__version__)"
+        working-directory: _examples 
       - name: Test
         run: |
           ctest -T Test ${{ matrix.exclude-tests }} \
@@ -337,6 +339,7 @@ jobs:
         run: |
           mkdir _install
           mkdir _build
+          mkdir _examples
       ## - name: Install Dependences
       ##   run: |
       ##     share/ci/scripts/macos/install_boost.sh 
@@ -358,6 +361,21 @@ jobs:
                 --config ${{ matrix.build-type }} \
                 -- -j2
         working-directory: _build
+      - name: Examples
+        run: |
+          # Make sure we can build the tests when configured as a
+          # standalone application linking against the just-installed
+          # Imath library.
+          cmake ../src/ImathTest \
+                -DCMAKE_PREFIX_PATH=../../_install \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
+                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
+                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }}
+          cmake --build . \
+                --config ${{ matrix.build-type }}
+          # Confirm the tests run
+          ./bin/ImathTest
+        working-directory: _examples 
       - name: Test
         run: |
           ctest -T Test ${{matrix.exclude-tests }} \

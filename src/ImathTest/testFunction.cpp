@@ -10,7 +10,7 @@
 #include "halfFunction.h"
 #include <assert.h>
 #include <iostream>
-#include <testFunction.h>
+#include "testFunction.h"
 
 using namespace std;
 

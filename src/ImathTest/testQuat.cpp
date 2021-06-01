@@ -7,17 +7,17 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathFun.h"
-#include "ImathMatrixAlgo.h"
-#include "ImathPlatform.h" /* [i_a] M_PI_2 */
-#include "ImathQuat.h"
+#include <ImathFun.h>
+#include <ImathMatrixAlgo.h>
+#include <ImathPlatform.h>
+#include <ImathQuat.h>
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <testQuat.h>
+#include "testQuat.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
-#include "ImathForward.h"
+#include <ImathForward.h>
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;

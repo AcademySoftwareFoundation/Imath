@@ -7,13 +7,13 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathEuler.h"
-#include "ImathFun.h"
-#include "ImathMatrixAlgo.h"
-#include "ImathRandom.h"
+#include <ImathEuler.h>
+#include <ImathFun.h>
+#include <ImathMatrixAlgo.h>
+#include <ImathRandom.h>
 #include <assert.h>
 #include <iostream>
-#include <testExtractEuler.h>
+#include "testExtractEuler.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
