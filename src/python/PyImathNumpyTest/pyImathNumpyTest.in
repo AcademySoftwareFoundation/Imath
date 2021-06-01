@@ -106,7 +106,7 @@ def testScalarArrayToNumpy():
         refType  = numpyType(ia)
         refShape = (aDim,)
         
-        for i in xrange(aDim):
+        for i in range(aDim):
             ia[i] = i
         na = imathnumpy.arrayToNumpy(ia)
         
@@ -116,7 +116,7 @@ def testScalarArrayToNumpy():
         print("%s == %s" % (str(na.shape), str(refShape)))
         assert(na.shape == refShape)
 
-        for i in xrange(aDim):
+        for i in range(aDim):
             assert(na[i] == ia[i])
         print(na)
 
@@ -157,8 +157,8 @@ def testVectorArrayToNumpy():
         refBaseTypeSize = baseTypeSize(ia)
         refShape        = (aDim, refBaseTypeSize)
 
-        for i in xrange(aDim):
-            for j in xrange(refBaseTypeSize):
+        for i in range(aDim):
+            for j in range(refBaseTypeSize):
                 ia[i][j] = i + 2 ** j
         na = imathnumpy.arrayToNumpy(ia)
         
@@ -168,8 +168,8 @@ def testVectorArrayToNumpy():
         print("%s == %s" % (str(na.shape), str(refShape)))
         assert(na.shape == refShape)
 
-        for i in xrange(aDim):
-            for j in xrange(refBaseTypeSize):
+        for i in range(aDim):
+            for j in range(refBaseTypeSize):
                 assert(na[i][j] == ia[i][j])
         print(na)
 
@@ -197,8 +197,8 @@ def testScalarArray2DToNumpy():
         refType  = numpyType(ia)
         refShape = (aDim2, aDim1)
 
-        for y in xrange(aDim2):
-            for x in xrange(aDim1):
+        for y in range(aDim2):
+            for x in range(aDim1):
                 ia[(x, y)] = x + 2 * y
         na = imathnumpy.arrayToNumpy(ia)
 
@@ -208,8 +208,8 @@ def testScalarArray2DToNumpy():
         print("%s == %s" % (str(na.shape), str(refShape)))
         assert(na.shape == refShape)
 
-        for y in xrange(aDim2):
-            for x in xrange(aDim1):
+        for y in range(aDim2):
+            for x in range(aDim1):
                 assert(na[y][x] == ia.item(x, y))
         print(na)
 
@@ -237,9 +237,9 @@ def testVectorArray2DToNumpy():
         refBaseTypeSize = baseTypeSize(ia)
         refShape        = (aDim2, aDim1, refBaseTypeSize)
 
-        for y in xrange(aDim2):
-            for x in xrange(aDim1):
-                for k in xrange(refBaseTypeSize):
+        for y in range(aDim2):
+            for x in range(aDim1):
+                for k in range(refBaseTypeSize):
                     ia.item(x, y)[k] = x + 2 * y + k
         na = imathnumpy.arrayToNumpy(ia)
 
@@ -249,9 +249,9 @@ def testVectorArray2DToNumpy():
         print("%s == %s" % (str(na.shape), str(refShape)))
         assert(na.shape == refShape)
 
-        for y in xrange(aDim2):
-            for x in xrange(aDim1):
-                for k in xrange(refBaseTypeSize):
+        for y in range(aDim2):
+            for x in range(aDim1):
+                for k in range(refBaseTypeSize):
                     assert(na[y][x][k] == ia.item(x, y)[k])
         print(na)
 

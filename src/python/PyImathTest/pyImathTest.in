@@ -9,7 +9,6 @@ from imath import *
 from math import sqrt, pi, sin, cos
 import math
 import string, traceback, sys
-import iex
 import random
 
 testList = []
