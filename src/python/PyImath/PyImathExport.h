@@ -13,7 +13,7 @@
         #define PYIMATH_EXPORT __attribute__((visibility("default")))
         #define PYIMATH_EXPORT __attribute__((visibility("default")))
     #elif defined(_MSC_VER)
-        #if defined(PYIMATH_EXPORTS)
+        #if defined(PYIMATH_BUILD)
             #define PYIMATH_EXPORT __declspec(dllexport)
         #else
             #define PYIMATH_EXPORT __declspec(dllimport)

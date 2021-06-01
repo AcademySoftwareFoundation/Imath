@@ -156,7 +156,7 @@ static Box<T> * box3TupleConstructor2(const tuple &t0, const tuple &t1)
         return new Box<T>(point0, point1);
     }
     else
-        throw std::logic_error ("Invalid input to Box tuple constructor");
+        throw std::invalid_argument ("Invalid input to Box tuple constructor");
 }
 
 template <class T>
