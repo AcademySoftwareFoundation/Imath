@@ -5,8 +5,6 @@
 
 // clang-format off
 
-#include "PyImathRandom.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/format.hpp>
@@ -14,7 +12,8 @@
 #include "PyImath.h"
 #include "PyImathMathExc.h"
 #include "PyImathFixedArray.h"
-
+#include "PyImathRandom.h"
+#include "PyImathDecorators.h"
 
 namespace PyImath{
 using namespace boost::python;

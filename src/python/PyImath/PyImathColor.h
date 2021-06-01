@@ -10,8 +10,8 @@
 
 #include <Python.h>
 #include <boost/python.hpp>
-#include "PyImath.h"
 #include <ImathColor.h>
+#include "PyImath.h"
 
 namespace PyImath {
 

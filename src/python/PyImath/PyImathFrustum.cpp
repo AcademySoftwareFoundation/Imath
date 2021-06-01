@@ -5,15 +5,15 @@
 
 // clang-format off
 
-#include "PyImathFrustum.h"
-#include "PyImathDecorators.h"
-#include "PyImathExport.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/format.hpp>
 #include "PyImath.h"
 #include "PyImathMathExc.h"
 #include "PyImathVec.h"
+#include "PyImathFrustum.h"
+#include "PyImathDecorators.h"
+#include "PyImathExport.h"
 
 namespace PyImath{
 using namespace boost::python;

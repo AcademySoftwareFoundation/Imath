@@ -5,9 +5,9 @@
 
 // clang-format off
 
-#include "PyImathUtil.h"
 #include <boost/python.hpp>
 #include <pystate.h>
+#include "PyImathUtil.h"
 
 namespace PyImath {
 

@@ -9,10 +9,9 @@
 #define _PyImathRandom_h_
 
 #include <Python.h>
-#include "PyImathExport.h"
 #include <boost/python.hpp>
 #include <ImathRandom.h>
-
+#include "PyImathExport.h"
 
 namespace PyImath {
 

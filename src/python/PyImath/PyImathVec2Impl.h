@@ -14,18 +14,18 @@
 // order to work around MSVC limitations.
 //
 
-#include "PyImathVec.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
-#include "PyImath.h"
-#include "PyImathBox.h"
+#include <boost/cast.hpp>
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
+#include "PyImath.h"
 #include "PyImathMathExc.h"
-#include <boost/cast.hpp>
+#include "PyImathBox.h"
+#include "PyImathVec.h"
+#include "PyImathDecorators.h"
 #include "PyImathOperators.h"
 #include "PyImathVecOperators.h"
 
@@ -960,7 +960,7 @@ register_Vec2()
         .staticmethod("baseTypeEpsilon")
         .def("baseTypeMax", &Vec2<T>::baseTypeMax,"baseTypeMax() max value of the base type of the vector")
         .staticmethod("baseTypeMax")
-        .def("baseTypeLowest", &Vec2<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the vector")
+        .def("baseTypeLowest", &Vec2<T>::baseTypeLowest,"baseTypeLowest() largest negative value of the base type of the vector")
         .staticmethod("baseTypeLowest")
         .def("baseTypeSmallest", &Vec2<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the vector")
         .staticmethod("baseTypeSmallest")
@@ -1030,6 +1030,9 @@ register_Vec2()
         .def("__rdiv__", &Vec2_rdivTuple<T,tuple>)
         .def("__rdiv__", &Vec2_rdivTuple<T,list>)
         .def("__rdiv__", &Vec2_rdivT<T>)
+        .def("__rtruediv__", &Vec2_rdivTuple<T,tuple>)
+        .def("__rtruediv__", &Vec2_rdivTuple<T,list>)
+        .def("__rtruediv__", &Vec2_rdivT<T>)
         .def("__idiv__", &Vec2_idivObj<T>,return_internal_reference<>())
         .def("__itruediv__", &Vec2_idivObj<T>,return_internal_reference<>())
         .def("__xor__", &Vec2_dot<T>)
@@ -1089,7 +1092,8 @@ template <class T,int index>
 static FixedArray<T>
 Vec2Array_get(FixedArray<IMATH_NAMESPACE::Vec2<T> > &va)
 {
-    return FixedArray<T>(&va[0][index],va.len(),2*va.stride());
+    return FixedArray<T>(&(va.unchecked_index(0)[index]),
+                         va.len(), 2*va.stride(), va.handle(), va.writable());
 }
 
 template <class T>

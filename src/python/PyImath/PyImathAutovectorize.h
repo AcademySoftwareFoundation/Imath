@@ -68,25 +68,6 @@ using boost::mpl::remove_if;
 using boost::mpl::if_;
 using boost::mpl::for_each;
 
-template <class T> struct name_of_type;
-
-template <> struct name_of_type<int>
-{
-   static const char *apply() { return "int"; }
-};
-template <> struct name_of_type<float>
-{
-    static const char *apply() { return "float"; }
-};
-template <> struct name_of_type<double>
-{
-    static const char *apply() { return "double"; }
-};
-template <class T> struct name_of_type<PyImath::FixedArray<T> >
-{
-    static const char *apply() { return PyImath::FixedArray<T>::name(); }
-};
-
 
 struct null_precomputation {
     static void precompute(size_t len) { return; }
@@ -169,55 +150,6 @@ bool any_masked(const T1 &a, const T2 &b, const T3 &c, const T4 &d)
     return any_masked(a,b) || any_masked(c,d);
 }
 
-template <class T>
-struct access_value
-{
-    static inline T & apply(T &arg, size_t i) { return arg; }
-};
-
-template <class T>
-struct access_value<T &>
-{
-    static inline T & apply(T &arg, size_t i) { return arg; }
-};
-
-template <class T>
-struct access_value<PyImath::FixedArray<T> &>
-{
-    static inline T & apply(PyImath::FixedArray<T> &arg, size_t i) { return arg[i]; }
-};
-
-template <class T>
-struct access_value<const PyImath::FixedArray<T> &>
-{
-    static inline const T & apply(const PyImath::FixedArray<T> &arg, size_t i) { return arg[i]; }
-};
-
-template <class T>
-struct direct_access_value
-{
-    static inline T & apply(T &arg, size_t i) { return arg; }
-};
-
-template <class T>
-struct direct_access_value<T &>
-{
-    static inline T & apply(T &arg, size_t i) { return arg; }
-};
-
-template <class T>
-struct direct_access_value<PyImath::FixedArray<T> &>
-{
-    static inline T & apply(PyImath::FixedArray<T> &arg, size_t i) { return arg.direct_index(i); }
-};
-
-template <class T>
-struct direct_access_value<const PyImath::FixedArray<T> &>
-{
-    static inline const T & apply(const PyImath::FixedArray<T> &arg, size_t i) { return arg.direct_index(i); }
-};
-
-
 //-----------------------------------------------------------------------------------------
 
 //
@@ -287,6 +219,29 @@ measure_arguments(const arg1_type &arg1, const arg2_type &arg2, const arg3_type 
     return len.first;
 }
 
+template <class arg1_type, class arg2_type, class arg3_type, class arg4_type>
+size_t
+measure_arguments(const arg1_type &arg1, const arg2_type &arg2, const arg3_type &arg3, const arg4_type &arg4)
+{
+    std::pair<size_t,bool> len = measure_argument<arg1_type>::apply(arg1);
+    len = match_lengths(len,measure_argument<arg2_type>::apply(arg2));
+    len = match_lengths(len,measure_argument<arg3_type>::apply(arg3));
+    len = match_lengths(len,measure_argument<arg4_type>::apply(arg4));
+    return len.first;
+}
+
+template <class arg1_type, class arg2_type, class arg3_type, class arg4_type, class arg5_type>
+size_t
+measure_arguments(const arg1_type &arg1, const arg2_type &arg2, const arg3_type &arg3, const arg4_type &arg4, const arg5_type &arg5)
+{
+    std::pair<size_t,bool> len = measure_argument<arg1_type>::apply(arg1);
+    len = match_lengths(len,measure_argument<arg2_type>::apply(arg2));
+    len = match_lengths(len,measure_argument<arg3_type>::apply(arg3));
+    len = match_lengths(len,measure_argument<arg4_type>::apply(arg4));
+    len = match_lengths(len,measure_argument<arg5_type>::apply(arg5));
+    return len.first;
+}
+
 //-----------------------------------------------------------------------------------------
 
 template <class T>
@@ -313,88 +268,204 @@ struct vectorized_result_type
     typedef typename if_<VectorizeArg,PyImath::FixedArray<T>,T>::type type;
 };
 
+template <typename T>
+struct SimpleNonArrayWrapper
+{
+    struct ReadOnlyDirectAccess
+    {
+        ReadOnlyDirectAccess (const T& arg)
+            : _arg (arg) {}
+        ReadOnlyDirectAccess (const ReadOnlyDirectAccess& other)
+            : _arg (other._arg) {}
+
+        const T&  operator[] (size_t) const { return _arg; }
+
+      private:
+        const T&  _arg;
+    };
+
+    struct WritableDirectAccess : public ReadOnlyDirectAccess
+    {
+        WritableDirectAccess (T& arg)
+            : ReadOnlyDirectAccess (arg), _arg (arg) {}
+        WritableDirectAccess (const WritableDirectAccess& other)
+            : ReadOnlyDirectAccess (other), _arg (other._arg) {}
+
+        T&  operator[] (size_t) { return _arg; }
+
+      private:
+        T&  _arg;
+    };
+
+    typedef ReadOnlyDirectAccess ReadOnlyMaskedAccess;
+    typedef WritableDirectAccess WritableMaskedAccess;
+};
+
+
+template <class T>
+struct access_type
+{
+    typedef typename remove_reference<T>::type     prim_type;
+    typedef typename remove_const<prim_type>::type base_type;
+    typedef typename if_<is_const<prim_type>,
+                         const PyImath::FixedArray<base_type> &,
+                               PyImath::FixedArray<base_type> &>::type reference_type;
+    typedef typename remove_reference<reference_type>::type class_type;
+
+    typedef typename if_<is_const<prim_type>,
+                         typename class_type::ReadOnlyMaskedAccess,
+                         typename class_type::WritableMaskedAccess>::type masked;
+    typedef typename if_<is_const<prim_type>,
+                         typename class_type::ReadOnlyDirectAccess,
+                         typename class_type::WritableDirectAccess>::type direct;
+};
+
 template <class T, class VectorizeArg>
-struct vectorized_argument_type
+struct argument_access_type
 {
     typedef typename remove_const<typename remove_reference<T>::type>::type base_type;
     typedef typename if_<VectorizeArg,const PyImath::FixedArray<base_type> &,T>::type type;
+
+    typedef typename if_<VectorizeArg,
+                         typename remove_reference<type>::type,
+                              SimpleNonArrayWrapper<base_type> >::type _class_type;
+
+    typedef typename _class_type::ReadOnlyMaskedAccess masked;
+    typedef typename _class_type::ReadOnlyDirectAccess direct;
 };
 
-template <class Op, class result_type, class arg1_type>
+template <class T, class VectorizeArg>
+struct result_access_type
+{
+    typedef typename remove_const<typename remove_reference<T>::type>::type base_type;
+    typedef typename if_<VectorizeArg,PyImath::FixedArray<base_type>,T>::type type;
+
+    typedef typename if_<VectorizeArg, type,
+                         SimpleNonArrayWrapper<base_type> >::type _class_type;
+
+    typedef typename _class_type::WritableMaskedAccess masked;
+    typedef typename _class_type::WritableDirectAccess direct;
+};
+
+template <class AccessType, class T>
+AccessType getArrayAccess (T&  value)
+           { return AccessType (value); }
+
+template <class AccessType, class T>
+AccessType getArrayAccess (const PyImath::FixedArray<T>& array)
+           { return AccessType (array); }
+
+template <class AccessType, class T>
+AccessType getArrayAccess (PyImath::FixedArray<T>& array)
+           { return AccessType (array); }
+
+//
+
+template <class Op, class result_access_type, class access_type>
 struct VectorizedOperation1 : public Task
 {
-    result_type &retval;
-    arg1_type arg1;
+    result_access_type retAccess;
+    access_type        access;
 
-    VectorizedOperation1(result_type &r, arg1_type a1) : retval(r), arg1(a1) {}
+    VectorizedOperation1 (result_access_type r, access_type a1)
+        : retAccess (r), access (a1) {}
 
     void execute(size_t start, size_t end)
     {
-        if (any_masked(retval,arg1)) {
-            for (size_t i=start; i<end; ++i) {
-                access_value<result_type &>::apply(retval,i) = Op::apply(access_value<arg1_type>::apply(arg1,i));
-            }
-        } else {
-            for (size_t i=start; i<end; ++i) {
-                direct_access_value<result_type &>::apply(retval,i) = Op::apply(direct_access_value<arg1_type>::apply(arg1,i));
-            }
+        for (size_t i = start; i < end; ++i)
+        {
+            retAccess[i] = Op::apply (access[i]);
         }
     }
 };
 
-template <class Op, class result_type, class arg1_type, class arg2_type>
+template <class Op, class result_access_type, class access_type, class arg1_access_type>
 struct VectorizedOperation2 : public Task
 {
-    result_type &retval;
-    arg1_type arg1;
-    arg2_type arg2;
+    result_access_type retAccess;
+    access_type        access;
+    arg1_access_type   argAccess;
 
-    VectorizedOperation2(result_type &r, arg1_type a1, arg2_type a2) : retval(r), arg1(a1), arg2(a2) {}
+    VectorizedOperation2(result_access_type r, access_type a1, arg1_access_type a2)
+        : retAccess (r), access (a1), argAccess (a2) {}
 
     void execute(size_t start, size_t end)
     {
-        if (any_masked(retval,arg1,arg2)) {
-            for (size_t i=start; i<end; ++i) {
-                access_value<result_type &>::apply(retval,i) = Op::apply(access_value<arg1_type>::apply(arg1,i),
-                                                                         access_value<arg2_type>::apply(arg2,i));
-            }
-        } else {
-            for (size_t i=start; i<end; ++i) {
-                direct_access_value<result_type &>::apply(retval,i) = Op::apply(direct_access_value<arg1_type>::apply(arg1,i),
-                                                                                direct_access_value<arg2_type>::apply(arg2,i));
-            }
+        for (size_t i = start; i < end; ++i)
+        {
+            retAccess[i] = Op::apply (access[i], argAccess[i]);
         }
     }
 };
 
-template <class Op, class result_type, class arg1_type, class arg2_type, class arg3_type>
+template <class Op, class result_access_type, class access_type,
+                    class arg1_access_type, class arg2_access_type>
 struct VectorizedOperation3 : public Task
 {
-    result_type &retval;
-    arg1_type arg1;
-    arg2_type arg2;
-    arg3_type arg3;
+    result_access_type retAccess;
+    access_type        access;
+    arg1_access_type   arg1Access;
+    arg2_access_type   arg2Access;
 
-    VectorizedOperation3(result_type &r, arg1_type a1, arg2_type a2, arg3_type a3) : retval(r), arg1(a1), arg2(a2), arg3(a3) {}
+    VectorizedOperation3(result_access_type r, access_type a,
+                         arg1_access_type a1, arg2_access_type a2)
+        : retAccess(r), access(a), arg1Access(a1), arg2Access(a2) {}
 
     void execute(size_t start, size_t end)
     {
-        if (any_masked(retval,arg1,arg2,arg3)) {
-            for (size_t i=start; i<end; ++i) {
-                access_value<result_type &>::apply(retval,i) = Op::apply(access_value<arg1_type>::apply(arg1,i),
-                                                                         access_value<arg2_type>::apply(arg2,i),
-                                                                         access_value<arg3_type>::apply(arg3,i));
-            }
-        } else {
-            for (size_t i=start; i<end; ++i) {
-                direct_access_value<result_type &>::apply(retval,i) = Op::apply(direct_access_value<arg1_type>::apply(arg1,i),
-                                                                                direct_access_value<arg2_type>::apply(arg2,i),
-                                                                                direct_access_value<arg3_type>::apply(arg3,i));
-            }
+        for (size_t i = start; i < end; ++i)
+        {
+            retAccess[i] = Op::apply(access[i], arg1Access[i], arg2Access[i]);
         }
     }
 };
 
+template <class Op, class result_access_type, class access_type,
+                    class arg1_access_type, class arg2_access_type, class arg3_access_type>
+struct VectorizedOperation4 : public Task
+{
+    result_access_type retAccess;
+    access_type        access;
+    arg1_access_type   arg1Access;
+    arg2_access_type   arg2Access;
+    arg3_access_type   arg3Access;
+
+    VectorizedOperation4(result_access_type r, access_type a,
+                         arg1_access_type a1, arg2_access_type a2, arg3_access_type a3)
+        : retAccess(r), access(a), arg1Access(a1), arg2Access(a2), arg3Access(a3) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+        {
+            retAccess[i] = Op::apply(access[i], arg1Access[i], arg2Access[i], arg3Access[i]);
+        }
+    }
+};
+
+template <class Op, class result_access_type, class access_type,
+                    class arg1_access_type, class arg2_access_type, class arg3_access_type, class arg4_access_type>
+struct VectorizedOperation5 : public Task
+{
+    result_access_type retAccess;
+    access_type        access;
+    arg1_access_type   arg1Access;
+    arg2_access_type   arg2Access;
+    arg3_access_type   arg3Access;
+    arg4_access_type   arg4Access;
+
+    VectorizedOperation5(result_access_type r, access_type a,
+                         arg1_access_type a1, arg2_access_type a2, arg3_access_type a3, arg4_access_type a4)
+        : retAccess(r), access(a), arg1Access(a1), arg2Access(a2), arg3Access(a3), arg4Access(a4) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+        {
+            retAccess[i] = Op::apply(access[i], arg1Access[i], arg2Access[i], arg3Access[i], arg4Access[i]);
+        }
+    }
+};
 
 template <class Op, class Vectorize, class Func>
 struct VectorizedFunction1 {
@@ -403,8 +474,18 @@ struct VectorizedFunction1 {
     typedef function_traits<Func> traits;
     typedef typename fold<Vectorize,false_,or_<_,_> >::type any_vectorized;
 
-    typedef typename vectorized_result_type<typename traits::result_type,any_vectorized>::type result_type;
-    typedef typename vectorized_argument_type<typename traits::arg1_type,typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::type result_type;
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::direct result_access_type;
+    // Result array is created here 'from scratch', so is always 'direct' access.
+
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
 
     static result_type
     apply(arg1_type arg1)
@@ -413,9 +494,29 @@ struct VectorizedFunction1 {
         size_t len = measure_arguments(arg1);
         op_precompute<Op>::apply(len);
         result_type retval = create_uninitalized_return_value<result_type>::apply(len);
-        VectorizedOperation1<Op,result_type,arg1_type> vop(retval,arg1);
-        dispatchTask(vop,len);
-        PY_IMATH_RETURN_PYTHON;
+
+        result_access_type resultAccess = getArrayAccess<result_access_type> (retval);
+
+        if (any_masked(arg1))
+        {
+            arg1_masked_access_type argAccess =
+                 getArrayAccess<arg1_masked_access_type> (arg1);
+
+            VectorizedOperation1<Op,result_access_type,arg1_masked_access_type>
+                vop (resultAccess, argAccess);
+            dispatchTask(vop,len);
+        }
+        else
+        {
+            arg1_direct_access_type argAccess =
+                 getArrayAccess<arg1_direct_access_type> (arg1);
+
+            VectorizedOperation1<Op,result_access_type,arg1_direct_access_type>
+                vop (resultAccess, argAccess);
+            dispatchTask(vop,len);
+        }
+
+        PY_IMATH_RETURN_PYTHON;        
         return retval;
     }
 
@@ -434,9 +535,25 @@ struct VectorizedFunction2 {
     typedef function_traits<Func> traits;
     typedef typename fold<Vectorize,false_,or_<_,_> >::type any_vectorized;
 
-    typedef typename vectorized_result_type<typename traits::result_type,any_vectorized>::type result_type;
-    typedef typename vectorized_argument_type<typename traits::arg1_type,typename at<Vectorize,long_<0> >::type>::type arg1_type;
-    typedef typename vectorized_argument_type<typename traits::arg2_type,typename at<Vectorize,long_<1> >::type>::type arg2_type;
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::type result_type;
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::direct result_access_type;
+    // Result array is created here 'from scratch', so is always 'direct' access.
+
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::type arg2_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::direct arg2_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::masked arg2_masked_access_type;
 
     static result_type
     apply(arg1_type arg1, arg2_type arg2)
@@ -445,9 +562,67 @@ struct VectorizedFunction2 {
         size_t len = measure_arguments(arg1,arg2);
         op_precompute<Op>::apply(len);
         result_type retval = create_uninitalized_return_value<result_type>::apply(len);
-        VectorizedOperation2<Op,result_type,arg1_type,arg2_type> vop(retval,arg1,arg2);
-        dispatchTask(vop,len);
-        PY_IMATH_RETURN_PYTHON;
+
+        result_access_type resultAccess = getArrayAccess<result_access_type> (retval);
+
+        if (any_masked(arg1))
+        {
+            arg1_masked_access_type arg1Access =
+                 getArrayAccess<arg1_masked_access_type> (arg1);
+
+            if (any_masked(arg2))
+            {
+                arg2_masked_access_type arg2Access =
+                     getArrayAccess<arg2_masked_access_type> (arg2);
+
+                VectorizedOperation2<Op,result_access_type,
+                                   arg1_masked_access_type,
+                                   arg2_masked_access_type>
+                    vop (resultAccess, arg1Access, arg2Access);
+                dispatchTask(vop,len);
+            }
+            else
+            {
+                arg2_direct_access_type arg2Access =
+                     getArrayAccess<arg2_direct_access_type> (arg2);
+
+                VectorizedOperation2<Op,result_access_type,
+                                   arg1_masked_access_type,
+                                   arg2_direct_access_type>
+                    vop (resultAccess, arg1Access, arg2Access);
+                dispatchTask(vop,len);
+            }
+        }
+        else
+        {
+            arg1_direct_access_type arg1Access =
+                 getArrayAccess<arg1_direct_access_type> (arg1);
+
+            if (any_masked(arg2))
+            {
+                arg2_masked_access_type arg2Access =
+                     getArrayAccess<arg2_masked_access_type> (arg2);
+
+                VectorizedOperation2<Op,result_access_type,
+                                   arg1_direct_access_type,
+                                   arg2_masked_access_type>
+                    vop (resultAccess, arg1Access, arg2Access);
+                dispatchTask(vop,len);
+            }
+            else
+            {
+                arg2_direct_access_type arg2Access =
+                     getArrayAccess<arg2_direct_access_type> (arg2);
+
+                VectorizedOperation2<Op,result_access_type,
+                                   arg1_direct_access_type,
+                                   arg2_direct_access_type>
+                    vop (resultAccess, arg1Access, arg2Access);
+                dispatchTask(vop,len);
+            }
+        }
+
+        PY_IMATH_RETURN_PYTHON;        
         return retval;
     }
 
@@ -466,10 +641,32 @@ struct VectorizedFunction3 {
     typedef function_traits<Func> traits;
     typedef typename fold<Vectorize,false_,or_<_,_> >::type any_vectorized;
 
-    typedef typename vectorized_result_type<typename traits::result_type,any_vectorized>::type result_type;
-    typedef typename vectorized_argument_type<typename traits::arg1_type,typename at<Vectorize,long_<0> >::type>::type arg1_type;
-    typedef typename vectorized_argument_type<typename traits::arg2_type,typename at<Vectorize,long_<1> >::type>::type arg2_type;
-    typedef typename vectorized_argument_type<typename traits::arg3_type,typename at<Vectorize,long_<2> >::type>::type arg3_type;
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::type result_type;
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::direct result_access_type;
+    // Result array is created here 'from scratch', so is always 'direct' access.
+
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::type arg2_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::direct arg2_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::masked arg2_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::type arg3_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::direct arg3_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::masked arg3_masked_access_type;
 
     static result_type
     apply(arg1_type arg1, arg2_type arg2, arg3_type arg3)
@@ -478,8 +675,142 @@ struct VectorizedFunction3 {
         size_t len = measure_arguments(arg1,arg2,arg3);
         op_precompute<Op>::apply(len);
         result_type retval = create_uninitalized_return_value<result_type>::apply(len);
-        VectorizedOperation3<Op,result_type,arg1_type,arg2_type,arg3_type> vop(retval,arg1,arg2,arg3);
-        dispatchTask(vop,len);
+
+        result_access_type resultAccess = getArrayAccess<result_access_type> (retval);
+
+        if (any_masked(arg1))
+        {
+            arg1_masked_access_type arg1Access =
+                 getArrayAccess<arg1_masked_access_type> (arg1);
+
+            if (any_masked(arg2))
+            {
+                arg2_masked_access_type arg2Access =
+                     getArrayAccess<arg2_masked_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                       arg1_masked_access_type,
+                                       arg2_masked_access_type,
+                                       arg3_masked_access_type>
+                        vop (resultAccess, arg1Access, arg2Access, arg3Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                       arg1_masked_access_type,
+                                       arg2_masked_access_type,
+                                       arg3_direct_access_type>
+                        vop (resultAccess, arg1Access, arg2Access, arg3Access);
+                    dispatchTask(vop,len);
+                }
+            }
+            else
+            {
+                arg2_direct_access_type arg2Access =
+                     getArrayAccess<arg2_direct_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                       arg1_masked_access_type,
+                                       arg2_direct_access_type,
+                                       arg3_masked_access_type>
+                        vop (resultAccess, arg1Access, arg2Access, arg3Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                       arg1_masked_access_type,
+                                       arg2_direct_access_type,
+                                       arg3_direct_access_type>
+                        vop (resultAccess, arg1Access, arg2Access, arg3Access);
+                    dispatchTask(vop,len);
+                }
+            }
+        }
+        else
+        {
+            arg1_direct_access_type arg1Access =
+                 getArrayAccess<arg1_direct_access_type> (arg1);
+
+            if (any_masked(arg2))
+            {
+                arg2_masked_access_type arg2Access =
+                     getArrayAccess<arg2_masked_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                       arg1_direct_access_type,
+                                       arg2_masked_access_type,
+                                       arg3_masked_access_type>
+                        vop (resultAccess, arg1Access, arg2Access, arg3Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                       arg1_direct_access_type,
+                                       arg2_masked_access_type,
+                                       arg3_direct_access_type>
+                        vop (resultAccess, arg1Access, arg2Access, arg3Access);
+                    dispatchTask(vop,len);
+                }
+            }
+            else
+            {
+                arg2_direct_access_type arg2Access =
+                     getArrayAccess<arg2_direct_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                       arg1_direct_access_type,
+                                       arg2_direct_access_type,
+                                       arg3_masked_access_type>
+                        vop (resultAccess, arg1Access, arg2Access, arg3Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                       arg1_direct_access_type,
+                                       arg2_direct_access_type,
+                                       arg3_direct_access_type>
+                        vop (resultAccess, arg1Access, arg2Access, arg3Access);
+                    dispatchTask(vop,len);
+                }
+            }
+        }
+
         PY_IMATH_RETURN_PYTHON;
         return retval;
     }
@@ -489,6 +820,1060 @@ struct VectorizedFunction3 {
     {
         // TODO: add types here
         return std::string("(")+args.elements[0].name+","+args.elements[1].name+","+args.elements[2].name+") - ";
+    }
+};
+
+template <class Op, class Vectorize, class Func>
+struct VectorizedFunction4 {
+    BOOST_STATIC_ASSERT((size<Vectorize>::value == function_traits<Func>::arity));
+
+    typedef function_traits<Func> traits;
+    typedef typename fold<Vectorize,false_,or_<_,_> >::type any_vectorized;
+
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::type result_type;
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::direct result_access_type;
+    // Result array is created here 'from scratch', so is always 'direct' access.
+
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::type arg2_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::direct arg2_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::masked arg2_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::type arg3_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::direct arg3_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::masked arg3_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg4_type,
+                              typename at<Vectorize,long_<3> >::type>::type arg4_type;
+    typedef typename argument_access_type<typename traits::arg4_type,
+                              typename at<Vectorize,long_<3> >::type>::direct arg4_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg4_type,
+                              typename at<Vectorize,long_<3> >::type>::masked arg4_masked_access_type;
+
+    static result_type
+    apply(arg1_type arg1, arg2_type arg2, arg3_type arg3, arg4_type arg4)
+    {
+        PY_IMATH_LEAVE_PYTHON;
+        size_t len = measure_arguments(arg1,arg2,arg3,arg4);
+        op_precompute<Op>::apply(len);
+        result_type retval = create_uninitalized_return_value<result_type>::apply(len);
+
+        result_access_type resultAccess = getArrayAccess<result_access_type> (retval);
+
+        if (any_masked(arg1))
+        {
+            arg1_masked_access_type arg1Access =
+                 getArrayAccess<arg1_masked_access_type> (arg1);
+
+            if (any_masked(arg2))
+            {
+                arg2_masked_access_type arg2Access =
+                     getArrayAccess<arg2_masked_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_masked_access_type,
+                                           arg3_masked_access_type,
+                                           arg4_masked_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_masked_access_type,
+                                           arg3_masked_access_type,
+                                           arg4_direct_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_masked_access_type,
+                                           arg3_direct_access_type,
+                                           arg4_masked_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_masked_access_type,
+                                           arg3_direct_access_type,
+                                           arg4_direct_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                }
+            }
+            else
+            {
+                arg2_direct_access_type arg2Access =
+                     getArrayAccess<arg2_direct_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_direct_access_type,
+                                           arg3_masked_access_type,
+                                           arg4_masked_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_direct_access_type,
+                                           arg3_masked_access_type,
+                                           arg4_direct_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_direct_access_type,
+                                           arg3_direct_access_type,
+                                           arg4_masked_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_direct_access_type,
+                                           arg3_direct_access_type,
+                                           arg4_direct_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                }
+            }
+        }
+        else
+        {
+            arg1_direct_access_type arg1Access =
+                 getArrayAccess<arg1_direct_access_type> (arg1);
+
+            if (any_masked(arg2))
+            {
+                arg2_masked_access_type arg2Access =
+                     getArrayAccess<arg2_masked_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_masked_access_type,
+                                           arg3_masked_access_type,
+                                           arg4_masked_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_masked_access_type,
+                                           arg3_masked_access_type,
+                                           arg4_direct_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_masked_access_type,
+                                           arg3_direct_access_type,
+                                           arg4_masked_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_masked_access_type,
+                                           arg3_direct_access_type,
+                                           arg4_direct_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                }
+            }
+            else
+            {
+                arg2_direct_access_type arg2Access =
+                     getArrayAccess<arg2_direct_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_direct_access_type,
+                                           arg3_masked_access_type,
+                                           arg4_masked_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_direct_access_type,
+                                           arg3_masked_access_type,
+                                           arg4_direct_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_direct_access_type,
+                                           arg3_direct_access_type,
+                                           arg4_masked_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        VectorizedOperation4<Op,result_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_direct_access_type,
+                                           arg3_direct_access_type,
+                                           arg4_direct_access_type>
+                            vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access);
+                        dispatchTask(vop,len);
+                    }
+                }
+            }
+        }
+
+        PY_IMATH_RETURN_PYTHON;
+        return retval;
+    }
+
+    static std::string
+    format_arguments(const boost::python::detail::keywords<4> &args)
+    {
+        // TODO: add types here
+        return std::string("(")+args.elements[0].name+","+args.elements[1].name+","+args.elements[2].name+","+args.elements[3].name+") - ";
+    }
+};
+
+template <class Op, class Vectorize, class Func>
+struct VectorizedFunction5 {
+    BOOST_STATIC_ASSERT((size<Vectorize>::value == function_traits<Func>::arity));
+
+    typedef function_traits<Func> traits;
+    typedef typename fold<Vectorize,false_,or_<_,_> >::type any_vectorized;
+
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::type result_type;
+    typedef typename result_access_type<typename traits::result_type,
+                                        any_vectorized>::direct result_access_type;
+    // Result array is created here 'from scratch', so is always 'direct' access.
+
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg1_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::type arg2_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::direct arg2_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<1> >::type>::masked arg2_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::type arg3_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::direct arg3_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<2> >::type>::masked arg3_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg4_type,
+                              typename at<Vectorize,long_<3> >::type>::type arg4_type;
+    typedef typename argument_access_type<typename traits::arg4_type,
+                              typename at<Vectorize,long_<3> >::type>::direct arg4_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg4_type,
+                              typename at<Vectorize,long_<3> >::type>::masked arg4_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg5_type,
+                              typename at<Vectorize,long_<4> >::type>::type arg5_type;
+    typedef typename argument_access_type<typename traits::arg5_type,
+                              typename at<Vectorize,long_<4> >::type>::direct arg5_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg5_type,
+                              typename at<Vectorize,long_<4> >::type>::masked arg5_masked_access_type;
+
+    static result_type
+    apply(arg1_type arg1, arg2_type arg2, arg3_type arg3, arg4_type arg4, arg5_type arg5)
+    {
+        PY_IMATH_LEAVE_PYTHON;
+        size_t len = measure_arguments(arg1,arg2,arg3,arg4,arg5);
+        op_precompute<Op>::apply(len);
+        result_type retval = create_uninitalized_return_value<result_type>::apply(len);
+
+        result_access_type resultAccess = getArrayAccess<result_access_type> (retval);
+
+        if (any_masked(arg1))
+        {
+            arg1_masked_access_type arg1Access =
+                 getArrayAccess<arg1_masked_access_type> (arg1);
+
+            if (any_masked(arg2))
+            {
+                arg2_masked_access_type arg2Access =
+                     getArrayAccess<arg2_masked_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                arg2_direct_access_type arg2Access =
+                     getArrayAccess<arg2_direct_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_masked_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            arg1_direct_access_type arg1Access =
+                 getArrayAccess<arg1_direct_access_type> (arg1);
+
+            if (any_masked(arg2))
+            {
+                arg2_masked_access_type arg2Access =
+                     getArrayAccess<arg2_masked_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_masked_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                arg2_direct_access_type arg2Access =
+                     getArrayAccess<arg2_direct_access_type> (arg2);
+
+                if (any_masked(arg3))
+                {
+                    arg3_masked_access_type arg3Access =
+                         getArrayAccess<arg3_masked_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_masked_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                }
+                else
+                {
+                    arg3_direct_access_type arg3Access =
+                         getArrayAccess<arg3_direct_access_type> (arg3);
+
+                    if (any_masked(arg4))
+                    {
+                        arg4_masked_access_type arg4Access =
+                            getArrayAccess<arg4_masked_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_masked_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                    else
+                    {
+                        arg4_direct_access_type arg4Access =
+                            getArrayAccess<arg4_direct_access_type> (arg4);
+
+                        if (any_masked(arg5))
+                        {
+                            arg5_masked_access_type arg5Access =
+                                getArrayAccess<arg5_masked_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_masked_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                        else
+                        {
+                            arg5_direct_access_type arg5Access =
+                                getArrayAccess<arg5_direct_access_type> (arg5);
+
+                            VectorizedOperation5<Op,result_access_type,
+                                               arg1_direct_access_type,
+                                               arg2_direct_access_type,
+                                               arg3_direct_access_type,
+                                               arg4_direct_access_type,
+                                               arg5_direct_access_type>
+                                vop (resultAccess, arg1Access, arg2Access, arg3Access, arg4Access, arg5Access);
+                            dispatchTask(vop,len);
+                        }
+                    }
+                }
+            }
+        }
+
+        PY_IMATH_RETURN_PYTHON;
+        return retval;
+    }
+
+    static std::string
+    format_arguments(const boost::python::detail::keywords<5> &args)
+    {
+        // TODO: add types here
+        return std::string("(")+args.elements[0].name+","+args.elements[1].name+","+args.elements[2].name+","+args.elements[3].name+","+args.elements[4].name+") - ";
     }
 };
 
@@ -510,7 +1895,9 @@ struct function_binding
              int,  // unused, arity 0
              VectorizedFunction1<Op,Vectorize,Func>,
              VectorizedFunction2<Op,Vectorize,Func>,
-             VectorizedFunction3<Op,Vectorize,Func>
+             VectorizedFunction3<Op,Vectorize,Func>,
+             VectorizedFunction4<Op,Vectorize,Func>,
+             VectorizedFunction5<Op,Vectorize,Func>
             >,
             long_<function_traits<Func>::arity> >::type vectorized_function_type;
         std::string doc = _name + vectorized_function_type::format_arguments(_args) + _doc;
@@ -535,105 +1922,74 @@ struct generate_bindings_struct
 };
 
 
-template <class T>
-struct vectorized_class_reference_type
-{
-    typedef typename remove_const<typename remove_reference<T>::type>::type base_type;
-    typedef typename if_<is_const<T>,const PyImath::FixedArray<base_type> &,PyImath::FixedArray<base_type> &>::type type;
-};
-
-template <class Op, class class_type>
+template <class Op, class access_type>
 struct VectorizedVoidOperation0 : public Task
 {
-    class_type cls;
+    access_type access;
 
-    VectorizedVoidOperation0(class_type c) : cls(c) {}
+    VectorizedVoidOperation0 (access_type a) : access(a) {}
 
-    void execute(size_t start, size_t end)
+    void execute (size_t start, size_t end)
     {
-        if (any_masked(cls)) {
-            for (size_t i=start; i<end; ++i) {
-                Op::apply(access_value<class_type>::apply(cls,i));
-            }
-        } else {
-            for (size_t i=start; i<end; ++i) {
-                Op::apply(direct_access_value<class_type>::apply(cls,i));
-            }
+        for (size_t i = start; i < end; ++i)
+        {
+            Op::apply (access[i]);
         }
     }
 };
 
-template <class Op, class class_type, class arg1_type>
+template <class Op, class access_type, class arg1_access_type>
 struct VectorizedVoidOperation1 : public Task
 {
-    class_type cls;
-    arg1_type arg1;
+    access_type      access;
+    arg1_access_type arg1;
 
-    VectorizedVoidOperation1(class_type c, arg1_type a1) : cls(c), arg1(a1) {}
+    VectorizedVoidOperation1(access_type a, arg1_access_type a1) : access(a), arg1(a1) {}
 
     void execute(size_t start, size_t end)
     {
-        if (any_masked(cls,arg1)) {
-            for (size_t i=start; i<end; ++i) {
-                Op::apply(access_value<class_type>::apply(cls,i),
-                          access_value<arg1_type>::apply(arg1,i));
-            }
-        } else {
-            for (size_t i=start; i<end; ++i) {
-                Op::apply(direct_access_value<class_type>::apply(cls,i),
-                          direct_access_value<arg1_type>::apply(arg1,i));
-            }
+        for (size_t i = start; i < end; ++i)
+        {
+            Op::apply (access[i], arg1[i]);
         }
     }
 };
 
-template <class Op, class class_type, class arg1_type>
+template <class Op, class access_type, class arg1_access_type, class array_type>
 struct VectorizedMaskedVoidOperation1 : public Task
 {
-    class_type cls;
-    arg1_type arg1;
+    access_type      access;
+    arg1_access_type arg1;
+    array_type       array;
 
-    VectorizedMaskedVoidOperation1(class_type c, arg1_type a1) : cls(c), arg1(a1) {}
+    VectorizedMaskedVoidOperation1(access_type a, arg1_access_type a1, array_type arr)
+        : access(a), arg1(a1), array(arr) {}
 
     void execute(size_t start, size_t end)
     {
-        if (any_masked(arg1)) {
-            for (size_t i=start; i<end; ++i) {
-                Op::apply(access_value<class_type>::apply(cls,i),
-                          access_value<arg1_type>::apply(arg1,cls.raw_ptr_index(i)));
-            }
-        } else {
-            for (size_t i=start; i<end; ++i) {
-                Op::apply(access_value<class_type>::apply(cls,i),
-                          direct_access_value<arg1_type>::apply(arg1,cls.raw_ptr_index(i)));
-            }
+        for (size_t i = start; i < end; ++i)
+        {
+            const size_t ri = array.raw_ptr_index(i);
+            Op::apply (access[i], arg1[ri]);
         }
     }
 };
 
-template <class Op, class class_type, class arg1_type, class arg2_type>
+template <class Op, class access_type, class arg1_access_type, class arg2_access_type>
 struct VectorizedVoidOperation2 : public Task
 {
-    class_type cls;
-    arg1_type arg1;
-    arg2_type arg2;
+    access_type      access;
+    arg1_access_type arg1;
+    arg2_access_type arg2;
 
-    VectorizedVoidOperation2(class_type c, arg1_type a1, arg2_type a2) : cls(c), arg1(a1), arg2(a2) {}
+    VectorizedVoidOperation2(access_type a, arg1_access_type a1, arg2_access_type a2)
+        : access(a), arg1(a1), arg2(a2) {}
 
     void execute(size_t start, size_t end)
     {
-        if (any_masked(cls,arg1,arg2)) {
-            for (size_t i=start; i<end; ++i) {
-                Op::apply(access_value<class_type>::apply(cls,i),
-                          access_value<arg1_type>::apply(arg1,i),
-                          access_value<arg2_type>::apply(arg2,i));
-            }
-        } else {
-            for (size_t i=start; i<end; ++i) {
-                Op::apply(direct_access_value<class_type>::apply(cls,i),
-                          direct_access_value<arg1_type>::apply(arg1,i),
-                          direct_access_value<arg2_type>::apply(arg2,i));
-            }
+        for (size_t i = start; i < end; ++i)
+        {
+            Op::apply (access[i], arg1[i], arg2[i]);
         }
     }
 };
@@ -645,18 +2001,32 @@ struct VectorizedVoidMemberFunction0 {
 
     typedef function_traits<Func> traits;
 
-    typedef typename vectorized_class_reference_type<typename traits::arg1_type>::type class_type;
+    typedef typename access_type<typename traits::arg1_type>::reference_type reference_type;
+    typedef typename access_type<typename traits::arg1_type>::direct direct_access_type;
+    typedef typename access_type<typename traits::arg1_type>::masked masked_access_type;
 
-    static class_type
-    apply(class_type cls)
+    static reference_type
+    apply(reference_type array)
     {
         PY_IMATH_LEAVE_PYTHON;
-        size_t len = measure_arguments(cls);
+        size_t len = measure_arguments(array);
         op_precompute<Op>::apply(len);
-        VectorizedVoidOperation0<Op,class_type> vop(cls);
-        dispatchTask(vop,len);
+
+        if (any_masked(array))
+        {
+            masked_access_type access (array);
+            VectorizedVoidOperation0<Op,masked_access_type> vop (access);
+            dispatchTask(vop,len);
+        }
+        else
+        {
+            direct_access_type access (array);
+            VectorizedVoidOperation0<Op,direct_access_type> vop (access);
+            dispatchTask(vop,len);
+        }
+
         PY_IMATH_RETURN_PYTHON;
-        return cls;
+        return array;
     }
 };
 
@@ -666,19 +2036,73 @@ struct VectorizedVoidMemberFunction1 {
 
     typedef function_traits<Func> traits;
 
-    typedef typename vectorized_class_reference_type<typename traits::arg1_type>::type class_type;
-    typedef typename vectorized_argument_type<typename traits::arg2_type,typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename access_type<typename traits::arg1_type>::reference_type reference_type;
+    typedef typename access_type<typename traits::arg1_type>::direct direct_access_type;
+    typedef typename access_type<typename traits::arg1_type>::masked masked_access_type;
 
-    static class_type
-    apply(class_type cls, arg1_type arg1)
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
+
+    static reference_type
+    apply(reference_type array, arg1_type arg1)
     {
         PY_IMATH_LEAVE_PYTHON;
-        size_t len = measure_arguments(cls,arg1);
+        size_t len = measure_arguments(array,arg1);
         op_precompute<Op>::apply(len);
-        VectorizedVoidOperation1<Op,class_type,arg1_type> vop(cls,arg1);
-        dispatchTask(vop,len);
+
+        if (any_masked(array))
+        {
+            masked_access_type arrayAccess (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type argAccess =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                VectorizedVoidOperation1<Op,masked_access_type,arg1_masked_access_type>
+                    vop (arrayAccess, argAccess);
+                dispatchTask(vop,len);
+            }
+            else
+            {
+                arg1_direct_access_type argAccess =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                VectorizedVoidOperation1<Op,masked_access_type,arg1_direct_access_type>
+                    vop (arrayAccess, argAccess);
+                dispatchTask(vop,len);
+            }
+        }
+        else
+        {
+            direct_access_type arrayAccess (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type argAccess =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                VectorizedVoidOperation1<Op,direct_access_type,arg1_masked_access_type>
+                    vop (arrayAccess, argAccess);
+                dispatchTask(vop,len);
+            }
+            else
+            {
+                arg1_direct_access_type argAccess =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                VectorizedVoidOperation1<Op,direct_access_type,arg1_direct_access_type>
+                    vop (arrayAccess, argAccess);
+                dispatchTask(vop,len);
+            }
+        }
+
         PY_IMATH_RETURN_PYTHON;
-        return cls;
+        return array;
     }
 
     static std::string
@@ -701,31 +2125,107 @@ struct VectorizedVoidMaskableMemberFunction1 {
 
     typedef function_traits<Func> traits;
 
-    typedef typename vectorized_class_reference_type<typename traits::arg1_type>::type class_type;
-    typedef typename vectorized_argument_type<typename traits::arg2_type,boost::mpl::true_>::type arg1_type;
+    typedef typename access_type<typename traits::arg1_type>::reference_type reference_type;
+    typedef typename access_type<typename traits::arg1_type>::direct direct_access_type;
+    typedef typename access_type<typename traits::arg1_type>::masked masked_access_type;
 
-    static class_type
-    apply(class_type cls, arg1_type arg1)
+    typedef typename argument_access_type<typename traits::arg2_type,
+                                                   boost::mpl::true_>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                                                   boost::mpl::true_>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                                                   boost::mpl::true_>::masked arg1_masked_access_type;
+
+    static reference_type
+    apply(reference_type array, arg1_type arg1)
     {
         PY_IMATH_LEAVE_PYTHON;
-        size_t len = cls.match_dimension(arg1, false);
+        size_t len = array.match_dimension(arg1, false);
         op_precompute<Op>::apply(len);
 
-        if (cls.isMaskedReference() && (size_t) arg1.len() == cls.unmaskedLength())
+        if (array.isMaskedReference() && (size_t) arg1.len() == array.unmaskedLength())
         {
             // class is masked, and the unmasked length matches the right hand side
-            VectorizedMaskedVoidOperation1<Op,class_type,arg1_type> vop(cls,arg1);
-            dispatchTask(vop,len);
+
+            masked_access_type arrayAccess (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type argAccess =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                VectorizedMaskedVoidOperation1<Op,masked_access_type,
+                                             arg1_masked_access_type,
+                                                      reference_type>
+                    vop (arrayAccess, argAccess, array);
+                dispatchTask(vop,len);
+            }
+            else
+            {
+                arg1_direct_access_type argAccess =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                VectorizedMaskedVoidOperation1<Op,masked_access_type,
+                                             arg1_direct_access_type,
+                                                      reference_type>
+                    vop (arrayAccess, argAccess, array);
+                dispatchTask(vop,len);
+            }
         }
         else
         {
             // the two arrays match length (masked or otherwise), use the standard path.
-            VectorizedVoidOperation1<Op,class_type,arg1_type> vop(cls,arg1);
-            dispatchTask(vop,len);
+
+            if (any_masked(array))
+            {
+                masked_access_type arrayAccess (array);
+
+                if (any_masked(arg1))
+                {
+                    arg1_masked_access_type argAccess =
+                         getArrayAccess<arg1_masked_access_type> (arg1);
+
+                    VectorizedVoidOperation1<Op,masked_access_type,arg1_masked_access_type>
+                        vop (arrayAccess, argAccess);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg1_direct_access_type argAccess =
+                         getArrayAccess<arg1_direct_access_type> (arg1);
+
+                    VectorizedVoidOperation1<Op,masked_access_type,arg1_direct_access_type>
+                        vop (arrayAccess, argAccess);
+                    dispatchTask(vop,len);
+                }
+            }
+            else
+            {
+                direct_access_type arrayAccess (array);
+
+                if (any_masked(arg1))
+                {
+                    arg1_masked_access_type argAccess =
+                         getArrayAccess<arg1_masked_access_type> (arg1);
+
+                    VectorizedVoidOperation1<Op,direct_access_type,arg1_masked_access_type>
+                        vop (arrayAccess, argAccess);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg1_direct_access_type argAccess =
+                         getArrayAccess<arg1_direct_access_type> (arg1);
+
+                    VectorizedVoidOperation1<Op,direct_access_type,arg1_direct_access_type>
+                        vop (arrayAccess, argAccess);
+                    dispatchTask(vop,len);
+                }
+            }
         }
            
         PY_IMATH_RETURN_PYTHON;
-        return cls;
+        return array;
     }
 
     static std::string
@@ -742,20 +2242,156 @@ struct VectorizedVoidMemberFunction2 {
 
     typedef function_traits<Func> traits;
 
-    typedef typename vectorized_class_reference_type<typename traits::arg1_type>::type class_type;
-    typedef typename vectorized_argument_type<typename traits::arg2_type,typename at<Vectorize,long_<0> >::type>::type arg1_type;
-    typedef typename vectorized_argument_type<typename traits::arg3_type,typename at<Vectorize,long_<1> >::type>::type arg2_type;
+    typedef typename access_type<typename traits::arg1_type>::reference_type reference_type;
+    typedef typename access_type<typename traits::arg1_type>::direct direct_access_type;
+    typedef typename access_type<typename traits::arg1_type>::masked masked_access_type;
 
-    static class_type
-    apply(class_type cls, arg1_type arg1, arg2_type arg2)
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<1> >::type>::type arg2_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<1> >::type>::direct arg2_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<1> >::type>::masked arg2_masked_access_type;
+
+    static reference_type
+    apply(reference_type array, arg1_type arg1, arg2_type arg2)
     {
         PY_IMATH_LEAVE_PYTHON;
-        size_t len = measure_arguments(cls,arg1,arg2);
+        size_t len = measure_arguments(array,arg1,arg2);
         op_precompute<Op>::apply(len);
-        VectorizedVoidOperation2<Op,class_type,arg1_type,arg2_type> vop(cls,arg1,arg2);
-        dispatchTask(vop,len);
+
+        if (any_masked(array))
+        {
+            masked_access_type arrayAccess (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type arg1Access =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                if (any_masked(arg2))
+                {
+                    arg2_masked_access_type arg2Access =
+                         getArrayAccess<arg2_masked_access_type> (arg2);
+
+                    VectorizedVoidOperation2<Op,masked_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_masked_access_type>
+                          vop (arrayAccess, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg2_direct_access_type arg2Access =
+                         getArrayAccess<arg2_direct_access_type> (arg2);
+
+                    VectorizedVoidOperation2<Op,masked_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_direct_access_type>
+                          vop (arrayAccess, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+            }
+            else
+            {
+                arg1_direct_access_type arg1Access =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                if (any_masked(arg2))
+                {
+                    arg2_masked_access_type arg2Access =
+                         getArrayAccess<arg2_masked_access_type> (arg2);
+
+                    VectorizedVoidOperation2<Op,masked_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_masked_access_type>
+                          vop (arrayAccess, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg2_direct_access_type arg2Access =
+                         getArrayAccess<arg2_direct_access_type> (arg2);
+
+                    VectorizedVoidOperation2<Op,masked_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_direct_access_type>
+                          vop (arrayAccess, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+            }
+        }
+        else
+        {
+            direct_access_type arrayAccess (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type arg1Access =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                if (any_masked(arg2))
+                {
+                    arg2_masked_access_type arg2Access =
+                         getArrayAccess<arg2_masked_access_type> (arg2);
+
+                    VectorizedVoidOperation2<Op,direct_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_masked_access_type>
+                          vop (arrayAccess, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg2_direct_access_type arg2Access =
+                         getArrayAccess<arg2_direct_access_type> (arg2);
+
+                    VectorizedVoidOperation2<Op,direct_access_type,
+                                           arg1_masked_access_type,
+                                           arg2_direct_access_type>
+                          vop (arrayAccess, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+            }
+            else
+            {
+                arg1_direct_access_type arg1Access =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                if (any_masked(arg2))
+                {
+                    arg2_masked_access_type arg2Access =
+                         getArrayAccess<arg2_masked_access_type> (arg2);
+
+                    VectorizedVoidOperation2<Op,direct_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_masked_access_type>
+                          vop (arrayAccess, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg2_direct_access_type arg2Access =
+                         getArrayAccess<arg2_direct_access_type> (arg2);
+
+                    VectorizedVoidOperation2<Op,direct_access_type,
+                                           arg1_direct_access_type,
+                                           arg2_direct_access_type>
+                          vop (arrayAccess, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+            }
+        }
+
         PY_IMATH_RETURN_PYTHON;
-        return cls;
+        return array;
     }
 
     static std::string
@@ -774,17 +2410,38 @@ struct VectorizedMemberFunction0 {
     typedef function_traits<Func> traits;
 
     typedef typename vectorized_result_type<typename traits::result_type,true_>::type result_type;
-    typedef typename vectorized_class_reference_type<typename traits::arg1_type>::type class_type;
+
+    typedef typename access_type<typename traits::arg1_type>::reference_type reference_type;
+    typedef typename access_type<typename traits::arg1_type>::direct direct_access_type;
+    typedef typename access_type<typename traits::arg1_type>::masked masked_access_type;
+
+    // The return value can't be const or masked.  Verify that condition.
+    BOOST_STATIC_ASSERT( !is_const<result_type>::value );
+    typedef typename result_type::WritableDirectAccess result_access_type;
 
     static result_type
-    apply(class_type cls)
+    apply(reference_type array)
     {
         PY_IMATH_LEAVE_PYTHON;
-        size_t len = measure_arguments(cls);
+        size_t len = measure_arguments(array);
         op_precompute<Op>::apply(len);
         result_type retval = create_uninitalized_return_value<result_type>::apply(len);
-        VectorizedOperation1<Op,result_type,class_type> vop(retval,cls);
-        dispatchTask(vop,len);
+
+        result_access_type returnAccess (retval);
+
+        if (any_masked(array))
+        {
+            masked_access_type access (array);
+            VectorizedOperation1<Op,result_access_type,masked_access_type> vop(returnAccess,access);
+            dispatchTask(vop,len);
+        }
+        else
+        {
+            direct_access_type access (array);
+            VectorizedOperation1<Op,result_access_type,direct_access_type> vop(returnAccess,access);
+            dispatchTask(vop,len);
+        }
+
         PY_IMATH_RETURN_PYTHON;
         return retval;
     }
@@ -797,18 +2454,83 @@ struct VectorizedMemberFunction1 {
     typedef function_traits<Func> traits;
 
     typedef typename vectorized_result_type<typename traits::result_type,true_>::type result_type;
-    typedef typename vectorized_class_reference_type<typename traits::arg1_type>::type class_type;
-    typedef typename vectorized_argument_type<typename traits::arg2_type,typename at<Vectorize,long_<0> >::type>::type arg1_type;
+
+    typedef typename access_type<typename traits::arg1_type>::reference_type reference_type;
+    typedef typename access_type<typename traits::arg1_type>::direct direct_access_type;
+    typedef typename access_type<typename traits::arg1_type>::masked masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
+
+    // The return value can't be const or masked.  Verify that condition.
+    BOOST_STATIC_ASSERT( !is_const<result_type>::value );
+    typedef typename result_type::WritableDirectAccess result_access_type;
 
     static result_type
-    apply(class_type cls, arg1_type arg1)
+    apply(reference_type array, arg1_type arg1)
     {
         PY_IMATH_LEAVE_PYTHON;
-        size_t len = measure_arguments(cls,arg1);
+        size_t len = measure_arguments(array,arg1);
         op_precompute<Op>::apply(len);
         result_type retval = create_uninitalized_return_value<result_type>::apply(len);
-        VectorizedOperation2<Op,result_type,class_type,arg1_type> vop(retval,cls,arg1);
-        dispatchTask(vop,len);
+
+        result_access_type returnAccess (retval);
+
+        if (any_masked(array))
+        {
+            masked_access_type access (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type argAccess =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                VectorizedOperation2<Op,result_access_type,
+                                        masked_access_type,
+                                   arg1_masked_access_type> vop (returnAccess, access, argAccess);
+                dispatchTask(vop,len);
+            }
+            else
+            {
+                arg1_direct_access_type argAccess =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                VectorizedOperation2<Op,result_access_type,
+                                        masked_access_type,
+                                   arg1_direct_access_type> vop (returnAccess, access, argAccess);
+                dispatchTask(vop,len);
+            }
+        }
+        else
+        {
+            direct_access_type access (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type argAccess =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                VectorizedOperation2<Op,result_access_type,
+                                        direct_access_type,
+                                   arg1_masked_access_type> vop (returnAccess, access, argAccess);
+                dispatchTask(vop,len);
+            }
+            else
+            {
+                arg1_direct_access_type argAccess =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                VectorizedOperation2<Op,result_access_type,
+                                        direct_access_type,
+                                   arg1_direct_access_type> vop (returnAccess, access, argAccess);
+                dispatchTask(vop,len);
+            }
+        }
+
         PY_IMATH_RETURN_PYTHON;
         return retval;
     }
@@ -828,19 +2550,170 @@ struct VectorizedMemberFunction2 {
     typedef function_traits<Func> traits;
 
     typedef typename vectorized_result_type<typename traits::result_type,true_>::type result_type;
-    typedef typename vectorized_class_reference_type<typename traits::arg1_type>::type class_type;
-    typedef typename vectorized_argument_type<typename traits::arg2_type,typename at<Vectorize,long_<0> >::type>::type arg1_type;
-    typedef typename vectorized_argument_type<typename traits::arg3_type,typename at<Vectorize,long_<1> >::type>::type arg2_type;
+
+    typedef typename access_type<typename traits::arg1_type>::reference_type reference_type;
+    typedef typename access_type<typename traits::arg1_type>::direct direct_access_type;
+    typedef typename access_type<typename traits::arg1_type>::masked masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::type arg1_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::direct arg1_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg2_type,
+                              typename at<Vectorize,long_<0> >::type>::masked arg1_masked_access_type;
+
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<1> >::type>::type arg2_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<1> >::type>::direct arg2_direct_access_type;
+    typedef typename argument_access_type<typename traits::arg3_type,
+                              typename at<Vectorize,long_<1> >::type>::masked arg2_masked_access_type;
+
+    // The return value can't be const or masked.  Verify that condition.
+    BOOST_STATIC_ASSERT( !is_const<result_type>::value );
+    typedef typename result_type::WritableDirectAccess result_access_type;
 
     static result_type
-    apply(class_type cls, arg1_type arg1, arg2_type arg2)
+    apply(reference_type array, arg1_type arg1, arg2_type arg2)
     {
         PY_IMATH_LEAVE_PYTHON;
-        size_t len = measure_arguments(cls,arg1,arg2);
+        size_t len = measure_arguments(array,arg1,arg2);
         op_precompute<Op>::apply(len);
         result_type retval = create_uninitalized_return_value<result_type>::apply(len);
-        VectorizedOperation3<Op,result_type,class_type,arg1_type,arg2_type> vop(retval,cls,arg1,arg2);
-        dispatchTask(vop,len);
+
+        result_access_type returnAccess (retval);
+
+        if (any_masked(array))
+        {
+            masked_access_type access (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type arg1Access =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                if (any_masked(arg2))
+                {
+                    arg2_masked_access_type arg2Access =
+                         getArrayAccess<arg2_masked_access_type> (arg2);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                            masked_access_type,
+                                       arg1_masked_access_type,
+                                       arg2_masked_access_type>
+                        vop (returnAccess, access, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg2_direct_access_type arg2Access =
+                         getArrayAccess<arg2_direct_access_type> (arg2);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                            masked_access_type,
+                                       arg1_masked_access_type,
+                                       arg2_direct_access_type>
+                        vop (returnAccess, access, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+            }
+            else
+            {
+                arg1_direct_access_type arg1Access =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                if (any_masked(arg2))
+                {
+                    arg2_masked_access_type arg2Access =
+                         getArrayAccess<arg2_masked_access_type> (arg2);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                            masked_access_type,
+                                       arg1_direct_access_type,
+                                       arg2_masked_access_type>
+                        vop (returnAccess, access, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg2_direct_access_type arg2Access =
+                         getArrayAccess<arg2_direct_access_type> (arg2);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                            masked_access_type,
+                                       arg1_direct_access_type,
+                                       arg2_direct_access_type>
+                        vop (returnAccess, access, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+            }
+        }
+        else
+        {
+            direct_access_type access (array);
+
+            if (any_masked(arg1))
+            {
+                arg1_masked_access_type arg1Access =
+                     getArrayAccess<arg1_masked_access_type> (arg1);
+
+                if (any_masked(arg2))
+                {
+                    arg2_masked_access_type arg2Access =
+                         getArrayAccess<arg2_masked_access_type> (arg2);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                            direct_access_type,
+                                       arg1_masked_access_type,
+                                       arg2_masked_access_type>
+                        vop (returnAccess, access, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg2_direct_access_type arg2Access =
+                         getArrayAccess<arg2_direct_access_type> (arg2);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                            direct_access_type,
+                                       arg1_masked_access_type,
+                                       arg2_direct_access_type>
+                        vop (returnAccess, access, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+            }
+            else
+            {
+                arg1_direct_access_type arg1Access =
+                     getArrayAccess<arg1_direct_access_type> (arg1);
+
+                if (any_masked(arg2))
+                {
+                    arg2_masked_access_type arg2Access =
+                         getArrayAccess<arg2_masked_access_type> (arg2);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                            direct_access_type,
+                                       arg1_direct_access_type,
+                                       arg2_masked_access_type>
+                        vop (returnAccess, access, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+                else
+                {
+                    arg2_direct_access_type arg2Access =
+                         getArrayAccess<arg2_direct_access_type> (arg2);
+
+                    VectorizedOperation3<Op,result_access_type,
+                                            direct_access_type,
+                                       arg1_direct_access_type,
+                                       arg2_direct_access_type>
+                        vop (returnAccess, access, arg1Access, arg2Access);
+                    dispatchTask(vop,len);
+                }
+            }
+        }
+
         PY_IMATH_RETURN_PYTHON;
         return retval;
     }
@@ -946,6 +2819,18 @@ void generate_bindings(const std::string &name,const std::string &doc,const boos
     generate_bindings_struct<Op,vector<Vectorizable0,Vectorizable1,Vectorizable2>,boost::python::detail::keywords<3> >::apply(name,doc,args);
 }
 
+template <class Op,class Vectorizable0, class Vectorizable1, class Vectorizable2, class Vectorizable3>
+void generate_bindings(const std::string &name,const std::string &doc,const boost::python::detail::keywords<4> &args) {
+    using namespace detail;
+    generate_bindings_struct<Op,vector<Vectorizable0,Vectorizable1,Vectorizable2,Vectorizable3>,boost::python::detail::keywords<4> >::apply(name,doc,args);
+}
+
+template <class Op,class Vectorizable0, class Vectorizable1, class Vectorizable2, class Vectorizable3, class Vectorizable4>
+void generate_bindings(const std::string &name,const std::string &doc,const boost::python::detail::keywords<5> &args) {
+    using namespace detail;
+    generate_bindings_struct<Op,vector<Vectorizable0,Vectorizable1,Vectorizable2,Vectorizable3,Vectorizable4>,boost::python::detail::keywords<5> >::apply(name,doc,args);
+}
+
 template <class Op,class Cls>
 void
 generate_member_bindings(Cls &cls,const std::string &name,const std::string &doc)
@@ -956,18 +2841,22 @@ generate_member_bindings(Cls &cls,const std::string &name,const std::string &doc
 
 template <class Op,class Vectorizable0,class Cls>
 void
-generate_member_bindings(Cls &cls,const std::string &name,const std::string &doc,const boost::python::detail::keywords<1> &args)
+generate_member_bindings(Cls &cls,const std::string &name,const std::string &doc,
+                         const boost::python::detail::keywords<1> &args)
 {
     using boost::mpl::vector;
-    detail::generate_member_bindings_struct<Op,Cls,vector<Vectorizable0>,boost::python::detail::keywords<1> >::apply(cls,name,doc,args);
+    detail::generate_member_bindings_struct<Op,Cls,vector<Vectorizable0>,
+                                            boost::python::detail::keywords<1> >::apply(cls,name,doc,args);
 }
 
 template <class Op,class Vectorizable0,class Vectorizable1,class Cls>
 void
-generate_member_bindings(Cls &cls,const std::string &name,const std::string &doc,const boost::python::detail::keywords<2> &args)
+generate_member_bindings(Cls &cls,const std::string &name,const std::string &doc,
+                         const boost::python::detail::keywords<2> &args)
 {
     using boost::mpl::vector;
-    detail::generate_member_bindings_struct<Op,Cls,vector<Vectorizable0,Vectorizable1>,boost::python::detail::keywords<2> >::apply(cls,name,doc,args);
+    detail::generate_member_bindings_struct<Op,Cls,vector<Vectorizable0,Vectorizable1>,
+                                            boost::python::detail::keywords<2> >::apply(cls,name,doc,args);
 }
 
 } // namespace PyImath

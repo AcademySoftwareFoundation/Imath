@@ -5,15 +5,15 @@
 
 // clang-format off
 
+#include <boost/python/make_constructor.hpp>
+#include <vector>
+#include <ImathBoxAlgo.h>
 #include "PyImathBox.h"
 #include "PyImathVec.h"
 #include "PyImathMathExc.h"
 #include "PyImathDecorators.h"
 #include "PyImathExport.h"
-#include <boost/python/make_constructor.hpp>
-#include <ImathBoxAlgo.h>
 #include "PyImathTask.h"
-#include <vector>
 #include "PyImathBoxArrayImpl.h"
 
 namespace PyImath {
@@ -22,16 +22,16 @@ using namespace IMATH_NAMESPACE;
 using namespace PyImath;
 
 template <class T> struct BoxName { static const char *value; };
-template <> const char *BoxName<IMATH_NAMESPACE::V2s>::value = "Box2s";
-template <> const char *BoxName<IMATH_NAMESPACE::V2i>::value = "Box2i";
+template <> const char *BoxName<IMATH_NAMESPACE::V2s>::value   = "Box2s";
+template <> const char *BoxName<IMATH_NAMESPACE::V2i>::value   = "Box2i";
 template <> const char *BoxName<IMATH_NAMESPACE::V2i64>::value = "Box2i64";
-template <> const char *BoxName<IMATH_NAMESPACE::V2f>::value = "Box2f";
-template <> const char *BoxName<IMATH_NAMESPACE::V2d>::value = "Box2d";
-template <> const char *BoxName<IMATH_NAMESPACE::V3s>::value = "Box3s";
-template <> const char *BoxName<IMATH_NAMESPACE::V3i>::value = "Box3i";
+template <> const char *BoxName<IMATH_NAMESPACE::V2f>::value   = "Box2f";
+template <> const char *BoxName<IMATH_NAMESPACE::V2d>::value   = "Box2d";
+template <> const char *BoxName<IMATH_NAMESPACE::V3s>::value   = "Box3s";
+template <> const char *BoxName<IMATH_NAMESPACE::V3i>::value   = "Box3i";
 template <> const char *BoxName<IMATH_NAMESPACE::V3i64>::value = "Box3i64";
-template <> const char *BoxName<IMATH_NAMESPACE::V3f>::value = "Box3f";
-template <> const char *BoxName<IMATH_NAMESPACE::V3d>::value = "Box3d";
+template <> const char *BoxName<IMATH_NAMESPACE::V3f>::value   = "Box3f";
+template <> const char *BoxName<IMATH_NAMESPACE::V3d>::value   = "Box3d";
 
 template <> PYIMATH_EXPORT const char *PyImath::Box2sArray::name()   { return "Box2sArray"; }
 template <> PYIMATH_EXPORT const char *PyImath::Box2iArray::name()   { return "Box2iArray"; }
@@ -156,65 +156,22 @@ static Box<T> * box3TupleConstructor2(const tuple &t0, const tuple &t1)
         return new Box<T>(point0, point1);
     }
     else
-      throw std::invalid_argument ("Invalid input to Box tuple constructor");
+        throw std::logic_error ("Invalid input to Box tuple constructor");
 }
 
 template <class T>
-static std::string Box2_repr(const Box<T> &box)
+static std::string Box_repr(const Box<T> &box)
 {
     std::stringstream stream;
     typename boost::python::return_by_value::apply <T>::type converter;
 
-    PyObject *minObj = converter (box.min);
-    PyObject *minReprObj = PyObject_Repr (minObj);
-#if PY_MAJOR_VERSION > 2
-    std::string minReprStr = PyUnicode_AsUTF8 (minReprObj);
-#else
-    std::string minReprStr = PyString_AsString (minReprObj);
-#endif
-    Py_DECREF (minReprObj);
-    Py_DECREF (minObj);
+    handle<> minObj (converter (box.min));
+    handle<> minH (PYUTIL_OBJECT_REPR (minObj.get()));
+    std::string minReprStr = extract<std::string> (minH.get());
 
-    PyObject *maxObj = converter (box.max);
-    PyObject *maxReprObj = PyObject_Repr (maxObj);
-#if PY_MAJOR_VERSION > 2
-    std::string maxReprStr = PyUnicode_AsUTF8 (maxReprObj);
-#else
-    std::string maxReprStr = PyString_AsString (maxReprObj);
-#endif
-    Py_DECREF (maxReprObj);
-    Py_DECREF (maxObj);
-
-    stream << BoxName<T>::value << "(" << minReprStr << ", " << maxReprStr << ")";
-    
-    return stream.str();
-}
-
-template <class T>
-static std::string Box3_repr(const Box<T> &box)
-{
-    std::stringstream stream;
-    typename boost::python::return_by_value::apply <T>::type converter;
-
-    PyObject *minObj = converter (box.min);
-    PyObject *minReprObj = PyObject_Repr (minObj);
-#if PY_MAJOR_VERSION > 2
-    std::string minReprStr = PyUnicode_AsUTF8 (minReprObj);
-#else
-    std::string minReprStr = PyString_AsString (minReprObj);
-#endif
-    Py_DECREF (minReprObj);
-    Py_DECREF (minObj);
-
-    PyObject *maxObj = converter (box.max);
-    PyObject *maxReprObj = PyObject_Repr (maxObj);
-#if PY_MAJOR_VERSION > 2
-    std::string maxReprStr = PyUnicode_AsUTF8 (maxReprObj);
-#else
-    std::string maxReprStr = PyString_AsString (maxReprObj);
-#endif
-    Py_DECREF (maxReprObj);
-    Py_DECREF (maxObj);
+    handle<> maxObj (converter (box.max));
+    handle<> maxH (PYUTIL_OBJECT_REPR (maxObj.get()));
+    std::string maxReprStr = extract<std::string> (maxH.get());
 
     stream << BoxName<T>::value << "(" << minReprStr << ", " << maxReprStr << ")";
     
@@ -335,7 +292,7 @@ register_Box2()
         .def("max", &boxMax<T>)
         .def(self == self) // NOSONAR - suppress SonarCloud bug report.
         .def(self != self) // NOSONAR - suppress SonarCloud bug report.
-        .def("__repr__", &Box2_repr<T>)
+        .def("__repr__", &Box_repr<T>)
         .def("makeEmpty",&Box<T>::makeEmpty,"makeEmpty() make the box empty")
         .def("makeInfinite",&Box<T>::makeInfinite,"makeInfinite() make the box cover all space")
         .def("extendBy",extendBy1,"extendBy(point) extend the box by a point")
@@ -402,7 +359,7 @@ register_Box3()
         .def("__imul__", &imulM44<T, double>,return_internal_reference<>())
         .def("min", &boxMin<T>)
         .def("max", &boxMax<T>)
-        .def("__repr__", &Box3_repr<T>)
+        .def("__repr__", &Box_repr<T>)
         .def("makeEmpty",&Box<T>::makeEmpty,"makeEmpty() make the box empty")
         .def("makeInfinite",&Box<T>::makeInfinite,"makeInfinite() make the box cover all space")
         .def("extendBy",extendBy1,"extendBy(point) extend the box by a point")
@@ -427,15 +384,15 @@ register_Box3()
 }
 
 
-template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2s> > register_Box2<IMATH_NAMESPACE::V2s>();
-template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2i> > register_Box2<IMATH_NAMESPACE::V2i>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2s> >   register_Box2<IMATH_NAMESPACE::V2s>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2i> >   register_Box2<IMATH_NAMESPACE::V2i>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2i64> > register_Box2<IMATH_NAMESPACE::V2i64>();
-template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2f> > register_Box2<IMATH_NAMESPACE::V2f>();
-template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2d> > register_Box2<IMATH_NAMESPACE::V2d>();
-template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3s> > register_Box3<IMATH_NAMESPACE::V3s>();
-template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3i> > register_Box3<IMATH_NAMESPACE::V3i>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2f> >   register_Box2<IMATH_NAMESPACE::V2f>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V2d> >   register_Box2<IMATH_NAMESPACE::V2d>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3s> >   register_Box3<IMATH_NAMESPACE::V3s>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3i> >   register_Box3<IMATH_NAMESPACE::V3i>();
 template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3i64> > register_Box3<IMATH_NAMESPACE::V3i64>();
-template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3f> > register_Box3<IMATH_NAMESPACE::V3f>();
-template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3d> > register_Box3<IMATH_NAMESPACE::V3d>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3f> >   register_Box3<IMATH_NAMESPACE::V3f>();
+template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Box<IMATH_NAMESPACE::V3d> >   register_Box3<IMATH_NAMESPACE::V3d>();
 
 }

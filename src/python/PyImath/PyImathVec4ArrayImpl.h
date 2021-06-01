@@ -14,15 +14,15 @@
 // order to work around MSVC limitations.
 //
 
-#include "PyImathVec.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
-#include "PyImath.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
+#include "PyImath.h"
+#include "PyImathVec.h"
+#include "PyImathDecorators.h"
 #include "PyImathMathExc.h"
 #include "PyImathOperators.h"
 #include "PyImathVecOperators.h"
@@ -38,7 +38,8 @@ template <class T,int index>
 static FixedArray<T>
 Vec4Array_get(FixedArray<IMATH_NAMESPACE::Vec4<T> > &va)
 {
-    return FixedArray<T>(&va[0][index],va.len(),4*va.stride(),va.handle());
+    return FixedArray<T>(&(va.unchecked_index(0)[index]),
+                         va.len(), 4*va.stride(), va.handle(), va.writable());
 }
 
 template <class T>

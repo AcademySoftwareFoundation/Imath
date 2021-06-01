@@ -5,9 +5,9 @@
 
 // clang-format off
 
-#include "PyImathStringTable.h"
 #include <limits>
 #include "PyImathExport.h"
+#include "PyImathStringTable.h"
 
 namespace PyImath {
 

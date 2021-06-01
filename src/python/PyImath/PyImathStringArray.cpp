@@ -35,11 +35,11 @@ StringArrayT<T>* StringArrayT<T>::createUniformArray(const T& initialValue, size
     for(size_t i=0; i<length; ++i)
         indexArray[i] = index;
 
-    return new StringArrayT<T>(*table, indexArray.get(), length, 1, indexArray, table);
+    return new StringArrayT<T>(*table, indexArray.get(), length, 1, indexArray, boost::any(table));
 }
 
 template<class T>
-StringArrayT<T>* StringArrayT<T>::createFromRawArray(const T* rawArray, size_t length)
+StringArrayT<T>* StringArrayT<T>::createFromRawArray(const T* rawArray, size_t length, bool writable)
 {
     typedef boost::shared_array<StringTableIndex> StringTableIndexArrayPtr;
     typedef boost::shared_ptr<StringTableT<T> > StringTablePtr;
@@ -52,24 +52,50 @@ StringArrayT<T>* StringArrayT<T>::createFromRawArray(const T* rawArray, size_t l
     for(size_t i=0; i<length; ++i)
         indexArray[i] = table->intern(rawArray[i]);
 
-    return new StringArrayT<T>(*table, indexArray.get(), length, 1, indexArray, table);
+    return new StringArrayT<T>(*table, indexArray.get(), length, 1, indexArray, table, writable);
 }
 
 template<class T>
-StringArrayT<T>::StringArrayT(StringTableT<T> &table, StringTableIndex *ptr, size_t length, size_t stride, boost::any tableHandle)
-    : super(ptr,length,stride), _table(table), _tableHandle(tableHandle)
+StringArrayT<T>::StringArrayT(StringTableT<T> &table, StringTableIndex *ptr, size_t length,
+                              size_t stride, boost::any tableHandle, bool writable)
+    : super(ptr,length,stride,writable), _table(table), _tableHandle(tableHandle)
 {
     // nothing
 }
 
 template<class T>
-StringArrayT<T>::StringArrayT(StringTableT<T> &table, StringTableIndex *ptr, size_t length, size_t stride, boost::any handle, boost::any tableHandle) 
-    : super(ptr,length,stride,handle), _table(table), _tableHandle(tableHandle)
+StringArrayT<T>::StringArrayT(StringTableT<T> &table, StringTableIndex *ptr, size_t length,
+                              size_t stride, boost::any handle, boost::any tableHandle, bool writable)
+    : super(ptr,length,stride,handle,writable), _table(table), _tableHandle(tableHandle)
 {
     // nothing
 }
 
+template<class T>
+StringArrayT<T>::StringArrayT(const StringTableT<T> &table, const StringTableIndex *ptr,
+                              size_t length, size_t stride, boost::any tableHandle)
+    : super(ptr,length,stride), _table(const_cast<StringTableT<T> &>(table)),
+                                _tableHandle(tableHandle)
+{
+    // nothing
+}
 
+template<class T>
+StringArrayT<T>::StringArrayT(const StringTableT<T> &table, const StringTableIndex *ptr,
+                              size_t length, size_t stride, boost::any handle, boost::any tableHandle)
+    : super(ptr,length,stride,handle), _table(const_cast<StringTableT<T> &>(table)),
+                                       _tableHandle(tableHandle)
+{
+    // nothing
+}
+
+template<class T>
+StringArrayT<T>::StringArrayT(StringArrayT& s, const FixedArray<int>& mask)
+    : super(s, mask),
+      _table(s._table),
+      _tableHandle(s._tableHandle)
+{
+}
 
 template<class T>
 StringArrayT<T>*
@@ -90,13 +116,23 @@ StringArrayT<T>::getslice_string(PyObject *index) const
     for(size_t i=0; i<slicelength; ++i)
         indexArray[i] = table->intern(getitem_string(start+i*step));
 
-    return new StringArrayT<T>(*table, indexArray.get(), slicelength, 1, indexArray, table);
+    return new StringArrayT<T>(*table, indexArray.get(), slicelength, 1, indexArray, boost::any(table));
+}
+
+template<class T>
+StringArrayT<T>*
+StringArrayT<T>::getslice_mask_string(const FixedArray<int>& mask)
+{
+    return new StringArrayT(*this, mask);
 }
 
 template<class T>
 void
 StringArrayT<T>::setitem_string_scalar(PyObject *index, const T &data)
 {
+    if (!writable())
+        throw std::invalid_argument("Fixed string-array is read-only.");
+
     size_t start=0, end=0, slicelength=0;
     Py_ssize_t step;
     extract_slice_indices(index,start,end,step,slicelength);
@@ -110,6 +146,9 @@ template<class T>
 void
 StringArrayT<T>::setitem_string_scalar_mask(const FixedArray<int> &mask, const T &data)
 {
+    if (!writable())
+        throw std::invalid_argument("Fixed string-array is read-only.");
+
     size_t len = match_dimension(mask);
     StringTableIndex di = _table.intern(data);
     for (size_t i=0; i<len; ++i) {
@@ -121,6 +160,9 @@ template<class T>
 void
 StringArrayT<T>::setitem_string_vector(PyObject *index, const StringArrayT<T> &data)
 {
+    if (!writable())
+        throw std::invalid_argument("Fixed string-array is read-only.");
+
     size_t start=0, end=0, slicelength=0;
     Py_ssize_t step;
     extract_slice_indices(index,start,end,step,slicelength);
@@ -140,6 +182,9 @@ template<class T>
 void
 StringArrayT<T>::setitem_string_vector_mask(const FixedArray<int> &mask, const StringArrayT<T> &data)
 {
+    if (!writable())
+        throw std::invalid_argument("Fixed string-array is read-only.");
+
     size_t len = match_dimension(mask);
     if ((size_t) data.len() == len) {
         for (size_t i=0; i<len; ++i) {
@@ -271,12 +316,15 @@ void register_StringArrays()
         .def("__init__", make_constructor(StringArray::createDefaultArray))
         .def("__init__", make_constructor(StringArray::createUniformArray))
         .def("__getitem__", &StringArray::getslice_string, return_value_policy<manage_new_object>()) 
-        .def("__getitem__", &StringArray::getitem_string) 
+        .def("__getitem__", &StringArray::getitem_string)
+        .def("__getitem__", &StringArray::getslice_mask_string, return_value_policy<manage_new_object>())
         .def("__setitem__", &StringArray::setitem_string_scalar)
         .def("__setitem__", &StringArray::setitem_string_scalar_mask)
         .def("__setitem__", &StringArray::setitem_string_vector)
         .def("__setitem__", &StringArray::setitem_string_vector_mask)
-        .def("__len__",&StringArray::len)
+        .def("__len__",     &StringArray::len)
+        .def("writable",    &StringArray::writable)
+        .def("makeReadOnly",&StringArray::makeReadOnly)
         .def(self == self) // NOSONAR - suppress SonarCloud bug report.
         .def(self == other<std::string>())
         .def(other<std::string>() == self)
@@ -291,7 +339,8 @@ void register_StringArrays()
         .def("__init__", make_constructor(WstringArray::createDefaultArray))
         .def("__init__", make_constructor(WstringArray::createUniformArray))
         .def("__getitem__", &WstringArray::getslice_string, return_value_policy<manage_new_object>()) 
-        .def("__getitem__", &WstringArray::getitem_string) 
+        .def("__getitem__", &WstringArray::getitem_string)
+        .def("__getitem__", &WstringArray::getslice_mask_string, return_value_policy<manage_new_object>())
         .def("__setitem__", &WstringArray::setitem_string_scalar)
         .def("__setitem__", &WstringArray::setitem_string_scalar_mask)
         .def("__setitem__", &WstringArray::setitem_string_vector)

@@ -14,13 +14,13 @@
 // order to work around MSVC limitations.
 //
 
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
 #include "PyImath.h"
 #include "PyImathMathExc.h"
+#include "PyImathDecorators.h"
 
 namespace PyImath {
 using namespace boost::python;
@@ -33,7 +33,8 @@ template <class T,int index>
 static FixedArray<T>
 Color4Array_get(FixedArray<IMATH_NAMESPACE::Color4<T> > &ca)
 {    
-    return FixedArray<T>(&ca[0][index],ca.len(),4*ca.stride(),ca.handle());
+    return FixedArray<T>(&(ca.unchecked_index(0)[index]),
+                         ca.len(),4*ca.stride(),ca.handle(),ca.writable());
 }
 
 // Currently we are only exposing the RGBA components.

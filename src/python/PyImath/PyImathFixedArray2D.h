@@ -13,9 +13,9 @@
 #include <boost/shared_array.hpp>
 #include <boost/any.hpp>
 #include <iostream>
+#include <ImathVec.h>
 #include "PyImathFixedArray.h"
 #include "PyImathOperators.h"
-#include <ImathVec.h>
 
 namespace PyImath {
 
@@ -180,13 +180,8 @@ class FixedArray2D
             start = s;
             end = e;
             slicelength = sl;
-#if PY_MAJOR_VERSION > 2
-        } else if (PyLong_Check(index)) {
-            size_t i = canonical_index(PyLong_AsSsize_t(index), length);
-#else
         } else if (PyInt_Check(index)) {
             size_t i = canonical_index(PyInt_AsSsize_t(index), length);
-#endif
             start = i; end = i+1; step = 1; slicelength = 1;
         } else {
             PyErr_SetString(PyExc_TypeError, "Object is not a slice");

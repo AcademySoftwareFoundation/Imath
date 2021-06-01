@@ -10,6 +10,7 @@
 
 #include <ImathVec.h>
 #include <ImathQuat.h>
+#include <PyImathAPI.h>
 #include "PyImathFixedArray.h"
 #include "PyImathFixedMatrix.h"
 #include "PyImathFixedArray2D.h"
@@ -39,6 +40,9 @@ typedef FixedArray2D<int> IntArray2D;
 typedef FixedArray2D<double> DoubleArray2D;
 
 typedef FixedVArray<int> VIntArray;
+typedef FixedVArray<float> VFloatArray;
+typedef FixedVArray<Imath::Vec2<int> > VV2iArray;
+typedef FixedVArray<Imath::Vec2<float> > VV2fArray;
 
 }
 

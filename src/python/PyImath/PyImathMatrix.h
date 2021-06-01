@@ -10,9 +10,9 @@
 
 #include <Python.h>
 #include <boost/python.hpp>
-#include "PyImath.h"
 #include <ImathMatrix.h>
 #include <ImathMatrixAlgo.h>
+#include "PyImath.h"
 
 namespace PyImath {
 

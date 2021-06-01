@@ -8,7 +8,6 @@
 #include "PyImath.h"
 #include "PyImathExport.h"
 
-
 namespace PyImath {
 
 template <> PYIMATH_EXPORT const char * BoolArray::name()         { return "BoolArray"; }
@@ -21,5 +20,8 @@ template <> PYIMATH_EXPORT const char * UnsignedIntArray::name()  { return "Unsi
 template <> PYIMATH_EXPORT const char * FloatArray::name()        { return "FloatArray"; }
 template <> PYIMATH_EXPORT const char * DoubleArray::name()       { return "DoubleArray"; }
 template <> PYIMATH_EXPORT const char * VIntArray::name()         { return "VIntArray"; }
+template <> PYIMATH_EXPORT const char * VFloatArray::name()       { return "VFloatArray"; }
+template <> PYIMATH_EXPORT const char * VV2iArray::name()         { return "VV2iArray"; }
+template <> PYIMATH_EXPORT const char * VV2fArray::name()         { return "VV2fArray"; }
 
 }

@@ -5,17 +5,16 @@
 
 // clang-format off
 
-#include "PyImathShear.h"
-
-#include "PyImathPlane.h"
-#include "PyImathDecorators.h"
-#include "PyImathExport.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
 #include "PyImath.h"
 #include "PyImathMathExc.h"
+#include "PyImathShear.h"
+#include "PyImathPlane.h"
+#include "PyImathDecorators.h"
+#include "PyImathExport.h"
 
 
 namespace PyImath{
@@ -536,6 +535,8 @@ register_Shear()
         .def("__truediv__", &divTuple<T>)
         .def("__rdiv__", &rdiv<T>)
         .def("__rdiv__", &rdivTuple<T>)
+        .def("__rtruediv__", &rdiv<T>)
+        .def("__rtruediv__", &rdivTuple<T>)
         .def("__lt__", &lessThan<T>)
         .def("__gt__", &greaterThan<T>)
         .def("__le__", &lessThanEqual<T>)

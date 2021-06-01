@@ -7,9 +7,6 @@
 
 #define BOOST_PYTHON_MAX_ARITY 17
 
-#include "PyImathMatrix.h"
-#include "PyImathExport.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
@@ -17,11 +14,14 @@
 #include <boost/python/tuple.hpp>
 #include <boost/python/dict.hpp>
 #include <boost/python/raw_function.hpp>
+#include <ImathVec.h>
+#include <ImathMatrixAlgo.h>
+#include "PyImathMatrix.h"
+#include "PyImathExport.h"
+#include "PyImathDecorators.h"
 #include "PyImath.h"
 #include "PyImathVec.h"
 #include "PyImathMathExc.h"
-#include <ImathVec.h>
-#include <ImathMatrixAlgo.h>
 
 namespace PyImath {
 
@@ -121,7 +121,8 @@ invert33 (Matrix33<T> &m, bool singExc = true)
 }
 
 template <class T>
-static Matrix33<T>inverse33 (Matrix33<T> &m, bool singExc = true)
+static Matrix33<T>
+inverse33 (Matrix33<T> &m, bool singExc = true)
 {
     MATH_EXC_ON;
     return m.inverse(singExc);
@@ -852,7 +853,7 @@ register_Matrix33()
         .staticmethod("baseTypeEpsilon")
         .def("baseTypeMax", &Matrix33<T>::baseTypeMax,"baseTypeMax() max value of the base type of the vector")
         .staticmethod("baseTypeMax")
-        .def("baseTypeLowest", &Matrix33<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the vector")
+        .def("baseTypeLowest", &Matrix33<T>::baseTypeLowest,"baseTypeLowest() largest negative value of the base type of the vector")
         .staticmethod("baseTypeLowest")
         .def("baseTypeSmallest", &Matrix33<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the vector")
         .staticmethod("baseTypeSmallest")
@@ -1059,6 +1060,53 @@ register_Matrix33()
 }
 
 template <class T>
+struct Matrix33Array_Constructor : public Task
+{
+    const FixedArray<T> &a; const FixedArray<T> &b; const FixedArray<T> &c;
+    const FixedArray<T> &d; const FixedArray<T> &e; const FixedArray<T> &f;
+    const FixedArray<T> &g; const FixedArray<T> &h; const FixedArray<T> &i;
+    FixedArray<IMATH_NAMESPACE::Matrix33<T> > &result;
+
+    Matrix33Array_Constructor (const FixedArray<T> &a, const FixedArray<T> &b, const FixedArray<T> &c,
+                               const FixedArray<T> &d, const FixedArray<T> &e, const FixedArray<T> &f,
+                               const FixedArray<T> &g, const FixedArray<T> &h, const FixedArray<T> &i,
+                               FixedArray<IMATH_NAMESPACE::Matrix33<T> > &result)
+        : a (a), b (b), c (c), 
+          d (d), e (e), f (f), 
+          g (g), h (h), i (i), result (result) {}
+
+    void execute (size_t start, size_t end)
+    {
+        for (size_t index = start; index < end; ++index)
+        {
+            result[index] = IMATH_NAMESPACE::Matrix33<T>(a[index], b[index], c[index], 
+                                                         d[index], e[index], f[index], 
+                                                         g[index], h[index], i[index]);
+        }
+    }
+};
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix33<T> > *
+M33Array_constructor(const FixedArray<T> &a, const FixedArray<T> &b, const FixedArray<T> &c,
+                     const FixedArray<T> &d, const FixedArray<T> &e, const FixedArray<T> &f,
+                     const FixedArray<T> &g, const FixedArray<T> &h, const FixedArray<T> &i)
+{
+    MATH_EXC_ON;
+    size_t len = a.len();
+    if (!( a.len() == len && b.len() == len && c.len() == len && 
+           d.len() == len && e.len() == len && f.len() == len && 
+           g.len() == len && h.len() == len && i.len() == len))
+        throw std::invalid_argument("Dimensions do not match" );
+    FixedArray<IMATH_NAMESPACE::Matrix33<T> >* result =
+        new FixedArray<IMATH_NAMESPACE::Matrix33<T> > (Py_ssize_t(len), UNINITIALIZED);
+
+    Matrix33Array_Constructor<T> task (a, b, c, d, e, f, g, h, i, *result);
+    dispatchTask (task, len);
+    return result;
+}
+
+template <class T>
 static void
 setM33ArrayItem(FixedArray<IMATH_NAMESPACE::Matrix33<T> > &ma,
                 Py_ssize_t index,
@@ -1067,51 +1115,106 @@ setM33ArrayItem(FixedArray<IMATH_NAMESPACE::Matrix33<T> > &ma,
     ma[ma.canonical_index(index)] = m;
 }
 
+
 template <class T>
-static FixedArray<IMATH_NAMESPACE::Matrix33<T> > 
-gjInverse33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
+struct M33Array_Inverse : public Task
 {
-  MATH_EXC_ON;
-  size_t len = ma.len();
-  FixedArray<IMATH_NAMESPACE::Matrix33<T> > dst(len);
-  for (size_t i=0; i<len; ++i) dst[i] = ma[i].gjInverse(singExc);    
-  return dst;
+    const FixedArray<IMATH_NAMESPACE::Matrix33<T> > &mats;
+    FixedArray<IMATH_NAMESPACE::Matrix33<T> >       &result;
+
+    M33Array_Inverse (FixedArray<IMATH_NAMESPACE::Matrix33<T> >        &result,
+                       const FixedArray<IMATH_NAMESPACE::Matrix33<T> > &mats)
+        : mats (mats), result (result) {}
+
+    void execute (size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+            result[i] = mats[i].inverse();
+    } 
+};
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix33<T> >
+M33Array_inverse(const FixedArray<IMATH_NAMESPACE::Matrix33<T> > &ma)
+{
+    MATH_EXC_ON;
+    size_t len = ma.len();
+    FixedArray<IMATH_NAMESPACE::Matrix33<T> > result (len);
+
+    M33Array_Inverse<T> task (result, ma);
+    dispatchTask (task, len);
+
+    return result;
 }
 
 template <class T>
-static FixedArray<IMATH_NAMESPACE::Matrix33<T> > &
-gjInvert33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
+struct M33Array_RmulVec3 : public Task
 {
-  MATH_EXC_ON;
-  size_t len = ma.len();
-  for (size_t i=0; i<len; ++i) ma[i].gjInvert(singExc);    
-  return ma;
+    const FixedArray<IMATH_NAMESPACE::Matrix33<T> > &a;
+    const Vec3<T>                                   &v;
+    FixedArray<Vec3<T> >                            &r;
+
+    M33Array_RmulVec3 (const FixedArray<IMATH_NAMESPACE::Matrix33<T> > &a,
+                       const Vec3<T>                                   &v, 
+                       FixedArray<Vec3<T> >                            &r)
+        : a (a), v (v), r (r) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+        {
+            r[i] = v * a[i];
+        }
+    }
+};
+
+template <class T>
+static FixedArray< Vec3<T> >
+M33Array_rmulVec3 (const FixedArray< IMATH_NAMESPACE::Matrix33<T> > &a, const Vec3<T> &v)
+{
+    MATH_EXC_ON;
+    size_t len = a.len();
+    FixedArray< Vec3<T> > r (Py_ssize_t(len), UNINITIALIZED);
+
+    M33Array_RmulVec3<T> task (a, v, r);
+    dispatchTask (task, len);
+    return r;
 }
 
 template <class T>
-static FixedArray<IMATH_NAMESPACE::Matrix33<T> > 
-inverse33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
+struct M33Array_RmulVec3Array : public Task
 {
-  MATH_EXC_ON;
-  size_t len = ma.len();
-  FixedArray<IMATH_NAMESPACE::Matrix33<T> > dst(len);
-  for (size_t i=0; i<len; ++i) dst[i] = ma[i].inverse(singExc);    
-  return dst;
-}
+    const FixedArray<IMATH_NAMESPACE::Matrix33<T> > &a;
+    const FixedArray<Vec3<T> >                      &b;
+    FixedArray<Vec3<T> >                            &r;
+
+    M33Array_RmulVec3Array (const FixedArray<IMATH_NAMESPACE::Matrix33<T> > &a,
+                            const FixedArray<Vec3<T> >                      &b,
+                            FixedArray<Vec3<T> >                            &r)
+        : a (a), b (b), r (r) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+        {
+            r[i] = b[i] * a[i];
+        }
+    }
+};
 
 template <class T>
-static FixedArray<IMATH_NAMESPACE::Matrix33<T> > &
-invert33_array(FixedArray<IMATH_NAMESPACE::Matrix33<T> >&ma, bool singExc = true)
+static FixedArray< Vec3<T> >
+M33Array_rmulVec3Array (const FixedArray< IMATH_NAMESPACE::Matrix33<T> > &a,
+                        const FixedArray< Vec3<T> > &b)
 {
-  MATH_EXC_ON;
-  size_t len = ma.len();
-  for (size_t i=0; i<len; ++i) ma[i].invert(singExc);    
-  return ma;
+    MATH_EXC_ON;
+    size_t len = a.match_dimension(b);
+    FixedArray< Vec3<T> > r (Py_ssize_t(len), UNINITIALIZED);
+
+    M33Array_RmulVec3Array<T> task (a, b, r);
+    dispatchTask (task, len);
+    return r;
 }
-
-BOOST_PYTHON_FUNCTION_OVERLOADS(invert33_array_overloads, invert33_array, 1, 2);
-BOOST_PYTHON_FUNCTION_OVERLOADS(inverse33_array_overloads, inverse33_array, 1, 2);
-
 
 template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Matrix33<T> > >
@@ -1119,12 +1222,17 @@ register_M33Array()
 {
     class_<FixedArray<IMATH_NAMESPACE::Matrix33<T> > > matrixArray_class = FixedArray<IMATH_NAMESPACE::Matrix33<T> >::register_("Fixed length array of IMATH_NAMESPACE::Matrix33");
     matrixArray_class
+         .def("__init__", make_constructor(M33Array_constructor<T>))
          .def("__setitem__", &setM33ArrayItem<T>)
-         .def("inverse",&inverse33_array<T>,inverse33_array_overloads("inverse() return an inverted copy of these matricies"))
-         .def("invert",&invert33_array<T>,invert33_array_overloads("invert() invert these matricies")[return_internal_reference<>()])
-         .def("gjInverse",&gjInverse33_array<T>,inverse33_array_overloads("gjInverse() return an inverted copy of these matricies"))
-         .def("gjInvert",&gjInvert33_array<T>,invert33_array_overloads("gjInvert() invert these matricies")[return_internal_reference<>()])
+         .def("inverse", &M33Array_inverse<T>,
+             "Return M^-1 for each element M.",
+             (args("vector")))
+         .def("__rmul__", &M33Array_rmulVec3<T>)
+         .def("__rmul__", &M33Array_rmulVec3Array<T>)
         ;
+
+    add_comparison_functions(matrixArray_class);
+
     return matrixArray_class;
 }
 

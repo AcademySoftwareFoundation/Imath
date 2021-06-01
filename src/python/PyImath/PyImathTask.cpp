@@ -11,6 +11,13 @@ namespace PyImath {
 
 static WorkerPool *_currentPool = 0;
 
+// Its not worth dispatching parallel tasks unless the iteration count
+// is high enough.  The time to create and launch parallel tasks takes
+// longer than to just do the iterations directly.  This value of '200'
+// is actually very conservative; in some tests, this number should
+// probably be in the thousands.
+static const size_t _minIterations = 200;
+
 WorkerPool *
 WorkerPool::currentPool()
 {
@@ -26,7 +33,8 @@ WorkerPool::setCurrentPool(WorkerPool *pool)
 void
 dispatchTask(Task &task,size_t length)
 {
-    if (WorkerPool::currentPool() && !WorkerPool::currentPool()->inWorkerThread())
+    if (length > _minIterations   &&
+        WorkerPool::currentPool() && !WorkerPool::currentPool()->inWorkerThread())
         WorkerPool::currentPool()->dispatch(task,length);
     else
         task.execute(0,length,0);

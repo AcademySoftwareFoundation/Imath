@@ -27,6 +27,7 @@ class FixedVArray
     std::vector<T> *  _ptr;
     size_t            _length;
     size_t            _stride;
+    bool              _writable;
 
     // This handle optionally stores a shared_array to allocated array data
     // so that everything is freed properly on exit.
@@ -39,22 +40,24 @@ class FixedVArray
     typedef T  BaseType;
 
     FixedVArray (std::vector<T>* ptr, Py_ssize_t length,
-                 Py_ssize_t stride = 1);
+                 Py_ssize_t stride = 1, bool writable = true);
 
     FixedVArray (std::vector<T>* ptr, Py_ssize_t length,
+                 Py_ssize_t stride, boost::any handle, bool writable = true);
+
+    FixedVArray (const std::vector<T>* ptr, Py_ssize_t length,
+                 Py_ssize_t stride = 1);
+
+    FixedVArray (const std::vector<T>* ptr, Py_ssize_t length,
                  Py_ssize_t stride, boost::any handle);
 
     explicit FixedVArray (Py_ssize_t length);
-
- // Not needed.  vector-lengths are zero (uninitialized) by default.
- // FixedVArray (Py_ssize_t length, Uninitialized);
 
     FixedVArray (const T& initialValue, Py_ssize_t length);
 
     FixedVArray (FixedVArray<T>& f, const FixedArray<int>& mask);
 
- // template <class S>
- // explicit FixedVArray (const FixedVArray<S> &other);
+    FixedVArray (const FixedArray<int>& size, const T& initialValue);
 
     FixedVArray (const FixedVArray<T>& other);
 
@@ -66,8 +69,15 @@ class FixedVArray
 
     const boost::any&  handle() { return _handle; }
 
-    Py_ssize_t  len()    const { return _length; }
-    size_t      stride() const { return _stride; }
+    Py_ssize_t  len()      const { return _length;   }
+    size_t      stride()   const { return _stride;   }
+    bool        writable() const { return _writable; }
+
+    // This method is mainly here for use in confidence tests, but there may
+    // be other use-cases where a writable array needs to be made read-only.
+    // Note that we do not provide a 'makeWritable' method here, because that
+    // type of operation shouldn't be allowed.
+    void        makeReadOnly() { _writable = false; }
 
     bool        isMaskedReference() const { return _indices.get() != 0; }
     size_t      unmaskedLength()    const { return _unmaskedLength; }
@@ -77,24 +87,36 @@ class FixedVArray
 
     // ----------------
 
- // typedef typename boost::mpl::if_<boost::is_class<T>,T&,T>::type get_type;
- // get_type        getitem (Py_ssize_t index);
- // 
- // typedef typename boost::mpl::if_<boost::is_class<T>,const T&,T>::type get_type_const;
- // get_type_const  getitem (Py_ssize_t index) const;
-
-    // ----------------
-
-    FixedVArray<T>  getslice (PyObject* index) const;  // AAJ: Question about 'FixedArray' version
+    FixedArray<T>   getitem (Py_ssize_t index);
+    FixedVArray<T>  getslice (PyObject* index) const;
     FixedVArray<T>  getslice_mask (const FixedArray<int>& mask);
 
- // void            setitem_scalar (PyObject* index, const T& data);
- // void            setitem_scalar_mask (const FixedArray<int>& mask, const T& data);
+    void            setitem_scalar (PyObject* index, const FixedArray<T>& data);
+    void            setitem_scalar_mask (const FixedArray<int>& mask, const FixedArray<T>& data);
     void            setitem_vector (PyObject* index, const FixedVArray<T>& data);
     void            setitem_vector_mask (const FixedArray<int>& mask, const FixedVArray<T>& data);
 
- // FixedVArray<T>  ifelse_scalar(const FixedArray<int>& choice, const T& other);
-    FixedVArray<T>  ifelse_vector(const FixedArray<int>& choice, const FixedVArray<T>& other);
+    struct SizeHelper
+    {
+        SizeHelper(FixedVArray &a) : _a(a) {}
+
+        int             getitem(Py_ssize_t index) const;
+        FixedArray<int> getitem_slice(PyObject* index) const;
+        FixedArray<int> getitem_mask(const FixedArray<int>& mask) const;
+
+        void            setitem_scalar (PyObject* index, size_t size);
+        void            setitem_scalar_mask (const FixedArray<int>& mask, size_t size);
+        void            setitem_vector (PyObject* index, const FixedArray<int>& size);
+        void            setitem_vector_mask (const FixedArray<int>& mask, const FixedArray<int>& size);
+
+      private:
+
+        FixedVArray &_a;
+    };
+
+    boost::shared_ptr<SizeHelper> getSizeHelper();
+
+    friend struct SizeHelper;
 
     // ----------------
 

@@ -10,9 +10,9 @@
 
 #include <Python.h>
 #include <boost/python.hpp>
-#include "PyImath.h"
 #include <ImathQuat.h>
 #include <ImathVec.h>
+#include "PyImath.h"
 
 namespace PyImath {
 
