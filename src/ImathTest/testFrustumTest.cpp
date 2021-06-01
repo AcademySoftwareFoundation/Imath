@@ -7,16 +7,16 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathBox.h"
-#include "ImathFrustum.h"
-#include "ImathFrustumTest.h"
-#include "ImathSphere.h"
+#include <ImathBox.h>
+#include <ImathFrustum.h>
+#include <ImathFrustumTest.h>
+#include <ImathSphere.h>
 #include <assert.h>
 #include <iostream>
-#include <testFrustumTest.h>
+#include "testFrustumTest.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
-#include "ImathForward.h"
+#include <ImathForward.h>
 
 using namespace std;
 

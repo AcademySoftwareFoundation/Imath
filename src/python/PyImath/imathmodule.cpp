@@ -188,7 +188,6 @@ FixedArray2D<int> rangeY(int sizeX, int sizeY)
 
 BOOST_PYTHON_MODULE(imath)
 {
-    
     scope().attr("__doc__") = "Imath module";
     scope().attr("__version__") = IMATH_VERSION_STRING;
 

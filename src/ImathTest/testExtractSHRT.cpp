@@ -7,15 +7,15 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathEuler.h"
-#include "ImathFun.h"
-#include "ImathMatrixAlgo.h"
-#include "ImathRandom.h"
+#include <ImathEuler.h>
+#include <ImathFun.h>
+#include <ImathMatrixAlgo.h>
+#include <ImathRandom.h>
 #include <assert.h>
 #include <exception>
 #include <iostream>
 #include <stdio.h>
-#include <testExtractSHRT.h>
+#include "testExtractSHRT.h"
 
 #if 0
 #    define debug(x) (printf x, fflush (stdout))

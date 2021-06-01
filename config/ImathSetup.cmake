@@ -9,6 +9,8 @@ if(NOT "${CMAKE_PROJECT_NAME}" STREQUAL "${PROJECT_NAME}")
   message(STATUS "Imath is configuring as a cmake sub project")
 endif()
 
+option(IMATH_USE_HALF_LOOKUP_TABLES "Restores use of lookup tables for systems where that is still faster (on by default)" ON)
+
 option(IMATH_USE_DEFAULT_VISIBILITY "Makes the compile use default visibility (by default compiles tidy, hidden-by-default)"     OFF)
 
 # This is primarily for the halfFunction code that enables a stack
@@ -29,7 +31,7 @@ set(tmp)
 set(IMATH_NAMESPACE_CUSTOM "0" CACHE STRING "Whether the namespace has been customized (so external users know)")
 set(IMATH_INTERNAL_NAMESPACE "Imath_${IMATH_VERSION_API}" CACHE STRING "Real namespace for Imath that will end up in compiled symbols")
 set(IMATH_NAMESPACE "Imath" CACHE STRING "Public namespace alias for Imath")
-set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}" CACHE STRING "Public string / label for displaying package")
+set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}${IMATH_VERSION_RELEASE_TYPE}" CACHE STRING "Public string / label for displaying package")
 
 # Whether to generate and install a pkg-config file Imath.pc on
 if(WIN32)

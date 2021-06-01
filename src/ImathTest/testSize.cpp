@@ -11,7 +11,7 @@
 #include <assert.h>
 #include <iostream>
 #include <stddef.h>
-#include <testSize.h>
+#include "testSize.h"
 
 using namespace std;
 

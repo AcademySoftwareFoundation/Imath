@@ -193,6 +193,9 @@ static void *apply_import()
 
 BOOST_PYTHON_MODULE(imathnumpy)
 {
+    scope().attr("__doc__") = "Imathnumpy module";
+    scope().attr("__version__") = IMATH_VERSION_STRING;
+
     handle<> imath(PyImport_ImportModule("imath"));
     if (PyErr_Occurred()) throw_error_already_set();
     scope().attr("imath") = imath;

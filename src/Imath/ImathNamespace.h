@@ -56,6 +56,8 @@
 #    define IMATH_INTERNAL_NAMESPACE IMATH_NAMESPACE
 #endif
 
+#ifdef __cplusplus
+
 //
 // We need to be sure that we import the internal namespace into the public one.
 // To do this, we use the small bit of code below which initially defines
@@ -86,6 +88,8 @@ using namespace IMATH_INTERNAL_NAMESPACE;
     namespace IMATH_INTERNAL_NAMESPACE                                                             \
     {
 #define IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT }
+
+#endif // __cplusplus
 
 /// @endcond
 

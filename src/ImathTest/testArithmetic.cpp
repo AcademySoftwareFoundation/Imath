@@ -7,10 +7,10 @@
 #    undef NDEBUG
 #endif
 
-#include "half.h"
+#include <half.h>
 #include <assert.h>
 #include <iostream>
-#include <testArithmetic.h>
+#include "testArithmetic.h"
 
 using namespace std;
 

@@ -7,8 +7,8 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathMatrix.h"
-#include "ImathMatrixAlgo.h"
+#include <ImathMatrix.h>
+#include <ImathMatrixAlgo.h>
 #include <algorithm>
 #include <cassert>
 #include <cmath>

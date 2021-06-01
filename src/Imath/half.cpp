@@ -9,7 +9,6 @@
 //     Rod Bogart <rgb@ilm.com>
 //
 
-
 //---------------------------------------------------------------------------
 //
 //	class half --
@@ -34,21 +33,33 @@ using namespace std;
 
 // clang-format off
 
-EXPORT_CONST const half::uif half::_toFloat[1 << 16] =
+#ifdef IMATH_ENABLE_HALF_LOOKUP_TABLES
+const imath_half_uif_t imath_half_to_float_table_data[1 << 16] =
 #include "toFloat.h"
-EXPORT_CONST const unsigned short half::_eLut[1 << 9] =
+
+const uint16_t imath_float_half_exp_table_data[1 << 9] =
 #include "eLut.h"
 
+extern "C" {
+EXPORT_CONST const imath_half_uif_t *imath_half_to_float_table = imath_half_to_float_table_data;
+EXPORT_CONST const uint16_t *imath_float_half_exp_table = imath_float_half_exp_table_data;
+} // extern "C"
+
+#endif
+
+// clang-format on
+
+//#ifdef IMATH_USE_ORIGINAL_HALF_IMPLEMENTATION
 //-----------------------------------------------
 // Overflow handler for float-to-half conversion;
 // generates a hardware floating-point overflow,
 // which may be trapped by the operating system.
 //-----------------------------------------------
 
-IMATH_EXPORT float
-half::overflow() noexcept
+static float
+half_overflow() noexcept
 {
-    volatile float f = 1e10;
+    float f = 1e10;
 
     for (int i = 0; i < 10; i++)
         f *= f; // this will overflow before the for loop terminates
@@ -61,8 +72,8 @@ half::overflow() noexcept
 // zeroes, denormalized numbers and exponent overflows.
 //-----------------------------------------------------
 
-IMATH_EXPORT short
-half::convert (int i) noexcept
+IMATH_EXPORT uint16_t
+half::long_convert (int i) noexcept
 {
     //
     // Our floating point number, f, is represented by the bit
@@ -184,7 +195,7 @@ half::convert (int i) noexcept
 
         if (e > 30)
         {
-            overflow();        // Cause a hardware floating point overflow;
+            half_overflow ();        // Cause a hardware floating point overflow;
             return s | 0x7c00; // if this returns, the half becomes an
         }                      // infinity with the same sign as f.
 
@@ -195,6 +206,8 @@ half::convert (int i) noexcept
         return s | (e << 10) | (m >> 13);
     }
 }
+
+//#endif
 
 //---------------------
 // Stream I/O operators
