@@ -30,7 +30,11 @@
 namespace PyImath {
 
 namespace {
-    
+
+//
+// Utility classes used for converting array members to boost python objects.
+//
+
 template <class T>
 struct ReturnReference
 {
