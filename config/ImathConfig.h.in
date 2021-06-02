@@ -55,6 +55,19 @@
 // IMATH_LIB_VERSION is the library API version: SOCURRENT.SOAGE.SOREVISION
 #define IMATH_LIB_VERSION_STRING "@IMATH_LIB_VERSION@"
 
+//
+// Code that depends on the v2 ExcMath mechanism of signal handlers
+// that throw exceptions is incompatible with noexcept, since
+// floating-point overflow and underflow can occur in a wide variety
+// of computations within Imath functions now marked with
+// noexcept. Code that needs to accomodate the exception-handling
+// behavior can disable the noexcept specifier by defining the
+// IMATH_NOEXCEPT macro to be empty.
+//
+
+#ifndef IMATH_NOEXCEPT
+#define IMATH_NOEXCEPT noexcept
+#endif
 
 //
 // By default, opt into the interoparability constructors and assignments.

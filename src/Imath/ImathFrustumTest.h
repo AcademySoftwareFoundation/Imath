@@ -89,7 +89,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
     /// @name Constructors
 
     /// Initialize camera matrix to identity
-    FrustumTest() noexcept
+    FrustumTest() IMATH_NOEXCEPT
     {
         Frustum<T> frust;
         Matrix44<T> cameraMat;
@@ -98,7 +98,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
     }
 
     /// Initialize to a given frustum and camera matrix.
-    FrustumTest (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) noexcept
+    FrustumTest (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) IMATH_NOEXCEPT
     {
         setFrustum (frustum, cameraMat);
     }
@@ -111,7 +111,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
     /// Update the frustum test with a new frustum and matrix.
     /// This should usually be called just once per frame, or however
     /// often the camera moves.
-    void setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) noexcept;
+    void setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) IMATH_NOEXCEPT;
 
     /// @}
 
@@ -120,28 +120,28 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
     
     /// Return true if any part of the sphere is inside the frustum.
     /// The result MAY return close false-positives, but not false-negatives.
-    bool isVisible (const Sphere3<T>& sphere) const noexcept;
+    bool isVisible (const Sphere3<T>& sphere) const IMATH_NOEXCEPT;
 
     /// Return true if any part of the box is inside the frustum.
     /// The result MAY return close false-positives, but not false-negatives.
-    bool isVisible (const Box<Vec3<T>>& box) const noexcept;
+    bool isVisible (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT;
 
     /// Return true if the point is inside the frustum.
-    bool isVisible (const Vec3<T>& vec) const noexcept;
+    bool isVisible (const Vec3<T>& vec) const IMATH_NOEXCEPT;
 
     /// Return true if every part of the sphere is inside the frustum.
     /// The result MAY return close false-negatives, but not false-positives.
-    bool completelyContains (const Sphere3<T>& sphere) const noexcept;
+    bool completelyContains (const Sphere3<T>& sphere) const IMATH_NOEXCEPT;
 
     /// Return true if every part of the box is inside the frustum.
     /// The result MAY return close false-negatives, but not false-positives.
-    bool completelyContains (const Box<Vec3<T>>& box) const noexcept;
+    bool completelyContains (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT;
 
     /// Return the camera matrix (primarily for debugging)
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T> cameraMat() const noexcept { return cameraMatrix; }
+    IMATH_INTERNAL_NAMESPACE::Matrix44<T> cameraMat() const IMATH_NOEXCEPT { return cameraMatrix; }
 
     /// Return the viewing frustum (primarily for debugging)
-    IMATH_INTERNAL_NAMESPACE::Frustum<T> currentFrustum() const noexcept { return currFrustum; }
+    IMATH_INTERNAL_NAMESPACE::Frustum<T> currentFrustum() const IMATH_NOEXCEPT { return currFrustum; }
 
     /// @}
     
@@ -172,7 +172,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
 
 template <class T>
 void
-FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) noexcept
+FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) IMATH_NOEXCEPT
 {
     Plane3<T> frustumPlanes[6];
     frustum.planes (frustumPlanes, cameraMat);
@@ -213,7 +213,7 @@ FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& camera
 
 template <typename T>
 bool
-FrustumTest<T>::isVisible (const Sphere3<T>& sphere) const noexcept
+FrustumTest<T>::isVisible (const Sphere3<T>& sphere) const IMATH_NOEXCEPT
 {
     Vec3<T> center    = sphere.center;
     Vec3<T> radiusVec = Vec3<T> (sphere.radius, sphere.radius, sphere.radius);
@@ -236,7 +236,7 @@ FrustumTest<T>::isVisible (const Sphere3<T>& sphere) const noexcept
 
 template <typename T>
 bool
-FrustumTest<T>::completelyContains (const Sphere3<T>& sphere) const noexcept
+FrustumTest<T>::completelyContains (const Sphere3<T>& sphere) const IMATH_NOEXCEPT
 {
     Vec3<T> center    = sphere.center;
     Vec3<T> radiusVec = Vec3<T> (sphere.radius, sphere.radius, sphere.radius);
@@ -259,7 +259,7 @@ FrustumTest<T>::completelyContains (const Sphere3<T>& sphere) const noexcept
 
 template <typename T>
 bool
-FrustumTest<T>::isVisible (const Box<Vec3<T>>& box) const noexcept
+FrustumTest<T>::isVisible (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT
 {
     if (box.isEmpty())
         return false;
@@ -287,7 +287,7 @@ FrustumTest<T>::isVisible (const Box<Vec3<T>>& box) const noexcept
 
 template <typename T>
 bool
-FrustumTest<T>::completelyContains (const Box<Vec3<T>>& box) const noexcept
+FrustumTest<T>::completelyContains (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT
 {
     if (box.isEmpty())
         return false;
@@ -315,7 +315,7 @@ FrustumTest<T>::completelyContains (const Box<Vec3<T>>& box) const noexcept
 
 template <typename T>
 bool
-FrustumTest<T>::isVisible (const Vec3<T>& vec) const noexcept
+FrustumTest<T>::isVisible (const Vec3<T>& vec) const IMATH_NOEXCEPT
 {
     // This is a vertical dot-product on three vectors at once.
     Vec3<T> d0 = (planeNormX[0] * vec.x) + (planeNormY[0] * vec.y) + (planeNormZ[0] * vec.z) -

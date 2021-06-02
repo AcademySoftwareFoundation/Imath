@@ -28,7 +28,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
 IMATH_CONSTEXPR14 bool
-closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Vec3<T>& point2) noexcept
+closestPoints (const Line3<T>& line1, const Line3<T>& line2, Vec3<T>& point1, Vec3<T>& point2) IMATH_NOEXCEPT
 {
     Vec3<T> w = line1.pos - line2.pos;
     T d1w     = line1.dir ^ w;
@@ -83,7 +83,7 @@ intersect (const Line3<T>& line,
            const Vec3<T>& v2,
            Vec3<T>& pt,
            Vec3<T>& barycentric,
-           bool& front) noexcept
+           bool& front) IMATH_NOEXCEPT
 {
     Vec3<T> edge0  = v1 - v0;
     Vec3<T> edge1  = v2 - v1;
@@ -161,7 +161,7 @@ intersect (const Line3<T>& line,
 
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
-closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Line3<T>& l) noexcept
+closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Line3<T>& l) IMATH_NOEXCEPT
 {
     Vec3<T> nearest = v0;
     T neardot       = (v0 - l.closestPointTo (v0)).length2();
@@ -190,7 +190,7 @@ closestVertex (const Vec3<T>& v0, const Vec3<T>& v1, const Vec3<T>& v2, const Li
 
 template <class T>
 IMATH_CONSTEXPR14 Vec3<T>
-rotatePoint (const Vec3<T> p, Line3<T> l, T angle) noexcept
+rotatePoint (const Vec3<T> p, Line3<T> l, T angle) IMATH_NOEXCEPT
 {
     //
     // Form a coordinate frame with <x,y,a>. The rotation is the in xy

@@ -41,13 +41,13 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Interval
     /// @name Constructors
 
     /// Initialize to the empty interval
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval() noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval() IMATH_NOEXCEPT;
 
     /// Intitialize to a single point
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& point) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& point) IMATH_NOEXCEPT;
 
     /// Intitialize to a given (min,max)
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& minT, const T& maxT) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Interval (const T& minT, const T& maxT) IMATH_NOEXCEPT;
 
     /// @}
 
@@ -55,9 +55,9 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Interval
     /// @name Comparison
 
     /// Equality
-    IMATH_HOSTDEVICE constexpr bool operator== (const Interval<T>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Interval<T>& src) const IMATH_NOEXCEPT;
     /// Inequality
-    IMATH_HOSTDEVICE constexpr bool operator!= (const Interval<T>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Interval<T>& src) const IMATH_NOEXCEPT;
 
     /// @}
 
@@ -66,16 +66,16 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Interval
 
     /// Set the interval to be empty. An interval is empty if the
     /// minimum is greater than the maximum.
-    IMATH_HOSTDEVICE void makeEmpty() noexcept;
+    IMATH_HOSTDEVICE void makeEmpty() IMATH_NOEXCEPT;
 
     /// Extend the interval to include the given point.
-    IMATH_HOSTDEVICE void extendBy (const T& point) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const T& point) IMATH_NOEXCEPT;
 
     /// Extend the interval to include the given interval
-    IMATH_HOSTDEVICE void extendBy (const Interval<T>& interval) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const Interval<T>& interval) IMATH_NOEXCEPT;
 
     /// Make the interval include the entire range of the base type.
-    IMATH_HOSTDEVICE void makeInfinite() noexcept;
+    IMATH_HOSTDEVICE void makeInfinite() IMATH_NOEXCEPT;
 
     /// @}
 
@@ -83,30 +83,30 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Interval
     ///	@name Query
 
     /// Return the size of the interval. The size is (max-min). An empty box has a size of 0.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T size() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T size() const IMATH_NOEXCEPT;
 
     /// Return the center of the interval. The center is defined as
     /// (max+min)/2. The center of an empty interval is undefined.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T center() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T center() const IMATH_NOEXCEPT;
 
     /// Return true if the given point is inside the interval, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const T& point) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const T& point) const IMATH_NOEXCEPT;
 
     /// Return true if the given interval is inside the interval, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Interval<T>& interval) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Interval<T>& interval) const IMATH_NOEXCEPT;
 
     /// Return true if the interval is empty, false otherwise. An
     /// empty interval's minimum is greater than its maximum.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const IMATH_NOEXCEPT;
 
     /// Return true if the interval is larger than a single point,
     /// false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const IMATH_NOEXCEPT;
 
     /// Return true if the interval contains all points, false
     /// otherwise.  An infinite box has a mimimum of `numeric_limits<T>::lowest()`
     /// and a maximum of `numeric_limits<T>::max()`
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const IMATH_NOEXCEPT;
 
     /// @}
 };
@@ -126,18 +126,18 @@ typedef Interval<short> Intervals;
 /// Interval of type integer
 typedef Interval<int> Intervali;
 
-template <class T> inline IMATH_CONSTEXPR14 Interval<T>::Interval() noexcept
+template <class T> inline IMATH_CONSTEXPR14 Interval<T>::Interval() IMATH_NOEXCEPT
 {
     makeEmpty();
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& point) noexcept
+template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& point) IMATH_NOEXCEPT
 {
     min = point;
     max = point;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& minV, const T& maxV) noexcept
+template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& minV, const T& maxV) IMATH_NOEXCEPT
 {
     min = minV;
     max = maxV;
@@ -145,21 +145,21 @@ template <class T> IMATH_CONSTEXPR14 inline Interval<T>::Interval (const T& minV
 
 template <class T>
 constexpr inline bool
-Interval<T>::operator== (const Interval<T>& src) const noexcept
+Interval<T>::operator== (const Interval<T>& src) const IMATH_NOEXCEPT
 {
     return (min == src.min && max == src.max);
 }
 
 template <class T>
 constexpr inline bool
-Interval<T>::operator!= (const Interval<T>& src) const noexcept
+Interval<T>::operator!= (const Interval<T>& src) const IMATH_NOEXCEPT
 {
     return (min != src.min || max != src.max);
 }
 
 template <class T>
 inline void
-Interval<T>::makeEmpty() noexcept
+Interval<T>::makeEmpty() IMATH_NOEXCEPT
 {
     min = std::numeric_limits<T>::max();
     max = std::numeric_limits<T>::lowest();
@@ -167,7 +167,7 @@ Interval<T>::makeEmpty() noexcept
 
 template <class T>
 inline void
-Interval<T>::makeInfinite() noexcept
+Interval<T>::makeInfinite() IMATH_NOEXCEPT
 {
     min = std::numeric_limits<T>::lowest();
     max = std::numeric_limits<T>::max();
@@ -176,7 +176,7 @@ Interval<T>::makeInfinite() noexcept
 
 template <class T>
 inline void
-Interval<T>::extendBy (const T& point) noexcept
+Interval<T>::extendBy (const T& point) IMATH_NOEXCEPT
 {
     if (point < min)
         min = point;
@@ -187,7 +187,7 @@ Interval<T>::extendBy (const T& point) noexcept
 
 template <class T>
 inline void
-Interval<T>::extendBy (const Interval<T>& interval) noexcept
+Interval<T>::extendBy (const Interval<T>& interval) IMATH_NOEXCEPT
 {
     if (interval.min < min)
         min = interval.min;
@@ -198,21 +198,21 @@ Interval<T>::extendBy (const Interval<T>& interval) noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::intersects (const T& point) const noexcept
+Interval<T>::intersects (const T& point) const IMATH_NOEXCEPT
 {
     return point >= min && point <= max;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::intersects (const Interval<T>& interval) const noexcept
+Interval<T>::intersects (const Interval<T>& interval) const IMATH_NOEXCEPT
 {
     return interval.max >= min && interval.min <= max;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline T
-Interval<T>::size() const noexcept
+Interval<T>::size() const IMATH_NOEXCEPT
 {
     if (isEmpty())
         return T(0);
@@ -222,28 +222,28 @@ Interval<T>::size() const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline T
-Interval<T>::center() const noexcept
+Interval<T>::center() const IMATH_NOEXCEPT
 {
     return (max + min) / 2;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::isEmpty() const noexcept
+Interval<T>::isEmpty() const IMATH_NOEXCEPT
 {
     return max < min;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::hasVolume() const noexcept
+Interval<T>::hasVolume() const IMATH_NOEXCEPT
 {
     return max > min;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Interval<T>::isInfinite() const noexcept
+Interval<T>::isInfinite() const IMATH_NOEXCEPT
 {
     if (min != std::numeric_limits<T>::lowest() || max != std::numeric_limits<T>::max())
         return false;

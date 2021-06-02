@@ -8,7 +8,7 @@
 IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
 
 float
-succf (float f) noexcept
+succf (float f) IMATH_NOEXCEPT
 {
     union
     {
@@ -46,7 +46,7 @@ succf (float f) noexcept
 }
 
 float
-predf (float f) noexcept
+predf (float f) IMATH_NOEXCEPT
 {
     union
     {
@@ -84,7 +84,7 @@ predf (float f) noexcept
 }
 
 double
-succd (double d) noexcept
+succd (double d) IMATH_NOEXCEPT
 {
     union
     {
@@ -122,7 +122,7 @@ succd (double d) noexcept
 }
 
 double
-predd (double d) noexcept
+predd (double d) IMATH_NOEXCEPT
 {
     union
     {

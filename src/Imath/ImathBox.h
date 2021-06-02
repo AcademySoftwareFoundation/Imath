@@ -55,13 +55,13 @@ template <class V> class IMATH_EXPORT_TEMPLATE_TYPE Box
     /// Construct an empty bounding box. This initializes the mimimum to
     /// `std::numeric_limits<V::baseType>::max()` and the maximum to
     /// `std::numeric_limits<V::baseType>::lowest()`.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() IMATH_NOEXCEPT;
 
     /// Construct a bounding box that contains a single point.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const V& point) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const V& point) IMATH_NOEXCEPT;
 
     /// Construct a bounding box with the given minimum and maximum values.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const V& minV, const V& maxV) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const V& minV, const V& maxV) IMATH_NOEXCEPT;
 
     /// @}
 
@@ -69,10 +69,10 @@ template <class V> class IMATH_EXPORT_TEMPLATE_TYPE Box
     /// @name Comparison
     
     /// Equality
-    IMATH_HOSTDEVICE constexpr bool operator== (const Box<V>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Box<V>& src) const IMATH_NOEXCEPT;
 
     /// Inequality
-    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<V>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<V>& src) const IMATH_NOEXCEPT;
 
     /// @}
 
@@ -82,16 +82,16 @@ template <class V> class IMATH_EXPORT_TEMPLATE_TYPE Box
     /// Set the box to be empty. A box is empty if the mimimum is greater
     /// than the maximum. makeEmpty() sets the mimimum to `V::baseTypeMax()`
     /// and the maximum to `V::baseTypeLowest()`.
-    IMATH_HOSTDEVICE void makeEmpty() noexcept;
+    IMATH_HOSTDEVICE void makeEmpty() IMATH_NOEXCEPT;
 
     /// Extend the box to include the given point.
-    IMATH_HOSTDEVICE void extendBy (const V& point) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const V& point) IMATH_NOEXCEPT;
 
     /// Extend the box to include the given box.
-    IMATH_HOSTDEVICE void extendBy (const Box<V>& box) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const Box<V>& box) IMATH_NOEXCEPT;
 
     /// Make the box include the entire range of `V`.
-    IMATH_HOSTDEVICE void makeInfinite() noexcept;
+    IMATH_HOSTDEVICE void makeInfinite() IMATH_NOEXCEPT;
 
     /// @}
 
@@ -101,33 +101,33 @@ template <class V> class IMATH_EXPORT_TEMPLATE_TYPE Box
     /// Return the size of the box. The size is of type `V`, defined
     /// as `(max-min)`. An empty box has a size of `V(0)`, i.e. 0 in
     /// each dimension.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 V size() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 V size() const IMATH_NOEXCEPT;
 
     /// Return the center of the box. The center is defined as
     /// `(max+min)/2`. The center of an empty box is undefined.
-    IMATH_HOSTDEVICE constexpr V center() const noexcept;
+    IMATH_HOSTDEVICE constexpr V center() const IMATH_NOEXCEPT;
 
     /// Return true if the given point is inside the box, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const V& point) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const V& point) const IMATH_NOEXCEPT;
 
     /// Return true if the given box is inside the box, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<V>& box) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<V>& box) const IMATH_NOEXCEPT;
 
     /// Return the major axis of the box. The major axis is the dimension with
     /// the greatest difference between maximum and minimum.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const IMATH_NOEXCEPT;
 
     /// Return true if the box is empty, false otherwise. An empty box's
     /// minimum is greater than its maximum.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const IMATH_NOEXCEPT;
 
     /// Return true if the box is larger than a single point, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const IMATH_NOEXCEPT;
 
     /// Return true if the box contains all points, false otherwise.
     /// An infinite box has a mimimum of`V::baseTypeLowest()`
     /// and a maximum of `V::baseTypeMax()`.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const IMATH_NOEXCEPT;
 
     /// @}
 };
@@ -166,18 +166,18 @@ typedef Box<V3f> Box3f;
 /// 3D box of base type `double`.
 typedef Box<V3d> Box3d;
 
-template <class V> IMATH_CONSTEXPR14 inline Box<V>::Box() noexcept
+template <class V> IMATH_CONSTEXPR14 inline Box<V>::Box() IMATH_NOEXCEPT
 {
     makeEmpty();
 }
 
-template <class V> IMATH_CONSTEXPR14 inline Box<V>::Box (const V& point) noexcept
+template <class V> IMATH_CONSTEXPR14 inline Box<V>::Box (const V& point) IMATH_NOEXCEPT
 {
     min = point;
     max = point;
 }
 
-template <class V> IMATH_CONSTEXPR14 inline Box<V>::Box (const V& minV, const V& maxV) noexcept
+template <class V> IMATH_CONSTEXPR14 inline Box<V>::Box (const V& minV, const V& maxV) IMATH_NOEXCEPT
 {
     min = minV;
     max = maxV;
@@ -185,21 +185,21 @@ template <class V> IMATH_CONSTEXPR14 inline Box<V>::Box (const V& minV, const V&
 
 template <class V>
 constexpr inline bool
-Box<V>::operator== (const Box<V>& src) const noexcept
+Box<V>::operator== (const Box<V>& src) const IMATH_NOEXCEPT
 {
     return (min == src.min && max == src.max);
 }
 
 template <class V>
 constexpr inline bool
-Box<V>::operator!= (const Box<V>& src) const noexcept
+Box<V>::operator!= (const Box<V>& src) const IMATH_NOEXCEPT
 {
     return (min != src.min || max != src.max);
 }
 
 template <class V>
 inline void
-Box<V>::makeEmpty() noexcept
+Box<V>::makeEmpty() IMATH_NOEXCEPT
 {
     min = V (V::baseTypeMax());
     max = V (V::baseTypeLowest());
@@ -207,7 +207,7 @@ Box<V>::makeEmpty() noexcept
 
 template <class V>
 inline void
-Box<V>::makeInfinite() noexcept
+Box<V>::makeInfinite() IMATH_NOEXCEPT
 {
     min = V (V::baseTypeLowest());
     max = V (V::baseTypeMax());
@@ -215,7 +215,7 @@ Box<V>::makeInfinite() noexcept
 
 template <class V>
 inline void
-Box<V>::extendBy (const V& point) noexcept
+Box<V>::extendBy (const V& point) IMATH_NOEXCEPT
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
     {
@@ -229,7 +229,7 @@ Box<V>::extendBy (const V& point) noexcept
 
 template <class V>
 inline void
-Box<V>::extendBy (const Box<V>& box) noexcept
+Box<V>::extendBy (const Box<V>& box) IMATH_NOEXCEPT
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
     {
@@ -243,7 +243,7 @@ Box<V>::extendBy (const Box<V>& box) noexcept
 
 template <class V>
 IMATH_CONSTEXPR14 inline bool
-Box<V>::intersects (const V& point) const noexcept
+Box<V>::intersects (const V& point) const IMATH_NOEXCEPT
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
     {
@@ -256,7 +256,7 @@ Box<V>::intersects (const V& point) const noexcept
 
 template <class V>
 IMATH_CONSTEXPR14 inline bool
-Box<V>::intersects (const Box<V>& box) const noexcept
+Box<V>::intersects (const Box<V>& box) const IMATH_NOEXCEPT
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
     {
@@ -269,7 +269,7 @@ Box<V>::intersects (const Box<V>& box) const noexcept
 
 template <class V>
 IMATH_CONSTEXPR14 inline V
-Box<V>::size() const noexcept
+Box<V>::size() const IMATH_NOEXCEPT
 {
     if (isEmpty())
         return V (0);
@@ -279,14 +279,14 @@ Box<V>::size() const noexcept
 
 template <class V>
 constexpr inline V
-Box<V>::center() const noexcept
+Box<V>::center() const IMATH_NOEXCEPT
 {
     return (max + min) / 2;
 }
 
 template <class V>
 IMATH_CONSTEXPR14 inline bool
-Box<V>::isEmpty() const noexcept
+Box<V>::isEmpty() const IMATH_NOEXCEPT
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
     {
@@ -299,7 +299,7 @@ Box<V>::isEmpty() const noexcept
 
 template <class V>
 IMATH_CONSTEXPR14 inline bool
-Box<V>::isInfinite() const noexcept
+Box<V>::isInfinite() const IMATH_NOEXCEPT
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
     {
@@ -312,7 +312,7 @@ Box<V>::isInfinite() const noexcept
 
 template <class V>
 IMATH_CONSTEXPR14 inline bool
-Box<V>::hasVolume() const noexcept
+Box<V>::hasVolume() const IMATH_NOEXCEPT
 {
     for (unsigned int i = 0; i < min.dimensions(); i++)
     {
@@ -325,7 +325,7 @@ Box<V>::hasVolume() const noexcept
 
 template <class V>
 IMATH_CONSTEXPR14 inline unsigned int
-Box<V>::majorAxis() const noexcept
+Box<V>::majorAxis() const IMATH_NOEXCEPT
 {
     unsigned int major = 0;
     V s                = size();
@@ -372,13 +372,13 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
     /// @name Constructors and Assignment
 
     /// Empty by default
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() IMATH_NOEXCEPT;
 
     /// Construct a bounding box that contains a single point.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& point) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& point) IMATH_NOEXCEPT;
 
     /// Construct a bounding box with the given minimum and maximum points
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& minT, const Vec2<T>& maxT) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& minT, const Vec2<T>& maxT) IMATH_NOEXCEPT;
 
     /// @}
 
@@ -386,10 +386,10 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
     /// @name Comparison
     
     /// Equality
-    IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec2<T>>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec2<T>>& src) const IMATH_NOEXCEPT;
 
     /// Inequality
-    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec2<T>>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec2<T>>& src) const IMATH_NOEXCEPT;
 
     /// @}
 
@@ -400,16 +400,16 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
     /// greater than the maximum. makeEmpty() sets the mimimum to
     /// `numeric_limits<T>::max()' and the maximum to
     /// `numeric_limits<T>::lowest()`.
-    IMATH_HOSTDEVICE void makeEmpty() noexcept;
+    IMATH_HOSTDEVICE void makeEmpty() IMATH_NOEXCEPT;
 
     /// Extend the Box to include the given point.
-    IMATH_HOSTDEVICE void extendBy (const Vec2<T>& point) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const Vec2<T>& point) IMATH_NOEXCEPT;
 
     /// Extend the Box to include the given box.
-    IMATH_HOSTDEVICE void extendBy (const Box<Vec2<T>>& box) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const Box<Vec2<T>>& box) IMATH_NOEXCEPT;
 
     /// Make the box include the entire range of T.
-    IMATH_HOSTDEVICE void makeInfinite() noexcept;
+    IMATH_HOSTDEVICE void makeInfinite() IMATH_NOEXCEPT;
 
     /// @}
 
@@ -418,33 +418,33 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
     
     /// Return the size of the box. The size is of type `V`, defined as
     /// `(max-min)`. An empty box has a size of `V(0)`, i.e. 0 in each dimension.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> size() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> size() const IMATH_NOEXCEPT;
 
     /// Return the center of the box. The center is defined as
     /// `(max+min)/2`. The center of an empty box is undefined.
-    IMATH_HOSTDEVICE constexpr Vec2<T> center() const noexcept;
+    IMATH_HOSTDEVICE constexpr Vec2<T> center() const IMATH_NOEXCEPT;
 
     /// Return true if the given point is inside the box, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Vec2<T>& point) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Vec2<T>& point) const IMATH_NOEXCEPT;
 
     /// Return true if the given box is inside the box, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<Vec2<T>>& box) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<Vec2<T>>& box) const IMATH_NOEXCEPT;
 
     /// Return the major axis of the box. The major axis is the dimension with
     /// the greatest difference between maximum and minimum.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const IMATH_NOEXCEPT;
 
     /// Return true if the box is empty, false otherwise. An empty box's
     /// minimum is greater than its maximum.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const IMATH_NOEXCEPT;
 
     /// Return true if the box is larger than a single point, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const IMATH_NOEXCEPT;
 
     /// Return true if the box contains all points, false otherwise.
     /// An infinite box has a mimimum of `V::baseTypeMin()`
     /// and a maximum of `V::baseTypeMax()`.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const IMATH_NOEXCEPT;
 
     /// @}
 };
@@ -453,19 +453,19 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
 //  Implementation
 //----------------
 
-template <class T> IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box() noexcept
+template <class T> IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box() IMATH_NOEXCEPT
 {
     makeEmpty();
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (const Vec2<T>& point) noexcept
+template <class T> IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (const Vec2<T>& point) IMATH_NOEXCEPT
 {
     min = point;
     max = point;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (const Vec2<T>& minT, const Vec2<T>& maxT) noexcept
+IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (const Vec2<T>& minT, const Vec2<T>& maxT) IMATH_NOEXCEPT
 {
     min = minT;
     max = maxT;
@@ -473,21 +473,21 @@ IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (const Vec2<T>& minT, const Vec2<T>& 
 
 template <class T>
 constexpr inline bool
-Box<Vec2<T>>::operator== (const Box<Vec2<T>>& src) const noexcept
+Box<Vec2<T>>::operator== (const Box<Vec2<T>>& src) const IMATH_NOEXCEPT
 {
     return (min == src.min && max == src.max);
 }
 
 template <class T>
 constexpr inline bool
-Box<Vec2<T>>::operator!= (const Box<Vec2<T>>& src) const noexcept
+Box<Vec2<T>>::operator!= (const Box<Vec2<T>>& src) const IMATH_NOEXCEPT
 {
     return (min != src.min || max != src.max);
 }
 
 template <class T>
 inline void
-Box<Vec2<T>>::makeEmpty() noexcept
+Box<Vec2<T>>::makeEmpty() IMATH_NOEXCEPT
 {
     min = Vec2<T> (Vec2<T>::baseTypeMax());
     max = Vec2<T> (Vec2<T>::baseTypeLowest());
@@ -495,7 +495,7 @@ Box<Vec2<T>>::makeEmpty() noexcept
 
 template <class T>
 inline void
-Box<Vec2<T>>::makeInfinite() noexcept
+Box<Vec2<T>>::makeInfinite() IMATH_NOEXCEPT
 {
     min = Vec2<T> (Vec2<T>::baseTypeLowest());
     max = Vec2<T> (Vec2<T>::baseTypeMax());
@@ -503,7 +503,7 @@ Box<Vec2<T>>::makeInfinite() noexcept
 
 template <class T>
 inline void
-Box<Vec2<T>>::extendBy (const Vec2<T>& point) noexcept
+Box<Vec2<T>>::extendBy (const Vec2<T>& point) IMATH_NOEXCEPT
 {
     if (point[0] < min[0])
         min[0] = point[0];
@@ -520,7 +520,7 @@ Box<Vec2<T>>::extendBy (const Vec2<T>& point) noexcept
 
 template <class T>
 inline void
-Box<Vec2<T>>::extendBy (const Box<Vec2<T>>& box) noexcept
+Box<Vec2<T>>::extendBy (const Box<Vec2<T>>& box) IMATH_NOEXCEPT
 {
     if (box.min[0] < min[0])
         min[0] = box.min[0];
@@ -537,7 +537,7 @@ Box<Vec2<T>>::extendBy (const Box<Vec2<T>>& box) noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec2<T>>::intersects (const Vec2<T>& point) const noexcept
+Box<Vec2<T>>::intersects (const Vec2<T>& point) const IMATH_NOEXCEPT
 {
     if (point[0] < min[0] || point[0] > max[0] || point[1] < min[1] || point[1] > max[1])
         return false;
@@ -547,7 +547,7 @@ Box<Vec2<T>>::intersects (const Vec2<T>& point) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec2<T>>::intersects (const Box<Vec2<T>>& box) const noexcept
+Box<Vec2<T>>::intersects (const Box<Vec2<T>>& box) const IMATH_NOEXCEPT
 {
     if (box.max[0] < min[0] || box.min[0] > max[0] || box.max[1] < min[1] || box.min[1] > max[1])
         return false;
@@ -557,7 +557,7 @@ Box<Vec2<T>>::intersects (const Box<Vec2<T>>& box) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline Vec2<T>
-Box<Vec2<T>>::size() const noexcept
+Box<Vec2<T>>::size() const IMATH_NOEXCEPT
 {
     if (isEmpty())
         return Vec2<T> (0);
@@ -567,14 +567,14 @@ Box<Vec2<T>>::size() const noexcept
 
 template <class T>
 constexpr inline Vec2<T>
-Box<Vec2<T>>::center() const noexcept
+Box<Vec2<T>>::center() const IMATH_NOEXCEPT
 {
     return (max + min) / 2;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec2<T>>::isEmpty() const noexcept
+Box<Vec2<T>>::isEmpty() const IMATH_NOEXCEPT
 {
     if (max[0] < min[0] || max[1] < min[1])
         return true;
@@ -584,7 +584,7 @@ Box<Vec2<T>>::isEmpty() const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec2<T>>::isInfinite() const noexcept
+Box<Vec2<T>>::isInfinite() const IMATH_NOEXCEPT
 {
     if (min[0] != std::numeric_limits<T>::lowest() ||
         max[0] != std::numeric_limits<T>::max() ||
@@ -597,7 +597,7 @@ Box<Vec2<T>>::isInfinite() const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec2<T>>::hasVolume() const noexcept
+Box<Vec2<T>>::hasVolume() const IMATH_NOEXCEPT
 {
     if (max[0] <= min[0] || max[1] <= min[1])
         return false;
@@ -607,7 +607,7 @@ Box<Vec2<T>>::hasVolume() const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline unsigned int
-Box<Vec2<T>>::majorAxis() const noexcept
+Box<Vec2<T>>::majorAxis() const IMATH_NOEXCEPT
 {
     unsigned int major = 0;
     Vec2<T> s          = size();
@@ -641,85 +641,85 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec3<T>>
     /// @name Constructors
 
     /// Empty by default
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() IMATH_NOEXCEPT;
 
     /// Construct a bounding box that contains a single point.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& point) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& point) IMATH_NOEXCEPT;
 
     /// Construct a bounding box with the given minimum and maximum points
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& minT, const Vec3<T>& maxT) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& minT, const Vec3<T>& maxT) IMATH_NOEXCEPT;
 
     /// @}
 
     /// Equality
-    IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec3<T>>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator== (const Box<Vec3<T>>& src) const IMATH_NOEXCEPT;
 
     /// Inequality
-    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec3<T>>& src) const noexcept;
+    IMATH_HOSTDEVICE constexpr bool operator!= (const Box<Vec3<T>>& src) const IMATH_NOEXCEPT;
 
     /// Set the Box to be empty. A Box is empty if the mimimum is
     /// greater than the maximum. makeEmpty() sets the mimimum to
     /// `numeric_limits<T>::max()` and the maximum to
     /// `numeric_limits<T>::lowest()`.
-    IMATH_HOSTDEVICE void makeEmpty() noexcept;
+    IMATH_HOSTDEVICE void makeEmpty() IMATH_NOEXCEPT;
 
     /// Extend the Box to include the given point.
-    IMATH_HOSTDEVICE void extendBy (const Vec3<T>& point) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const Vec3<T>& point) IMATH_NOEXCEPT;
     /// Extend the Box to include the given box.
 
-    IMATH_HOSTDEVICE void extendBy (const Box<Vec3<T>>& box) noexcept;
+    IMATH_HOSTDEVICE void extendBy (const Box<Vec3<T>>& box) IMATH_NOEXCEPT;
 
     /// Make the box include the entire range of T.
-    IMATH_HOSTDEVICE void makeInfinite() noexcept;
+    IMATH_HOSTDEVICE void makeInfinite() IMATH_NOEXCEPT;
 
     /// Return the size of the box. The size is of type `V`, defined as
     /// (max-min). An empty box has a size of V(0), i.e. 0 in each dimension.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> size() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> size() const IMATH_NOEXCEPT;
 
     /// Return the center of the box. The center is defined as
     /// (max+min)/2. The center of an empty box is undefined.
-    IMATH_HOSTDEVICE constexpr Vec3<T> center() const noexcept;
+    IMATH_HOSTDEVICE constexpr Vec3<T> center() const IMATH_NOEXCEPT;
 
     /// Return true if the given point is inside the box, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Vec3<T>& point) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Vec3<T>& point) const IMATH_NOEXCEPT;
 
     /// Return true if the given box is inside the box, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<Vec3<T>>& box) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersects (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT;
 
     /// Return the major axis of the box. The major axis is the dimension with
     /// the greatest difference between maximum and minimum.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 unsigned int majorAxis() const IMATH_NOEXCEPT;
 
     /// Return true if the box is empty, false otherwise. An empty box's
     /// minimum is greater than its maximum.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isEmpty() const IMATH_NOEXCEPT;
 
     /// Return true if the box is larger than a single point, false otherwise.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool hasVolume() const IMATH_NOEXCEPT;
 
     /// Return true if the box contains all points, false otherwise.
     /// An infinite box has a mimimum of`V::baseTypeMin()`
     /// and a maximum of `V::baseTypeMax()`.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite() const IMATH_NOEXCEPT;
 };
 
 //----------------
 //  Implementation
 //----------------
 
-template <class T> IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box() noexcept
+template <class T> IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box() IMATH_NOEXCEPT
 {
     makeEmpty();
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (const Vec3<T>& point) noexcept
+template <class T> IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (const Vec3<T>& point) IMATH_NOEXCEPT
 {
     min = point;
     max = point;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (const Vec3<T>& minT, const Vec3<T>& maxT) noexcept
+IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (const Vec3<T>& minT, const Vec3<T>& maxT) IMATH_NOEXCEPT
 {
     min = minT;
     max = maxT;
@@ -727,21 +727,21 @@ IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (const Vec3<T>& minT, const Vec3<T>& 
 
 template <class T>
 constexpr inline bool
-Box<Vec3<T>>::operator== (const Box<Vec3<T>>& src) const noexcept
+Box<Vec3<T>>::operator== (const Box<Vec3<T>>& src) const IMATH_NOEXCEPT
 {
     return (min == src.min && max == src.max);
 }
 
 template <class T>
 constexpr inline bool
-Box<Vec3<T>>::operator!= (const Box<Vec3<T>>& src) const noexcept
+Box<Vec3<T>>::operator!= (const Box<Vec3<T>>& src) const IMATH_NOEXCEPT
 {
     return (min != src.min || max != src.max);
 }
 
 template <class T>
 inline void
-Box<Vec3<T>>::makeEmpty() noexcept
+Box<Vec3<T>>::makeEmpty() IMATH_NOEXCEPT
 {
     min = Vec3<T> (Vec3<T>::baseTypeMax());
     max = Vec3<T> (Vec3<T>::baseTypeLowest());
@@ -749,7 +749,7 @@ Box<Vec3<T>>::makeEmpty() noexcept
 
 template <class T>
 inline void
-Box<Vec3<T>>::makeInfinite() noexcept
+Box<Vec3<T>>::makeInfinite() IMATH_NOEXCEPT
 {
     min = Vec3<T> (Vec3<T>::baseTypeLowest());
     max = Vec3<T> (Vec3<T>::baseTypeMax());
@@ -757,7 +757,7 @@ Box<Vec3<T>>::makeInfinite() noexcept
 
 template <class T>
 inline void
-Box<Vec3<T>>::extendBy (const Vec3<T>& point) noexcept
+Box<Vec3<T>>::extendBy (const Vec3<T>& point) IMATH_NOEXCEPT
 {
     if (point[0] < min[0])
         min[0] = point[0];
@@ -780,7 +780,7 @@ Box<Vec3<T>>::extendBy (const Vec3<T>& point) noexcept
 
 template <class T>
 inline void
-Box<Vec3<T>>::extendBy (const Box<Vec3<T>>& box) noexcept
+Box<Vec3<T>>::extendBy (const Box<Vec3<T>>& box) IMATH_NOEXCEPT
 {
     if (box.min[0] < min[0])
         min[0] = box.min[0];
@@ -803,7 +803,7 @@ Box<Vec3<T>>::extendBy (const Box<Vec3<T>>& box) noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec3<T>>::intersects (const Vec3<T>& point) const noexcept
+Box<Vec3<T>>::intersects (const Vec3<T>& point) const IMATH_NOEXCEPT
 {
     if (point[0] < min[0] || point[0] > max[0] || point[1] < min[1] || point[1] > max[1] ||
         point[2] < min[2] || point[2] > max[2])
@@ -814,7 +814,7 @@ Box<Vec3<T>>::intersects (const Vec3<T>& point) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec3<T>>::intersects (const Box<Vec3<T>>& box) const noexcept
+Box<Vec3<T>>::intersects (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT
 {
     if (box.max[0] < min[0] || box.min[0] > max[0] || box.max[1] < min[1] || box.min[1] > max[1] ||
         box.max[2] < min[2] || box.min[2] > max[2])
@@ -825,7 +825,7 @@ Box<Vec3<T>>::intersects (const Box<Vec3<T>>& box) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline Vec3<T>
-Box<Vec3<T>>::size() const noexcept
+Box<Vec3<T>>::size() const IMATH_NOEXCEPT
 {
     if (isEmpty())
         return Vec3<T> (0);
@@ -835,14 +835,14 @@ Box<Vec3<T>>::size() const noexcept
 
 template <class T>
 constexpr inline Vec3<T>
-Box<Vec3<T>>::center() const noexcept
+Box<Vec3<T>>::center() const IMATH_NOEXCEPT
 {
     return (max + min) / 2;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec3<T>>::isEmpty() const noexcept
+Box<Vec3<T>>::isEmpty() const IMATH_NOEXCEPT
 {
     if (max[0] < min[0] || max[1] < min[1] || max[2] < min[2])
         return true;
@@ -852,7 +852,7 @@ Box<Vec3<T>>::isEmpty() const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec3<T>>::isInfinite() const noexcept
+Box<Vec3<T>>::isInfinite() const IMATH_NOEXCEPT
 {
     if (min[0] != std::numeric_limits<T>::lowest() ||
         max[0] != std::numeric_limits<T>::max() ||
@@ -867,7 +867,7 @@ Box<Vec3<T>>::isInfinite() const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Box<Vec3<T>>::hasVolume() const noexcept
+Box<Vec3<T>>::hasVolume() const IMATH_NOEXCEPT
 {
     if (max[0] <= min[0] || max[1] <= min[1] || max[2] <= min[2])
         return false;
@@ -877,7 +877,7 @@ Box<Vec3<T>>::hasVolume() const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline unsigned int
-Box<Vec3<T>>::majorAxis() const noexcept
+Box<Vec3<T>>::majorAxis() const IMATH_NOEXCEPT
 {
     unsigned int major = 0;
     Vec3<T> s          = size();

@@ -128,7 +128,7 @@ sinx_over_x (T x)
 ///	abs (x1 - x2) <= e
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
-equalWithAbsError (T x1, T x2, T e) noexcept
+equalWithAbsError (T x1, T x2, T e) IMATH_NOEXCEPT
 {
     return ((x1 > x2) ? x1 - x2 : x2 - x1) <= e;
 }
@@ -141,7 +141,7 @@ equalWithAbsError (T x1, T x2, T e) noexcept
 /// abs (x1 - x2) <= e * x1
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
-equalWithRelError (T x1, T x2, T e) noexcept
+equalWithRelError (T x1, T x2, T e) IMATH_NOEXCEPT
 {
     return ((x1 > x2) ? x1 - x2 : x2 - x1) <= e * ((x1 > 0) ? x1 : -x1);
 }
