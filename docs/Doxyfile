@@ -20,5 +20,10 @@ PREDEFINED = IMATH_CONSTEXPR14=constexpr \
              IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT="}" \
              IMATH_INTERNAL_NAMESPACE_HEADER_ENTER="namespace Imath {" \
              IMATH_INTERNAL_NAMESPACE_HEADER_EXIT="}" \
+             IMATH_EXPORT= \
+             IMATH_EXPORT_ENUM= \
+             IMATH_EXPORT_TYPE= \
+             IMATH_EXPORT_TEMPLATE_TYPE= \
+             __cplusplus=1 \
              IMATH_NOEXCEPT="noexcept"
              
