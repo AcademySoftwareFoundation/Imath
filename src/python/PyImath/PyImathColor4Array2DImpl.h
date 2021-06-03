@@ -14,13 +14,13 @@
 // order to work around MSVC limitations.
 //
 
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
 #include "PyImath.h"
 #include "PyImathMathExc.h"
+#include "PyImathDecorators.h"
 
 namespace PyImath {
 using namespace boost::python;

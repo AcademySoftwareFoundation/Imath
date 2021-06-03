@@ -34,6 +34,7 @@
 #include "PyImathMathExc.h"
 #include "PyImathAutovectorize.h"
 #include "PyImathStringArrayRegister.h"
+#include "PyImathBufferProtocol.h"
 
 using namespace boost::python;
 using namespace PyImath;
@@ -42,7 +43,7 @@ namespace {
 
 template <typename T>
 IMATH_NAMESPACE::Box<IMATH_NAMESPACE::Vec3<T> >
-computeBoundingBox(const PyImath::FixedArray<IMATH_NAMESPACE::Vec3<T> >& position)
+computeBoundingBox(const FixedArray<IMATH_NAMESPACE::Vec3<T> >& position)
 {
     IMATH_NAMESPACE::Box<IMATH_NAMESPACE::Vec3<T> > bounds;
     int len = position.len();
@@ -61,13 +62,13 @@ procrustes1 (PyObject* from_input,
     if (!PySequence_Check (from_input))
     {
         PyErr_SetString (PyExc_TypeError, "Expected a sequence type for 'from'");
-        boost::python::throw_error_already_set();
+        throw_error_already_set();
     }
         
     if (!PySequence_Check (to_input))
     {
         PyErr_SetString (PyExc_TypeError, "Expected a sequence type for 'to'");
-        boost::python::throw_error_already_set();
+        throw_error_already_set();
     }
 
     bool useWeights = PySequence_Check (weights_input);
@@ -78,7 +79,7 @@ procrustes1 (PyObject* from_input,
         (useWeights && n != PySequence_Length (weights_input)))
     {
         PyErr_SetString (PyExc_TypeError, "'from, 'to', and 'weights' should all have the same lengths.");
-        boost::python::throw_error_already_set();
+        throw_error_already_set();
     }
 
     std::vector<IMATH_NAMESPACE::V3d> from;  from.reserve (n);
@@ -97,13 +98,13 @@ procrustes1 (PyObject* from_input,
         {
             PyErr_SetString (PyExc_TypeError,
                              "Missing element in array");
-            boost::python::throw_error_already_set();
+            throw_error_already_set();
         }
 
-        from.push_back (boost::python::extract<IMATH_NAMESPACE::V3d> (f));
-        to.push_back (boost::python::extract<IMATH_NAMESPACE::V3d> (t));
+        from.push_back (extract<IMATH_NAMESPACE::V3d> (f));
+        to.push_back (extract<IMATH_NAMESPACE::V3d> (t));
         if (useWeights)
-            weights.push_back (boost::python::extract<double> (w));
+            weights.push_back (extract<double> (w));
     }
 
     if (useWeights)
@@ -111,6 +112,58 @@ procrustes1 (PyObject* from_input,
     else
         return IMATH_NAMESPACE::procrustesRotationAndTranslation (&from[0], &to[0], n, doScale);
 }
+
+template <typename T>
+const T*
+flatten(const PyImath::FixedArray<T>& q, std::unique_ptr<T[]>& handle)
+{
+    if (q.isMaskedReference())
+    {
+        const size_t len = q.len();
+        handle.reset(new T[len]);
+        for (size_t i = 0; i < len; ++i)
+            handle[i] = q[i];
+
+        return handle.get();
+    }
+
+    return &q[0];
+}
+
+template <typename T>
+IMATH_NAMESPACE::M44d
+procrustesRotationAndTranslation(const FixedArray<IMATH_NAMESPACE::Vec3<T> >& from,
+                                 const FixedArray<IMATH_NAMESPACE::Vec3<T> >& to,
+                                 const FixedArray<T>* weights = 0,
+                                 bool doScale = false)
+{
+    const size_t len = from.match_dimension(to);
+    if (len == 0)
+        return IMATH_NAMESPACE::M44d();
+
+    std::unique_ptr<IMATH_NAMESPACE::Vec3<T>[]> fromHandle;
+    const Imath::Vec3<T>* fromPtr = flatten(from, fromHandle);
+
+    std::unique_ptr<IMATH_NAMESPACE::Vec3<T>[]> toHandle;
+    const Imath::Vec3<T>* toPtr = flatten(to, toHandle);
+
+    std::unique_ptr<T[]> weightsHandle;
+    const T* weightsPtr = nullptr;
+    if (weights)
+    {
+        weights->match_dimension(from);
+        flatten(*weights, weightsHandle);
+    }
+
+    if (weightsPtr)
+        return IMATH_NAMESPACE::procrustesRotationAndTranslation(fromPtr, toPtr, weightsPtr, len, doScale);
+    else
+        return IMATH_NAMESPACE::procrustesRotationAndTranslation(fromPtr, toPtr, len, doScale);
+}
+
+BOOST_PYTHON_FUNCTION_OVERLOADS(procrustesRotationAndTranslationf_overloads, procrustesRotationAndTranslation<float>, 2, 4);
+BOOST_PYTHON_FUNCTION_OVERLOADS(procrustesRotationAndTranslationd_overloads, procrustesRotationAndTranslation<double>, 2, 4);
+
 
 FixedArray2D<int> rangeX(int sizeX, int sizeY)
 {
@@ -130,12 +183,14 @@ FixedArray2D<int> rangeY(int sizeX, int sizeY)
     return f;
 }
 
-}
+} // anonymous-namespace
+
 
 BOOST_PYTHON_MODULE(imath)
 {
+    scope().attr("__doc__") = "Imath module";
     scope().attr("__version__") = IMATH_VERSION_STRING;
-        
+
     register_basicTypes();
 
     class_<IntArray2D> iclass2D = IntArray2D::register_("IntArray2D","Fixed length array of ints");
@@ -176,6 +231,21 @@ BOOST_PYTHON_MODULE(imath)
     def("rangeX", &rangeX);
     def("rangeY", &rangeY);
 
+    def("IntArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<int> >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct an IntArray from a buffer object");
+
+    def("FloatArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<float> >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a FloatArray from a buffer object");
+
+    def("DoubleArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<double> >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a DoubleArray from a buffer object");
+
     //
     //  Vec2
     //
@@ -184,28 +254,57 @@ BOOST_PYTHON_MODULE(imath)
     register_Vec2<int64_t>();
     register_Vec2<float>();
     register_Vec2<double>();
-    class_<FixedArray<IMATH_NAMESPACE::V2s> > v2s_class = register_Vec2Array<short>();
-    class_<FixedArray<IMATH_NAMESPACE::V2i> > v2i_class = register_Vec2Array<int>();
+    class_<FixedArray<IMATH_NAMESPACE::V2s> >   v2s_class = register_Vec2Array<short>();
+    class_<FixedArray<IMATH_NAMESPACE::V2i> >   v2i_class = register_Vec2Array<int>();
     class_<FixedArray<IMATH_NAMESPACE::V2i64> > v2i64_class = register_Vec2Array<int64_t>();
-    class_<FixedArray<IMATH_NAMESPACE::V2f> > v2f_class = register_Vec2Array<float>();
-    class_<FixedArray<IMATH_NAMESPACE::V2d> > v2d_class = register_Vec2Array<double>();
+    class_<FixedArray<IMATH_NAMESPACE::V2f> >   v2f_class = register_Vec2Array<float>();
+    class_<FixedArray<IMATH_NAMESPACE::V2d> >   v2d_class = register_Vec2Array<double>();
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2s>(v2i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2s>(v2i64_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2s>(v2f_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2s>(v2d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2i>(v2s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2i>(v2i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2i>(v2f_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2i>(v2d_class);
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2i64>(v2s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2i64>(v2i_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2i64>(v2f_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2i64>(v2d_class);
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2f>(v2s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2f>(v2i_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2f>(v2i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2f>(v2d_class);
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2i_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V2d>(v2f_class);
 
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V2s> > (v2s_class);
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V2i> > (v2i_class);
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V2i64> > (v2i64_class);
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V2f> > (v2f_class);
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V2d> > (v2d_class);
+
+    def("V2iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec2<int> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V2iArray from a buffer object");
+
+    def("V2fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec2<float> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V2fArray from a buffer object");
+
+    def("V2dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec2<double> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V2dArray from a buffer object");
 
     //
     //  Vec3
@@ -216,27 +315,57 @@ BOOST_PYTHON_MODULE(imath)
     register_Vec3<int64_t>();
     register_Vec3<float>();
     register_Vec3<double>();
-    class_<FixedArray<IMATH_NAMESPACE::V3s> > v3s_class = register_Vec3Array<short>();
-    class_<FixedArray<IMATH_NAMESPACE::V3i> > v3i_class = register_Vec3Array<int>();
+    class_<FixedArray<IMATH_NAMESPACE::V3s> >   v3s_class = register_Vec3Array<short>();
+    class_<FixedArray<IMATH_NAMESPACE::V3i> >   v3i_class = register_Vec3Array<int>();
     class_<FixedArray<IMATH_NAMESPACE::V3i64> > v3i64_class = register_Vec3Array<int64_t>();
-    class_<FixedArray<IMATH_NAMESPACE::V3f> > v3f_class = register_Vec3Array<float>();
-    class_<FixedArray<IMATH_NAMESPACE::V3d> > v3d_class = register_Vec3Array<double>();
+    class_<FixedArray<IMATH_NAMESPACE::V3f> >   v3f_class = register_Vec3Array<float>();
+    class_<FixedArray<IMATH_NAMESPACE::V3d> >   v3d_class = register_Vec3Array<double>();
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3s>(v3i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3s>(v3i64_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3s>(v3f_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3s>(v3d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3i>(v3s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3i>(v3i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3i>(v3f_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3i>(v3d_class);
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3i64>(v3s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3i64>(v3i_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3i64>(v3f_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3i64>(v3d_class);
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3f>(v3s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3f>(v3i_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3f>(v3i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3f>(v3d_class);
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3i_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V3d>(v3f_class);
+
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V3s> > (v3s_class);
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V3i> > (v3i_class);
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V3i64> > (v3i64_class);
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V3f> > (v3f_class);
+    add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V3d> > (v3d_class);
+
+    def("V3iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec3<int> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V3iArray from a buffer object");
+
+    def("V3fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec3<float> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V3fArray from a buffer object");
+
+    def("V3dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec3<double> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V3dArray from a buffer object");
 
     //
     //  Vec4
@@ -247,23 +376,51 @@ BOOST_PYTHON_MODULE(imath)
     register_Vec4<int64_t>();
     register_Vec4<float>();
     register_Vec4<double>();
-    class_<FixedArray<IMATH_NAMESPACE::V4s> > v4s_class = register_Vec4Array<short>();
-    class_<FixedArray<IMATH_NAMESPACE::V4i> > v4i_class = register_Vec4Array<int>();
+    class_<FixedArray<IMATH_NAMESPACE::V4s> >   v4s_class = register_Vec4Array<short>();
+    class_<FixedArray<IMATH_NAMESPACE::V4i> >   v4i_class = register_Vec4Array<int>();
     class_<FixedArray<IMATH_NAMESPACE::V4i64> > v4i64_class = register_Vec4Array<int64_t>();
-    class_<FixedArray<IMATH_NAMESPACE::V4f> > v4f_class = register_Vec4Array<float>();
-    class_<FixedArray<IMATH_NAMESPACE::V4d> > v4d_class = register_Vec4Array<double>();
+    class_<FixedArray<IMATH_NAMESPACE::V4f> >   v4f_class = register_Vec4Array<float>();
+    class_<FixedArray<IMATH_NAMESPACE::V4d> >   v4d_class = register_Vec4Array<double>();
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4s>(v4i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4s>(v4i64_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4s>(v4f_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4s>(v4d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4i>(v4s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4i>(v4i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4i>(v4f_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4i>(v4d_class);
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4i64>(v4s_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4i64>(v4i_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4i64>(v4f_class);
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4i64>(v4d_class);
+
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4f>(v4s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4f>(v4i_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4f>(v4i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4f>(v4d_class);
 
+    add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4s_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4i_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4f_class);
+
+    def("V4iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec4<int> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V4iArray from a buffer object");
+
+    def("V4fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec4<float> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V4fArray from a buffer object");
+
+    def("V4dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec4<double> > >,
+        return_value_policy<manage_new_object>(),
+        args("bufferObject"),
+        "Construct a V4dArray from a buffer object");
 
     //
     //  Quat
@@ -293,11 +450,11 @@ BOOST_PYTHON_MODULE(imath)
     register_Box2<IMATH_NAMESPACE::V2i64>();
     register_Box2<IMATH_NAMESPACE::V2f>();
     register_Box2<IMATH_NAMESPACE::V2d>();
-    class_<FixedArray<IMATH_NAMESPACE::Box2s> > b2s_class = register_BoxArray<IMATH_NAMESPACE::V2s>();
-    class_<FixedArray<IMATH_NAMESPACE::Box2i> > b2i_class = register_BoxArray<IMATH_NAMESPACE::V2i>();
+    class_<FixedArray<IMATH_NAMESPACE::Box2s> >   b2s_class =   register_BoxArray<IMATH_NAMESPACE::V2s>();
+    class_<FixedArray<IMATH_NAMESPACE::Box2i> >   b2i_class =   register_BoxArray<IMATH_NAMESPACE::V2i>();
     class_<FixedArray<IMATH_NAMESPACE::Box2i64> > b2i64_class = register_BoxArray<IMATH_NAMESPACE::V2i64>();
-    class_<FixedArray<IMATH_NAMESPACE::Box2f> > b2f_class = register_BoxArray<IMATH_NAMESPACE::V2f>();
-    class_<FixedArray<IMATH_NAMESPACE::Box2d> > b2d_class = register_BoxArray<IMATH_NAMESPACE::V2d>();
+    class_<FixedArray<IMATH_NAMESPACE::Box2f> >   b2f_class =   register_BoxArray<IMATH_NAMESPACE::V2f>();
+    class_<FixedArray<IMATH_NAMESPACE::Box2d> >   b2d_class =   register_BoxArray<IMATH_NAMESPACE::V2d>();
 
     //
     // Box3
@@ -307,11 +464,11 @@ BOOST_PYTHON_MODULE(imath)
     register_Box3<IMATH_NAMESPACE::V3i64>();
     register_Box3<IMATH_NAMESPACE::V3f>();
     register_Box3<IMATH_NAMESPACE::V3d>();
-    class_<FixedArray<IMATH_NAMESPACE::Box3s> > b3s_class = register_BoxArray<IMATH_NAMESPACE::V3s>();
-    class_<FixedArray<IMATH_NAMESPACE::Box3i> > b3i_class = register_BoxArray<IMATH_NAMESPACE::V3i>();
+    class_<FixedArray<IMATH_NAMESPACE::Box3s> >   b3s_class =   register_BoxArray<IMATH_NAMESPACE::V3s>();
+    class_<FixedArray<IMATH_NAMESPACE::Box3i> >   b3i_class =   register_BoxArray<IMATH_NAMESPACE::V3i>();
     class_<FixedArray<IMATH_NAMESPACE::Box3i64> > b3i64_class = register_BoxArray<IMATH_NAMESPACE::V3i64>();
-    class_<FixedArray<IMATH_NAMESPACE::Box3f> > b3f_class = register_BoxArray<IMATH_NAMESPACE::V3f>();
-    class_<FixedArray<IMATH_NAMESPACE::Box3d> > b3d_class = register_BoxArray<IMATH_NAMESPACE::V3d>();
+    class_<FixedArray<IMATH_NAMESPACE::Box3f> >   b3f_class =   register_BoxArray<IMATH_NAMESPACE::V3f>();
+    class_<FixedArray<IMATH_NAMESPACE::Box3d> >   b3d_class =   register_BoxArray<IMATH_NAMESPACE::V3d>();
 
     //
     // Matrix22/33/44
@@ -411,6 +568,24 @@ BOOST_PYTHON_MODULE(imath)
         "are provided, then the points are weighted (that is, some points are considered more important "
         "than others while computing the transform).  If the 'doScale' parameter is True, then "
         "the resulting matrix is also allowed to have a uniform scale.");
+
+    def("procrustesRotationAndTranslation", &procrustesRotationAndTranslation<float>, procrustesRotationAndTranslationf_overloads(
+        args("fromPts", "toPts", "weights", "doScale"),
+        "Computes the orthogonal transform (consisting only of rotation and translation) mapping the "
+        "'fromPts' points as close as possible to the 'toPts' points in the least squares norm.  The 'fromPts' and "
+        "'toPts' lists must be the same length or the function will error out.  If weights "
+        "are provided, then the points are weighted (that is, some points are considered more important "
+        "than others while computing the transform).  If the 'doScale' parameter is True, then "
+        "the resulting matrix is also allowed to have a uniform scale."));
+
+    def("procrustesRotationAndTranslation", &procrustesRotationAndTranslation<double>, procrustesRotationAndTranslationd_overloads(
+        args("fromPts", "toPts", "weights", "doScale"),
+        "Computes the orthogonal transform (consisting only of rotation and translation) mapping the "
+        "'fromPts' points as close as possible to the 'toPts' points in the least squares norm.  The 'fromPts' and "
+        "'toPts' lists must be the same length or the function will error out.  If weights "
+        "are provided, then the points are weighted (that is, some points are considered more important "
+        "than others while computing the transform).  If the 'doScale' parameter is True, then "
+        "the resulting matrix is also allowed to have a uniform scale."));
 
     //
     // Rand

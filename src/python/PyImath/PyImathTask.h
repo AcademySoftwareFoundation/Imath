@@ -8,8 +8,8 @@
 #ifndef _PyImathTask_h_
 #define _PyImathTask_h_
 
-#include "PyImathExport.h"
 #include <cstddef>
+#include "PyImathExport.h"
 
 namespace PyImath {
 

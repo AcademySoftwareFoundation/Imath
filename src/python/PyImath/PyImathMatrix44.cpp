@@ -7,9 +7,6 @@
 
 #define BOOST_PYTHON_MAX_ARITY 17
 
-#include "PyImathMatrix.h"
-#include "PyImathExport.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
@@ -17,11 +14,14 @@
 #include <boost/python/tuple.hpp>
 #include <boost/python/dict.hpp>
 #include <boost/python/raw_function.hpp>
+#include <ImathVec.h>
+#include <ImathMatrixAlgo.h>
 #include "PyImath.h"
 #include "PyImathVec.h"
 #include "PyImathMathExc.h"
-#include <ImathVec.h>
-#include <ImathMatrixAlgo.h>
+#include "PyImathMatrix.h"
+#include "PyImathExport.h"
+#include "PyImathDecorators.h"
 #include "PyImathTask.h"
 
 namespace PyImath {
@@ -948,7 +948,7 @@ register_Matrix44()
         .staticmethod("baseTypeEpsilon")
         .def("baseTypeMax", &Matrix44<T>::baseTypeMax,"baseTypeMax() max value of the base type of the vector")
         .staticmethod("baseTypeMax")
-        .def("baseTypeLowest", &Matrix44<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the vector")
+        .def("baseTypeLowest", &Matrix44<T>::baseTypeLowest,"baseTypeLowest() largest negative value of the base type of the vector")
         .staticmethod("baseTypeLowest")
         .def("baseTypeSmallest", &Matrix44<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the vector")
         .staticmethod("baseTypeSmallest")
@@ -1148,6 +1148,59 @@ register_Matrix44()
 */
 }
 
+template <class T>
+struct Matrix44Array_Constructor : public Task
+{
+    const FixedArray<T> &a; const FixedArray<T> &b; const FixedArray<T> &c; const FixedArray<T> &d;
+    const FixedArray<T> &e; const FixedArray<T> &f; const FixedArray<T> &g; const FixedArray<T> &h;
+    const FixedArray<T> &i; const FixedArray<T> &j; const FixedArray<T> &k; const FixedArray<T> &l;
+    const FixedArray<T> &m; const FixedArray<T> &n; const FixedArray<T> &o; const FixedArray<T> &p;
+    FixedArray<IMATH_NAMESPACE::Matrix44<T> > &result;
+
+    Matrix44Array_Constructor (const FixedArray<T> &a, const FixedArray<T> &b, const FixedArray<T> &c, const FixedArray<T> &d,
+                               const FixedArray<T> &e, const FixedArray<T> &f, const FixedArray<T> &g, const FixedArray<T> &h,
+                               const FixedArray<T> &i, const FixedArray<T> &j, const FixedArray<T> &k, const FixedArray<T> &l,
+                               const FixedArray<T> &m, const FixedArray<T> &n, const FixedArray<T> &o, const FixedArray<T> &p,
+                               FixedArray<IMATH_NAMESPACE::Matrix44<T> > &result)
+        : a (a), b (b), c (c), d (d), 
+          e (e), f (f), g (g), h (h), 
+          i (i), j (j), k (k), l (l),
+          m (m), n (n), o (o), p (p), result (result) {}
+
+    void execute (size_t start, size_t end)
+    {
+        for (size_t index = start; index < end; ++index)
+        {
+            result[index] = IMATH_NAMESPACE::Matrix44<T>(a[index], b[index], c[index], d[index], 
+                                                         e[index], f[index], g[index], h[index], 
+                                                         i[index], j[index], k[index], l[index],
+                                                         m[index], n[index], o[index], p[index]);
+        }
+    }
+};
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix44<T> > *
+M44Array_constructor(const FixedArray<T> &a, const FixedArray<T> &b, const FixedArray<T> &c, const FixedArray<T> &d, 
+                     const FixedArray<T> &e, const FixedArray<T> &f, const FixedArray<T> &g, const FixedArray<T> &h, 
+                     const FixedArray<T> &i, const FixedArray<T> &j, const FixedArray<T> &k, const FixedArray<T> &l, 
+                     const FixedArray<T> &m, const FixedArray<T> &n, const FixedArray<T> &o, const FixedArray<T> &p)
+{
+    MATH_EXC_ON;
+    size_t len = a.len();
+    if (!( a.len() == len && b.len() == len && c.len() == len && d.len() == len && 
+            e.len() == len && f.len() == len && g.len() == len && h.len() == len && 
+            i.len() == len && j.len() == len && k.len() == len && l.len() == len && 
+           m.len() == len && n.len() == len && o.len() == len && p.len() == len))
+        throw std::invalid_argument ("Dimensions do not match" );
+               
+    FixedArray<IMATH_NAMESPACE::Matrix44<T> >* result =
+        new FixedArray<IMATH_NAMESPACE::Matrix44<T> > (Py_ssize_t(len), UNINITIALIZED);
+
+    Matrix44Array_Constructor<T> task (a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, *result);
+    dispatchTask (task, len);
+    return result;
+}
 
 template <class T>
 static void
@@ -1159,62 +1212,288 @@ setM44ArrayItem(FixedArray<IMATH_NAMESPACE::Matrix44<T> > &ma,
 }
 
 template <class T>
-static FixedArray<IMATH_NAMESPACE::Matrix44<T> > 
-inverse44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true)
+struct M44Array_Inverse : public Task
 {
-  MATH_EXC_ON;
-  size_t len = ma.len();
-  FixedArray<IMATH_NAMESPACE::Matrix44<T> > dst(len);
-  for (size_t i=0; i<len; ++i) dst[i] = ma[i].inverse(singExc);    
-  return dst;
+    const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &mats;
+    FixedArray<IMATH_NAMESPACE::Matrix44<T> >       &result;
+
+    M44Array_Inverse (FixedArray<IMATH_NAMESPACE::Matrix44<T> >        &result,
+                       const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &mats)
+        : mats (mats), result (result) {}
+
+    void execute (size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+            result[i] = mats[i].inverse();
+    } 
+};
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Matrix44<T> >
+M44Array_inverse(const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &ma)
+{
+    MATH_EXC_ON;
+    size_t len = ma.len();
+    FixedArray<IMATH_NAMESPACE::Matrix44<T> > result (len);
+
+    M44Array_Inverse<T> task (result, ma);
+    dispatchTask (task, len);
+
+    return result;
 }
 
 template <class T>
-static FixedArray<IMATH_NAMESPACE::Matrix44<T> > &
-invert44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true)
+struct M44Array_RmulVec4 : public Task
 {
-  MATH_EXC_ON;
-  size_t len = ma.len();
-  for (size_t i=0; i<len; ++i) ma[i].invert(singExc);    
-  return ma;
+    const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &a;
+    const Vec4<T>                                   &v;
+    FixedArray<Vec4<T> >                            &r;
+
+    M44Array_RmulVec4 (const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &a,
+                       const Vec4<T>                                   &v, 
+                       FixedArray<Vec4<T> >                            &r)
+        : a (a), v (v), r (r) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+        {
+            r[i] = v * a[i];
+        }
+    }
+};
+
+template <class T>
+static FixedArray< Vec4<T> >
+M44Array_rmulVec4 (const FixedArray< IMATH_NAMESPACE::Matrix44<T> > &a, const Vec4<T> &v)
+{
+    MATH_EXC_ON;
+    size_t len = a.len();
+    FixedArray< Vec4<T> > r (Py_ssize_t(len), UNINITIALIZED);
+
+    M44Array_RmulVec4<T> task (a, v, r);
+    dispatchTask (task, len);
+    return r;
 }
 
 template <class T>
-static FixedArray<IMATH_NAMESPACE::Matrix44<T> > 
-gjInverse44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true)
+struct M44Array_RmulVec4Array : public Task
 {
-  MATH_EXC_ON;
-  size_t len = ma.len();
-  FixedArray<IMATH_NAMESPACE::Matrix44<T> > dst(len);
-  for (size_t i=0; i<len; ++i) dst[i] = ma[i].gjInverse(singExc);    
-  return dst;
+    const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &a;
+    const FixedArray<Vec4<T> >                      &b;
+    FixedArray<Vec4<T> >                            &r;
+
+    M44Array_RmulVec4Array (const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &a,
+                            const FixedArray<Vec4<T> >                      &b,
+                            FixedArray<Vec4<T> >                            &r)
+        : a (a), b (b), r (r) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+        {
+            r[i] = b[i] * a[i];
+        }
+    }
+};
+
+template <class T>
+static FixedArray< Vec4<T> >
+M44Array_rmulVec4Array (const FixedArray< IMATH_NAMESPACE::Matrix44<T> > &a,
+                        const FixedArray< Vec4<T> > &b)
+{
+    MATH_EXC_ON;
+    size_t len = a.match_dimension(b);
+    FixedArray< Vec4<T> > r (Py_ssize_t(len), UNINITIALIZED);
+
+    M44Array_RmulVec4Array<T> task (a, b, r);
+    dispatchTask (task, len);
+    return r;
 }
 
 template <class T>
-static FixedArray<IMATH_NAMESPACE::Matrix44<T> > &
-gjInvert44_array(FixedArray<IMATH_NAMESPACE::Matrix44<T> >&ma, bool singExc = true)
+struct M44Array_RmulVec3ArrayT : public Task
 {
-  MATH_EXC_ON;
-  size_t len = ma.len();
-  for (size_t i=0; i<len; ++i) ma[i].gjInvert(singExc);    
-  return ma;
+    const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &a;
+    const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &b;
+    FixedArray<IMATH_NAMESPACE::Vec3<T> >           &r;
+
+    M44Array_RmulVec3ArrayT (const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &a,
+                             const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &b,
+                             FixedArray<IMATH_NAMESPACE::Vec3<T> >           &r)
+      : a(a), b(b), r(r) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+            r[i] = b[i] * a[i];
+    }
+};
+
+template <class T>
+FixedArray<Vec3<T> >
+M44Array_rmulVec3ArrayT (const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &a,
+                         const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &b)
+{
+    MATH_EXC_ON;
+    size_t len = a.match_dimension(b);
+    FixedArray< IMATH_NAMESPACE::Vec3<T> > result (Py_ssize_t(len), UNINITIALIZED);
+
+    M44Array_RmulVec3ArrayT<T> task (a, b, result);
+    dispatchTask (task, len);
+
+    return result;
 }
 
-BOOST_PYTHON_FUNCTION_OVERLOADS(invert44_array_overloads, invert44_array, 1, 2);
-BOOST_PYTHON_FUNCTION_OVERLOADS(inverse44_array_overloads, inverse44_array, 1, 2);
+template <class T>
+struct M44Array_Invert : public Task
+{
+    FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m;
+
+    M44Array_Invert (FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m)
+      : m(m) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+            m[i].invert();
+    }
+};
+
+template <class T>
+void
+M44Array_invert (FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m)
+{
+    MATH_EXC_ON;
+    size_t len = m.len();
+
+    M44Array_Invert<T> task (m);
+    dispatchTask (task, len);
+}
+
+template <class T>
+struct M44Array_Transpose : public Task
+{
+    FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m;
+
+    M44Array_Transpose (FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m)
+      : m(m) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+            m[i].transpose();
+    }
+};
+
+template <class T>
+void
+M44Array_transpose (FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m)
+{
+    MATH_EXC_ON;
+    size_t len = m.len();
+
+    M44Array_Transpose<T> task (m);
+    dispatchTask (task, len);
+}
+
+template <class T>
+struct M44Array_MultDirMatrix : public Task
+{
+    const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m;
+    const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &v;
+    FixedArray<IMATH_NAMESPACE::Vec3<T> >           &r;
+
+    M44Array_MultDirMatrix (const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m,
+                            const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &v,
+                            FixedArray<IMATH_NAMESPACE::Vec3<T> >           &r)
+      : m(m), v(v), r(r) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+            m[i].multDirMatrix (v[i], r[i]);
+    }
+};
+
+template <class T>
+FixedArray<Vec3<T> >
+M44Array_multDirMatrix (const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m,
+                        const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &v)
+{
+    MATH_EXC_ON;
+    size_t len = m.match_dimension(v);
+    FixedArray<IMATH_NAMESPACE::Vec3<T> > result (Py_ssize_t(len), UNINITIALIZED);
+
+    M44Array_MultDirMatrix<T> task (m, v, result);
+    dispatchTask (task, len);
+
+    return result;
+}
+
+template <class T>
+struct M44Array_MultVecMatrix : public Task
+{
+    const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m;
+    const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &v;
+    FixedArray<IMATH_NAMESPACE::Vec3<T> >           &r;
+
+    M44Array_MultVecMatrix (const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m,
+                            const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &v,
+                            FixedArray<IMATH_NAMESPACE::Vec3<T> >           &r)
+      : m(m), v(v), r(r) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+            m[i].multVecMatrix (v[i], r[i]);
+    }
+};
+
+template <class T>
+FixedArray<Vec3<T> >
+M44Array_multVecMatrix (const FixedArray<IMATH_NAMESPACE::Matrix44<T> > &m,
+                        const FixedArray<IMATH_NAMESPACE::Vec3<T> >     &v)
+{
+    MATH_EXC_ON;
+    size_t len = m.match_dimension(v);
+    FixedArray<IMATH_NAMESPACE::Vec3<T> > result (Py_ssize_t(len), UNINITIALIZED);
+
+    M44Array_MultVecMatrix<T> task (m, v, result);
+    dispatchTask (task, len);
+
+    return result;
+}
 
 template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Matrix44<T> > >
 register_M44Array()
 {
+
     class_<FixedArray<IMATH_NAMESPACE::Matrix44<T> > > matrixArray_class = FixedArray<IMATH_NAMESPACE::Matrix44<T> >::register_("Fixed length array of IMATH_NAMESPACE::Matrix44");
     matrixArray_class
+         .def("__init__", make_constructor(M44Array_constructor<T>))
          .def("__setitem__", &setM44ArrayItem<T>)
-         .def("inverse",&inverse44_array<T>,inverse44_array_overloads("inverse() return an inverted copy of this matrix"))
-         .def("invert",&invert44_array<T>,invert44_array_overloads("invert()  invert these matricies")[return_internal_reference<>()])
-         .def("gjInverse",&gjInverse44_array<T>,inverse44_array_overloads("gjInverse() return an inverted copy of this matrix"))
-         .def("gjInvert",&gjInvert44_array<T>,invert44_array_overloads("giInvert()  invert these matricies")[return_internal_reference<>()])
-      ;
+         .def("inverse", &M44Array_inverse<T>,
+             "Return M^-1 for each element M.",
+             (args("vector")))
+         .def("invert", &M44Array_invert<T>,
+             "Perform M^-1 in place for each element M.")
+         .def("transpose", &M44Array_transpose<T>,
+             "Perform M^T in place for each element M.")
+         .def("multDirMatrix", &M44Array_multDirMatrix<T>,
+             "Multiply an array of vectors element by element with the matrix array.",
+             (args("vector")))
+         .def("multVecMatrix", &M44Array_multVecMatrix<T>,
+             "Multiply an array of normals element by element with the matrix array.",
+             (args("vector")))
+         .def("__rmul__", &M44Array_rmulVec4<T>)
+         .def("__rmul__", &M44Array_rmulVec4Array<T>)
+         .def("__rmul__", &M44Array_rmulVec3ArrayT<T>)
+        ;
+
+    add_comparison_functions(matrixArray_class);
+
     return matrixArray_class;
 }
 

@@ -113,13 +113,8 @@ class FixedMatrix
             if (PySlice_GetIndicesEx(slice,_rows,&start,&end,&step,&slicelength) == -1) {
 		    boost::python::throw_error_already_set();
             }
-#if PY_MAJOR_VERSION > 2
-        } else if (PyLong_Check(index)) {
-            Py_ssize_t i = convert_index(PyLong_AsSsize_t(index));
-#else
         } else if (PyInt_Check(index)) {
             Py_ssize_t i = convert_index(PyInt_AS_LONG(index));
-#endif
             start = i; end = i+1; step = 1; slicelength = 1;
         } else {
             PyErr_SetString(PyExc_TypeError, "Object is not a slice");

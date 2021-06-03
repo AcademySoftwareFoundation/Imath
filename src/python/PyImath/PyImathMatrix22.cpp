@@ -7,9 +7,6 @@
 
 #define BOOST_PYTHON_MAX_ARITY 17
 
-#include "PyImathMatrix.h"
-#include "PyImathExport.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
@@ -17,11 +14,14 @@
 #include <boost/python/tuple.hpp>
 #include <boost/python/dict.hpp>
 #include <boost/python/raw_function.hpp>
+#include <ImathVec.h>
+#include <ImathMatrixAlgo.h>
 #include "PyImath.h"
 #include "PyImathVec.h"
 #include "PyImathMathExc.h"
-#include <ImathVec.h>
-#include <ImathMatrixAlgo.h>
+#include "PyImathMatrix.h"
+#include "PyImathExport.h"
+#include "PyImathDecorators.h"
 
 namespace PyImath {
 
@@ -561,7 +561,7 @@ register_Matrix22()
         .staticmethod("baseTypeEpsilon")
         .def("baseTypeMax", &Matrix22<T>::baseTypeMax,"baseTypeMax() max value of the base type of the vector")
         .staticmethod("baseTypeMax")
-        .def("baseTypeLowest", &Matrix22<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the vector")
+        .def("baseTypeLowest", &Matrix22<T>::baseTypeLowest,"baseTypeLowest() largest negative value of the base type of the vector")
         .staticmethod("baseTypeLowest")
         .def("baseTypeSmallest", &Matrix22<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the vector")
         .staticmethod("baseTypeSmallest")
@@ -717,6 +717,9 @@ register_M22Array()
          .def("inverse",&inverse22_array<T>,inverse22_array_overloads("inverse() return an inverted copy of this matrix"))
          .def("invert",&invert22_array<T>,invert22_array_overloads("invert() invert these matricies")[return_internal_reference<>()])
         ;
+
+    add_comparison_functions(matrixArray_class);
+
     return matrixArray_class;
 }
 

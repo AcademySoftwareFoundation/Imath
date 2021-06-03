@@ -5,248 +5,163 @@
 
 // clang-format off
 
-#include "PyImathFun.h"
-#include "PyImathDecorators.h"
-#include "PyImathExport.h"
-#include "PyImathAutovectorize.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
-#include <ImathVec.h>
-#include <ImathMatrixAlgo.h>
-#include <ImathFun.h>
+#include "PyImathFun.h"
+#include "PyImathFunOperators.h"
+#include "PyImathDecorators.h"
+#include "PyImathExport.h"
+#include "PyImathAutovectorize.h"
 
 namespace PyImath {
 
 using namespace boost::python;
-using namespace PyImath;
 
-namespace {
-
-template <class T>
-struct rotationXYZWithUpDir_op
+namespace
 {
-    static IMATH_NAMESPACE::Vec3<T>
-    apply(const IMATH_NAMESPACE::Vec3<T> &from, const IMATH_NAMESPACE::Vec3<T> &to, 
-          const IMATH_NAMESPACE::Vec3<T> &up)
-    {
-        IMATH_NAMESPACE::Vec3<T> retval;
-        IMATH_NAMESPACE::extractEulerXYZ(IMATH_NAMESPACE::rotationMatrixWithUpDir(from,to,up),retval);
-        return retval;
-    }
-};
 
-template <class T>
-struct abs_op
+struct RegisterFloatDoubleOps
 {
-    static T
-    apply(T value)
+    template <typename T>
+    void operator() (T)
     {
-        return IMATH_NAMESPACE::abs<T>(value);
-    }
-};
+        // nb: MSVC gets confused about which arg we want (it thinks it
+        // might be boost::arg), so telling it which one explicitly here.
+        typedef boost::python::arg arg;
 
-template <class T>
-struct sign_op
-{
-    static T
-    apply(T value)
-    {
-        return IMATH_NAMESPACE::sign<T>(value);
-    }
-};
+        generate_bindings<abs_op<T>,boost::mpl::true_>(
+            "abs",
+            "return the absolute value of 'value'",
+            (arg("value")));
 
-template <class T>
-struct log_op
-{
-    static T
-    apply(T value)
-    {
-        return ::log(value);
-    }
-};
+        generate_bindings<sign_op<T>,boost::mpl::true_>(
+            "sign",
+            "return 1 or -1 based on the sign of 'value'",
+            (arg("value")));
 
-template <class T>
-struct log10_op
-{
-    static T
-    apply(T value)
-    {
-        return ::log10(value);
-    }
-};
+        generate_bindings<log_op<T>,boost::mpl::true_>(
+            "log",
+            "return the natural log of 'value'",
+            (arg("value")));
 
-template <class T>
-struct lerp_op
-{
-    static T
-    apply(T a, T b, T t)
-    {
-        return IMATH_NAMESPACE::lerp<T>(a,b,t);
-    }
-};
+        generate_bindings<log10_op<T>,boost::mpl::true_>(
+            "log10",
+            "return the base 10 log of 'value'",
+            (arg("value")));
 
-template <class T>
-struct ulerp_op
-{
-    static T
-    apply(T a, T b, T t)
-    {
-        return IMATH_NAMESPACE::ulerp<T>(a,b,t);
-    }
-};
+        generate_bindings<lerp_op<T>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
+            "lerp",
+            "return the linear interpolation of 'a' to 'b' using parameter 't'",
+            (arg("a"),arg("b"),arg("t")));
 
-template <class T>
-struct lerpfactor_op
-{
-    static T
-    apply(T a, T b, T t)
-    {
-        return IMATH_NAMESPACE::lerpfactor<T>(a,b,t);
-    }
-};
+        generate_bindings<lerpfactor_op<T>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
+            "lerpfactor",
+            "return how far m is between a and b, that is return t such that\n"
+            "if:\n"
+            "    t = lerpfactor(m, a, b);\n"
+            "then:\n"
+            "    m = lerp(a, b, t);\n"
+            "\n"
+            "If a==b, return 0.\n",
+            (arg("m"),arg("a"),arg("b")));
 
-template <class T>
-struct clamp_op
-{
-    static T
-    apply(T value, T low, T high)
-    {
-        return IMATH_NAMESPACE::clamp<T>(value,low,high);
-    }
-};
+        generate_bindings<clamp_op<T>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
+            "clamp",
+            "return the value clamped to the range [low,high]",
+            (arg("value"),arg("low"),arg("high")));
 
-template <class T>
-struct cmp_op
-{
-    static T
-    apply(T value)
-    {
-        return IMATH_NAMESPACE::cmp<T>(value);
-    }
-};
+        generate_bindings<floor_op<T>,boost::mpl::true_>(
+            "floor",
+            "return the closest integer less than or equal to 'value'",
+            (arg("value")));
 
-template <class T>
-struct cmpt_op
-{
-    static T
-    apply(T value)
-    {
-        return IMATH_NAMESPACE::cmpt<T>(value);
-    }
-};
+        generate_bindings<ceil_op<T>,boost::mpl::true_>(
+            "ceil",
+            "return the closest integer greater than or equal to 'value'",
+            (arg("value")));
 
-template <class T>
-struct iszero_op
-{
-    static T
-    apply(T value)
-    {
-        return IMATH_NAMESPACE::iszero<T>(value);
-    }
-};
+        generate_bindings<trunc_op<T>,boost::mpl::true_>(
+            "trunc",
+            "return the closest integer with magnitude less than or equal to 'value'",
+            (arg("value")));
 
-template <class T>
-struct equal_op
-{
-    static T
-    apply(T value)
-    {
-        return IMATH_NAMESPACE::equal<T>(value);
-    }
-};
+        generate_bindings<rgb2hsv_op<T>,boost::mpl::true_>(
+            "rgb2hsv",
+            "return the hsv version of an rgb color",
+            args("rgb"));
 
-template <class T>
-struct floor_op
-{
-    static int
-    apply(T value)
-    {
-        return IMATH_NAMESPACE::floor<T>(value);
-    }
-};
+        generate_bindings<hsv2rgb_op<T>,boost::mpl::true_>(
+            "hsv2rgb",
+            "return the rgb version of an hsv color",
+            args("hsv"));
 
-template <class T>
-struct ceil_op
-{
-    static int
-    apply(T value)
-    {
-        return IMATH_NAMESPACE::ceil<T>(value);
-    }
-};
+        generate_bindings<sin_op<T>,boost::mpl::true_>(
+            "sin",
+            "return the sine of the angle theta",
+            args("theta"));
 
-template <class T>
-struct trunc_op
-{
-    static int
-    apply(T value)
-    {
-        return IMATH_NAMESPACE::trunc<T>(value);
-    }
-};
+        generate_bindings<cos_op<T>,boost::mpl::true_>(
+            "cos",
+            "return the cosine of the angle theta",
+            args("theta"));
 
-struct divs_op
-{
-    static int
-    apply(int x, int y)
-    {
-        return IMATH_NAMESPACE::divs(x,y);
-    }
-};
+        generate_bindings<tan_op<T>,boost::mpl::true_>(
+            "tan",
+            "return the tangent of the angle theta",
+            args("theta"));
 
-struct mods_op
-{
-    static int
-    apply(int x, int y)
-    {
-        return IMATH_NAMESPACE::mods(x,y);
-    }
-};
+        generate_bindings<asin_op<T>,boost::mpl::true_>(
+            "asin",
+            "return the arcsine of the value x",
+            args("x"));
 
-struct divp_op
-{
-    static int
-    apply(int x, int y)
-    {
-        return IMATH_NAMESPACE::divp(x,y);
-    }
-};
+        generate_bindings<acos_op<T>,boost::mpl::true_>(
+            "acos",
+            "return the arccosine of the value x",
+            args("x"));
 
-struct modp_op
-{
-    static int
-    apply(int x, int y)
-    {
-        return IMATH_NAMESPACE::modp(x,y);
-    }
-};
+        generate_bindings<atan_op<T>,boost::mpl::true_>(
+            "atan",
+            "return the arctangent of the value x",
+            args("x"));
 
-struct bias_op
-{
-    static inline float
-    apply(float x, float b)
-    {
-        if (b != 0.5f)
-        {
-            static const float inverse_log_half = 1.0f / std::log(0.5f);
-            const float biasPow = std::log(b)*inverse_log_half;
-            return std::pow(x, biasPow);
-        }
-        return x;
-    }
-};
+        generate_bindings<atan2_op<T>,boost::mpl::true_,boost::mpl::true_>(
+            "atan2",
+            "return the arctangent of the coordinate x,y - note the y "
+            "is the first argument for consistency with libm ordering",
+            args("y","x"));
 
-struct gain_op
-{
-    static inline float
-    apply(float x, float g)
-    {
-        if (x < 0.5f)
-            return 0.5f*bias_op::apply(2.0f*x, 1.0f - g);
-        else
-            return 1.0f - 0.5f*bias_op::apply(2.0f - 2.0f*x, 1.0f - g);
+        generate_bindings<sqrt_op<T>,boost::mpl::true_>(
+            "sqrt",
+            "return the square root of x",
+            args("x"));
+
+        generate_bindings<pow_op<T>,boost::mpl::true_,boost::mpl::true_>(
+            "pow",
+            "return x**y",
+            args("x","y"));
+
+        generate_bindings<exp_op<T>,boost::mpl::true_>(
+             "exp",
+             "return exp(x)",
+             args("x"));
+
+        generate_bindings<sinh_op<T>,boost::mpl::true_>(
+             "sinh",
+             "return sinh(x)",
+             args("x"));
+
+        generate_bindings<cosh_op<T>,boost::mpl::true_>(
+             "cosh",
+             "return cosh(x)",
+             args("x"));
+
+        def("cmp", IMATH_NAMESPACE::cmp<T>);
+        def("cmpt", IMATH_NAMESPACE::cmpt<T>);
+        def("iszero", IMATH_NAMESPACE::iszero<T>);
+        def("equal", IMATH_NAMESPACE::equal<T, T, T>);
     }
 };
 
@@ -262,159 +177,52 @@ void register_functions()
     // might be boost::arg), so telling it which one explicitly here.
     typedef boost::python::arg arg;
 
-    PyImath::generate_bindings<abs_op<int>,boost::mpl::true_>(
-        "abs",
-        "return the absolute value of 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<abs_op<float>,boost::mpl::true_>(
-        "abs",
-        "return the absolute value of 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<abs_op<double>,boost::mpl::true_>(
+    using fp_types = boost::mpl::vector<float, double>;
+    boost::mpl::for_each<fp_types>(RegisterFloatDoubleOps());
+
+    generate_bindings<abs_op<int>,boost::mpl::true_>(
         "abs",
         "return the absolute value of 'value'",
         (arg("value")));
     
-    PyImath::generate_bindings<sign_op<int>,boost::mpl::true_>(
-        "sign",
-        "return 1 or -1 based on the sign of 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<sign_op<float>,boost::mpl::true_>(
-        "sign",
-        "return 1 or -1 based on the sign of 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<sign_op<double>,boost::mpl::true_>(
+    generate_bindings<sign_op<int>,boost::mpl::true_>(
         "sign",
         "return 1 or -1 based on the sign of 'value'",
         (arg("value")));
     
-    PyImath::generate_bindings<log_op<float>,boost::mpl::true_>(
-        "log",
-        "return the natural log of 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<log_op<double>,boost::mpl::true_>(
-        "log",
-        "return the natural log of 'value'",
-        (arg("value")));
-    
-    PyImath::generate_bindings<log10_op<float>,boost::mpl::true_>(
-        "log10",
-        "return the base 10 log of 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<log10_op<double>,boost::mpl::true_>(
-        "log10",
-        "return the base 10 log of 'value'",
-        (arg("value")));
-    
-    PyImath::generate_bindings<lerp_op<float>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
-        "lerp",
-        "return the linear interpolation of 'a' to 'b' using parameter 't'",
-        (arg("a"),arg("b"),arg("t")));
-    PyImath::generate_bindings<lerp_op<double>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
-        "lerp",
-        "return the linear interpolation of 'a' to 'b' using parameter 't'",
-        (arg("a"),arg("b"),arg("t")));
-    
-    PyImath::generate_bindings<lerpfactor_op<float>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
-        "lerpfactor",
-        "return how far m is between a and b, that is return t such that\n"
-        "if:\n"
-        "    t = lerpfactor(m, a, b);\n"
-        "then:\n"
-        "    m = lerp(a, b, t);\n"
-        "\n"
-        "If a==b, return 0.\n",
-        (arg("m"),arg("a"),arg("b")));
-    PyImath::generate_bindings<lerpfactor_op<double>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
-        "lerpfactor",
-        "return how far m is between a and b, that is return t such that\n"
-        "    if:\n"
-        "        t = lerpfactor(m, a, b);\n"
-        "    then:\n"
-        "        m = lerp(a, b, t);\n"
-        "    if a==b, return 0.\n",
-        (arg("m"),arg("a"),arg("b")));
-    
-    PyImath::generate_bindings<clamp_op<int>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
-        "clamp",
-        "return the value clamped to the range [low,high]",
-        (arg("value"),arg("low"),arg("high")));
-    PyImath::generate_bindings<clamp_op<float>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
-        "clamp",
-        "return the value clamped to the range [low,high]",
-        (arg("value"),arg("low"),arg("high")));
-    PyImath::generate_bindings<clamp_op<double>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
+    generate_bindings<clamp_op<int>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
         "clamp",
         "return the value clamped to the range [low,high]",
         (arg("value"),arg("low"),arg("high")));
 
-    def("cmp", IMATH_NAMESPACE::cmp<float>);
-    def("cmp", IMATH_NAMESPACE::cmp<double>);   
-
-    def("cmpt", IMATH_NAMESPACE::cmpt<float>);
-    def("cmpt", IMATH_NAMESPACE::cmpt<double>);
-
-    def("iszero", IMATH_NAMESPACE::iszero<float>);
-    def("iszero", IMATH_NAMESPACE::iszero<double>);
-
-    def("equal", IMATH_NAMESPACE::equal<float, float, float>);
-    def("equal", IMATH_NAMESPACE::equal<double, double, double>);    
-
-    PyImath::generate_bindings<floor_op<float>,boost::mpl::true_>(
-        "floor",
-        "return the closest integer less than or equal to 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<floor_op<double>,boost::mpl::true_>(
-        "floor",
-        "return the closest integer less than or equal to 'value'",
-        (arg("value")));
-
-    PyImath::generate_bindings<ceil_op<float>,boost::mpl::true_>(
-        "ceil",
-        "return the closest integer greater than or equal to 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<ceil_op<double>,boost::mpl::true_>(
-        "ceil",
-        "return the closest integer greater than or equal to 'value'",
-        (arg("value")));
-
-    PyImath::generate_bindings<trunc_op<float>,boost::mpl::true_>(
-        "trunc",
-        "return the closest integer with magnitude less than or equal to 'value'",
-        (arg("value")));
-    PyImath::generate_bindings<trunc_op<double>,boost::mpl::true_>(
-        "trunc",
-        "return the closest integer with magnitude less than or equal to 'value'",
-        (arg("value")));
-
-    PyImath::generate_bindings<divs_op,boost::mpl::true_,boost::mpl::true_>(
+    generate_bindings<divs_op,boost::mpl::true_,boost::mpl::true_>(
         "divs",
         "return x/y where the remainder has the same sign as x:\n"
         "    divs(x,y) == (abs(x) / abs(y)) * (sign(x) * sign(y))\n",
         (arg("x"),arg("y")));
-    PyImath::generate_bindings<mods_op,boost::mpl::true_,boost::mpl::true_>(
+    generate_bindings<mods_op,boost::mpl::true_,boost::mpl::true_>(
         "mods",
         "return x%y where the remainder has the same sign as x:\n"
         "    mods(x,y) == x - y * divs(x,y)\n",
         (arg("x"),arg("y")));
 
-    PyImath::generate_bindings<divp_op,boost::mpl::true_,boost::mpl::true_>(
+    generate_bindings<divp_op,boost::mpl::true_,boost::mpl::true_>(
         "divp",
         "return x/y where the remainder is always positive:\n"
         "    divp(x,y) == floor (double(x) / double (y))\n",
         (arg("x"),arg("y")));
-    PyImath::generate_bindings<modp_op,boost::mpl::true_,boost::mpl::true_>(
+    generate_bindings<modp_op,boost::mpl::true_,boost::mpl::true_>(
         "modp",
         "return x%y where the remainder is always positive:\n"
         "    modp(x,y) == x - y * divp(x,y)\n",
         (arg("x"),arg("y")));
 
-    PyImath::generate_bindings<bias_op,boost::mpl::true_,boost::mpl::true_>(
+    generate_bindings<bias_op,boost::mpl::true_,boost::mpl::true_>(
          "bias",
          "bias(x,b) is a gamma correction that remaps the unit interval such that bias(0.5, b) = b.",
          (arg("x"),arg("b")));
 
-    PyImath::generate_bindings<gain_op,boost::mpl::true_,boost::mpl::true_>(
+    generate_bindings<gain_op,boost::mpl::true_,boost::mpl::true_>(
          "gain",
          "gain(x,g) is a gamma correction that remaps the unit interval with the property that gain(0.5, g) = 0.5.\n"
          "The gain function can be thought of as two scaled bias curves forming an 'S' shape in the unit interval.",
@@ -423,7 +231,7 @@ void register_functions()
     //
     // Vectorized utility functions
     // 
-    PyImath::generate_bindings<rotationXYZWithUpDir_op<float>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
+    generate_bindings<rotationXYZWithUpDir_op<float>,boost::mpl::true_,boost::mpl::true_,boost::mpl::true_>(
         "rotationXYZWithUpDir",
         "return the XYZ rotation vector that rotates 'fromDir' to 'toDir'"
         "using the up vector 'upDir'",
@@ -431,5 +239,3 @@ void register_functions()
 }
 
 } // namespace PyImath
-
-

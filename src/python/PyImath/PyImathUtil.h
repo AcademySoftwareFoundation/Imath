@@ -10,14 +10,15 @@
 
 //----------------------------------------------------------------------------
 //
-//	PyImath.h -- miscellaneous classes, functions
+//	PyImathUtil.h -- miscellaneous classes, functions
 //	and macros that are useful for Python wrapping
 //	of C++ objects.
 //
 //----------------------------------------------------------------------------
 
-#include "PyImathExport.h"
 #include <Python.h>
+#include "PyImathExport.h"
+#include <PyImathAPI.h>
 
 namespace PyImath {
 
@@ -143,6 +144,62 @@ class PySafeObject
   private:
 
     T *_object;
+};
+
+/**
+ * A special selectable postcall policy used in python wrappings.
+ *
+ * It expects the initial result to be a touple where the first
+ * object represents an integer value 0, 1, 2 which corresponds
+ * to which of the templated call polices should be applied.
+ *
+ * This postcall policy is modeled after a similar one defined 
+ * in PyGeomParticleUtil.h of the PyGeomParticle project.
+ *
+ */
+template <class policy0, class policy1, class policy2>
+struct selectable_postcall_policy_from_tuple : policy0
+{
+    static PyObject *
+    postcall (PyObject* args, PyObject* result)
+    {
+        if (!PyTuple_Check (result))
+        {
+            PyErr_SetString (PyExc_TypeError,
+                             "selectable_postcall: retval was not a tuple");
+            return 0;
+        }
+        if (PyTuple_Size(result) != 2)
+        {
+            PyErr_SetString (PyExc_IndexError,
+                             "selectable_postcall: retval was not a tuple of length 2");
+            return 0;
+        }
+
+        // borrowed references within the tuple
+        PyObject* object0 = PyTuple_GetItem (result, 0);  // 'Choice' integer
+        PyObject* object1 = PyTuple_GetItem (result, 1);  // The actual object
+
+        if (!PyInt_Check (object0))
+        {
+            PyErr_SetString (PyExc_TypeError,
+                             "selectable_postcall: tuple item 0 was not an integer choice");
+            return 0;
+        }
+
+        const long usePolicy = PyInt_AsLong (object0);
+
+        // ensure correct reference count for returned object and decref the tuple
+        Py_INCREF (object1);
+        Py_DECREF (result );
+
+        if (usePolicy <= 0)
+            return policy0::postcall (args, object1);
+        else if (usePolicy == 1)
+            return policy1::postcall (args, object1);
+        else  // usePolicy >= 2
+            return policy2::postcall (args, object1);
+    }
 };
 
 } // namespace PyImath

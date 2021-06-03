@@ -5,9 +5,6 @@
 
 // clang-format off
 
-#include "PyImathPlane.h"
-#include "PyImathDecorators.h"
-#include "PyImathExport.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
@@ -15,6 +12,9 @@
 #include "PyImath.h"
 #include "PyImathVec.h"
 #include "PyImathMathExc.h"
+#include "PyImathPlane.h"
+#include "PyImathDecorators.h"
+#include "PyImathExport.h"
 
 namespace PyImath{
 using namespace boost::python;
@@ -164,15 +164,10 @@ static std::string Plane3_str(const Plane3<T> &plane)
 {
     std::stringstream stream;
 
-    PyObject *normalObj = V3<T>::wrap (plane.normal);
-    PyObject *normalReprObj = PyObject_Repr (normalObj);
-#if PY_MAJOR_VERSION > 2
-    std::string normalReprStr = PyUnicode_AsUTF8 (normalReprObj);
-#else
-    std::string normalReprStr = PyString_AsString (normalReprObj);
-#endif
-    Py_DECREF (normalReprObj);
-    Py_DECREF (normalObj);
+    typename return_by_value::apply <Vec3<float> >::type converter;
+    handle<> normH (converter (plane.normal));
+    handle<> normRepr (PYUTIL_OBJECT_REPR (normH.get()));
+    std::string normalReprStr = extract<std::string> (normRepr.get());
 
     stream << PlaneName<T>::value << "(" << normalReprStr << ", " 
            << plane.distance << ")";
@@ -190,15 +185,11 @@ static std::string Plane3_repr(const Plane3<T> &plane)
 template <>
 std::string Plane3_repr(const Plane3<float> &plane)
 {
-    PyObject *normalObj = V3<float>::wrap (plane.normal);
-    PyObject *normalReprObj = PyObject_Repr (normalObj);
-#if PY_MAJOR_VERSION > 2
-    std::string normalReprStr = PyUnicode_AsUTF8 (normalReprObj);
-#else
-    std::string normalReprStr = PyString_AsString (normalReprObj);
-#endif
-    Py_DECREF (normalReprObj);
-    Py_DECREF (normalObj);
+    typename return_by_value::apply <Vec3<float> >::type converter;
+
+    handle<> normH (converter (plane.normal));
+    handle<> normRepr (PYUTIL_OBJECT_REPR (normH.get()));
+    std::string normalReprStr = extract<std::string> (normRepr.get());
 
     return (boost::format("%s(%s, %.9g)")
                         % PlaneName<float>::value
@@ -210,15 +201,11 @@ std::string Plane3_repr(const Plane3<float> &plane)
 template <>
 std::string Plane3_repr(const Plane3<double> &plane)
 {
-    PyObject *normalObj = V3<double>::wrap (plane.normal);
-    PyObject *normalReprObj = PyObject_Repr (normalObj);
-#if PY_MAJOR_VERSION > 2
-    std::string normalReprStr = PyUnicode_AsUTF8 (normalReprObj);
-#else
-    std::string normalReprStr = PyString_AsString (normalReprObj);
-#endif
-    Py_DECREF (normalReprObj);
-    Py_DECREF (normalObj);
+    typename return_by_value::apply <Vec3<double> >::type converter;
+
+    handle<> normH (converter (plane.normal));
+    handle<> normRepr (PYUTIL_OBJECT_REPR (normH.get()));
+    std::string normalReprStr = extract<std::string> (normRepr.get());
 
     return (boost::format("%s(%s, %.17g)")
                         % PlaneName<double>::value

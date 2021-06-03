@@ -3,27 +3,27 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+// clang-format off
+
 //
 // This .C file was turned into a header file so that instantiations
 // of the various V3* types can be spread across multiple files in
 // order to work around MSVC limitations.
 //
 
-// clang-format off
-
-#include "PyImathColor.h"
-#include "PyImathVec.h"
-#include "PyImathDecorators.h"
-#include "PyImathExport.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
-#include "PyImath.h"
-#include "PyImathMathExc.h"
 #include <ImathVec.h>
 #include <ImathColor.h>
 #include <ImathColorAlgo.h>
+#include "PyImath.h"
+#include "PyImathMathExc.h"
+#include "PyImathColor.h"
+#include "PyImathVec.h"
+#include "PyImathDecorators.h"
+#include "PyImathExport.h"
 #include "PyImathColor3ArrayImpl.h"
 
 namespace PyImath {
@@ -600,6 +600,8 @@ register_Color3()
         .def("__truediv__", &divTupleL<T>)
         .def("__rdiv__", &divTupleR<T>)  
         .def("__rdiv__", &divTR<T>)
+        .def("__rtruediv__", &divTupleR<T>)  
+        .def("__rtruediv__", &divTR<T>)
         .def("__lt__", &lessThan<T>)
         .def("__gt__", &greaterThan<T>)
         .def("__le__", &lessThanEqual<T>)
@@ -610,7 +612,7 @@ register_Color3()
         .staticmethod("baseTypeEpsilon")
         .def("baseTypeMax", &Color3<T>::baseTypeMax,"baseTypeMax() max value of the base type of the color")
         .staticmethod("baseTypeMax")
-        .def("baseTypeLowest", &Color3<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the color")
+        .def("baseTypeLowest", &Color3<T>::baseTypeLowest,"baseTypeLowest() largest negative value of the base type of the color")
         .staticmethod("baseTypeLowest")
         .def("baseTypeSmallest", &Color3<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the color")
         .staticmethod("baseTypeSmallest")

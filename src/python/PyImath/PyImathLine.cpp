@@ -5,18 +5,18 @@
 
 // clang-format off
 
-#include "PyImathLine.h"
-#include "PyImathDecorators.h"
-#include "PyImathExport.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
+#include <ImathLineAlgo.h>
+#include <ImathMatrix.h>
+#include "PyImathLine.h"
+#include "PyImathDecorators.h"
+#include "PyImathExport.h"
 #include "PyImath.h"
 #include "PyImathVec.h"
 #include "PyImathMathExc.h"
-#include <ImathLineAlgo.h>
-#include <ImathMatrix.h>
 
 
 namespace PyImath{
@@ -320,7 +320,8 @@ intersect2(Line3<T> &line, const Vec3<T> &v0, const Vec3<T> &v1, const Vec3<T> &
     
     if(IMATH_NAMESPACE::intersect(line, v0, v1, v2, pt, bar, front))
     {
-        return make_tuple (pt, bar, front);
+        tuple t = make_tuple(pt, bar, front);
+        return t;
     }
     else
     {
@@ -393,28 +394,18 @@ rotatePointTuple(Line3<T> &line, const tuple &t, const T &r)
 template <class T>
 static std::string Line3_repr(const Line3<T> &v)
 {
+    typename return_by_value::apply <Vec3<T> >::type converter;
+
     Vec3<T> v1 = v.pos;
     Vec3<T> v2 = v.pos + v.dir;
 
-    PyObject *v1Obj = V3<T>::wrap (v1);
-    PyObject *v1ReprObj = PyObject_Repr (v1Obj);
-#if PY_MAJOR_VERSION > 2
-    std::string v1ReprStr = PyUnicode_AsUTF8 (v1ReprObj);
-#else
-    std::string v1ReprStr = PyString_AsString (v1ReprObj);
-#endif
-    Py_DECREF (v1ReprObj);
-    Py_DECREF (v1Obj);
+    handle<> v1h (converter (v.pos));
+    handle<> v1Repr (PYUTIL_OBJECT_REPR (v1h.get()));
+    std::string v1ReprStr = extract<std::string> (v1Repr.get());
 
-    PyObject *v2Obj = V3<T>::wrap (v2);
-    PyObject *v2ReprObj = PyObject_Repr (v2Obj);
-#if PY_MAJOR_VERSION > 2
-    std::string v2ReprStr = PyUnicode_AsUTF8 (v2ReprObj);
-#else
-    std::string v2ReprStr = PyString_AsString (v2ReprObj);
-#endif
-    Py_DECREF (v2ReprObj);
-    Py_DECREF (v2Obj);
+    handle<> v2h (converter (v.pos + v.dir));
+    handle<> v2Repr (PYUTIL_OBJECT_REPR (v2h.get()));
+    std::string v2ReprStr = extract<std::string> (v2Repr.get());
 
     std::stringstream stream;
     stream << LineName<T>::value << "(" << v1ReprStr << ", " << v2ReprStr << ")";
@@ -562,3 +553,5 @@ template PYIMATH_EXPORT class_<Line3<float> > register_Line<float>();
 template PYIMATH_EXPORT class_<Line3<double> > register_Line<double>();
 
 } // namespace PyImath
+
+

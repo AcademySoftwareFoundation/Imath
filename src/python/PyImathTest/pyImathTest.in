@@ -5,15 +5,11 @@
 # Copyright Contributors to the OpenEXR Project.
 #
 
-import math
-import random
-import string
-import sys
-import traceback
-from math import cos, pi, sin, sqrt
-
 from imath import *
-
+from math import sqrt, pi, sin, cos
+import math
+import string, traceback, sys
+import random
 
 testList = []
 
@@ -57,10 +53,6 @@ def numNonZeroMaskEntries(mask):
     return count
 
 def equalWithAbsErrorScalar(x1, x2, e):
-    print("type x1({}) x2({}) e({}) -> scalar".format(type(x1), type(x2), type(e)))
-    val = abs(x1 - x2)
-    if val >= e:
-        print ("Violation: val {} x1 {} x2 {} e {}".format(val, x1, x2, e))
     return abs(x1 - x2) < e
 
 def make_range(start, end):
@@ -91,8 +83,6 @@ def equalWithAbsError(x1, x2, e):
             if not equalWithAbsErrorScalar(x1[i], x2[i], e):
                 return False
         return True
-    elif isinstance(x1, int):
-        return equalWithAbsErrorScalar(x1, int(x2), e)
     else:
         return equalWithAbsErrorScalar(x1, x2, e)
 
@@ -106,8 +96,6 @@ def equalWithRelError(x1, x2, e):
             if not equalWithRelErrorScalar(x1[i], x2[i], e):
                 return False
         return True
-    elif isinstance(x1, int):
-        return equalWithRelErrorScalar(x1, int(x2), e)
     else:
         return equalWithRelErrorScalar(x1, x2, e)
 
@@ -129,8 +117,13 @@ def testVectorVectorArithmeticOps(f1, f2):
 
     f = f1 / f2
     assert(len(f) == len(f1))
+
+    if isinstance(f,IntArray) or isinstance(f,ShortArray):
+        op = lambda a,b : a // b
+    else:
+        op = lambda a,b : a / b
     for i in range(0, len(f)):
-        assert(equalWithAbsError(f[i], f1[i] / f2[i], eps))
+        assert(equalWithAbsError(f[i], op(f1[i],f2[i]), eps))
 
     f = -f1
     assert(len(f) == len(f1))
@@ -171,8 +164,12 @@ def testVectorScalarArithmeticOps(f1, v):
 
     f = f1 / v
     assert(len(f) == len(f1))
+    if isinstance(f,IntArray) or isinstance(f,ShortArray):
+        op = lambda a,b : a // b
+    else:
+        op = lambda a,b : a / b
     for i in range(0, len(f)):
-        assert(equalWithAbsError(f[i], f1[i] / v, eps))
+        assert(equalWithAbsError(f[i], op(f1[i],v), eps))
 
 
 def testVectorVectorInPlaceArithmeticOps(f1, f2):
@@ -198,8 +195,12 @@ def testVectorVectorInPlaceArithmeticOps(f1, f2):
     f = f1[:]
     f /= f2
     assert(len(f) == len(f1))
+    if isinstance(f,IntArray) or isinstance(f,ShortArray):
+        op = lambda a,b : a // b
+    else:
+        op = lambda a,b : a / b
     for i in range(0, len(f)):
-        assert(equalWithAbsError(f[i], f1[i] / f2[i], eps))
+        assert(equalWithAbsError(f[i], op(f1[i],f2[i]), eps))
 
     f = f1[:]
     f = -f;
@@ -229,8 +230,12 @@ def testVectorScalarInPlaceArithmeticOps(f1, v):
     f = f1[:]
     f /= v
     assert(len(f) == len(f1))
+    if isinstance(f,IntArray) or isinstance(f,ShortArray):
+        op = lambda a,b : a // b
+    else:
+        op = lambda a,b : a / b
     for i in range(0, len(f)):
-        assert(equalWithAbsError(f[i], f1[i] / v, eps))
+        assert(equalWithAbsError(f[i], op(f1[i],v), eps))
 
 def testPowFunctions(f1, f2):
     # vector-vector pow
@@ -450,8 +455,12 @@ def testVectorVectorMaskedInPlaceArithmeticOps(f1, f2, m):
 
     f = f1[:]
     f[m] /= f2
+    if isinstance(f,IntArray) or isinstance(f,ShortArray):
+        op = lambda a,b : a // b
+    else:
+        op = lambda a,b : a / b
     for i in range(0, len(m)):
-        if m[i]: assert(equalWithAbsError(f[i], f1[i] / f2[i], eps))
+        if m[i]: assert(equalWithAbsError(f[i], op(f1[i],f2[i]), eps))
 
     f = f1[:]
     f[m] = -f
@@ -500,8 +509,12 @@ def testVectorVectorMaskedInPlaceArithmeticOps2(f1, f2, m):
     f[m] /= f2
     fm = f[m]
 
+    if isinstance(f,IntArray) or isinstance(f,ShortArray):
+        op = lambda a,b : a // b
+    else:
+        op = lambda a,b : a / b
     for i in range(0, len(fm)):
-        assert(equalWithAbsError(fm[i], f1m[i] / f2[i], eps))
+        assert(equalWithAbsError(fm[i], op(f1m[i],f2[i]), eps))
     
     for i in range(0, len(m)):
         if m[i] == 0:
@@ -528,8 +541,12 @@ def testVectorVectorMaskedArithmeticOps(f1, f2, f3, m):
 
     f = f3[:]
     f[m] = f1[m] / f2[m]
+    if isinstance(f,IntArray) or isinstance(f,ShortArray):
+        op = lambda a,b : a // b
+    else:
+        op = lambda a,b : a / b
     for i in range(0, len(m)):
-        if m[i]: assert(equalWithRelError(f[i], f1[i] / f2[i], eps))
+        if m[i]: assert(equalWithRelError(f[i], op(f1[i],f2[i]), eps))
         else:    assert(f[i] == f3[i])
 
 
@@ -720,9 +737,95 @@ def assertModOpFailures(f1, f2):
     else:
         assert(False)
 
+def testArrayArrayEquality(a1,a2):
+    assert len(a1) == len(a2)
+    for i in range(0, len(a1)):
+        assert a1[i] == a2[i]
+
 # -----------------------------------------------------------------
 # Begin main test definitions
 # -----------------------------------------------------------------
+
+def testSlicesOnArrayImpl(Array, BaseTypeConstructor):
+    
+    # Test the slicing operators on array types.
+    # We use a python list as a reference here.
+
+    size = 4
+
+    a = Array(size)
+    l = []
+
+    for i in range(0,size):
+        n = BaseTypeConstructor(i)
+        a[i] = n
+        l.append(n)
+
+    # Test extraction using slices
+
+    a1 = a[::2]
+    l1 = l[::2]
+    testArrayArrayEquality(a1, l1)
+
+    a2 = a[::-1]
+    l2 = l[::-1]
+    testArrayArrayEquality(a2, l2)
+
+    a3 = a[1:size]
+    l3 = l[1:size]
+    testArrayArrayEquality(a3, l3)
+
+    a4 = a[:size]
+    l4 = l[:size]
+    testArrayArrayEquality(a4, l4)
+
+    a5 = a[:-1]
+    l5 = l[:-1]
+    testArrayArrayEquality(a5, l5)
+
+    a6 = a[1:]
+    l6 = l[1:]
+    testArrayArrayEquality(a6, l6)
+
+    testArrayArrayEquality(a,a[:])
+
+    # Test assignment using slices
+
+    a8 = a
+    l8 = l
+    a8[::2] = a8[::-2]
+    l8[::2] = a8[::-2]
+
+    testArrayArrayEquality(a8,l8)
+
+    try:
+        a9 = a
+        a9[::1] = a9[::2]
+    except:
+        pass
+    else:
+        assert(False)
+
+    # Test that a sliced array does not share
+    # the same internal data
+    a10 = a[:]
+    a10[0] = BaseTypeConstructor(size)
+
+    assert a10[0] != a[0]
+
+def testSlicesOnArray():
+
+    # All fixed arrays except StringArray shares
+    # the same implementation. We just choose
+    # a few samples for testing.
+    testSlicesOnArrayImpl(IntArray, int)
+    testSlicesOnArrayImpl(V3fArray, V3f)
+    testSlicesOnArrayImpl(FloatArray, float)
+    testSlicesOnArrayImpl(StringArray, str)
+    
+    print ("ok")
+    
+testList.append (('testSlicesOnArray',testSlicesOnArray))
 
 def testNonMaskedFloatTypeArray(FloatTypeArray):
     f1 = FloatTypeArray(5)
@@ -4826,7 +4929,7 @@ def testM22 ():
     print ("M22d")
     testM22x (M22d, V2d)
 
-testList.append (('testM22',testM22))
+#testList.append (('testM22',testM22))
 
 
 # -------------------------------------------------------------------------
@@ -6380,7 +6483,7 @@ def testM22xM44xConversion (MatA, MatB):
 def testMatConversions ():
 
     print ("M22f")
-    testM22xConversions (M22f)
+#    testM22xConversions (M22f)
     print ("M22d")
     testM22xConversions (M22d)
 
@@ -8128,6 +8231,96 @@ def testC4Array ():
 testList.append (('testC4Array',testC4Array))
 
 # -------------------------------------------------------------------------
+# Tests C3xArrays
+def testC3xArray(Array, Color, Arrayx):
+    a = Array (3)
+
+    a[0] = Color(0)
+    a[1] = Color(1)
+    a[2] = Color(2)
+
+    assert a[0] == Color(0)
+    assert a[1] == Color(1)
+    assert a[2] == Color(2)
+
+    # Element setting.
+
+    a = Array(2)
+
+    try:
+        a[-3] = Color(0) # This should raise an exception.
+    except:
+        pass
+    else:
+        assert 0         # We shouldn't get here.   
+
+    try:
+        a[3] = Color(0)   # This should raise an exception.
+    except:
+        pass
+    else:
+        assert 0        # We shouldn't get here.
+
+    try:
+        a[1] = "a"      # This should raise an exception.
+    except:
+        pass
+    else:
+        assert 0        # We shouldn't get here.
+
+    # Assignment.
+
+    a = Array(2)
+    a[0] = Color(0)
+    a[1] = Color(1)
+
+    # Array Component access
+    
+    ar = Arrayx(2)
+    ag = Arrayx(2)
+    ab = Arrayx(2)
+    ar[:] = a.r
+    ag[:] = a.g
+    ab[:] = a.b
+
+    assert ar == a.r
+    assert ag == a.g
+    assert ab == a.b
+
+    a.r[0] = 1
+    assert ar != a.r
+
+def testC3xExplicitConversion(Array):
+
+     # explicit constructors from Vec3 types
+    af = V3fArray(3)
+    af[0] = V3f(0)
+    af[1] = V3f(1)
+    af[2] = V3f(2)
+    a = Array(af);
+    assert af[0] == V3f(a[0])
+    assert af[1] == V3f(a[1])
+    assert af[2] == V3f(a[2])
+
+    ad = V3dArray(3)
+    ad[0] = V3d(0)
+    ad[1] = V3d(1)
+    ad[2] = V3d(2)
+    a = Array(ad);
+    assert ad[0] == V3d(a[0])
+    assert ad[1] == V3d(a[1])
+    assert ad[2] == V3d(a[2])
+
+def testC3Array ():
+    print ("C3fArray")
+    testC3xArray (C3fArray, Color3f, FloatArray)
+    testC3xExplicitConversion(C3fArray)
+    print ("C3cArray")
+    testC3xArray (C3cArray, Color3c, UnsignedCharArray)
+
+testList.append (('testC3Array',testC3Array))
+
+# -------------------------------------------------------------------------
 # Verify that floating-point exceptions, both in Imath and in Python,
 # raise Python exceptions rather than causing crashes.
 
@@ -8163,7 +8356,6 @@ def testFpExceptions():
 
     print ("ok")
     return
-
 
 testList.append (('testFpExceptions',testFpExceptions))
 
@@ -8420,7 +8612,7 @@ def testSymmetricEigensolve():
 testList.append (('testSymmetricEigensolve',testSymmetricEigensolve))
 
 # -------------------------------------------------------------------------
-# Tests C4xArrays
+# Tests MxArrays
 def testMxArray(Array, Matrix):
     a = Array (3)
 
@@ -8463,12 +8655,67 @@ def testMxArray(Array, Matrix):
     a[0] = Matrix(0)
     a[1] = Matrix(1)
 
+    # Comparison.
+
+    m = Matrix(2)
+    a1 = Array(m, 3)
+    a2 = Array(m, 3)
+
+    testVectorVectorComparisonOps(a1, a2)
+    testVectorScalarComparisonOps(a1, m)
+
+def testM4Array(Array, Matrix, Vec, VecArray):
+
+    a = Array(3)
+    m0 = Matrix()
+    m0.setTranslation (Vec(1,2,3))
+    m1 = Matrix()
+    m1.setScale (Vec(.3,.2,.1))
+    m2 = Matrix()
+    m2.rotate (Vec(.3,.1,.2))
+
+    a[0] = m0
+    a[1] = m1
+    a[2] = m2
+
+    n = a.inverse()
+    assert n[0] == m0.inverse()
+    assert n[1] == m1.inverse()
+    assert n[2] == m2.inverse()
+
+    a.invert()
+    testVectorVectorComparisonOps(a, n)
+    
+    n0 = a[0]
+    n1 = a[2]
+    n2 = a[2]
+    a.transpose()
+    assert n[0].transposed() == a[0]
+    assert n[1].transposed() == a[1]
+    assert n[2].transposed() == a[2]
+
+    v = VecArray(3)
+    v[0] = Vec(11,17,3).normalized()
+    v[1] = Vec(7,19,31).normalized()
+    v[2] = Vec(23,5,13).normalized()
+   
+    V = a.multDirMatrix(v)
+    assert a[0].multDirMatrix(v[0]) == V[0]
+    assert a[1].multDirMatrix(v[1]) == V[1]
+    assert a[2].multDirMatrix(v[2]) == V[2]
+
+    V = a.multVecMatrix(v)
+    assert a[0].multVecMatrix(v[0]) == V[0]
+    assert a[1].multVecMatrix(v[1]) == V[1]
+    assert a[2].multVecMatrix(v[2]) == V[2]
 
 def testMatrixArray ():
     print ("M44fArray")
     testMxArray (M44fArray, M44f)
+    testM4Array (M44fArray, M44f, V3f, V3fArray)
     print ("M44dArray")
     testMxArray (M44dArray, M44d)
+    testM4Array (M44dArray, M44d, V3d, V3dArray)
     print ("M33fArray")
     testMxArray (M33fArray, M33f)
     print ("M33dArray")
@@ -8478,8 +8725,84 @@ def testMatrixArray ():
     print ("M22dArray")
     testMxArray (M22dArray, M22d)
 
-
 testList.append(("testMatrixArray",testMatrixArray))
+
+# -------------------------------------------------------------------------
+# Tests BoxxArrays
+def testBoxxArray(Array, Box, Vec):
+
+    b0 = Box(Vec(1), Vec(2))
+    b1 = Box(Vec(2), Vec(3))
+    b2 = Box(Vec(3), Vec(4))
+
+    a = Array (3)
+
+    a[0] = b0
+    a[1] = b1
+    a[2] = b2
+
+    assert a[0] == b0
+    assert a[1] == b1
+    assert a[2] == b2
+
+    # Element setting.
+
+    a = Array(2)
+
+    try:
+        a[-3] = b0      # This should raise an exception.
+    except:
+        pass
+    else:
+        assert 0        # We shouldn't get here.
+
+    try:
+        a[3] = b0       # This should raise an exception.
+    except:
+        pass
+    else:
+        assert 0        # We shouldn't get here.
+
+    try:
+        a[1] = "a"      # This should raise an exception.
+    except:
+        pass
+    else:
+        assert 0        # We shouldn't get here.
+
+    # Assignment.
+
+    a = Array(2)
+    a[0] = b0
+    a[1] = b1
+
+    # Comparison.
+
+    a1 = Array(b2, 3)
+    a2 = Array(b2, 3)
+
+    testVectorVectorComparisonOps(a1, a2)
+    testVectorScalarComparisonOps(a1, b2)
+
+def testBoxArray ():
+    print ("Box2iArray")
+    testBoxxArray (Box2iArray, Box2i, V2i)
+    print ("Box2sArray")
+    testBoxxArray (Box2sArray, Box2s, V2s)
+    print ("Box2fArray")
+    testBoxxArray (Box2fArray, Box2f, V2f)
+    print ("Box2dArray")
+    testBoxxArray (Box2dArray, Box2d, V2d)
+    print ("Box3iArray")
+    testBoxxArray (Box3iArray, Box3i, V3i)
+    print ("Box3sArray")
+    testBoxxArray (Box3sArray, Box3s, V3s)
+    print ("Box3fArray")
+    testBoxxArray (Box3fArray, Box3f, V3f)
+    print ("Box3dArray")
+    testBoxxArray (Box3dArray, Box3d, V3d)
+
+testList.append(("testBoxArray",testBoxArray))
 
 def testStringArray():
 
@@ -8514,20 +8837,20 @@ def testStringArray():
 
     s[id < num//2] = 'bar'
     
-    assert((s != 'foo').reduce() == num/2)
-    assert((s == 'foo').reduce() == num/2)
+    assert((s != 'foo').reduce() == num//2)
+    assert((s == 'foo').reduce() == num//2)
 
-    assert(('foo' != s).reduce() == num/2)
-    assert(('foo' == s).reduce() == num/2)
+    assert(('foo' != s).reduce() == num//2)
+    assert(('foo' == s).reduce() == num//2)
 
-    assert((s != 'bar').reduce() == num/2)
-    assert((s == 'bar').reduce() == num/2)
+    assert((s != 'bar').reduce() == num//2)
+    assert((s == 'bar').reduce() == num//2)
 
-    assert(('bar' != s).reduce() == num/2)
-    assert(('bar' == s).reduce() == num/2)
+    assert(('bar' != s).reduce() == num//2)
+    assert(('bar' == s).reduce() == num//2)
 
-    assert((s != s2).reduce() == num/2)
-    assert((s == s2).reduce() == num/2)
+    assert((s != s2).reduce() == num//2)
+    assert((s == s2).reduce() == num//2)
     
     for i in range(0,num):
         s2[i] = str(i)
@@ -8535,10 +8858,10 @@ def testStringArray():
     for i in range(0,num):
         assert(int(s2[i]) == i)
 
-    print ("should see %d 'bar' and %d 'foo'" % (num/2,num/2))
+    print ("should see {0} 'bar' and {1} 'foo'".format (num//2,num//2))
     for m in s:
         print (m)
-    print ("should see '0' through '%d'" % (num-1))
+    print ("should see '0' through '{}'".format(num-1))
     for m in s2:
         print (m)
 
@@ -8580,20 +8903,20 @@ def testWstringArray():
 
     s[id < num//2] = u'bar'
     
-    assert((s != u'foo').reduce() == num/2)
-    assert((s == u'foo').reduce() == num/2)
+    assert((s != u'foo').reduce() == num//2)
+    assert((s == u'foo').reduce() == num//2)
 
-    assert((u'foo' != s).reduce() == num/2)
-    assert((u'foo' == s).reduce() == num/2)
+    assert((u'foo' != s).reduce() == num//2)
+    assert((u'foo' == s).reduce() == num//2)
 
-    assert((s != u'bar').reduce() == num/2)
-    assert((s == u'bar').reduce() == num/2)
+    assert((s != u'bar').reduce() == num//2)
+    assert((s == u'bar').reduce() == num//2)
 
-    assert((u'bar' != s).reduce() == num/2)
-    assert((u'bar' == s).reduce() == num/2)
+    assert((u'bar' != s).reduce() == num//2)
+    assert((u'bar' == s).reduce() == num//2)
 
-    assert((s != s2).reduce() == num/2)
-    assert((s == s2).reduce() == num/2)
+    assert((s != s2).reduce() == num//2)
+    assert((s == s2).reduce() == num//2)
     
     for i in range(0,num):
         s2[i] = str(i)
@@ -8601,10 +8924,10 @@ def testWstringArray():
     for i in range(0,num):
         assert(int(s2[i]) == i)
 
-    print ("should see %d 'bar' and %d 'foo'" % (num/2,num/2))
+    print ("should see {0} 'bar' and {1} 'foo'".format(num//2,num//2))
     for m in s:
         print (m)
-    print ("should see '0' through '%d'" % (num-1))
+    print ("should see '0' through '{}'".format(num-1))
     for m in s2:
         print (m)
 
@@ -8613,15 +8936,1204 @@ def testWstringArray():
 testList.append(("testWstringArray",testWstringArray))
 
 
+def testVArrays():
+    '''
+    Test variable-length arrays.  Currently we only support an
+    VIntArray with very limited Python functionality.  This test
+    should be expanded when support for variable-length arrays
+    becomes more complete.
+    '''
+
+    num = 1000
+    a1 = VIntArray(num)
+    a2 = VIntArray(1, num)
+    a3 = VIntArray(a2)
+    assert(len(a1) == num)
+    assert(len(a2) == num)
+    assert(len(a3) == num)
+
+    # test constructor failure cases
+    failed = False
+    try:
+        VIntArray(-1)
+    except:
+        failed = True
+    assert(failed)
+
+    failed = False
+    try:
+        VIntArray(10,-1)
+    except:
+        failed = True
+    assert(failed)
+
+    assert(a2[0][0] == 1)
+    assert(a2[1][0] == 1)
+    assert(a2[2][0] == 1)
+    assert(a2[3][0] == 1)
+
+    # index out of bounds
+    failed = False
+    try:
+        a2[num]
+    except:
+        failed = True
+    assert(failed)
+
+
+    values = IntArray(1)
+    values[0] = 5
+
+    # test getitem and setitem
+    assert(len(a1[0]) == 0)
+    assert(len(a2[0]) == 1)
+    assert(len(a3[0]) == 1)
+    a2[0] = values
+    assert(a2[0][0] == 5)
+
+    # test getitem, negative indices
+    assert(len(a1[-1]) == 0)
+    assert(len(a2[-1]) == 1)
+    assert(len(a3[-1]) == 1)
+    a2[-1] = values
+    assert(a2[-1][0] == 5)
+
+    mask = IntArray(num)
+    mask[2] = 1
+    mask[3] = 1
+   
+    # test getitem and setitem with mask
+    assert(len(a2[mask]) == 2) # two elements from the original array
+    a2[mask] = values
+    assert(a2[0][0] == 5)
+    assert(a2[1][0] == 1)
+    assert(a2[2][0] == 5)
+    assert(a2[3][0] == 5)
+
+    a2[3][0] = 6
+    assert(a2[3][0] == 6)
+    a2m = a2[mask] # masked to [2,3]
+    a2ms = a2m[1:2:1] # sliced to [2]
+    a2msa = a2ms[0] # indexed to the elemnt 3 array
+    assert(a2msa[0] == 6) # test slice on mask
+
+    # test slice assignment in masked array
+    tmpValues = IntArray(9,1)
+    a2m[1:2:1] = tmpValues
+    assert(a2[3][0] == 9)
+
+    tmpValues = IntArray(9,2)
+    tmpValuesMask = IntArray(2)
+    tmpValuesMask[1] = 1
+    tmpValues[1] = 15
+    a2m[1:2:1] = tmpValues[tmpValuesMask]
+    assert(a2[3][0] == 15)
+
+    # mismatched length on RHG
+    failed = False
+    try:
+        a2m[1:2:1] = tmpValues
+    except:
+        failed = True
+    assert(failed)
+
+    tmpValues[1] = 17
+    a2[3:4:1] = tmpValues[tmpValuesMask]
+    assert(a2[3][0] == 17)
+
+    # mismatched length on RHG
+    failed = False
+    try:
+        a2[3:4:1] = tmpValues
+    except:
+        failed = True
+    assert(failed)
+
+    a2[mask] = tmpValues[tmpValuesMask]
+
+    # test getitem and setitem with slice
+    values[:] = 7
+    assert(len(a2[1:4:2]) == 2) # two elements from the original array
+    a2[1:4:2] = values
+    assert(a2[0][0] == 5)
+    assert(a2[1][0] == 7)
+    assert(a2[2][0] == 17)
+    assert(a2[3][0] == 7)
+
+    # test size property setitem and getitem
+    a1.size[0] = 10
+    assert(len(a1[0]) == 10)
+    assert(a1.size[0] == 10)
+
+    # test internal reference handling
+    a10 = a1[0]
+    a10[9] = 15
+    del a10
+    a10 = a1[0]
+    assert(a10[9] == 15)
+
+    #  Some tests for Variable V2is
+
+    print ("Testing VV2i...")
+    failed = False
+    try:
+        VV2iArray(-1)
+    except:
+        failed = True
+    assert(failed)
+
+    failed = False
+    try:
+        VV2iArray(10,-1)
+    except:
+        failed = True
+    assert(failed)
+
+    defaults2i = V2iArray(1)
+    defaults2i[0] = V2i(17,31)
+
+    a = VV2iArray (defaults2i[0], 5)
+    count = 0
+    for elem in a:
+        assert (elem == V2i(17,31))
+        count += 1
+    assert (count == 5)
+
+    failed = False
+    try:
+        print ("If you see a value here it's bogus: {}".format(a[-6]))
+    except:
+        failed = True
+    assert (failed)
+    print ("")
+
+    #  Some tests for Variable floats
+
+    print ("Testing VFloat...")
+    failed = False
+    try:
+        VFloatArray(-1)
+    except:
+        failed = True
+    assert(failed)
+
+    failed = False
+    try:
+        VFloatArray(10.,-1)
+    except:
+        failed = True
+    assert(failed)
+
+    value0 = 42.23
+    value1 = 2.
+    defaultsFloats = VFloatArray(1,2)
+    defaultsFloats[0] = FloatArray(value0, 1)
+    defaultsFloats[1] = FloatArray(value1, 1)
+
+    a = VFloatArray (defaultsFloats[1][0], 7)
+    count = 0
+    for elem in a:
+        assert (len(elem) == 1)
+        assert (elem[0]  == value1)
+        assert (elem[-1] == value1)
+        count += 1
+    assert (count == 7 and len(a) == count)
+
+    failed = False
+    try:
+        print ("If you see a value here it's bogus: {}".format(a[8]))
+    except:
+        failed = True
+    assert (failed)
+    print ("")
+
+    # See the 'PyImath/varraySemantics.txt' document for more information.
+
+testList.append(("testVArrays", testVArrays))
+
+
+def testReadOnlyBasic(AType, val):
+    '''
+    Tests the basic operation, features, and expectations of a read-only
+    fixed array.  Makes sure the writeable state is accurate and errors
+    are thrown if we try to modify a read-only array.  Also makes sures
+    that values returned from arrays are as expected, depending on the 
+    writable state of the array (i.e. copies of array values or direct
+    references to those array values).
+    '''
+
+    a = AType(13)
+    assert (len(a) == 13)
+    assert (a.writable() == True)
+
+    for i in range(5):
+        a[i] = val
+    for i in range(5):
+        assert (equalWithAbsError(a[i], val, eps) == True)
+    for i in range(5,13):
+        assert (equalWithAbsError(a[i], val, eps) == False)
+
+    # Test '__getitem__' subtleties for array items.
+    if hasattr(a[0], 'setValue'):
+        l = len(a[0])
+        # Vector-type arrays.
+        if l == 2:
+            for i in range(13):
+                a[i].setValue(101, 102)
+            for i in range(13):
+                assert (equalWithAbsError(a[i].x, 101, eps) == True)
+                assert (equalWithAbsError(a[i].y, 102, eps) == True)
+            for i in range(5):
+                v = a[i]
+                v.setValue(val.x, val.y)
+        elif l == 3:
+            for i in range(13):
+                a[i].setValue(101, 102, 103)
+            for i in range(13):
+                assert (equalWithAbsError(a[i].x, 101, eps) == True)
+                assert (equalWithAbsError(a[i].y, 102, eps) == True)
+                assert (equalWithAbsError(a[i].z, 103, eps) == True)
+            for i in range(5):
+                v = a[i]
+                v.setValue(val.x, val.y, val.z)
+
+        for i in range(5):
+            assert (equalWithAbsError(a[i], val, eps) == True)
+        for i in range(5,13):
+            assert (equalWithAbsError(a[i], val, eps) == False)
+
+    b = a
+    c = AType (a)
+    assert (len(b) == 13)
+    assert (len(c) == 13)
+    assert (b.writable() == True)
+    assert (c.writable() == True)
+
+    for i in range(5):
+        assert (equalWithAbsError(b[i], val, eps) == True)
+        assert (equalWithAbsError(c[i], val, eps) == True)
+    for i in range(5,13):
+        assert (equalWithAbsError(b[i], val, eps) == False)
+        assert (equalWithAbsError(c[i], val, eps) == False)
+
+    # Make the array 'read only'.
+
+    a.makeReadOnly()
+    assert (len(a) == 13)
+    assert (a.writable() == False)
+
+    b = a
+    c = AType (a)
+    assert (len(b) == 13)
+    assert (len(c) == 13)
+    assert (b.writable() == False)
+    assert (c.writable() == False)
+
+    for i in range(5):
+        assert (equalWithAbsError(a[i], val, eps) == True)
+        assert (equalWithAbsError(b[i], val, eps) == True)
+        assert (equalWithAbsError(c[i], val, eps) == True)
+    for i in range(5,13):
+        assert (equalWithAbsError(a[i], val, eps) == False)
+        assert (equalWithAbsError(b[i], val, eps) == False)
+        assert (equalWithAbsError(c[i], val, eps) == False)
+
+    # These should all fail because the array is read-only.
+    try:
+        a[3] = val
+    except:
+        pass
+    else:
+        assert(False)
+    try:
+        a[5] = val
+    except:
+        pass
+    else:
+        assert(False)
+    try:
+        a[8:10] = val
+    except:
+        pass
+    else:
+        assert(False)
+
+    # Continue to test '__getitem__' subtleties for array items.
+    if hasattr(a[0], 'setValue'):
+        l = len(a[0])
+        # Vector-type arrays.
+        if l == 2:
+            for i in range(13):
+                a[i].setValue(201, 202)
+            # For read-only arrays, the setValue should be operating
+            # on copies of the vaslues.  Because of that, the values
+            # should not have actually changed.
+            for i in range(13):
+                assert (equalWithAbsError(a[i].x, 201, eps) == False)
+                assert (equalWithAbsError(a[i].y, 202, eps) == False)
+        elif l == 3:
+            for i in range(13):
+                a[i].setValue(201, 202, 203)
+            # For read-only arrays, the setValue should be operating
+            # on copies of the vaslues.  Because of that, the values
+            # should not have actually changed.
+            for i in range(13):
+                assert (equalWithAbsError(a[i].x, 201, eps) == False)
+                assert (equalWithAbsError(a[i].y, 202, eps) == False)
+                assert (equalWithAbsError(a[i].z, 203, eps) == False)
+
+        for i in range(5):
+            assert (equalWithAbsError(a[i], val, eps) == True)
+        for i in range(5,13):
+            assert (equalWithAbsError(a[i], val, eps) == False)
+
+    print ("ok")
+
+testList.append(("testReadOnlyBasicInt",
+                 lambda : testReadOnlyBasic(IntArray, 7)))
+testList.append(("testReadOnlyBasicFloat",
+                 lambda : testReadOnlyBasic(FloatArray, 1.234)))
+testList.append(("testReadOnlyBasicV3f",
+                 lambda : testReadOnlyBasic(V3fArray, V3f(1.2, 3.4, 5.6))))
+testList.append(("testReadOnlyBasicV2i",
+                 lambda : testReadOnlyBasic(V2iArray, V2i(8, 9))))
+
+
+def testVectorVectorInPlaceArithmeticOpsReadOnly(f1, f2,
+                                                 shouldFail = True):
+    assert(len(f1) == len(f2))
+
+    try:    f1 += f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1 -= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1 *= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1 /= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+def testVectorScalarInPlaceArithmeticOpsReadOnly(f1, v):
+    try:    f1 += v
+    except: pass
+    else:   assert(False)
+
+    try:    f1 -= v
+    except: pass
+    else:   assert(False)
+
+    try:    f1 *= v
+    except: pass
+    else:   assert(False)
+
+    try:    f1 /= v
+    except: pass
+    else:   assert(False)
+
+def testVectorVectorMaskedInPlaceArithmeticOpsReadOnly(f1, f2, m,
+                                                       shouldFail = True):
+    assert(len(f1) == len(f2))
+    assert(len(f1) == len(m ));
+
+    try:    f1[m] += f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1[m] -= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1[m] *= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1[m] /= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+def testVectorVectorMaskedInPlaceArithmeticOps2ReadOnly(f1, f2, m,
+                                                        shouldFail = True):
+    assert(len(f1) == len(m))
+    assert(len(f1[m]) == len(f2))
+
+    try:    f1[m] += f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1[m] -= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1[m] *= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+    try:    f1[m] /= f2
+    except: pass
+    else:   assert(not shouldFail)
+
+def testUnaryVecMethodsReadOnly(f):
+    g = f.length()
+    assert(len(g) == len(f))
+    for i in range(0, len(f)):
+        assert(equalWithRelError(g[i], f[i].length(), eps))
+
+    g = f.length2()
+    assert(len(g) == len(f))
+    for i in range(0, len(f)):
+        assert(g[i] == f[i].length2())
+
+    # Normalization only makes sense for these types
+    try:    f.normalize()
+    except: pass
+    else:   assert(False)
+
+    g = f.normalized()
+    assert(len(g) == len(f))
+    for i in range(0, len(f)):
+        assert(g[i] == f[i].normalized())
+
+def testReadOnlyAutoVect(ArrayType, val1, val2):
+    '''
+    Tests the auto-vectorized functions operating on read-only arrays.
+    Generally it is ok if a read-only array is used in a vectorized function
+    if its values are just read (used), but errors should be thrown if the
+    auto-vectorized function tries to modify a read-only array.
+    '''
+
+    aLen = 1234
+    f1  = ArrayType(val1, aLen)
+    f1w = ArrayType(val1, aLen)
+    f2 = ArrayType(val2, aLen)
+
+    m = IntArray(aLen)
+    m[    : 100] = 1
+    m[ 100: 200] = 0
+    m[ 200: 300] = 1
+    m[ 300: 400] = 0
+    m[ 400: 500] = 1
+    m[ 500: 600] = 0
+    m[ 600: 700] = 1
+    m[ 700: 800] = 0
+    m[ 800: 900] = 1
+    m[ 900:1000] = 0
+    m[1000:1100] = 1
+    m[1100:1200] = 0
+    m[1200:    ] = 1
+
+    m.makeReadOnly()
+
+    maskedLen = len(f1[m])
+    f3 = ArrayType(val2, len(f1[m]))
+
+    assert (f1.writable() == True)
+    assert (f2.writable() == True)
+    assert (f3.writable() == True)
+
+    testVectorVectorArithmeticOps(f1, f2)
+
+    testVectorScalarArithmeticOps(f1, val2)
+
+    testVectorVectorInPlaceArithmeticOps(f1, f2)
+
+    testVectorScalarInPlaceArithmeticOps(f1, val2)
+
+    testVectorVectorComparisonOps(f1, f2)
+
+    testVectorScalarComparisonOps(f1, val2)
+
+    testVectorVectorMaskedInPlaceArithmeticOps(f1, f2, m)
+
+    testVectorVectorMaskedInPlaceArithmeticOps2(f1, f3, m)
+
+    if ArrayType in [V2fArray, V2dArray, V3fArray, V3dArray]:
+        testUnaryVecMethods(f1)
+
+        testBinaryVecMethods(f1, f2)
+
+    # Now do the test again with both arrays read-only.
+    # Most tests will still pass, but some will fail.
+
+    f1.makeReadOnly()
+    f2.makeReadOnly()
+    f3.makeReadOnly()
+    assert (f1.writable() == False)
+    assert (f2.writable() == False)
+    assert (f3.writable() == False)
+
+    f1w = ArrayType(val1, aLen)
+    assert (f1w.writable() == True)
+
+    testVectorVectorArithmeticOps(f1, f2)
+
+    testVectorScalarArithmeticOps(f1, val2)
+
+    testVectorVectorInPlaceArithmeticOpsReadOnly(f1 , f2)
+    testVectorVectorInPlaceArithmeticOpsReadOnly(f1w, f2, False)
+
+    testVectorScalarInPlaceArithmeticOpsReadOnly(f1, val2)
+
+    testVectorVectorComparisonOps(f1, f2)
+
+    testVectorScalarComparisonOps(f1, val2)
+
+    testVectorVectorMaskedInPlaceArithmeticOpsReadOnly(f1 , f2, m)
+    testVectorVectorMaskedInPlaceArithmeticOpsReadOnly(f1w, f2, m, False)
+
+    testVectorVectorMaskedInPlaceArithmeticOps2ReadOnly(f1 , f3, m)
+    testVectorVectorMaskedInPlaceArithmeticOps2ReadOnly(f1w, f3, m, False)
+
+    if ArrayType in [V2fArray, V2dArray, V3fArray, V3dArray]:
+        testUnaryVecMethodsReadOnly(f1)
+    
+        testBinaryVecMethods(f1, f2)
+
+    print ("ok")
+
+testList.append(("testReadOnlyAutoVectFloat",
+                  lambda : testReadOnlyAutoVect(FloatArray, 1.25, 5.0)))
+testList.append(("testReadOnlyAutoVectDouble",
+                  lambda : testReadOnlyAutoVect(DoubleArray, 3.456, 4.567)))
+testList.append(("testReadOnlyAutoVectV3f",
+                  lambda : testReadOnlyAutoVect(V3fArray, V3f(1.234, 2.345, 3.456),
+                                                          V3f(4.234, 6.345, 5.456))))
+testList.append(("testReadOnlyAutoVectV2d",
+                  lambda : testReadOnlyAutoVect(V2dArray, V2d(3.456, 0.456),
+                                                           V2d(4.567, 0.581))))
+
+
+def testReadOnlySpecialAccess():
+    '''
+    Tests that some of the special array-access operators (for example,
+    a 'V3fArray' x, y, or z operators) maintain the proper writable 
+    state and behave as expected.
+    '''
+
+    aLen = 123
+
+    b2 = Box2dArray(aLen)
+    b3 = Box3fArray(aLen)
+
+    assert (b2.writable() == True)
+    assert (b3.writable() == True)
+
+    assert (b2.min.writable() == True)
+    assert (b2.max.writable() == True)
+    assert (b3.min.writable() == True)
+    assert (b3.max.writable() == True)
+
+    b2.min[10] = V2d( 1, 2)
+    b2.max[10] = V2d( 2, 3)
+    b3.min[10] = V3f(-1,-1,-1)
+    b3.max[10] = V3f( 1, 1, 1)
+
+    b2.makeReadOnly()
+    b3.makeReadOnly()
+
+    assert (b2.writable() == False)
+    assert (b3.writable() == False)
+
+    assert (b2.min.writable() == False)
+    assert (b2.max.writable() == False)
+    assert (b3.min.writable() == False)
+    assert (b3.max.writable() == False)
+
+    assert (equalWithAbsError(b2.min[10], V2d(1,2), eps) == True)
+    assert (equalWithAbsError(b2.max[10], V2d(2,3), eps) == True)
+    assert (equalWithAbsError(b3.min[10], V3f(-1,-1,-1), eps) == True)
+    assert (equalWithAbsError(b3.max[10], V3f( 1, 1, 1), eps) == True)
+
+    try:    b2.min[20] = V2d( 1, 2)
+    except: pass
+    else:   assert(False)
+    try:    b2.max[20] = V2d( 2, 3)
+    except: pass
+    else:   assert(False)
+    try:    b3.min[20] = V3f(-1,-1,-1)
+    except: pass
+    else:   assert(False)
+    try:    b3.max[20] = V3f( 1, 1, 1)
+    except: pass
+    else:   assert(False)
+
+    ##
+
+    c3 = C3fArray(aLen)
+    c4 = C4fArray(aLen)
+
+    assert (c3.writable() == True)
+    assert (c4.writable() == True)
+
+    assert (c3.r.writable() == True)
+    assert (c3.g.writable() == True)
+    assert (c3.b.writable() == True)
+
+    assert (c4.r.writable() == True)
+    assert (c4.g.writable() == True)
+    assert (c4.b.writable() == True)
+    assert (c4.a.writable() == True)
+
+    c3.r[10] = 0.1
+    c3.g[10] = 0.2
+    c3.b[10] = 0.3
+
+    c4.r[10] = 0.1
+    c4.g[10] = 0.2
+    c4.b[10] = 0.3
+    c4.a[10] = 0.4
+
+    c3.makeReadOnly()
+    c4.makeReadOnly()
+
+    assert (c3.writable() == False)
+    assert (c4.writable() == False)
+
+    assert (c3.r.writable() == False)
+    assert (c3.g.writable() == False)
+    assert (c3.b.writable() == False)
+
+    assert (c4.r.writable() == False)
+    assert (c4.g.writable() == False)
+    assert (c4.b.writable() == False)
+    assert (c4.a.writable() == False)
+
+    assert (equalWithAbsError(c3.r[10], 0.1, eps) == True)
+    assert (equalWithAbsError(c3.g[10], 0.2, eps) == True)
+    assert (equalWithAbsError(c3.b[10], 0.3, eps) == True)
+
+    assert (equalWithAbsError(c4.r[10], 0.1, eps) == True)
+    assert (equalWithAbsError(c4.g[10], 0.2, eps) == True)
+    assert (equalWithAbsError(c4.b[10], 0.3, eps) == True)
+    assert (equalWithAbsError(c4.a[10], 0.4, eps) == True)
+
+    try:    c3.r[10] = 0.2
+    except: pass
+    else:   assert(False)
+    try:    c3.g[10] = 0.3
+    except: pass
+    else:   assert(False)
+    try:    c3.b[10] = 0.4
+    except: pass
+    else:   assert(False)
+
+    try:    c4.r[10] = 0.2
+    except: pass
+    else:   assert(False)
+    try:    c4.g[10] = 0.3
+    except: pass
+    else:   assert(False)
+    try:    c4.b[10] = 0.4
+    except: pass
+    else:   assert(False)
+    try:    c4.a[10] = 0.5
+    except: pass
+    else:   assert(False)
+
+    ##
+
+    qd = QuatdArray(aLen)
+    qf = QuatfArray(aLen)
+
+    assert (qd.writable() == True)
+    assert (qf.writable() == True)
+
+    assert (qd.r.writable() == True)
+    assert (qd.x.writable() == True)
+    assert (qd.y.writable() == True)
+    assert (qd.z.writable() == True)
+    assert (qf.r.writable() == True)
+    assert (qf.x.writable() == True)
+    assert (qf.y.writable() == True)
+    assert (qf.z.writable() == True)
+
+    qd.setRotation( V3dArray(V3d(1,2,3), aLen),
+                    V3dArray(V3d(2,3,4), aLen) )
+    qf.orientToVectors( V3fArray(V3f(2,3,4), aLen),
+                        V3fArray(V3f(3,4,5), aLen), False )
+    qd.setAxisAngle( V3dArray(V3d(4,5,6), aLen), DoubleArray(23.45, aLen) )
+    qf.setEulerXYZ( V3fArray(V3f(30,-10,20), aLen) )
+
+    qd.makeReadOnly()
+    qf.makeReadOnly()
+
+    assert (qd.writable() == False)
+    assert (qf.writable() == False)
+
+    assert (qd.r.writable() == False)
+    assert (qd.x.writable() == False)
+    assert (qd.y.writable() == False)
+    assert (qd.z.writable() == False)
+    assert (qf.r.writable() == False)
+    assert (qf.x.writable() == False)
+    assert (qf.y.writable() == False)
+    assert (qf.z.writable() == False)
+
+    try:
+        qd.setRotation( V3dArray(V3d(-1,-2,-3), aLen),
+                        V3dArray(V3d(-2,-3,-4), aLen) )
+    except:
+        pass
+    else:
+        assert(False)
+    try:
+        qf.orientToVectors( V3fArray(V3f(-2,-3,-4), aLen),
+                            V3fArray(V3f(-3,-4,-5), aLen), True )
+    except:
+        pass
+    else:
+        assert(False)
+    try:
+        qd.setAxisAngle( V3dArray(V3d(-4,-5,-6), aLen), DoubleArray(-23.45, aLen) )
+    except:
+        pass
+    else:
+        assert(False)
+    try:
+        qf.setEulerXYZ( V3fArray(V3f(-30,10,-20), aLen) )
+    except:
+        pass
+    else:
+        assert(False)
+
+    ##
+
+    v2 = V2fArray(aLen)
+    v3 = V3dArray(aLen)
+    v4 = V4fArray(aLen)
+
+    assert (v2.writable() == True)
+    assert (v3.writable() == True)
+    assert (v4.writable() == True)
+
+    assert (v2.x.writable() == True)
+    assert (v2.y.writable() == True)
+    assert (v3.x.writable() == True)
+    assert (v3.y.writable() == True)
+    assert (v3.z.writable() == True)
+    assert (v4.x.writable() == True)
+    assert (v4.y.writable() == True)
+    assert (v4.z.writable() == True)
+    assert (v4.w.writable() == True)
+
+    v2.x[10] = 0.1
+    v2.y[10] = 0.2
+    v3.x[10] = 0.1
+    v3.y[10] = 0.2
+    v3.z[10] = 0.3
+    v4.x[10] = 0.1
+    v4.y[10] = 0.2
+    v4.z[10] = 0.3
+    v4.w[10] = 0.4
+
+    v2.makeReadOnly()
+    v3.makeReadOnly()
+    v4.makeReadOnly()
+
+    assert (v2.writable() == False)
+    assert (v3.writable() == False)
+    assert (v4.writable() == False)
+
+    assert (v2.x.writable() == False)
+    assert (v2.y.writable() == False)
+    assert (v3.x.writable() == False)
+    assert (v3.y.writable() == False)
+    assert (v3.z.writable() == False)
+    assert (v4.x.writable() == False)
+    assert (v4.y.writable() == False)
+    assert (v4.z.writable() == False)
+    assert (v4.w.writable() == False)
+
+    assert (equalWithAbsError(v2.x[10], 0.1, eps) == True)
+    assert (equalWithAbsError(v2.y[10], 0.2, eps) == True)
+    assert (equalWithAbsError(v3.x[10], 0.1, eps) == True)
+    assert (equalWithAbsError(v3.y[10], 0.2, eps) == True)
+    assert (equalWithAbsError(v3.z[10], 0.3, eps) == True)
+    assert (equalWithAbsError(v4.x[10], 0.1, eps) == True)
+    assert (equalWithAbsError(v4.y[10], 0.2, eps) == True)
+    assert (equalWithAbsError(v4.z[10], 0.3, eps) == True)
+    assert (equalWithAbsError(v4.w[10], 0.4, eps) == True)
+
+    try:    v2.x[20] = 0.2
+    except: pass
+    else:   assert(False)
+    try:    v2.y[20] = 0.3
+    except: pass
+    else:   assert(False)
+    try:    v3.x[20] = 0.2
+    except: pass
+    else:   assert(False)
+    try:    v3.y[20] = 0.3
+    except: pass
+    else:   assert(False)
+    try:    v3.z[20] = 0.4
+    except: pass
+    else:   assert(False)
+    try:    v4.x[20] = 0.2
+    except: pass
+    else:   assert(False)
+    try:    v4.y[20] = 0.3
+    except: pass
+    else:   assert(False)
+    try:    v4.z[20] = 0.4
+    except: pass
+    else:   assert(False)
+    try:    v4.w[20] = 0.5
+    except: pass
+    else:   assert(False)
+
+    print ("ok")
+
+testList.append(("testReadOnlySpecialAccess", testReadOnlySpecialAccess))
+
+
+def testReadOnlyIndexedArrays(ArrayType, val):
+    '''
+    Tests that indexed read-only arrays behave as expected.
+    '''
+
+    aLen = 123
+
+    a = ArrayType(aLen)
+    assert (a.writable() == True)
+
+    m = IntArray(aLen)
+    m[:]     = 0
+    m[10:80] = 1
+    assert (m.writable() == True)
+    m.makeReadOnly()
+    assert (m.writable() == False)
+
+    a1 = a[30:100]  # getitem (new array; writable)
+    assert (len(a1) == 70)
+    assert (a1.writable() == True)
+    a1[:] = val
+
+    a2 = a[m]   # getitem (copied; writable state preserved)
+    assert (len(a2) == 70)
+    assert (a2.writable() == True)
+    a2[:] = val
+
+    assert (equalWithAbsError(a[ 5], val, eps) == False)
+    assert (equalWithAbsError(a[20], val, eps) == True )
+    assert (equalWithAbsError(a[90], val, eps) == False)
+
+    a2[:] = ArrayType(2 * val, 70)
+    assert (equalWithAbsError(a[ 5], 2*val, eps) == False)
+    assert (equalWithAbsError(a[20], 2*val, eps) == True )
+    assert (equalWithAbsError(a[90], 2*val, eps) == False)
+
+    a.makeReadOnly()
+    assert (a.writable() == False)
+
+    a1 = a[30:100]  # getitem (new array; writable by default)
+    assert (len(a1) == 70)
+    assert (a1.writable() == True)
+    a1[:] = val
+
+    a2 = a[m]   # getitem (copied; writable state preserved)
+    assert (len(a2) == 70)
+    assert (a2.writable() == False)
+    try:    a2[:] = val
+    except: pass
+    else:   assert(False)
+
+    a1[:] = ArrayType(val, 70)
+    try:    a2[:] = ArrayType(val, 70)
+    except: pass
+    else:   assert(False)
+
+    #
+
+    a = ArrayType(aLen)
+    assert (a.writable() == True)
+
+    a[m]       =   val  # setitem_scalar
+    a[100:110] = 2*val  # setitem_scalar
+    assert (equalWithAbsError(a[  5],   val, eps) == False)
+    assert (equalWithAbsError(a[ 30],   val, eps) == True )
+    assert (equalWithAbsError(a[105], 2*val, eps) == True )
+    assert (equalWithAbsError(a[115], 2*val, eps) == False)
+
+    a[m]       = ArrayType(3*val, 70)  # setitem_vector
+    a[100:110] = ArrayType(4*val, 10)  # setitem_vector
+    assert (equalWithAbsError(a[  5], 3*val, eps) == False)
+    assert (equalWithAbsError(a[ 30], 3*val, eps) == True )
+    assert (equalWithAbsError(a[105], 4*val, eps) == True )
+    assert (equalWithAbsError(a[115], 4*val, eps) == False)
+
+    a.makeReadOnly()
+    assert (a.writable() == False)
+
+    try:    a[m]      = 5*val;  # setitem_scalar
+    except: pass
+    else:   assert(False)
+    try:    a[100:110] = 6*val;  # setitem_scalar
+    except: pass
+    else:   assert(False)
+
+    try:    a[m]       = ArrayType(7*val, 70)  # setitem_vector
+    except: pass
+    else:   assert(False)
+    try:    a[100:110] = ArrayType(8*val, 10)  # setitem_vector
+    except: pass
+    else:   assert(False)
+
+    print ("ok")
+
+testList.append(("testReadOnlyIndexedArraysFloat",
+                 lambda : testReadOnlyIndexedArrays(FloatArray, 1.25)))
+testList.append(("testReadOnlyIndexedArraysV3f",
+                 lambda : testReadOnlyIndexedArrays(V3fArray, V3f(1.25, 2, 3))))
+
+
+def testReadOnlyVIntArrays():
+    '''
+    Tests the basic operations of read-only Variable-Int arrays and makes
+    sure they behave as expected and throw access errors when they should.
+    '''
+
+    aLen = 123
+
+    a = VIntArray(aLen)
+    assert (len(a) == aLen)
+    assert (a.writable() == True)
+
+    a.size[:] = 10  # 10 cvs each.
+
+    for i in range(aLen):
+        assert (len(a[i]) == 10)
+        for j in range(10):
+            a[i][j] = j + i
+
+    for i in range(aLen):
+        for j in range(len(a[i])):
+            assert (a[i][j] == (i+j))
+
+    a.makeReadOnly()
+    assert (a.writable() == False)
+
+    av = a[70]  # getitem
+    assert(len(av) == 10)
+    assert(av.writable() == False)
+
+    try:    a[80][5] = 7
+    except: pass
+    else:   assert(False)
+
+    assert (a.size[12] == 10)
+    try:    a.size[13] = 12
+    except: pass
+    else:   assert(False)
+
+    av = a[10:14]
+    assert (len(av) == 4)
+    assert (av.writable() == True)  # A new array is returned for slices
+    for i in range(len(av)):
+        assert (len(av[i]) == 10)
+        av[i][3] = 3
+        av[i][8] = 8
+
+    m = IntArray(aLen)
+    m[:] = 0
+    m[50:70] = 1
+    m.makeReadOnly()
+
+    av = a[m]
+    assert (len(av) == 20)
+    assert (av.writable() == False)  # An copied indexed array is returned for masks.
+
+    print ("ok")
+
+testList.append(("testReadOnlyVIntArrays", testReadOnlyVIntArrays))
+
+
+def testReadOnlyStringArrays():
+    '''
+    Tests the basic operations of read-only string arrays and makes sure
+    they behave as expected and throw access errors when they should.
+    '''
+
+    aLen = 20
+
+    a = StringArray(aLen)
+    assert (len(a) == aLen)
+    assert (a.writable() == True)
+
+    a[:]  = "Hello"
+    a[10] = "Hello Joe"
+
+    for i in range(20):
+        if i == 10:
+            assert (a[i] == "Hello Joe")
+        else:
+            assert (a[i] == "Hello")
+
+    a.makeReadOnly()
+    assert (len(a) == aLen)
+    assert (a.writable() == False)
+
+    for i in range(20):
+        if i == 10:
+            assert (a[i] == "Hello Joe")
+        else:
+            assert (a[i] == "Hello")
+
+    try:    a[3:12] = "Goodbye"
+    except: pass
+    else:   assert(False)
+    try:    a[10] = "Goodbye Joe"
+    except: pass
+    else:   assert(False)
+
+    print ("ok")
+
+testList.append(("testReadOnlyStringArrays", testReadOnlyStringArrays))
+
+
+def testQuatArrays():
+
+    x  = math.sqrt(2.) / 2.
+    q1 = QuatfArray(5)
+
+    q1[0].setAxisAngle (V3f ( 1., 0., 0.), math.pi)
+    q1[1].setAxisAngle (V3f ( 1., 1., 0.), math.pi)
+    q1[2].setAxisAngle (V3f ( 0., 1., 0.), math.pi)
+    q1[3].setAxisAngle (V3f (-1., 1., 0.), math.pi)
+    q1[4].setAxisAngle (V3f (-1., 0., 0.), math.pi)
+
+    qA = Quatf()
+    qA.setAxisAngle (V3f (0., 0., 1.), math.pi / 2.)
+
+    assert (abs (q1.x[1] - x) <= 1.e-6)
+    assert (abs (q1.y[1] - x) <= 1.e-6)
+    assert (abs (q1.x[3] + x) <= 1.e-6)
+    assert (abs (q1.y[3] - x) <= 1.e-6)
+
+    q2 = -q1
+    for i in range(5):
+        assert (q2[i] == -q1[i])
+
+    s  = q1 ^ q2
+    for i in range(5):
+        assert (s[i] == q1[i] ^ q2[i])
+
+    q3 = q1 * qA
+    for i in range(5):
+        assert (q3[i] == q1[i] * qA)
+    q3 *= 10.
+
+    tmp = QuatfArray (5)
+    tmp[:] = q3
+    q3.normalize()
+    for i in range(5):
+        assert (q3[i] != tmp[i])
+        assert (q3[i] == tmp[i].normalized())
+
+    q4 = q1.slerp (q3, 0.5)
+    for i in range(5):
+        assert (q4[i] == q1[i].slerpShortestArc (q3[i], 0.5))
+
+    tmp[:] = q4
+    q4 *= q3.inverse()
+    for i in range(5):
+        assert (q4[i] == tmp[i] * q3[i].inverse())
+
+    q5 = QuatfArray (5)
+    tmp[:] = q4
+    q5[:] = q4.normalized()
+    for i in range(5):
+        assert (q4[i] == tmp[i])
+        assert (q5[i] == q4[i].normalize())
+
+    print ("ok")
+
+testList.append(("testQuatArrays", testQuatArrays))
+
+
+def testBufferProtocol():
+    '''
+    The buffer protocol can be used to exchange array data between python modules.
+    For example, numpy and Pixar Vt arrays both support the buffer protocol.
+    There's a limited amount of testing that can be done with native python, so
+    the majority of this functionality is tested in the PyImathNumpyTest project.
+    '''
+    def verifyScalar (a):
+
+        m = memoryview (a)
+        assert (        m.ndim == 1)
+        assert (len(m.strides) == m.ndim)
+        assert (  len(m.shape) == m.ndim)
+        assert (    m.shape[0] == len(a))
+        assert (  m.strides[0] == struct.calcsize (m.format))
+
+
+    def verifyVector (a):
+
+        m = memoryview (a)
+        assert (        m.ndim == 2)
+        assert (len(m.strides) == m.ndim)
+        assert (  len(m.shape) == m.ndim)
+        assert (    m.shape[0] == len(a))
+        assert (    m.shape[1] == len(a[0]))
+        assert (  m.strides[0] == struct.calcsize (m.format) * len(a[0]))
+        assert (  m.strides[1] == struct.calcsize (m.format))
+
+# .............................................................................
+
+    import struct
+
+    a = UnsignedCharArray (10)
+    verifyScalar (a)
+
+    a = IntArray (10)
+    verifyScalar (a)
+
+    a = FloatArray (10)
+    verifyScalar (a)
+
+    a = DoubleArray (10)
+    verifyScalar (a)
+
+    a = V2iArray (10)
+    verifyVector (a)
+
+    a = V2fArray (10)
+    verifyVector (a)
+
+    a = V2dArray (10)
+    verifyVector (a)
+
+    a = V3iArray (10)
+    verifyVector (a)
+
+    a = V3fArray (10)
+    verifyVector (a)
+
+    a = V3dArray (10)
+    verifyVector (a)
+
+    print ("ok")
+
+testList.append(("Buffer protocol test", testBufferProtocol))
+
 # -------------------------------------------------------------------------
 # Main loop
 
 random.seed (1567)
 
+import imath
+print (imath.__file__)
+
 for test in testList:
     funcName = test[0]
     print ("")
-    print ("Running %s" % funcName)
+    print ("Running {}".format (funcName))
     test[1]()
 
 print ("")

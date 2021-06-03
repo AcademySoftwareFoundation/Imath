@@ -14,16 +14,16 @@
 // order to work around MSVC limitations.
 //
 
-#include "PyImathVec.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
-#include "PyImath.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
+#include "PyImath.h"
 #include "PyImathMathExc.h"
+#include "PyImathVec.h"
+#include "PyImathDecorators.h"
 
 namespace PyImath {
 using namespace boost::python;
@@ -915,7 +915,7 @@ register_Vec3()
         .staticmethod("baseTypeEpsilon")
 	.def("baseTypeMax", &Vec3<T>::baseTypeMax,"baseTypeMax() max value of the base type of the vector")
         .staticmethod("baseTypeMax")
-	.def("baseTypeLowest", &Vec3<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the vector")
+	.def("baseTypeLowest", &Vec3<T>::baseTypeLowest,"baseTypeLowest() largest negative value of the base type of the vector")
         .staticmethod("baseTypeLowest")
 	.def("baseTypeSmallest", &Vec3<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the vector")
         .staticmethod("baseTypeSmallest")
@@ -979,6 +979,9 @@ register_Vec3()
         .def("__rdiv__", &Vec3_rdivTuple<T,tuple>)
         .def("__rdiv__", &Vec3_rdivTuple<T,list>)
         .def("__rdiv__", &Vec3_rdivT<T>)
+        .def("__rtruediv__", &Vec3_rdivTuple<T,tuple>)
+        .def("__rtruediv__", &Vec3_rdivTuple<T,list>)
+        .def("__rtruediv__", &Vec3_rdivT<T>)
         .def("__idiv__", &Vec3_idivObj<T>,return_internal_reference<>())
         .def("__itruediv__", &Vec3_idivObj<T>,return_internal_reference<>())
         .def("__xor__", &Vec3_dot<T>)

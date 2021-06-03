@@ -5,19 +5,20 @@
 
 // clang-format off
 
-#include "PyImathQuat.h"
-#include "PyImathExport.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
-#include "PyImath.h"
-#include "PyImathMathExc.h"
 #include <ImathVec.h>
 #include <ImathMatrixAlgo.h>
 #include <ImathEuler.h>
+#include "PyImathQuat.h"
+#include "PyImathExport.h"
+#include "PyImathDecorators.h"
+#include "PyImath.h"
+#include "PyImathMathExc.h"
 #include "PyImathOperators.h"
+#include "PyImathQuatOperators.h"
 
 // XXX incomplete array wrapping, docstrings missing
 
@@ -107,6 +108,14 @@ length (Quat<T> &quat)
 {
     MATH_EXC_ON;
     return quat.length();
+}
+
+template <class T>
+static Vec3<T>
+rotateVector(const Quat<T> &quat, const Vec3<T> &original)
+{
+    MATH_EXC_ON;
+    return quat.rotateVector(original);
 }
 
 template <class T>
@@ -215,6 +224,14 @@ slerp(const Quat<T> &quat, const Quat<T> &other, T t)
 {
     MATH_EXC_ON;
     return IMATH_NAMESPACE::slerp (quat, other, t);
+}
+
+template <class T>
+static Quat<T>
+slerpShortestArc(const Quat<T>& quat, const Quat<T>& other, T t)
+{
+    MATH_EXC_ON;
+    return IMATH_NAMESPACE::slerpShortestArc (quat, other, t);
 }
 
 template <class T>
@@ -430,6 +447,12 @@ register_Quat()
 			 "of quaternion q; q is not modified\n")
              
         .def("length",&length<T>)
+
+        .def("rotateVector",&rotateVector<T>,
+			"q.rotateVector(orig) -- Given a vector orig,\n"
+                        "   calculate orig' = q x orig x q*\n\n"
+                        "   Assumes unit quaternions")
+             
         .def("setAxisAngle",&setAxisAngle<T>,return_internal_reference<>(),
 			"q.setAxisAngle(x,r) -- sets the value of\n"
 			"quaternion q so that q represents a rotation\n"
@@ -485,6 +508,12 @@ register_Quat()
 			 "interpolation between quaternions q and p:\n"
 			 "q.slerp(p,0) returns q; q.slerp(p,1) returns p.\n"
 			 "q and p must be normalized\n")
+
+        .def("slerpShortestArc", &slerpShortestArc<T>,
+        	 "q.slerpShortestArc(p,t) -- performs spherical linear\n"
+                         "interpolation along the shortest arc between\n"
+                         "quaternions q and either p or -p, whichever is\n"
+                         "closer. q and p must be normalized\n")
              
         .def("__str__",Quat_str<T>)
         .def("__repr__",Quat_repr<T>)
@@ -528,7 +557,8 @@ template <class T,int index>
 static FixedArray<T>
 QuatArray_get(FixedArray<IMATH_NAMESPACE::Quat<T> > &qa)
 {
-    return FixedArray<T>( &(qa[0].r)+index, qa.len(), 4*qa.stride(), qa.handle());
+    return FixedArray<T>(&(qa.unchecked_index(0).r) + index,
+                         qa.len(), 4*qa.stride(), qa.handle(), qa.writable());
 }
 
 template <class T>
@@ -558,6 +588,10 @@ QuatArray_setRotation (FixedArray<IMATH_NAMESPACE::Quat<T> > &va,
     MATH_EXC_ON;
     size_t len = va.match_dimension(from); 
     va.match_dimension(to); 
+
+    // Validate that 'va' is writable before entering the thread-task.
+    if (!va.writable())
+        throw std::invalid_argument ("Input fixed array is read-only.");
 
     QuatArray_SetRotationTask<T> task (from, to, va);
     dispatchTask (task, len);
@@ -614,6 +648,10 @@ QuatArray_orientToVectors (FixedArray<IMATH_NAMESPACE::Quat<T> >       &va,
     MATH_EXC_ON;
     size_t len = va.match_dimension(forward);
     va.match_dimension(up);
+
+    // Validate that 'va' is writable before entering the thread-task.
+    if (!va.writable())
+        throw std::invalid_argument ("Input fixed array is read-only.");
 
     QuatArray_OrientToVectors<T> task (forward, up, va, alignForward);
     dispatchTask (task, len);
@@ -770,7 +808,7 @@ struct QuatArray_SetAxisAngle : public Task
 };
 
 template <class T>
-static void
+static FixedArray< IMATH_NAMESPACE::Quat<T> > &
 QuatArray_setAxisAngle (FixedArray< IMATH_NAMESPACE::Quat<T> > &quats,
                         const FixedArray< IMATH_NAMESPACE::Vec3<T> > &axis,
                         const FixedArray<T> &angles)
@@ -779,8 +817,79 @@ QuatArray_setAxisAngle (FixedArray< IMATH_NAMESPACE::Quat<T> > &quats,
     size_t len = quats.match_dimension(axis);
     quats.match_dimension(angles);
 
+    // Validate that 'va' is writable before entering the thread-task.
+    if (!quats.writable())
+        throw std::invalid_argument ("Input fixed array is read-only.");
+
     QuatArray_SetAxisAngle<T> task (axis, angles, quats);
     dispatchTask (task, len);
+    return quats;
+}
+
+template <class T>
+struct QuatArray_RotateVector : public Task
+{
+    FixedArray<IMATH_NAMESPACE::Vec3<T> >       &result;
+    const FixedArray<IMATH_NAMESPACE::Vec3<T> > &vectors;
+    const FixedArray<IMATH_NAMESPACE::Quat<T> > &quats;
+
+    QuatArray_RotateVector (FixedArray<IMATH_NAMESPACE::Vec3<T> >       &resultIn,
+                            const FixedArray<IMATH_NAMESPACE::Vec3<T> > &vectorsIn,
+                            const FixedArray<IMATH_NAMESPACE::Quat<T> > &quatsIn)
+        : result (resultIn), vectors (vectorsIn), quats (quatsIn) {}
+
+    void execute(size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+        {
+            result[i] = quats[i].rotateVector (vectors[i]);
+        }
+    }
+};
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Vec3<T> >
+QuatArray_rotateVector (const FixedArray< IMATH_NAMESPACE::Quat<T> > &quats,
+                        const FixedArray< IMATH_NAMESPACE::Vec3<T> > &vectors)
+{
+    MATH_EXC_ON;
+    size_t len = quats.match_dimension(vectors);
+    FixedArray< IMATH_NAMESPACE::Vec3<T> > result (len);
+
+    QuatArray_RotateVector<T> task (result, vectors, quats);
+    dispatchTask (task, len);
+    return result;
+}
+
+template <class T>
+struct QuatArray_Inverse : public Task
+{
+    const FixedArray<IMATH_NAMESPACE::Quat<T> > &quats;
+    FixedArray<IMATH_NAMESPACE::Quat<T> >       &result;
+
+    QuatArray_Inverse (FixedArray<IMATH_NAMESPACE::Quat<T> >       &resultIn,
+                       const FixedArray<IMATH_NAMESPACE::Quat<T> > &quatsIn)
+        : quats (quatsIn), result (resultIn) {}
+
+    void execute (size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+            result[i] = quats[i].inverse();
+    } 
+};
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Quat<T> >
+QuatArray_inverse(const FixedArray<IMATH_NAMESPACE::Quat<T> > &quats)
+{
+    MATH_EXC_ON;
+    size_t len = quats.len();
+    FixedArray<IMATH_NAMESPACE::Quat<T> > result (len);
+
+    QuatArray_Inverse<T> task (result, quats);
+    dispatchTask (task, len);
+
+    return result;
 }
 
 template <class T>
@@ -810,6 +919,10 @@ QuatArray_setEulerXYZ (FixedArray< IMATH_NAMESPACE::Quat<T> > &quats,
 {
     MATH_EXC_ON;
     size_t len = quats.match_dimension(rot);
+
+    // Validate that 'va' is writable before entering the thread-task.
+    if (!quats.writable())
+        throw std::invalid_argument ("Input fixed array is read-only.");
 
     QuatArray_SetEulerXYZ<T> task (rot, quats);
     dispatchTask (task, len);
@@ -884,10 +997,46 @@ QuatArray_quatConstructor1(const FixedArray<IMATH_NAMESPACE::Euler<T> > &e)
 }
 
 template <class T>
+struct QuatArray_ExtractTask : public Task
+{
+    const FixedArray<Matrix44<double> >    &m;
+    FixedArray<IMATH_NAMESPACE::Quat<T> >  &result;
+
+    QuatArray_ExtractTask (const FixedArray<Matrix44<double> >    &mIn,
+                           FixedArray<IMATH_NAMESPACE::Quat<T> >  &resultIn)
+        : m (mIn), result (resultIn) {}
+
+    void execute (size_t start, size_t end)
+    {
+        for (size_t i = start; i < end; ++i)
+        {
+            result[i] = IMATH_NAMESPACE::extractQuat (m[i]);
+        }
+    }
+};
+
+template <class T>
+static void
+QuatArray_extract(FixedArray<IMATH_NAMESPACE::Quat<T> > &q,
+                  const FixedArray<Matrix44<double> >   &m)
+{
+    MATH_EXC_ON;
+    const size_t len = q.match_dimension(m);
+
+    QuatArray_ExtractTask<T> task (m, q);
+    dispatchTask (task, len);
+}
+
+template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Quat<T> > >
 register_QuatArray()
 {
-    class_<FixedArray<IMATH_NAMESPACE::Quat<T> > > quatArray_class = FixedArray<IMATH_NAMESPACE::Quat<T> >::register_("Fixed length array of IMATH_NAMESPACE::Quat");
+    using boost::mpl::true_;
+    using boost::mpl::false_;
+
+    typedef IMATH_NAMESPACE::Quat<T>   QuatT;
+
+    class_<FixedArray<QuatT> > quatArray_class = FixedArray<QuatT>::register_("Fixed length array of IMATH_NAMESPACE::Quat");
     quatArray_class
         .add_property("r",&QuatArray_get<T,0>)
         .add_property("x",&QuatArray_get<T,1>)
@@ -902,21 +1051,61 @@ register_QuatArray()
              "the up vector exactly if 'alignForward' is False.  If the vectors are "
              "already orthogonal, both vectors will be matched exactly.",
              (args("forward", "up", "alignForward")))
+        .def("extract", &QuatArray_extract<T>,
+             "Extract the rotation component of an M44d and return it as a quaternion.",
+             (args("lxform")))
         .def("axis", &QuatArray_axis<T>,
              "get rotation axis for each quat")
         .def("angle", &QuatArray_angle<T>,
              "get rotation angle about the axis returned by axis() for each quat")
         .def("setAxisAngle", &QuatArray_setAxisAngle<T>,
              "set the quaternion arrays from a given axis and angle",
-             (args("axis", "angle")))
+             (args("axis", "angle")), return_value_policy<copy_non_const_reference>())
         .def("setEulerXYZ", &QuatArray_setEulerXYZ<T>,
              "set the quaternion arrays from a given euler XYZ angle vector",
              (args("euler")))
-        .def("__mul__", &QuatArray_mul<T>)
+        .def("rotateVector", &QuatArray_rotateVector<T>,
+             "Rotate the supplied vectors by the quaternions.  Assumes quaternions are normalized.",
+             (args("vector")))
+        .def("inverse", &QuatArray_inverse<T>,
+             "Return 1/Q for each quaternion.",
+             (args("QuatArray")))
         .def("__rmul__", &QuatArray_rmulVec3<T>)
         .def("__rmul__", &QuatArray_rmulVec3Array<T>)
         .def("__init__", make_constructor(QuatArray_quatConstructor1<T>))
         ;
+
+    generate_member_bindings<op_quatDot<QuatT>, true_>
+        (quatArray_class, "dot",
+         "Return the element-by-element Euclidean inner product",
+         args("qB"));
+    generate_member_bindings<op_quatDot<QuatT>, true_>
+        (quatArray_class, "euclideanInnerProduct",
+         "Return the element-by-element Euclidean inner product",
+         args("qB"));
+    generate_member_bindings<op_quatNormalize<QuatT> >
+        (quatArray_class, "normalize",
+         "Normalize each quaternion in the array");
+    generate_member_bindings<op_quatNormalized<QuatT> >
+        (quatArray_class, "normalized",
+         "Return a new quaternion array with unit quaternions.");
+
+    generate_member_bindings<op_neg<QuatT> >
+        (quatArray_class, "__neg__" , "-self");
+    generate_member_bindings<op_mul<QuatT,QuatT>, true_ >
+        (quatArray_class, "__mul__",  "self * qB", args("qB"));
+    generate_member_bindings<op_mul<QuatT,T>, false_ >
+        (quatArray_class, "__mul__",  "self * x",  args("x"));
+    generate_member_bindings<op_mul<QuatT,T>, false_ >
+        (quatArray_class, "__rmul__", "self * x",  args("x"));
+    generate_member_bindings<op_quatDot<QuatT>, true_ >
+        (quatArray_class, "__xor__",  "self.dot(qB)",  args("qB"));
+
+    generate_member_bindings<op_quatSlerp<QuatT>, true_, false_ >
+        (quatArray_class,
+         "slerp",
+         "Return the element-by-element shortest arc spherical linear interpolation between self and B.",
+         args("qB", "t"));
 
     add_comparison_functions(quatArray_class);
     decoratecopy(quatArray_class);

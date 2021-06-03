@@ -10,8 +10,8 @@
 
 #include <Python.h>
 #include <boost/python.hpp>
-#include "PyImath.h"
 #include <ImathVec.h>
+#include "PyImath.h"
 #include "PyImathFixedArray.h"
 
 namespace PyImath {

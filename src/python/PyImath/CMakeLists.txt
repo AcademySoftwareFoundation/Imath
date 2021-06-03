@@ -11,6 +11,7 @@ pyimath_define_module(imath
     PyImathBox2Array.cpp
     PyImathBox3Array.cpp
     PyImathBox.cpp
+    PyImathBufferProtocol.cpp
     PyImathColor3.cpp
     PyImathColor4.cpp
     PyImathEuler.cpp
@@ -43,10 +44,12 @@ pyimath_define_module(imath
     PyImathBasicTypes.cpp
   HEADERS
     PyImath.h
+    PyImathAPI.h
     PyImathAutovectorize.h
     PyImathBasicTypes.h
     PyImathBox.h
     PyImathBoxArrayImpl.h
+    PyImathBufferProtocol.h
     PyImathColor.h
     PyImathColor3ArrayImpl.h
     PyImathColor4Array2DImpl.h
@@ -56,6 +59,7 @@ pyimath_define_module(imath
     PyImathExport.h
     PyImathFixedArray.h
     PyImathFixedArray2D.h
+    PyImathFixedArrayTraits.h
     PyImathFixedMatrix.h
     PyImathFixedVArray.h
     PyImathFrustum.h
@@ -67,6 +71,7 @@ pyimath_define_module(imath
     PyImathOperators.h
     PyImathPlane.h
     PyImathQuat.h
+    PyImathQuatOperators.h
     PyImathRandom.h
     PyImathShear.h
     PyImathStringArray.h

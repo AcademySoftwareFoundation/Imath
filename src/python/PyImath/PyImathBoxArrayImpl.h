@@ -3,6 +3,8 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
+// clang-format off
+
 #ifndef _PyImathBoxArrayImpl_h_
 #define _PyImathBoxArrayImpl_h_
 
@@ -12,18 +14,16 @@
 // order to work around MSVC limitations.
 //
 
-// clang-format off
-
-#include "PyImathBox.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
-#include "PyImath.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
 #include <ImathBox.h>
+#include "PyImath.h"
+#include "PyImathBox.h"
+#include "PyImathDecorators.h"
 #include "PyImathMathExc.h"
 #include "PyImathOperators.h"
 #include "PyImathVecOperators.h"
@@ -37,8 +37,10 @@ static FixedArray<T>
 BoxArray_get(FixedArray<IMATH_NAMESPACE::Box<T> > &va)
 {
     return index == 0 ? 
-           FixedArray<T>(&va[0].min,va.len(),2*va.stride(),va.handle()) :
-           FixedArray<T>(&va[0].max,va.len(),2*va.stride(),va.handle());
+           FixedArray<T>(&(va.unchecked_index(0).min),
+                         va.len(),2*va.stride(),va.handle(),va.writable()) :
+           FixedArray<T>(&(va.unchecked_index(0).max),
+                         va.len(),2*va.stride(),va.handle(),va.writable());
 }
 
 template <class T>
@@ -70,6 +72,7 @@ register_BoxArray()
         .def("__setitem__", &setItemTuple<T>)
     ;
 
+    add_comparison_functions(boxArray_class);
     decoratecopy(boxArray_class);
 
     return boxArray_class;
