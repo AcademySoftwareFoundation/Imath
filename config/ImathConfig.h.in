@@ -61,12 +61,14 @@
 // floating-point overflow and underflow can occur in a wide variety
 // of computations within Imath functions now marked with
 // noexcept. Code that needs to accomodate the exception-handling
-// behavior can disable the noexcept specifier by defining the
-// IMATH_NOEXCEPT macro to be empty.
+// behavior can build with the IMATH_USE_NOEXCEPT off.
 //
 
-#ifndef IMATH_NOEXCEPT
+#cmakedefine01 IMATH_USE_NOEXCEPT
+#if IMATH_USE_NOEXCEPT
 #define IMATH_NOEXCEPT noexcept
+#else
+#define IMATH_NOEXCEPT
 #endif
 
 //

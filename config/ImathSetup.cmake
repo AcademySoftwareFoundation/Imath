@@ -17,6 +17,9 @@ option(IMATH_USE_DEFAULT_VISIBILITY "Makes the compile use default visibility (b
 # object (if you enable this) that contains a LUT of the function
 option(IMATH_ENABLE_LARGE_STACK "Enables code to take advantage of large stack support"     OFF)
 
+# Option to make it possible to build without the noexcept specifier
+option(IMATH_USE_NOEXCEPT "Compile with noexcept specifier" ON)
+
 # What C++ standard to compile for.  VFX Platform 18 is c++14, so
 # that's the default.
 set(tmp 14)
