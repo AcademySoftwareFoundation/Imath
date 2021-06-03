@@ -14,15 +14,15 @@
 // order to work around MSVC limitations.
 //
 
-#include "PyImathVec.h"
-#include "PyImathDecorators.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
-#include "PyImath.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
+#include "PyImath.h"
+#include "PyImathVec.h"
+#include "PyImathDecorators.h"
 #include "PyImathMathExc.h"
 
 namespace PyImath {
@@ -852,8 +852,6 @@ notequal(const Vec4<T> &v, const tuple &t)
         throw std::invalid_argument ("tuple of length 4 expected");    
 }
 
-
-
 // Trick to register methods for float-only-based vectors
 template <class T, IMATH_ENABLE_IF(!std::is_integral<T>::value)>
 void register_Vec4_floatonly(class_<Vec4<T>>& vec4_class)
@@ -880,8 +878,6 @@ void register_Vec4_floatonly(class_<Vec4<T>>& vec4_class)
 {
 }
 
-
-
 template <class T>
 class_<Vec4<T> >
 register_Vec4()
@@ -900,7 +896,7 @@ register_Vec4()
         .staticmethod("baseTypeEpsilon")
 	.def("baseTypeMax", &Vec4<T>::baseTypeMax,"baseTypeMax() max value of the base type of the vector")
         .staticmethod("baseTypeMax")
-	.def("baseTypeLowest", &Vec4<T>::baseTypeLowest,"baseTypeLowest() min value of the base type of the vector")
+	.def("baseTypeLowest", &Vec4<T>::baseTypeLowest,"baseTypeLowest() largest negative value of the base type of the vector")
         .staticmethod("baseTypeLowest")
 	.def("baseTypeSmallest", &Vec4<T>::baseTypeSmallest,"baseTypeSmallest() smallest value of the base type of the vector")
         .staticmethod("baseTypeSmallest")
@@ -959,6 +955,9 @@ register_Vec4()
         .def("__rdiv__", &Vec4_rdivTuple<T,tuple>)
         .def("__rdiv__", &Vec4_rdivTuple<T,list>)
         .def("__rdiv__", &Vec4_rdivT<T>)
+        .def("__rtruediv__", &Vec4_rdivTuple<T,tuple>)
+        .def("__rtruediv__", &Vec4_rdivTuple<T,list>)
+        .def("__rtruediv__", &Vec4_rdivT<T>)
         .def("__idiv__", &Vec4_idivObj<T>,return_internal_reference<>())
         .def("__itruediv__", &Vec4_idivObj<T>,return_internal_reference<>())
         .def("__xor__", &Vec4_dot<T>)

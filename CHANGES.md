@@ -1,10 +1,19 @@
 # Imath Release Notes
 
+* [Version 3.0.4](#version-304-june-1-2021) June 1, 2021
 * [Version 3.0.2](#version-302-may-16-2021) May 16, 2021
 * [Version 3.0.1](#version-301-april-1-2021) April 1, 2021
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.0.4 (June 1, 2021)
+
+Patch release that corrects a problem with the release version number
+of v3.0.2:
+
+* \[[#147](https://github.com/AcademySoftwareFoundation/Imath/pull/147)\] Add #define for IMATH_VERSION_RELEASE_TYPE
+* \[[#145](https://github.com/AcademySoftwareFoundation/Imath/pull/145)\] Set IMATH_VERSION from Imath_VERSION instead of CMAKE_PROJECT_VERSION
 
 ## Version 3.0.2 (May 16, 2021)
 

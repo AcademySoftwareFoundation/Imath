@@ -5,16 +5,16 @@
 
 // clang-format off
 
-#include "PyImathEuler.h"
-#include "PyImathDecorators.h"
-#include "PyImathExport.h"
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>
+#include <ImathVec.h>
 #include "PyImath.h"
 #include "PyImathMathExc.h"
-#include <ImathVec.h>
+#include "PyImathEuler.h"
+#include "PyImathDecorators.h"
+#include "PyImathExport.h"
 #include "PyImathOperators.h"
 
 // XXX incomplete array wrapping, docstrings missing
@@ -753,6 +753,60 @@ EulerArray_eulerConstructor7a(const FixedArray<IMATH_NAMESPACE::Quat<T> > &q)
 }
 
 template <class T>
+static FixedArray<IMATH_NAMESPACE::Euler<T> > *
+EulerArray_eulerConstructor8a(const FixedArray<IMATH_NAMESPACE::Vec3<T> >& v)
+{
+    MATH_EXC_ON;
+    size_t len = v.len();
+    FixedArray<IMATH_NAMESPACE::Euler<T> >* result = new FixedArray<IMATH_NAMESPACE::Euler<T> >(len);
+
+    for (size_t i = 0; i < len; ++i)
+        (*result)[i] = Euler<T>(v[i]);
+
+    return result;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Euler<T> > *
+EulerArray_eulerConstructor9a(const FixedArray<IMATH_NAMESPACE::Vec3<T> >& v, typename IMATH_NAMESPACE::Eulerf::Order order)
+{
+    MATH_EXC_ON;
+    size_t len = v.len();
+    FixedArray<IMATH_NAMESPACE::Euler<T> >* result = new FixedArray<IMATH_NAMESPACE::Euler<T> >(len);
+
+    typename Euler<T>::Order o = interpretOrder<T>(order);
+    for (size_t i = 0; i < len; ++i)
+        (*result)[i] = Euler<T>(v[i], o);
+
+    return result;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Vec3<T> >
+EulerArray_toXYZVector(const FixedArray<IMATH_NAMESPACE::Euler<T> >& e)
+{
+    MATH_EXC_ON;
+    size_t len = e.len();
+    FixedArray<IMATH_NAMESPACE::Vec3<T> > result(len, UNINITIALIZED);
+    for (size_t i = 0; i < len; ++i)
+        result[i] = e[i].toXYZVector();
+    return result;
+}
+
+template <class T>
+static FixedArray<IMATH_NAMESPACE::Quat<T> >
+EulerArray_toQuat(const FixedArray<IMATH_NAMESPACE::Euler<T> >& e)
+{
+    MATH_EXC_ON;
+    size_t len = e.len();
+    FixedArray<IMATH_NAMESPACE::Quat<T> > result(len, UNINITIALIZED);
+    for (size_t i = 0; i < len; ++i)
+        result[i] = e[i].toQuat();
+    return result;
+}
+
+
+template <class T>
 class_<FixedArray<IMATH_NAMESPACE::Euler<T> > >
 register_EulerArray()
 {
@@ -762,6 +816,10 @@ register_EulerArray()
         //.add_property("y",&EulerArray_get<T,2>)
         //.add_property("z",&EulerArray_get<T,3>)
         .def("__init__", make_constructor(EulerArray_eulerConstructor7a<T>))
+        .def("__init__", make_constructor(EulerArray_eulerConstructor8a<T>))
+        .def("__init__", make_constructor(EulerArray_eulerConstructor9a<T>))
+        .def("toXYZVector", EulerArray_toXYZVector<T>)
+        .def("toQuat", EulerArray_toQuat<T>)
         ;
 
     add_comparison_functions(eulerArray_class);
@@ -775,8 +833,8 @@ template PYIMATH_EXPORT class_<IMATH_NAMESPACE::Euler<double>,bases<IMATH_NAMESP
 
 template PYIMATH_EXPORT class_<FixedArray<IMATH_NAMESPACE::Euler<float> > > register_EulerArray<float>();
 template PYIMATH_EXPORT class_<FixedArray<IMATH_NAMESPACE::Euler<double> > > register_EulerArray<double>();
-}
-namespace PyImath {
-	template<> PYIMATH_EXPORT IMATH_NAMESPACE::Euler<float> FixedArrayDefaultValue<IMATH_NAMESPACE::Euler<float> >::value() { return IMATH_NAMESPACE::Euler<float>(); }
-	template<> PYIMATH_EXPORT IMATH_NAMESPACE::Euler<double> FixedArrayDefaultValue<IMATH_NAMESPACE::Euler<double> >::value() { return IMATH_NAMESPACE::Euler<double>(); }
-}
+
+template<> PYIMATH_EXPORT IMATH_NAMESPACE::Euler<float> FixedArrayDefaultValue<IMATH_NAMESPACE::Euler<float> >::value() { return IMATH_NAMESPACE::Euler<float>(); }
+template<> PYIMATH_EXPORT IMATH_NAMESPACE::Euler<double> FixedArrayDefaultValue<IMATH_NAMESPACE::Euler<double> >::value() { return IMATH_NAMESPACE::Euler<double>(); }
+
+} // namespace PyImath

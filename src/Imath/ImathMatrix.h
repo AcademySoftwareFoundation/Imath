@@ -866,6 +866,10 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
                           const Matrix44& b,     // &a != &c and
                           Matrix44& c) IMATH_NOEXCEPT; // &b != &c.
 
+    /// Matrix-matrix multiplication returning a result.
+    IMATH_HOSTDEVICE
+    static IMATH_CONSTEXPR14 Matrix44 multiply (const Matrix44& a, const Matrix44& b) noexcept;
+
     /// Vector-matrix multiplication: a homogeneous transformation
     /// by computing Vec3 (src.x, src.y, src.z, 1) * m and dividing by the
     /// result's third element.
@@ -3572,14 +3576,62 @@ operator* (T a, const Matrix44<T>& v) IMATH_NOEXCEPT
     return v * a;
 }
 
+
+template <class T>
+inline IMATH_CONSTEXPR14 Matrix44<T>
+Matrix44<T>::multiply (const Matrix44 &a, const Matrix44 &b) noexcept
+{
+    const auto a00 = a.x[0][0];
+    const auto a01 = a.x[0][1];
+    const auto a02 = a.x[0][2];
+    const auto a03 = a.x[0][3];
+
+    const auto c00  = a00 * b.x[0][0] + a01 * b.x[1][0] + a02 * b.x[2][0] + a03 * b.x[3][0];
+    const auto c01  = a00 * b.x[0][1] + a01 * b.x[1][1] + a02 * b.x[2][1] + a03 * b.x[3][1];
+    const auto c02  = a00 * b.x[0][2] + a01 * b.x[1][2] + a02 * b.x[2][2] + a03 * b.x[3][2];
+    const auto c03  = a00 * b.x[0][3] + a01 * b.x[1][3] + a02 * b.x[2][3] + a03 * b.x[3][3];
+
+    const auto a10 = a.x[1][0];
+    const auto a11 = a.x[1][1];
+    const auto a12 = a.x[1][2];
+    const auto a13 = a.x[1][3];
+
+    const auto c10  = a10 * b.x[0][0] + a11 * b.x[1][0] + a12 * b.x[2][0] + a13 * b.x[3][0];
+    const auto c11  = a10 * b.x[0][1] + a11 * b.x[1][1] + a12 * b.x[2][1] + a13 * b.x[3][1];
+    const auto c12  = a10 * b.x[0][2] + a11 * b.x[1][2] + a12 * b.x[2][2] + a13 * b.x[3][2];
+    const auto c13  = a10 * b.x[0][3] + a11 * b.x[1][3] + a12 * b.x[2][3] + a13 * b.x[3][3];
+
+    const auto a20 = a.x[2][0];
+    const auto a21 = a.x[2][1];
+    const auto a22 = a.x[2][2];
+    const auto a23 = a.x[2][3];
+
+    const auto c20 = a20 * b.x[0][0] + a21 * b.x[1][0] + a22 * b.x[2][0] + a23 * b.x[3][0];
+    const auto c21 = a20 * b.x[0][1] + a21 * b.x[1][1] + a22 * b.x[2][1] + a23 * b.x[3][1];
+    const auto c22 = a20 * b.x[0][2] + a21 * b.x[1][2] + a22 * b.x[2][2] + a23 * b.x[3][2];
+    const auto c23 = a20 * b.x[0][3] + a21 * b.x[1][3] + a22 * b.x[2][3] + a23 * b.x[3][3];
+
+    const auto a30 = a.x[3][0];
+    const auto a31 = a.x[3][1];
+    const auto a32 = a.x[3][2];
+    const auto a33 = a.x[3][3];
+
+    const auto c30 = a30 * b.x[0][0] + a31 * b.x[1][0] + a32 * b.x[2][0] + a33 * b.x[3][0];
+    const auto c31 = a30 * b.x[0][1] + a31 * b.x[1][1] + a32 * b.x[2][1] + a33 * b.x[3][1];
+    const auto c32 = a30 * b.x[0][2] + a31 * b.x[1][2] + a32 * b.x[2][2] + a33 * b.x[3][2];
+    const auto c33 = a30 * b.x[0][3] + a31 * b.x[1][3] + a32 * b.x[2][3] + a33 * b.x[3][3];
+    return Matrix44(c00, c01, c02, c03,
+                    c10, c11, c12, c13,
+                    c20, c21, c22, c23,
+                    c30, c31, c32, c33);
+}
+
+
 template <class T>
 IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator*= (const Matrix44<T>& v) IMATH_NOEXCEPT
 {
-    Matrix44 tmp (T (0));
-
-    multiply (*this, v, tmp);
-    *this = tmp;
+    *this = multiply(*this, v);
     return *this;
 }
 
@@ -3587,61 +3639,14 @@ template <class T>
 IMATH_CONSTEXPR14 inline Matrix44<T>
 Matrix44<T>::operator* (const Matrix44<T>& v) const IMATH_NOEXCEPT
 {
-    Matrix44 tmp (T (0));
-
-    multiply (*this, v, tmp);
-    return tmp;
+    return multiply(*this, v);
 }
 
 template <class T>
 inline void
 Matrix44<T>::multiply (const Matrix44<T>& a, const Matrix44<T>& b, Matrix44<T>& c) IMATH_NOEXCEPT
 {
-    const T* IMATH_RESTRICT ap = &a.x[0][0];
-    const T* IMATH_RESTRICT bp = &b.x[0][0];
-    T* IMATH_RESTRICT cp       = &c.x[0][0];
-
-    T a0, a1, a2, a3;
-
-    a0 = ap[0];
-    a1 = ap[1];
-    a2 = ap[2];
-    a3 = ap[3];
-
-    cp[0] = a0 * bp[0] + a1 * bp[4] + a2 * bp[8] + a3 * bp[12];
-    cp[1] = a0 * bp[1] + a1 * bp[5] + a2 * bp[9] + a3 * bp[13];
-    cp[2] = a0 * bp[2] + a1 * bp[6] + a2 * bp[10] + a3 * bp[14];
-    cp[3] = a0 * bp[3] + a1 * bp[7] + a2 * bp[11] + a3 * bp[15];
-
-    a0 = ap[4];
-    a1 = ap[5];
-    a2 = ap[6];
-    a3 = ap[7];
-
-    cp[4] = a0 * bp[0] + a1 * bp[4] + a2 * bp[8] + a3 * bp[12];
-    cp[5] = a0 * bp[1] + a1 * bp[5] + a2 * bp[9] + a3 * bp[13];
-    cp[6] = a0 * bp[2] + a1 * bp[6] + a2 * bp[10] + a3 * bp[14];
-    cp[7] = a0 * bp[3] + a1 * bp[7] + a2 * bp[11] + a3 * bp[15];
-
-    a0 = ap[8];
-    a1 = ap[9];
-    a2 = ap[10];
-    a3 = ap[11];
-
-    cp[8]  = a0 * bp[0] + a1 * bp[4] + a2 * bp[8] + a3 * bp[12];
-    cp[9]  = a0 * bp[1] + a1 * bp[5] + a2 * bp[9] + a3 * bp[13];
-    cp[10] = a0 * bp[2] + a1 * bp[6] + a2 * bp[10] + a3 * bp[14];
-    cp[11] = a0 * bp[3] + a1 * bp[7] + a2 * bp[11] + a3 * bp[15];
-
-    a0 = ap[12];
-    a1 = ap[13];
-    a2 = ap[14];
-    a3 = ap[15];
-
-    cp[12] = a0 * bp[0] + a1 * bp[4] + a2 * bp[8] + a3 * bp[12];
-    cp[13] = a0 * bp[1] + a1 * bp[5] + a2 * bp[9] + a3 * bp[13];
-    cp[14] = a0 * bp[2] + a1 * bp[6] + a2 * bp[10] + a3 * bp[14];
-    cp[15] = a0 * bp[3] + a1 * bp[7] + a2 * bp[11] + a3 * bp[15];
+    c = multiply(a, b);
 }
 
 template <class T>

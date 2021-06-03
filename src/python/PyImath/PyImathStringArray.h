@@ -28,16 +28,30 @@ class StringArrayT : public FixedArray<StringTableIndex>
 
     static StringArrayT<T>* createDefaultArray(size_t length);
     static StringArrayT<T>* createUniformArray(const T& initialValue, size_t length);
-    static StringArrayT<T>* createFromRawArray(const T* rawArray, size_t length);
+    static StringArrayT<T>* createFromRawArray(const T* rawArray, size_t length,
+                                               bool writable = true);
 
-    StringArrayT(StringTableT<T> &table, StringTableIndex *ptr, size_t length, size_t stride = 1, boost::any tableHandle = boost::any());
+    StringArrayT(StringTableT<T> &table, StringTableIndex *ptr, size_t length,
+                 size_t stride = 1, boost::any tableHandle = boost::any(),
+                 bool writable = true);
 
-    StringArrayT(StringTableT<T> &table, StringTableIndex *ptr, size_t length, size_t stride, boost::any handle, boost::any tableHandle = boost::any()) ;
+    StringArrayT(StringTableT<T> &table, StringTableIndex *ptr, size_t length,
+                 size_t stride, boost::any handle, boost::any tableHandle = boost::any(),
+                 bool writable = true);
+
+    StringArrayT(const StringTableT<T> &table, const StringTableIndex *ptr, size_t length,
+                 size_t stride = 1, boost::any tableHandle = boost::any());
+
+    StringArrayT(const StringTableT<T> &table, const StringTableIndex *ptr, size_t length,
+                 size_t stride, boost::any handle, boost::any tableHandle = boost::any());
+
+    StringArrayT(StringArrayT& s, const FixedArray<int>& mask);
 
     const StringTableT<T> & stringTable() const { return _table; }
 
     T  getitem_string(Py_ssize_t index) const {return _table.lookup(getitem(index)); }
     StringArrayT* getslice_string(PyObject *index) const;
+    StringArrayT* getslice_mask_string(const FixedArray<int>& mask);
 
     void setitem_string_scalar(PyObject *index, const T &data);
 
