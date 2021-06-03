@@ -7,12 +7,12 @@
 #    undef NDEBUG
 #endif
 
-#include "half.h"
+#include <half.h>
 #include <assert.h>
 #include <float.h>
 #include <iostream>
 #include <string.h>
-#include <testBitPatterns.h>
+#include "testBitPatterns.h"
 
 using namespace std;
 

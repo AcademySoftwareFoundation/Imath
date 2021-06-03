@@ -7,7 +7,7 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathFun.h"
+#include <ImathFun.h>
 #if __cplusplus >= 202002L
 #    include <bit>
 #endif
@@ -15,7 +15,7 @@
 #include <assert.h>
 #include <iostream>
 #include <stdio.h>
-#include <testFun.h>
+#include "testFun.h"
 
 using namespace std;
 

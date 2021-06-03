@@ -7,11 +7,11 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathQuat.h"
-#include "ImathRandom.h"
+#include <ImathQuat.h>
+#include <ImathRandom.h>
 #include <assert.h>
 #include <iostream>
-#include <testQuatSetRotation.h>
+#include "testQuatSetRotation.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;

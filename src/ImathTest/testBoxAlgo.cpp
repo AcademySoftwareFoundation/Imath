@@ -7,12 +7,12 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathBoxAlgo.h"
-#include "ImathRandom.h"
+#include <ImathBoxAlgo.h>
+#include <ImathRandom.h>
 #include <algorithm>
 #include <assert.h>
 #include <iostream>
-#include <testBoxAlgo.h>
+#include "testBoxAlgo.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;

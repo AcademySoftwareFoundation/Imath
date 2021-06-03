@@ -7,16 +7,16 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathFun.h"
-#include "ImathRandom.h"
-#include "ImathVec.h"
+#include <ImathFun.h>
+#include <ImathRandom.h>
+#include <ImathVec.h>
 #include <assert.h>
 #include <iomanip>
 #include <iostream>
-#include <testRandom.h>
+#include "testRandom.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
-#include "ImathForward.h"
+#include <ImathForward.h>
 
 using namespace std;
 using IMATH_INTERNAL_NAMESPACE::abs;

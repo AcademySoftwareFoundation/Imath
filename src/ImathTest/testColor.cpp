@@ -7,15 +7,15 @@
 #    undef NDEBUG
 #endif
 
-#include "ImathColor.h"
-#include "ImathColorAlgo.h"
-#include "ImathMath.h"
+#include <ImathColor.h>
+#include <ImathColorAlgo.h>
+#include <ImathMath.h>
 #include <assert.h>
 #include <iostream>
-#include <testColor.h>
+#include "testColor.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
-#include "ImathForward.h"
+#include <ImathForward.h>
 
 using namespace std;
 
