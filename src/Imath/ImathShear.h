@@ -263,16 +263,16 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Shear6
     /// @name Numerical Limits
     
     /// Largest possible negative value
-    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() noexcept { return std::numeric_limits<T>::lowest(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeLowest() IMATH_NOEXCEPT { return std::numeric_limits<T>::lowest(); }
 
     /// Largest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeMax() noexcept { return std::numeric_limits<T>::max(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeMax() IMATH_NOEXCEPT { return std::numeric_limits<T>::max(); }
 
     /// Smallest possible positive value
-    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() noexcept { return std::numeric_limits<T>::min(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeSmallest() IMATH_NOEXCEPT { return std::numeric_limits<T>::min(); }
 
     /// Smallest possible e for which 1+e != 1
-    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() noexcept { return std::numeric_limits<T>::epsilon(); }
+    IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon() IMATH_NOEXCEPT { return std::numeric_limits<T>::epsilon(); }
 
     /// @}
 

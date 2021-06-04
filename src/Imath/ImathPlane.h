@@ -47,18 +47,18 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Plane3
     ///	@name Constructors
 
     /// Uninitialized by default
-    IMATH_HOSTDEVICE Plane3() noexcept {}
+    IMATH_HOSTDEVICE Plane3() IMATH_NOEXCEPT {}
 
     /// Initialize with a normal and distance
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& normal, T distance) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& normal, T distance) IMATH_NOEXCEPT;
 
     /// Initialize with a point and a normal
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point, const Vec3<T>& normal) noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point, const Vec3<T>& normal) IMATH_NOEXCEPT;
     
     /// Initialize with three points
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3 (const Vec3<T>& point1,
                                                const Vec3<T>& point2,
-                                               const Vec3<T>& point3) noexcept;
+                                               const Vec3<T>& point3) IMATH_NOEXCEPT;
 
     /// @}
     
@@ -66,13 +66,13 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Plane3
     /// @name Manipulation
     
     /// Set via a given normal and distance
-    IMATH_HOSTDEVICE void set (const Vec3<T>& normal, T distance) noexcept;
+    IMATH_HOSTDEVICE void set (const Vec3<T>& normal, T distance) IMATH_NOEXCEPT;
 
     /// Set via a given point and normal
-    IMATH_HOSTDEVICE void set (const Vec3<T>& point, const Vec3<T>& normal) noexcept;
+    IMATH_HOSTDEVICE void set (const Vec3<T>& point, const Vec3<T>& normal) IMATH_NOEXCEPT;
 
     /// Set via three points
-    IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3) noexcept;
+    IMATH_HOSTDEVICE void set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3) IMATH_NOEXCEPT;
 
     /// @}
     
@@ -84,22 +84,22 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Plane3
     /// @param[out] intersection The point of intersection
     /// @return True if the line intersects the plane.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-    intersect (const Line3<T>& line, Vec3<T>& intersection) const noexcept;
+    intersect (const Line3<T>& line, Vec3<T>& intersection) const IMATH_NOEXCEPT;
 
     /// Determine if a line intersects the plane.
     /// @param line The line
     /// @param[out] parameter The parametric value of the point of intersection
     /// @return True if the line intersects the plane.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& line, T& parameter) const noexcept;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& line, T& parameter) const IMATH_NOEXCEPT;
 
     /// Return the distance from a point to the plane.
-    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>& point) const noexcept;
+    IMATH_HOSTDEVICE constexpr T distanceTo (const Vec3<T>& point) const IMATH_NOEXCEPT;
 
     /// Reflect the given point around the plane.
-    IMATH_HOSTDEVICE constexpr Vec3<T> reflectPoint (const Vec3<T>& point) const noexcept;
+    IMATH_HOSTDEVICE constexpr Vec3<T> reflectPoint (const Vec3<T>& point) const IMATH_NOEXCEPT;
 
     /// Reflect the direction vector around the plane
-    IMATH_HOSTDEVICE constexpr Vec3<T> reflectVector (const Vec3<T>& vec) const noexcept;
+    IMATH_HOSTDEVICE constexpr Vec3<T> reflectVector (const Vec3<T>& vec) const IMATH_NOEXCEPT;
 
     /// @}
 };
@@ -115,24 +115,24 @@ typedef Plane3<double> Plane3d;
 //---------------
 
 template <class T>
-IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p0, const Vec3<T>& p1, const Vec3<T>& p2) noexcept
+IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p0, const Vec3<T>& p1, const Vec3<T>& p2) IMATH_NOEXCEPT
 {
     set (p0, p1, p2);
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& n, T d) noexcept
+template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& n, T d) IMATH_NOEXCEPT
 {
     set (n, d);
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p, const Vec3<T>& n) noexcept
+template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p, const Vec3<T>& n) IMATH_NOEXCEPT
 {
     set (p, n);
 }
 
 template <class T>
 inline void
-Plane3<T>::set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3) noexcept
+Plane3<T>::set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3) IMATH_NOEXCEPT
 {
     normal = (point2 - point1) % (point3 - point1);
     normal.normalize();
@@ -141,7 +141,7 @@ Plane3<T>::set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& poi
 
 template <class T>
 inline void
-Plane3<T>::set (const Vec3<T>& point, const Vec3<T>& n) noexcept
+Plane3<T>::set (const Vec3<T>& point, const Vec3<T>& n) IMATH_NOEXCEPT
 {
     normal = n;
     normal.normalize();
@@ -150,7 +150,7 @@ Plane3<T>::set (const Vec3<T>& point, const Vec3<T>& n) noexcept
 
 template <class T>
 inline void
-Plane3<T>::set (const Vec3<T>& n, T d) noexcept
+Plane3<T>::set (const Vec3<T>& n, T d) IMATH_NOEXCEPT
 {
     normal = n;
     normal.normalize();
@@ -159,28 +159,28 @@ Plane3<T>::set (const Vec3<T>& n, T d) noexcept
 
 template <class T>
 constexpr inline T
-Plane3<T>::distanceTo (const Vec3<T>& point) const noexcept
+Plane3<T>::distanceTo (const Vec3<T>& point) const IMATH_NOEXCEPT
 {
     return (point ^ normal) - distance;
 }
 
 template <class T>
 constexpr inline Vec3<T>
-Plane3<T>::reflectPoint (const Vec3<T>& point) const noexcept
+Plane3<T>::reflectPoint (const Vec3<T>& point) const IMATH_NOEXCEPT
 {
     return normal * distanceTo (point) * -2.0 + point;
 }
 
 template <class T>
 constexpr inline Vec3<T>
-Plane3<T>::reflectVector (const Vec3<T>& v) const noexcept
+Plane3<T>::reflectVector (const Vec3<T>& v) const IMATH_NOEXCEPT
 {
     return normal * (normal ^ v) * 2.0 - v;
 }
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Plane3<T>::intersect (const Line3<T>& line, Vec3<T>& point) const noexcept
+Plane3<T>::intersect (const Line3<T>& line, Vec3<T>& point) const IMATH_NOEXCEPT
 {
     T d = normal ^ line.dir;
     if (d == 0.0)
@@ -192,7 +192,7 @@ Plane3<T>::intersect (const Line3<T>& line, Vec3<T>& point) const noexcept
 
 template <class T>
 IMATH_CONSTEXPR14 inline bool
-Plane3<T>::intersectT (const Line3<T>& line, T& t) const noexcept
+Plane3<T>::intersectT (const Line3<T>& line, T& t) const IMATH_NOEXCEPT
 {
     T d = normal ^ line.dir;
     if (d == 0.0)
@@ -212,7 +212,7 @@ operator<< (std::ostream& o, const Plane3<T>& plane)
 /// Transform a plane by a matrix
 template <class T>
 IMATH_CONSTEXPR14 Plane3<T>
-operator* (const Plane3<T>& plane, const Matrix44<T>& M) noexcept
+operator* (const Plane3<T>& plane, const Matrix44<T>& M) IMATH_NOEXCEPT
 {
     //                        T
     //	                    -1
@@ -248,7 +248,7 @@ operator* (const Plane3<T>& plane, const Matrix44<T>& M) noexcept
 /// Reflect the pla
 template <class T>
 constexpr inline Plane3<T>
-operator- (const Plane3<T>& plane) noexcept
+operator- (const Plane3<T>& plane) IMATH_NOEXCEPT
 {
     return Plane3<T> (-plane.normal, -plane.distance);
 }

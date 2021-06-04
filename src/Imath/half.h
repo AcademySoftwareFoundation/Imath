@@ -377,98 +377,98 @@ class IMATH_EXPORT_TYPE half
 
     /// Default construction provides no initialization (hence it is
     /// not constexpr).
-    half() noexcept = default;
+    half() IMATH_NOEXCEPT = default;
 
     /// Construct from float
-    half (float f) noexcept;
+    half (float f) IMATH_NOEXCEPT;
 
     /// Construct from bit-vector
-    constexpr half (FromBitsTag, uint16_t bits) noexcept;
+    constexpr half (FromBitsTag, uint16_t bits) IMATH_NOEXCEPT;
 
     /// Copy constructor
-    constexpr half (const half&) noexcept = default;
+    constexpr half (const half&) IMATH_NOEXCEPT = default;
 
     /// Move constructor
-    constexpr half (half&&) noexcept = default;
+    constexpr half (half&&) IMATH_NOEXCEPT = default;
 
     /// Destructor
-    ~half() noexcept = default;
+    ~half() IMATH_NOEXCEPT = default;
 
     /// @}
 
     /// Conversion to float
-    operator float() const noexcept;
+    operator float() const IMATH_NOEXCEPT;
 
     /// @{
     /// @name Basic Algebra
 
     /// Unary minus
-    constexpr half operator-() const noexcept;
+    constexpr half operator-() const IMATH_NOEXCEPT;
 
     /// Assignment
-    half& operator= (const half& h) noexcept = default;
+    half& operator= (const half& h) IMATH_NOEXCEPT = default;
 
     /// Move assignment
-    half& operator= (half&& h) noexcept = default;
+    half& operator= (half&& h) IMATH_NOEXCEPT = default;
 
     /// Assignment from float
-    half& operator= (float f) noexcept;
+    half& operator= (float f) IMATH_NOEXCEPT;
 
     /// Addition assignment
-    half& operator+= (half h) noexcept;
+    half& operator+= (half h) IMATH_NOEXCEPT;
 
     /// Addition assignment from float
-    half& operator+= (float f) noexcept;
+    half& operator+= (float f) IMATH_NOEXCEPT;
 
     /// Subtraction assignment
-    half& operator-= (half h) noexcept;
+    half& operator-= (half h) IMATH_NOEXCEPT;
 
     /// Subtraction assignment from float
-    half& operator-= (float f) noexcept;
+    half& operator-= (float f) IMATH_NOEXCEPT;
 
     /// Multiplication assignment
-    half& operator*= (half h) noexcept;
+    half& operator*= (half h) IMATH_NOEXCEPT;
 
     /// Multiplication assignment from float
-    half& operator*= (float f) noexcept;
+    half& operator*= (float f) IMATH_NOEXCEPT;
 
     /// Division assignment
-    half& operator/= (half h) noexcept;
+    half& operator/= (half h) IMATH_NOEXCEPT;
 
     /// Division assignment from float
-    half& operator/= (float f) noexcept;
+    half& operator/= (float f) IMATH_NOEXCEPT;
 
     /// @}
 
     /// Round to n-bit precision (n should be between 0 and 10).
     /// After rounding, the significand's 10-n least significant
     /// bits will be zero.
-    IMATH_CONSTEXPR14 half round (unsigned int n) const noexcept;
+    IMATH_CONSTEXPR14 half round (unsigned int n) const IMATH_NOEXCEPT;
 
     /// @{
     /// @name Classification
 
     /// Return true if a normalized number, a denormalized number, or
     /// zero.
-    constexpr bool isFinite() const noexcept;
+    constexpr bool isFinite() const IMATH_NOEXCEPT;
 
     /// Return true if a normalized number.
-    constexpr bool isNormalized() const noexcept;
+    constexpr bool isNormalized() const IMATH_NOEXCEPT;
 
     /// Return true if a denormalized number.
-    constexpr bool isDenormalized() const noexcept;
+    constexpr bool isDenormalized() const IMATH_NOEXCEPT;
 
     /// Return true if zero.
-    constexpr bool isZero() const noexcept;
+    constexpr bool isZero() const IMATH_NOEXCEPT;
 
     /// Return true if NAN.
-    constexpr bool isNan() const noexcept;
+    constexpr bool isNan() const IMATH_NOEXCEPT;
 
     /// Return true if a positive or a negative infinity
-    constexpr bool isInfinity() const noexcept;
+    constexpr bool isInfinity() const IMATH_NOEXCEPT;
 
     /// Return true if the sign bit is set (negative)
-    constexpr bool isNegative() const noexcept;
+    constexpr bool isNegative() const IMATH_NOEXCEPT;
 
     /// @}
 
@@ -476,16 +476,16 @@ class IMATH_EXPORT_TYPE half
     /// @name Special values
 
     /// Return +infinity
-    static constexpr half posInf() noexcept;
+    static constexpr half posInf() IMATH_NOEXCEPT;
 
     /// Return -infinity
-    static constexpr half negInf() noexcept;
+    static constexpr half negInf() IMATH_NOEXCEPT;
 
     /// Returns a NAN with the bit pattern 0111111111111111
-    static constexpr half qNan() noexcept;
+    static constexpr half qNan() IMATH_NOEXCEPT;
 
     /// Return a NAN with the bit pattern 0111110111111111
-    static constexpr half sNan() noexcept;
+    static constexpr half sNan() IMATH_NOEXCEPT;
 
     /// @}
 
@@ -493,10 +493,10 @@ class IMATH_EXPORT_TYPE half
     /// @name Access to the internal representation
 
     /// Return the bit pattern
-    IMATH_EXPORT constexpr uint16_t bits() const noexcept;
+    IMATH_EXPORT constexpr uint16_t bits() const IMATH_NOEXCEPT;
 
     /// Set the bit pattern
-    IMATH_EXPORT IMATH_CONSTEXPR14 void setBits (uint16_t bits) noexcept;
+    IMATH_EXPORT IMATH_CONSTEXPR14 void setBits (uint16_t bits) IMATH_NOEXCEPT;
 
     /// @}
 
@@ -506,11 +506,11 @@ class IMATH_EXPORT_TYPE half
     using uif = imath_half_uif;
 
     // preserved for legacy conversion
-    IMATH_EXPORT static uint16_t long_convert ( int i ) noexcept;
+    IMATH_EXPORT static uint16_t long_convert ( int i ) IMATH_NOEXCEPT;
   private:
 
-    constexpr uint16_t mantissa() const noexcept;
-    constexpr uint16_t exponent() const noexcept;
+    constexpr uint16_t mantissa() const IMATH_NOEXCEPT;
+    constexpr uint16_t exponent() const IMATH_NOEXCEPT;
 
     uint16_t _h;
 };
@@ -631,7 +631,7 @@ class IMATH_EXPORT_TYPE half
 // Half-from-float constructor
 //----------------------------
 
-inline half::half (float f) noexcept
+inline half::half (float f) IMATH_NOEXCEPT
     : _h (imath_float_to_half (f))
 {
 }
@@ -640,14 +640,14 @@ inline half::half (float f) noexcept
 // Half from raw bits constructor
 //------------------------------------------
 
-inline constexpr half::half (FromBitsTag, uint16_t bits) noexcept : _h (bits)
+inline constexpr half::half (FromBitsTag, uint16_t bits) IMATH_NOEXCEPT : _h (bits)
 {}
 
 //------------------------------------------
 // Half-to-float conversion via table lookup
 //------------------------------------------
 
-inline half::operator float() const noexcept
+inline half::operator float() const IMATH_NOEXCEPT
 {
     return imath_half_to_float (_h);
 }
@@ -657,7 +657,7 @@ inline half::operator float() const noexcept
 //-------------------------
 
 inline IMATH_CONSTEXPR14 half
-half::round (unsigned int n) const noexcept
+half::round (unsigned int n) const IMATH_NOEXCEPT
 {
     //
     // Parameter check.
@@ -714,160 +714,160 @@ half::round (unsigned int n) const noexcept
 //-----------------------
 
 inline constexpr half
-half::operator-() const noexcept
+half::operator-() const IMATH_NOEXCEPT
 {
     return half (FromBits, bits() ^ 0x8000);
 }
 
 inline half&
-half::operator= (float f) noexcept
+half::operator= (float f) IMATH_NOEXCEPT
 {
     *this = half (f);
     return *this;
 }
 
 inline half&
-half::operator+= (half h) noexcept
+half::operator+= (half h) IMATH_NOEXCEPT
 {
     *this = half (float (*this) + float (h));
     return *this;
 }
 
 inline half&
-half::operator+= (float f) noexcept
+half::operator+= (float f) IMATH_NOEXCEPT
 {
     *this = half (float (*this) + f);
     return *this;
 }
 
 inline half&
-half::operator-= (half h) noexcept
+half::operator-= (half h) IMATH_NOEXCEPT
 {
     *this = half (float (*this) - float (h));
     return *this;
 }
 
 inline half&
-half::operator-= (float f) noexcept
+half::operator-= (float f) IMATH_NOEXCEPT
 {
     *this = half (float (*this) - f);
     return *this;
 }
 
 inline half&
-half::operator*= (half h) noexcept
+half::operator*= (half h) IMATH_NOEXCEPT
 {
     *this = half (float (*this) * float (h));
     return *this;
 }
 
 inline half&
-half::operator*= (float f) noexcept
+half::operator*= (float f) IMATH_NOEXCEPT
 {
     *this = half (float (*this) * f);
     return *this;
 }
 
 inline half&
-half::operator/= (half h) noexcept
+half::operator/= (half h) IMATH_NOEXCEPT
 {
     *this = half (float (*this) / float (h));
     return *this;
 }
 
 inline half&
-half::operator/= (float f) noexcept
+half::operator/= (float f) IMATH_NOEXCEPT
 {
     *this = half (float (*this) / f);
     return *this;
 }
 
 inline constexpr uint16_t
-half::mantissa() const noexcept
+half::mantissa() const IMATH_NOEXCEPT
 {
     return _h & 0x3ff;
 }
 
 inline constexpr uint16_t
-half::exponent() const noexcept
+half::exponent() const IMATH_NOEXCEPT
 {
     return (_h >> 10) & 0x001f;
 }
 
 inline constexpr bool
-half::isFinite() const noexcept
+half::isFinite() const IMATH_NOEXCEPT
 {
     return exponent() < 31;
 }
 
 inline constexpr bool
-half::isNormalized() const noexcept
+half::isNormalized() const IMATH_NOEXCEPT
 {
     return exponent() > 0 && exponent() < 31;
 }
 
 inline constexpr bool
-half::isDenormalized() const noexcept
+half::isDenormalized() const IMATH_NOEXCEPT
 {
     return exponent() == 0 && mantissa() != 0;
 }
 
 inline constexpr bool
-half::isZero() const noexcept
+half::isZero() const IMATH_NOEXCEPT
 {
     return (_h & 0x7fff) == 0;
 }
 
 inline constexpr bool
-half::isNan() const noexcept
+half::isNan() const IMATH_NOEXCEPT
 {
     return exponent() == 31 && mantissa() != 0;
 }
 
 inline constexpr bool
-half::isInfinity() const noexcept
+half::isInfinity() const IMATH_NOEXCEPT
 {
     return exponent() == 31 && mantissa() == 0;
 }
 
 inline constexpr bool
-half::isNegative() const noexcept
+half::isNegative() const IMATH_NOEXCEPT
 {
     return (_h & 0x8000) != 0;
 }
 
 inline constexpr half
-half::posInf() noexcept
+half::posInf() IMATH_NOEXCEPT
 {
     return half (FromBits, 0x7c00);
 }
 
 inline constexpr half
-half::negInf() noexcept
+half::negInf() IMATH_NOEXCEPT
 {
     return half (FromBits, 0xfc00);
 }
 
 inline constexpr half
-half::qNan() noexcept
+half::qNan() IMATH_NOEXCEPT
 {
     return half (FromBits, 0x7fff);
 }
 
 inline constexpr half
-half::sNan() noexcept
+half::sNan() IMATH_NOEXCEPT
 {
     return half (FromBits, 0x7dff);
 }
 
 inline constexpr uint16_t
-half::bits() const noexcept
+half::bits() const IMATH_NOEXCEPT
 {
     return _h;
 }
 
 inline IMATH_CONSTEXPR14 void
-half::setBits (uint16_t bits) noexcept
+half::setBits (uint16_t bits) IMATH_NOEXCEPT
 {
     _h = bits;
 }

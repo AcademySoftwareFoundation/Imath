@@ -25,19 +25,19 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 ///
 /// Convert 3-channel hsv to rgb. Non-templated helper routine.
-IMATH_EXPORT Vec3<double> hsv2rgb_d (const Vec3<double>& hsv) noexcept;
+IMATH_EXPORT Vec3<double> hsv2rgb_d (const Vec3<double>& hsv) IMATH_NOEXCEPT;
 
 ///
 /// Convert 4-channel hsv to rgb (with alpha). Non-templated helper routine.
-IMATH_EXPORT Color4<double> hsv2rgb_d (const Color4<double>& hsv) noexcept;
+IMATH_EXPORT Color4<double> hsv2rgb_d (const Color4<double>& hsv) IMATH_NOEXCEPT;
 
 ///
 /// Convert 3-channel rgb to hsv. Non-templated helper routine.
-IMATH_EXPORT Vec3<double> rgb2hsv_d (const Vec3<double>& rgb) noexcept;
+IMATH_EXPORT Vec3<double> rgb2hsv_d (const Vec3<double>& rgb) IMATH_NOEXCEPT;
 
 ///
 /// Convert 4-channel rgb to hsv. Non-templated helper routine.
-IMATH_EXPORT Color4<double> rgb2hsv_d (const Color4<double>& rgb) noexcept;
+IMATH_EXPORT Color4<double> rgb2hsv_d (const Color4<double>& rgb) IMATH_NOEXCEPT;
 
 ///
 /// Convert 3-channel hsv to rgb.
@@ -45,7 +45,7 @@ IMATH_EXPORT Color4<double> rgb2hsv_d (const Color4<double>& rgb) noexcept;
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
-hsv2rgb (const Vec3<T>& hsv) noexcept
+hsv2rgb (const Vec3<T>& hsv) IMATH_NOEXCEPT
 {
     if (std::numeric_limits<T>::is_integer)
     {
@@ -71,7 +71,7 @@ hsv2rgb (const Vec3<T>& hsv) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4<T>
-hsv2rgb (const Color4<T>& hsv) noexcept
+hsv2rgb (const Color4<T>& hsv) IMATH_NOEXCEPT
 {
     if (std::numeric_limits<T>::is_integer)
     {
@@ -99,7 +99,7 @@ hsv2rgb (const Color4<T>& hsv) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
-rgb2hsv (const Vec3<T>& rgb) noexcept
+rgb2hsv (const Vec3<T>& rgb) IMATH_NOEXCEPT
 {
     if (std::numeric_limits<T>::is_integer)
     {
@@ -125,7 +125,7 @@ rgb2hsv (const Vec3<T>& rgb) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4<T>
-rgb2hsv (const Color4<T>& rgb) noexcept
+rgb2hsv (const Color4<T>& rgb) IMATH_NOEXCEPT
 {
     if (std::numeric_limits<T>::is_integer)
     {
@@ -153,7 +153,7 @@ rgb2hsv (const Color4<T>& rgb) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 PackedColor
-rgb2packed (const Vec3<T>& c) noexcept
+rgb2packed (const Vec3<T>& c) IMATH_NOEXCEPT
 {
     if (std::numeric_limits<T>::is_integer)
     {
@@ -178,7 +178,7 @@ rgb2packed (const Vec3<T>& c) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 PackedColor
-rgb2packed (const Color4<T>& c) noexcept
+rgb2packed (const Color4<T>& c) IMATH_NOEXCEPT
 {
     if (std::numeric_limits<T>::is_integer)
     {
@@ -206,7 +206,7 @@ rgb2packed (const Color4<T>& c) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE void
-packed2rgb (PackedColor packed, Vec3<T>& out) noexcept
+packed2rgb (PackedColor packed, Vec3<T>& out) IMATH_NOEXCEPT
 {
     if (std::numeric_limits<T>::is_integer)
     {
@@ -231,7 +231,7 @@ packed2rgb (PackedColor packed, Vec3<T>& out) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE void
-packed2rgb (PackedColor packed, Color4<T>& out) noexcept
+packed2rgb (PackedColor packed, Color4<T>& out) IMATH_NOEXCEPT
 {
     if (std::numeric_limits<T>::is_integer)
     {

@@ -26,7 +26,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
-clip (const T& p, const Box<T>& box) noexcept
+clip (const T& p, const Box<T>& box) IMATH_NOEXCEPT
 {
     T q;
 
@@ -50,7 +50,7 @@ clip (const T& p, const Box<T>& box) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline T
-closestPointInBox (const T& p, const Box<T>& box) noexcept
+closestPointInBox (const T& p, const Box<T>& box) IMATH_NOEXCEPT
 {
     return clip (p, box);
 }
@@ -64,7 +64,7 @@ closestPointInBox (const T& p, const Box<T>& box) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
-closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) noexcept
+closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) IMATH_NOEXCEPT
 {
     if (box.isEmpty())
         return p;
@@ -111,7 +111,7 @@ closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) noexcept
 
 template <class S, class T>
 IMATH_HOSTDEVICE Box<Vec3<S>>
-transform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
+transform (const Box<Vec3<S>>& box, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     if (box.isEmpty() || box.isInfinite())
         return box;
@@ -192,7 +192,7 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 
 template <class S, class T>
 IMATH_HOSTDEVICE void
-transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) noexcept
+transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) IMATH_NOEXCEPT
 {
     if (box.isEmpty() || box.isInfinite())
     {
@@ -267,7 +267,7 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) 
 
 template <class S, class T>
 IMATH_HOSTDEVICE Box<Vec3<S>>
-affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
+affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     if (box.isEmpty() || box.isInfinite())
         return box;
@@ -315,7 +315,7 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) noexcept
 
 template <class S, class T>
 IMATH_HOSTDEVICE void
-affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) noexcept
+affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) IMATH_NOEXCEPT
 {
     if (box.isEmpty())
     {
@@ -369,7 +369,7 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& re
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry, Vec3<T>& exit) noexcept
+findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry, Vec3<T>& exit) IMATH_NOEXCEPT
 {
     if (b.isEmpty())
     {
@@ -639,7 +639,7 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) noexcept
+intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEPT
 {
     if (b.isEmpty())
     {
@@ -897,7 +897,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) noexcept
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-intersects (const Box<Vec3<T>>& box, const Line3<T>& ray) noexcept
+intersects (const Box<Vec3<T>>& box, const Line3<T>& ray) IMATH_NOEXCEPT
 {
     Vec3<T> ignored;
     return intersects (box, ray, ignored);

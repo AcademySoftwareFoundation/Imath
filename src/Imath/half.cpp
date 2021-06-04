@@ -57,7 +57,7 @@ EXPORT_CONST const uint16_t *imath_float_half_exp_table = imath_float_half_exp_t
 //-----------------------------------------------
 
 static float
-half_overflow() noexcept
+half_overflow() IMATH_NOEXCEPT
 {
     float f = 1e10;
 
@@ -73,7 +73,7 @@ half_overflow() noexcept
 //-----------------------------------------------------
 
 IMATH_EXPORT uint16_t
-half::long_convert (int i) noexcept
+half::long_convert (int i) IMATH_NOEXCEPT
 {
     //
     // Our floating point number, f, is represented by the bit
