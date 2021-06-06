@@ -9,8 +9,8 @@
 //     Rod Bogart <rgb@ilm.com>
 //
 
-#ifndef _HALF_H_
-#define _HALF_H_
+#ifndef IMATH_HALF_H_
+#define IMATH_HALF_H_
 
 #include "ImathExport.h"
 #include "ImathNamespace.h"
@@ -270,7 +270,7 @@ imath_float_to_half (float f)
                 return ret;
             m = (ui & 0x7fffff) >> 13;
             // make sure we have at least one bit after shift to preserve nan-ness
-            return ret | m | (m == 0);
+            return ret | (uint16_t)m | (uint16_t)(m == 0);
         }
 
         // too large, round to infinity
@@ -284,7 +284,7 @@ imath_float_to_half (float f)
 
         ui -= 0x38000000;
         ui = ((ui + 0x00000fff + ((ui >> 13) & 1)) >> 13);
-        return ret | ui;
+        return ret | (uint16_t)ui;
     }
 
     // zero or flush to 0
@@ -898,4 +898,4 @@ using half = IMATH_INTERNAL_NAMESPACE::half;
 
 #endif // __cplusplus
 
-#endif
+#endif // IMATH_HALF_H_

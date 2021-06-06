@@ -134,7 +134,7 @@
 //
 #if defined(_MSC_VER)
 # define IMATH_DEPRECATED(msg) __declspec(deprecated(msg))
-#elif __cplusplus >= 201402L
+#elif defined(__cplusplus) && __cplusplus >= 201402L
 # define IMATH_DEPRECATED(msg) [[deprecated(msg)]]
 #elif defined(__GNUC__) || defined(__clang__)
 # define IMATH_DEPRECATED(msg) __attribute__((deprecated(msg)))
