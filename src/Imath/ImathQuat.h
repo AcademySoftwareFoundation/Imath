@@ -28,6 +28,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 // Disable MS VC++ warnings about conversion from double to float
+#    pragma warning(push)
 #    pragma warning(disable : 4244)
 #endif
 
@@ -925,7 +926,7 @@ operator* (const Vec3<T>& v, const Quat<T>& q) IMATH_NOEXCEPT
 }
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
-#    pragma warning(default : 4244)
+#    pragma warning(pop)
 #endif
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
