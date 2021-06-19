@@ -117,5 +117,6 @@ define_imath_tests(
   testTinySVD
   testJacobiEigenSolver
   testFrustumTest
+  testInterop
 )
 
