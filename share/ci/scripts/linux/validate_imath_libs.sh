@@ -66,20 +66,22 @@ else
     _d=""
 fi
 
-# Validate each of the libs
+#
+# Validate each of the symlinks, which should be changed together like:
+#
+# libImath.so -> libImath-3_1.so -> libImath-3_1.so.29 -> libImath-3_1.so.29.0.0
+#
+
 libs=$(pkg-config Imath --libs-only-l | sed -e s/-l//g)
 for lib in $libs; do
 
-    base=`echo $lib | cut -d- -f1`
-    suffix=`echo $lib | cut -d- -f2`
-
-    if [[ -f $LIB_DIR/lib$base$_d.so ]]; then 
-        libbase=`readlink $LIB_DIR/lib$base$_d.so`
-        echo libbase=$libbase
-        libcurrent=`readlink $LIB_DIR/$libbase`
-        echo libcurrent=$libcurrent
-        libversion=`readlink $LIB_DIR/$libcurrent`
-        echo libversion=$libversion
+    base=`echo $lib | cut -d- -f1` # Imath
+    suffix=`echo $lib | cut -d- -f2` # 3_1
+    
+    if [[ -f $LIB_DIR/lib$base$_d.so ]]; then       # libImath.so
+        libbase=`readlink $LIB_DIR/lib$base$_d.so`  # libImath-3.1.so
+        libcurrent=`readlink $LIB_DIR/$libbase`     # libImath-3.1.so.29
+        libversion=`readlink $LIB_DIR/$libcurrent`  # libImath-3.1.so.29.0.0
         file $LIB_DIR/$libversion | grep -q "ELF"
 
         if [[ "$?" != 0 ]]; then
@@ -135,6 +137,7 @@ if [[ "$?" == "0" ]]; then
   exit -1
 fi
 
+# If the SRC_ROOT is specified, check if there are release notes.
 if [[ "$SRC_ROOT" != "" ]]; then
     version=$(pkg-config Imath --modversion)
     notes=$(grep "\* \[Version $version\]" $SRC_ROOT/CHANGES.md | head -1)
