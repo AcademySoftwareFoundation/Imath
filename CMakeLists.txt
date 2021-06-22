@@ -14,7 +14,7 @@ endif()
 
 # Imath version
 
-project(Imath VERSION 3.0.4 LANGUAGES C CXX)
+project(Imath VERSION 3.0.5 LANGUAGES C CXX)
 
 set(IMATH_VERSION_RELEASE_TYPE "" CACHE STRING "Extra version tag string for Imath build, such as -dev, -beta1, etc.")
 
@@ -24,7 +24,7 @@ set(IMATH_VERSION_API "${Imath_VERSION_MAJOR}_${Imath_VERSION_MINOR}")
 # See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 set(IMATH_SOVERSION 28)
 set(IMATH_SOREVISION 0) 
-set(IMATH_SOAGE 1) 
+set(IMATH_SOAGE 2) 
 set(IMATH_LIB_VERSION "${IMATH_SOVERSION}.${IMATH_SOREVISION}.${IMATH_SOAGE}")
 
 # ImathSetup.cmake declares all the configuration variables visible
