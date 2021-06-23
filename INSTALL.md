@@ -2,23 +2,17 @@
 
 ## Download
 
-To build the latest release of Imath, download the source from the
-releases page
+To build the latest release of Imath, download the source (.zip or
+.tar.gz) from the releases page
 https://github.com/AcademySoftwareFoundation/Imath/releases.
 
-To build from the latest development version, which may not be stable,
-clone the GitHub repo directly via:
+To build from the latest development version, clone the GitHub repo directly via:
 
     % git clone https://github.com/AcademySoftwareFoundation/Imath.git
 
-Alternatively, you can download the master branch via
-https://github.com/AcademySoftwareFoundation/Imath/tarball/master, and
-extract the contents via ``tar``:
-
-    % curl -L https://github.com/AcademySoftwareFoundation/Imath/tarball/master | tar xv
-
-which will produce a source directory named
-``AcademySoftwareFoundation-Imath-<abbreviated-SHA-1-checksum>``.
+The ``master`` branch is the most recent development version, which
+may be unstable, but the ``release`` branch always points to the most
+recent, most modern, stable, released version.
 
 In the instructions that follow, we will refer to the top-level
 directory of the source code tree as ``$source_directory``.
@@ -88,20 +82,31 @@ the project. A simple example of this would be to have different
 versions of the library installed to allow for applications targeting
 different VFX Platform years to co-exist.
 
-If you are building dynamic libraries, once you have configured, built,
-and installed the libraries, you should see the following pattern of
-symlinks and files in the install lib folder:
+If you are building dynamic libraries, once you have configured,
+built, and installed the libraries, you should see something like the
+following pattern of symlinks and files in the install lib folder:
 
-    libHalf.so -> libHalf-$LIB_SUFFIX.so
-    libHalf-$LIB_SUFFIX.so -> libHalf-$LIB_SUFFIX.so.$SO_MAJOR_VERSION
-    libHalf-$LIB_SUFFIX.so.$SO_MAJOR_VERSION -> libHalf-$LIB_SUFFIX.so.$SO_FULL_VERSION
-    libHalf-$LIB_SUFFIX.so.$SO_FULL_VERSION (actual file)
+    libImath.so -> libImath-3_1.so
+    libImath-3_1.so -> libImath-3_1.so.29
+    libImath-3_1.so.29 -> libImath-3_1.29.0.1
 
-You can configure the LIB_SUFFIX, although it defaults to the library
-major and minor version, so in the case of a 2.3 library, it would default
-to 2_3. You would then link your programs against this versioned library
-to have maximum safety (i.e. `-lHalf-2_3`), and the pkg-config and cmake
-configuration files included with find_package should set this up.
+The actual shared object file is appended with the library interface
+version name, formed according to the [libtool versioning
+scheme](https://www.gnu.org/software/libtool/manual/html_node/Libtool-versioning.html):
+``current.revision.age``.
+
+Note that the ``libImath.so`` symlink is ommitted if the
+``IMATH_INSTALL_SYM_LINK`` option is disabled.
+
+You can configure the ``IMATH_LIB_SUFFIX``, although it defaults to
+the library major and minor version, so in the case of a ``3.1`` release,
+it would default to ``-3_1``. You would then link your programs against
+this versioned library to have maximum safety (i.e. `-lImath-3_1`),
+and the pkg-config and cmake configuration files included with
+find_package should set this up.
+
+The versioned libraries will have the ``-d`` suffix when the
+``CMAKE_BUILD_TYPE`` is ``Debug``.
 
 ## Custom Namespaces
 
@@ -193,11 +198,39 @@ Common cmake configuration settings:
 * ``BUILD_SHARED_LIBS`` - CMake standard variable to select a static or shared
   build. Default is ``ON``.
 
+* ``BUILD_TESTING`` - Build the runtime test suite. Default is ``ON``.
+
 * ``IMATH_CXX_STANDARD`` - C++ standard to compile against. Default is
   ``14``.
 
-* ``IMATH_ENABLE_LARGE_STACK`` - Enables code to take advantage of
-  large stack support.  Default is ``OFF``.
+* ``IMATH_USE_HALF_LOOKUP_TABLES`` - Use the hard-coded half-to-float
+  conversion lookup tables. Default is ``ON`` for backwards
+  compatibility. With the value of ``OFF``, half-to-float and
+  float-to-half conversion is performed using Intel intrinsic
+  instructions if available, or if not, via a newer, optimized bit
+  manpulation algorithm.
+
+* ``IMATH_ENABLE_LARGE_STACK`` - Enables the ``halfFunction`` object
+  to place the lookup tables on the stack rather than allocating heap
+  memory. Default is ``OFF``.
+
+* ``IMATH_USE_NOEXCEPT`` - Use the ``noexcept`` specifier of
+  appropriate methods. Default is ``ON``.  With the value of ``OFF``,
+  the ``noexcept`` specifier is omitted, for situations in which it is
+  not desireable.
+
+* ``IMATH_USE_DEFAULT_VISIBILITY`` - Use default visibility, which
+  makes all symbols visible in compiled objects.  Default is ``OFF``,
+  in which case only designated necessary symbols are marked for
+  export.
+
+* ``IMATH_VERSION_RELEASE_TYPE`` a string to append to the version
+  number in the internal package name macro
+  IMATH_PACKAGE_STRING. Default is the empty string, but can be set
+  to, for example, "-dev" during development (e.g. "3.1.0-dev").
+
+* ``IMATH_INSTALL_SYM_LINK`` - Install an unversioned symbolic link
+  (i.e. libImath.so) to the versioned library.
 
 * ``IMATH_INSTALL_PKG_CONFIG`` - Install Imath.pc file. Default is
   ``ON``.
@@ -211,7 +244,7 @@ Common cmake configuration settings:
 * ``IMATH_NAMESPACE_CUSTOM`` - Whether the namespace has been
   customized (so external users know). Default is ``NO``.
 
-* ``IMATH_LIB_SUFFIX`` - String added to the end of all the
+* ``IMATH_LIB_SUFFIX`` - String added to the end of all the versioned
   libraries. Default is ``-<major>_<minor>``
 
 * ``IMATH_OUTPUT_SUBDIR`` - Destination sub-folder of the include path
