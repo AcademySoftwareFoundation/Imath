@@ -38,6 +38,22 @@ or numerical analysis package.
 * Shear: Shear3f, Shear3d, Shear6f, Shear6
 * Miscellaneous math functions
   
+### New Features in 3.1
+
+The 3.1 release of Imath introduces optimized half-to-float and
+float-to-half conversion, using Intel intrinsics if available, or
+otherwise using an optimized bit-manipulation algorithm that does not
+require lookup tables. Performance of both options is generally
+significantly faster than the lookup-table based conversions that
+Imath has traditionally used, although results may vary depending on
+the nature of the data. The new optimized conversions generate the
+same values as the tranditional methods.
+
+For backwards compatibility and ensured stability in the 3.1 release,
+the optimized conversion is off by default, but it can be enabled at
+compile-time by disabling the ``IMATH_USE_HALF_LOOKUP_TABLES`` cmake
+option.
+
 ### Supported Platforms
 
 Imath builds on Linux, macOS, Microsoft Windows, and is
