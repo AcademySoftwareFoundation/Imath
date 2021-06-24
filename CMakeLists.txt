@@ -21,11 +21,28 @@ set(IMATH_VERSION_RELEASE_TYPE "-dev" CACHE STRING "Extra version tag string for
 set(IMATH_VERSION ${Imath_VERSION})
 set(IMATH_VERSION_API "${Imath_VERSION_MAJOR}_${Imath_VERSION_MINOR}")
 
+# Library/shared-object version using libtool versioning policy.
 # See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
-set(IMATH_SOVERSION 29)
-set(IMATH_SOREVISION 0) 
-set(IMATH_SOAGE 0) 
-set(IMATH_LIB_VERSION "${IMATH_SOVERSION}.${IMATH_SOREVISION}.${IMATH_SOAGE}")
+#
+# Library API version (CMake's library VERSION attribute) is of the
+# form CURRENT.REVISION.AGE; the CMake SOVERSION attribute corresonds
+# to just CURRENT. These produce a .so and a symlink symlink, e.g.:
+# libImath-3_1.so.29 -> libImath-3_1.so.29.0.0
+#                 ^                     ^  ^ ^
+#                 |                     |  | |
+#                 CURRENT               |  | AGE
+#                                       |  REVISION 
+#                                       CURRENT
+# When updating:
+#   1. no API change: CURRENT.REVISION+1.AGE
+#   2. API added:     CURRENT+1.0.AGE+1
+#   3. API changed:   CURRENT+1.0.0
+#
+set(IMATH_LIBTOOL_CURRENT 29)
+set(IMATH_LIBTOOL_REVISION 0)
+set(IMATH_LIBTOOL_AGE 0)
+set(IMATH_LIB_VERSION "${IMATH_LIBTOOL_CURRENT}.${IMATH_LIBTOOL_REVISION}.${IMATH_LIBTOOL_AGE}")
+set(IMATH_LIB_SOVERSION ${IMATH_LIBTOOL_CURRENT})
 
 # ImathSetup.cmake declares all the configuration variables visible
 # in cmake-gui or similar and the rest of the global

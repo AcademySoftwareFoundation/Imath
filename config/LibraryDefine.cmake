@@ -70,7 +70,7 @@ function(IMATH_DEFINE_LIBRARY libname)
 
   if(BUILD_SHARED_LIBS)
     set_target_properties(${libname} PROPERTIES
-      SOVERSION ${IMATH_SOVERSION}
+      SOVERSION ${IMATH_LIB_SOVERSION}
       VERSION ${IMATH_LIB_VERSION}
     )
   endif()
