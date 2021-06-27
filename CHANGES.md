@@ -1,6 +1,6 @@
 # Imath Release Notes
 
-* [Version 3.0.5](#version-305-june-24-2021) June 24, 2021
+* [Version 3.0.5](#version-305-june-29-2021) June 29, 2021
 * [Version 3.0.4](#version-304-june-1-2021) June 1, 2021
 * [Version 3.0.2](#version-302-may-16-2021) May 16, 2021
 * [Version 3.0.1](#version-301-april-1-2021) April 1, 2021
@@ -8,11 +8,12 @@
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
 
-## Version 3.0.5 (June 24, 2021)
+## Version 3.0.5 (June 29, 2021)
 
 Patch release that fixes problems with library symlinks and
 pkg-config. Otherwise, no code changes.
 
+* [#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig
 * [#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)] Fix non-versioned library symlinks in debug build.
 * [#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix.
 
