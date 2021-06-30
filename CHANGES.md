@@ -1,11 +1,68 @@
 # Imath Release Notes
 
+* [Version 3.1.0](#version-310-july-5-2021) July 5, 2021
+* [Version 3.0.5](#version-305-june-29-2021) June 29, 2021
 * [Version 3.0.4](#version-304-june-1-2021) June 1, 2021
 * [Version 3.0.2](#version-302-may-16-2021) May 16, 2021
 * [Version 3.0.1](#version-301-april-1-2021) April 1, 2021
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.0 (July 5, 2021)
+
+Minor release with new features:
+
+* Optimized half-to-float and float-to-half conversion, using Intel
+  intrinsics if available, or otherwise using an optimized
+  bit-manipulation algorithm that does not require lookup tables.
+
+  Also available as C-language functions ``imath_half_to_float()`` and
+  ``imath_float_to_half()``.
+  
+  For backwards compatibility and ensured stability in the 3.1
+  release, the optimized conversion is off by default, but it can be
+  enabled at compile-time by disabling the
+  ``IMATH_USE_HALF_LOOKUP_TABLES`` cmake option.
+
+* NOEXEPT specifier can be eliminated at compile-time via the
+  ``IMATH_USE_NOEXCEPT`` CMake option.
+
+* Python bindings:
+  * FixedArray objects support a "read only" state.
+  * FixedArray objects support python buffer protocol.
+
+* Optimized 4x4 matrix multiplication.
+
+### Merged Pull Requests
+
+* [#175](https://github.com/AcademySoftwareFoundation/Imath/pull/175)] Clean up library VERSION and SOVERSION 
+* [#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig 
+* [#173](https://github.com/AcademySoftwareFoundation/Imath/pull/173)] Update README.md and INSTALL.md for 3.1 
+* [#169](https://github.com/AcademySoftwareFoundation/Imath/pull/169)] Add testInterop to test list in define_imath_test() 
+* [#168](https://github.com/AcademySoftwareFoundation/Imath/pull/168)] Push/pop Windows warning pragma 
+* [#167](https://github.com/AcademySoftwareFoundation/Imath/pull/167)] Clean up cmake lib symlink message 
+* [#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix. 
+* [#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)] Fix non-versioned library symlinks in debug build. 
+* [#162](https://github.com/AcademySoftwareFoundation/Imath/pull/162)] silence a few warnings noticed with -Weverything 
+* [#157](https://github.com/AcademySoftwareFoundation/Imath/pull/157)] IMATH_NOEXCEPT macro to make noexcept a compile-time option 
+* [#156](https://github.com/AcademySoftwareFoundation/Imath/pull/156)] PyImath read-only FixedArray state & python buffer protocol support 
+* [#158](https://github.com/AcademySoftwareFoundation/Imath/pull/158)] Improve 4x4 matrix multiplication 
+* [#160](https://github.com/AcademySoftwareFoundation/Imath/pull/160)] Clean up analysis_workflow.yml 
+* [#155](https://github.com/AcademySoftwareFoundation/Imath/pull/155)] Release notes for v3.0.4 
+* [#159](https://github.com/AcademySoftwareFoundation/Imath/pull/159)] Add new macros to Doxyfile PREDEFINED 
+* [#153](https://github.com/AcademySoftwareFoundation/Imath/pull/153)] Configure ImathTest as optional standalone program 
+* [#141](https://github.com/AcademySoftwareFoundation/Imath/pull/141)] Enable C and lighter weight half <-> float conversion 
+* [#150](https://github.com/AcademySoftwareFoundation/Imath/pull/150)] Add __version__ attr to imath and imathnumpy python modules 
+
+## Version 3.0.5 (June 29, 2021)
+
+Patch release that fixes problems with library symlinks and
+pkg-config. Otherwise, no code changes.
+
+* [#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig
+* [#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)] Fix non-versioned library symlinks in debug build.
+* [#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix.
 
 ## Version 3.0.4 (June 1, 2021)
 
