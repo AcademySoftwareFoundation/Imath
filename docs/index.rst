@@ -53,6 +53,7 @@ applications, including the ``half`` 16-bit floating-point type.
    functions/random
    functions/roots
    functions/vec
+   functions/half_c
    
 :ref:`genindex`
 

@@ -20,3 +20,6 @@ Example:
 .. doxygenclass:: Imath::Plane3
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& s, const Plane3<T>& plane)
+      

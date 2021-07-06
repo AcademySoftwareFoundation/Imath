@@ -24,3 +24,6 @@ Example:
 .. doxygenclass:: Imath::Matrix44
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& s, const Matrix44<T>& m)
+      

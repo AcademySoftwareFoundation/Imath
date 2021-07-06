@@ -933,24 +933,6 @@ Euler<T>::operator= (const Vec3<T>& v) IMATH_NOEXCEPT
     return *this;
 }
 
-/// Stream ouput
-template <class T>
-std::ostream&
-operator<< (std::ostream& o, const Euler<T>& euler) IMATH_NOEXCEPT
-{
-    char a[3] = { 'X', 'Y', 'Z' };
-
-    const char* r = euler.frameStatic() ? "" : "r";
-    int i, j, k;
-    euler.angleOrder (i, j, k);
-
-    if (euler.initialRepeated())
-        k = i;
-
-    return o << "(" << euler.x << " " << euler.y << " " << euler.z << " " << a[i] << a[j] << a[k]
-             << r << ")";
-}
-
 template <class T>
 IMATH_CONSTEXPR14 inline float
 Euler<T>::angleMod (T angle) IMATH_NOEXCEPT
@@ -1025,11 +1007,30 @@ Euler<T>::makeNear (const Euler<T>& target) IMATH_NOEXCEPT
     setXYZVector (xyzRot);
 }
 
+/// @endcond
+
+/// Stream ouput, as "(x y z i j k)"
+template <class T>
+std::ostream&
+operator<< (std::ostream& o, const Euler<T>& euler)
+{
+    char a[3] = { 'X', 'Y', 'Z' };
+
+    const char* r = euler.frameStatic() ? "" : "r";
+    int i, j, k;
+    euler.angleOrder (i, j, k);
+
+    if (euler.initialRepeated())
+        k = i;
+
+    return o << "(" << euler.x << " " << euler.y << " " << euler.z << " " << a[i] << a[j] << a[k]
+             << r << ")";
+}
+
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 #    pragma warning(pop)
 #endif
 
-/// @endcond
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

@@ -12,7 +12,14 @@ To build from the latest development version, clone the GitHub repo directly via
 
 The ``master`` branch is the most recent development version, which
 may be unstable, but the ``release`` branch always points to the most
-recent, most modern, stable, released version.
+recent and most modern, stable, released version.
+
+**Note:** The GitHub repository identifies a "latest" release, which
+GitHub defines as the release containing the most recent commit, which
+may correspond to a patch for an earlier minor release. Therefore, the
+release labled "latest" is not always the most modern or preferable
+version. If you want the most modern release, use the ``releases``
+branch.
 
 In the instructions that follow, we will refer to the top-level
 directory of the source code tree as ``$source_directory``.
@@ -52,7 +59,7 @@ executable programs in ``/usr/local/bin``.
 
 If you wish to install the optional python bindings included in this
 repository, this must first be toggled on by appending -DPYTHON=ON to the
-cmake command before compiling.
+CMake command before compiling.
 
     % cmake $source_directory -DPYTHON=ON
 
@@ -63,12 +70,12 @@ From here forward PyImath will be compiled until it is toggled back. Using:
 ## Windows Quick Start
 
 Under Windows, if you are using a command line-based setup, such as
-cygwin, you can of course follow the above. For Visual Studio, cmake
+cygwin, you can of course follow the above. For Visual Studio, CMake
 generators are "multiple configuration", so you don't even have to set
 the build type, although you will most likely need to specify the
 install location.  Install Directory By default, ``make install``
 installs the headers, libraries, and programs into ``/usr/local``, but you
-can specify a local install directory to cmake via the
+can specify a local install directory to CMake via the
 ``CMAKE_INSTALL_PREFIX`` variable:
 
     % cmake .. -DCMAKE_INSTALL_PREFIX=$install_directory
@@ -102,7 +109,7 @@ You can configure the ``IMATH_LIB_SUFFIX``, although it defaults to
 the library major and minor version, so in the case of a ``3.1`` release,
 it would default to ``-3_1``. You would then link your programs against
 this versioned library to have maximum safety (i.e. `-lImath-3_1`),
-and the pkg-config and cmake configuration files included with
+and the pkg-config and CMake configuration files included with
 find_package should set this up.
 
 The versioned libraries will have the ``-d`` suffix when the
@@ -111,8 +118,8 @@ The versioned libraries will have the ``-d`` suffix when the
 ## Custom Namespaces
 
 Normally, all Imath symbols are in the ``Imath`` namespace, but you
-can control this at cmake time via the ``IMATH_NAMESPACE`` and
-``IMATH_INTERNAL_NAMESPACE`` cmake settings.
+can control this at CMake time via the ``IMATH_NAMESPACE`` and
+``IMATH_INTERNAL_NAMESPACE`` CMake settings.
 
 These settings specify an ``IMATH_INTERNAL_NAMESPACE`` preprocessor
 definition that places all of the Imath symbols within the given
@@ -134,7 +141,7 @@ is possible to use an internal namespace to prevent collisions between
 the older versions of Imath symbols and the newer ones.  To do this,
 the following could be defined at build time:
 
-    cmake -DIMATH_INTERNAL_NAMESPACE=Imath_v2 $source_directory
+    % cmake -DIMATH_INTERNAL_NAMESPACE=Imath_v2 $source_directory
 
 This means that declarations inside Imath headers look like this (after
 the preprocessor has done its work):
@@ -151,25 +158,24 @@ the preprocessor has done its work):
 
 ## Cross Compiling / Specifying Specific Compilers
 
-When trying to either cross-compile for a different platform, or for
-tasks such as specifying a compiler set to match the VFX reference
-platform (https://vfxplatform.com/), cmake provides the idea of a
-toolchain which may be useful instead of having to remember a chain of
-configuration options. It also means that platform-specific compiler
-names and options are out of the main cmake file, providing better
-isolation.
+When either cross-compiling for a different platform, or when
+specifying a compiler set to match the VFX reference platform
+(https://vfxplatform.com/), CMake provides the idea of a *toolchain*,
+which may be useful instead of having to remember a chain of
+configuration options. This also means that platform-specific compiler
+names and options are kept out of the main ``CMakeList.txt`` file,
+which provides better isolation.
 
-A toolchain file is simply just a cmake script that sets all the
-compiler and related flags and is run very early in the configuration
-step to be able to set all the compiler options and such for the
-discovery that cmake performs automatically. These options can be set
-on the command line still if that is clearer, but a theoretical
-toolchain file for compiling for VFX Platform 2015 is provided in the
-source tree at cmake/Toolchain-Linux-VFX_Platform15.cmake which will
-hopefully provide a guide how this might work.
+A toolchain file is simply a CMake script that sets compiler and
+related flags and is run early in the configuration step, prior to
+CMake's automatic discovery step. These options can still be set on
+the command line if that is clearer, but a theoretical toolchain file
+for compiling for VFX Platform 2021 is provided in the source tree at
+``cmake/Toolchain-Linux-VFX_Platform21.cmake`` which will hopefully
+provide a guide how this might work.
 
 For cross-compiling for additional platforms, there is also an
-included sample script in cmake/Toolchain-mingw.cmake which shows how
+included sample script in ``cmake/Toolchain-mingw.cmake`` which shows how
 cross compiling from Linux for Windows may work. The compiler names
 and paths may need to be changed for your environment.
 
@@ -193,12 +199,7 @@ ways:
 2. Use the UI ``cmake-gui`` or ``ccmake``.
 2. Specify them as command-line arguments via -D when you invoke cmake.
 
-Common cmake configuration settings:
-
-* ``BUILD_SHARED_LIBS`` - CMake standard variable to select a static or shared
-  build. Default is ``ON``.
-
-* ``BUILD_TESTING`` - Build the runtime test suite. Default is ``ON``.
+### Imath Configuration Settings:
 
 * ``IMATH_CXX_STANDARD`` - C++ standard to compile against. Default is
   ``14``.
@@ -209,6 +210,10 @@ Common cmake configuration settings:
   float-to-half conversion is performed using Intel intrinsic
   instructions if available, or if not, via a newer, optimized bit
   manpulation algorithm.
+
+* ``IMATH_HALF_NO_TABLES_AT_ALL`` - force elimination of all
+  half-conversion lookup tables. This forces either the SSE extension
+  instructions or the bit-manipulation conversion.
 
 * ``IMATH_ENABLE_LARGE_STACK`` - Enables the ``halfFunction`` object
   to place the lookup tables on the stack rather than allocating heap
@@ -250,13 +255,23 @@ Common cmake configuration settings:
 * ``IMATH_OUTPUT_SUBDIR`` - Destination sub-folder of the include path
   for install. Default is ``Imath``.
 
-## Cmake Tips and Tricks:
+### Common CMake Settings:
 
-If you have ninja (https://ninja-build.org/) installed, it is faster than make. You can generate ninja files using cmake when doing the initial generation:
+* ``BUILD_SHARED_LIBS`` - CMake standard variable to select a static or shared
+  build. Default is ``ON``.
+
+* ``BUILD_TESTING`` - Build the runtime test suite. Default is ``ON``.
+
+## CMake Tips and Tricks:
+
+If you have ninja (https://ninja-build.org/) installed, it is faster
+than make. You can generate ninja files using CMake when doing the
+initial generation:
 
     % cmake -G “Ninja” ..
 
-If you would like to confirm compile flags, you don’t have to specify the verbose configuration up front, you can instead run
+If you would like to confirm compile flags, you don’t have to specify
+the verbose configuration up front, you can instead run
 
     % make VERBOSE=1
 

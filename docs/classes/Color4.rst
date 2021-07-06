@@ -37,3 +37,6 @@ Example:
 .. doxygenclass:: Imath::Color4
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& s, const Color4<T>& v)
+      

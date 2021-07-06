@@ -257,7 +257,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Color4
     /// @}
 };
 
-/// std::ostream output
+/// Stream output, as "(r g b a)"
 template <class T> std::ostream& operator<< (std::ostream& s, const Color4<T>& v);
 
 /// Reverse multiplication: S * Color4

@@ -17,10 +17,122 @@
 #include "ImathPlatform.h"
 
 /// @file half.h
-/// The conversion routines here have been extended to use the hardware
-/// instructions when enabled by the compiler.
+/// The half type is a 16-bit floating number, compatible with the
+/// IEEE 754-2008 binary16 type.
 ///
-/// Further, Additional control is possible for embedded
+/// **Representation of a 32-bit float:**
+///
+/// We assume that a float, f, is an IEEE 754 single-precision
+/// floating point number, whose bits are arranged as follows:
+///
+///     31 (msb)
+///     |
+///     | 30     23
+///     | |      |
+///     | |      | 22                    0 (lsb)
+///     | |      | |                     |
+///     X XXXXXXXX XXXXXXXXXXXXXXXXXXXXXXX
+///
+///     s e        m
+///
+/// S is the sign-bit, e is the exponent and m is the significand.
+///
+/// If e is between 1 and 254, f is a normalized number:
+///
+///             s    e-127
+///     f = (-1)  * 2      * 1.m
+///
+/// If e is 0, and m is not zero, f is a denormalized number:
+///
+///             s    -126
+///     f = (-1)  * 2      * 0.m
+///
+/// If e and m are both zero, f is zero:
+///
+///     f = 0.0
+///
+/// If e is 255, f is an "infinity" or "not a number" (NAN),
+/// depending on whether m is zero or not.
+///
+/// Examples:
+///
+///     0 00000000 00000000000000000000000 = 0.0
+///     0 01111110 00000000000000000000000 = 0.5
+///     0 01111111 00000000000000000000000 = 1.0
+///     0 10000000 00000000000000000000000 = 2.0
+///     0 10000000 10000000000000000000000 = 3.0
+///     1 10000101 11110000010000000000000 = -124.0625
+///     0 11111111 00000000000000000000000 = +infinity
+///     1 11111111 00000000000000000000000 = -infinity
+///     0 11111111 10000000000000000000000 = NAN
+///     1 11111111 11111111111111111111111 = NAN
+///
+/// **Representation of a 16-bit half:**
+///
+/// Here is the bit-layout for a half number, h:
+///
+///     15 (msb)
+///     |
+///     | 14  10
+///     | |   |
+///     | |   | 9        0 (lsb)
+///     | |   | |        |
+///     X XXXXX XXXXXXXXXX
+///
+///     s e     m
+///
+/// S is the sign-bit, e is the exponent and m is the significand.
+///
+/// If e is between 1 and 30, h is a normalized number:
+///
+///             s    e-15
+///     h = (-1)  * 2     * 1.m
+///
+/// If e is 0, and m is not zero, h is a denormalized number:
+///
+///             S    -14
+///     h = (-1)  * 2     * 0.m
+///
+/// If e and m are both zero, h is zero:
+///
+///     h = 0.0
+///
+/// If e is 31, h is an "infinity" or "not a number" (NAN),
+/// depending on whether m is zero or not.
+///
+/// Examples:
+///
+///     0 00000 0000000000 = 0.0
+///     0 01110 0000000000 = 0.5
+///     0 01111 0000000000 = 1.0
+///     0 10000 0000000000 = 2.0
+///     0 10000 1000000000 = 3.0
+///     1 10101 1111000001 = -124.0625
+///     0 11111 0000000000 = +infinity
+///     1 11111 0000000000 = -infinity
+///     0 11111 1000000000 = NAN
+///     1 11111 1111111111 = NAN
+///
+/// **Conversion via Lookup Table:**
+///
+/// Converting from a float to a half requires some non-trivial bit
+/// manipulations.  In some cases, this makes conversion relatively
+/// slow, but the most common case is accelerated via table lookups.
+///
+/// Converting back from a half to a float is easier because we don't
+/// have to do any rounding.  In addition, there are only 65536
+/// different half numbers; we can convert each of those numbers once
+/// and store the results in a table.  Later, all conversions can be
+/// done using only simple table lookups. (Although this is
+/// arguably the fastest way to do this, and Imath has an implementation in
+/// hardware now)
+///
+/// **Conversion via Hardware:**
+///
+/// For Imath v3.1, the conversion routines have been extended to use
+/// hardware instructions when enabled by the compiler.
+///
+/// Furthermore, additional control is possible for embedded
 /// systems. First, the library can be configured to disable
 /// generation of the half to float table. This table is faster on x86
 /// hardware, but for embedded systems may artificially bloat the
@@ -28,22 +140,26 @@
 /// acceleration. An implementation can add a preprocessor #define
 /// IMATH_HALF_NO_TABLES_AT_ALL, which will eliminate all tables.
 ///
+/// **Conversion Performance Comparison:**
+///
 /// Testing on a Core i9, the timings are approximately:
 ///
-/// half to float table: 0.71 ns / call
-/// no table: 1.06 ns / call
-/// f16c: 0.45 ns / call
+/// - half to float table: 0.71 ns / call
+/// - no table: 1.06 ns / call
+/// - f16c: 0.45 ns / call
 ///
-/// original: 5.2 ns / call
-/// no exp table + opt: 1.27 ns / call
-/// f16c: 0.45 ns / call
+/// - original: 5.2 ns / call
+/// - no exp table + opt: 1.27 ns / call
+/// - f16c: 0.45 ns / call
 ///
-/// ** - the above depend on the distribution of the floats in question
+/// **Note:** the timing above depends on the distribution of the
+/// floats in question.
 ///
 /// Further, an implementation wishing to receive floating point
 /// exceptions on underflow / overflow when converting float to half
 /// can include this file with IMATH_HALF_EXCEPTIONS_ENABLED defined.
 ///
+
 #if defined(__has_include)
 #    if __has_include(<x86intrin.h>)
 #        include <x86intrin.h>
@@ -155,7 +271,9 @@ extern
     IMATH_EXPORT const uint16_t* imath_float_half_exp_table;
 #endif
 
-////////////////////////////////////////
+///
+/// Convert half to float
+///
 
 static inline float
 imath_half_to_float (imath_half_bits_t h)
@@ -234,8 +352,13 @@ imath_half_to_float (imath_half_bits_t h)
 #endif
 }
 
-/// NB: This only supports the one rounding mode which was present in
-/// the original exr library (round to even)
+///
+/// Convert half to float
+///
+/// Note: This only supports the "round to even" rounding mode, which
+/// was the only mode supported by the original OpenEXR library
+///
+
 static inline imath_half_bits_t
 imath_float_to_half (float f)
 {
@@ -515,118 +638,6 @@ class IMATH_EXPORT_TYPE half
     uint16_t _h;
 };
 
-//---------------------------------------------------------------------------
-//
-// Implementation --
-//
-// Representation of a float:
-//
-// We assume that a float, f, is an IEEE 754 single-precision
-// floating point number, whose bits are arranged as follows:
-//
-//     31 (msb)
-//     |
-//     | 30     23
-//     | |      |
-//     | |      | 22                    0 (lsb)
-//     | |      | |                     |
-//     X XXXXXXXX XXXXXXXXXXXXXXXXXXXXXXX
-//
-//     s e        m
-//
-// S is the sign-bit, e is the exponent and m is the significand.
-//
-// If e is between 1 and 254, f is a normalized number:
-//
-//             s    e-127
-//     f = (-1)  * 2      * 1.m
-//
-// If e is 0, and m is not zero, f is a denormalized number:
-//
-//             s    -126
-//     f = (-1)  * 2      * 0.m
-//
-// If e and m are both zero, f is zero:
-//
-//     f = 0.0
-//
-// If e is 255, f is an "infinity" or "not a number" (NAN),
-// depending on whether m is zero or not.
-//
-// Examples:
-//
-//     0 00000000 00000000000000000000000 = 0.0
-//     0 01111110 00000000000000000000000 = 0.5
-//     0 01111111 00000000000000000000000 = 1.0
-//     0 10000000 00000000000000000000000 = 2.0
-//     0 10000000 10000000000000000000000 = 3.0
-//     1 10000101 11110000010000000000000 = -124.0625
-//     0 11111111 00000000000000000000000 = +infinity
-//     1 11111111 00000000000000000000000 = -infinity
-//     0 11111111 10000000000000000000000 = NAN
-//     1 11111111 11111111111111111111111 = NAN
-//
-// Representation of a half:
-//
-// Here is the bit-layout for a half number, h:
-//
-//     15 (msb)
-//     |
-//     | 14  10
-//     | |   |
-//     | |   | 9        0 (lsb)
-//     | |   | |        |
-//     X XXXXX XXXXXXXXXX
-//
-//     s e     m
-//
-// S is the sign-bit, e is the exponent and m is the significand.
-//
-// If e is between 1 and 30, h is a normalized number:
-//
-//             s    e-15
-//     h = (-1)  * 2     * 1.m
-//
-// If e is 0, and m is not zero, h is a denormalized number:
-//
-//             S    -14
-//     h = (-1)  * 2     * 0.m
-//
-// If e and m are both zero, h is zero:
-//
-//     h = 0.0
-//
-// If e is 31, h is an "infinity" or "not a number" (NAN),
-// depending on whether m is zero or not.
-//
-// Examples:
-//
-//     0 00000 0000000000 = 0.0
-//     0 01110 0000000000 = 0.5
-//     0 01111 0000000000 = 1.0
-//     0 10000 0000000000 = 2.0
-//     0 10000 1000000000 = 3.0
-//     1 10101 1111000001 = -124.0625
-//     0 11111 0000000000 = +infinity
-//     1 11111 0000000000 = -infinity
-//     0 11111 1000000000 = NAN
-//     1 11111 1111111111 = NAN
-//
-// Conversion:
-//
-// Converting from a float to a half requires some non-trivial bit
-// manipulations.  In some cases, this makes conversion relatively
-// slow, but the most common case is accelerated via table lookups.
-//
-// Converting back from a half to a float is easier because we don't
-// have to do any rounding.  In addition, there are only 65536
-// different half numbers; we can convert each of those numbers once
-// and store the results in a table.  Later, all conversions can be
-// done using only simple table lookups. (Although this is
-// arguably the fastest way to do this, and Imath has an implementation in
-// hardware now)
-//
-
 //----------------------------
 // Half-from-float constructor
 //----------------------------
@@ -874,11 +885,10 @@ half::setBits (uint16_t bits) IMATH_NOEXCEPT
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 
-//-----------
-// Stream I/O
-//-----------
-
+/// Output h to os, formatted as a float
 IMATH_EXPORT std::ostream& operator<< (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
+
+/// Input h from is
 IMATH_EXPORT std::istream& operator>> (std::istream& is, IMATH_INTERNAL_NAMESPACE::half& h);
 
 //----------

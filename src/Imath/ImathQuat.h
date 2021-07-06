@@ -832,7 +832,7 @@ operator* (const Quat<T>& q, const Matrix33<T>& M) IMATH_NOEXCEPT
     return q.toMatrix33() * M;
 }
 
-/// Stream output
+/// Stream output as "(r x y z)"
 template <class T>
 std::ostream&
 operator<< (std::ostream& o, const Quat<T>& q)

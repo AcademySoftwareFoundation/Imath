@@ -25,3 +25,5 @@ Example:
    :undoc-members:
    :members:
 
+.. doxygenfunction:: operator<<(std::ostream& s, const Matrix33<T>& m)
+

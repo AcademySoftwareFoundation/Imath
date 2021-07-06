@@ -24,3 +24,6 @@ Example:
 .. doxygenclass:: Imath::Line3
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& s, const Line3<T>& line)
+      

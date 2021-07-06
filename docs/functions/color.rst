@@ -24,3 +24,5 @@ Functions that operate on colors.
 .. doxygenfunction:: packed2rgb(PackedColor packed, Color4<T> &out) noexcept
 
 .. doxygenfunction:: packed2rgb(PackedColor packed, Vec3<T> &out) noexcept
+
+                     
