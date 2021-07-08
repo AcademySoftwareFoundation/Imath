@@ -10,7 +10,6 @@ imath_define_library(Imath
     ImathFun.cpp
     ImathMatrixAlgo.cpp
     toFloat.h
-    eLut.h
     half.cpp
   HEADERS
     ImathBoxAlgo.h
