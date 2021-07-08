@@ -33,39 +33,70 @@ Quick Links
 Install Options
 ---------------
 
-``IMATH_USE_HALF_LOOKUP_TABLES``
-  The 3.1 release of Imath introduces optimized half-to-float and
-  float-to-half conversion, using the F16C SSE extension if available,
-  or otherwise using an optimized bit-manipulation algorithm that does
-  not require lookup tables. Performance of both options is generally
-  significantly faster than the lookup-table based conversions that
-  Imath has traditionally used, although performance may vary
-  depending on the nature of your data. The new optimized conversions
-  generate the same values as the tranditional methods.
+When installing Imath from source, take note of the following CMake options:
 
-  For backwards compatibility and ensured stability in the 3.1
-  release, the optimized conversion is off by default, but it can be
-  enabled at compile-time by disabling the
-  ``IMATH_USE_HALF_LOOKUP_TABLES`` CMake option:
+``IMATH_CXX_STANDARD``
+  C++ standard to compile against. Default is ``14``.
 
-      % cmake <source directory> -DIMATH_USE_HALF_LOOKUP_TABLES=OFF
+``IMATH_HALF_USE_LOOKUP_TABLE``
+  Use the half-to-float conversion lookup table. Default is ``ON`` for
+  backwards compatibility. With the value of ``OFF``, use a bit-shif
+  conversion algorithm. Note that this setting is overriden when
+  compiler flags enable the F16C SSE instruction set.
 
-``IMATH_HALF_NO_TABLES_AT_ALL``
-  Furthermore, the ``IMATH_HALF_NO_TABLES_AT_ALL`` CMake option forces
-  elimination of all half-conversion lookup tables. This forces either
-  the SSE extension instructions or the bit-manipulation conversion.
-
-``IMATH_HALF_EXCEPTIONS_ENABLED``
-  An implementation wishing to receive floating point exceptions on
-  underflow / overflow when converting float to half can include
-  ``half.h`` with ``IMATH_HALF_EXCEPTIONS_ENABLED`` defined.
+``IMATH_USE_DEFAULT_VISIBILITY``
+  Use default visibility, which makes all symbols visible in compiled
+  objects.  Default is ``OFF``, in which case only designated
+  necessary symbols are marked for export.
 
 ``IMATH_USE_NOEXCEPT``
-  Also, the ``IMATH_USE_NOEXCEPT`` CMake option disables the use of
-  the ``noexcept`` specifier. Earlier versions of the OpenEXR library
-  provided the ability to catch floating point errors through signal
-  handlers and throw corresponding C++ exceptions.  Code using this
-  mechanism is incompatible with the ``noexcept`` specifier.
+  Use the ``noexcept`` specifier of appropriate methods. Default is
+  ``ON``.  With the value of ``OFF``, the ``noexcept`` specifier is
+  omitted, for situations in which it is not desireable.
+
+``IMATH_ENABLE_LARGE_STACK``
+  Enables the ``halfFunction`` object to place the lookup tables on
+  the stack rather than allocating heap memory. Default is ``OFF``.
+
+``IMATH_VERSION_RELEASE_TYPE``
+  A string to append to the version
+  number in the internal package name macro
+  IMATH_PACKAGE_STRING. Default is the empty string, but can be set
+  to, for example, "-dev" during development (e.g. "3.1.0-dev").
+
+``IMATH_INSTALL_SYM_LINK``
+  Install an unversioned symbolic link (i.e. libImath.so) to the
+  versioned library.
+
+``IMATH_INSTALL_PKG_CONFIG``
+  Install Imath.pc file. Default is ``ON``.
+
+``IMATH_NAMESPACE``
+  Public namespace alias for Imath. Default is ``Imath``.
+
+``IMATH_INTERNAL_NAMESPACE``
+  Real namespace for Imath that will end up in compiled
+  symbols. Default is ``Imath_<major>_<minor>``.
+
+``IMATH_NAMESPACE_CUSTOM``
+  Whether the namespace has been customized (so external users
+  know). Default is ``NO``.
+
+``IMATH_LIB_SUFFIX``
+  String added to the end of all the versioned libraries. Default is
+  ``-<major>_<minor>``
+
+``IMATH_OUTPUT_SUBDIR``
+  Destination sub-folder of the include path for install. Default is ``Imath``.
+
+To enable half-to-float conversion using the F16C SSE instruction set
+for g++ and clang when installing Imath, add the ``-mf16c`` compiler
+option:
+
+      % cmake <Imath source directory> -DCMAKE_CXX_FLAGS="-mf16c"
+
+See `half-float Conversion Configuration Options`_ for more
+information about the half-float conversion process.
 
 History
 -------

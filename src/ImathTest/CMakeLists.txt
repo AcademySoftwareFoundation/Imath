@@ -59,7 +59,7 @@ if(NOT "${CMAKE_PROJECT_NAME}" STREQUAL "ImathTest")
   target_link_libraries(ImathHalfCTest Imath::Config)
   target_include_directories(ImathHalfCTest PRIVATE "../Imath")
   #target_compile_options(ImathHalfCTest PRIVATE -mavx2 -mf16c)
-  if (IMATH_USE_HALF_LOOKUP_TABLES)
+  if (IMATH_USE_HALF_LOOKUP_TABLE)
     target_link_libraries(ImathHalfCTest Imath::Imath)
   endif()
 

@@ -115,49 +115,66 @@
 ///
 /// **Conversion via Lookup Table:**
 ///
-/// Converting from a float to a half requires some non-trivial bit
-/// manipulations.  In some cases, this makes conversion relatively
-/// slow, but the most common case is accelerated via table lookups.
+/// Converting from half to float is performed by default using a
+/// lookup table. There are only 65,536 different half numbers; each
+/// of these numbers has been converted and stored in a table pointed
+/// to by the ``imath_half_to_float_table`` pointer.
 ///
-/// Converting back from a half to a float is easier because we don't
-/// have to do any rounding.  In addition, there are only 65536
-/// different half numbers; we can convert each of those numbers once
-/// and store the results in a table.  Later, all conversions can be
-/// done using only simple table lookups. (Although this is
-/// arguably the fastest way to do this, and Imath has an implementation in
-/// hardware now)
+/// Prior to Imath v3.1, conversion from float to half was
+/// accomplished with the help of an exponent look table, but this is
+/// now replaced with explicit bit shifting.
 ///
 /// **Conversion via Hardware:**
 ///
 /// For Imath v3.1, the conversion routines have been extended to use
-/// hardware instructions when enabled by the compiler.
+/// F16C SSE instructions whenever present and enabled by compiler
+/// flags.
 ///
-/// Furthermore, additional control is possible for embedded
-/// systems. First, the library can be configured to disable
-/// generation of the half to float table. This table is faster on x86
-/// hardware, but for embedded systems may artificially bloat the
-/// executable. Without this, a smaller table is used for
-/// acceleration. An implementation can add a preprocessor #define
-/// IMATH_HALF_NO_TABLES_AT_ALL, which will eliminate all tables.
+/// **Conversion via Bit-Shifting**
+///
+/// If F16C SSE instructions are not available, conversion can be
+/// accomplished by a bit-shifting algorithm. For half-to-float
+/// conversion, this is generally slower than the lookup table, but it
+/// may be preferable when memory limits preclude storing of the
+/// 65,536-entry lookup table.
+///
+/// The lookup table symbol is included in the compilation even if
+/// ``IMATH_HALF_USE_LOOKUP_TABLE`` is false, because application code
+/// using the exported ``half.h`` may choose to enable the use of the table.
+///
+/// An implementation can eliminate the table from compilation by
+/// defining the ``IMATH_HALF_NO_LOOKUP_TABLE`` preprocessor symbol.
+/// Simply add:
+///
+///     #define IMATH_HALF_NO_LOOKUP_TABLE
+///
+/// before including ``half.h``, or define the symbol on the compile
+/// command line.
+///
+/// Furthermore, an implementation wishing to receive ``FE_OVERFLOW``
+/// and ``FE_UNDERFLOW`` floating point exceptions when converting
+/// float to half by the bit-shift algorithm can define the
+/// preprocessor symbol ``IMATH_HALF_ENABLE_FP_EXCEPTIONS`` prior to
+/// including ``half.h``:
+///
+///     #define IMATH_HALF_ENABLE_FP_EXCEPTIONS
 ///
 /// **Conversion Performance Comparison:**
 ///
 /// Testing on a Core i9, the timings are approximately:
 ///
-/// - half to float table: 0.71 ns / call
+/// half to float
+/// - table: 0.71 ns / call
 /// - no table: 1.06 ns / call
 /// - f16c: 0.45 ns / call
 ///
+/// float-to-half:
 /// - original: 5.2 ns / call
 /// - no exp table + opt: 1.27 ns / call
 /// - f16c: 0.45 ns / call
 ///
 /// **Note:** the timing above depends on the distribution of the
 /// floats in question.
-///
-/// Further, an implementation wishing to receive floating point
-/// exceptions on underflow / overflow when converting float to half
-/// can include this file with IMATH_HALF_EXCEPTIONS_ENABLED defined.
 ///
 
 #if defined(__has_include)
@@ -171,7 +188,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#ifdef IMATH_HALF_EXCEPTIONS_ENABLED
+#ifdef IMATH_HALF_ENABLE_FP_EXCEPTIONS
 #    include <fenv.h>
 #endif
 
@@ -249,15 +266,13 @@ typedef uint16_t imath_half_bits_t;
 typedef imath_half_bits_t half;
 #endif
 
-#if defined(IMATH_ENABLE_HALF_LOOKUP_TABLES)
-
+#if !defined(IMATH_HALF_NO_LOOKUP_TABLE)
 #    if defined(__cplusplus)
 extern "C"
 #    else
 extern
 #    endif
     IMATH_EXPORT const imath_half_uif_t* imath_half_to_float_table;
-
 #endif
 
 ///
@@ -279,7 +294,7 @@ imath_half_to_float (imath_half_bits_t h)
 #    else
     return _cvtsh_ss (h);
 #    endif
-#elif defined(IMATH_ENABLE_HALF_LOOKUP_TABLES) && !defined(IMATH_HALF_NO_TABLES_AT_ALL)
+#elif defined(IMATH_HALF_USE_LOOKUP_TABLE) && !defined(IMATH_HALF_NO_LOOKUP_TABLE)
     return imath_half_to_float_table[h].f;
 #else
     imath_half_uif_t v;
@@ -386,7 +401,7 @@ imath_float_to_half (float f)
         // too large, round to infinity
         if (IMATH_UNLIKELY (ui > 0x477fefff))
         {
-#    ifdef IMATH_HALF_EXCEPTIONS_ENABLED
+#    ifdef IMATH_HALF_ENABLE_FP_EXCEPTIONS
             feraiseexcept (FE_OVERFLOW);
 #    endif
             return ret | 0x7c00;
@@ -400,7 +415,7 @@ imath_float_to_half (float f)
     // zero or flush to 0
     if (ui < 0x33000001)
     {
-#    ifdef IMATH_HALF_EXCEPTIONS_ENABLED
+#    ifdef IMATH_HALF_ENABLE_FP_EXCEPTIONS
         if (ui == 0)
             return ret;
         feraiseexcept (FE_UNDERFLOW);
@@ -639,9 +654,9 @@ inline half::half (float f) IMATH_NOEXCEPT
 inline constexpr half::half (FromBitsTag, uint16_t bits) IMATH_NOEXCEPT : _h (bits)
 {}
 
-//------------------------------------------
-// Half-to-float conversion via table lookup
-//------------------------------------------
+//-------------------------
+// Half-to-float conversion
+//-------------------------
 
 inline half::operator float() const IMATH_NOEXCEPT
 {

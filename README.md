@@ -41,19 +41,24 @@ or numerical analysis package.
 ### New Features in 3.1
 
 The 3.1 release of Imath introduces optimized half-to-float and
-float-to-half conversion, using the F16C SSE extension if available,
-or otherwise using an optimized bit-manipulation algorithm that does
-not require lookup tables. Performance of both options is generally
-significantly faster than the lookup-table based conversions that
-Imath has traditionally used, although performance may vary depending
-on the nature of the data. The new optimized conversions generate the
-same values as the tranditional methods.
+float-to-half conversion using the F16C SSE instruction set extension,
+if available. These single-instruction conversions offer a 5-10x
+speedup for float-to-half and 2x speedup for half-to-float over
+Imath/half's traditional table-based conversion (timings depend on the
+data).
 
-For backwards compatibility and ensured stability in the 3.1 release,
-the optimized conversion is off by default, but it can be enabled at
-compile-time by disabling the ``IMATH_USE_HALF_LOOKUP_TABLES`` CMake
-option. See [INSTALL.md](INSTALL.md#imath-configuration-settings) for
-more installation options.
+In the absence of the F16C instruction set, the lookup-table-based
+conversion from half to float is still the default, but Imath 3.1 also
+introduces an optimized bit-shift conversion algorithm as a
+compile-time option that does not require lookup tables, for
+architectures where memory is limited. The float-to-half conversion
+also no longer requires an exponent lookup table, further reducing
+memory requirements.
+
+These new conversions generate the same values as the tranditional
+methods, which ensures backwards compatibility.  See
+[INSTALL.md](INSTALL.md#imath-configuration-settings) for more
+installation and configuation options.
 
 Also, ``half.h`` can now be included in pure C code for a definition
 of the type and for conversions between half and float.

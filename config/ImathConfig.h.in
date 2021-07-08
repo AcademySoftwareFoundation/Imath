@@ -10,12 +10,15 @@
 
 //
 // Options / configuration based on O.S. / compiler
-/////////////////////
+//
 
 //
-// Define if the half implementation should compile / enable the half lookup tables
+// Define whether the half-to-float conversion should use the lookup
+// table method. Note that this is overriden by F16C compiler
+// flags. It is also overrided by the IMATH_HALF_NO_LOOKUP_TABLE
+// macro, if defined.
 //
-#cmakedefine IMATH_ENABLE_HALF_LOOKUP_TABLES
+#cmakedefine IMATH_HALF_USE_LOOKUP_TABLE
 
 //
 // Define if the target system has support for large

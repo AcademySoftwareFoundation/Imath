@@ -33,7 +33,10 @@ using namespace std;
 
 // clang-format off
 
-#ifdef IMATH_ENABLE_HALF_LOOKUP_TABLES
+#if !defined(IMATH_HALF_NO_LOOKUP_TABLE)
+// Omit the table entirely if IMATH_HALF_NO_LOOKUP_TABLE is
+// defined. Half-to-float conversion must be accomplished either by
+// F16C instructions or the bit-shift algorithm.
 const imath_half_uif_t imath_half_to_float_table_data[1 << 16] =
 #include "toFloat.h"
 

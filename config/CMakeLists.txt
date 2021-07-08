@@ -1,10 +1,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-if (IMATH_USE_HALF_LOOKUP_TABLES)
-  set(IMATH_ENABLE_HALF_LOOKUP_TABLES ON)
-endif()
-
 if (IMATH_ENABLE_LARGE_STACK)
   set(IMATH_HAVE_LARGE_STACK ON)
 endif()
