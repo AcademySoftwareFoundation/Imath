@@ -21,7 +21,7 @@ static const c_half_uif half_to_float[1 << 16] =
 #include "../Imath/toFloat.h"
 
 static const unsigned short half_eLut[1 << 9] =
-#include "../Imath/eLut.h"
+#include "eLut.h"
 
 static short exp_long_convert (int i)
 {

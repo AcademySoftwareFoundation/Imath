@@ -144,15 +144,6 @@ extern
 #    endif
     IMATH_EXPORT const imath_half_uif_t* imath_half_to_float_table;
 
-// This is still exposed as a symbol, but is no longer actively used
-// other than within the performance test @sa half_perf_test.cpp
-// TODO: consider deprecating and removing it
-#    if defined(__cplusplus)
-extern "C"
-#    else
-extern
-#    endif
-    IMATH_EXPORT const uint16_t* imath_float_half_exp_table;
 #endif
 
 ////////////////////////////////////////
@@ -180,8 +171,6 @@ imath_half_to_float (imath_half_bits_t h)
     // (1.06 vs 1.08 ns/call) to avoid the constants and just do 4
     // shifts.
     //
-    //uint32_t hexpmant = (h & ~0x8000) << 13;
-    //v.i = (h & 0x8000) << 16;
     uint32_t hexpmant = ( (uint32_t)(h) << 17 ) >> 4;
     v.i = ((uint32_t)(h >> 15)) << 31;
 
