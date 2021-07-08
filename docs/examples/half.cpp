@@ -1,5 +1,6 @@
 #include <Imath/half.h>
 #include <math.h>
+
 void
 half_example()
 {

@@ -1,7 +1,3 @@
-===============
-Imath |version|
-===============
-
 Overview
 --------
 
@@ -30,8 +26,46 @@ Quick Links
 -----------
 
 - Download: https://github.com/AcademySoftwareFoundation/Imath
-- License: `BSD License <https://github.com/OpenImageIO/oiio/blob/master/LICENSE.md>`_
-- `Imath/OpenEXR Version 2->3 Porting Guide <https://github.com/AcademySoftwareFoundation/Imath/blob/master/docs/PortingGuide2-3.md>`_
+- Install Help: `INSTALL.md <https://github.com/AcademySoftwareFoundation/Imath/blob/master/INSTALL.md>`_
+- Porting Help: `Imath/OpenEXR Version 2->3 Porting Guide <https://github.com/AcademySoftwareFoundation/Imath/blob/master/docs/PortingGuide2-3.md>`_
+- License: `BSD License <https://github.com/AcademySoftwareFoundation/Imath/blob/master/LICENSE.md>`_
+
+Install Options
+---------------
+
+``IMATH_USE_HALF_LOOKUP_TABLES``
+  The 3.1 release of Imath introduces optimized half-to-float and
+  float-to-half conversion, using the F16C SSE extension if available,
+  or otherwise using an optimized bit-manipulation algorithm that does
+  not require lookup tables. Performance of both options is generally
+  significantly faster than the lookup-table based conversions that
+  Imath has traditionally used, although performance may vary
+  depending on the nature of your data. The new optimized conversions
+  generate the same values as the tranditional methods.
+
+  For backwards compatibility and ensured stability in the 3.1
+  release, the optimized conversion is off by default, but it can be
+  enabled at compile-time by disabling the
+  ``IMATH_USE_HALF_LOOKUP_TABLES`` CMake option:
+
+      % cmake <source directory> -DIMATH_USE_HALF_LOOKUP_TABLES=OFF
+
+``IMATH_HALF_NO_TABLES_AT_ALL``
+  Furthermore, the ``IMATH_HALF_NO_TABLES_AT_ALL`` CMake option forces
+  elimination of all half-conversion lookup tables. This forces either
+  the SSE extension instructions or the bit-manipulation conversion.
+
+``IMATH_HALF_EXCEPTIONS_ENABLED``
+  An implementation wishing to receive floating point exceptions on
+  underflow / overflow when converting float to half can include
+  ``half.h`` with ``IMATH_HALF_EXCEPTIONS_ENABLED`` defined.
+
+``IMATH_USE_NOEXCEPT``
+  Also, the ``IMATH_USE_NOEXCEPT`` CMake option disables the use of
+  the ``noexcept`` specifier. Earlier versions of the OpenEXR library
+  provided the ability to catch floating point errors through signal
+  handlers and throw corresponding C++ exceptions.  Code using this
+  mechanism is incompatible with the ``noexcept`` specifier.
 
 History
 -------
@@ -179,3 +213,4 @@ as pre-multiplication:
   0 & 0 & 1 & 0 \\
   tx & ty & tz & 1 \\
   \end{bmatrix}
+

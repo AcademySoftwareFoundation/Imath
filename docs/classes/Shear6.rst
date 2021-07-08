@@ -18,3 +18,6 @@ Example:
 .. doxygenclass:: Imath::Shear6
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& s, const Shear6<T>& h)
+      

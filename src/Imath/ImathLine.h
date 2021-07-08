@@ -154,7 +154,7 @@ Line3<T>::closestPointTo (const Line3<T>& line) const IMATH_NOEXCEPT
     return pos + dir * (num / denom);
 }
 
-/// Stream output
+/// Stream output, as "(pos dir)"
 template <class T>
 std::ostream&
 operator<< (std::ostream& o, const Line3<T>& line)

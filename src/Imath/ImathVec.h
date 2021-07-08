@@ -163,14 +163,14 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec2
     /// @return True if the coefficients of this and `m` are the same
     /// with an absolute error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Compare two matrices and test if they are "approximately equal":
     /// @return True if the coefficients of this and m are the same with
     /// a relative error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Dot product
@@ -434,14 +434,14 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec3
     /// @return True if the coefficients of this and `m` are the same
     /// with an absolute error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Vec3<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Compare two matrices and test if they are "approximately equal":
     /// @return True if the coefficients of this and m are the same with
     /// a relative error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Vec3<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Dot product
@@ -675,14 +675,14 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec4
     /// @return True if the coefficients of this and `m` are the same
     /// with an absolute error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Vec4<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Compare two matrices and test if they are "approximately equal":
     /// @return True if the coefficients of this and m are the same with
     /// a relative error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Vec4<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Dot product
@@ -799,13 +799,13 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec4
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T lengthTiny() const IMATH_NOEXCEPT;
 };
 
-/// Stream output
+/// Stream output, as "(x y)"
 template <class T> std::ostream& operator<< (std::ostream& s, const Vec2<T>& v);
 
-/// Stream output
+/// Stream output, as "(x y z)"
 template <class T> std::ostream& operator<< (std::ostream& s, const Vec3<T>& v);
 
-/// Stream output
+/// Stream output, as "(x y z w)"
 template <class T> std::ostream& operator<< (std::ostream& s, const Vec4<T>& v);
 
 /// Reverse multiplication: S * Vec2<T>

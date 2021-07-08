@@ -41,18 +41,22 @@ or numerical analysis package.
 ### New Features in 3.1
 
 The 3.1 release of Imath introduces optimized half-to-float and
-float-to-half conversion, using Intel intrinsics if available, or
-otherwise using an optimized bit-manipulation algorithm that does not
-require lookup tables. Performance of both options is generally
+float-to-half conversion, using the F16C SSE extension if available,
+or otherwise using an optimized bit-manipulation algorithm that does
+not require lookup tables. Performance of both options is generally
 significantly faster than the lookup-table based conversions that
-Imath has traditionally used, although results may vary depending on
-the nature of the data. The new optimized conversions generate the
+Imath has traditionally used, although performance may vary depending
+on the nature of the data. The new optimized conversions generate the
 same values as the tranditional methods.
 
 For backwards compatibility and ensured stability in the 3.1 release,
 the optimized conversion is off by default, but it can be enabled at
-compile-time by disabling the ``IMATH_USE_HALF_LOOKUP_TABLES`` cmake
-option.
+compile-time by disabling the ``IMATH_USE_HALF_LOOKUP_TABLES`` CMake
+option. See [INSTALL.md](INSTALL.md#imath-configuration-settings) for
+more installation options.
+
+Also, ``half.h`` can now be included in pure C code for a definition
+of the type and for conversions between half and float.
 
 ### Supported Platforms
 
@@ -77,11 +81,11 @@ community. Read our [code of conduct](CODE_OF_CONDUCT.md).
 
 ### Developer Quick Start
 
+Technical documentation for the Imath classes and functions can be found at
+[imath.readthedocs.io](https://imath.readthedocs.io).
+
 See [INSTALL.md](INSTALL.md) for instructions on downloading and building Imath
 from source.
-
-Documentation for the Imath classes and functions can be found at
-[imath.readthedocs.io](https://imath.readthedocs.io).
 
 If you encounter problems compiling code or building projects written
 with an earlier release of Imath, the [porting
@@ -99,13 +103,15 @@ OpenEXR.
 
 ### Getting Help
 
-There are two primary ways to connect with the project:
+Connect with the project through:
 
 * The openexr-dev@lists.aswf.io mail list: This is a development
   focused mail list with a deep history of technical conversations and
   decisions that have shaped the project. Subscribe at
   [openexr-dev@lists.aswf.io](https://lists.aswf.io/g/openexr-dev).
 
+* Slack: [#openexr](https://academysoftwarefdn.slack.com/archives/CMLRW4N73)
+  
 * GitHub Issues: GitHub issues are used both to track bugs and to
   discuss feature requests. Submit an issue here:
   https://github.com/AcademySoftwareFoundation/imath/issues. 

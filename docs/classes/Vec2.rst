@@ -37,3 +37,7 @@ Example:
 .. doxygenclass:: Imath::Vec2
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& s, const Vec2<T>& v)
+
+      

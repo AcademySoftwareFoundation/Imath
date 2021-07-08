@@ -26,3 +26,6 @@ Example:
 .. doxygenclass:: Imath::Euler
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& o, const Euler<T>& euler)
+      

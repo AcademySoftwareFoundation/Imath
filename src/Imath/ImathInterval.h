@@ -111,7 +111,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Interval
     /// @}
 };
 
-/// Stream output
+/// Stream output, as "(min max)"
 template <class T> std::ostream& operator<< (std::ostream& s, const Interval<T>& v);
 
 /// Interval of type float

@@ -9,13 +9,30 @@ and 3D vectors and matrices and other simple but useful mathematical
 objects, functions, and data types common in computer graphics
 applications, including the ``half`` 16-bit floating-point type.
 
+Introduction
+############
+
 .. toctree::
    :maxdepth: 3
 
    intro
    
+The half Type
+#############
+
 .. toctree::
-   :caption: Imath Classes
+   :maxdepth: 3
+
+   classes/half
+   functions/half_c
+   half_limits
+   half_conversion
+   float
+              
+Imath Classes
+#############
+
+.. toctree::
    :maxdepth: 3
 
    classes/Box
@@ -37,10 +54,11 @@ applications, including the ``half`` 16-bit floating-point type.
    classes/Vec2
    classes/Vec3
    classes/Vec4
-   classes/half
+
+Imath Functions
+###############
 
 .. toctree::
-   :caption: Imath Functions
    :maxdepth: 3
 
    functions/box

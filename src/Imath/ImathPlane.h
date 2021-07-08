@@ -201,7 +201,7 @@ Plane3<T>::intersectT (const Line3<T>& line, T& t) const IMATH_NOEXCEPT
     return true;
 }
 
-/// Stream output
+/// Stream output, as "(normal distance)"
 template <class T>
 std::ostream&
 operator<< (std::ostream& o, const Plane3<T>& plane)

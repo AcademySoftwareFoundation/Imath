@@ -97,3 +97,4 @@ Functions that operate on matrices
 
 .. doxygenfunction:: minEigenVector(TM& A, TV& S)
 
+

@@ -36,7 +36,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 ///
 /// Solve for x in the linear equation:
 ///
-///   a * x + b == 0
+///     a * x + b == 0
 ///
 /// @return 1 if the equation has a solution, 0 if there is no
 /// solution, and -1 if all real numbers are solutions.
@@ -45,7 +45,7 @@ template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveLinear (T a, T b,
 ///
 /// Solve for x in the quadratic equation:
 ///
-///   a * x*x + b * x + c == 0
+///     a * x*x + b * x + c == 0
 ///
 /// @return 2 if the equation has two solutions, 1 if the equation has
 /// a single solution, 0 if there is no solution, and -1 if all real
@@ -56,7 +56,7 @@ template <class T>
 ///
 /// Solve for x in the normalized cubic equation:
 ///
-///   x*x*x + r * x*x + s * x + t == 0
+///     x*x*x + r * x*x + s * x + t == 0
 ///
 /// The equation is solved using Cardano's Formula; even though only
 /// real solutions are produced, some intermediate results are complex
@@ -69,7 +69,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 int solveNormalizedCubic (T r, T s, T t, T x[
 ///
 /// Solve for x in the cubic equation:
 ///
-///   a * x*x*x + b * x*x + c * x + d == 0
+///     a * x*x*x + b * x*x + c * x + d == 0
 ///
 /// The equation is solved using Cardano's Formula; even though only
 /// real solutions are produced, some intermediate results are complex

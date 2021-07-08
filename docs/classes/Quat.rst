@@ -19,3 +19,6 @@ Example:
 .. doxygenclass:: Imath::Quat
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& s, const Quat<T>& q)
+      

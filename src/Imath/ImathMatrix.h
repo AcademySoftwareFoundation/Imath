@@ -68,26 +68,26 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix22
 
     /// Default constructor: initialize to identity
     ///
-    ///   1 0
-    ///   0 1
+    ///     1 0
+    ///     0 1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22() IMATH_NOEXCEPT;
 
     /// Initialize to scalar constant:
     ///
-    ///   a a
-    ///   a a
+    ///     a a
+    ///     a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (T a) IMATH_NOEXCEPT;
 
     /// Construct from 2x2 array:
     ///
-    ///   a[0][0] a[0][1]
-    ///   a[1][0] a[1][1]
+    ///     a[0][0] a[0][1]
+    ///     a[1][0] a[1][1]
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const T a[2][2]) IMATH_NOEXCEPT;
 
     /// Construct from given scalar values:
     ///
-    ///   a b
-    ///   c d
+    ///     a b
+    ///     c d
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (T a, T b, T c, T d) IMATH_NOEXCEPT;
 
     /// Copy constructor
@@ -170,14 +170,14 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix22
     /// @return True if the coefficients of this and `m` are the same
     /// with an absolute error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix22<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Compare two matrices and test if they are "approximately equal":
     /// @return True if the coefficients of this and m are the same with
     /// a relative error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix22<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Component-wise addition
@@ -340,27 +340,27 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix33
     IMATH_HOSTDEVICE Matrix33 (Uninitialized) IMATH_NOEXCEPT {}
 
     /// Default constructor: initialize to identity
-    ///   1 0 0
-    ///   0 1 0
-    ///   0 0 1
+    ///     1 0 0
+    ///     0 1 0
+    ///     0 0 1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33() IMATH_NOEXCEPT;
 
     /// Initialize to scalar constant
-    ///   a a a
-    ///   a a a
-    ///   a a a
+    ///     a a a
+    ///     a a a
+    ///     a a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (T a) IMATH_NOEXCEPT;
 
     /// Construct from 3x3 array 
-    ///   a[0][0] a[0][1] a[0][2]
-    ///   a[1][0] a[1][1] a[1][2]
-    ///   a[2][0] a[2][1] a[2][2]
+    ///     a[0][0] a[0][1] a[0][2]
+    ///     a[1][0] a[1][1] a[1][2]
+    ///     a[2][0] a[2][1] a[2][2]
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const T a[3][3]) IMATH_NOEXCEPT;
 
     /// Construct from given scalar values
-    ///   a b c
-    ///   d e f
-    ///   g h i
+    ///     a b c
+    ///     d e f
+    ///     g h i
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (T a, T b, T c, T d, T e, T f, T g, T h, T i) IMATH_NOEXCEPT;
 
     /// Copy constructor
@@ -449,14 +449,14 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix33
     /// @return True if the coefficients of this and `m` are the same
     /// with an absolute error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix33<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Compare two matrices and test if they are "approximately equal":
     /// @return True if the coefficients of this and m are the same with
     /// a relative error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix33<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Component-wise addition
@@ -684,40 +684,40 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
     IMATH_HOSTDEVICE constexpr Matrix44 (Uninitialized) IMATH_NOEXCEPT {}
 
     /// Default constructor: initialize to identity
-    ///   1 0 0 0
-    ///   0 1 0 0
-    ///   0 0 1 0
-    ///   0 0 0 1
+    ///     1 0 0 0
+    ///     0 1 0 0
+    ///     0 0 1 0
+    ///     0 0 0 1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44() IMATH_NOEXCEPT;
 
     /// Initialize to scalar constant
-    ///   a a a a
-    ///   a a a a
-    ///   a a a a
-    ///   a a a a
+    ///     a a a a
+    ///     a a a a
+    ///     a a a a
+    ///     a a a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (T a) IMATH_NOEXCEPT;
 
     /// Construct from 4x4 array 
-    ///   a[0][0] a[0][1] a[0][2] a[0][3]
-    ///   a[1][0] a[1][1] a[1][2] a[1][3]
-    ///   a[2][0] a[2][1] a[2][2] a[2][3]
-    ///   a[3][0] a[3][1] a[3][2] a[3][3]
+    ///     a[0][0] a[0][1] a[0][2] a[0][3]
+    ///     a[1][0] a[1][1] a[1][2] a[1][3]
+    ///     a[2][0] a[2][1] a[2][2] a[2][3]
+    ///     a[3][0] a[3][1] a[3][2] a[3][3]
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const T a[4][4]) IMATH_NOEXCEPT;
 
     /// Construct from given scalar values
-    ///   a b c d
-    ///   e f g h
-    ///   i j k l
-    ///   m n o p
+    ///     a b c d
+    ///     e f g h
+    ///     i j k l
+    ///     m n o p
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Matrix44 (T a, T b, T c, T d, T e, T f, T g, T h, T i, T j, T k, T l, T m, T n, T o, T p) IMATH_NOEXCEPT;
 
 
     /// Construct from a 3x3 rotation matrix and a translation vector
-    ///   r r r 0
-    ///   r r r 0
-    ///   r r r 0
-    ///   t t t 1
+    ///     r r r 0
+    ///     r r r 0
+    ///     r r r 0
+    ///     t t t 1
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (Matrix33<T> r, Vec3<T> t) IMATH_NOEXCEPT;
 
     /// Copy constructor
@@ -808,14 +808,14 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
     /// @return True if the coefficients of this and `m` are the same
     /// with an absolute error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i][j] - m[i][j]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithAbsError (const Matrix44<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Compare two matrices and test if they are "approximately equal":
     /// @return True if the coefficients of this and m are the same with
     /// a relative error of no more than e, i.e., for all i, j:
     ///
-    ///   abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool equalWithRelError (const Matrix44<T>& v, T e) const IMATH_NOEXCEPT;
 
     /// Component-wise addition
@@ -987,40 +987,40 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& translate (const Vec3<S>& t) IMATH_NOEXCEPT;
 
     /// Set matrix to shear by given vector h.  The resulting matrix
-    ///   - will shear x for each y coord. by a factor of h[0] ;
-    ///   - will shear x for each z coord. by a factor of h[1] ;
-    ///   - will shear y for each z coord. by a factor of h[2] .
+    /// - will shear x for each y coord. by a factor of h[0] ;
+    /// - will shear x for each z coord. by a factor of h[1] ;
+    /// - will shear y for each z coord. by a factor of h[2] .
     /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setShear (const Vec3<S>& h) IMATH_NOEXCEPT;
 
     /// Set matrix to shear by given factors.  The resulting matrix
-    ///   - will shear x for each y coord. by a factor of h.xy ;
-    ///   - will shear x for each z coord. by a factor of h.xz ;
-    ///   - will shear y for each z coord. by a factor of h.yz ;
-    ///   - will shear y for each x coord. by a factor of h.yx ;
-    ///   - will shear z for each x coord. by a factor of h.zx ;
-    ///   - will shear z for each y coord. by a factor of h.zy .
+    /// - will shear x for each y coord. by a factor of h.xy ;
+    /// - will shear x for each z coord. by a factor of h.xz ;
+    /// - will shear y for each z coord. by a factor of h.yz ;
+    /// - will shear y for each x coord. by a factor of h.yx ;
+    /// - will shear z for each x coord. by a factor of h.zx ;
+    /// - will shear z for each y coord. by a factor of h.zy .
     /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& setShear (const Shear6<S>& h) IMATH_NOEXCEPT;
 
     /// Shear the matrix by given vector.  The composed matrix
     /// will be `shear` * `this`, where the shear matrix ...
-    ///   - will shear x for each y coord. by a factor of h[0] ;
-    ///   - will shear x for each z coord. by a factor of h[1] ;
-    ///   - will shear y for each z coord. by a factor of h[2] .
+    /// - will shear x for each y coord. by a factor of h[0] ;
+    /// - will shear x for each z coord. by a factor of h[1] ;
+    /// - will shear y for each z coord. by a factor of h[2] .
     /// @return const referenced to this
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& shear (const Vec3<S>& h) IMATH_NOEXCEPT;
 
     /// Shear the matrix by the given factors.  The composed matrix
     /// will be `shear` * `this`, where the shear matrix ...
-    ///   - will shear x for each y coord. by a factor of h.xy ;
-    ///   - will shear x for each z coord. by a factor of h.xz ;
-    ///   - will shear y for each z coord. by a factor of h.yz ;
-    ///   - will shear y for each x coord. by a factor of h.yx ;
-    ///   - will shear z for each x coord. by a factor of h.zx ;
-    ///   - will shear z for each y coord. by a factor of h.zy .
+    /// - will shear x for each y coord. by a factor of h.xy ;
+    /// - will shear x for each z coord. by a factor of h.xz ;
+    /// - will shear y for each z coord. by a factor of h.yz ;
+    /// - will shear y for each x coord. by a factor of h.yx ;
+    /// - will shear z for each x coord. by a factor of h.zx ;
+    /// - will shear z for each y coord. by a factor of h.zy .
     /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Matrix44& shear (const Shear6<S>& h) IMATH_NOEXCEPT;
@@ -1054,13 +1054,23 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
     typedef Vec4<T> BaseVecType;
 };
 
-/// Stream output
+/// Stream output, as:
+///     (m00 m01
+///      m10 m11)
 template <class T> std::ostream& operator<< (std::ostream& s, const Matrix22<T>& m);
 
-/// Stream output
+/// Stream output, as:
+///     (m00 m01 m02
+///      m10 m11 m12
+///      m20 m21 m22)
 template <class T> std::ostream& operator<< (std::ostream& s, const Matrix33<T>& m);
 
-/// Stream output
+/// Stream output, as:
+///
+///     (m00 m01 m02 m03
+///      m10 m11 m12 m13
+///      m20 m21 m22 m23
+///      m30 m31 m32 m33)
 template <class T> std::ostream& operator<< (std::ostream& s, const Matrix44<T>& m);
 
 //---------------------------------------------

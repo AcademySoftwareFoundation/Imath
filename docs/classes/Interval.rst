@@ -27,3 +27,6 @@ Example:
 .. doxygenclass:: Imath::Interval
    :undoc-members:
    :members:
+
+.. doxygenfunction:: operator<<(std::ostream& s, const Interval<T>& v)
+      
