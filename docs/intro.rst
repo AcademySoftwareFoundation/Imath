@@ -1,7 +1,3 @@
-===============
-Imath |version|
-===============
-
 Overview
 --------
 
@@ -218,8 +214,3 @@ as pre-multiplication:
   tx & ty & tz & 1 \\
   \end{bmatrix}
 
-The half Type
-------------------------
-
-.. doxygenfile:: half.h
-   :sections: detaileddescription

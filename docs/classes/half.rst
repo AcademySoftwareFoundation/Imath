@@ -1,10 +1,9 @@
-half
-####
+The ``half`` Class
+##################
 
 .. code-block::
 
    #include <Imath/half.h>
-   
 
 ``half`` is a 16-bit floating point number. See `The half Type`_ for
 an explanation of the representation.

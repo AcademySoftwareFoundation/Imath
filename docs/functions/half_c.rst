@@ -1,5 +1,5 @@
-C-language half Conversion
-##########################
+C-language half-float Conversion
+################################
 
 The ``half.h`` header can be included in pure C code:
 

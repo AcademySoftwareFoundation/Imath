@@ -193,11 +193,10 @@
 #    define HALF_MIN 6.10351562e-05f
 /// Largest positive half
 #    define HALF_MAX 65504.0f
-/// Smallest positive e for which
-/// half (1.0 + e) != half (1.0)
+/// Smallest positive e for which ``half(1.0 + e) != half(1.0)``
 #    define HALF_EPSILON 0.00097656f
 #else
-// Smallest positive half
+/// Smallest positive denormalized half
 #    define HALF_DENORM_MIN 5.96046448e-08
 /// Smallest positive normalized half
 #    define HALF_NRM_MIN 6.10351562e-05
@@ -205,28 +204,27 @@
 #    define HALF_MIN 6.10351562e-05f
 /// Largest positive half
 #    define HALF_MAX 65504.0
-/// Smallest positive e for which
-/// half (1.0 + e) != half (1.0)
+/// Smallest positive e for which ``half(1.0 + e) != half(1.0)``
 #    define HALF_EPSILON 0.00097656
 #endif
 
 /// Number of digits in mantissa (significand + hidden leading 1)
 #define HALF_MANT_DIG 11
-/// Number of base 10 digits that can be represented without change
+/// Number of base 10 digits that can be represented without change:
 ///
-/// floor( (HALF_MANT_DIG - 1) * log10(2) ) => 3.01... -> 3
+/// ``floor( (HALF_MANT_DIG - 1) * log10(2) ) => 3.01... -> 3``
 #define HALF_DIG 3
 /// Number of base-10 digits that are necessary to uniquely represent
-/// all distinct values
-///
-/// ceil(HALF_MANT_DIG * log10(2) + 1) => 4.31... -> 5
+/// all distinct values:
+/// 
+/// ``ceil(HALF_MANT_DIG * log10(2) + 1) => 4.31... -> 5``
 #define HALF_DECIMAL_DIG 5
 /// Base of the exponent
 #define HALF_RADIX 2
-/// Minimum negative integer such that HALF_RADIX raised to the power
+/// Minimum negative integer such that ``HALF_RADIX`` raised to the power
 /// of one less than that integer is a normalized half
 #define HALF_DENORM_MIN_EXP -13
-/// Maximum positive integer such that HALF_RADIX raised to the power
+/// Maximum positive integer such that ``HALF_RADIX`` raised to the power
 /// of one less than that integer is a normalized half
 #define HALF_MAX_EXP 16
 /// Minimum positive integer such that 10 raised to that power is a
