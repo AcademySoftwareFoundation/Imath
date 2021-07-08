@@ -14,7 +14,7 @@ half and 32-bit float:
    Imath v3.1, this was the only method supported.
 
 To use the F16C instruction set on an architecture that supports it,
-simply provide the appropriate compiler flags. For gcc/g++, for example:
+simply provide the appropriate compiler flags. For g++ and clang, for example:
 
     % cmake -dCMAKE_CXX_FLAGS="-m16fc"
 
