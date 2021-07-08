@@ -494,8 +494,6 @@ class IMATH_EXPORT_TYPE half
                    "Assumption about the size of floats correct");
     using uif = imath_half_uif;
 
-    // preserved for legacy conversion
-    IMATH_EXPORT static uint16_t long_convert ( int i ) IMATH_NOEXCEPT;
   private:
 
     constexpr uint16_t mantissa() const IMATH_NOEXCEPT;
