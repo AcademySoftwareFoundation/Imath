@@ -8,7 +8,7 @@ When installing Imath from source, take note of the following CMake options:
 
 ``IMATH_HALF_USE_LOOKUP_TABLE``
   Use the half-to-float conversion lookup table. Default is ``ON`` for
-  backwards compatibility. With the value of ``OFF``, use a bit-shif
+  backwards compatibility. With the value of ``OFF``, use a bit-shift
   conversion algorithm. Note that this setting is overriden when
   compiler flags enable the F16C SSE instruction set.
 
