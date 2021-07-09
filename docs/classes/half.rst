@@ -1,5 +1,5 @@
-The ``half`` Class
-##################
+The half Class
+##############
 
 .. code-block::
 

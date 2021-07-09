@@ -1,13 +1,18 @@
 .. Imath documentation master file, created by
    sphinx-quickstart on Wed Apr 24 15:19:01 2019.
 
-Imath Documentation
-===================
+Imath Technical Documentation
+=============================
 
 Imath is a basic, light-weight, and efficient C++ representation of 2D
 and 3D vectors and matrices and other simple but useful mathematical
 objects, functions, and data types common in computer graphics
 applications, including the ``half`` 16-bit floating-point type.
+
+- Download: https://github.com/AcademySoftwareFoundation/Imath
+- Install Help: `INSTALL.md <https://github.com/AcademySoftwareFoundation/Imath/blob/master/INSTALL>`_
+- Porting Help: `Imath/OpenEXR Version 2->3 Porting Guide <https://github.com/AcademySoftwareFoundation/Imath/blob/master/docs/PortingGuide2-3.md>`_
+- License: `BSD License <https://github.com/AcademySoftwareFoundation/Imath/blob/master/LICENSE.md>`_
 
 Introduction
 ############
@@ -17,6 +22,8 @@ Introduction
 
    intro
    
+   install
+
 The half Type
 #############
 
@@ -24,8 +31,8 @@ The half Type
    :maxdepth: 3
 
    classes/half
-   functions/half_c
    half_limits
+   functions/half_c
    half_conversion
    float
               
