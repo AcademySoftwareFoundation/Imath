@@ -49,11 +49,12 @@ tree, hence the ``$build_directory`` noted above, referred to in CMake
 parlance as the *build directory*. You can place this directory
 wherever you like.
 
-See the CMake Configuration Options section below for the most common
-configuration options especially the install directory. Note that with
-no arguments, as above, ``make install`` installs the header files in
-``/usr/local/include``, the object libraries in ``/usr/local/lib``, and the
-executable programs in ``/usr/local/bin``.
+See the [CMake Configuration Options](#CMake-Configuration-Options)
+section below for the most common configuration options especially the
+install directory. Note that with no arguments, as above, ``make
+install`` installs the header files in ``/usr/local/include``, the
+object libraries in ``/usr/local/lib``, and the executable programs in
+``/usr/local/bin``.
 
 ## Python Bindings
 
@@ -261,7 +262,8 @@ option:
 
       % cmake <Imath source directory> -DCMAKE_CXX_FLAGS="-mf16c"
 
-See `half-float Conversion Configuration Options`_ for more
+See the [Imath Technical
+Documentation](https://imath.readthedocs.io/en/latest) for more
 information about the half-float conversion process.
 
 ### Common CMake Settings:
