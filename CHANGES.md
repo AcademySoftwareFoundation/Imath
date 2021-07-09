@@ -1,6 +1,6 @@
 # Imath Release Notes
 
-* [Version 3.1.0](#version-310-july-5-2021) July 5, 2021
+* [Version 3.1.0](#version-310-july-13-2021) July 13, 2021
 * [Version 3.0.5](#version-305-june-29-2021) June 29, 2021
 * [Version 3.0.4](#version-304-june-1-2021) June 1, 2021
 * [Version 3.0.2](#version-302-may-16-2021) May 16, 2021
@@ -9,23 +9,26 @@
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
 
-## Version 3.1.0 (July 5, 2021)
+## Version 3.1.0 (July 13, 2021)
 
 Minor release with new features:
 
-* Optimized half-to-float and float-to-half conversion, using Intel
-  intrinsics if available, or otherwise using an optimized
-  bit-manipulation algorithm that does not require lookup tables.
+* Optimized half-to-float and float-to-half conversion, using F16C SSE
+  instruction set if available. Non-SSE conversion eliminates the
+  float-to-half exponent lookup table, and half-to-float conversion
+  provides a compile-time-optional bit shifting that is slower but
+  eliminates the need for the lookup table, for applications where
+  memory is limited.
 
-  Also available as C-language functions ``imath_half_to_float()`` and
+  Half-to-float and float-to-half conversion is also available as
+  C-language functions ``imath_half_to_float()`` and
   ``imath_float_to_half()``.
   
-  For backwards compatibility and ensured stability in the 3.1
-  release, the optimized conversion is off by default, but it can be
-  enabled at compile-time by disabling the
-  ``IMATH_USE_HALF_LOOKUP_TABLES`` cmake option.
-
-* NOEXEPT specifier can be eliminated at compile-time via the
+  All new conversions produced identical results, and new options are
+  off by default to ensure backwards compatibility. See
+  https://imath.readthedocs.io for more info.
+  
+* NOEXCEPT specifier can be eliminated at compile-time via the
   ``IMATH_USE_NOEXCEPT`` CMake option.
 
 * Python bindings:
@@ -36,6 +39,11 @@ Minor release with new features:
 
 ### Merged Pull Requests
 
+* [#181](https://github.com/AcademySoftwareFoundation/Imath/pull/181)] Clean up half lookup-table options and related docs
+* [#179](https://github.com/AcademySoftwareFoundation/Imath/pull/179)] Remove dead code from half
+* [#178](https://github.com/AcademySoftwareFoundation/Imath/pull/178)] Update Imath docs for 3.1
+* [#177](https://github.com/AcademySoftwareFoundation/Imath/pull/177)] v3.1.0 release notes
+* [#176](https://github.com/AcademySoftwareFoundation/Imath/pull/176)] v3.0.5 notes
 * [#175](https://github.com/AcademySoftwareFoundation/Imath/pull/175)] Clean up library VERSION and SOVERSION 
 * [#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig 
 * [#173](https://github.com/AcademySoftwareFoundation/Imath/pull/173)] Update README.md and INSTALL.md for 3.1 
