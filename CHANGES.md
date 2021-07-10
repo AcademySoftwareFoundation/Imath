@@ -63,7 +63,7 @@ Minor release with new features:
   off by default to ensure backwards compatibility. See
   https://imath.readthedocs.io for more info.
   
-* NOEXCEPT specifier can be eliminated at compile-time via the
+* ``noexcept`` specifier can be eliminated at compile-time via the
   ``IMATH_USE_NOEXCEPT`` CMake option.
 
 * Python bindings:
@@ -74,38 +74,37 @@ Minor release with new features:
 
 ### Merged Pull Requests
 
-* [#181](https://github.com/AcademySoftwareFoundation/Imath/pull/181)] Clean up half lookup-table options and related docs
-* [#179](https://github.com/AcademySoftwareFoundation/Imath/pull/179)] Remove dead code from half
-* [#178](https://github.com/AcademySoftwareFoundation/Imath/pull/178)] Update Imath docs for 3.1
-* [#177](https://github.com/AcademySoftwareFoundation/Imath/pull/177)] v3.1.0 release notes
-* [#176](https://github.com/AcademySoftwareFoundation/Imath/pull/176)] v3.0.5 notes
-* [#175](https://github.com/AcademySoftwareFoundation/Imath/pull/175)] Clean up library VERSION and SOVERSION 
-* [#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig 
-* [#173](https://github.com/AcademySoftwareFoundation/Imath/pull/173)] Update README.md and INSTALL.md for 3.1 
-* [#169](https://github.com/AcademySoftwareFoundation/Imath/pull/169)] Add testInterop to test list in define_imath_test() 
-* [#168](https://github.com/AcademySoftwareFoundation/Imath/pull/168)] Push/pop Windows warning pragma 
-* [#167](https://github.com/AcademySoftwareFoundation/Imath/pull/167)] Clean up cmake lib symlink message 
-* [#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix. 
-* [#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)] Fix non-versioned library symlinks in debug build. 
-* [#162](https://github.com/AcademySoftwareFoundation/Imath/pull/162)] silence a few warnings noticed with -Weverything 
-* [#157](https://github.com/AcademySoftwareFoundation/Imath/pull/157)] IMATH_NOEXCEPT macro to make noexcept a compile-time option 
-* [#156](https://github.com/AcademySoftwareFoundation/Imath/pull/156)] PyImath read-only FixedArray state & python buffer protocol support 
-* [#158](https://github.com/AcademySoftwareFoundation/Imath/pull/158)] Improve 4x4 matrix multiplication 
-* [#160](https://github.com/AcademySoftwareFoundation/Imath/pull/160)] Clean up analysis_workflow.yml 
-* [#155](https://github.com/AcademySoftwareFoundation/Imath/pull/155)] Release notes for v3.0.4 
-* [#159](https://github.com/AcademySoftwareFoundation/Imath/pull/159)] Add new macros to Doxyfile PREDEFINED 
-* [#153](https://github.com/AcademySoftwareFoundation/Imath/pull/153)] Configure ImathTest as optional standalone program 
-* [#141](https://github.com/AcademySoftwareFoundation/Imath/pull/141)] Enable C and lighter weight half <-> float conversion 
-* [#150](https://github.com/AcademySoftwareFoundation/Imath/pull/150)] Add __version__ attr to imath and imathnumpy python modules 
+* \[[#181](https://github.com/AcademySoftwareFoundation/Imath/pull/181)\] Clean up half lookup-table options and related docs
+* \[[#179](https://github.com/AcademySoftwareFoundation/Imath/pull/179)\] Remove dead code from half
+* \[[#178](https://github.com/AcademySoftwareFoundation/Imath/pull/178)\] Update Imath docs for 3.1
+* \[[#177](https://github.com/AcademySoftwareFoundation/Imath/pull/177)\] v3.1.0 release notes
+* \[[#175](https://github.com/AcademySoftwareFoundation/Imath/pull/175)\] Clean up library VERSION and SOVERSION 
+* \[[#173](https://github.com/AcademySoftwareFoundation/Imath/pull/173)\] Update README.md and INSTALL.md for 3.1 
+* \[[#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)\] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig 
+* \[[#169](https://github.com/AcademySoftwareFoundation/Imath/pull/169)\] Add testInterop to test list in define_imath_test() 
+* \[[#168](https://github.com/AcademySoftwareFoundation/Imath/pull/168)\] Push/pop Windows warning pragma 
+* \[[#167](https://github.com/AcademySoftwareFoundation/Imath/pull/167)\] Clean up cmake lib symlink message 
+* \[[#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)\] Fix non-versioned library symlinks in debug build. 
+* \[[#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)\] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix. 
+* \[[#162](https://github.com/AcademySoftwareFoundation/Imath/pull/162)\] silence a few warnings noticed with -Weverything 
+* \[[#160](https://github.com/AcademySoftwareFoundation/Imath/pull/160)\] Clean up analysis_workflow.yml 
+* \[[#159](https://github.com/AcademySoftwareFoundation/Imath/pull/159)\] Add new macros to Doxyfile PREDEFINED 
+* \[[#158](https://github.com/AcademySoftwareFoundation/Imath/pull/158)\] Improve 4x4 matrix multiplication 
+* \[[#157](https://github.com/AcademySoftwareFoundation/Imath/pull/157)\] IMATH_NOEXCEPT macro to make noexcept a compile-time option 
+* \[[#156](https://github.com/AcademySoftwareFoundation/Imath/pull/156)\] PyImath read-only FixedArray state & python buffer protocol support 
+* \[[#155](https://github.com/AcademySoftwareFoundation/Imath/pull/155)\] Release notes for v3.0.4 
+* \[[#153](https://github.com/AcademySoftwareFoundation/Imath/pull/153)\] Configure ImathTest as optional standalone program 
+* \[[#150](https://github.com/AcademySoftwareFoundation/Imath/pull/150)\] Add __version__ attr to imath and imathnumpy python modules 
+* \[[#141](https://github.com/AcademySoftwareFoundation/Imath/pull/141)\] Enable C and lighter weight half <-> float conversion 
 
 ## Version 3.0.5 (June 29, 2021)
 
 Patch release that fixes problems with library symlinks and
 pkg-config. Otherwise, no code changes.
 
-* [#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig
-* [#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)] Fix non-versioned library symlinks in debug build.
-* [#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix.
+* \[[#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)\] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig
+* \[[#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)\] Fix non-versioned library symlinks in debug build.
+* \[[#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)\] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix.
 
 ## Version 3.0.4 (June 1, 2021)
 
