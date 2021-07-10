@@ -257,6 +257,9 @@ jobs:
                 --target install \
                 --config ${{ matrix.build-type }}
         working-directory: _build
+      - name: Validate
+        run: |
+          share/ci/scripts/linux/validate_imath_libs.sh _install 
       - name: Examples
         run: |
           # Make sure we can build the tests when configured as a
