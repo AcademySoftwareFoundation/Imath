@@ -3,8 +3,11 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-#define IMATH_HALF_NO_TABLES_AT_ALL
-//#define IMATH_HALF_EXCEPTIONS_ENABLED
+// For the C version test, omit the lookup table, which validates that
+// ``half.h`` works as a "header-only" implementation not requiring
+// the compiled library. Note that the C-language support for half
+// only includes conversion to and from float.
+#define IMATH_HALF_NO_LOOKUP_TABLE
 
 #include <half.h>
 #include <math.h>

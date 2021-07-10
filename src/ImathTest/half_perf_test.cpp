@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright Contributors to the OpenEXR Project.
 //
-//#define IMATH_HALF_NO_TABLES_AT_ALL
-//#define IMATH_HALF_EXCEPTIONS_ENABLED
-//
+
 #ifdef _MSC_VER
 #    define _CRT_RAND_S
 #endif
@@ -29,7 +27,8 @@ static const unsigned short imath_float_half_exp_table[1 << 9] =
 
 using namespace IMATH_NAMESPACE;
 
-#ifdef IMATH_ENABLE_HALF_LOOKUP_TABLES
+#ifdef IMATH_USE_HALF_LOOKUP_TABLE
+
 static inline float table_half_cast(const half &h)
 {
     return imath_half_to_float_table[h.bits()].f;
