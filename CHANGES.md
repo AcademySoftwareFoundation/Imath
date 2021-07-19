@@ -14,7 +14,7 @@
 
 Patch release that fixes a build failure on ARM64 macOS
 
-* \[[#184](https://github.com/AcademySoftwareFoundation/Imath/pull/184)\] Include <x86intrin.h> only if __x86_64__
+* \[[#184](https://github.com/AcademySoftwareFoundation/Imath/pull/184)\] Include ``<x86intrin.h>`` only if ``__x86_64__``
 
 ## Version 3.1.0 (July 13, 2021)
 
