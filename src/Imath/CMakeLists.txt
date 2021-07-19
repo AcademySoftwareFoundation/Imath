@@ -5,17 +5,20 @@ imath_define_library(Imath
   PRIV_EXPORT IMATH_EXPORTS
   CURDIR ${CMAKE_CURRENT_SOURCE_DIR}
   SOURCES
-    ImathRandom.cpp
+    half.cpp
     ImathColorAlgo.cpp
     ImathFun.cpp
     ImathMatrixAlgo.cpp
+    ImathRandom.cpp
     toFloat.h
-    half.cpp
   HEADERS
-    ImathBoxAlgo.h
+    half.h
+    halfFunction.h
+    halfLimits.h
     ImathBox.h
-    ImathColorAlgo.h
+    ImathBoxAlgo.h
     ImathColor.h
+    ImathColorAlgo.h
     ImathEuler.h
     ImathExport.h
     ImathForward.h
@@ -27,11 +30,11 @@ imath_define_library(Imath
     ImathGLU.h
     ImathInt64.h
     ImathInterval.h
-    ImathLineAlgo.h
     ImathLine.h
+    ImathLineAlgo.h
     ImathMath.h
-    ImathMatrixAlgo.h
     ImathMatrix.h
+    ImathMatrixAlgo.h
     ImathNamespace.h
     ImathPlane.h
     ImathPlatform.h
@@ -41,9 +44,6 @@ imath_define_library(Imath
     ImathShear.h
     ImathSphere.h
     ImathTypeTraits.h
-    ImathVecAlgo.h
     ImathVec.h
-    half.h
-    halfFunction.h
-    halfLimits.h
+    ImathVecAlgo.h
   )
