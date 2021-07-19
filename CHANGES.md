@@ -1,5 +1,6 @@
 # Imath Release Notes
 
+* [Version 3.1.1](#version-311-july-20-2021) July 20, 2021
 * [Version 3.1.0](#version-310-july-13-2021) July 13, 2021
 * [Version 3.0.5](#version-305-june-29-2021) June 29, 2021
 * [Version 3.0.4](#version-304-june-1-2021) June 1, 2021
@@ -8,6 +9,12 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.1 (July 20, 2021)
+
+Patch release that fixes a build failure on ARM64 macOS
+
+* \[[#184](https://github.com/AcademySoftwareFoundation/Imath/pull/184)\] Include <x86intrin.h> only if __x86_64__
 
 ## Version 3.1.0 (July 13, 2021)
 
