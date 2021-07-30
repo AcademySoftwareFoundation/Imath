@@ -1,5 +1,6 @@
 # Imath Release Notes
 
+* [Version 3.1.2](#version-312-july-31-2021) July 31, 2021
 * [Version 3.1.1](#version-311-july-20-2021) July 20, 2021
 * [Version 3.1.0](#version-310-july-13-2021) July 13, 2021
 * [Version 3.0.5](#version-305-june-29-2021) June 29, 2021
@@ -9,6 +10,13 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.2 (July 31, 2021)
+
+Patch release that fixes a Windows header issue.
+
+* \[[#190](https://github.com/AcademySoftwareFoundation/Imath/pull/190)\] 
+  Improve handling of ``#include <*intrin.h>``
 
 ## Version 3.1.1 (July 20, 2021)
 
