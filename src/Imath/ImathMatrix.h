@@ -2167,7 +2167,7 @@ Matrix33<T>::operator*= (const Matrix33<T>& v) IMATH_NOEXCEPT
 {
     // Avoid initializing with 0 values before immediately overwriting them,
     // and unroll all loops for the best autovectorization.
-    Matrix33 tmp(Imath::UNINITIALIZED);
+    Matrix33 tmp(IMATH_INTERNAL_NAMESPACE::UNINITIALIZED);
 
     tmp.x[0][0] = x[0][0] * v.x[0][0] + x[0][1] * v.x[1][0] + x[0][2] * v.x[2][0];
     tmp.x[0][1] = x[0][0] * v.x[0][1] + x[0][1] * v.x[1][1] + x[0][2] * v.x[2][1];
@@ -2191,7 +2191,7 @@ Matrix33<T>::operator* (const Matrix33<T>& v) const IMATH_NOEXCEPT
 {
     // Avoid initializing with 0 values before immediately overwriting them,
     // and unroll all loops for the best autovectorization.
-    Matrix33 tmp(Imath::UNINITIALIZED);
+    Matrix33 tmp(IMATH_INTERNAL_NAMESPACE::UNINITIALIZED);
 
     tmp.x[0][0] = x[0][0] * v.x[0][0] + x[0][1] * v.x[1][0] + x[0][2] * v.x[2][0];
     tmp.x[0][1] = x[0][0] * v.x[0][1] + x[0][1] * v.x[1][1] + x[0][2] * v.x[2][1];
