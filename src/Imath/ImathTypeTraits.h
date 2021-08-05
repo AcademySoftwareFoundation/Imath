@@ -29,7 +29,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 /// An enable_if helper to be used in template parameters which results in
 /// much shorter symbols.
-#define IMATH_ENABLE_IF(...) Imath::enable_if_t<(__VA_ARGS__), int> = 0
+#define IMATH_ENABLE_IF(...) IMATH_INTERNAL_NAMESPACE::enable_if_t<(__VA_ARGS__), int> = 0
 
 
 #if IMATH_FOREIGN_VECTOR_INTEROP
