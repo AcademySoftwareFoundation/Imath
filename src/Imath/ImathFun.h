@@ -200,7 +200,7 @@ IMATH_EXPORT double predd (double d) IMATH_NOEXCEPT;
 // Return true if the number is not a NaN or Infinity.
 //
 
-inline bool IMATH_HOSTDEVICE
+IMATH_HOSTDEVICE inline bool
 finitef (float f) IMATH_NOEXCEPT
 {
     union
@@ -213,7 +213,7 @@ finitef (float f) IMATH_NOEXCEPT
     return (u.i & 0x7f800000) != 0x7f800000;
 }
 
-inline bool IMATH_HOSTDEVICE
+IMATH_HOSTDEVICE inline bool
 finited (double d) IMATH_NOEXCEPT
 {
     union

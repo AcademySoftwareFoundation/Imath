@@ -115,23 +115,25 @@ typedef Plane3<double> Plane3d;
 //---------------
 
 template <class T>
-IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p0, const Vec3<T>& p1, const Vec3<T>& p2) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p0, const Vec3<T>& p1, const Vec3<T>& p2) IMATH_NOEXCEPT
 {
     set (p0, p1, p2);
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& n, T d) IMATH_NOEXCEPT
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& n, T d) IMATH_NOEXCEPT
 {
     set (n, d);
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p, const Vec3<T>& n) IMATH_NOEXCEPT
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Plane3<T>::Plane3 (const Vec3<T>& p, const Vec3<T>& n) IMATH_NOEXCEPT
 {
     set (p, n);
 }
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Plane3<T>::set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& point3) IMATH_NOEXCEPT
 {
     normal = (point2 - point1) % (point3 - point1);
@@ -140,7 +142,7 @@ Plane3<T>::set (const Vec3<T>& point1, const Vec3<T>& point2, const Vec3<T>& poi
 }
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Plane3<T>::set (const Vec3<T>& point, const Vec3<T>& n) IMATH_NOEXCEPT
 {
     normal = n;
@@ -149,7 +151,7 @@ Plane3<T>::set (const Vec3<T>& point, const Vec3<T>& n) IMATH_NOEXCEPT
 }
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Plane3<T>::set (const Vec3<T>& n, T d) IMATH_NOEXCEPT
 {
     normal = n;
@@ -158,28 +160,28 @@ Plane3<T>::set (const Vec3<T>& n, T d) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Plane3<T>::distanceTo (const Vec3<T>& point) const IMATH_NOEXCEPT
 {
     return (point ^ normal) - distance;
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Plane3<T>::reflectPoint (const Vec3<T>& point) const IMATH_NOEXCEPT
 {
     return normal * distanceTo (point) * -2.0 + point;
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Plane3<T>::reflectVector (const Vec3<T>& v) const IMATH_NOEXCEPT
 {
     return normal * (normal ^ v) * 2.0 - v;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Plane3<T>::intersect (const Line3<T>& line, Vec3<T>& point) const IMATH_NOEXCEPT
 {
     T d = normal ^ line.dir;
@@ -191,7 +193,7 @@ Plane3<T>::intersect (const Line3<T>& line, Vec3<T>& point) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Plane3<T>::intersectT (const Line3<T>& line, T& t) const IMATH_NOEXCEPT
 {
     T d = normal ^ line.dir;
@@ -211,7 +213,7 @@ operator<< (std::ostream& o, const Plane3<T>& plane)
 
 /// Transform a plane by a matrix
 template <class T>
-IMATH_CONSTEXPR14 Plane3<T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Plane3<T>
 operator* (const Plane3<T>& plane, const Matrix44<T>& M) IMATH_NOEXCEPT
 {
     //                        T
@@ -247,7 +249,7 @@ operator* (const Plane3<T>& plane, const Matrix44<T>& M) IMATH_NOEXCEPT
 
 /// Reflect the pla
 template <class T>
-constexpr inline Plane3<T>
+IMATH_HOSTDEVICE constexpr inline Plane3<T>
 operator- (const Plane3<T>& plane) IMATH_NOEXCEPT
 {
     return Plane3<T> (-plane.normal, -plane.distance);
