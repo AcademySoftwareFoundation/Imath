@@ -156,7 +156,7 @@
 #  define IMATH_PUBLIC_SYMBOL_ATTRIBUTE __attribute__ ((__visibility__ ("default")))
 #  define IMATH_PRIVATE_SYMBOL_ATTRIBUTE __attribute__ ((__visibility__ ("hidden")))
 // clang differs from gcc and has type visibility which is needed for enums and templates
-#  if __has_attribute(__type_visibility__)
+#  if defined(__has_attribute) && __has_attribute(__type_visibility__)
 #    define IMATH_PUBLIC_TYPE_VISIBILITY_ATTRIBUTE __attribute__ ((__type_visibility__ ("default")))
 #  endif
 #endif
