@@ -130,6 +130,13 @@
 #endif
 
 
+// On modern versions of gcc & clang, __has_attribute can test support for
+// __attribute__((attr)).  Make sure it's safe for other compilers.
+#ifndef __has_attribute
+#    define __has_attribute(x) 0
+#endif
+
+
 //
 // Simple way to mark things as deprecated.
 // When we are sure that C++14 is our true minimum, then we can just
@@ -156,7 +163,7 @@
 #  define IMATH_PUBLIC_SYMBOL_ATTRIBUTE __attribute__ ((__visibility__ ("default")))
 #  define IMATH_PRIVATE_SYMBOL_ATTRIBUTE __attribute__ ((__visibility__ ("hidden")))
 // clang differs from gcc and has type visibility which is needed for enums and templates
-#  if defined(__has_attribute) && __has_attribute(__type_visibility__)
+#  if __has_attribute(__type_visibility__)
 #    define IMATH_PUBLIC_TYPE_VISIBILITY_ATTRIBUTE __attribute__ ((__type_visibility__ ("default")))
 #  endif
 #endif
