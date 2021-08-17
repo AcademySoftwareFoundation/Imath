@@ -1419,7 +1419,7 @@ IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec4<S>& v) IMATH_NOEXCEP
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec4<S>& v, InfException)
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec4<S>& v, InfException)
 {
     T vx = T (v.x);
     T vy = T (v.y);
@@ -2065,7 +2065,7 @@ Vec4<T>::operator/ (T a) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Vec4<T>::lengthTiny() const IMATH_NOEXCEPT
 {
     T absX = (x >= T (0)) ? x : -x;

@@ -678,7 +678,7 @@ operator<< (std::ostream& s, const Shear6<T>& h)
 //-----------------------------------------
 
 template <class S, class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 operator* (S a, const Shear6<T>& h)
 {
     return Shear6<T> (a * h.xy, a * h.xz, a * h.yz, a * h.yx, a * h.zx, a * h.zy);
