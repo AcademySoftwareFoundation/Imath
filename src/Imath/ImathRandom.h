@@ -125,7 +125,7 @@ Rand32::init (unsigned long int seed)
     _state = (seed * 0xa5a573a5L) ^ 0x5a5a5a5aL;
 }
 
-inline Rand32::Rand32 (unsigned long int seed)
+IMATH_HOSTDEVICE inline Rand32::Rand32 (unsigned long int seed)
 {
     init (seed);
 }

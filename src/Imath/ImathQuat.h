@@ -276,7 +276,7 @@ IMATH_HOSTDEVICE constexpr inline Quat<T>::Quat() IMATH_NOEXCEPT : r (1), v (0, 
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Quat<T>::Quat (const Quat<S>& q) IMATH_NOEXCEPT : r (q.r), v (q.v)
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Quat<T>::Quat (const Quat<S>& q) IMATH_NOEXCEPT : r (q.r), v (q.v)
 {
     // empty
 }
