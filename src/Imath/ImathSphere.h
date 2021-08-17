@@ -94,7 +94,7 @@ typedef Sphere3<double> Sphere3d;
 //---------------
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Sphere3<T>::circumscribe (const Box<Vec3<T>>& box)
 {
     center = T (0.5) * (box.min + box.max);
@@ -102,7 +102,7 @@ Sphere3<T>::circumscribe (const Box<Vec3<T>>& box)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
 Sphere3<T>::intersectT (const Line3<T>& line, T& t) const
 {
     bool doesIntersect = true;
