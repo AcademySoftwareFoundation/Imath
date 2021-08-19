@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright Contributors to the OpenEXR Project.
+
 find_package(Doxygen REQUIRED)
 find_package(Sphinx REQUIRED)
 
