@@ -60,6 +60,8 @@ include(config/LibraryDefine.cmake)
 # Source code is in src/Imath
 add_subdirectory(src/Imath)
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
 # Imath_DIR points to the location of ImathConfig.cmake, which tells
 # downstream projects where to find Imath, via find_package(Imath).
 set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
@@ -71,6 +73,11 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file
 option(PYTHON "Set ON to compile PyImath bindings")
 if (PYTHON)
   add_subdirectory(src/python)
+endif()
+
+option(DOCS "Set ON to build html documentation")
+if (DOCS)
+  add_subdirectory(docs)
 endif()
 
 # If you want to use ctest to configure, build and
@@ -107,3 +114,4 @@ endif()
 if(NOT IMATH_IS_SUBPROJECT)
   include(cmake/clang-format.cmake)
 endif()
+

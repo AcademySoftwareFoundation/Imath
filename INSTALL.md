@@ -81,6 +81,20 @@ can specify a local install directory to CMake via the
 
     % cmake .. -DCMAKE_INSTALL_PREFIX=$install_directory
 
+## Documentation
+
+The Imath documentation is generated via
+[Sphinx](https://www.sphinx-doc.org) with the
+[Breathe](https://breathe.readthedocs.io) extension using information
+extracted from header comments by [Doxgen](https://www.doxygen.nl).
+
+To build the documentation locally from the source headers and
+``.rst`` files, set the CMake option ``DOCS=ON``. Local documentation
+generation is off by default.
+
+Building the documentation requires that sphinx, breathe, and doxygen
+are installed.
+
 ## Library Names
 
 By default the installed libraries follow a pattern for how they are
@@ -256,6 +270,9 @@ ways:
 ``IMATH_OUTPUT_SUBDIR``
   Destination sub-folder of the include path for install. Default is ``Imath``.
 
+``DOCS``
+  Build the html documentation. Default is ``OFF``.
+  
 To enable half-to-float conversion using the F16C SSE instruction set
 for g++ and clang when installing Imath, add the ``-mf16c`` compiler
 option:
