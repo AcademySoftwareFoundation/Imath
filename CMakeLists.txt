@@ -60,8 +60,6 @@ include(config/LibraryDefine.cmake)
 # Source code is in src/Imath
 add_subdirectory(src/Imath)
 
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-
 # Imath_DIR points to the location of ImathConfig.cmake, which tells
 # downstream projects where to find Imath, via find_package(Imath).
 set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
