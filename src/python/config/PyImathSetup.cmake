@@ -6,9 +6,7 @@ include(GNUInstallDirs)
 ########################
 ## Target configuration
 
-# TODO: Right now, we support compiling for multiple pythons at once
-set(PYIMATH_OVERRIDE_PYTHON2_INSTALL_DIR "" CACHE STRING "Override the install location for any python 2.x modules compiled")
-set(PYIMATH_OVERRIDE_PYTHON3_INSTALL_DIR "" CACHE STRING "Override the install location for any python 3.x modules compiled")
+set(PYIMATH_OVERRIDE_PYTHON_INSTALL_DIR "" CACHE STRING "Override the install location for imath.so and imathnumpy.so modules")
 
 ########################
 ## Build related options
