@@ -130,6 +130,13 @@
 #endif
 
 
+// On modern versions of gcc & clang, __has_attribute can test support for
+// __attribute__((attr)).  Make sure it's safe for other compilers.
+#ifndef __has_attribute
+#    define __has_attribute(x) 0
+#endif
+
+
 //
 // Simple way to mark things as deprecated.
 // When we are sure that C++14 is our true minimum, then we can just
