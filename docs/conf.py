@@ -31,7 +31,7 @@ if on_rtd:
     filedata = file.read()
 
   doxygen_output_dir = "_build"
-  filedata = filedata.replace('@DOXYGEN_INPUT_DIR@', "../src/lib/OpenEXRCore")
+  filedata = filedata.replace('@DOXYGEN_INPUT_DIR@', "../src/Imath")
   filedata = filedata.replace('@DOXYGEN_OUTPUT_DIR@', "doxygen")
 
   with open("Doxyfile", "w") as file:
