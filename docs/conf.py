@@ -169,7 +169,7 @@ html_logo = "images/imath-logo-blue.png"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = [_static]
+#html_static_path = ['_static']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -284,7 +284,7 @@ man_pages = [
 texinfo_documents = [
   ('index', 'Imath', 'Imath Documentation',
    'Contributors to the OpenEXR Project', 'Imath',
-   'Basic, light-weight, and efficient C++ representation of 2D and 3D vectors and matrices and other simple but useful mathematical objects, functions, and data types common in computer graphics applications, including the “half” 16-bit floating-point type.',
+   '2D and 3D vectors and matrices, half 16-bit floating-point type',
    'Miscellaneous'),
 ]
 
