@@ -56,18 +56,6 @@ install`` installs the header files in ``/usr/local/include``, the
 object libraries in ``/usr/local/lib``, and the executable programs in
 ``/usr/local/bin``.
 
-## Python Bindings
-
-If you wish to install the optional python bindings included in this
-repository, this must first be toggled on by appending -DPYTHON=ON to the
-CMake command before compiling.
-
-    % cmake $source_directory -DPYTHON=ON
-
-From here forward PyImath will be compiled until it is toggled back. Using:
-
-    % cmake $source_directory -DPYTHON=OFF
-
 ## Windows Quick Start
 
 Under Windows, if you are using a command line-based setup, such as
@@ -80,6 +68,15 @@ can specify a local install directory to CMake via the
 ``CMAKE_INSTALL_PREFIX`` variable:
 
     % cmake .. -DCMAKE_INSTALL_PREFIX=$install_directory
+
+## Python Bindings
+
+To build and install the optional Python bindings for Imath, set the
+CMake option ``PYTHON=ON``.
+
+The Python bindings require that ``boost_python`` is installed. By
+default, the bindings build for Python 3. To build with python 2, set
+the CMake option ``USE_PYTHON2=ON``.
 
 ## Library Names
 
@@ -255,6 +252,20 @@ ways:
 
 ``IMATH_OUTPUT_SUBDIR``
   Destination sub-folder of the include path for install. Default is ``Imath``.
+
+``PYTHON``
+  Build the optional Imath python bindings. Default is ``OFF``.
+  
+  The Python bindings require that ``boost_python`` is installed.
+
+``USE_PYTHON2`` If ``ON`` and ``PYTHON`` is also ``ON``, build the
+  bindings for Python 2. Default is ``OFF``, implying that the default
+  bindings are built for Python 3.
+
+``PYIMATH_OVERRIDE_PYTHON_INSTALL_DIR``
+  Custom destination for installatation of ``imath.so`` and
+  ``imathnumpy.so`` modules. By default, they go into either
+  ``site-packages`` or ``dist-packages`.
 
 To enable half-to-float conversion using the F16C SSE instruction set
 for g++ and clang when installing Imath, add the ``-mf16c`` compiler
