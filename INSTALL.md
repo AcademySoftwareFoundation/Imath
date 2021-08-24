@@ -270,11 +270,9 @@ ways:
 ``IMATH_OUTPUT_SUBDIR``
   Destination sub-folder of the include path for install. Default is ``Imath``.
 
-<<<<<<< HEAD
 ``DOCS``
   Build the html documentation. Default is ``OFF``.
   
-=======
 ``PYTHON``
   Build the optional Imath python bindings. Default is ``OFF``.
   
@@ -289,7 +287,6 @@ ways:
   ``imathnumpy.so`` modules. By default, they go into either
   ``site-packages`` or ``dist-packages`.
 
->>>>>>> master
 To enable half-to-float conversion using the F16C SSE instruction set
 for g++ and clang when installing Imath, add the ``-mf16c`` compiler
 option:
