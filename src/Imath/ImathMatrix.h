@@ -2505,7 +2505,7 @@ Matrix33<T>::gjInverse() const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::invert (bool singExc)
 {
     *this = inverse (singExc);
