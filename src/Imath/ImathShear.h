@@ -167,7 +167,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Shear6
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator= (const Vec3<S>& v);
 
     /// Destructor
-    ~Shear6() = default;
+    IMATH_HOSTDEVICE ~Shear6() = default;
 
     /// @}
     
@@ -308,25 +308,25 @@ typedef Shear6<double> Shear6d;
 //-----------------------
 
 template <class T>
-IMATH_CONSTEXPR14 inline T&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T&
 Shear6<T>::operator[] (int i)
 {
     return (&xy)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-constexpr inline const T&
+IMATH_HOSTDEVICE constexpr inline const T&
 Shear6<T>::operator[] (int i) const
 {
     return (&xy)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6()
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Shear6<T>::Shear6()
 {
     xy = xz = yz = yx = zx = zy = 0;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (T XY, T XZ, T YZ)
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (T XY, T XZ, T YZ)
 {
     xy = XY;
     xz = XZ;
@@ -336,7 +336,7 @@ template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (T XY, T XZ, T YZ)
     zy = 0;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Vec3<T>& v)
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Vec3<T>& v)
 {
     xy = v.x;
     xz = v.y;
@@ -346,7 +346,9 @@ template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Vec3<T>& v)
     zy = 0;
 }
 
-template <class T> template <class S> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Vec3<S>& v)
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Vec3<S>& v)
 {
     xy = T (v.x);
     xz = T (v.y);
@@ -356,7 +358,7 @@ template <class T> template <class S> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6
     zy = 0;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (T XY, T XZ, T YZ, T YX, T ZX, T ZY)
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (T XY, T XZ, T YZ, T YX, T ZX, T ZY)
 {
     xy = XY;
     xz = XZ;
@@ -366,7 +368,7 @@ template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (T XY, T XZ, T YZ,
     zy = ZY;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Shear6& h)
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Shear6& h)
 {
     xy = h.xy;
     xz = h.xz;
@@ -378,7 +380,7 @@ template <class T> IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Shear6& h)
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Shear6<S>& h)
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Shear6<S>& h)
 {
     xy = T (h.xy);
     xz = T (h.xz);
@@ -389,7 +391,7 @@ IMATH_CONSTEXPR14 inline Shear6<T>::Shear6 (const Shear6<S>& h)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::operator= (const Shear6& h)
 {
     xy = h.xy;
@@ -403,7 +405,7 @@ Shear6<T>::operator= (const Shear6& h)
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::operator= (const Vec3<S>& v)
 {
     xy = T (v.x);
@@ -417,7 +419,7 @@ Shear6<T>::operator= (const Vec3<S>& v)
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Shear6<T>::setValue (S XY, S XZ, S YZ, S YX, S ZX, S ZY)
 {
     xy = T (XY);
@@ -430,7 +432,7 @@ Shear6<T>::setValue (S XY, S XZ, S YZ, S YX, S ZX, S ZY)
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Shear6<T>::setValue (const Shear6<S>& h)
 {
     xy = T (h.xy);
@@ -443,7 +445,7 @@ Shear6<T>::setValue (const Shear6<S>& h)
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Shear6<T>::getValue (S& XY, S& XZ, S& YZ, S& YX, S& ZX, S& ZY) const
 {
     XY = S (xy);
@@ -456,7 +458,7 @@ Shear6<T>::getValue (S& XY, S& XZ, S& YZ, S& YX, S& ZX, S& ZY) const
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Shear6<T>::getValue (Shear6<S>& h) const
 {
     h.xy = S (xy);
@@ -468,14 +470,14 @@ Shear6<T>::getValue (Shear6<S>& h) const
 }
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE inline T*
 Shear6<T>::getValue()
 {
     return (T*) &xy;
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Shear6<T>::getValue() const
 {
     return (const T*) &xy;
@@ -483,7 +485,7 @@ Shear6<T>::getValue() const
 
 template <class T>
 template <class S>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Shear6<T>::operator== (const Shear6<S>& h) const
 {
     return xy == h.xy && xz == h.xz && yz == h.yz && yx == h.yx && zx == h.zx && zy == h.zy;
@@ -491,14 +493,14 @@ Shear6<T>::operator== (const Shear6<S>& h) const
 
 template <class T>
 template <class S>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Shear6<T>::operator!= (const Shear6<S>& h) const
 {
     return xy != h.xy || xz != h.xz || yz != h.yz || yx != h.yx || zx != h.zx || zy != h.zy;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Shear6<T>::equalWithAbsError (const Shear6<T>& h, T e) const
 {
     for (int i = 0; i < 6; i++)
@@ -509,7 +511,7 @@ Shear6<T>::equalWithAbsError (const Shear6<T>& h, T e) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Shear6<T>::equalWithRelError (const Shear6<T>& h, T e) const
 {
     for (int i = 0; i < 6; i++)
@@ -520,7 +522,7 @@ Shear6<T>::equalWithRelError (const Shear6<T>& h, T e) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::operator+= (const Shear6& h)
 {
     xy += h.xy;
@@ -533,14 +535,14 @@ Shear6<T>::operator+= (const Shear6& h)
 }
 
 template <class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 Shear6<T>::operator+ (const Shear6& h) const
 {
     return Shear6 (xy + h.xy, xz + h.xz, yz + h.yz, yx + h.yx, zx + h.zx, zy + h.zy);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::operator-= (const Shear6& h)
 {
     xy -= h.xy;
@@ -553,21 +555,21 @@ Shear6<T>::operator-= (const Shear6& h)
 }
 
 template <class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 Shear6<T>::operator- (const Shear6& h) const
 {
     return Shear6 (xy - h.xy, xz - h.xz, yz - h.yz, yx - h.yx, zx - h.zx, zy - h.zy);
 }
 
 template <class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 Shear6<T>::operator-() const
 {
     return Shear6 (-xy, -xz, -yz, -yx, -zx, -zy);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::negate()
 {
     xy = -xy;
@@ -580,7 +582,7 @@ Shear6<T>::negate()
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::operator*= (const Shear6& h)
 {
     xy *= h.xy;
@@ -593,7 +595,7 @@ Shear6<T>::operator*= (const Shear6& h)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::operator*= (T a)
 {
     xy *= a;
@@ -606,21 +608,21 @@ Shear6<T>::operator*= (T a)
 }
 
 template <class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 Shear6<T>::operator* (const Shear6& h) const
 {
     return Shear6 (xy * h.xy, xz * h.xz, yz * h.yz, yx * h.yx, zx * h.zx, zy * h.zy);
 }
 
 template <class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 Shear6<T>::operator* (T a) const
 {
     return Shear6 (xy * a, xz * a, yz * a, yx * a, zx * a, zy * a);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::operator/= (const Shear6& h)
 {
     xy /= h.xy;
@@ -633,7 +635,7 @@ Shear6<T>::operator/= (const Shear6& h)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Shear6<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Shear6<T>&
 Shear6<T>::operator/= (T a)
 {
     xy /= a;
@@ -646,14 +648,14 @@ Shear6<T>::operator/= (T a)
 }
 
 template <class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 Shear6<T>::operator/ (const Shear6& h) const
 {
     return Shear6 (xy / h.xy, xz / h.xz, yz / h.yz, yx / h.yx, zx / h.zx, zy / h.zy);
 }
 
 template <class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 Shear6<T>::operator/ (T a) const
 {
     return Shear6 (xy / a, xz / a, yz / a, yx / a, zx / a, zy / a);
@@ -676,7 +678,7 @@ operator<< (std::ostream& s, const Shear6<T>& h)
 //-----------------------------------------
 
 template <class S, class T>
-constexpr inline Shear6<T>
+IMATH_HOSTDEVICE constexpr inline Shear6<T>
 operator* (S a, const Shear6<T>& h)
 {
     return Shear6<T> (a * h.xy, a * h.xz, a * h.yz, a * h.yx, a * h.zx, a * h.zy);

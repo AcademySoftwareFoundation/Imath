@@ -343,7 +343,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec3
     /// Vec4 to Vec3 conversion: divide x, y and z by w.  Throws an
     /// exception if w is zero or if division by w would overflow.
     template <class S>
-    explicit IMATH_CONSTEXPR14 Vec3 (const Vec4<S>& v, InfException);
+    explicit IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3 (const Vec4<S>& v, InfException);
 
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3& operator= (const Vec3& v) IMATH_NOEXCEPT;
@@ -873,131 +873,131 @@ typedef Vec4<double> V4d;
 //----------------------------------------------------------------------------
 
 // Vec2<short>
-template <> short Vec2<short>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec2<short>& Vec2<short>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE short Vec2<short>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec2<short>& Vec2<short>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec2<short>& Vec2<short>::normalizeExc() = delete;
-template <> const Vec2<short>& Vec2<short>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec2<short> Vec2<short>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec2<short>& Vec2<short>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec2<short> Vec2<short>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec2<short> Vec2<short>::normalizedExc() const = delete;
-template <> Vec2<short> Vec2<short>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec2<short> Vec2<short>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 // Vec2<int>
-template <> int Vec2<int>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec2<int>& Vec2<int>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE int Vec2<int>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec2<int>& Vec2<int>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec2<int>& Vec2<int>::normalizeExc() = delete;
-template <> const Vec2<int>& Vec2<int>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec2<int> Vec2<int>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec2<int>& Vec2<int>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec2<int> Vec2<int>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec2<int> Vec2<int>::normalizedExc() const = delete;
-template <> Vec2<int> Vec2<int>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec2<int> Vec2<int>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 // Vec2<int64_t>
-template <> int64_t Vec2<int64_t>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec2<int64_t>& Vec2<int64_t>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE int64_t Vec2<int64_t>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec2<int64_t>& Vec2<int64_t>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec2<int64_t>& Vec2<int64_t>::normalizeExc() = delete;
-template <> const Vec2<int64_t>& Vec2<int64_t>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec2<int64_t> Vec2<int64_t>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec2<int64_t>& Vec2<int64_t>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec2<int64_t> Vec2<int64_t>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec2<int64_t> Vec2<int64_t>::normalizedExc() const = delete;
-template <> Vec2<int64_t> Vec2<int64_t>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec2<int64_t> Vec2<int64_t>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 // Vec3<short>
-template <> short Vec3<short>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec3<short>& Vec3<short>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE short Vec3<short>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec3<short>& Vec3<short>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec3<short>& Vec3<short>::normalizeExc() = delete;
-template <> const Vec3<short>& Vec3<short>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec3<short> Vec3<short>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec3<short>& Vec3<short>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec3<short> Vec3<short>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec3<short> Vec3<short>::normalizedExc() const = delete;
-template <> Vec3<short> Vec3<short>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec3<short> Vec3<short>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 // Vec3<int>
-template <> int Vec3<int>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec3<int>& Vec3<int>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE int Vec3<int>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec3<int>& Vec3<int>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec3<int>& Vec3<int>::normalizeExc() = delete;
-template <> const Vec3<int>& Vec3<int>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec3<int> Vec3<int>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec3<int>& Vec3<int>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec3<int> Vec3<int>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec3<int> Vec3<int>::normalizedExc() const = delete;
-template <> Vec3<int> Vec3<int>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec3<int> Vec3<int>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 // Vec3<int64_t>
-template <> int64_t Vec3<int64_t>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec3<int64_t>& Vec3<int64_t>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE int64_t Vec3<int64_t>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec3<int64_t>& Vec3<int64_t>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec3<int64_t>& Vec3<int64_t>::normalizeExc() = delete;
-template <> const Vec3<int64_t>& Vec3<int64_t>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec3<int64_t> Vec3<int64_t>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec3<int64_t>& Vec3<int64_t>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec3<int64_t> Vec3<int64_t>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec3<int64_t> Vec3<int64_t>::normalizedExc() const = delete;
-template <> Vec3<int64_t> Vec3<int64_t>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec3<int64_t> Vec3<int64_t>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 // Vec4<short>
-template <> short Vec4<short>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec4<short>& Vec4<short>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE short Vec4<short>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec4<short>& Vec4<short>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec4<short>& Vec4<short>::normalizeExc() = delete;
-template <> const Vec4<short>& Vec4<short>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec4<short> Vec4<short>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec4<short>& Vec4<short>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec4<short> Vec4<short>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec4<short> Vec4<short>::normalizedExc() const = delete;
-template <> Vec4<short> Vec4<short>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec4<short> Vec4<short>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 // Vec4<int>
-template <> int Vec4<int>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec4<int>& Vec4<int>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE int Vec4<int>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec4<int>& Vec4<int>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec4<int>& Vec4<int>::normalizeExc() = delete;
-template <> const Vec4<int>& Vec4<int>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec4<int> Vec4<int>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec4<int>& Vec4<int>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec4<int> Vec4<int>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec4<int> Vec4<int>::normalizedExc() const = delete;
-template <> Vec4<int> Vec4<int>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec4<int> Vec4<int>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 // Vec4<int64_t>
-template <> int64_t Vec4<int64_t>::length() const IMATH_NOEXCEPT = delete;
-template <> const Vec4<int64_t>& Vec4<int64_t>::normalize() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE int64_t Vec4<int64_t>::length() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec4<int64_t>& Vec4<int64_t>::normalize() IMATH_NOEXCEPT = delete;
 template <> const Vec4<int64_t>& Vec4<int64_t>::normalizeExc() = delete;
-template <> const Vec4<int64_t>& Vec4<int64_t>::normalizeNonNull() IMATH_NOEXCEPT = delete;
-template <> Vec4<int64_t> Vec4<int64_t>::normalized() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE const Vec4<int64_t>& Vec4<int64_t>::normalizeNonNull() IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec4<int64_t> Vec4<int64_t>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec4<int64_t> Vec4<int64_t>::normalizedExc() const = delete;
-template <> Vec4<int64_t> Vec4<int64_t>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+template <> IMATH_HOSTDEVICE Vec4<int64_t> Vec4<int64_t>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
 
 //------------------------
 // Implementation of Vec2:
 //------------------------
 
 template <class T>
-IMATH_CONSTEXPR14 inline T&
+IMATH_CONSTEXPR14 IMATH_HOSTDEVICE inline T&
 Vec2<T>::operator[] (int i) IMATH_NOEXCEPT
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
 template <class T>
-constexpr inline const T&
+constexpr IMATH_HOSTDEVICE inline const T&
 Vec2<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> inline Vec2<T>::Vec2() IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE inline Vec2<T>::Vec2() IMATH_NOEXCEPT
 {
     // empty, and not constexpr because data is uninitialized.
 }
 
-template <class T> constexpr inline Vec2<T>::Vec2 (T a) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (T a) IMATH_NOEXCEPT
     : x(a), y(a)
 {
 }
 
-template <class T> constexpr inline Vec2<T>::Vec2 (T a, T b) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (T a, T b) IMATH_NOEXCEPT
     : x(a), y(b)
 {
 }
 
-template <class T> constexpr inline Vec2<T>::Vec2 (const Vec2& v) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2& v) IMATH_NOEXCEPT
     : x(v.x), y(v.y)
 {
 }
 
-template <class T> template <class S> constexpr inline Vec2<T>::Vec2 (const Vec2<S>& v) IMATH_NOEXCEPT
+template <class T> template <class S> IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2<S>& v) IMATH_NOEXCEPT
     : x(T(v.x)), y(T(v.y))
 {
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec2<T>&
+IMATH_CONSTEXPR14 IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::operator= (const Vec2& v) IMATH_NOEXCEPT
 {
     x = v.x;
@@ -1007,7 +1007,7 @@ Vec2<T>::operator= (const Vec2& v) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Vec2<T>::setValue (S a, S b) IMATH_NOEXCEPT
 {
     x = T (a);
@@ -1016,7 +1016,7 @@ Vec2<T>::setValue (S a, S b) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Vec2<T>::setValue (const Vec2<S>& v) IMATH_NOEXCEPT
 {
     x = T (v.x);
@@ -1025,7 +1025,7 @@ Vec2<T>::setValue (const Vec2<S>& v) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Vec2<T>::getValue (S& a, S& b) const IMATH_NOEXCEPT
 {
     a = S (x);
@@ -1034,7 +1034,7 @@ Vec2<T>::getValue (S& a, S& b) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Vec2<T>::getValue (Vec2<S>& v) const IMATH_NOEXCEPT
 {
     v.x = S (x);
@@ -1042,14 +1042,14 @@ Vec2<T>::getValue (Vec2<S>& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE inline T*
 Vec2<T>::getValue() IMATH_NOEXCEPT
 {
     return (T*) &x;
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Vec2<T>::getValue() const IMATH_NOEXCEPT
 {
     return (const T*) &x;
@@ -1057,7 +1057,7 @@ Vec2<T>::getValue() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Vec2<T>::operator== (const Vec2<S>& v) const IMATH_NOEXCEPT
 {
     return x == v.x && y == v.y;
@@ -1065,14 +1065,14 @@ Vec2<T>::operator== (const Vec2<S>& v) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Vec2<T>::operator!= (const Vec2<S>& v) const IMATH_NOEXCEPT
 {
     return x != v.x || y != v.y;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Vec2<T>::equalWithAbsError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 2; i++)
@@ -1083,7 +1083,7 @@ Vec2<T>::equalWithAbsError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Vec2<T>::equalWithRelError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 2; i++)
@@ -1094,35 +1094,35 @@ Vec2<T>::equalWithRelError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec2<T>::dot (const Vec2& v) const IMATH_NOEXCEPT
 {
     return x * v.x + y * v.y;
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec2<T>::operator^ (const Vec2& v) const IMATH_NOEXCEPT
 {
     return dot (v);
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec2<T>::cross (const Vec2& v) const IMATH_NOEXCEPT
 {
     return x * v.y - y * v.x;
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec2<T>::operator% (const Vec2& v) const IMATH_NOEXCEPT
 {
     return x * v.y - y * v.x;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec2<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec2<T>&
 Vec2<T>::operator+= (const Vec2& v) IMATH_NOEXCEPT
 {
     x += v.x;
@@ -1131,14 +1131,14 @@ Vec2<T>::operator+= (const Vec2& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Vec2<T>::operator+ (const Vec2& v) const IMATH_NOEXCEPT
 {
     return Vec2 (x + v.x, y + v.y);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec2<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec2<T>&
 Vec2<T>::operator-= (const Vec2& v) IMATH_NOEXCEPT
 {
     x -= v.x;
@@ -1147,21 +1147,21 @@ Vec2<T>::operator-= (const Vec2& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Vec2<T>::operator- (const Vec2& v) const IMATH_NOEXCEPT
 {
     return Vec2 (x - v.x, y - v.y);
 }
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Vec2<T>::operator-() const IMATH_NOEXCEPT
 {
     return Vec2 (-x, -y);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec2<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec2<T>&
 Vec2<T>::negate() IMATH_NOEXCEPT
 {
     x = -x;
@@ -1170,7 +1170,7 @@ Vec2<T>::negate() IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec2<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec2<T>&
 Vec2<T>::operator*= (const Vec2& v) IMATH_NOEXCEPT
 {
     x *= v.x;
@@ -1179,7 +1179,7 @@ Vec2<T>::operator*= (const Vec2& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec2<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec2<T>&
 Vec2<T>::operator*= (T a) IMATH_NOEXCEPT
 {
     x *= a;
@@ -1188,21 +1188,21 @@ Vec2<T>::operator*= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Vec2<T>::operator* (const Vec2& v) const IMATH_NOEXCEPT
 {
     return Vec2 (x * v.x, y * v.y);
 }
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Vec2<T>::operator* (T a) const IMATH_NOEXCEPT
 {
     return Vec2 (x * a, y * a);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec2<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec2<T>&
 Vec2<T>::operator/= (const Vec2& v) IMATH_NOEXCEPT
 {
     x /= v.x;
@@ -1211,7 +1211,7 @@ Vec2<T>::operator/= (const Vec2& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec2<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec2<T>&
 Vec2<T>::operator/= (T a) IMATH_NOEXCEPT
 {
     x /= a;
@@ -1220,21 +1220,21 @@ Vec2<T>::operator/= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Vec2<T>::operator/ (const Vec2& v) const IMATH_NOEXCEPT
 {
     return Vec2 (x / v.x, y / v.y);
 }
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Vec2<T>::operator/ (T a) const IMATH_NOEXCEPT
 {
     return Vec2 (x / a, y / a);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Vec2<T>::lengthTiny() const IMATH_NOEXCEPT
 {
     T absX = std::abs(x);
@@ -1261,7 +1261,7 @@ Vec2<T>::lengthTiny() const IMATH_NOEXCEPT
 }
 
 template <class T>
-inline T
+IMATH_HOSTDEVICE inline T
 Vec2<T>::length() const IMATH_NOEXCEPT
 {
     T length2 = dot (*this);
@@ -1273,14 +1273,14 @@ Vec2<T>::length() const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec2<T>::length2() const IMATH_NOEXCEPT
 {
     return dot (*this);
 }
 
 template <class T>
-inline const Vec2<T>&
+IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::normalize() IMATH_NOEXCEPT
 {
     T l = length();
@@ -1315,7 +1315,7 @@ Vec2<T>::normalizeExc()
 }
 
 template <class T>
-inline const Vec2<T>&
+IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::normalizeNonNull() IMATH_NOEXCEPT
 {
     T l = length();
@@ -1325,7 +1325,7 @@ Vec2<T>::normalizeNonNull() IMATH_NOEXCEPT
 }
 
 template <class T>
-inline Vec2<T>
+IMATH_HOSTDEVICE inline Vec2<T>
 Vec2<T>::normalized() const IMATH_NOEXCEPT
 {
     T l = length();
@@ -1349,7 +1349,7 @@ Vec2<T>::normalizedExc() const
 }
 
 template <class T>
-inline Vec2<T>
+IMATH_HOSTDEVICE inline Vec2<T>
 Vec2<T>::normalizedNonNull() const IMATH_NOEXCEPT
 {
     T l = length();
@@ -1361,6 +1361,7 @@ Vec2<T>::normalizedNonNull() const IMATH_NOEXCEPT
 //-----------------------
 
 template <class T>
+IMATH_HOSTDEVICE
 IMATH_CONSTEXPR14 inline T&
 Vec3<T>::operator[] (int i) IMATH_NOEXCEPT
 {
@@ -1368,39 +1369,40 @@ Vec3<T>::operator[] (int i) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline const T&
+IMATH_HOSTDEVICE constexpr inline const T&
 Vec3<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> inline Vec3<T>::Vec3() IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE inline Vec3<T>::Vec3() IMATH_NOEXCEPT
 {
     // empty, and not constexpr because data is uninitialized.
 }
 
-template <class T> constexpr inline Vec3<T>::Vec3 (T a) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (T a) IMATH_NOEXCEPT
     : x(a), y(a), z(a)
 {
 }
 
-template <class T> constexpr inline Vec3<T>::Vec3 (T a, T b, T c) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (T a, T b, T c) IMATH_NOEXCEPT
     : x(a), y(b), z(c)
 {
 }
 
-template <class T> constexpr inline Vec3<T>::Vec3 (const Vec3& v) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec3& v) IMATH_NOEXCEPT
     : x(v.x), y(v.y), z(v.z)
 {
 }
 
-template <class T> template <class S> constexpr inline Vec3<T>::Vec3 (const Vec3<S>& v) IMATH_NOEXCEPT
+template <class T> template <class S>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec3<S>& v) IMATH_NOEXCEPT
     : x(T(v.x)), y(T(v.y)), z(T(v.z))
 {
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator= (const Vec3& v) IMATH_NOEXCEPT
 {
     x = v.x;
@@ -1409,14 +1411,15 @@ Vec3<T>::operator= (const Vec3& v) IMATH_NOEXCEPT
     return *this;
 }
 
-template <class T> template <class S> constexpr inline Vec3<T>::Vec3 (const Vec4<S>& v) IMATH_NOEXCEPT
+template <class T> template <class S>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec4<S>& v) IMATH_NOEXCEPT
     : x(T(v.x/v.w)), y(T(v.y/v.w)), z(T(v.z/v.w))
 {
 }
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec4<S>& v, InfException)
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec4<S>& v, InfException)
 {
     T vx = T (v.x);
     T vy = T (v.y);
@@ -1440,7 +1443,7 @@ IMATH_CONSTEXPR14 inline Vec3<T>::Vec3 (const Vec4<S>& v, InfException)
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Vec3<T>::setValue (S a, S b, S c) IMATH_NOEXCEPT
 {
     x = T (a);
@@ -1450,7 +1453,7 @@ Vec3<T>::setValue (S a, S b, S c) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Vec3<T>::setValue (const Vec3<S>& v) IMATH_NOEXCEPT
 {
     x = T (v.x);
@@ -1460,7 +1463,7 @@ Vec3<T>::setValue (const Vec3<S>& v) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Vec3<T>::getValue (S& a, S& b, S& c) const IMATH_NOEXCEPT
 {
     a = S (x);
@@ -1470,7 +1473,7 @@ Vec3<T>::getValue (S& a, S& b, S& c) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Vec3<T>::getValue (Vec3<S>& v) const IMATH_NOEXCEPT
 {
     v.x = S (x);
@@ -1479,14 +1482,14 @@ Vec3<T>::getValue (Vec3<S>& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE inline T*
 Vec3<T>::getValue() IMATH_NOEXCEPT
 {
     return (T*) &x;
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Vec3<T>::getValue() const IMATH_NOEXCEPT
 {
     return (const T*) &x;
@@ -1494,7 +1497,7 @@ Vec3<T>::getValue() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Vec3<T>::operator== (const Vec3<S>& v) const IMATH_NOEXCEPT
 {
     return x == v.x && y == v.y && z == v.z;
@@ -1502,14 +1505,14 @@ Vec3<T>::operator== (const Vec3<S>& v) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Vec3<T>::operator!= (const Vec3<S>& v) const IMATH_NOEXCEPT
 {
     return x != v.x || y != v.y || z != v.z;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Vec3<T>::equalWithAbsError (const Vec3<T>& v, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 3; i++)
@@ -1520,7 +1523,7 @@ Vec3<T>::equalWithAbsError (const Vec3<T>& v, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Vec3<T>::equalWithRelError (const Vec3<T>& v, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 3; i++)
@@ -1531,28 +1534,28 @@ Vec3<T>::equalWithRelError (const Vec3<T>& v, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec3<T>::dot (const Vec3& v) const IMATH_NOEXCEPT
 {
     return x * v.x + y * v.y + z * v.z;
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec3<T>::operator^ (const Vec3& v) const IMATH_NOEXCEPT
 {
     return dot (v);
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::cross (const Vec3& v) const IMATH_NOEXCEPT
 {
     return Vec3 (y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator%= (const Vec3& v) IMATH_NOEXCEPT
 {
     T a = y * v.z - z * v.y;
@@ -1565,14 +1568,14 @@ Vec3<T>::operator%= (const Vec3& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::operator% (const Vec3& v) const IMATH_NOEXCEPT
 {
     return Vec3 (y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator+= (const Vec3& v) IMATH_NOEXCEPT
 {
     x += v.x;
@@ -1582,14 +1585,14 @@ Vec3<T>::operator+= (const Vec3& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::operator+ (const Vec3& v) const IMATH_NOEXCEPT
 {
     return Vec3 (x + v.x, y + v.y, z + v.z);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator-= (const Vec3& v) IMATH_NOEXCEPT
 {
     x -= v.x;
@@ -1599,21 +1602,21 @@ Vec3<T>::operator-= (const Vec3& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::operator- (const Vec3& v) const IMATH_NOEXCEPT
 {
     return Vec3 (x - v.x, y - v.y, z - v.z);
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::operator-() const IMATH_NOEXCEPT
 {
     return Vec3 (-x, -y, -z);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::negate() IMATH_NOEXCEPT
 {
     x = -x;
@@ -1623,7 +1626,7 @@ Vec3<T>::negate() IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator*= (const Vec3& v) IMATH_NOEXCEPT
 {
     x *= v.x;
@@ -1633,7 +1636,7 @@ Vec3<T>::operator*= (const Vec3& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator*= (T a) IMATH_NOEXCEPT
 {
     x *= a;
@@ -1643,21 +1646,21 @@ Vec3<T>::operator*= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::operator* (const Vec3& v) const IMATH_NOEXCEPT
 {
     return Vec3 (x * v.x, y * v.y, z * v.z);
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::operator* (T a) const IMATH_NOEXCEPT
 {
     return Vec3 (x * a, y * a, z * a);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator/= (const Vec3& v) IMATH_NOEXCEPT
 {
     x /= v.x;
@@ -1667,7 +1670,7 @@ Vec3<T>::operator/= (const Vec3& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec3<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator/= (T a) IMATH_NOEXCEPT
 {
     x /= a;
@@ -1677,21 +1680,21 @@ Vec3<T>::operator/= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::operator/ (const Vec3& v) const IMATH_NOEXCEPT
 {
     return Vec3 (x / v.x, y / v.y, z / v.z);
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Vec3<T>::operator/ (T a) const IMATH_NOEXCEPT
 {
     return Vec3 (x / a, y / a, z / a);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Vec3<T>::lengthTiny() const IMATH_NOEXCEPT
 {
     T absX = (x >= T (0)) ? x : -x;
@@ -1723,7 +1726,7 @@ Vec3<T>::lengthTiny() const IMATH_NOEXCEPT
 }
 
 template <class T>
-inline T
+IMATH_HOSTDEVICE inline T
 Vec3<T>::length() const IMATH_NOEXCEPT
 {
     T length2 = dot (*this);
@@ -1735,14 +1738,14 @@ Vec3<T>::length() const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec3<T>::length2() const IMATH_NOEXCEPT
 {
     return dot (*this);
 }
 
 template <class T>
-inline const Vec3<T>&
+IMATH_HOSTDEVICE inline const Vec3<T>&
 Vec3<T>::normalize() IMATH_NOEXCEPT
 {
     T l = length();
@@ -1779,7 +1782,7 @@ Vec3<T>::normalizeExc()
 }
 
 template <class T>
-inline const Vec3<T>&
+IMATH_HOSTDEVICE inline const Vec3<T>&
 Vec3<T>::normalizeNonNull() IMATH_NOEXCEPT
 {
     T l = length();
@@ -1790,7 +1793,7 @@ Vec3<T>::normalizeNonNull() IMATH_NOEXCEPT
 }
 
 template <class T>
-inline Vec3<T>
+IMATH_HOSTDEVICE inline Vec3<T>
 Vec3<T>::normalized() const IMATH_NOEXCEPT
 {
     T l = length();
@@ -1814,7 +1817,7 @@ Vec3<T>::normalizedExc() const
 }
 
 template <class T>
-inline Vec3<T>
+IMATH_HOSTDEVICE inline Vec3<T>
 Vec3<T>::normalizedNonNull() const IMATH_NOEXCEPT
 {
     T l = length();
@@ -1826,6 +1829,7 @@ Vec3<T>::normalizedNonNull() const IMATH_NOEXCEPT
 //-----------------------
 
 template <class T>
+IMATH_HOSTDEVICE
 IMATH_CONSTEXPR14 inline T&
 Vec4<T>::operator[] (int i) IMATH_NOEXCEPT
 {
@@ -1833,39 +1837,40 @@ Vec4<T>::operator[] (int i) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline const T&
+IMATH_HOSTDEVICE constexpr inline const T&
 Vec4<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> inline Vec4<T>::Vec4() IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE inline Vec4<T>::Vec4() IMATH_NOEXCEPT
 {
     // empty, and not constexpr because data is uninitialized.
 }
 
-template <class T> constexpr inline Vec4<T>::Vec4 (T a) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (T a) IMATH_NOEXCEPT
     : x(a), y(a), z(a), w(a)
 {
 }
 
-template <class T> constexpr inline Vec4<T>::Vec4 (T a, T b, T c, T d) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (T a, T b, T c, T d) IMATH_NOEXCEPT
     : x(a), y(b), z(c), w(d)
 {
 }
 
-template <class T> constexpr inline Vec4<T>::Vec4 (const Vec4& v) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4& v) IMATH_NOEXCEPT
     : x(v.x), y(v.y), z(v.z), w(v.w)
 {
 }
 
-template <class T> template <class S> constexpr inline Vec4<T>::Vec4 (const Vec4<S>& v) IMATH_NOEXCEPT
+template <class T> template <class S>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4<S>& v) IMATH_NOEXCEPT
     : x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(v.w))
 {
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec4<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator= (const Vec4& v) IMATH_NOEXCEPT
 {
     x = v.x;
@@ -1875,14 +1880,15 @@ Vec4<T>::operator= (const Vec4& v) IMATH_NOEXCEPT
     return *this;
 }
 
-template <class T> template <class S> constexpr inline Vec4<T>::Vec4 (const Vec3<S>& v) IMATH_NOEXCEPT
+template <class T> template <class S>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec3<S>& v) IMATH_NOEXCEPT
     : x(T(v.x)), y(T(v.y)), z(T(v.z)), w(T(1))
 {
 }
 
 template <class T>
 template <class S>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Vec4<T>::operator== (const Vec4<S>& v) const IMATH_NOEXCEPT
 {
     return x == v.x && y == v.y && z == v.z && w == v.w;
@@ -1890,14 +1896,14 @@ Vec4<T>::operator== (const Vec4<S>& v) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Vec4<T>::operator!= (const Vec4<S>& v) const IMATH_NOEXCEPT
 {
     return x != v.x || y != v.y || z != v.z || w != v.w;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Vec4<T>::equalWithAbsError (const Vec4<T>& v, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 4; i++)
@@ -1908,7 +1914,7 @@ Vec4<T>::equalWithAbsError (const Vec4<T>& v, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Vec4<T>::equalWithRelError (const Vec4<T>& v, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 4; i++)
@@ -1919,21 +1925,21 @@ Vec4<T>::equalWithRelError (const Vec4<T>& v, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec4<T>::dot (const Vec4& v) const IMATH_NOEXCEPT
 {
     return x * v.x + y * v.y + z * v.z + w * v.w;
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec4<T>::operator^ (const Vec4& v) const IMATH_NOEXCEPT
 {
     return dot (v);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec4<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator+= (const Vec4& v) IMATH_NOEXCEPT
 {
     x += v.x;
@@ -1944,14 +1950,14 @@ Vec4<T>::operator+= (const Vec4& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec4<T>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>
 Vec4<T>::operator+ (const Vec4& v) const IMATH_NOEXCEPT
 {
     return Vec4 (x + v.x, y + v.y, z + v.z, w + v.w);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec4<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator-= (const Vec4& v) IMATH_NOEXCEPT
 {
     x -= v.x;
@@ -1962,21 +1968,21 @@ Vec4<T>::operator-= (const Vec4& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec4<T>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>
 Vec4<T>::operator- (const Vec4& v) const IMATH_NOEXCEPT
 {
     return Vec4 (x - v.x, y - v.y, z - v.z, w - v.w);
 }
 
 template <class T>
-constexpr inline Vec4<T>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>
 Vec4<T>::operator-() const IMATH_NOEXCEPT
 {
     return Vec4 (-x, -y, -z, -w);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec4<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::negate() IMATH_NOEXCEPT
 {
     x = -x;
@@ -1987,7 +1993,7 @@ Vec4<T>::negate() IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec4<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator*= (const Vec4& v) IMATH_NOEXCEPT
 {
     x *= v.x;
@@ -1998,7 +2004,7 @@ Vec4<T>::operator*= (const Vec4& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec4<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator*= (T a) IMATH_NOEXCEPT
 {
     x *= a;
@@ -2009,21 +2015,21 @@ Vec4<T>::operator*= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec4<T>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>
 Vec4<T>::operator* (const Vec4& v) const IMATH_NOEXCEPT
 {
     return Vec4 (x * v.x, y * v.y, z * v.z, w * v.w);
 }
 
 template <class T>
-constexpr inline Vec4<T>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>
 Vec4<T>::operator* (T a) const IMATH_NOEXCEPT
 {
     return Vec4 (x * a, y * a, z * a, w * a);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec4<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator/= (const Vec4& v) IMATH_NOEXCEPT
 {
     x /= v.x;
@@ -2034,7 +2040,7 @@ Vec4<T>::operator/= (const Vec4& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Vec4<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator/= (T a) IMATH_NOEXCEPT
 {
     x /= a;
@@ -2045,21 +2051,21 @@ Vec4<T>::operator/= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec4<T>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>
 Vec4<T>::operator/ (const Vec4& v) const IMATH_NOEXCEPT
 {
     return Vec4 (x / v.x, y / v.y, z / v.z, w / v.w);
 }
 
 template <class T>
-constexpr inline Vec4<T>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>
 Vec4<T>::operator/ (T a) const IMATH_NOEXCEPT
 {
     return Vec4 (x / a, y / a, z / a, w / a);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Vec4<T>::lengthTiny() const IMATH_NOEXCEPT
 {
     T absX = (x >= T (0)) ? x : -x;
@@ -2096,7 +2102,7 @@ Vec4<T>::lengthTiny() const IMATH_NOEXCEPT
 }
 
 template <class T>
-inline T
+IMATH_HOSTDEVICE inline T
 Vec4<T>::length() const IMATH_NOEXCEPT
 {
     T length2 = dot (*this);
@@ -2108,14 +2114,14 @@ Vec4<T>::length() const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Vec4<T>::length2() const IMATH_NOEXCEPT
 {
     return dot (*this);
 }
 
 template <class T>
-const inline Vec4<T>&
+IMATH_HOSTDEVICE const inline Vec4<T>&
 Vec4<T>::normalize() IMATH_NOEXCEPT
 {
     T l = length();
@@ -2154,7 +2160,7 @@ Vec4<T>::normalizeExc()
 }
 
 template <class T>
-inline const Vec4<T>&
+IMATH_HOSTDEVICE inline const Vec4<T>&
 Vec4<T>::normalizeNonNull() IMATH_NOEXCEPT
 {
     T l = length();
@@ -2166,7 +2172,7 @@ Vec4<T>::normalizeNonNull() IMATH_NOEXCEPT
 }
 
 template <class T>
-inline Vec4<T>
+IMATH_HOSTDEVICE inline Vec4<T>
 Vec4<T>::normalized() const IMATH_NOEXCEPT
 {
     T l = length();
@@ -2190,7 +2196,7 @@ Vec4<T>::normalizedExc() const
 }
 
 template <class T>
-inline Vec4<T>
+IMATH_HOSTDEVICE inline Vec4<T>
 Vec4<T>::normalizedNonNull() const IMATH_NOEXCEPT
 {
     T l = length();
@@ -2227,21 +2233,21 @@ operator<< (std::ostream& s, const Vec4<T>& v)
 //-----------------------------------------
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 operator* (T a, const Vec2<T>& v) IMATH_NOEXCEPT
 {
     return Vec2<T> (a * v.x, a * v.y);
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 operator* (T a, const Vec3<T>& v) IMATH_NOEXCEPT
 {
     return Vec3<T> (a * v.x, a * v.y, a * v.z);
 }
 
 template <class T>
-constexpr inline Vec4<T>
+IMATH_HOSTDEVICE constexpr inline Vec4<T>
 operator* (T a, const Vec4<T>& v) IMATH_NOEXCEPT
 {
     return Vec4<T> (a * v.x, a * v.y, a * v.z, a * v.w);

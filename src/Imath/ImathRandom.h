@@ -119,24 +119,24 @@ IMATH_HOSTDEVICE IMATH_EXPORT void srand48 (long int seed);
 // Implementation
 //---------------
 
-inline void
+IMATH_HOSTDEVICE inline void
 Rand32::init (unsigned long int seed)
 {
     _state = (seed * 0xa5a573a5L) ^ 0x5a5a5a5aL;
 }
 
-inline Rand32::Rand32 (unsigned long int seed)
+IMATH_HOSTDEVICE inline Rand32::Rand32 (unsigned long int seed)
 {
     init (seed);
 }
 
-inline void
+IMATH_HOSTDEVICE inline void
 Rand32::next()
 {
     _state = 1664525L * _state + 1013904223L;
 }
 
-inline bool
+IMATH_HOSTDEVICE inline bool
 Rand32::nextb()
 {
     next();
@@ -144,21 +144,21 @@ Rand32::nextb()
     return !!(_state & 2147483648UL);
 }
 
-inline unsigned long int
+IMATH_HOSTDEVICE inline unsigned long int
 Rand32::nexti()
 {
     next();
     return _state & 0xffffffff;
 }
 
-inline float
+IMATH_HOSTDEVICE inline float
 Rand32::nextf (float rangeMin, float rangeMax)
 {
     float f = nextf();
     return rangeMin * (1 - f) + rangeMax * f;
 }
 
-inline void
+IMATH_HOSTDEVICE inline void
 Rand48::init (unsigned long int seed)
 {
     seed = (seed * 0xa5a573a5L) ^ 0x5a5a5a5aL;
@@ -168,30 +168,30 @@ Rand48::init (unsigned long int seed)
     _state[2] = (unsigned short int) (seed & 0xFFFF);
 }
 
-inline Rand48::Rand48 (unsigned long int seed)
+IMATH_HOSTDEVICE inline Rand48::Rand48 (unsigned long int seed)
 {
     init (seed);
 }
 
-inline bool
+IMATH_HOSTDEVICE inline bool
 Rand48::nextb()
 {
     return nrand48 (_state) & 1;
 }
 
-inline long int
+IMATH_HOSTDEVICE inline long int
 Rand48::nexti()
 {
     return nrand48 (_state);
 }
 
-inline double
+IMATH_HOSTDEVICE inline double
 Rand48::nextf()
 {
     return erand48 (_state);
 }
 
-inline double
+IMATH_HOSTDEVICE inline double
 Rand48::nextf (double rangeMin, double rangeMax)
 {
     double f = nextf();
@@ -199,7 +199,7 @@ Rand48::nextf (double rangeMin, double rangeMax)
 }
 
 template <class Vec, class Rand>
-Vec
+IMATH_HOSTDEVICE Vec
 solidSphereRand (Rand& rand)
 {
     Vec v;
@@ -214,7 +214,7 @@ solidSphereRand (Rand& rand)
 }
 
 template <class Vec, class Rand>
-Vec
+IMATH_HOSTDEVICE Vec
 hollowSphereRand (Rand& rand)
 {
     Vec v;
@@ -232,7 +232,7 @@ hollowSphereRand (Rand& rand)
 }
 
 template <class Rand>
-float
+IMATH_HOSTDEVICE float
 gaussRand (Rand& rand)
 {
     float x;       // Note: to avoid numerical problems with very small
@@ -250,7 +250,7 @@ gaussRand (Rand& rand)
 }
 
 template <class Vec, class Rand>
-Vec
+IMATH_HOSTDEVICE Vec
 gaussSphereRand (Rand& rand)
 {
     return hollowSphereRand<Vec> (rand) * gaussRand (rand);

@@ -84,13 +84,14 @@ typedef Line3<float> Line3f;
 /// Line of type double
 typedef Line3<double> Line3d;
 
-template <class T> IMATH_CONSTEXPR14 inline Line3<T>::Line3 (const Vec3<T>& p0, const Vec3<T>& p1) IMATH_NOEXCEPT
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Line3<T>::Line3 (const Vec3<T>& p0, const Vec3<T>& p1) IMATH_NOEXCEPT
 {
     set (p0, p1);
 }
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Line3<T>::set (const Vec3<T>& p0, const Vec3<T>& p1) IMATH_NOEXCEPT
 {
     pos = p0;
@@ -99,28 +100,28 @@ Line3<T>::set (const Vec3<T>& p0, const Vec3<T>& p1) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Line3<T>::operator() (T parameter) const IMATH_NOEXCEPT
 {
     return pos + dir * parameter;
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Line3<T>::distanceTo (const Vec3<T>& point) const IMATH_NOEXCEPT
 {
     return (closestPointTo (point) - point).length();
 }
 
 template <class T>
-constexpr inline Vec3<T>
+IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Line3<T>::closestPointTo (const Vec3<T>& point) const IMATH_NOEXCEPT
 {
     return ((point - pos) ^ dir) * dir + pos;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Line3<T>::distanceTo (const Line3<T>& line) const IMATH_NOEXCEPT
 {
     T d = (dir % line.dir) ^ (line.pos - pos);
@@ -128,7 +129,7 @@ Line3<T>::distanceTo (const Line3<T>& line) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Vec3<T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Vec3<T>
 Line3<T>::closestPointTo (const Line3<T>& line) const IMATH_NOEXCEPT
 {
     // Assumes the lines are normalized
@@ -164,7 +165,7 @@ operator<< (std::ostream& o, const Line3<T>& line)
 
 /// Transform a line by a matrix
 template <class S, class T>
-constexpr inline Line3<S>
+IMATH_HOSTDEVICE constexpr inline Line3<S>
 operator* (const Line3<S>& line, const Matrix44<T>& M) IMATH_NOEXCEPT
 {
     return Line3<S> (line.pos * M, (line.pos + line.dir) * M);

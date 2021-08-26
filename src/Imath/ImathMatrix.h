@@ -868,7 +868,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
 
     /// Matrix-matrix multiplication returning a result.
     IMATH_HOSTDEVICE
-    static IMATH_CONSTEXPR14 Matrix44 multiply (const Matrix44& a, const Matrix44& b) noexcept;
+    static IMATH_CONSTEXPR14 Matrix44 multiply (const Matrix44& a, const Matrix44& b) IMATH_NOEXCEPT;
 
     /// Vector-matrix multiplication: a homogeneous transformation
     /// by computing Vec3 (src.x, src.y, src.z, 1) * m and dividing by the
@@ -1144,20 +1144,20 @@ typedef Matrix44<double> M44d;
 //---------------------------
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
 Matrix22<T>::operator[] (int i) IMATH_NOEXCEPT
 {
     return x[i];
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Matrix22<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
     return x[i];
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22() IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22() IMATH_NOEXCEPT
 {
     x[0][0] = 1;
     x[0][1] = 0;
@@ -1165,7 +1165,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22() IMATH_NOEXCE
     x[1][1] = 1;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a) IMATH_NOEXCEPT
 {
     x[0][0] = a;
     x[0][1] = a;
@@ -1173,7 +1173,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a) IMATH_NO
     x[1][1] = a;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const T a[2][2]) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const T a[2][2]) IMATH_NOEXCEPT
 {
     // Function calls and aliasing issues can inhibit vectorization versus
     // straight assignment of data members, so instead of this:
@@ -1185,7 +1185,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const T a[2][
     x[1][1] = a[1][1];
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a, T b, T c, T d) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a, T b, T c, T d) IMATH_NOEXCEPT
 {
     x[0][0] = a;
     x[0][1] = b;
@@ -1193,7 +1193,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a, T b, T c
     x[1][1] = d;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const Matrix22& v) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const Matrix22& v) IMATH_NOEXCEPT
 {
     // Function calls and aliasing issues can inhibit vectorization versus
     // straight assignment of data members, so we don't do this:
@@ -1207,7 +1207,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const Matrix2
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const Matrix22<S>& v) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const Matrix22<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = T (v.x[0][0]);
     x[0][1] = T (v.x[0][1]);
@@ -1216,7 +1216,7 @@ IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const Matrix22<S>& v) IMATH_NOEX
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator= (const Matrix22& v) IMATH_NOEXCEPT
 {
     // Function calls and aliasing issues can inhibit vectorization versus
@@ -1231,7 +1231,7 @@ Matrix22<T>::operator= (const Matrix22& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator= (T a) IMATH_NOEXCEPT
 {
     x[0][0] = a;
@@ -1242,14 +1242,14 @@ Matrix22<T>::operator= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
 Matrix22<T>::getValue() IMATH_NOEXCEPT
 {
     return (T*) &x[0][0];
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Matrix22<T>::getValue() const IMATH_NOEXCEPT
 {
     return (const T*) &x[0][0];
@@ -1257,7 +1257,7 @@ Matrix22<T>::getValue() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix22<T>::getValue (Matrix22<S>& v) const IMATH_NOEXCEPT
 {
     v.x[0][0] = x[0][0];
@@ -1268,7 +1268,7 @@ Matrix22<T>::getValue (Matrix22<S>& v) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>&
 Matrix22<T>::setValue (const Matrix22<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = v.x[0][0];
@@ -1280,7 +1280,7 @@ Matrix22<T>::setValue (const Matrix22<S>& v) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>&
 Matrix22<T>::setTheMatrix (const Matrix22<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = v.x[0][0];
@@ -1291,7 +1291,7 @@ Matrix22<T>::setTheMatrix (const Matrix22<S>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix22<T>::makeIdentity() IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -1301,7 +1301,7 @@ Matrix22<T>::makeIdentity() IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Matrix22<T>::operator== (const Matrix22& v) const IMATH_NOEXCEPT
 {
     return x[0][0] == v.x[0][0] && x[0][1] == v.x[0][1] && x[1][0] == v.x[1][0] &&
@@ -1309,7 +1309,7 @@ Matrix22<T>::operator== (const Matrix22& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Matrix22<T>::operator!= (const Matrix22& v) const IMATH_NOEXCEPT
 {
     return x[0][0] != v.x[0][0] || x[0][1] != v.x[0][1] || x[1][0] != v.x[1][0] ||
@@ -1317,7 +1317,7 @@ Matrix22<T>::operator!= (const Matrix22& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Matrix22<T>::equalWithAbsError (const Matrix22<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 2; i++)
@@ -1329,7 +1329,7 @@ Matrix22<T>::equalWithAbsError (const Matrix22<T>& m, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Matrix22<T>::equalWithRelError (const Matrix22<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 2; i++)
@@ -1341,7 +1341,7 @@ Matrix22<T>::equalWithRelError (const Matrix22<T>& m, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator+= (const Matrix22<T>& v) IMATH_NOEXCEPT
 {
     x[0][0] += v.x[0][0];
@@ -1353,7 +1353,7 @@ Matrix22<T>::operator+= (const Matrix22<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator+= (T a) IMATH_NOEXCEPT
 {
     x[0][0] += a;
@@ -1365,7 +1365,7 @@ Matrix22<T>::operator+= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix22<T>
+IMATH_HOSTDEVICE constexpr inline Matrix22<T>
 Matrix22<T>::operator+ (const Matrix22<T>& v) const IMATH_NOEXCEPT
 {
     return Matrix22 (x[0][0] + v.x[0][0],
@@ -1375,7 +1375,7 @@ Matrix22<T>::operator+ (const Matrix22<T>& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator-= (const Matrix22<T>& v) IMATH_NOEXCEPT
 {
     x[0][0] -= v.x[0][0];
@@ -1387,7 +1387,7 @@ Matrix22<T>::operator-= (const Matrix22<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator-= (T a) IMATH_NOEXCEPT
 {
     x[0][0] -= a;
@@ -1399,7 +1399,7 @@ Matrix22<T>::operator-= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix22<T>
+IMATH_HOSTDEVICE constexpr inline Matrix22<T>
 Matrix22<T>::operator- (const Matrix22<T>& v) const IMATH_NOEXCEPT
 {
     return Matrix22 (x[0][0] - v.x[0][0],
@@ -1409,14 +1409,14 @@ Matrix22<T>::operator- (const Matrix22<T>& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix22<T>
+IMATH_HOSTDEVICE constexpr inline Matrix22<T>
 Matrix22<T>::operator-() const IMATH_NOEXCEPT
 {
     return Matrix22 (-x[0][0], -x[0][1], -x[1][0], -x[1][1]);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::negate() IMATH_NOEXCEPT
 {
     x[0][0] = -x[0][0];
@@ -1428,7 +1428,7 @@ Matrix22<T>::negate() IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator*= (T a) IMATH_NOEXCEPT
 {
     x[0][0] *= a;
@@ -1440,7 +1440,7 @@ Matrix22<T>::operator*= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix22<T>
+IMATH_HOSTDEVICE constexpr inline Matrix22<T>
 Matrix22<T>::operator* (T a) const IMATH_NOEXCEPT
 {
     return Matrix22 (x[0][0] * a, x[0][1] * a, x[1][0] * a, x[1][1] * a);
@@ -1448,14 +1448,14 @@ Matrix22<T>::operator* (T a) const IMATH_NOEXCEPT
 
 /// Matrix-scalar multiplication
 template <class T>
-inline Matrix22<T>
+IMATH_HOSTDEVICE inline Matrix22<T>
 operator* (T a, const Matrix22<T>& v) IMATH_NOEXCEPT
 {
     return v * a;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator*= (const Matrix22<T>& v) IMATH_NOEXCEPT
 {
     Matrix22 tmp (T (0));
@@ -1470,7 +1470,7 @@ Matrix22<T>::operator*= (const Matrix22<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Matrix22<T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>
 Matrix22<T>::operator* (const Matrix22<T>& v) const IMATH_NOEXCEPT
 {
     Matrix22 tmp (T (0));
@@ -1485,7 +1485,7 @@ Matrix22<T>::operator* (const Matrix22<T>& v) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix22<T>::multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const IMATH_NOEXCEPT
 {
     S a, b;
@@ -1498,7 +1498,7 @@ Matrix22<T>::multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const IMATH_NOEXCE
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::operator/= (T a) IMATH_NOEXCEPT
 {
     x[0][0] /= a;
@@ -1510,14 +1510,14 @@ Matrix22<T>::operator/= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix22<T>
+IMATH_HOSTDEVICE constexpr inline Matrix22<T>
 Matrix22<T>::operator/ (T a) const IMATH_NOEXCEPT
 {
     return Matrix22 (x[0][0] / a, x[0][1] / a, x[1][0] / a, x[1][1] / a);
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::transpose() IMATH_NOEXCEPT
 {
     Matrix22 tmp (x[0][0], x[1][0], x[0][1], x[1][1]);
@@ -1526,7 +1526,7 @@ Matrix22<T>::transpose() IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix22<T>
+IMATH_HOSTDEVICE constexpr inline Matrix22<T>
 Matrix22<T>::transposed() const IMATH_NOEXCEPT
 {
     return Matrix22 (x[0][0], x[1][0], x[0][1], x[1][1]);
@@ -1541,7 +1541,7 @@ Matrix22<T>::invert (bool singExc)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::invert() IMATH_NOEXCEPT
 {
     *this = inverse();
@@ -1592,7 +1592,7 @@ Matrix22<T>::inverse (bool singExc) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Matrix22<T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>
 Matrix22<T>::inverse() const IMATH_NOEXCEPT
 {
     Matrix22 s (x[1][1], -x[0][1], -x[1][0], x[0][0]);
@@ -1632,7 +1632,7 @@ Matrix22<T>::inverse() const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Matrix22<T>::determinant() const IMATH_NOEXCEPT
 {
     return x[0][0] * x[1][1] - x[1][0] * x[0][1];
@@ -1640,7 +1640,7 @@ Matrix22<T>::determinant() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline const Matrix22<T>&
+IMATH_HOSTDEVICE inline const Matrix22<T>&
 Matrix22<T>::setRotation (S r) IMATH_NOEXCEPT
 {
     S cos_r, sin_r;
@@ -1659,8 +1659,7 @@ Matrix22<T>::setRotation (S r) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::rotate (S r) IMATH_NOEXCEPT
 {
     *this *= Matrix22<T>().setRotation (r);
@@ -1668,7 +1667,6 @@ Matrix22<T>::rotate (S r) IMATH_NOEXCEPT
 }
 
 template <class T>
-
 IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::setScale (T s) IMATH_NOEXCEPT
 {
@@ -1688,8 +1686,7 @@ Matrix22<T>::setScale (T s) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::setScale (const Vec2<S>& s) IMATH_NOEXCEPT
 {
     //
@@ -1708,8 +1705,7 @@ Matrix22<T>::setScale (const Vec2<S>& s) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-
-IMATH_CONSTEXPR14 inline const Matrix22<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 Matrix22<T>::scale (const Vec2<S>& s) IMATH_NOEXCEPT
 {
     x[0][0] *= s.x;
@@ -1726,21 +1722,21 @@ Matrix22<T>::scale (const Vec2<S>& s) IMATH_NOEXCEPT
 //---------------------------
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
 Matrix33<T>::operator[] (int i) IMATH_NOEXCEPT
 {
     return x[i];
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Matrix33<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
     return x[i];
 }
 
 template <class T>
-inline IMATH_CONSTEXPR14
+IMATH_HOSTDEVICE inline IMATH_CONSTEXPR14
 Matrix33<T>::Matrix33() IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -1754,7 +1750,7 @@ Matrix33<T>::Matrix33() IMATH_NOEXCEPT
     x[2][2] = 1;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a) IMATH_NOEXCEPT
 {
     x[0][0] = a;
     x[0][1] = a;
@@ -1767,7 +1763,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a) IMATH_NO
     x[2][2] = a;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const T a[3][3]) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const T a[3][3]) IMATH_NOEXCEPT
 {
     // Function calls and aliasing issues can inhibit vectorization versus
     // straight assignment of data members, so instead of this:
@@ -1785,8 +1781,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const T a[3][
 }
 
 template <class T>
-
-IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a, T b, T c, T d, T e, T f, T g, T h, T i) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a, T b, T c, T d, T e, T f, T g, T h, T i) IMATH_NOEXCEPT
 {
     x[0][0] = a;
     x[0][1] = b;
@@ -1799,7 +1794,8 @@ IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a, T b, T c, T d, T e, T f, T 
     x[2][2] = i;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix33& v) IMATH_NOEXCEPT
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix33& v) IMATH_NOEXCEPT
 {
     // Function calls and aliasing issues can inhibit vectorization versus
     // straight assignment of data members, so instead of this:
@@ -1818,8 +1814,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix3
 
 template <class T>
 template <class S>
-
-IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix33<S>& v) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix33<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = T (v.x[0][0]);
     x[0][1] = T (v.x[0][1]);
@@ -1833,8 +1828,7 @@ IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const Matrix33<S>& v) IMATH_NOEX
 }
 
 template <class T>
-
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator= (const Matrix33& v) IMATH_NOEXCEPT
 {
     // Function calls and aliasing issues can inhibit vectorization versus
@@ -1854,8 +1848,7 @@ Matrix33<T>::operator= (const Matrix33& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator= (T a) IMATH_NOEXCEPT
 {
     x[0][0] = a;
@@ -1871,14 +1864,14 @@ Matrix33<T>::operator= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
 Matrix33<T>::getValue() IMATH_NOEXCEPT
 {
     return (T*) &x[0][0];
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Matrix33<T>::getValue() const IMATH_NOEXCEPT
 {
     return (const T*) &x[0][0];
@@ -1886,7 +1879,7 @@ Matrix33<T>::getValue() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix33<T>::getValue (Matrix33<S>& v) const IMATH_NOEXCEPT
 {
     v.x[0][0] = x[0][0];
@@ -1902,7 +1895,7 @@ Matrix33<T>::getValue (Matrix33<S>& v) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>&
 Matrix33<T>::setValue (const Matrix33<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = v.x[0][0];
@@ -1919,7 +1912,7 @@ Matrix33<T>::setValue (const Matrix33<S>& v) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>&
 Matrix33<T>::setTheMatrix (const Matrix33<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = v.x[0][0];
@@ -1935,7 +1928,7 @@ Matrix33<T>::setTheMatrix (const Matrix33<S>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix33<T>::makeIdentity() IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -1950,7 +1943,7 @@ Matrix33<T>::makeIdentity() IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Matrix33<T>::operator== (const Matrix33& v) const IMATH_NOEXCEPT
 {
     return x[0][0] == v.x[0][0] && x[0][1] == v.x[0][1] && x[0][2] == v.x[0][2] &&
@@ -1959,7 +1952,7 @@ Matrix33<T>::operator== (const Matrix33& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Matrix33<T>::operator!= (const Matrix33& v) const IMATH_NOEXCEPT
 {
     return x[0][0] != v.x[0][0] || x[0][1] != v.x[0][1] || x[0][2] != v.x[0][2] ||
@@ -1968,7 +1961,7 @@ Matrix33<T>::operator!= (const Matrix33& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Matrix33<T>::equalWithAbsError (const Matrix33<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 3; i++)
@@ -1980,7 +1973,7 @@ Matrix33<T>::equalWithAbsError (const Matrix33<T>& m, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Matrix33<T>::equalWithRelError (const Matrix33<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 3; i++)
@@ -1992,7 +1985,7 @@ Matrix33<T>::equalWithRelError (const Matrix33<T>& m, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator+= (const Matrix33<T>& v) IMATH_NOEXCEPT
 {
     x[0][0] += v.x[0][0];
@@ -2009,7 +2002,7 @@ Matrix33<T>::operator+= (const Matrix33<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator+= (T a) IMATH_NOEXCEPT
 {
     x[0][0] += a;
@@ -2026,7 +2019,7 @@ Matrix33<T>::operator+= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix33<T>
+IMATH_HOSTDEVICE constexpr inline Matrix33<T>
 Matrix33<T>::operator+ (const Matrix33<T>& v) const IMATH_NOEXCEPT
 {
     return Matrix33 (x[0][0] + v.x[0][0],
@@ -2041,7 +2034,7 @@ Matrix33<T>::operator+ (const Matrix33<T>& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator-= (const Matrix33<T>& v) IMATH_NOEXCEPT
 {
     x[0][0] -= v.x[0][0];
@@ -2058,7 +2051,7 @@ Matrix33<T>::operator-= (const Matrix33<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator-= (T a) IMATH_NOEXCEPT
 {
     x[0][0] -= a;
@@ -2075,7 +2068,7 @@ Matrix33<T>::operator-= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix33<T>
+IMATH_HOSTDEVICE constexpr inline Matrix33<T>
 Matrix33<T>::operator- (const Matrix33<T>& v) const IMATH_NOEXCEPT
 {
     return Matrix33 (x[0][0] - v.x[0][0],
@@ -2090,7 +2083,7 @@ Matrix33<T>::operator- (const Matrix33<T>& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix33<T>
+IMATH_HOSTDEVICE constexpr inline Matrix33<T>
 Matrix33<T>::operator-() const IMATH_NOEXCEPT
 {
     return Matrix33 (-x[0][0],
@@ -2105,7 +2098,7 @@ Matrix33<T>::operator-() const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::negate() IMATH_NOEXCEPT
 {
     x[0][0] = -x[0][0];
@@ -2122,7 +2115,7 @@ Matrix33<T>::negate() IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator*= (T a) IMATH_NOEXCEPT
 {
     x[0][0] *= a;
@@ -2139,7 +2132,7 @@ Matrix33<T>::operator*= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix33<T>
+IMATH_HOSTDEVICE constexpr inline Matrix33<T>
 Matrix33<T>::operator* (T a) const IMATH_NOEXCEPT
 {
     return Matrix33 (x[0][0] * a,
@@ -2155,14 +2148,14 @@ Matrix33<T>::operator* (T a) const IMATH_NOEXCEPT
 
 /// Matrix-scalar multiplication
 template <class T>
-inline Matrix33<T> constexpr
+IMATH_HOSTDEVICE inline Matrix33<T> constexpr
 operator* (T a, const Matrix33<T>& v) IMATH_NOEXCEPT
 {
     return v * a;
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator*= (const Matrix33<T>& v) IMATH_NOEXCEPT
 {
     // Avoid initializing with 0 values before immediately overwriting them,
@@ -2186,7 +2179,7 @@ Matrix33<T>::operator*= (const Matrix33<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Matrix33<T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>
 Matrix33<T>::operator* (const Matrix33<T>& v) const IMATH_NOEXCEPT
 {
     // Avoid initializing with 0 values before immediately overwriting them,
@@ -2210,7 +2203,7 @@ Matrix33<T>::operator* (const Matrix33<T>& v) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix33<T>::multVecMatrix (const Vec2<S>& src, Vec2<S>& dst) const IMATH_NOEXCEPT
 {
     S a, b, w;
@@ -2225,7 +2218,7 @@ Matrix33<T>::multVecMatrix (const Vec2<S>& src, Vec2<S>& dst) const IMATH_NOEXCE
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix33<T>::multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const IMATH_NOEXCEPT
 {
     S a, b;
@@ -2238,7 +2231,7 @@ Matrix33<T>::multDirMatrix (const Vec2<S>& src, Vec2<S>& dst) const IMATH_NOEXCE
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::operator/= (T a) IMATH_NOEXCEPT
 {
     x[0][0] /= a;
@@ -2255,7 +2248,7 @@ Matrix33<T>::operator/= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix33<T>
+IMATH_HOSTDEVICE constexpr inline Matrix33<T>
 Matrix33<T>::operator/ (T a) const IMATH_NOEXCEPT
 {
     return Matrix33 (x[0][0] / a,
@@ -2270,7 +2263,7 @@ Matrix33<T>::operator/ (T a) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::transpose() IMATH_NOEXCEPT
 {
     Matrix33 tmp (x[0][0], x[1][0], x[2][0], x[0][1], x[1][1], x[2][1], x[0][2], x[1][2], x[2][2]);
@@ -2279,7 +2272,7 @@ Matrix33<T>::transpose() IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix33<T>
+IMATH_HOSTDEVICE constexpr inline Matrix33<T>
 Matrix33<T>::transposed() const IMATH_NOEXCEPT
 {
     return Matrix33 (x[0][0],
@@ -2302,7 +2295,7 @@ Matrix33<T>::gjInvert (bool singExc)
 }
 
 template <class T>
-const inline Matrix33<T>&
+IMATH_HOSTDEVICE const inline Matrix33<T>&
 Matrix33<T>::gjInvert() IMATH_NOEXCEPT
 {
     *this = gjInverse();
@@ -2414,7 +2407,7 @@ Matrix33<T>::gjInverse (bool singExc) const
 }
 
 template <class T>
-inline Matrix33<T>
+IMATH_HOSTDEVICE inline Matrix33<T>
 Matrix33<T>::gjInverse() const IMATH_NOEXCEPT
 {
     int i, j, k;
@@ -2520,7 +2513,7 @@ Matrix33<T>::invert (bool singExc)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::invert() IMATH_NOEXCEPT
 {
     *this = inverse();
@@ -2639,7 +2632,7 @@ Matrix33<T>::inverse (bool singExc) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Matrix33<T>
+IMATH_HOSTDEVICE IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>
 Matrix33<T>::inverse() const IMATH_NOEXCEPT
 {
     if (x[0][2] != 0 || x[1][2] != 0 || x[2][2] != 1)
@@ -2744,7 +2737,7 @@ Matrix33<T>::inverse() const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Matrix33<T>::minorOf (const int r, const int c) const IMATH_NOEXCEPT
 {
     int r0 = 0 + (r < 1 ? 1 : 0);
@@ -2756,14 +2749,14 @@ Matrix33<T>::minorOf (const int r, const int c) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Matrix33<T>::fastMinor (const int r0, const int r1, const int c0, const int c1) const IMATH_NOEXCEPT
 {
     return x[r0][c0] * x[r1][c1] - x[r0][c1] * x[r1][c0];
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Matrix33<T>::determinant() const IMATH_NOEXCEPT
 {
     return x[0][0] * (x[1][1] * x[2][2] - x[1][2] * x[2][1]) +
@@ -2773,7 +2766,7 @@ Matrix33<T>::determinant() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline const Matrix33<T>&
+IMATH_HOSTDEVICE inline const Matrix33<T>&
 Matrix33<T>::setRotation (S r) IMATH_NOEXCEPT
 {
     S cos_r, sin_r;
@@ -2798,7 +2791,7 @@ Matrix33<T>::setRotation (S r) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::rotate (S r) IMATH_NOEXCEPT
 {
     *this *= Matrix33<T>().setRotation (r);
@@ -2806,7 +2799,7 @@ Matrix33<T>::rotate (S r) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setScale (T s) IMATH_NOEXCEPT
 {
     //
@@ -2830,7 +2823,7 @@ Matrix33<T>::setScale (T s) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setScale (const Vec2<S>& s) IMATH_NOEXCEPT
 {
     //
@@ -2854,7 +2847,7 @@ Matrix33<T>::setScale (const Vec2<S>& s) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::scale (const Vec2<S>& s) IMATH_NOEXCEPT
 {
     x[0][0] *= s.x;
@@ -2870,7 +2863,7 @@ Matrix33<T>::scale (const Vec2<S>& s) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setTranslation (const Vec2<S>& t) IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -2889,7 +2882,7 @@ Matrix33<T>::setTranslation (const Vec2<S>& t) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Vec2<T>
+IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Matrix33<T>::translation() const IMATH_NOEXCEPT
 {
     return Vec2<T> (x[2][0], x[2][1]);
@@ -2897,7 +2890,7 @@ Matrix33<T>::translation() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::translate (const Vec2<S>& t) IMATH_NOEXCEPT
 {
     x[2][0] += t.x * x[0][0] + t.y * x[1][0];
@@ -2909,7 +2902,7 @@ Matrix33<T>::translate (const Vec2<S>& t) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setShear (const S& xy) IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -2929,7 +2922,7 @@ Matrix33<T>::setShear (const S& xy) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::setShear (const Vec2<S>& h) IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -2949,7 +2942,7 @@ Matrix33<T>::setShear (const Vec2<S>& h) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::shear (const S& xy) IMATH_NOEXCEPT
 {
     //
@@ -2967,7 +2960,7 @@ Matrix33<T>::shear (const S& xy) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix33<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 Matrix33<T>::shear (const Vec2<S>& h) IMATH_NOEXCEPT
 {
     Matrix33<T> P (*this);
@@ -2988,20 +2981,20 @@ Matrix33<T>::shear (const Vec2<S>& h) IMATH_NOEXCEPT
 //---------------------------
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
 Matrix44<T>::operator[] (int i) IMATH_NOEXCEPT
 {
     return x[i];
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Matrix44<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
     return x[i];
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44() IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44() IMATH_NOEXCEPT
 {
     x[0][0] = 1;
     x[0][1] = 0;
@@ -3021,7 +3014,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44() IMATH_NOEXCE
     x[3][3] = 1;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (T a) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (T a) IMATH_NOEXCEPT
 {
     x[0][0] = a;
     x[0][1] = a;
@@ -3041,7 +3034,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (T a) IMATH_NO
     x[3][3] = a;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const T a[4][4]) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const T a[4][4]) IMATH_NOEXCEPT
 {
     x[0][0] = a[0][0];
     x[0][1] = a[0][1];
@@ -3062,7 +3055,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const T a[4][
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Matrix44<
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<
     T>::Matrix44 (T a, T b, T c, T d, T e, T f, T g, T h, T i, T j, T k, T l, T m, T n, T o, T p) IMATH_NOEXCEPT
 {
     x[0][0] = a;
@@ -3083,7 +3076,7 @@ IMATH_CONSTEXPR14 inline Matrix44<
     x[3][3] = p;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (Matrix33<T> r, Vec3<T> t) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (Matrix33<T> r, Vec3<T> t) IMATH_NOEXCEPT
 {
     x[0][0] = r[0][0];
     x[0][1] = r[0][1];
@@ -3103,7 +3096,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (Matrix33<T> r
     x[3][3] = 1;
 }
 
-template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const Matrix44& v) IMATH_NOEXCEPT
+template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const Matrix44& v) IMATH_NOEXCEPT
 {
     x[0][0] = v.x[0][0];
     x[0][1] = v.x[0][1];
@@ -3125,7 +3118,7 @@ template <class T> IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const Matrix4
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const Matrix44<S>& v) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const Matrix44<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = T (v.x[0][0]);
     x[0][1] = T (v.x[0][1]);
@@ -3146,7 +3139,7 @@ IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const Matrix44<S>& v) IMATH_NOEX
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator= (const Matrix44& v) IMATH_NOEXCEPT
 {
     x[0][0] = v.x[0][0];
@@ -3169,7 +3162,7 @@ Matrix44<T>::operator= (const Matrix44& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator= (T a) IMATH_NOEXCEPT
 {
     x[0][0] = a;
@@ -3192,14 +3185,14 @@ Matrix44<T>::operator= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-inline T*
+IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
 Matrix44<T>::getValue() IMATH_NOEXCEPT
 {
     return (T*) &x[0][0];
 }
 
 template <class T>
-inline const T*
+IMATH_HOSTDEVICE inline const T*
 Matrix44<T>::getValue() const IMATH_NOEXCEPT
 {
     return (const T*) &x[0][0];
@@ -3207,7 +3200,7 @@ Matrix44<T>::getValue() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix44<T>::getValue (Matrix44<S>& v) const IMATH_NOEXCEPT
 {
     v.x[0][0] = x[0][0];
@@ -3230,7 +3223,7 @@ Matrix44<T>::getValue (Matrix44<S>& v) const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>&
 Matrix44<T>::setValue (const Matrix44<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = v.x[0][0];
@@ -3254,7 +3247,7 @@ Matrix44<T>::setValue (const Matrix44<S>& v) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>&
 Matrix44<T>::setTheMatrix (const Matrix44<S>& v) IMATH_NOEXCEPT
 {
     x[0][0] = v.x[0][0];
@@ -3277,7 +3270,7 @@ Matrix44<T>::setTheMatrix (const Matrix44<S>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix44<T>::makeIdentity() IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -3299,7 +3292,7 @@ Matrix44<T>::makeIdentity() IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Matrix44<T>::operator== (const Matrix44& v) const IMATH_NOEXCEPT
 {
     return x[0][0] == v.x[0][0] && x[0][1] == v.x[0][1] && x[0][2] == v.x[0][2] &&
@@ -3311,7 +3304,7 @@ Matrix44<T>::operator== (const Matrix44& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline bool
+IMATH_HOSTDEVICE constexpr inline bool
 Matrix44<T>::operator!= (const Matrix44& v) const IMATH_NOEXCEPT
 {
     return x[0][0] != v.x[0][0] || x[0][1] != v.x[0][1] || x[0][2] != v.x[0][2] ||
@@ -3323,7 +3316,7 @@ Matrix44<T>::operator!= (const Matrix44& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Matrix44<T>::equalWithAbsError (const Matrix44<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 4; i++)
@@ -3335,7 +3328,7 @@ Matrix44<T>::equalWithAbsError (const Matrix44<T>& m, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline bool
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Matrix44<T>::equalWithRelError (const Matrix44<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 4; i++)
@@ -3347,7 +3340,7 @@ Matrix44<T>::equalWithRelError (const Matrix44<T>& m, T e) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator+= (const Matrix44<T>& v) IMATH_NOEXCEPT
 {
     x[0][0] += v.x[0][0];
@@ -3371,7 +3364,7 @@ Matrix44<T>::operator+= (const Matrix44<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator+= (T a) IMATH_NOEXCEPT
 {
     x[0][0] += a;
@@ -3395,7 +3388,7 @@ Matrix44<T>::operator+= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix44<T>
+IMATH_HOSTDEVICE constexpr inline Matrix44<T>
 Matrix44<T>::operator+ (const Matrix44<T>& v) const IMATH_NOEXCEPT
 {
     return Matrix44 (x[0][0] + v.x[0][0],
@@ -3417,7 +3410,7 @@ Matrix44<T>::operator+ (const Matrix44<T>& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator-= (const Matrix44<T>& v) IMATH_NOEXCEPT
 {
     x[0][0] -= v.x[0][0];
@@ -3441,7 +3434,7 @@ Matrix44<T>::operator-= (const Matrix44<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator-= (T a) IMATH_NOEXCEPT
 {
     x[0][0] -= a;
@@ -3465,7 +3458,7 @@ Matrix44<T>::operator-= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix44<T>
+IMATH_HOSTDEVICE constexpr inline Matrix44<T>
 Matrix44<T>::operator- (const Matrix44<T>& v) const IMATH_NOEXCEPT
 {
     return Matrix44 (x[0][0] - v.x[0][0],
@@ -3487,7 +3480,7 @@ Matrix44<T>::operator- (const Matrix44<T>& v) const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix44<T>
+IMATH_HOSTDEVICE constexpr inline Matrix44<T>
 Matrix44<T>::operator-() const IMATH_NOEXCEPT
 {
     return Matrix44 (-x[0][0],
@@ -3509,7 +3502,7 @@ Matrix44<T>::operator-() const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::negate() IMATH_NOEXCEPT
 {
     x[0][0] = -x[0][0];
@@ -3533,7 +3526,7 @@ Matrix44<T>::negate() IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator*= (T a) IMATH_NOEXCEPT
 {
     x[0][0] *= a;
@@ -3557,7 +3550,7 @@ Matrix44<T>::operator*= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix44<T>
+IMATH_HOSTDEVICE constexpr inline Matrix44<T>
 Matrix44<T>::operator* (T a) const IMATH_NOEXCEPT
 {
     return Matrix44 (x[0][0] * a,
@@ -3580,7 +3573,7 @@ Matrix44<T>::operator* (T a) const IMATH_NOEXCEPT
 
 /// Matrix-scalar multiplication
 template <class T>
-inline Matrix44<T>
+IMATH_HOSTDEVICE inline Matrix44<T>
 operator* (T a, const Matrix44<T>& v) IMATH_NOEXCEPT
 {
     return v * a;
@@ -3588,8 +3581,8 @@ operator* (T a, const Matrix44<T>& v) IMATH_NOEXCEPT
 
 
 template <class T>
-inline IMATH_CONSTEXPR14 Matrix44<T>
-Matrix44<T>::multiply (const Matrix44 &a, const Matrix44 &b) noexcept
+IMATH_HOSTDEVICE inline IMATH_CONSTEXPR14 Matrix44<T>
+Matrix44<T>::multiply (const Matrix44 &a, const Matrix44 &b) IMATH_NOEXCEPT
 {
     const auto a00 = a.x[0][0];
     const auto a01 = a.x[0][1];
@@ -3638,7 +3631,7 @@ Matrix44<T>::multiply (const Matrix44 &a, const Matrix44 &b) noexcept
 
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator*= (const Matrix44<T>& v) IMATH_NOEXCEPT
 {
     *this = multiply(*this, v);
@@ -3646,14 +3639,14 @@ Matrix44<T>::operator*= (const Matrix44<T>& v) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Matrix44<T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>
 Matrix44<T>::operator* (const Matrix44<T>& v) const IMATH_NOEXCEPT
 {
     return multiply(*this, v);
 }
 
 template <class T>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix44<T>::multiply (const Matrix44<T>& a, const Matrix44<T>& b, Matrix44<T>& c) IMATH_NOEXCEPT
 {
     c = multiply(a, b);
@@ -3661,7 +3654,7 @@ Matrix44<T>::multiply (const Matrix44<T>& a, const Matrix44<T>& b, Matrix44<T>& 
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix44<T>::multVecMatrix (const Vec3<S>& src, Vec3<S>& dst) const IMATH_NOEXCEPT
 {
     S a, b, c, w;
@@ -3678,7 +3671,7 @@ Matrix44<T>::multVecMatrix (const Vec3<S>& src, Vec3<S>& dst) const IMATH_NOEXCE
 
 template <class T>
 template <class S>
-inline void
+IMATH_HOSTDEVICE inline void
 Matrix44<T>::multDirMatrix (const Vec3<S>& src, Vec3<S>& dst) const IMATH_NOEXCEPT
 {
     S a, b, c;
@@ -3693,7 +3686,7 @@ Matrix44<T>::multDirMatrix (const Vec3<S>& src, Vec3<S>& dst) const IMATH_NOEXCE
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::operator/= (T a) IMATH_NOEXCEPT
 {
     x[0][0] /= a;
@@ -3717,7 +3710,7 @@ Matrix44<T>::operator/= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix44<T>
+IMATH_HOSTDEVICE constexpr inline Matrix44<T>
 Matrix44<T>::operator/ (T a) const IMATH_NOEXCEPT
 {
     return Matrix44 (x[0][0] / a,
@@ -3739,7 +3732,7 @@ Matrix44<T>::operator/ (T a) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::transpose() IMATH_NOEXCEPT
 {
     Matrix44 tmp (x[0][0],
@@ -3763,7 +3756,7 @@ Matrix44<T>::transpose() IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline Matrix44<T>
+IMATH_HOSTDEVICE constexpr inline Matrix44<T>
 Matrix44<T>::transposed() const IMATH_NOEXCEPT
 {
     return Matrix44 (x[0][0],
@@ -3793,7 +3786,7 @@ Matrix44<T>::gjInvert (bool singExc)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::gjInvert() IMATH_NOEXCEPT
 {
     *this = gjInverse();
@@ -3905,7 +3898,7 @@ Matrix44<T>::gjInverse (bool singExc) const
 }
 
 template <class T>
-inline Matrix44<T>
+IMATH_HOSTDEVICE inline Matrix44<T>
 Matrix44<T>::gjInverse() const IMATH_NOEXCEPT
 {
     int i, j, k;
@@ -4011,7 +4004,7 @@ Matrix44<T>::invert (bool singExc)
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::invert() IMATH_NOEXCEPT
 {
     *this = inverse();
@@ -4088,7 +4081,7 @@ Matrix44<T>::inverse (bool singExc) const
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline Matrix44<T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>
 Matrix44<T>::inverse() const IMATH_NOEXCEPT
 {
     if (x[0][3] != 0 || x[1][3] != 0 || x[2][3] != 0 || x[3][3] != 1)
@@ -4154,7 +4147,7 @@ Matrix44<T>::inverse() const IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline T
+IMATH_HOSTDEVICE constexpr inline T
 Matrix44<T>::fastMinor (const int r0,
                         const int r1,
                         const int r2,
@@ -4168,7 +4161,7 @@ Matrix44<T>::fastMinor (const int r0,
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Matrix44<T>::minorOf (const int r, const int c) const IMATH_NOEXCEPT
 {
     int r0 = 0 + (r < 1 ? 1 : 0);
@@ -4192,7 +4185,7 @@ Matrix44<T>::minorOf (const int r, const int c) const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Matrix44<T>::determinant() const IMATH_NOEXCEPT
 {
     T sum = (T) 0;
@@ -4211,7 +4204,7 @@ Matrix44<T>::determinant() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline const Matrix44<T>&
+IMATH_HOSTDEVICE inline const Matrix44<T>&
 Matrix44<T>::setEulerAngles (const Vec3<S>& r) IMATH_NOEXCEPT
 {
     S cos_rz, sin_rz, cos_ry, sin_ry, cos_rx, sin_rx;
@@ -4249,7 +4242,7 @@ Matrix44<T>::setEulerAngles (const Vec3<S>& r) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setAxisAngle (const Vec3<S>& axis, S angle) IMATH_NOEXCEPT
 {
     Vec3<S> unit (axis.normalized());
@@ -4281,7 +4274,7 @@ Matrix44<T>::setAxisAngle (const Vec3<S>& axis, S angle) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-inline const Matrix44<T>&
+IMATH_HOSTDEVICE inline const Matrix44<T>&
 Matrix44<T>::rotate (const Vec3<S>& r) IMATH_NOEXCEPT
 {
     S cos_rz, sin_rz, cos_ry, sin_ry, cos_rx, sin_rx;
@@ -4328,7 +4321,7 @@ Matrix44<T>::rotate (const Vec3<S>& r) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setScale (T s) IMATH_NOEXCEPT
 {
     //
@@ -4360,7 +4353,7 @@ Matrix44<T>::setScale (T s) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setScale (const Vec3<S>& s) IMATH_NOEXCEPT
 {
     //
@@ -4392,7 +4385,7 @@ Matrix44<T>::setScale (const Vec3<S>& s) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::scale (const Vec3<S>& s) IMATH_NOEXCEPT
 {
     x[0][0] *= s.x;
@@ -4415,7 +4408,7 @@ Matrix44<T>::scale (const Vec3<S>& s) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setTranslation (const Vec3<S>& t) IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -4442,7 +4435,7 @@ Matrix44<T>::setTranslation (const Vec3<S>& t) IMATH_NOEXCEPT
 }
 
 template <class T>
-constexpr inline const Vec3<T>
+IMATH_HOSTDEVICE constexpr inline const Vec3<T>
 Matrix44<T>::translation() const IMATH_NOEXCEPT
 {
     return Vec3<T> (x[3][0], x[3][1], x[3][2]);
@@ -4450,7 +4443,7 @@ Matrix44<T>::translation() const IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::translate (const Vec3<S>& t) IMATH_NOEXCEPT
 {
     x[3][0] += t.x * x[0][0] + t.y * x[1][0] + t.z * x[2][0];
@@ -4463,7 +4456,7 @@ Matrix44<T>::translate (const Vec3<S>& t) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setShear (const Vec3<S>& h) IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -4491,7 +4484,7 @@ Matrix44<T>::setShear (const Vec3<S>& h) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::setShear (const Shear6<S>& h) IMATH_NOEXCEPT
 {
     x[0][0] = 1;
@@ -4519,7 +4512,7 @@ Matrix44<T>::setShear (const Shear6<S>& h) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::shear (const Vec3<S>& h) IMATH_NOEXCEPT
 {
     //
@@ -4539,7 +4532,7 @@ Matrix44<T>::shear (const Vec3<S>& h) IMATH_NOEXCEPT
 
 template <class T>
 template <class S>
-IMATH_CONSTEXPR14 inline const Matrix44<T>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix44<T>&
 Matrix44<T>::shear (const Shear6<S>& h) IMATH_NOEXCEPT
 {
     Matrix44<T> P (*this);
@@ -4663,7 +4656,7 @@ operator<< (std::ostream& s, const Matrix44<T>& m)
 //---------------------------------------------------------------
 
 template <class S, class T>
-inline const Vec2<S>&
+IMATH_HOSTDEVICE inline const Vec2<S>&
 operator*= (Vec2<S>& v, const Matrix22<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0]);
@@ -4676,7 +4669,7 @@ operator*= (Vec2<S>& v, const Matrix22<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline Vec2<S>
+IMATH_HOSTDEVICE inline Vec2<S>
 operator* (const Vec2<S>& v, const Matrix22<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0]);
@@ -4686,7 +4679,7 @@ operator* (const Vec2<S>& v, const Matrix22<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline const Vec2<S>&
+IMATH_HOSTDEVICE inline const Vec2<S>&
 operator*= (Vec2<S>& v, const Matrix33<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0] + m[2][0]);
@@ -4700,7 +4693,7 @@ operator*= (Vec2<S>& v, const Matrix33<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline Vec2<S>
+IMATH_HOSTDEVICE inline Vec2<S>
 operator* (const Vec2<S>& v, const Matrix33<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0] + m[2][0]);
@@ -4711,7 +4704,7 @@ operator* (const Vec2<S>& v, const Matrix33<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline const Vec3<S>&
+IMATH_HOSTDEVICE inline const Vec3<S>&
 operator*= (Vec3<S>& v, const Matrix33<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0] + v.z * m[2][0]);
@@ -4726,7 +4719,7 @@ operator*= (Vec3<S>& v, const Matrix33<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline Vec3<S>
+IMATH_HOSTDEVICE inline Vec3<S>
 operator* (const Vec3<S>& v, const Matrix33<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0] + v.z * m[2][0]);
@@ -4737,7 +4730,7 @@ operator* (const Vec3<S>& v, const Matrix33<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline const Vec3<S>&
+IMATH_HOSTDEVICE inline const Vec3<S>&
 operator*= (Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0] + v.z * m[2][0] + m[3][0]);
@@ -4753,8 +4746,8 @@ operator*= (Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline Vec3<S>
-operator* (const Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE inline Vec3<S>
+IMATH_HOSTDEVICE operator* (const Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0] + v.z * m[2][0] + m[3][0]);
     S y = S (v.x * m[0][1] + v.y * m[1][1] + v.z * m[2][1] + m[3][1]);
@@ -4765,8 +4758,8 @@ operator* (const Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline const Vec4<S>&
-operator*= (Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE inline const Vec4<S>&
+IMATH_HOSTDEVICE operator*= (Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0] + v.z * m[2][0] + v.w * m[3][0]);
     S y = S (v.x * m[0][1] + v.y * m[1][1] + v.z * m[2][1] + v.w * m[3][1]);
@@ -4782,8 +4775,8 @@ operator*= (Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-inline Vec4<S>
-operator* (const Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE inline Vec4<S>
+IMATH_HOSTDEVICE operator* (const Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m[0][0] + v.y * m[1][0] + v.z * m[2][0] + v.w * m[3][0]);
     S y = S (v.x * m[0][1] + v.y * m[1][1] + v.z * m[2][1] + v.w * m[3][1]);
