@@ -309,7 +309,7 @@ FixedVArray<T>::getitem (Py_ssize_t index)
 {
     const size_t i = canonical_index (index, _length);
     std::vector<T>& data = _ptr[(_indices ? raw_ptr_index(i) : i) * _stride];
-    return FixedArray<T>(&data[0], data.size(), 1, _writable);
+    return FixedArray<T>(data.empty() ? nullptr : &data[0], data.size(), 1, _writable);
 }
 
 template <class T>
