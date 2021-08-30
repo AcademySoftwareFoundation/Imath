@@ -1,5 +1,6 @@
 # Imath Release Notes
 
+* [Version 3.1.3](#version-313-september-2-2021) September 2, 2021
 * [Version 3.1.2](#version-312-july-31-2021) July 31, 2021
 * [Version 3.1.1](#version-311-july-20-2021) July 20, 2021
 * [Version 3.1.0](#version-310-july-13-2021) July 13, 2021
@@ -10,6 +11,25 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.3 (September 2, 2021)
+
+Patch release with miscellaneous fixes
+
+* \[[#204](https://github.com/AcademySoftwareFoundation/Imath/pull/204)\] 
+Fix undefined access of a vector when empty
+* \[[#203](https://github.com/AcademySoftwareFoundation/Imath/pull/203)\] 
+Require sphinx 4.0.3
+* \[[#201](https://github.com/AcademySoftwareFoundation/Imath/pull/201)\] 
+Build sphinx/doxygen docs with CMake
+* \[[#200](https://github.com/AcademySoftwareFoundation/Imath/pull/200)\] 
+Use PYIMATH_OVERRIDE_PYTHON_INSTALL_DIR to specify destination python modules
+* \[[#199](https://github.com/AcademySoftwareFoundation/Imath/pull/199)\] 
+Guard `__has_attribute` for compilers that don't support it
+* \[[#198](https://github.com/AcademySoftwareFoundation/Imath/pull/198)\] 
+Cuda safety fixes
+* \[[#194](https://github.com/AcademySoftwareFoundation/Imath/pull/194)\] 
+Replace stray Imath:: with IMATH_INTERNAL_NAMESPACE::
 
 ## Version 3.1.2 (July 31, 2021)
 
