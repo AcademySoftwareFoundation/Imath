@@ -872,6 +872,8 @@ typedef Vec4<double> V4d;
 // Normalize and length don't make sense for integer vectors, so disable them.
 //----------------------------------------------------------------------------
 
+/// @cond Doxygen_Suppress
+
 // Vec2<short>
 template <> IMATH_HOSTDEVICE short Vec2<short>::length() const IMATH_NOEXCEPT = delete;
 template <> IMATH_HOSTDEVICE const Vec2<short>& Vec2<short>::normalize() IMATH_NOEXCEPT = delete;
@@ -952,6 +954,8 @@ template <> IMATH_HOSTDEVICE const Vec4<int64_t>& Vec4<int64_t>::normalizeNonNul
 template <> IMATH_HOSTDEVICE Vec4<int64_t> Vec4<int64_t>::normalized() const IMATH_NOEXCEPT = delete;
 template <> Vec4<int64_t> Vec4<int64_t>::normalizedExc() const = delete;
 template <> IMATH_HOSTDEVICE Vec4<int64_t> Vec4<int64_t>::normalizedNonNull() const IMATH_NOEXCEPT = delete;
+
+/// @endcond Doxygen_Suppress
 
 //------------------------
 // Implementation of Vec2:

@@ -5,11 +5,13 @@ The half Class
 
    #include <Imath/half.h>
 
-``half`` is a 16-bit floating point number. See `The half Type`_ for
-an explanation of the representation.
+``half`` is a 16-bit floating point number. See :doc:`../float` for an
+explanation of the representation.
 
-Also, see `C-language half Conversion`_ for C-language support for
-conversion between ``half`` and ``float``.
+See :doc:`../functions/half_c` for C-language functions for conversion
+between ``half`` and ``float``. Also, see :doc:`../half_conversion`
+for information about building Imath with support for the F16C SSE
+instruction set.
 
 Example:
 

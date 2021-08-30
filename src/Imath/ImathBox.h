@@ -53,8 +53,8 @@ template <class V> class IMATH_EXPORT_TEMPLATE_TYPE Box
     ///	@name Constructors
 
     /// Construct an empty bounding box. This initializes the mimimum to
-    /// `std::numeric_limits<V::baseType>::max()` and the maximum to
-    /// `std::numeric_limits<V::baseType>::lowest()`.
+    /// std::numeric_limits<V::baseType>::max() and the maximum to
+    /// std::numeric_limits<V::baseType>::lowest().
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box() IMATH_NOEXCEPT;
 
     /// Construct a bounding box that contains a single point.
@@ -401,8 +401,8 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
 
     /// Set the Box to be empty. A Box is empty if the mimimum is
     /// greater than the maximum. makeEmpty() sets the mimimum to
-    /// `numeric_limits<T>::max()' and the maximum to
-    /// `numeric_limits<T>::lowest()`.
+    /// std::numeric_limits<T>::max() and the maximum to
+    /// std::numeric_limits<T>::lowest().
     IMATH_HOSTDEVICE void makeEmpty() IMATH_NOEXCEPT;
 
     /// Extend the Box to include the given point.
@@ -662,8 +662,8 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec3<T>>
 
     /// Set the Box to be empty. A Box is empty if the mimimum is
     /// greater than the maximum. makeEmpty() sets the mimimum to
-    /// `numeric_limits<T>::max()` and the maximum to
-    /// `numeric_limits<T>::lowest()`.
+    /// std::numeric_limits<T>::max() and the maximum to
+    /// std::numeric_limits<T>::lowest().
     IMATH_HOSTDEVICE void makeEmpty() IMATH_NOEXCEPT;
 
     /// Extend the Box to include the given point.

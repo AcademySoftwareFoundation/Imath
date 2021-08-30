@@ -69,6 +69,23 @@ can specify a local install directory to CMake via the
 
     % cmake .. -DCMAKE_INSTALL_PREFIX=$install_directory
 
+
+## Documentation
+
+The Imath documentation at
+[imath.readthedocs.io](https://imath.readthedocs.io) is generated via
+[Sphinx](https://www.sphinx-doc.org) with the
+[Breathe](https://breathe.readthedocs.io) extension using information
+extracted from header comments by [Doxgen](https://www.doxygen.nl).
+
+To build the documentation locally from the source headers and
+``.rst`` files, set the CMake option ``DOCS=ON``. This adds
+``Doxygen`` and ``Sphinx`` CMake targets. Local documentation
+generation is off by default.
+
+Building the documentation requires that sphinx, breathe, and doxygen
+are installed.
+
 ## Python Bindings
 
 To build and install the optional Python bindings for Imath, set the
@@ -253,6 +270,9 @@ ways:
 ``IMATH_OUTPUT_SUBDIR``
   Destination sub-folder of the include path for install. Default is ``Imath``.
 
+``DOCS``
+  Build the html documentation. Default is ``OFF``.
+  
 ``PYTHON``
   Build the optional Imath python bindings. Default is ``OFF``.
   
