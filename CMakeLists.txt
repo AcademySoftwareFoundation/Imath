@@ -73,6 +73,11 @@ if (PYTHON)
   add_subdirectory(src/python)
 endif()
 
+option(DOCS "Set ON to build html documentation")
+if (DOCS)
+  add_subdirectory(docs)
+endif()
+
 # If you want to use ctest to configure, build and
 # upload the results, cmake has builtin support for
 # submitting to CDash, or any server who speaks the
@@ -107,3 +112,4 @@ endif()
 if(NOT IMATH_IS_SUBPROJECT)
   include(cmake/clang-format.cmake)
 endif()
+
