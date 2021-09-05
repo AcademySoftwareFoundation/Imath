@@ -9,7 +9,7 @@
 
 namespace PyImath {
 
-static WorkerPool *_currentPool = 0;
+static WorkerPool *_currentPool = nullptr;
 
 // Its not worth dispatching parallel tasks unless the iteration count
 // is high enough.  The time to create and launch parallel tasks takes
@@ -33,21 +33,26 @@ WorkerPool::setCurrentPool(WorkerPool *pool)
 void
 dispatchTask(Task &task,size_t length)
 {
-    if (length > _minIterations   &&
-        WorkerPool::currentPool() && !WorkerPool::currentPool()->inWorkerThread())
-        WorkerPool::currentPool()->dispatch(task,length);
-    else
-        task.execute(0,length,0);
+    if (length > _minIterations)
+    {
+        WorkerPool *curpool = WorkerPool::currentPool();
+        if (curpool && !curpool->inWorkerThread())
+        {
+            curpool->dispatch(task,length);
+            return;
+        }
+    }
+    task.execute(0,length,0);
 }
 
 
 size_t
 workers()
 {
-    if (WorkerPool::currentPool() && !WorkerPool::currentPool()->inWorkerThread())
-        return WorkerPool::currentPool()->workers();
-    else
-        return 1;
+    WorkerPool *curpool = WorkerPool::currentPool();
+    if (curpool && !curpool->inWorkerThread())
+        return curpool->workers();
+    return 1;
 }
 
 }
