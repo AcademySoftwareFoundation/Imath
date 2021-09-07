@@ -19,17 +19,12 @@
 
 using namespace std;
 
-#if ULONG_MAX == 18446744073709551615LU
-typedef long unsigned int Int64;
-#else
-    typedef long long unsigned int Int64;
-#endif
-
 #if __cplusplus < 202002L
     template <typename To, typename From>
     static inline To
     bit_cast (From from)
     {
+#warning "using custom bit_cast"
         static_assert (sizeof (From) == sizeof (To), "Type sizes do not match");
         union
         {
@@ -51,11 +46,17 @@ testf (float f, bool changeExpected = true)
     float spf = IMATH_INTERNAL_NAMESPACE::succf (IMATH_INTERNAL_NAMESPACE::predf (f));
     float psf = IMATH_INTERNAL_NAMESPACE::predf (IMATH_INTERNAL_NAMESPACE::succf (f));
 
-    printf ("f %.9g\n", f);
-    printf ("sf %.9g\n", sf);
-    printf ("pf %.9g\n", pf);
-    printf ("spf %.9g\n", spf);
-    printf ("psf %.9g\n", psf);
+    union {float f; uint32_t i;} u;
+    u.f = f;
+    printf ("f %.9g %x\n", f, u.i);
+    u.f = sf;
+    printf ("sf %.9g %x\n", sf, u.i);
+    u.f = pf;
+    printf ("pf %.9g %x\n", pf, u.i);
+    u.f = spf;
+    printf ("spf %.9g %x\n", spf, u.i);
+    u.f = psf;
+    printf ("psf %.9g %x\n", psf, u.i);
 
     fflush (stdout);
 
@@ -67,8 +68,13 @@ testf (float f, bool changeExpected = true)
     else
     {
         // No bit change expected if input was inf or NaN
-        assert (bit_cast<unsigned> (pf) == bit_cast<unsigned> (f));
-        assert (bit_cast<unsigned> (sf) == bit_cast<unsigned> (f));
+        uint32_t bc_f = bit_cast<uint32_t> (f);
+        uint32_t bc_pf = bit_cast<uint32_t> (pf);
+        uint32_t bc_sf = bit_cast<uint32_t> (sf);
+        printf ("no change expected: f=%x pf=%x sf=%x\n", bc_f, bc_pf, bc_sf);
+        
+        assert (bit_cast<uint32_t> (pf) == bit_cast<uint32_t> (f));
+        assert (bit_cast<uint32_t> (sf) == bit_cast<uint32_t> (f));
     }
 }
 
@@ -82,11 +88,18 @@ testd (double d, bool changeExpected = true)
     double spd = IMATH_INTERNAL_NAMESPACE::succd (IMATH_INTERNAL_NAMESPACE::predd (d));
     double psd = IMATH_INTERNAL_NAMESPACE::predd (IMATH_INTERNAL_NAMESPACE::succd (d));
 
-    printf ("d %.18lg\n", d);
-    printf ("sd %.18lg\n", sd);
-    printf ("pd %.18lg\n", pd);
-    printf ("spd %.18lg\n", spd);
-    printf ("psd %.18lg\n", psd);
+    union {double d; uint64_t i;} u;
+
+    u.d = d;
+    printf ("d %.18lg %lx\n", d, u.i);
+    u.d = sd;
+    printf ("sd %.18lg %lx\n", sd, u.i);
+    u.d = pd;
+    printf ("pd %.18lg %lx\n", pd, u.i);
+    u.d = spd;
+    printf ("spd %.18lg %lx\n", spd, u.i);
+    u.d = psd;
+    printf ("psd %.18lg %lx\n", psd, u.i);
 
     fflush (stdout);
 
@@ -97,9 +110,14 @@ testd (double d, bool changeExpected = true)
     }
     else
     {
+        uint64_t bc_d = bit_cast<uint64_t> (d);
+        uint64_t bc_pd = bit_cast<uint64_t> (pd);
+        uint64_t bc_sd = bit_cast<uint64_t> (sd);
+        printf ("no change expected: d=%lx pd=%lx sd=%lx\n", bc_d, bc_pd, bc_sd);
+
         // No bit change expected if input was inf or NaN
-        assert (bit_cast<Int64> (pd) == bit_cast<Int64> (d));
-        assert (bit_cast<Int64> (sd) == bit_cast<Int64> (d));
+        assert (bit_cast<uint64_t> (pd) == bit_cast<uint64_t> (d));
+        assert (bit_cast<uint64_t> (sd) == bit_cast<uint64_t> (d));
     }
 }
 
