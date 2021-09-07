@@ -244,7 +244,7 @@ testFun()
     testf (7);
     testf (0.7);
 
-    union {float f; int i;} u;
+    union {float f; uint32_t i;} u;
     u.i = 0x7f800000; //  inf
     testf (u.f, false);
     u.i = 0xff800000; // -inf
@@ -264,7 +264,7 @@ testFun()
     testd (7);
     testd (0.7);
 
-    union {double d; Int64 i;} v;
+    union {double d; uint64_t i;} v;
     v.i = 0x7ff0000000000000ULL; //  inf
     testd (v.d, false);
     v.i = 0xfff0000000000000ULL; // -inf
