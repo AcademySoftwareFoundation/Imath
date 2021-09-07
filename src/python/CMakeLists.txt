@@ -9,6 +9,8 @@ if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
 endif()
 
+project(PyImath VERSION 3.2.0 LANGUAGES C CXX)
+
 #######################################
 #######################################
 # This declares all the configuration variables visible
