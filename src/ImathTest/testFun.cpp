@@ -14,6 +14,7 @@
 #include <iostream>
 #include <assert.h>
 #include <iostream>
+#include <sstream>
 #include <stdio.h>
 #include "testFun.h"
 
@@ -34,6 +35,25 @@ using namespace std;
         return u.t;
     }
 #endif
+
+std::string
+formatBits (uint64_t x)
+{
+    std::stringstream s;
+    uint64_t mask = 0x1ULL << 63;
+    for (int i=0; i<64; i++)
+    {
+        if (i > 0 && i%4 == 0)
+            s << " ";
+        if (x & mask)
+            s << "1";
+        else
+            s << "0";
+        mask >>= 1;
+    }
+
+    return s.str();
+}
 
 void
 testf (float f, bool changeExpected = true)
@@ -99,15 +119,15 @@ testd (double d, bool changeExpected = true)
     union {double d; uint64_t i;} u;
 
     u.d = d;
-    printf ("d %.18lg %lx\n", d, u.i);
+    printf ("d   %0.18lg %s\n", d, formatBits (u.i).c_str());
     u.d = sd;
-    printf ("sd %.18lg %lx\n", sd, u.i);
+    printf ("sd  %0.18lg %s\n", sd, formatBits (u.i).c_str());
     u.d = pd;
-    printf ("pd %.18lg %lx\n", pd, u.i);
+    printf ("pd  %0.18lg %s\n", pd, formatBits (u.i).c_str());
     u.d = spd;
-    printf ("spd %.18lg %lx\n", spd, u.i);
+    printf ("spd %0.18lg %s\n", spd, formatBits (u.i).c_str());
     u.d = psd;
-    printf ("psd %.18lg %lx\n", psd, u.i);
+    printf ("psd %0.18lg %s\n", psd, formatBits (u.i).c_str());
 
     fflush (stdout);
 
@@ -118,24 +138,17 @@ testd (double d, bool changeExpected = true)
     }
     else
     {
-        uint64_t bc_d = bit_cast<uint64_t> (d);
-        uint64_t bc_pd = bit_cast<uint64_t> (pd);
-        uint64_t bc_sd = bit_cast<uint64_t> (sd);
-        printf ("no change expected: d=%lx pd=%lx sd=%lx\n", bc_d, bc_pd, bc_sd);
-
         // No bit change expected if input was inf or NaN
-        assert (bit_cast<uint64_t> (pd) == bit_cast<uint64_t> (d));
-        assert (bit_cast<uint64_t> (sd) == bit_cast<uint64_t> (d));
 
         if (isnan(d))
         {
-            printf ("no change expected [isnan(d)]: d=%lx pd=%lx sd=%lx\n", bc_d, bc_pd, bc_sd);
+            printf ("no change expected [isnan(d)]\n");
             assert (isnan(pd));
             assert (isnan(sd));
         }
         else
         {
-            printf ("no change expected: [!isnan(d)]: d=%lx pd=%lx sd=%lx\n", bc_d, bc_pd, bc_sd);
+            printf ("no change expected: [!isnan(d)]\n");
             assert (bit_cast<uint64_t> (pd) == bit_cast<uint64_t> (d));
             assert (bit_cast<uint64_t> (sd) == bit_cast<uint64_t> (d));
         }
