@@ -24,7 +24,6 @@ using namespace std;
     static inline To
     bit_cast (From from)
     {
-#warning "using custom bit_cast"
         static_assert (sizeof (From) == sizeof (To), "Type sizes do not match");
         union
         {
@@ -71,10 +70,19 @@ testf (float f, bool changeExpected = true)
         uint32_t bc_f = bit_cast<uint32_t> (f);
         uint32_t bc_pf = bit_cast<uint32_t> (pf);
         uint32_t bc_sf = bit_cast<uint32_t> (sf);
-        printf ("no change expected: f=%x pf=%x sf=%x\n", bc_f, bc_pf, bc_sf);
         
-        assert (bit_cast<uint32_t> (pf) == bit_cast<uint32_t> (f));
-        assert (bit_cast<uint32_t> (sf) == bit_cast<uint32_t> (f));
+        if (isnan(f))
+        {
+            printf ("no change expected [isnan(f)]: f=%x pf=%x sf=%x\n", bc_f, bc_pf, bc_sf);
+            assert (isnan(pf));
+            assert (isnan(sf));
+        }
+        else
+        {
+            printf ("no change expected: [!isnan(f)]: f=%x pf=%x sf=%x\n", bc_f, bc_pf, bc_sf);
+            assert (bit_cast<uint32_t> (pf) == bit_cast<uint32_t> (f));
+            assert (bit_cast<uint32_t> (sf) == bit_cast<uint32_t> (f));
+        }
     }
 }
 
@@ -118,6 +126,19 @@ testd (double d, bool changeExpected = true)
         // No bit change expected if input was inf or NaN
         assert (bit_cast<uint64_t> (pd) == bit_cast<uint64_t> (d));
         assert (bit_cast<uint64_t> (sd) == bit_cast<uint64_t> (d));
+
+        if (isnan(d))
+        {
+            printf ("no change expected [isnan(d)]: d=%lx pd=%lx sd=%lx\n", bc_d, bc_pd, bc_sd);
+            assert (isnan(pd));
+            assert (isnan(sd));
+        }
+        else
+        {
+            printf ("no change expected: [!isnan(d)]: d=%lx pd=%lx sd=%lx\n", bc_d, bc_pd, bc_sd);
+            assert (bit_cast<uint64_t> (pd) == bit_cast<uint64_t> (d));
+            assert (bit_cast<uint64_t> (sd) == bit_cast<uint64_t> (d));
+        }
     }
 }
 
