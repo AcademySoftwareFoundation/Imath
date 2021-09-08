@@ -14,6 +14,7 @@
 #include <iostream>
 #include <assert.h>
 #include <iostream>
+#include <cstdint>
 #include <stdio.h>
 #include "testFun.h"
 
@@ -45,11 +46,11 @@ testf (float f, bool changeExpected = true)
     float spf = IMATH_INTERNAL_NAMESPACE::succf (IMATH_INTERNAL_NAMESPACE::predf (f));
     float psf = IMATH_INTERNAL_NAMESPACE::predf (IMATH_INTERNAL_NAMESPACE::succf (f));
 
-    printf ("f %.9g %x\n", f, bit_cast<uin32_t>(f));
-    printf ("sf %.9g %x\n", sf, bit_cast<uin32_t>(sf));
-    printf ("pf %.9g %x\n", pf, bit_cast<uin32_t>(pf));
-    printf ("spf %.9g %x\n", spf, bit_cast<uin32_t>(spf));
-    printf ("psf %.9g %x\n", psf, bit_cast<uin32_t>(psf));
+    printf ("f %.9g %x\n", f, bit_cast<uint32_t>(f));
+    printf ("sf %.9g %x\n", sf, bit_cast<uint32_t>(sf));
+    printf ("pf %.9g %x\n", pf, bit_cast<uint32_t>(pf));
+    printf ("spf %.9g %x\n", spf, bit_cast<uint32_t>(spf));
+    printf ("psf %.9g %x\n", psf, bit_cast<uint32_t>(psf));
 
     fflush (stdout);
 
