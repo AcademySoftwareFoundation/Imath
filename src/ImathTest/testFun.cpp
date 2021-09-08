@@ -14,7 +14,6 @@
 #include <iostream>
 #include <assert.h>
 #include <iostream>
-#include <sstream>
 #include <stdio.h>
 #include "testFun.h"
 
@@ -36,25 +35,6 @@ using namespace std;
     }
 #endif
 
-std::string
-formatBits (uint64_t x)
-{
-    std::stringstream s;
-    uint64_t mask = 0x1ULL << 63;
-    for (int i=0; i<64; i++)
-    {
-        if (i > 0 && i%4 == 0)
-            s << " ";
-        if (x & mask)
-            s << "1";
-        else
-            s << "0";
-        mask >>= 1;
-    }
-
-    return s.str();
-}
-
 void
 testf (float f, bool changeExpected = true)
 {
@@ -65,17 +45,11 @@ testf (float f, bool changeExpected = true)
     float spf = IMATH_INTERNAL_NAMESPACE::succf (IMATH_INTERNAL_NAMESPACE::predf (f));
     float psf = IMATH_INTERNAL_NAMESPACE::predf (IMATH_INTERNAL_NAMESPACE::succf (f));
 
-    union {float f; uint32_t i;} u;
-    u.f = f;
-    printf ("f %.9g %x\n", f, u.i);
-    u.f = sf;
-    printf ("sf %.9g %x\n", sf, u.i);
-    u.f = pf;
-    printf ("pf %.9g %x\n", pf, u.i);
-    u.f = spf;
-    printf ("spf %.9g %x\n", spf, u.i);
-    u.f = psf;
-    printf ("psf %.9g %x\n", psf, u.i);
+    printf ("f %.9g %x\n", f, bit_cast<uin32_t>(f));
+    printf ("sf %.9g %x\n", sf, bit_cast<uin32_t>(sf));
+    printf ("pf %.9g %x\n", pf, bit_cast<uin32_t>(pf));
+    printf ("spf %.9g %x\n", spf, bit_cast<uin32_t>(spf));
+    printf ("psf %.9g %x\n", psf, bit_cast<uin32_t>(psf));
 
     fflush (stdout);
 
@@ -86,20 +60,16 @@ testf (float f, bool changeExpected = true)
     }
     else
     {
-        // No bit change expected if input was inf or NaN
-        uint32_t bc_f = bit_cast<uint32_t> (f);
-        uint32_t bc_pf = bit_cast<uint32_t> (pf);
-        uint32_t bc_sf = bit_cast<uint32_t> (sf);
-        
         if (isnan(f))
         {
-            printf ("no change expected [isnan(f)]: f=%x pf=%x sf=%x\n", bc_f, bc_pf, bc_sf);
+            // If f is nan, pf and sf may be converted from signaling
+            // to quiet nan, but they'll still be nan's.
             assert (isnan(pf));
             assert (isnan(sf));
         }
         else
         {
-            printf ("no change expected: [!isnan(f)]: f=%x pf=%x sf=%x\n", bc_f, bc_pf, bc_sf);
+            // No bit change expected if input was inf.
             assert (bit_cast<uint32_t> (pf) == bit_cast<uint32_t> (f));
             assert (bit_cast<uint32_t> (sf) == bit_cast<uint32_t> (f));
         }
@@ -116,18 +86,11 @@ testd (double d, bool changeExpected = true)
     double spd = IMATH_INTERNAL_NAMESPACE::succd (IMATH_INTERNAL_NAMESPACE::predd (d));
     double psd = IMATH_INTERNAL_NAMESPACE::predd (IMATH_INTERNAL_NAMESPACE::succd (d));
 
-    union {double d; uint64_t i;} u;
-
-    u.d = d;
-    printf ("d   %0.18lg %s\n", d, formatBits (u.i).c_str());
-    u.d = sd;
-    printf ("sd  %0.18lg %s\n", sd, formatBits (u.i).c_str());
-    u.d = pd;
-    printf ("pd  %0.18lg %s\n", pd, formatBits (u.i).c_str());
-    u.d = spd;
-    printf ("spd %0.18lg %s\n", spd, formatBits (u.i).c_str());
-    u.d = psd;
-    printf ("psd %0.18lg %s\n", psd, formatBits (u.i).c_str());
+    printf ("d   %0.18lg %lx\n", d, bit_cast<uint64_t>(d));
+    printf ("sd  %0.18lg %lx\n", sd, bit_cast<uint64_t>(sd));
+    printf ("pd  %0.18lg %lx\n", pd, bit_cast<uint64_t>(pd));
+    printf ("spd %0.18lg %lx\n", spd, bit_cast<uint64_t>(spd));
+    printf ("psd %0.18lg %lx\n", psd, bit_cast<uint64_t>(psd));
 
     fflush (stdout);
 
@@ -138,17 +101,16 @@ testd (double d, bool changeExpected = true)
     }
     else
     {
-        // No bit change expected if input was inf or NaN
-
         if (isnan(d))
         {
-            printf ("no change expected [isnan(d)]\n");
+            // If f is nan, pf and sf may be converted from signaling
+            // to quiet nan, but they'll still be nan's.
             assert (isnan(pd));
             assert (isnan(sd));
         }
         else
         {
-            printf ("no change expected: [!isnan(d)]\n");
+            // No bit change expected if input was inf.
             assert (bit_cast<uint64_t> (pd) == bit_cast<uint64_t> (d));
             assert (bit_cast<uint64_t> (sd) == bit_cast<uint64_t> (d));
         }
