@@ -14,16 +14,11 @@
 #include <iostream>
 #include <assert.h>
 #include <iostream>
+#include <cstdint>
 #include <stdio.h>
 #include "testFun.h"
 
 using namespace std;
-
-#if ULONG_MAX == 18446744073709551615LU
-typedef long unsigned int Int64;
-#else
-    typedef long long unsigned int Int64;
-#endif
 
 #if __cplusplus < 202002L
     template <typename To, typename From>
@@ -51,11 +46,11 @@ testf (float f, bool changeExpected = true)
     float spf = IMATH_INTERNAL_NAMESPACE::succf (IMATH_INTERNAL_NAMESPACE::predf (f));
     float psf = IMATH_INTERNAL_NAMESPACE::predf (IMATH_INTERNAL_NAMESPACE::succf (f));
 
-    printf ("f %.9g\n", f);
-    printf ("sf %.9g\n", sf);
-    printf ("pf %.9g\n", pf);
-    printf ("spf %.9g\n", spf);
-    printf ("psf %.9g\n", psf);
+    printf ("f %.9g %x\n", f, bit_cast<uint32_t>(f));
+    printf ("sf %.9g %x\n", sf, bit_cast<uint32_t>(sf));
+    printf ("pf %.9g %x\n", pf, bit_cast<uint32_t>(pf));
+    printf ("spf %.9g %x\n", spf, bit_cast<uint32_t>(spf));
+    printf ("psf %.9g %x\n", psf, bit_cast<uint32_t>(psf));
 
     fflush (stdout);
 
@@ -66,9 +61,19 @@ testf (float f, bool changeExpected = true)
     }
     else
     {
-        // No bit change expected if input was inf or NaN
-        assert (bit_cast<unsigned> (pf) == bit_cast<unsigned> (f));
-        assert (bit_cast<unsigned> (sf) == bit_cast<unsigned> (f));
+        if (isnan(f))
+        {
+            // If f is nan, pf and sf may be converted from signaling
+            // to quiet nan, but they'll still be nan's.
+            assert (isnan(pf));
+            assert (isnan(sf));
+        }
+        else
+        {
+            // No bit change expected if input was inf.
+            assert (bit_cast<uint32_t> (pf) == bit_cast<uint32_t> (f));
+            assert (bit_cast<uint32_t> (sf) == bit_cast<uint32_t> (f));
+        }
     }
 }
 
@@ -82,11 +87,11 @@ testd (double d, bool changeExpected = true)
     double spd = IMATH_INTERNAL_NAMESPACE::succd (IMATH_INTERNAL_NAMESPACE::predd (d));
     double psd = IMATH_INTERNAL_NAMESPACE::predd (IMATH_INTERNAL_NAMESPACE::succd (d));
 
-    printf ("d %.18lg\n", d);
-    printf ("sd %.18lg\n", sd);
-    printf ("pd %.18lg\n", pd);
-    printf ("spd %.18lg\n", spd);
-    printf ("psd %.18lg\n", psd);
+    printf ("d   %0.18lg %lx\n", d, bit_cast<uint64_t>(d));
+    printf ("sd  %0.18lg %lx\n", sd, bit_cast<uint64_t>(sd));
+    printf ("pd  %0.18lg %lx\n", pd, bit_cast<uint64_t>(pd));
+    printf ("spd %0.18lg %lx\n", spd, bit_cast<uint64_t>(spd));
+    printf ("psd %0.18lg %lx\n", psd, bit_cast<uint64_t>(psd));
 
     fflush (stdout);
 
@@ -97,9 +102,19 @@ testd (double d, bool changeExpected = true)
     }
     else
     {
-        // No bit change expected if input was inf or NaN
-        assert (bit_cast<Int64> (pd) == bit_cast<Int64> (d));
-        assert (bit_cast<Int64> (sd) == bit_cast<Int64> (d));
+        if (isnan(d))
+        {
+            // If f is nan, pf and sf may be converted from signaling
+            // to quiet nan, but they'll still be nan's.
+            assert (isnan(pd));
+            assert (isnan(sd));
+        }
+        else
+        {
+            // No bit change expected if input was inf.
+            assert (bit_cast<uint64_t> (pd) == bit_cast<uint64_t> (d));
+            assert (bit_cast<uint64_t> (sd) == bit_cast<uint64_t> (d));
+        }
     }
 }
 
@@ -244,7 +259,7 @@ testFun()
     testf (7);
     testf (0.7);
 
-    union {float f; int i;} u;
+    union {float f; uint32_t i;} u;
     u.i = 0x7f800000; //  inf
     testf (u.f, false);
     u.i = 0xff800000; // -inf
@@ -264,7 +279,7 @@ testFun()
     testd (7);
     testd (0.7);
 
-    union {double d; Int64 i;} v;
+    union {double d; uint64_t i;} v;
     v.i = 0x7ff0000000000000ULL; //  inf
     testd (v.d, false);
     v.i = 0xfff0000000000000ULL; // -inf

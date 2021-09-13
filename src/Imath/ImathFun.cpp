@@ -13,11 +13,11 @@ succf (float f) IMATH_NOEXCEPT
     union
     {
         float f;
-        unsigned int i;
+        uint32_t i;
     } u;
     u.f = f;
 
-    if ((u.i & 0x7f800000) == 0x7f800000)
+    if (isinf(f) || isnan (f))
     {
         // Nan or infinity; don't change value.
     }
@@ -51,11 +51,11 @@ predf (float f) IMATH_NOEXCEPT
     union
     {
         float f;
-        unsigned int i;
+        uint32_t i;
     } u;
     u.f = f;
 
-    if ((u.i & 0x7f800000) == 0x7f800000)
+    if (isinf(f) || isnan (f))
     {
         // Nan or infinity; don't change value.
     }
@@ -93,7 +93,7 @@ succd (double d) IMATH_NOEXCEPT
     } u;
     u.d = d;
 
-    if ((u.i & 0x7ff0000000000000LL) == 0x7ff0000000000000LL)
+    if (isinf(d) || isnan (d))
     {
         // Nan or infinity; don't change value.
     }
