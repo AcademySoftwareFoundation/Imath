@@ -30,22 +30,3 @@ if(IMATH_INSTALL_PKG_CONFIG)
 else()
   message(STATUS "pkg-config generation disabled")
 endif()
-
-# The main export of the configuration - This is the
-# moral equivalent of a pkg-config file for cmake
-# and replaces the Find*.cmake of the "old" cmake
-include(CMakePackageConfigHelpers)
-
-write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
-  VERSION ${IMATH_VERSION}
-  COMPATIBILITY SameMajorVersion
-)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
-install(EXPORT ${PROJECT_NAME}
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-  FILE ${PROJECT_NAME}Config.cmake
-  NAMESPACE ${PROJECT_NAME}::
-  EXPORT_LINK_INTERFACE_LIBRARIES
-)
