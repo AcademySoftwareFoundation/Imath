@@ -6,6 +6,7 @@
 // clang-format off
 
 #include <limits>
+#include <stdexcept>
 #include "PyImathExport.h"
 #include "PyImathStringTable.h"
 
