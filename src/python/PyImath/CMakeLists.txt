@@ -65,7 +65,6 @@ pyimath_define_module(imath
     PyImathFrustum.h
     PyImathFun.h
     PyImathLine.h
-    PyImathM44Array.h
     PyImathMathExc.h
     PyImathMatrix.h
     PyImathOperators.h

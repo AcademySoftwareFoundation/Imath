@@ -391,8 +391,7 @@ jobs:
   # TODO: Figure out how to get CMake to use Python 3.7.7.
   #       Boost 1.70.0 will only make boost python for 3.7.
   #       CMake finds Python 3.8 on the VM when configuring, then does not find 
-  #       a corresponding boost python38 module. As a result PyIlmbase tests are not 
-  #       built or run.
+  #       a corresponding boost python38 module. 
   # TODO: Determine why tests hang in Debug job.
   # TODO: Fix boost script to install from sourceforge.
 
