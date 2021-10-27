@@ -25,7 +25,7 @@ The half Type
 #############
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
 
    classes/half
    half_limits
