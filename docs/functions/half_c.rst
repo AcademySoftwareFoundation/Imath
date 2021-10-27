@@ -12,6 +12,6 @@ currently implemented in the C interface.
 
 .. doxygenfunction:: imath_half_to_float
 
-.. doxygenfunction:: imath_half_to_float
+.. doxygenfunction:: imath_float_to_half
 
 

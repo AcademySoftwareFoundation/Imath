@@ -22,6 +22,7 @@ file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR})
 
 add_custom_command(OUTPUT ${DOXYGEN_INDEX_FILE}
                    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
+                   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/fixmanpages.sh ${DOXYGEN_OUTPUT_DIR}
                    MAIN_DEPENDENCY ${DOXYFILE_OUT} ${DOXYFILE_IN}
                    COMMENT "Running doxygen"
                    VERBATIM)
