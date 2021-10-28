@@ -75,6 +75,7 @@ endif()
 
 option(DOCS "Set ON to build html documentation")
 if (DOCS)
+  option(INSTALL_DOCS "Set ON to install html documentation" ON)
   add_subdirectory(docs)
 endif()
 
