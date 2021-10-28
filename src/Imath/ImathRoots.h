@@ -156,7 +156,7 @@ solveNormalizedCubic (T r, T s, T t, T x[3])
     if (D > 0)
     {
         auto real_root = [] (T a, T x) -> T {
-            T sign = a < T (0) ? T (-1) : T (1);
+            T sign = std::copysign(T(1), a);
             return sign * std::pow (sign * a, T (1) / x);
         };
 
