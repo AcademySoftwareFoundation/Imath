@@ -586,7 +586,7 @@ def testBinaryVecMethods(f1, f2):
     f = f1.cross(f2)
     assert(len(f) == len(f1))
     for i in range(0, len(f)):
-        assert(f[i] == f1[i].cross(f2[i]))
+        assert(equalWithAbsError(f[i], f1[i].cross(f2[i]), eps))
 
     assert(f1.cross(f2) == -f2.cross(f1))
 
@@ -601,7 +601,7 @@ def testBinaryVecMethods(f1, f2):
     f = f1.cross(v)
     assert(len(f) == len(f1))
     for i in range(0, len(f)):
-        assert(f[i] == f1[i].cross(v))
+        assert(equalWithAbsError(f[i], f1[i].cross(v), eps))
 
     assert(f1.cross(v) == -v.cross(f1))
 
