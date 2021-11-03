@@ -74,7 +74,7 @@ if (PYTHON)
 endif()
 
 option(DOCS "Set ON to build html documentation")
-if (DOCS)
+if (DOCS AND NOT IMATH_IS_SUBPROJECT)
   option(INSTALL_DOCS "Set ON to install html documentation" ON)
   add_subdirectory(docs)
 endif()
