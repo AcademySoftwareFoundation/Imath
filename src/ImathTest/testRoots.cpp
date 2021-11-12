@@ -206,6 +206,7 @@ testRoots()
     solve (0, 0, 1, 0, 1, 0, 0, 0);      // real solutions: 0
     solve (0, 0, 0, 1, 0, 0, 0, 0);      // real solutions: none
     solve (0, 0, 0, 0, -1, 0, 0, 0);     // real solutions: [-inf, inf]
+    solve (36, -37, 0, 12, 1, -0.4715155, 0, 0);
 
     cout << endl << "solveQuadratic" << endl;
     // Solve quadratic equations
