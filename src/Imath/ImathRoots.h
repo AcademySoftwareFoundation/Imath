@@ -153,28 +153,31 @@ solveNormalizedCubic (T r, T s, T t, T x[3])
         return 1;
     }
 
-    COMPLEX_NAMESPACE::complex<T> u = COMPLEX_NAMESPACE::pow (
-        -q / 2 + COMPLEX_NAMESPACE::sqrt (COMPLEX_NAMESPACE::complex<T> (D)),
-        T (1) / T (3));
+    if (D > 0)
+    {
+        auto real_root = [] (T a, T x) -> T {
+            T sign = std::copysign(T(1), a);
+            return sign * std::pow (sign * a, T (1) / x);
+        };
 
-    COMPLEX_NAMESPACE::complex<T> v = -p / (T (3) * u);
+        T u = real_root (-q / 2 + std::sqrt (D), 3);
+        T v = -p / (T (3) * u);
+
+        x[0] = u + v - r / 3;
+        return 1;
+    }
+
+    namespace CN     = COMPLEX_NAMESPACE;
+    CN::complex<T> u = CN::pow (-q / 2 + CN::sqrt (CN::complex<T> (D)), T (1) / T (3));
+    CN::complex<T> v = -p / (T (3) * u);
 
     const T sqrt3 = T (1.73205080756887729352744634150587); // enough digits
                                                             // for long double
-    COMPLEX_NAMESPACE::complex<T> y0 (u + v);
+    CN::complex<T> y0 (u + v);
+    CN::complex<T> y1 (-(u + v) / T (2) + (u - v) / T (2) * CN::complex<T> (0, sqrt3));
+    CN::complex<T> y2 (-(u + v) / T (2) - (u - v) / T (2) * CN::complex<T> (0, sqrt3));
 
-    COMPLEX_NAMESPACE::complex<T> y1 (-(u + v) / T (2) +
-                                      (u - v) / T (2) * COMPLEX_NAMESPACE::complex<T> (0, sqrt3));
-
-    COMPLEX_NAMESPACE::complex<T> y2 (-(u + v) / T (2) -
-                                      (u - v) / T (2) * COMPLEX_NAMESPACE::complex<T> (0, sqrt3));
-
-    if (D > 0)
-    {
-        x[0] = y0.real() - r / 3;
-        return 1;
-    }
-    else if (D == 0)
+    if (D == 0)
     {
         x[0] = y0.real() - r / 3;
         x[1] = y1.real() - r / 3;
