@@ -368,7 +368,7 @@ FixedVArray<T>::setitem_scalar (PyObject* index, const FixedArray<T>& data)
         {
             std::vector<T> &d =_ptr[raw_ptr_index(start + i*step)*_stride];
             if (data.len() != d.size())
-                throw std::invalid_argument("FixedVArray::setitem: length of data does not match lengh of array element");
+                throw std::invalid_argument("FixedVArray::setitem: length of data does not match length of array element");
 
             if (data.isMaskedReference())
             {
@@ -392,7 +392,7 @@ FixedVArray<T>::setitem_scalar (PyObject* index, const FixedArray<T>& data)
         {
             std::vector<T> &d =_ptr[(start + i*step)*_stride];
             if (data.len() != d.size())
-                throw std::invalid_argument("FixedVArray::setitem: length of data does not match lengh of array element");
+                throw std::invalid_argument("FixedVArray::setitem: length of data does not match length of array element");
 
             if (data.isMaskedReference())
             {
@@ -429,7 +429,7 @@ FixedVArray<T>::setitem_scalar_mask (const FixedArray<int>& mask, const FixedArr
             // match_dimensions has already forced some expected condition.
             std::vector<T> &d =_ptr[raw_ptr_index(i)*_stride];
             if (data.len() != d.size())
-                throw std::invalid_argument("FixedVArray::setitem: length of data does not match lengh of array element");
+                throw std::invalid_argument("FixedVArray::setitem: length of data does not match length of array element");
 
             if (data.isMaskedReference())
             {
@@ -455,7 +455,7 @@ FixedVArray<T>::setitem_scalar_mask (const FixedArray<int>& mask, const FixedArr
             {
                 std::vector<T> &d = _ptr[i*_stride];
                 if (data.len() != d.size())
-                    throw std::invalid_argument("FixedVArray::setitem: length of data does not match lengh of array element");
+                    throw std::invalid_argument("FixedVArray::setitem: length of data does not match length of array element");
 
                 if (data.isMaskedReference())
                 {

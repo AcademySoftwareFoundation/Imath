@@ -200,7 +200,7 @@ class FixedMatrix
 
     static boost::python::class_<FixedMatrix<T> > register_(const char *name, const char *doc)
     {
-        boost::python::class_<FixedMatrix<T> > c(name,doc, boost::python::init<int,int>("return an unitialized array of the specified rows and cols"));
+        boost::python::class_<FixedMatrix<T> > c(name,doc, boost::python::init<int,int>("return an uninitialized array of the specified rows and cols"));
         c
             .def("__getitem__", &FixedMatrix<T>::getslice)
             .def("__getitem__", &FixedMatrix<T>::getitem, boost::python::return_internal_reference<>()) 
