@@ -323,7 +323,7 @@ imath_half_to_float (imath_half_bits_t h)
         // other compilers may provide count-leading-zeros primitives,
         // but we need the community to inform us of the variants
         uint32_t lc;
-#    if defined(_MSC_VER)
+#    if defined(_MSC_VER) && (_M_IX86 || _M_X64)
         lc = __lzcnt (hexpmant);
 #    elif defined(__GNUC__) || defined(__clang__)
         lc = (uint32_t) __builtin_clz (hexpmant);
