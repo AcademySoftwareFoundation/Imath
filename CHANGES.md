@@ -1,5 +1,6 @@
 # Imath Release Notes
 
+* [Version 3.1.4](#version-314-january-21-2022) January 21, 2022
 * [Version 3.1.3](#version-313-september-2-2021) September 2, 2021
 * [Version 3.1.2](#version-312-july-31-2021) July 31, 2021
 * [Version 3.1.1](#version-311-july-20-2021) July 20, 2021
@@ -11,6 +12,43 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.4 (January 21, 2022)
+
+Patch release with miscellaneous bug/doc/build fixes.
+
+* \[[#229](https://github.com/AcademySoftwareFoundation/Imath/pull/229)\] 
+Remove some simple typos in the code
+* \[[#228](https://github.com/AcademySoftwareFoundation/Imath/pull/228)\] 
+Added missing check _M_IX86 or _M_X64 when using __lzcnt.
+* \[[#224](https://github.com/AcademySoftwareFoundation/Imath/pull/224)\] 
+SolveNormalizedCubic fix to return proper real root
+* \[[#223](https://github.com/AcademySoftwareFoundation/Imath/pull/223)\] 
+Add docs target only if not a subproject
+* \[[#222](https://github.com/AcademySoftwareFoundation/Imath/pull/222)\] 
+Fix docs race condition and make installation optional
+* \[[#220](https://github.com/AcademySoftwareFoundation/Imath/pull/220)\] 
+Remove dead PyImath code and references to ilmbase
+* \[[#219](https://github.com/AcademySoftwareFoundation/Imath/pull/219)\] 
+Use equalWithAbsError instead of equal operator for float
+* \[[#218](https://github.com/AcademySoftwareFoundation/Imath/pull/218)\] 
+Fix sphinx warnings and man page filenames
+* \[[#215](https://github.com/AcademySoftwareFoundation/Imath/pull/215)\] 
+Adding missing stdexcept header
+* \[[#214](https://github.com/AcademySoftwareFoundation/Imath/pull/214)\] 
+Use .x instead of operator[] for better SIMD auto-vectorization
+* \[[#213](https://github.com/AcademySoftwareFoundation/Imath/pull/213)\] 
+Remove extra project layer for the pyimath code
+* \[[#209](https://github.com/AcademySoftwareFoundation/Imath/pull/209)\] 
+Successor/predecessor functions use isnan() and isinf()
+* \[[#207](https://github.com/AcademySoftwareFoundation/Imath/pull/207)\] 
+Fix python imath export
+* \[[#202](https://github.com/AcademySoftwareFoundation/Imath/pull/202)\] 
+Cuda safety fixes
+* \[[#185](https://github.com/AcademySoftwareFoundation/Imath/pull/185)\] 
+Sort Imath source files
+* \[[#182](https://github.com/AcademySoftwareFoundation/Imath/pull/182)\] 
+Fix formatting in release notes
 
 ## Version 3.1.3 (September 2, 2021)
 
