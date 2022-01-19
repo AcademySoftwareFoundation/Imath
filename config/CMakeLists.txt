@@ -28,7 +28,7 @@ install(
 
 install(TARGETS ImathConfig EXPORT ${PROJECT_NAME})
 
-add_library(Imath::Config ALIAS ImathConfig)
+add_library(Imath::ImathConfig ALIAS ImathConfig)
 
 if(IMATH_INSTALL_PKG_CONFIG)
   # use a helper function to avoid variable pollution, but pretty simple

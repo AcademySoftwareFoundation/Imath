@@ -8,7 +8,7 @@ add_library(PyImathConfig INTERFACE)
 target_include_directories(PyImathConfig INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>)
 install(TARGETS PyImathConfig EXPORT ${PROJECT_NAME})
-add_library(PyImath::Config ALIAS PyImathConfig)
+add_library(PyImath::PyImathConfig ALIAS PyImathConfig)
 
 if(IMATH_INSTALL_PKG_CONFIG)
   # use a helper function to avoid variable pollution, but pretty simple
