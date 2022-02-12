@@ -281,7 +281,7 @@ To reduce library size and make linkage behavior similar across
 platforms, Imath and OpenEXR now build with directives that make
 symbol visibility hidden by default, with specific externally-visible
 symbols explicitly marked for export. See the [Symbol
-Visibility](https://github.com/AcademySoftwareFoundation/openexr/blob/master/docs/SymbolVisibility.md)
+Visibility](https://github.com/AcademySoftwareFoundation/openexr/blob/main/docs/SymbolVisibility.md)
 doc and the appropriate ``*Export.h`` header file for more details.
 
 ## Imath Now Uses Standard C++ Exceptions and `noexcept`
