@@ -1,6 +1,8 @@
-# Disable clang-format in half.cpp
-344334aef268206ed1d46399ea85ab276f3f13e6
+# if you have git newer than 2.23, you can either
+# specify this on the command line
+# git blame foo.cpp --ignore-revs-file path/to/this/file
+# or add this file to your config (use global to change your global user pref)
+# git config [--global] blame.ignoreRevsFile .git-blame-ignore-revs
 
-# Tune .clang-format to match existing style
-c6014892de1acccca0deada8ab3353cd290e9fbc
-
+# initial clang-format run
+338c9a051c5b7569bbb06f200618feaba59a14c6
