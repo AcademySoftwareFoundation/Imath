@@ -7,6 +7,7 @@
 #    undef NDEBUG
 #endif
 
+#include "testMatrix.h"
 #include <ImathInt64.h>
 #include <ImathMath.h>
 #include <ImathMatrix.h>
@@ -15,7 +16,6 @@
 #include <ImathVec.h>
 #include <assert.h>
 #include <iostream>
-#include "testMatrix.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
 #include <ImathForward.h>
@@ -34,20 +34,20 @@ using IMATH_INTERNAL_NAMESPACE::Int64;
 //
 
 void
-testMatrix()
+testMatrix ()
 {
     cout << "Testing functions in ImathMatrix.h" << endl;
 
     union
     {
         float f;
-        int i;
+        int   i;
     } nanf;
     nanf.i = 0x7f800001; //  NAN
 
     union
     {
-        double d;
+        double   d;
         uint64_t i;
     } nand;
     nand.i = 0x7ff0000000000001ULL; //  NAN
@@ -66,7 +66,7 @@ testMatrix()
         assert (test != test2);
 
         IMATH_INTERNAL_NAMESPACE::M22f test3;
-        test3.makeIdentity();
+        test3.makeIdentity ();
         assert (test2 == test3);
     }
 
@@ -84,12 +84,13 @@ testMatrix()
         assert (test != test2);
 
         IMATH_INTERNAL_NAMESPACE::M22d test3;
-        test3.makeIdentity();
+        test3.makeIdentity ();
         assert (test2 == test3);
 
         IMATH_INTERNAL_NAMESPACE::M22f test4 (1.0f, 2.0f, 3.0f, 4.0f);
 
-        IMATH_INTERNAL_NAMESPACE::M22d test5 = IMATH_INTERNAL_NAMESPACE::M22d (test4);
+        IMATH_INTERNAL_NAMESPACE::M22d test5 =
+            IMATH_INTERNAL_NAMESPACE::M22d (test4);
 
         assert (test5[0][0] == 1.0);
         assert (test5[0][1] == 2.0);
@@ -103,17 +104,17 @@ testMatrix()
 
         IMATH_INTERNAL_NAMESPACE::M22f m1 (3.0f, 3.0f, 5.0f, 5.0f);
         IMATH_INTERNAL_NAMESPACE::M22f m2 = m1;
-        assert(m1.inverse(false) == m1.inverse());
-        m2.invert(false);
-        m1.invert();
-        assert(m1 == m2);
+        assert (m1.inverse (false) == m1.inverse ());
+        m2.invert (false);
+        m1.invert ();
+        assert (m1 == m2);
 
         IMATH_INTERNAL_NAMESPACE::M22f m3 (4.0f, 7.0f, 2.0f, 6.0f);
         m2 = m3;
-        assert(m2.inverse(true) == m2.inverse());
-        m3.invert(true);
-        m2.invert();
-        assert(m3 == m2);
+        assert (m2.inverse (true) == m2.inverse ());
+        m3.invert (true);
+        m2.invert ();
+        assert (m3 == m2);
     }
 
     {
@@ -121,24 +122,28 @@ testMatrix()
 
         IMATH_INTERNAL_NAMESPACE::M33f m1, m2;
         m1.setShear (2.0f);
-        assert (m1[0][0] == 1.0f && m1[0][1] == 0.0f && m1[0][2] == 0.0f && m1[1][0] == 2.0f &&
-                m1[1][1] == 1.0f && m1[1][2] == 0.0f && m1[2][0] == 0.0f && m1[2][1] == 0.0f &&
-                m1[2][2] == 1.0f);
+        assert (
+            m1[0][0] == 1.0f && m1[0][1] == 0.0f && m1[0][2] == 0.0f &&
+            m1[1][0] == 2.0f && m1[1][1] == 1.0f && m1[1][2] == 0.0f &&
+            m1[2][0] == 0.0f && m1[2][1] == 0.0f && m1[2][2] == 1.0f);
 
         m2.setShear (IMATH_INTERNAL_NAMESPACE::V2f (3.0f, 4.0f));
-        assert (m2[0][0] == 1.0f && m2[0][1] == 4.0f && m2[0][2] == 0.0f && m2[1][0] == 3.0f &&
-                m2[1][1] == 1.0f && m2[1][2] == 0.0f && m2[2][0] == 0.0f && m2[2][1] == 0.0f &&
-                m2[2][2] == 1.0f);
+        assert (
+            m2[0][0] == 1.0f && m2[0][1] == 4.0f && m2[0][2] == 0.0f &&
+            m2[1][0] == 3.0f && m2[1][1] == 1.0f && m2[1][2] == 0.0f &&
+            m2[2][0] == 0.0f && m2[2][1] == 0.0f && m2[2][2] == 1.0f);
 
         m1.shear (IMATH_INTERNAL_NAMESPACE::V2f (5.0f, 6.0f));
-        assert (m1[0][0] == 13.0f && m1[0][1] == 6.0f && m1[0][2] == 0.0f && m1[1][0] == 7.0f &&
-                m1[1][1] == 1.0f && m1[1][2] == 0.0f && m1[2][0] == 0.0f && m1[2][1] == 0.0f &&
-                m1[2][2] == 1.0f);
+        assert (
+            m1[0][0] == 13.0f && m1[0][1] == 6.0f && m1[0][2] == 0.0f &&
+            m1[1][0] == 7.0f && m1[1][1] == 1.0f && m1[1][2] == 0.0f &&
+            m1[2][0] == 0.0f && m1[2][1] == 0.0f && m1[2][2] == 1.0f);
 
         m2.shear (7.0f);
-        assert (m2[0][0] == 1.0f && m2[0][1] == 4.0f && m2[0][2] == 0.0f && m2[1][0] == 10.0f &&
-                m2[1][1] == 29.0f && m2[1][2] == 0.0f && m2[2][0] == 0.0f && m2[2][1] == 0.0f &&
-                m2[2][2] == 1.0f);
+        assert (
+            m2[0][0] == 1.0f && m2[0][1] == 4.0f && m2[0][2] == 0.0f &&
+            m2[1][0] == 10.0f && m2[1][1] == 29.0f && m2[1][2] == 0.0f &&
+            m2[2][0] == 0.0f && m2[2][1] == 0.0f && m2[2][2] == 1.0f);
 
         cout << "M33f constructors and equality operators" << endl;
 
@@ -149,40 +154,44 @@ testMatrix()
         assert (test != test2);
 
         IMATH_INTERNAL_NAMESPACE::M33f test3;
-        test3.makeIdentity();
+        test3.makeIdentity ();
         assert (test2 == test3);
     }
 
     {
-      cout << "M33f inversion operators" << endl;
+        cout << "M33f inversion operators" << endl;
 
-      IMATH_INTERNAL_NAMESPACE::M33f m1 (0.0f, 2.0f, -1.0f, 3.0f, -2.0f, 1.0f, 3.0f, 2.0f, -1.0f);
-      IMATH_INTERNAL_NAMESPACE::M33f m2 = m1;
-      assert(m1.inverse(false) == m1.inverse());
-      m2.invert(false);
-      m1.invert();
-      assert(m1 == m2);
+        IMATH_INTERNAL_NAMESPACE::M33f m1 (
+            0.0f, 2.0f, -1.0f, 3.0f, -2.0f, 1.0f, 3.0f, 2.0f, -1.0f);
+        IMATH_INTERNAL_NAMESPACE::M33f m2 = m1;
+        assert (m1.inverse (false) == m1.inverse ());
+        m2.invert (false);
+        m1.invert ();
+        assert (m1 == m2);
 
-      IMATH_INTERNAL_NAMESPACE::M33f m3 (1.0f, 0.0f, 5.0f, 2.0f, 1.0f, 6.0f, 3.0f, 4.0f, 0.0f);
-      m2 = m3;
-      assert(m3.inverse(true) == m3.inverse());
-      m3.invert(true);
-      m2.invert();
-      assert(m3 == m2);
+        IMATH_INTERNAL_NAMESPACE::M33f m3 (
+            1.0f, 0.0f, 5.0f, 2.0f, 1.0f, 6.0f, 3.0f, 4.0f, 0.0f);
+        m2 = m3;
+        assert (m3.inverse (true) == m3.inverse ());
+        m3.invert (true);
+        m2.invert ();
+        assert (m3 == m2);
 
-      IMATH_INTERNAL_NAMESPACE::M33f m4 (0.0f, 2.0f, -1.0f, 3.0f, -2.0f, 1.0f, 3.0f, 2.0f, -1.0f);
-      m2 = m4;
-      assert(m4.gjInverse(false) == m4.gjInverse());
-      m2.gjInvert(false);
-      m4.gjInvert();
-      assert(m4 == m2);
+        IMATH_INTERNAL_NAMESPACE::M33f m4 (
+            0.0f, 2.0f, -1.0f, 3.0f, -2.0f, 1.0f, 3.0f, 2.0f, -1.0f);
+        m2 = m4;
+        assert (m4.gjInverse (false) == m4.gjInverse ());
+        m2.gjInvert (false);
+        m4.gjInvert ();
+        assert (m4 == m2);
 
-      IMATH_INTERNAL_NAMESPACE::M33f m5 (1.0f, 0.0f, 5.0f, 2.0f, 1.0f, 6.0f, 3.0f, 4.0f, 0.0f);
-      m2 = m5;
-      assert(m5.gjInverse(true) == m5.gjInverse());
-      m5.gjInvert(true);
-      m2.gjInvert();
-      assert(m5 == m2);
+        IMATH_INTERNAL_NAMESPACE::M33f m5 (
+            1.0f, 0.0f, 5.0f, 2.0f, 1.0f, 6.0f, 3.0f, 4.0f, 0.0f);
+        m2 = m5;
+        assert (m5.gjInverse (true) == m5.gjInverse ());
+        m5.gjInvert (true);
+        m2.gjInvert ();
+        assert (m5 == m2);
     }
 
     {
@@ -199,12 +208,14 @@ testMatrix()
         assert (test != test2);
 
         IMATH_INTERNAL_NAMESPACE::M33d test3;
-        test3.makeIdentity();
+        test3.makeIdentity ();
         assert (test2 == test3);
 
-        IMATH_INTERNAL_NAMESPACE::M33f test4 (1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f);
+        IMATH_INTERNAL_NAMESPACE::M33f test4 (
+            1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f);
 
-        IMATH_INTERNAL_NAMESPACE::M33d test5 = IMATH_INTERNAL_NAMESPACE::M33d (test4);
+        IMATH_INTERNAL_NAMESPACE::M33d test5 =
+            IMATH_INTERNAL_NAMESPACE::M33d (test4);
 
         assert (test5[0][0] == 1.0);
         assert (test5[0][1] == 2.0);
@@ -233,7 +244,7 @@ testMatrix()
         assert (test != test2);
 
         IMATH_INTERNAL_NAMESPACE::M44f test3;
-        test3.makeIdentity();
+        test3.makeIdentity ();
         assert (test2 == test3);
 
         //
@@ -260,7 +271,7 @@ testMatrix()
         assert (test != test2);
 
         IMATH_INTERNAL_NAMESPACE::M44d test3;
-        test3.makeIdentity();
+        test3.makeIdentity ();
         assert (test2 == test3);
 
         //
@@ -272,24 +283,26 @@ testMatrix()
         test3       = test2;
         assert (test2 != test3);
 
-        IMATH_INTERNAL_NAMESPACE::M44f test4 (1.0f,
-                                              2.0f,
-                                              3.0f,
-                                              4.0f,
-                                              5.0f,
-                                              6.0f,
-                                              7.0f,
-                                              8.0f,
-                                              9.0f,
-                                              10.0f,
-                                              11.0f,
-                                              12.0f,
-                                              13.0f,
-                                              14.0f,
-                                              15.0f,
-                                              16.0f);
+        IMATH_INTERNAL_NAMESPACE::M44f test4 (
+            1.0f,
+            2.0f,
+            3.0f,
+            4.0f,
+            5.0f,
+            6.0f,
+            7.0f,
+            8.0f,
+            9.0f,
+            10.0f,
+            11.0f,
+            12.0f,
+            13.0f,
+            14.0f,
+            15.0f,
+            16.0f);
 
-        IMATH_INTERNAL_NAMESPACE::M44d test5 = IMATH_INTERNAL_NAMESPACE::M44d (test4);
+        IMATH_INTERNAL_NAMESPACE::M44d test5 =
+            IMATH_INTERNAL_NAMESPACE::M44d (test4);
 
         assert (test5[0][0] == 1.0);
         assert (test5[0][1] == 2.0);
@@ -313,95 +326,99 @@ testMatrix()
     }
 
     {
-      cout << "M44f inversion operators" << endl;
+        cout << "M44f inversion operators" << endl;
 
-      IMATH_INTERNAL_NAMESPACE::M44f m1 (1.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         1.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         1.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f);
-      IMATH_INTERNAL_NAMESPACE::M44f m2 = m1;
-      assert(m1.inverse(false) == m1.inverse());
-      m2.invert(false);
-      m1.invert();
-      assert(m1 == m2);
+        IMATH_INTERNAL_NAMESPACE::M44f m1 (
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f);
+        IMATH_INTERNAL_NAMESPACE::M44f m2 = m1;
+        assert (m1.inverse (false) == m1.inverse ());
+        m2.invert (false);
+        m1.invert ();
+        assert (m1 == m2);
 
-      IMATH_INTERNAL_NAMESPACE::M44f m3 (5.0f,
-                                         6.0f,
-                                         6.0f,
-                                         8.0f,
-                                         2.0f,
-                                         2.0f,
-                                         2.0f,
-                                         8.0f,
-                                         6.0f,
-                                         6.0f,
-                                         2.0f,
-                                         8.0f,
-                                         2.0f,
-                                         3.0f,
-                                         6.0f,
-                                         7.0f);
-      m2 = m3;
-      assert(m3.inverse(true) == m3.inverse());
-      m3.invert(true);
-      m2.invert();
-      assert(m3 == m2);
+        IMATH_INTERNAL_NAMESPACE::M44f m3 (
+            5.0f,
+            6.0f,
+            6.0f,
+            8.0f,
+            2.0f,
+            2.0f,
+            2.0f,
+            8.0f,
+            6.0f,
+            6.0f,
+            2.0f,
+            8.0f,
+            2.0f,
+            3.0f,
+            6.0f,
+            7.0f);
+        m2 = m3;
+        assert (m3.inverse (true) == m3.inverse ());
+        m3.invert (true);
+        m2.invert ();
+        assert (m3 == m2);
 
-      IMATH_INTERNAL_NAMESPACE::M44f m4 (1.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         1.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         1.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f,
-                                         0.0f);
-      m2 = m4;
-      assert(m4.gjInverse(false) == m4.gjInverse());
-      m2.gjInvert(false);
-      m4.gjInvert();
-      assert(m4 == m2);
+        IMATH_INTERNAL_NAMESPACE::M44f m4 (
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f);
+        m2 = m4;
+        assert (m4.gjInverse (false) == m4.gjInverse ());
+        m2.gjInvert (false);
+        m4.gjInvert ();
+        assert (m4 == m2);
 
-      IMATH_INTERNAL_NAMESPACE::M44f m5 (5.0f,
-                                         6.0f,
-                                         6.0f,
-                                         8.0f,
-                                         2.0f,
-                                         2.0f,
-                                         2.0f,
-                                         8.0f,
-                                         6.0f,
-                                         6.0f,
-                                         2.0f,
-                                         8.0f,
-                                         2.0f,
-                                         3.0f,
-                                         6.0f,
-                                         7.0f);
-      m2 = m5;
-      assert(m5.gjInverse(true) == m5.gjInverse());
-      m5.gjInvert(true);
-      m2.gjInvert();
-      assert(m5 == m2);
+        IMATH_INTERNAL_NAMESPACE::M44f m5 (
+            5.0f,
+            6.0f,
+            6.0f,
+            8.0f,
+            2.0f,
+            2.0f,
+            2.0f,
+            8.0f,
+            6.0f,
+            6.0f,
+            2.0f,
+            8.0f,
+            2.0f,
+            3.0f,
+            6.0f,
+            7.0f);
+        m2 = m5;
+        assert (m5.gjInverse (true) == m5.gjInverse ());
+        m5.gjInvert (true);
+        m2.gjInvert ();
+        assert (m5 == m2);
     }
 
     {
@@ -458,13 +475,15 @@ testMatrix()
         IMATH_INTERNAL_NAMESPACE::M22f v;
         IMATH_INTERNAL_NAMESPACE::M22f s;
 
-        u.setRotation (random.nextf());
-        v.setRotation (random.nextf());
-        s[0][0] = random.nextf();
-        s[1][1] = random.nextf();
+        u.setRotation (random.nextf ());
+        v.setRotation (random.nextf ());
+        s[0][0] = random.nextf ();
+        s[1][1] = random.nextf ();
 
-        IMATH_INTERNAL_NAMESPACE::M22f c = u * s * v.transpose();
-        assert (fabsf (c.determinant() - s[0][0] * s[1][1]) <= u.baseTypeEpsilon());
+        IMATH_INTERNAL_NAMESPACE::M22f c = u * s * v.transpose ();
+        assert (
+            fabsf (c.determinant () - s[0][0] * s[1][1]) <=
+            u.baseTypeEpsilon ());
     }
     {
         IMATH_INTERNAL_NAMESPACE::Rand32 random;
@@ -473,13 +492,15 @@ testMatrix()
         IMATH_INTERNAL_NAMESPACE::M22d v;
         IMATH_INTERNAL_NAMESPACE::M22d s;
 
-        u.setRotation ((double) random.nextf());
-        v.setRotation ((double) random.nextf());
-        s[0][0] = (double) random.nextf();
-        s[1][1] = (double) random.nextf();
+        u.setRotation ((double) random.nextf ());
+        v.setRotation ((double) random.nextf ());
+        s[0][0] = (double) random.nextf ();
+        s[1][1] = (double) random.nextf ();
 
-        IMATH_INTERNAL_NAMESPACE::M22d c = u * s * v.transpose();
-        assert (fabs (c.determinant() - s[0][0] * s[1][1]) <= u.baseTypeEpsilon());
+        IMATH_INTERNAL_NAMESPACE::M22d c = u * s * v.transpose ();
+        assert (
+            fabs (c.determinant () - s[0][0] * s[1][1]) <=
+            u.baseTypeEpsilon ());
     }
 
     {
@@ -491,14 +512,16 @@ testMatrix()
         IMATH_INTERNAL_NAMESPACE::M33f v;
         IMATH_INTERNAL_NAMESPACE::M33f s;
 
-        u.setRotation (random.nextf());
-        v.setRotation (random.nextf());
-        s[0][0] = random.nextf();
-        s[1][1] = random.nextf();
-        s[2][2] = random.nextf();
+        u.setRotation (random.nextf ());
+        v.setRotation (random.nextf ());
+        s[0][0] = random.nextf ();
+        s[1][1] = random.nextf ();
+        s[2][2] = random.nextf ();
 
-        IMATH_INTERNAL_NAMESPACE::M33f c = u * s * v.transpose();
-        assert (fabsf (c.determinant() - s[0][0] * s[1][1] * s[2][2]) <= u.baseTypeEpsilon());
+        IMATH_INTERNAL_NAMESPACE::M33f c = u * s * v.transpose ();
+        assert (
+            fabsf (c.determinant () - s[0][0] * s[1][1] * s[2][2]) <=
+            u.baseTypeEpsilon ());
     }
     {
         IMATH_INTERNAL_NAMESPACE::Rand32 random;
@@ -507,23 +530,26 @@ testMatrix()
         IMATH_INTERNAL_NAMESPACE::M33d v;
         IMATH_INTERNAL_NAMESPACE::M33d s;
 
-        u.setRotation ((double) random.nextf());
-        v.setRotation ((double) random.nextf());
-        s[0][0] = (double) random.nextf();
-        s[1][1] = (double) random.nextf();
-        s[2][2] = (double) random.nextf();
+        u.setRotation ((double) random.nextf ());
+        v.setRotation ((double) random.nextf ());
+        s[0][0] = (double) random.nextf ();
+        s[1][1] = (double) random.nextf ();
+        s[2][2] = (double) random.nextf ();
 
-        IMATH_INTERNAL_NAMESPACE::M33d c = u * s * v.transpose();
-        assert (fabs (c.determinant() - s[0][0] * s[1][1] * s[2][2]) <= u.baseTypeEpsilon());
+        IMATH_INTERNAL_NAMESPACE::M33d c = u * s * v.transpose ();
+        assert (
+            fabs (c.determinant () - s[0][0] * s[1][1] * s[2][2]) <=
+            u.baseTypeEpsilon ());
     }
 
     // Outer product of two 3D vectors
     {
         cout << "Outer product of two 3D vectors" << endl;
 
-        IMATH_INTERNAL_NAMESPACE::V3f a (1, 2, 3);
-        IMATH_INTERNAL_NAMESPACE::V3f b (4, 5, 6);
-        IMATH_INTERNAL_NAMESPACE::M33f p = IMATH_INTERNAL_NAMESPACE::outerProduct (a, b);
+        IMATH_INTERNAL_NAMESPACE::V3f  a (1, 2, 3);
+        IMATH_INTERNAL_NAMESPACE::V3f  b (4, 5, 6);
+        IMATH_INTERNAL_NAMESPACE::M33f p =
+            IMATH_INTERNAL_NAMESPACE::outerProduct (a, b);
 
         for (int i = 0; i < 3; i++)
         {
@@ -534,9 +560,10 @@ testMatrix()
         }
     }
     {
-        IMATH_INTERNAL_NAMESPACE::V3d a (1, 2, 3);
-        IMATH_INTERNAL_NAMESPACE::V3d b (4, 5, 6);
-        IMATH_INTERNAL_NAMESPACE::M33d p = IMATH_INTERNAL_NAMESPACE::outerProduct (a, b);
+        IMATH_INTERNAL_NAMESPACE::V3d  a (1, 2, 3);
+        IMATH_INTERNAL_NAMESPACE::V3d  b (4, 5, 6);
+        IMATH_INTERNAL_NAMESPACE::M33d p =
+            IMATH_INTERNAL_NAMESPACE::outerProduct (a, b);
 
         for (int i = 0; i < 3; i++)
         {
@@ -553,57 +580,72 @@ testMatrix()
 
         IMATH_INTERNAL_NAMESPACE::Rand32 random;
 
-        IMATH_INTERNAL_NAMESPACE::M44f u = IMATH_INTERNAL_NAMESPACE::rotationMatrix (
-            IMATH_INTERNAL_NAMESPACE::V3f (random.nextf(), random.nextf(), random.nextf())
-                .normalize(),
-            IMATH_INTERNAL_NAMESPACE::V3f (random.nextf(), random.nextf(), random.nextf())
-                .normalize());
-        IMATH_INTERNAL_NAMESPACE::M44f v = IMATH_INTERNAL_NAMESPACE::rotationMatrix (
-            IMATH_INTERNAL_NAMESPACE::V3f (random.nextf(), random.nextf(), random.nextf())
-                .normalize(),
-            IMATH_INTERNAL_NAMESPACE::V3f (random.nextf(), random.nextf(), random.nextf())
-                .normalize());
+        IMATH_INTERNAL_NAMESPACE::M44f u =
+            IMATH_INTERNAL_NAMESPACE::rotationMatrix (
+                IMATH_INTERNAL_NAMESPACE::V3f (
+                    random.nextf (), random.nextf (), random.nextf ())
+                    .normalize (),
+                IMATH_INTERNAL_NAMESPACE::V3f (
+                    random.nextf (), random.nextf (), random.nextf ())
+                    .normalize ());
+        IMATH_INTERNAL_NAMESPACE::M44f v =
+            IMATH_INTERNAL_NAMESPACE::rotationMatrix (
+                IMATH_INTERNAL_NAMESPACE::V3f (
+                    random.nextf (), random.nextf (), random.nextf ())
+                    .normalize (),
+                IMATH_INTERNAL_NAMESPACE::V3f (
+                    random.nextf (), random.nextf (), random.nextf ())
+                    .normalize ());
         IMATH_INTERNAL_NAMESPACE::M44f s;
 
-        s[0][0] = random.nextf();
-        s[1][1] = random.nextf();
-        s[2][2] = random.nextf();
-        s[3][3] = random.nextf();
+        s[0][0] = random.nextf ();
+        s[1][1] = random.nextf ();
+        s[2][2] = random.nextf ();
+        s[3][3] = random.nextf ();
 
-        IMATH_INTERNAL_NAMESPACE::M44f c = u * s * v.transpose();
-        assert (fabsf (c.determinant() - s[0][0] * s[1][1] * s[2][2] * s[3][3]) <=
-                u.baseTypeEpsilon());
+        IMATH_INTERNAL_NAMESPACE::M44f c = u * s * v.transpose ();
+        assert (
+            fabsf (c.determinant () - s[0][0] * s[1][1] * s[2][2] * s[3][3]) <=
+            u.baseTypeEpsilon ());
     }
     {
         IMATH_INTERNAL_NAMESPACE::Rand32 random;
 
-        IMATH_INTERNAL_NAMESPACE::M44d u = IMATH_INTERNAL_NAMESPACE::rotationMatrix (
-            IMATH_INTERNAL_NAMESPACE::V3d (random.nextf(), random.nextf(), random.nextf())
-                .normalize(),
-            IMATH_INTERNAL_NAMESPACE::V3d (random.nextf(), random.nextf(), random.nextf())
-                .normalize());
-        IMATH_INTERNAL_NAMESPACE::M44d v = IMATH_INTERNAL_NAMESPACE::rotationMatrix (
-            IMATH_INTERNAL_NAMESPACE::V3d (random.nextf(), random.nextf(), random.nextf())
-                .normalize(),
-            IMATH_INTERNAL_NAMESPACE::V3d (random.nextf(), random.nextf(), random.nextf())
-                .normalize());
+        IMATH_INTERNAL_NAMESPACE::M44d u =
+            IMATH_INTERNAL_NAMESPACE::rotationMatrix (
+                IMATH_INTERNAL_NAMESPACE::V3d (
+                    random.nextf (), random.nextf (), random.nextf ())
+                    .normalize (),
+                IMATH_INTERNAL_NAMESPACE::V3d (
+                    random.nextf (), random.nextf (), random.nextf ())
+                    .normalize ());
+        IMATH_INTERNAL_NAMESPACE::M44d v =
+            IMATH_INTERNAL_NAMESPACE::rotationMatrix (
+                IMATH_INTERNAL_NAMESPACE::V3d (
+                    random.nextf (), random.nextf (), random.nextf ())
+                    .normalize (),
+                IMATH_INTERNAL_NAMESPACE::V3d (
+                    random.nextf (), random.nextf (), random.nextf ())
+                    .normalize ());
         IMATH_INTERNAL_NAMESPACE::M44d s;
 
-        s[0][0] = random.nextf();
-        s[1][1] = random.nextf();
-        s[2][2] = random.nextf();
-        s[3][3] = random.nextf();
+        s[0][0] = random.nextf ();
+        s[1][1] = random.nextf ();
+        s[2][2] = random.nextf ();
+        s[3][3] = random.nextf ();
 
-        IMATH_INTERNAL_NAMESPACE::M44d c = u * s * v.transpose();
-        assert (fabs (c.determinant() - s[0][0] * s[1][1] * s[2][2] * s[3][3]) <=
-                u.baseTypeEpsilon());
+        IMATH_INTERNAL_NAMESPACE::M44d c = u * s * v.transpose ();
+        assert (
+            fabs (c.determinant () - s[0][0] * s[1][1] * s[2][2] * s[3][3]) <=
+            u.baseTypeEpsilon ());
     }
 
     // Matrix minors
     {
         cout << "4x4 matrix minors" << endl;
 
-        IMATH_INTERNAL_NAMESPACE::M44d a (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        IMATH_INTERNAL_NAMESPACE::M44d a (
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
         assert (a.minorOf (0, 0) == a.fastMinor (1, 2, 3, 1, 2, 3));
         assert (a.minorOf (0, 1) == a.fastMinor (1, 2, 3, 0, 2, 3));
@@ -623,7 +665,8 @@ testMatrix()
         assert (a.minorOf (3, 3) == a.fastMinor (0, 1, 2, 0, 1, 2));
     }
     {
-        IMATH_INTERNAL_NAMESPACE::M44f a (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        IMATH_INTERNAL_NAMESPACE::M44f a (
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 
         assert (a.minorOf (0, 0) == a.fastMinor (1, 2, 3, 1, 2, 3));
         assert (a.minorOf (0, 1) == a.fastMinor (1, 2, 3, 0, 2, 3));
@@ -649,25 +692,26 @@ testMatrix()
     // and ignores __restrict.
     {
         cout << "M44 multiplicaftion test" << endl;
-        IMATH_INTERNAL_NAMESPACE::M44f M (1.0f,
-                                          2.0f,
-                                          3.0f,
-                                          4.0f,
-                                          5.0f,
-                                          6.0f,
-                                          7.0f,
-                                          8.0f,
-                                          9.0f,
-                                          10.0f,
-                                          11.0f,
-                                          12.0f,
-                                          13.0f,
-                                          14.0f,
-                                          15.0f,
-                                          16.0f);
+        IMATH_INTERNAL_NAMESPACE::M44f M (
+            1.0f,
+            2.0f,
+            3.0f,
+            4.0f,
+            5.0f,
+            6.0f,
+            7.0f,
+            8.0f,
+            9.0f,
+            10.0f,
+            11.0f,
+            12.0f,
+            13.0f,
+            14.0f,
+            15.0f,
+            16.0f);
 
         IMATH_INTERNAL_NAMESPACE::M44f N;
-        N.makeIdentity();
+        N.makeIdentity ();
 
         // N should be equal to M
         // This typical test fails

@@ -39,23 +39,25 @@ template <class T> class Matrix44;
 ///
 ///  See Graphics Gems I for the underlying algorithm.
 
+template <class T>
+Matrix44<T> constexpr firstFrame (
+    const Vec3<T>&,                 // First point
+    const Vec3<T>&,                 // Second point
+    const Vec3<T>&) IMATH_NOEXCEPT; // Third point
 
 template <class T>
-Matrix44<T> constexpr firstFrame (const Vec3<T>&,  // First point
-                                  const Vec3<T>&,  // Second point
-                                  const Vec3<T>&) IMATH_NOEXCEPT; // Third point
+Matrix44<T> constexpr nextFrame (
+    const Matrix44<T>&,       // Previous matrix
+    const Vec3<T>&,           // Previous point
+    const Vec3<T>&,           // Current point
+    Vec3<T>&,                 // Previous tangent
+    Vec3<T>&) IMATH_NOEXCEPT; // Current tangent
 
 template <class T>
-Matrix44<T> constexpr nextFrame (const Matrix44<T>&, // Previous matrix
-                                 const Vec3<T>&,     // Previous point
-                                 const Vec3<T>&,     // Current point
-                                 Vec3<T>&,           // Previous tangent
-                                 Vec3<T>&) IMATH_NOEXCEPT;          // Current tangent
-
-template <class T>
-Matrix44<T> constexpr lastFrame (const Matrix44<T>&, // Previous matrix
-                                 const Vec3<T>&,     // Previous point
-                                 const Vec3<T>&) IMATH_NOEXCEPT;    // Last point
+Matrix44<T> constexpr lastFrame (
+    const Matrix44<T>&,             // Previous matrix
+    const Vec3<T>&,                 // Previous point
+    const Vec3<T>&) IMATH_NOEXCEPT; // Last point
 
 ///
 /// Compute the first reference frame along a curve.
@@ -73,27 +75,27 @@ Matrix44<T> constexpr lastFrame (const Matrix44<T>&, // Previous matrix
 ///      Second point
 /// @param pk
 ///      Third point
-/// 
+///
 template <class T>
-Matrix44<T> constexpr firstFrame (const Vec3<T>& pi, // first point
-                                  const Vec3<T>& pj, // secont point
-                                  const Vec3<T>& pk) IMATH_NOEXCEPT // third point
+Matrix44<T> constexpr firstFrame (
+    const Vec3<T>& pi,                // first point
+    const Vec3<T>& pj,                // secont point
+    const Vec3<T>& pk) IMATH_NOEXCEPT // third point
 {
     Vec3<T> t = pj - pi;
-    t.normalizeExc();
+    t.normalizeExc ();
 
     Vec3<T> n = t.cross (pk - pi);
-    n.normalize();
-    if (n.length() == 0.0f)
+    n.normalize ();
+    if (n.length () == 0.0f)
     {
         int i = fabs (t[0]) < fabs (t[1]) ? 0 : 1;
-        if (fabs (t[2]) < fabs (t[i]))
-            i = 2;
+        if (fabs (t[2]) < fabs (t[i])) i = 2;
 
         Vec3<T> v (0.0, 0.0, 0.0);
         v[i] = 1.0;
         n    = t.cross (v);
-        n.normalize();
+        n.normalize ();
     }
 
     Vec3<T> b = t.cross (n);
@@ -136,19 +138,20 @@ Matrix44<T> constexpr firstFrame (const Vec3<T>& pi, // first point
 ///      The current tangent vector
 
 template <class T>
-Matrix44<T> constexpr nextFrame (const Matrix44<T>& Mi, // Previous matrix
-                                 const Vec3<T>& pi,     // Previous point
-                                 const Vec3<T>& pj,     // Current point
-                                 Vec3<T>& ti,           // Previous tangent vector
-                                 Vec3<T>& tj) IMATH_NOEXCEPT  // Current tangent vector
+Matrix44<T> constexpr nextFrame (
+    const Matrix44<T>& Mi,      // Previous matrix
+    const Vec3<T>&     pi,      // Previous point
+    const Vec3<T>&     pj,      // Current point
+    Vec3<T>&           ti,      // Previous tangent vector
+    Vec3<T>&           tj) IMATH_NOEXCEPT // Current tangent vector
 {
     Vec3<T> a (0.0, 0.0, 0.0); /// Rotation axis.
-    T r = 0.0;                 // Rotation angle.
+    T       r = 0.0;           // Rotation angle.
 
-    if (ti.length() != 0.0 && tj.length() != 0.0)
+    if (ti.length () != 0.0 && tj.length () != 0.0)
     {
-        ti.normalize();
-        tj.normalize();
+        ti.normalize ();
+        tj.normalize ();
         T dot = ti.dot (tj);
 
         //
@@ -164,7 +167,7 @@ Matrix44<T> constexpr nextFrame (const Matrix44<T>& Mi, // Previous matrix
         a = ti.cross (tj);
     }
 
-    if (a.length() != 0.0 && r != 0.0)
+    if (a.length () != 0.0 && r != 0.0)
     {
         Matrix44<T> R;
         R.setAxisAngle (a, r);
@@ -199,9 +202,10 @@ Matrix44<T> constexpr nextFrame (const Matrix44<T>& Mi, // Previous matrix
 ///      The last point
 
 template <class T>
-Matrix44<T> constexpr lastFrame (const Matrix44<T>& Mi, // Previous matrix
-                                 const Vec3<T>& pi,     // Previous point
-                                 const Vec3<T>& pj) IMATH_NOEXCEPT // Last point
+Matrix44<T> constexpr lastFrame (
+    const Matrix44<T>& Mi,            // Previous matrix
+    const Vec3<T>&     pi,            // Previous point
+    const Vec3<T>&     pj) IMATH_NOEXCEPT // Last point
 {
     Matrix44<T> Tr;
     Tr.translate (pj - pi);

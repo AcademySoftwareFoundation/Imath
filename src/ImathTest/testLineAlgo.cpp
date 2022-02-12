@@ -7,11 +7,11 @@
 #    undef NDEBUG
 #endif
 
+#include "testLineAlgo.h"
 #include <ImathLineAlgo.h>
 #include <ImathRandom.h>
 #include <assert.h>
 #include <iostream>
-#include "testLineAlgo.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
 #include <ImathForward.h>
@@ -23,74 +23,81 @@ namespace
 {
 
 void
-testClosestPoints (const Line3f& line1,
-                   const Line3f& line2,
-                   bool returnValue,
-                   const V3f& point1,
-                   const V3f& point2)
+testClosestPoints (
+    const Line3f& line1,
+    const Line3f& line2,
+    bool          returnValue,
+    const V3f&    point1,
+    const V3f&    point2)
 {
-    V3f p1;
-    V3f p2;
+    V3f  p1;
+    V3f  p2;
     bool rv = closestPoints (line1, line2, p1, p2);
 
     assert (rv == returnValue);
 
     if (rv)
     {
-        float e = 10 * std::numeric_limits<float>::epsilon();
+        float e = 10 * std::numeric_limits<float>::epsilon ();
         assert (point1.equalWithAbsError (p1, e));
         assert (point2.equalWithAbsError (p2, e));
     }
 }
 
 void
-testClosestPoints()
+testClosestPoints ()
 {
     cout << "closest points on two lines" << endl;
 
     cout << "  non-intersecting, non-parallel lines" << endl;
 
-    testClosestPoints (Line3f (V3f (0, -1, -1), V3f (0, 1, -1)),
-                       Line3f (V3f (-1, 0, 1), V3f (1, 0, 1)),
-                       true,
-                       V3f (0, 0, -1),
-                       V3f (0, 0, 1));
+    testClosestPoints (
+        Line3f (V3f (0, -1, -1), V3f (0, 1, -1)),
+        Line3f (V3f (-1, 0, 1), V3f (1, 0, 1)),
+        true,
+        V3f (0, 0, -1),
+        V3f (0, 0, 1));
 
-    testClosestPoints (Line3f (V3f (2, -1, -1), V3f (2, 1, -1)),
-                       Line3f (V3f (-1, 3, 1), V3f (1, 3, 1)),
-                       true,
-                       V3f (2, 3, -1),
-                       V3f (2, 3, 1));
+    testClosestPoints (
+        Line3f (V3f (2, -1, -1), V3f (2, 1, -1)),
+        Line3f (V3f (-1, 3, 1), V3f (1, 3, 1)),
+        true,
+        V3f (2, 3, -1),
+        V3f (2, 3, 1));
 
     cout << "  intersecting, non-parallel lines" << endl;
 
-    testClosestPoints (Line3f (V3f (2, -1, 0), V3f (2, 1, 0)),
-                       Line3f (V3f (-1, 3, 0), V3f (1, 3, 0)),
-                       true,
-                       V3f (2, 3, 0),
-                       V3f (2, 3, 0));
+    testClosestPoints (
+        Line3f (V3f (2, -1, 0), V3f (2, 1, 0)),
+        Line3f (V3f (-1, 3, 0), V3f (1, 3, 0)),
+        true,
+        V3f (2, 3, 0),
+        V3f (2, 3, 0));
 
     cout << "  parallel lines" << endl;
 
-    testClosestPoints (Line3f (V3f (2, -1, 0), V3f (2, 1, 0)),
-                       Line3f (V3f (2, -1, 1), V3f (2, 1, 1)),
-                       false,
-                       V3f (0, 0, 0),
-                       V3f (0, 0, 0));
+    testClosestPoints (
+        Line3f (V3f (2, -1, 0), V3f (2, 1, 0)),
+        Line3f (V3f (2, -1, 1), V3f (2, 1, 1)),
+        false,
+        V3f (0, 0, 0),
+        V3f (0, 0, 0));
 
-    testClosestPoints (Line3f (V3f (2, -1, 0), V3f (2, 1, 0)),
-                       Line3f (V3f (2, 1, 1), V3f (2, -1, 1)),
-                       false,
-                       V3f (0, 0, 0),
-                       V3f (0, 0, 0));
+    testClosestPoints (
+        Line3f (V3f (2, -1, 0), V3f (2, 1, 0)),
+        Line3f (V3f (2, 1, 1), V3f (2, -1, 1)),
+        false,
+        V3f (0, 0, 0),
+        V3f (0, 0, 0));
 
     cout << "  coincident lines" << endl;
 
-    testClosestPoints (Line3f (V3f (2, -1, 0), V3f (2, -1, 1)),
-                       Line3f (V3f (2, -1, 0), V3f (2, -1, 1)),
-                       false,
-                       V3f (0, 0, 0),
-                       V3f (0, 0, 0));
+    testClosestPoints (
+        Line3f (V3f (2, -1, 0), V3f (2, -1, 1)),
+        Line3f (V3f (2, -1, 0), V3f (2, -1, 1)),
+        false,
+        V3f (0, 0, 0),
+        V3f (0, 0, 0));
 
     cout << "  random lines" << endl;
 
@@ -98,12 +105,16 @@ testClosestPoints()
 
     for (int i = 0; i < 10000; ++i)
     {
-        Line3f line1 (solidSphereRand<V3f> (rand) * 100.f, solidSphereRand<V3f> (rand) * 100.f);
+        Line3f line1 (
+            solidSphereRand<V3f> (rand) * 100.f,
+            solidSphereRand<V3f> (rand) * 100.f);
 
-        Line3f line2 (solidSphereRand<V3f> (rand) * 100.f, solidSphereRand<V3f> (rand) * 100.f);
+        Line3f line2 (
+            solidSphereRand<V3f> (rand) * 100.f,
+            solidSphereRand<V3f> (rand) * 100.f);
 
-        V3f point1;
-        V3f point2;
+        V3f  point1;
+        V3f  point2;
         bool rv = closestPoints (line1, line2, point1, point2);
 
         if (rv)
@@ -117,9 +128,9 @@ testClosestPoints()
             // close to parallel.
             //
 
-            float e = 2000 * std::numeric_limits<float>::epsilon();
+            float e = 2000 * std::numeric_limits<float>::epsilon ();
             float d = 1 - (line1.dir ^ line2.dir) * (line1.dir ^ line2.dir);
-            V3f n   = point1 - point2;
+            V3f   n = point1 - point2;
 
             assert (equalWithAbsError (0.0f, (line1.dir ^ n) * d, e));
             assert (equalWithAbsError (0.0f, (line2.dir ^ n) * d, e));
@@ -128,23 +139,24 @@ testClosestPoints()
 }
 
 void
-testIntersect (const Line3f& line,
-               const V3f& v0,
-               const V3f& v1,
-               const V3f& v2,
-               const V3f& point,
-               bool front,
-               bool returnValue)
+testIntersect (
+    const Line3f& line,
+    const V3f&    v0,
+    const V3f&    v1,
+    const V3f&    v2,
+    const V3f&    point,
+    bool          front,
+    bool          returnValue)
 {
-    V3f pt;
-    V3f bary;
+    V3f  pt;
+    V3f  bary;
     bool fr;
 
     bool rv = intersect (line, v0, v1, v2, pt, bary, fr);
 
     assert (rv == returnValue);
 
-    float e = 10 * std::numeric_limits<float>::epsilon();
+    float e = 10 * std::numeric_limits<float>::epsilon ();
 
     if (rv)
     {
@@ -156,161 +168,179 @@ testIntersect (const Line3f& line,
 }
 
 void
-testIntersect()
+testIntersect ()
 {
     cout << "line-triangle intersection" << endl;
 
     cout << "  line-plane intersection inside triangle" << endl;
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (0, 0, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 7),
-                   true,
-                   true);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (0, 0, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 7),
+        true,
+        true);
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (-1, -2, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (-1, -2, 7),
-                   true,
-                   true);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (-1, -2, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (-1, -2, 7),
+        true,
+        true);
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (-1, 1, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (-1, 1, 7),
-                   true,
-                   true);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (-1, 1, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (-1, 1, 7),
+        true,
+        true);
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (-1, 1, 7)),
-                   V3f (4, -4, 7),
-                   V3f (-4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (-1, 1, 7),
-                   false,
-                   true);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (-1, 1, 7)),
+        V3f (4, -4, 7),
+        V3f (-4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (-1, 1, 7),
+        false,
+        true);
 
-    testIntersect (Line3f (V3f (1, 1, 2), V3f (0, 0, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 7),
-                   true,
-                   true);
+    testIntersect (
+        Line3f (V3f (1, 1, 2), V3f (0, 0, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 7),
+        true,
+        true);
 
-    testIntersect (Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (-1, -2, 7),
-                   true,
-                   true);
+    testIntersect (
+        Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (-1, -2, 7),
+        true,
+        true);
 
-    testIntersect (Line3f (V3f (2, 8, -10), V3f (-1, 1, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (-1, 1, 7),
-                   true,
-                   true);
+    testIntersect (
+        Line3f (V3f (2, 8, -10), V3f (-1, 1, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (-1, 1, 7),
+        true,
+        true);
 
-    testIntersect (Line3f (V3f (-10, 2, -1), V3f (-1, 1, 7)),
-                   V3f (4, -4, 7),
-                   V3f (-4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (-1, 1, 7),
-                   false,
-                   true);
+    testIntersect (
+        Line3f (V3f (-10, 2, -1), V3f (-1, 1, 7)),
+        V3f (4, -4, 7),
+        V3f (-4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (-1, 1, 7),
+        false,
+        true);
 
     cout << "  line-plane intersection outside triangle" << endl;
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (4, 0, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (4, 0, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (-4, 1, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (-4, 1, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (0, -5, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (0, -5, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (0, -7, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (0, -7, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
     cout << "  line parallel to triangle" << endl;
 
-    testIntersect (Line3f (V3f (0, 0, -1), V3f (4, 0, -1)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (0, 0, -1), V3f (4, 0, -1)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
-    testIntersect (Line3f (V3f (0, 4, 7), V3f (4, 0, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (0, 4, 7), V3f (4, 0, 7)),
+        V3f (-4, -4, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
     cout << "  zero-area triangle" << endl;
 
-    testIntersect (Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
-                   V3f (0, 6, 7),
-                   V3f (4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
+        V3f (0, 6, 7),
+        V3f (4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
-    testIntersect (Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (-4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
+        V3f (-4, -4, 7),
+        V3f (-4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
-    testIntersect (Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 6, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
+        V3f (-4, -4, 7),
+        V3f (0, 6, 7),
+        V3f (0, 6, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
-    testIntersect (Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
-                   V3f (-4, -4, 7),
-                   V3f (-4, -4, 7),
-                   V3f (-4, -4, 7),
-                   V3f (0, 0, 0),
-                   false,
-                   false);
+    testIntersect (
+        Line3f (V3f (2, 3, -5), V3f (-1, -2, 7)),
+        V3f (-4, -4, 7),
+        V3f (-4, -4, 7),
+        V3f (-4, -4, 7),
+        V3f (0, 0, 0),
+        false,
+        false);
 
     cout << "  random lines and triangles" << endl;
 
@@ -331,7 +361,7 @@ testIntersect()
             v1     = solidSphereRand<V3f> (rand);
             v2     = solidSphereRand<V3f> (rand);
             normal = (v2 - v1) % (v1 - v0);
-        } while (normal.length() < 0.01);
+        } while (normal.length () < 0.01);
 
         {
             //
@@ -354,22 +384,24 @@ testIntersect()
             do
             {
                 p0 = solidSphereRand<V3f> (rand);
-            } while (abs (normal.normalized() ^ (p1 - p0).normalized()) < 0.1);
+            } while (abs (normal.normalized () ^ (p1 - p0).normalized ()) <
+                     0.1);
 
             //
             // Test for intersection
             //
 
-            V3f point;
-            V3f bary;
+            V3f  point;
+            V3f  bary;
             bool front;
 
-            bool rv = intersect (Line3f (p0, p1), v0, v1, v2, point, bary, front);
+            bool rv =
+                intersect (Line3f (p0, p1), v0, v1, v2, point, bary, front);
 
             assert (rv == true);
 
-            float nd = abs (normal.normalized() ^ (p1 - p0).normalized());
-            float ep = 20 * std::numeric_limits<float>::epsilon() / nd;
+            float nd = abs (normal.normalized () ^ (p1 - p0).normalized ());
+            float ep = 20 * std::numeric_limits<float>::epsilon () / nd;
 
             assert (point.equalWithAbsError (p1, ep));
         }
@@ -396,17 +428,19 @@ testIntersect()
             do
             {
                 p0 = solidSphereRand<V3f> (rand) * 10;
-            } while (abs (normal.normalized() ^ (p1 - p0).normalized()) < 0.1);
+            } while (abs (normal.normalized () ^ (p1 - p0).normalized ()) <
+                     0.1);
 
             //
             // Test for intersection
             //
 
-            V3f point;
-            V3f bary;
+            V3f  point;
+            V3f  bary;
             bool front;
 
-            bool rv = intersect (Line3f (p0, p1), v0, v1, v2, point, bary, front);
+            bool rv =
+                intersect (Line3f (p0, p1), v0, v1, v2, point, bary, front);
 
             assert (rv == false);
         }
@@ -416,12 +450,12 @@ testIntersect()
 } // namespace
 
 void
-testLineAlgo()
+testLineAlgo ()
 {
     cout << "Testing line algorithms" << endl;
 
-    testClosestPoints();
-    testIntersect();
+    testClosestPoints ();
+    testIntersect ();
 
     cout << "ok\n" << endl;
 }

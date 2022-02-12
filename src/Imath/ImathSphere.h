@@ -25,11 +25,10 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Sphere3
 {
-  public:
-
+public:
     /// @{
     /// @name Direct access to member fields
-    
+
     /// Center
     Vec3<T> center;
 
@@ -42,25 +41,27 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Sphere3
     ///	@name Constructors
 
     /// Default is center at (0,0,0) and radius of 0.
-    IMATH_HOSTDEVICE constexpr Sphere3() : center (0, 0, 0), radius (0) {}
+    IMATH_HOSTDEVICE constexpr Sphere3 () : center (0, 0, 0), radius (0) {}
 
     /// Initialize to a given center and radius
-    IMATH_HOSTDEVICE constexpr Sphere3 (const Vec3<T>& c, T r) : center (c), radius (r) {}
+    IMATH_HOSTDEVICE constexpr Sphere3 (const Vec3<T>& c, T r)
+        : center (c), radius (r)
+    {}
 
     /// @}
-    
+
     /// @{
     /// @name Manipulation
-    
+
     ///	Set the center and radius of the sphere so that it tightly
     ///	encloses Box b.
     IMATH_HOSTDEVICE void circumscribe (const Box<Vec3<T>>& box);
 
     /// @}
-    
+
     /// @{
     /// @name Utility Methods
-    
+
     ///	If the sphere and line `l` intersect, then compute the
     /// smallest `t` with `t>=0` so that `l(t)` is a point on the sphere.
     ///
@@ -78,7 +79,8 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Sphere3
     /// @param[out] t The parameter of the line at the intersection point
     /// @return True if the sphere and line intersect, false if they
     ///	do not.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool intersectT (const Line3<T>& l, T& t) const;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
+    intersectT (const Line3<T>& l, T& t) const;
 
     /// @}
 };
@@ -98,7 +100,7 @@ IMATH_HOSTDEVICE inline void
 Sphere3<T>::circumscribe (const Box<Vec3<T>>& box)
 {
     center = T (0.5) * (box.min + box.max);
-    radius = (box.max - center).length();
+    radius = (box.max - center).length ();
 }
 
 template <class T>
@@ -108,8 +110,8 @@ Sphere3<T>::intersectT (const Line3<T>& line, T& t) const
     bool doesIntersect = true;
 
     Vec3<T> v = line.pos - center;
-    T B       = T (2.0) * (line.dir ^ v);
-    T C       = (v ^ v) - (radius * radius);
+    T       B = T (2.0) * (line.dir ^ v);
+    T       C = (v ^ v) - (radius * radius);
 
     // compute discriminant
     // if negative, there is no intersection
@@ -136,8 +138,7 @@ Sphere3<T>::intersectT (const Line3<T>& line, T& t) const
             t = (-B + sqroot) * T (0.5);
         }
 
-        if (t < 0.0)
-            doesIntersect = false;
+        if (t < 0.0) doesIntersect = false;
     }
 
     return doesIntersect;

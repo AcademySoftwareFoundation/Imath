@@ -21,7 +21,7 @@ namespace
 // Static state used by Imath::drand48(), Imath::lrand48() and Imath::srand48()
 //
 
-unsigned short staticState[3] = { 0, 0, 0 };
+unsigned short staticState[3] = {0, 0, 0};
 
 void
 rand48Next (unsigned short state[3])
@@ -90,7 +90,7 @@ erand48 (unsigned short state[3])
 
     union
     {
-        double d;
+        double   d;
         uint64_t i;
     } u;
 
@@ -107,7 +107,7 @@ erand48 (unsigned short state[3])
 
 /// Return erand48()
 double
-drand48()
+drand48 ()
 {
     return IMATH_INTERNAL_NAMESPACE::erand48 (staticState);
 }
@@ -126,7 +126,7 @@ nrand48 (unsigned short state[3])
 
 /// Return nrand48()
 long int
-lrand48()
+lrand48 ()
 {
     return IMATH_INTERNAL_NAMESPACE::nrand48 (staticState);
 }
@@ -140,7 +140,7 @@ srand48 (long int seed)
 }
 
 float
-Rand32::nextf()
+Rand32::nextf ()
 {
     //
     // Generate single-precision floating-point values between 0.0 and 1.0:
@@ -155,11 +155,11 @@ Rand32::nextf()
     // between 0.0 and 1.0-FLT_EPSILON.
     //
 
-    next();
+    next ();
 
     union
     {
-        float f;
+        float        f;
         unsigned int i;
     } u;
 

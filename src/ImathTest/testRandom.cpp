@@ -7,13 +7,13 @@
 #    undef NDEBUG
 #endif
 
+#include "testRandom.h"
 #include <ImathFun.h>
 #include <ImathRandom.h>
 #include <ImathVec.h>
 #include <assert.h>
 #include <iomanip>
 #include <iostream>
-#include "testRandom.h"
 
 // Include ImathForward *after* other headers to validate forward declarations
 #include <ImathForward.h>
@@ -25,7 +25,7 @@ namespace
 {
 
 void
-testErand48()
+testErand48 ()
 {
     //
     // Our implementation of erand48(), nrand48(), etc.
@@ -45,11 +45,16 @@ testErand48()
     state[1] = 1;
     state[2] = 2;
 
-    assert (abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.671004) < 0.00001);
-    assert (abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.786905) < 0.00001);
-    assert (abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.316850) < 0.00001);
-    assert (abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.384870) < 0.00001);
-    assert (abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.854650) < 0.00001);
+    assert (
+        abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.671004) < 0.00001);
+    assert (
+        abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.786905) < 0.00001);
+    assert (
+        abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.316850) < 0.00001);
+    assert (
+        abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.384870) < 0.00001);
+    assert (
+        abs (IMATH_INTERNAL_NAMESPACE::erand48 (state) - 0.854650) < 0.00001);
 
     assert (IMATH_INTERNAL_NAMESPACE::nrand48 (state) == 0x4f4e8cb0);
     assert (IMATH_INTERNAL_NAMESPACE::nrand48 (state) == 0x063e864b);
@@ -64,7 +69,7 @@ testErand48()
 
 template <class Rand>
 void
-testGenerator()
+testGenerator ()
 {
     //
     // Test if the values, and the differences between
@@ -74,8 +79,8 @@ testGenerator()
     const int N = 10;
     const int M = 100000;
 
-    int values[N + 1];
-    int diffs[2 * N + 3];
+    int  values[N + 1];
+    int  diffs[2 * N + 3];
     int* v = &values[0];
     int* d = &diffs[N + 2];
 
@@ -85,7 +90,7 @@ testGenerator()
     for (int i = -N; i <= N; ++i)
         d[i] = 0;
 
-    Rand rand (0);
+    Rand  rand (0);
     float previous = 0;
 
     for (int i = 0; i < M * N; ++i)
@@ -135,11 +140,9 @@ testGenerator()
     {
         double r = rand.nextf (0.0, 1.0);
 
-        if (rMin > r)
-            rMin = r;
+        if (rMin > r) rMin = r;
 
-        if (rMax < r)
-            rMax = r;
+        if (rMax < r) rMax = r;
     }
 
     assert (rMin < 0.0001 && rMax > 0.9999);
@@ -161,11 +164,11 @@ testGenerator()
 
 template <class Rand>
 void
-testSolidSphere()
+testSolidSphere ()
 {
     const int N = 10;
     const int M = 10000;
-    int v[N + 1];
+    int       v[N + 1];
 
     for (int i = 0; i <= N; ++i)
         v[i] = 0;
@@ -175,8 +178,9 @@ testSolidSphere()
     for (int i = 0; i < M * N; ++i)
     {
         IMATH_INTERNAL_NAMESPACE::V3f p =
-            IMATH_INTERNAL_NAMESPACE::solidSphereRand<IMATH_INTERNAL_NAMESPACE::V3f> (rand);
-        float l = p.length();
+            IMATH_INTERNAL_NAMESPACE::solidSphereRand<
+                IMATH_INTERNAL_NAMESPACE::V3f> (rand);
+        float l = p.length ();
         v[IMATH_INTERNAL_NAMESPACE::floor (l * N)] += 1;
 
         assert (l < 1.00001);
@@ -188,16 +192,17 @@ testSolidSphere()
 
 template <class Rand>
 void
-testHollowSphere()
+testHollowSphere ()
 {
     const int M = 100000;
-    Rand rand (0);
+    Rand      rand (0);
 
     for (int i = 0; i < M; ++i)
     {
         IMATH_INTERNAL_NAMESPACE::V3f p =
-            IMATH_INTERNAL_NAMESPACE::hollowSphereRand<IMATH_INTERNAL_NAMESPACE::V3f> (rand);
-        float l = p.length();
+            IMATH_INTERNAL_NAMESPACE::hollowSphereRand<
+                IMATH_INTERNAL_NAMESPACE::V3f> (rand);
+        float l = p.length ();
 
         assert (abs (l - 1) < 0.00001);
     }
@@ -206,24 +211,24 @@ testHollowSphere()
 } // namespace
 
 void
-testRandom()
+testRandom ()
 {
     cout << "Testing random number generators" << endl;
 
     cout << "erand48(), nrand48()" << endl;
-    testErand48();
+    testErand48 ();
 
     cout << "Rand32" << endl;
-    testGenerator<IMATH_INTERNAL_NAMESPACE::Rand32>();
+    testGenerator<IMATH_INTERNAL_NAMESPACE::Rand32> ();
 
     cout << "Rand48" << endl;
-    testGenerator<IMATH_INTERNAL_NAMESPACE::Rand48>();
+    testGenerator<IMATH_INTERNAL_NAMESPACE::Rand48> ();
 
     cout << "solidSphereRand()" << endl;
-    testSolidSphere<IMATH_INTERNAL_NAMESPACE::Rand32>();
+    testSolidSphere<IMATH_INTERNAL_NAMESPACE::Rand32> ();
 
     cout << "hollowSphereRand()" << endl;
-    testHollowSphere<IMATH_INTERNAL_NAMESPACE::Rand32>();
+    testHollowSphere<IMATH_INTERNAL_NAMESPACE::Rand32> ();
 
     cout << "ok\n" << endl;
 }

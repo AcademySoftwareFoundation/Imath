@@ -84,21 +84,22 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
 {
-  public:
+public:
     /// @{
     /// @name Constructors
 
     /// Initialize camera matrix to identity
-    FrustumTest() IMATH_NOEXCEPT
+    FrustumTest () IMATH_NOEXCEPT
     {
-        Frustum<T> frust;
+        Frustum<T>  frust;
         Matrix44<T> cameraMat;
-        cameraMat.makeIdentity();
+        cameraMat.makeIdentity ();
         setFrustum (frust, cameraMat);
     }
 
     /// Initialize to a given frustum and camera matrix.
-    FrustumTest (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) IMATH_NOEXCEPT
+    FrustumTest (const Frustum<T>& frustum, const Matrix44<T>& cameraMat)
+        IMATH_NOEXCEPT
     {
         setFrustum (frustum, cameraMat);
     }
@@ -107,17 +108,18 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
 
     /// @{
     /// @name Set Value
-    
+
     /// Update the frustum test with a new frustum and matrix.
     /// This should usually be called just once per frame, or however
     /// often the camera moves.
-    void setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) IMATH_NOEXCEPT;
+    void setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat)
+        IMATH_NOEXCEPT;
 
     /// @}
 
     /// @{
     /// @name Query
-    
+
     /// Return true if any part of the sphere is inside the frustum.
     /// The result MAY return close false-positives, but not false-negatives.
     bool isVisible (const Sphere3<T>& sphere) const IMATH_NOEXCEPT;
@@ -138,15 +140,20 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
     bool completelyContains (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT;
 
     /// Return the camera matrix (primarily for debugging)
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T> cameraMat() const IMATH_NOEXCEPT { return cameraMatrix; }
+    IMATH_INTERNAL_NAMESPACE::Matrix44<T> cameraMat () const IMATH_NOEXCEPT
+    {
+        return cameraMatrix;
+    }
 
     /// Return the viewing frustum (primarily for debugging)
-    IMATH_INTERNAL_NAMESPACE::Frustum<T> currentFrustum() const IMATH_NOEXCEPT { return currFrustum; }
+    IMATH_INTERNAL_NAMESPACE::Frustum<T> currentFrustum () const IMATH_NOEXCEPT
+    {
+        return currFrustum;
+    }
 
     /// @}
-    
-  protected:
 
+protected:
     // To understand why the planes are stored this way, see
     // the SPECIAL NOTE above.
 
@@ -164,7 +171,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
     Vec3<T> planeNormAbsZ[2]; // The abs(X) components from 6 plane equations
 
     // These are kept primarily for debugging tools.
-    Frustum<T> currFrustum;
+    Frustum<T>  currFrustum;
     Matrix44<T> cameraMatrix;
 
     /// @endcond
@@ -172,7 +179,8 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE FrustumTest
 
 template <class T>
 void
-FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& cameraMat) IMATH_NOEXCEPT
+FrustumTest<T>::setFrustum (
+    const Frustum<T>& frustum, const Matrix44<T>& cameraMat) IMATH_NOEXCEPT
 {
     Plane3<T> frustumPlanes[6];
     frustum.planes (frustumPlanes, cameraMat);
@@ -183,29 +191,36 @@ FrustumTest<T>::setFrustum (const Frustum<T>& frustum, const Matrix44<T>& camera
     {
         int index = i * 3;
 
-        planeNormX[i] = Vec3<T> (frustumPlanes[index + 0].normal.x,
-                                 frustumPlanes[index + 1].normal.x,
-                                 frustumPlanes[index + 2].normal.x);
-        planeNormY[i] = Vec3<T> (frustumPlanes[index + 0].normal.y,
-                                 frustumPlanes[index + 1].normal.y,
-                                 frustumPlanes[index + 2].normal.y);
-        planeNormZ[i] = Vec3<T> (frustumPlanes[index + 0].normal.z,
-                                 frustumPlanes[index + 1].normal.z,
-                                 frustumPlanes[index + 2].normal.z);
+        planeNormX[i] = Vec3<T> (
+            frustumPlanes[index + 0].normal.x,
+            frustumPlanes[index + 1].normal.x,
+            frustumPlanes[index + 2].normal.x);
+        planeNormY[i] = Vec3<T> (
+            frustumPlanes[index + 0].normal.y,
+            frustumPlanes[index + 1].normal.y,
+            frustumPlanes[index + 2].normal.y);
+        planeNormZ[i] = Vec3<T> (
+            frustumPlanes[index + 0].normal.z,
+            frustumPlanes[index + 1].normal.z,
+            frustumPlanes[index + 2].normal.z);
 
-        planeNormAbsX[i] = Vec3<T> (std::abs (planeNormX[i].x),
-                                    std::abs (planeNormX[i].y),
-                                    std::abs (planeNormX[i].z));
-        planeNormAbsY[i] = Vec3<T> (std::abs (planeNormY[i].x),
-                                    std::abs (planeNormY[i].y),
-                                    std::abs (planeNormY[i].z));
-        planeNormAbsZ[i] = Vec3<T> (std::abs (planeNormZ[i].x),
-                                    std::abs (planeNormZ[i].y),
-                                    std::abs (planeNormZ[i].z));
+        planeNormAbsX[i] = Vec3<T> (
+            std::abs (planeNormX[i].x),
+            std::abs (planeNormX[i].y),
+            std::abs (planeNormX[i].z));
+        planeNormAbsY[i] = Vec3<T> (
+            std::abs (planeNormY[i].x),
+            std::abs (planeNormY[i].y),
+            std::abs (planeNormY[i].z));
+        planeNormAbsZ[i] = Vec3<T> (
+            std::abs (planeNormZ[i].x),
+            std::abs (planeNormZ[i].y),
+            std::abs (planeNormZ[i].z));
 
-        planeOffsetVec[i] = Vec3<T> (frustumPlanes[index + 0].distance,
-                                     frustumPlanes[index + 1].distance,
-                                     frustumPlanes[index + 2].distance);
+        planeOffsetVec[i] = Vec3<T> (
+            frustumPlanes[index + 0].distance,
+            frustumPlanes[index + 1].distance,
+            frustumPlanes[index + 2].distance);
     }
     currFrustum  = frustum;
     cameraMatrix = cameraMat;
@@ -219,40 +234,37 @@ FrustumTest<T>::isVisible (const Sphere3<T>& sphere) const IMATH_NOEXCEPT
     Vec3<T> radiusVec = Vec3<T> (sphere.radius, sphere.radius, sphere.radius);
 
     // This is a vertical dot-product on three vectors at once.
-    Vec3<T> d0 = planeNormX[0] * center.x + planeNormY[0] * center.y + planeNormZ[0] * center.z -
-                 radiusVec - planeOffsetVec[0];
+    Vec3<T> d0 = planeNormX[0] * center.x + planeNormY[0] * center.y +
+                 planeNormZ[0] * center.z - radiusVec - planeOffsetVec[0];
 
-    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0)
-        return false;
+    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0) return false;
 
-    Vec3<T> d1 = planeNormX[1] * center.x + planeNormY[1] * center.y + planeNormZ[1] * center.z -
-                 radiusVec - planeOffsetVec[1];
+    Vec3<T> d1 = planeNormX[1] * center.x + planeNormY[1] * center.y +
+                 planeNormZ[1] * center.z - radiusVec - planeOffsetVec[1];
 
-    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0)
-        return false;
+    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0) return false;
 
     return true;
 }
 
 template <typename T>
 bool
-FrustumTest<T>::completelyContains (const Sphere3<T>& sphere) const IMATH_NOEXCEPT
+FrustumTest<T>::completelyContains (const Sphere3<T>& sphere) const
+    IMATH_NOEXCEPT
 {
     Vec3<T> center    = sphere.center;
     Vec3<T> radiusVec = Vec3<T> (sphere.radius, sphere.radius, sphere.radius);
 
     // This is a vertical dot-product on three vectors at once.
-    Vec3<T> d0 = planeNormX[0] * center.x + planeNormY[0] * center.y + planeNormZ[0] * center.z +
-                 radiusVec - planeOffsetVec[0];
+    Vec3<T> d0 = planeNormX[0] * center.x + planeNormY[0] * center.y +
+                 planeNormZ[0] * center.z + radiusVec - planeOffsetVec[0];
 
-    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0)
-        return false;
+    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0) return false;
 
-    Vec3<T> d1 = planeNormX[1] * center.x + planeNormY[1] * center.y + planeNormZ[1] * center.z +
-                 radiusVec - planeOffsetVec[1];
+    Vec3<T> d1 = planeNormX[1] * center.x + planeNormY[1] * center.y +
+                 planeNormZ[1] * center.z + radiusVec - planeOffsetVec[1];
 
-    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0)
-        return false;
+    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0) return false;
 
     return true;
 }
@@ -261,54 +273,53 @@ template <typename T>
 bool
 FrustumTest<T>::isVisible (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT
 {
-    if (box.isEmpty())
-        return false;
+    if (box.isEmpty ()) return false;
 
     Vec3<T> center = (box.min + box.max) / 2;
     Vec3<T> extent = (box.max - center);
 
     // This is a vertical dot-product on three vectors at once.
-    Vec3<T> d0 = planeNormX[0] * center.x + planeNormY[0] * center.y + planeNormZ[0] * center.z -
-                 planeNormAbsX[0] * extent.x - planeNormAbsY[0] * extent.y -
-                 planeNormAbsZ[0] * extent.z - planeOffsetVec[0];
+    Vec3<T> d0 = planeNormX[0] * center.x + planeNormY[0] * center.y +
+                 planeNormZ[0] * center.z - planeNormAbsX[0] * extent.x -
+                 planeNormAbsY[0] * extent.y - planeNormAbsZ[0] * extent.z -
+                 planeOffsetVec[0];
 
-    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0)
-        return false;
+    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0) return false;
 
-    Vec3<T> d1 = planeNormX[1] * center.x + planeNormY[1] * center.y + planeNormZ[1] * center.z -
-                 planeNormAbsX[1] * extent.x - planeNormAbsY[1] * extent.y -
-                 planeNormAbsZ[1] * extent.z - planeOffsetVec[1];
+    Vec3<T> d1 = planeNormX[1] * center.x + planeNormY[1] * center.y +
+                 planeNormZ[1] * center.z - planeNormAbsX[1] * extent.x -
+                 planeNormAbsY[1] * extent.y - planeNormAbsZ[1] * extent.z -
+                 planeOffsetVec[1];
 
-    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0)
-        return false;
+    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0) return false;
 
     return true;
 }
 
 template <typename T>
 bool
-FrustumTest<T>::completelyContains (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT
+FrustumTest<T>::completelyContains (const Box<Vec3<T>>& box) const
+    IMATH_NOEXCEPT
 {
-    if (box.isEmpty())
-        return false;
+    if (box.isEmpty ()) return false;
 
     Vec3<T> center = (box.min + box.max) / 2;
     Vec3<T> extent = (box.max - center);
 
     // This is a vertical dot-product on three vectors at once.
-    Vec3<T> d0 = planeNormX[0] * center.x + planeNormY[0] * center.y + planeNormZ[0] * center.z +
-                 planeNormAbsX[0] * extent.x + planeNormAbsY[0] * extent.y +
-                 planeNormAbsZ[0] * extent.z - planeOffsetVec[0];
+    Vec3<T> d0 = planeNormX[0] * center.x + planeNormY[0] * center.y +
+                 planeNormZ[0] * center.z + planeNormAbsX[0] * extent.x +
+                 planeNormAbsY[0] * extent.y + planeNormAbsZ[0] * extent.z -
+                 planeOffsetVec[0];
 
-    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0)
-        return false;
+    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0) return false;
 
-    Vec3<T> d1 = planeNormX[1] * center.x + planeNormY[1] * center.y + planeNormZ[1] * center.z +
-                 planeNormAbsX[1] * extent.x + planeNormAbsY[1] * extent.y +
-                 planeNormAbsZ[1] * extent.z - planeOffsetVec[1];
+    Vec3<T> d1 = planeNormX[1] * center.x + planeNormY[1] * center.y +
+                 planeNormZ[1] * center.z + planeNormAbsX[1] * extent.x +
+                 planeNormAbsY[1] * extent.y + planeNormAbsZ[1] * extent.z -
+                 planeOffsetVec[1];
 
-    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0)
-        return false;
+    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0) return false;
 
     return true;
 }
@@ -318,17 +329,15 @@ bool
 FrustumTest<T>::isVisible (const Vec3<T>& vec) const IMATH_NOEXCEPT
 {
     // This is a vertical dot-product on three vectors at once.
-    Vec3<T> d0 = (planeNormX[0] * vec.x) + (planeNormY[0] * vec.y) + (planeNormZ[0] * vec.z) -
-                 planeOffsetVec[0];
+    Vec3<T> d0 = (planeNormX[0] * vec.x) + (planeNormY[0] * vec.y) +
+                 (planeNormZ[0] * vec.z) - planeOffsetVec[0];
 
-    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0)
-        return false;
+    if (d0.x >= 0 || d0.y >= 0 || d0.z >= 0) return false;
 
-    Vec3<T> d1 = (planeNormX[1] * vec.x) + (planeNormY[1] * vec.y) + (planeNormZ[1] * vec.z) -
-                 planeOffsetVec[1];
+    Vec3<T> d1 = (planeNormX[1] * vec.x) + (planeNormY[1] * vec.y) +
+                 (planeNormZ[1] * vec.z) - planeOffsetVec[1];
 
-    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0)
-        return false;
+    if (d1.x >= 0 || d1.y >= 0 || d1.z >= 0) return false;
 
     return true;
 }

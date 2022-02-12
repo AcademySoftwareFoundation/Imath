@@ -17,16 +17,16 @@
 typedef union
 {
     uint32_t i;
-    float f;
+    float    f;
 } c_half_uif;
 
 static const c_half_uif half_to_float[1 << 16] =
 #include "../Imath/toFloat.h"
 
-static const unsigned short half_eLut[1 << 9] =
+    static const unsigned short half_eLut[1 << 9] =
 #include "eLut.h"
 
-static short exp_long_convert (int i)
+        static short exp_long_convert (int i)
 {
     int s = (i >> 16) & 0x00008000;
     int e = ((i >> 23) & 0x000000ff) - (127 - 15);
@@ -35,10 +35,7 @@ static short exp_long_convert (int i)
     //fprintf( stderr, "old_convert: s %d   e = %d, m = %d\n", s, e, m );
     if (e <= 0)
     {
-        if (e < -10)
-        {
-            return s;
-        }
+        if (e < -10) { return s; }
 
         m = m | 0x00800000;
 
@@ -53,10 +50,7 @@ static short exp_long_convert (int i)
     }
     else if (e == 0xff - (127 - 15))
     {
-        if (m == 0)
-        {
-            return s | 0x7c00;
-        }
+        if (m == 0) { return s | 0x7c00; }
         else
         {
             m >>= 13;
@@ -84,8 +78,8 @@ static uint16_t
 exptable_method (float f)
 {
     c_half_uif x;
-    uint16_t _h = 0;
-    x.f         = f;
+    uint16_t   _h = 0;
+    x.f           = f;
 
     if (f == 0)
     {
@@ -142,21 +136,22 @@ exptable_method (float f)
 int
 main (int argc, char* argv[])
 {
-    int ret = 0;
+    int        ret = 0;
     c_half_uif conv;
-    half test, test2;
+    half       test, test2;
     conv.f = HALF_DENORM_MIN + HALF_DENORM_MIN * 0.5f;
     test   = imath_float_to_half (conv.f);
     test2  = exptable_method (conv.f);
     if (test != test2)
     {
-        fprintf (stderr,
-                 "Invalid conversion of %.10g 0x%08X 0x%08X downconvert 0x%04X vs 0x%04X\n",
-                 conv.f,
-                 (conv.i >> 13) & 0x3ff,
-                 (conv.i >> 13) & 0x3ff,
-                 test,
-                 test2);
+        fprintf (
+            stderr,
+            "Invalid conversion of %.10g 0x%08X 0x%08X downconvert 0x%04X vs 0x%04X\n",
+            conv.f,
+            (conv.i >> 13) & 0x3ff,
+            (conv.i >> 13) & 0x3ff,
+            test,
+            test2);
         ret = 1;
     }
 
@@ -208,17 +203,17 @@ main (int argc, char* argv[])
             // adding a low bit, so it won't always align
             int e = (conv.i >> 23) & 0xff;
             int m = (conv.i & 0x007fffff);
-            if (e == 255 && m != 0)
-                continue;
+            if (e == 255 && m != 0) continue;
 
-            fprintf (stderr,
-                     "float to half %d: %.10f (0x%08X) gives %d 0x%04X (e is %d)\n",
-                     i,
-                     conv.f,
-                     conv.i,
-                     (int) test,
-                     test,
-                     e);
+            fprintf (
+                stderr,
+                "float to half %d: %.10f (0x%08X) gives %d 0x%04X (e is %d)\n",
+                i,
+                conv.f,
+                conv.i,
+                (int) test,
+                test,
+                e);
             ret = 1;
         }
     }

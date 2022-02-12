@@ -12,8 +12,8 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <limits>
 #include <cstdint>
+#include <limits>
 
 #include "ImathExport.h"
 #include "ImathNamespace.h"
@@ -66,7 +66,7 @@ lerpfactor (T m, T a, T b) IMATH_NOEXCEPT
     T d = b - a;
     T n = m - a;
 
-    if (abs (d) > T (1) || abs (n) < std::numeric_limits<T>::max() * abs (d))
+    if (abs (d) > T (1) || abs (n) < std::numeric_limits<T>::max () * abs (d))
         return n / d;
 
     return T (0);
@@ -139,13 +139,15 @@ trunc (T x) IMATH_NOEXCEPT
 IMATH_HOSTDEVICE constexpr inline int
 divs (int x, int y) IMATH_NOEXCEPT
 {
-    return (x >= 0) ? ((y >= 0) ? (x / y) : -(x / -y)) : ((y >= 0) ? -(-x / y) : (-x / -y));
+    return (x >= 0) ? ((y >= 0) ? (x / y) : -(x / -y))
+                    : ((y >= 0) ? -(-x / y) : (-x / -y));
 }
 
 IMATH_HOSTDEVICE constexpr inline int
 mods (int x, int y) IMATH_NOEXCEPT
 {
-    return (x >= 0) ? ((y >= 0) ? (x % y) : (x % -y)) : ((y >= 0) ? -(-x % y) : -(-x % -y));
+    return (x >= 0) ? ((y >= 0) ? (x % y) : (x % -y))
+                    : ((y >= 0) ? -(-x % y) : -(-x % -y));
 }
 
 //
@@ -206,7 +208,7 @@ finitef (float f) IMATH_NOEXCEPT
     union
     {
         float f;
-        int i;
+        int   i;
     } u;
     u.f = f;
 
@@ -218,7 +220,7 @@ finited (double d) IMATH_NOEXCEPT
 {
     union
     {
-        double d;
+        double   d;
         uint64_t i;
     } u;
     u.d = d;

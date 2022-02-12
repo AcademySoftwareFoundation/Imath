@@ -36,14 +36,16 @@ testConstructors (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        assert (b.min == T (std::numeric_limits<T>::max()) && b.max == T (std::numeric_limits<T>::lowest()));
+        assert (
+            b.min == T (std::numeric_limits<T>::max ()) &&
+            b.max == T (std::numeric_limits<T>::lowest ()));
     }
 
     //
     // Single point
     //
     {
-        T p (42);
+        T                                     p (42);
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (p);
         assert (b.min == p && b.max == p);
     }
@@ -52,15 +54,15 @@ testConstructors (const char* type)
     // Min and max
     //
     {
-        T p0 (42);
-        T p1 (666);
+        T                                     p0 (42);
+        T                                     p1 (666);
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (p0, p1);
         assert (b.min == p0 && b.max == p1);
     }
 
     {
-        T p0 (666);
-        T p1 (42);
+        T                                     p0 (666);
+        T                                     p1 (42);
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (p0, p1);
         assert (b.min == p0 && b.max == p1);
     }
@@ -77,8 +79,10 @@ testMakeEmpty (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        b.makeEmpty();
-        assert (b.min == T (std::numeric_limits<T>::max()) && b.max == T (std::numeric_limits<T>::lowest()));
+        b.makeEmpty ();
+        assert (
+            b.min == T (std::numeric_limits<T>::max ()) &&
+            b.max == T (std::numeric_limits<T>::lowest ()));
     }
 
     //
@@ -86,19 +90,23 @@ testMakeEmpty (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (T (-1), T (1));
-        b.makeEmpty();
-        assert (b.min == T (std::numeric_limits<T>::max()) && b.max == T (std::numeric_limits<T>::lowest()));
+        b.makeEmpty ();
+        assert (
+            b.min == T (std::numeric_limits<T>::max ()) &&
+            b.max == T (std::numeric_limits<T>::lowest ()));
     }
 
     //
     // Non-empty, no volume
     //
     {
-        T min (0);
-        T max (10);
+        T                                     min (0);
+        T                                     max (10);
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
-        b.makeEmpty();
-        assert (b.min == T (std::numeric_limits<T>::max()) && b.max == T (std::numeric_limits<T>::lowest()));
+        b.makeEmpty ();
+        assert (
+            b.min == T (std::numeric_limits<T>::max ()) &&
+            b.max == T (std::numeric_limits<T>::lowest ()));
     }
 }
 
@@ -113,8 +121,10 @@ testMakeInfinite (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        b.makeInfinite();
-        assert (b.min == T (std::numeric_limits<T>::lowest()) && b.max == T (std::numeric_limits<T>::max()));
+        b.makeInfinite ();
+        assert (
+            b.min == T (std::numeric_limits<T>::lowest ()) &&
+            b.max == T (std::numeric_limits<T>::max ()));
     }
 
     //
@@ -122,8 +132,10 @@ testMakeInfinite (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (T (-1), T (1));
-        b.makeInfinite();
-        assert (b.min == T (std::numeric_limits<T>::lowest()) && b.max == T (std::numeric_limits<T>::max()));
+        b.makeInfinite ();
+        assert (
+            b.min == T (std::numeric_limits<T>::lowest ()) &&
+            b.max == T (std::numeric_limits<T>::max ()));
     }
 
     //
@@ -134,8 +146,10 @@ testMakeInfinite (const char* type)
         T max (1);
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
-        b.makeInfinite();
-        assert (b.min == T (std::numeric_limits<T>::lowest()) && b.max == T (std::numeric_limits<T>::max()));
+        b.makeInfinite ();
+        assert (
+            b.min == T (std::numeric_limits<T>::lowest ()) &&
+            b.max == T (std::numeric_limits<T>::max ()));
     }
 }
 
@@ -154,7 +168,7 @@ testExtendByPoint (const char* type)
     //
     for (unsigned int i = 0; i < iters; i++)
     {
-        T p (rand.nextf (-12345, 12345));
+        T                                     p (rand.nextf (-12345, 12345));
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
         b.extendBy (p);
         assert (b.min == p && b.max == p);
@@ -202,8 +216,10 @@ testExtendByInterval (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        b.extendBy (IMATH_INTERNAL_NAMESPACE::Interval<T>());
-        assert (b.min == T (std::numeric_limits<T>::max()) && b.max == T (std::numeric_limits<T>::lowest()));
+        b.extendBy (IMATH_INTERNAL_NAMESPACE::Interval<T> ());
+        assert (
+            b.min == T (std::numeric_limits<T>::max ()) &&
+            b.max == T (std::numeric_limits<T>::lowest ()));
     }
 
     //
@@ -218,7 +234,7 @@ testExtendByInterval (const char* type)
         assert (b0.min == p0 && b0.max == p1);
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
-        b1.extendBy (IMATH_INTERNAL_NAMESPACE::Interval<T>());
+        b1.extendBy (IMATH_INTERNAL_NAMESPACE::Interval<T> ());
         assert (b1.min == p0 && b1.max == p1);
     }
 
@@ -226,7 +242,7 @@ testExtendByInterval (const char* type)
     // Extend non-empty interval with non-empty interval. Starts with empty, then builds.
     //
     IMATH_INTERNAL_NAMESPACE::Rand32 rand (0);
-    const unsigned int iters = 10;
+    const unsigned int               iters = 10;
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
 
@@ -316,7 +332,7 @@ testIntersects (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        T p (1);
+        T                                     p (1);
 
         assert (!b.intersects (p));
     }
@@ -326,9 +342,9 @@ testIntersects (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (T (-1), T (1));
-        T p0 (0);
-        T p1 (5);
-        T p2 (-5);
+        T                                     p0 (0);
+        T                                     p1 (5);
+        T                                     p2 (-5);
 
         assert (b.intersects (p0));
         assert (!b.intersects (p1));
@@ -342,8 +358,8 @@ testIntersects (const char* type)
         T min (0);
         T max (1);
 
-        T p0 (0);
-        T p1 (5);
+        T                                     p0 (0);
+        T                                     p1 (5);
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
 
         assert (b.intersects (p0));
@@ -381,8 +397,8 @@ testIntersects (const char* type)
     //
     {
         T min (0);
-        T max                    = min;
-        max[T::dimensions() - 1] = 1;
+        T max                     = min;
+        max[T::dimensions () - 1] = 1;
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b0;
         IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (min, max);
@@ -457,7 +473,7 @@ testSize (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        assert (b.size() == T (0));
+        assert (b.size () == T (0));
     }
 
     //
@@ -465,12 +481,12 @@ testSize (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
-        assert (b0.size() == T (2));
- 
+        assert (b0.size () == T (2));
+
         T p (42);
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (-p, p);
-        assert (b1.size() == p * T (2));
+        assert (b1.size () == p * T (2));
     }
 
     //
@@ -482,7 +498,7 @@ testSize (const char* type)
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
 
-        assert (b.size() == max);
+        assert (b.size () == max);
     }
 }
 
@@ -497,7 +513,7 @@ testCenter (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        assert (b.center() == T (0));
+        assert (b.center () == T (0));
     }
 
     //
@@ -505,13 +521,13 @@ testCenter (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
-        assert (b0.center() == T (0));
+        assert (b0.center () == T (0));
 
         T p0 (1);
         T p1 (2);
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
-        assert (b1.center() == (p1 + p0) / 2);
+        assert (b1.center () == (p1 + p0) / 2);
     }
 
     //
@@ -523,7 +539,7 @@ testCenter (const char* type)
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
 
-        assert (b.center() == max / 2);
+        assert (b.center () == max / 2);
     }
 }
 
@@ -538,7 +554,7 @@ testIsEmpty (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        assert (b.isEmpty());
+        assert (b.isEmpty ());
     }
 
     //
@@ -546,12 +562,12 @@ testIsEmpty (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
-        assert (!b0.isEmpty());
+        assert (!b0.isEmpty ());
 
-        T p0 (2);
-        T p1 (4);
+        T                                     p0 (2);
+        T                                     p1 (4);
         IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
-        assert (!b1.isEmpty());
+        assert (!b1.isEmpty ());
     }
 
     //
@@ -563,7 +579,7 @@ testIsEmpty (const char* type)
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
 
-        assert (!b.isEmpty());
+        assert (!b.isEmpty ());
     }
 }
 
@@ -578,8 +594,8 @@ testIsInfinite (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        b.makeInfinite();
-        assert (b.isInfinite());
+        b.makeInfinite ();
+        assert (b.isInfinite ());
     }
 
     //
@@ -587,13 +603,13 @@ testIsInfinite (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
-        assert (!b0.isInfinite());
+        assert (!b0.isInfinite ());
 
         T p0 (2);
         T p1 (4);
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
-        assert (!b1.isInfinite());
+        assert (!b1.isInfinite ());
     }
 
     //
@@ -605,7 +621,7 @@ testIsInfinite (const char* type)
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
 
-        assert (!b.isInfinite());
+        assert (!b.isInfinite ());
     }
 }
 
@@ -620,7 +636,7 @@ testHasVolume (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        assert (!b.hasVolume());
+        assert (!b.hasVolume ());
     }
 
     //
@@ -628,8 +644,8 @@ testHasVolume (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        b.makeInfinite();
-        assert (b.hasVolume());
+        b.makeInfinite ();
+        assert (b.hasVolume ());
     }
 
     //
@@ -637,13 +653,13 @@ testHasVolume (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
-        assert (b0.hasVolume());
+        assert (b0.hasVolume ());
 
         T p0 (2);
         T p1 (4);
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
-        assert (b1.hasVolume());
+        assert (b1.hasVolume ());
     }
 
     //
@@ -654,8 +670,8 @@ testHasVolume (const char* type)
         T max (2);
 
         IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
-        b.makeEmpty();
-        assert (!b.hasVolume());
+        b.makeEmpty ();
+        assert (!b.hasVolume ());
     }
 }
 
@@ -667,21 +683,21 @@ testStream (const char* type)
 
     T min (0);
     T max (1);
-    
+
     IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
-    std::stringstream s1;
+    std::stringstream                     s1;
     s1 << '(' << min << ' ' << max << ')';
 
     std::stringstream s2;
     s2 << b;
 
-    assert (s1.str() == s2.str());
+    assert (s1.str () == s2.str ());
 }
 
 } // anonymous namespace
 
 void
-testInterval()
+testInterval ()
 {
     cout << "Testing interval methods" << endl;
 
@@ -708,7 +724,7 @@ testInterval()
     testMakeInfinite<int> ("int");
     testMakeInfinite<float> ("float");
     testMakeInfinite<double> ("double");
-    
+
     //
     // extendBy() (point)
     //
@@ -764,7 +780,7 @@ testInterval()
     testIsInfinite<int> ("int");
     testIsInfinite<float> ("float");
     testIsInfinite<double> ("double");
-    
+
     //
     // hasVolume()
     //

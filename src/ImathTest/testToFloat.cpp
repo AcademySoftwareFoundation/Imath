@@ -94,10 +94,8 @@ halfToFloat (unsigned short y)
     return (s << 31) | (e << 23) | m;
 }
 
-
-
 void
-testToFloat()
+testToFloat ()
 {
     std::cout << "running testToFloat" << std::endl;
 
@@ -109,8 +107,8 @@ testToFloat()
 
     for (unsigned int s = 0; s < iMax; s++)
     {
-        half hs(half::FromBits, static_cast<unsigned short>(s));
-        assert (hs.bits() == s);
+        half hs (half::FromBits, static_cast<unsigned short> (s));
+        assert (hs.bits () == s);
 
         //
         // cast these bits to a float, using the cast-to-float
@@ -141,12 +139,12 @@ testToFloat()
 
         if (isnan (f))
         {
-            assert (h.isNan());
+            assert (h.isNan ());
             assert (isnan (uif.f));
         }
         else if (isinf (f))
         {
-            assert (h.isInfinity());
+            assert (h.isInfinity ());
             assert (isinf (uif.f));
         }
         else

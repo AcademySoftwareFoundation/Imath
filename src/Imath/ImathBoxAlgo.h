@@ -30,7 +30,7 @@ clip (const T& p, const Box<T>& box) IMATH_NOEXCEPT
 {
     T q;
 
-    for (int i = 0; i < int (box.min.dimensions()); i++)
+    for (int i = 0; i < int (box.min.dimensions ()); i++)
     {
         if (p[i] < box.min[i])
             q[i] = box.min[i];
@@ -66,8 +66,7 @@ template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T>
 closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) IMATH_NOEXCEPT
 {
-    if (box.isEmpty())
-        return p;
+    if (box.isEmpty ()) return p;
 
     Vec3<T> q = closestPointInBox (p, box);
 
@@ -76,9 +75,10 @@ closestPointOnBox (const Vec3<T>& p, const Box<Vec3<T>>& box) IMATH_NOEXCEPT
         Vec3<T> d1 = p - box.min;
         Vec3<T> d2 = box.max - p;
 
-        Vec3<T> d ((d1.x < d2.x) ? d1.x : d2.x,
-                   (d1.y < d2.y) ? d1.y : d2.y,
-                   (d1.z < d2.z) ? d1.z : d2.z);
+        Vec3<T> d (
+            (d1.x < d2.x) ? d1.x : d2.x,
+            (d1.y < d2.y) ? d1.y : d2.y,
+            (d1.z < d2.z) ? d1.z : d2.z);
 
         if (d.x < d.y && d.x < d.z)
         {
@@ -113,8 +113,7 @@ template <class S, class T>
 IMATH_HOSTDEVICE Box<Vec3<S>>
 transform (const Box<Vec3<S>>& box, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
-    if (box.isEmpty() || box.isInfinite())
-        return box;
+    if (box.isEmpty () || box.isInfinite ()) return box;
 
     //
     // If the last column of m is (0 0 0 1) then m is an affine
@@ -192,12 +191,10 @@ transform (const Box<Vec3<S>>& box, const Matrix44<T>& m) IMATH_NOEXCEPT
 
 template <class S, class T>
 IMATH_HOSTDEVICE void
-transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) IMATH_NOEXCEPT
+transform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result)
+    IMATH_NOEXCEPT
 {
-    if (box.isEmpty() || box.isInfinite())
-    {
-        return;
-    }
+    if (box.isEmpty () || box.isInfinite ()) { return; }
 
     //
     // If the last column of m is (0 0 0 1) then m is an affine
@@ -269,8 +266,7 @@ template <class S, class T>
 IMATH_HOSTDEVICE Box<Vec3<S>>
 affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
-    if (box.isEmpty() || box.isInfinite())
-        return box;
+    if (box.isEmpty () || box.isInfinite ()) return box;
 
     Box<Vec3<S>> newBox;
 
@@ -303,7 +299,7 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) IMATH_NOEXCEPT
 
 ///
 /// Transform a 3D box by a matrix whose rightmost column is
-/// `(0 0 0 1)`, and compute a new box that tightly encloses 
+/// `(0 0 0 1)`, and compute a new box that tightly encloses
 /// the transformed box. Return the transformed box in the `result`
 /// argument.
 ///
@@ -315,17 +311,20 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m) IMATH_NOEXCEPT
 
 template <class S, class T>
 IMATH_HOSTDEVICE void
-affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& result) IMATH_NOEXCEPT
+affineTransform (
+    const Box<Vec3<S>>& box,
+    const Matrix44<T>&  m,
+    Box<Vec3<S>>&       result) IMATH_NOEXCEPT
 {
-    if (box.isEmpty())
+    if (box.isEmpty ())
     {
-        result.makeEmpty();
+        result.makeEmpty ();
         return;
     }
 
-    if (box.isInfinite())
+    if (box.isInfinite ())
     {
-        result.makeInfinite();
+        result.makeInfinite ();
         return;
     }
 
@@ -369,9 +368,11 @@ affineTransform (const Box<Vec3<S>>& box, const Matrix44<T>& m, Box<Vec3<S>>& re
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry, Vec3<T>& exit) IMATH_NOEXCEPT
+findEntryAndExitPoints (
+    const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry, Vec3<T>& exit)
+    IMATH_NOEXCEPT
 {
-    if (b.isEmpty())
+    if (b.isEmpty ())
     {
         //
         // No ray intersects an empty box
@@ -398,7 +399,7 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
     // exit point.
     //
 
-    const T TMAX = std::numeric_limits<T>::max();
+    const T TMAX = std::numeric_limits<T>::max ();
 
     T tFrontMax = -TMAX;
     T tBackMin  = TMAX;
@@ -412,7 +413,8 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
         T d1 = b.max.x - r.pos.x;
         T d2 = b.min.x - r.pos.x;
 
-        if (r.dir.x > 1 || (abs (d1) < TMAX * r.dir.x && abs (d2) < TMAX * r.dir.x))
+        if (r.dir.x > 1 ||
+            (abs (d1) < TMAX * r.dir.x && abs (d2) < TMAX * r.dir.x))
         {
             T t1 = d1 / r.dir.x;
             T t2 = d2 / r.dir.x;
@@ -445,7 +447,8 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
         T d1 = b.min.x - r.pos.x;
         T d2 = b.max.x - r.pos.x;
 
-        if (r.dir.x < -1 || (abs (d1) < -TMAX * r.dir.x && abs (d2) < -TMAX * r.dir.x))
+        if (r.dir.x < -1 ||
+            (abs (d1) < -TMAX * r.dir.x && abs (d2) < -TMAX * r.dir.x))
         {
             T t1 = d1 / r.dir.x;
             T t2 = d2 / r.dir.x;
@@ -483,7 +486,8 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
         T d1 = b.max.y - r.pos.y;
         T d2 = b.min.y - r.pos.y;
 
-        if (r.dir.y > 1 || (abs (d1) < TMAX * r.dir.y && abs (d2) < TMAX * r.dir.y))
+        if (r.dir.y > 1 ||
+            (abs (d1) < TMAX * r.dir.y && abs (d2) < TMAX * r.dir.y))
         {
             T t1 = d1 / r.dir.y;
             T t2 = d2 / r.dir.y;
@@ -516,7 +520,8 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
         T d1 = b.min.y - r.pos.y;
         T d2 = b.max.y - r.pos.y;
 
-        if (r.dir.y < -1 || (abs (d1) < -TMAX * r.dir.y && abs (d2) < -TMAX * r.dir.y))
+        if (r.dir.y < -1 ||
+            (abs (d1) < -TMAX * r.dir.y && abs (d2) < -TMAX * r.dir.y))
         {
             T t1 = d1 / r.dir.y;
             T t2 = d2 / r.dir.y;
@@ -554,7 +559,8 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
         T d1 = b.max.z - r.pos.z;
         T d2 = b.min.z - r.pos.z;
 
-        if (r.dir.z > 1 || (abs (d1) < TMAX * r.dir.z && abs (d2) < TMAX * r.dir.z))
+        if (r.dir.z > 1 ||
+            (abs (d1) < TMAX * r.dir.z && abs (d2) < TMAX * r.dir.z))
         {
             T t1 = d1 / r.dir.z;
             T t2 = d2 / r.dir.z;
@@ -587,7 +593,8 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
         T d1 = b.min.z - r.pos.z;
         T d2 = b.max.z - r.pos.z;
 
-        if (r.dir.z < -1 || (abs (d1) < -TMAX * r.dir.z && abs (d2) < -TMAX * r.dir.z))
+        if (r.dir.z < -1 ||
+            (abs (d1) < -TMAX * r.dir.z && abs (d2) < -TMAX * r.dir.z))
         {
             T t1 = d1 / r.dir.z;
             T t2 = d2 / r.dir.z;
@@ -639,9 +646,10 @@ findEntryAndExitPoints (const Line3<T>& r, const Box<Vec3<T>>& b, Vec3<T>& entry
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEPT
+intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip)
+    IMATH_NOEXCEPT
 {
-    if (b.isEmpty())
+    if (b.isEmpty ())
     {
         //
         // No ray intersects an empty box
@@ -673,7 +681,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
     // intersection is the ray-box intersection.
     //
 
-    const T TMAX = std::numeric_limits<T>::max();
+    const T TMAX = std::numeric_limits<T>::max ();
 
     T tFrontMax = -1;
     T tBackMin  = TMAX;
@@ -684,8 +692,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
 
     if (r.dir.x > 0)
     {
-        if (r.pos.x > b.max.x)
-            return false;
+        if (r.pos.x > b.max.x) return false;
 
         T d = b.max.x - r.pos.x;
 
@@ -693,8 +700,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
         {
             T t = d / r.dir.x;
 
-            if (tBackMin > t)
-                tBackMin = t;
+            if (tBackMin > t) tBackMin = t;
         }
 
         if (r.pos.x <= b.min.x)
@@ -714,8 +720,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
     }
     else if (r.dir.x < 0)
     {
-        if (r.pos.x < b.min.x)
-            return false;
+        if (r.pos.x < b.min.x) return false;
 
         T d = b.min.x - r.pos.x;
 
@@ -723,8 +728,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
         {
             T t = d / r.dir.x;
 
-            if (tBackMin > t)
-                tBackMin = t;
+            if (tBackMin > t) tBackMin = t;
         }
 
         if (r.pos.x >= b.max.x)
@@ -744,8 +748,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
     }
     else // r.dir.x == 0
     {
-        if (r.pos.x < b.min.x || r.pos.x > b.max.x)
-            return false;
+        if (r.pos.x < b.min.x || r.pos.x > b.max.x) return false;
     }
 
     //
@@ -754,8 +757,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
 
     if (r.dir.y > 0)
     {
-        if (r.pos.y > b.max.y)
-            return false;
+        if (r.pos.y > b.max.y) return false;
 
         T d = b.max.y - r.pos.y;
 
@@ -763,8 +765,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
         {
             T t = d / r.dir.y;
 
-            if (tBackMin > t)
-                tBackMin = t;
+            if (tBackMin > t) tBackMin = t;
         }
 
         if (r.pos.y <= b.min.y)
@@ -784,8 +785,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
     }
     else if (r.dir.y < 0)
     {
-        if (r.pos.y < b.min.y)
-            return false;
+        if (r.pos.y < b.min.y) return false;
 
         T d = b.min.y - r.pos.y;
 
@@ -793,8 +793,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
         {
             T t = d / r.dir.y;
 
-            if (tBackMin > t)
-                tBackMin = t;
+            if (tBackMin > t) tBackMin = t;
         }
 
         if (r.pos.y >= b.max.y)
@@ -814,8 +813,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
     }
     else // r.dir.y == 0
     {
-        if (r.pos.y < b.min.y || r.pos.y > b.max.y)
-            return false;
+        if (r.pos.y < b.min.y || r.pos.y > b.max.y) return false;
     }
 
     //
@@ -824,8 +822,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
 
     if (r.dir.z > 0)
     {
-        if (r.pos.z > b.max.z)
-            return false;
+        if (r.pos.z > b.max.z) return false;
 
         T d = b.max.z - r.pos.z;
 
@@ -833,8 +830,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
         {
             T t = d / r.dir.z;
 
-            if (tBackMin > t)
-                tBackMin = t;
+            if (tBackMin > t) tBackMin = t;
         }
 
         if (r.pos.z <= b.min.z)
@@ -854,8 +850,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
     }
     else if (r.dir.z < 0)
     {
-        if (r.pos.z < b.min.z)
-            return false;
+        if (r.pos.z < b.min.z) return false;
 
         T d = b.min.z - r.pos.z;
 
@@ -863,8 +858,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
         {
             T t = d / r.dir.z;
 
-            if (tBackMin > t)
-                tBackMin = t;
+            if (tBackMin > t) tBackMin = t;
         }
 
         if (r.pos.z >= b.max.z)
@@ -884,8 +878,7 @@ intersects (const Box<Vec3<T>>& b, const Line3<T>& r, Vec3<T>& ip) IMATH_NOEXCEP
     }
     else // r.dir.z == 0
     {
-        if (r.pos.z < b.min.z || r.pos.z > b.max.z)
-            return false;
+        if (r.pos.z < b.min.z || r.pos.z > b.max.z) return false;
     }
 
     return tFrontMax <= tBackMin;

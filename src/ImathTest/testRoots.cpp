@@ -7,13 +7,13 @@
 #    undef NDEBUG
 #endif
 
+#include "testRoots.h"
 #include <ImathFun.h>
 #include <ImathRoots.h>
 #include <algorithm>
 #include <assert.h>
 #include <iomanip>
 #include <iostream>
-#include "testRoots.h"
 
 using namespace std;
 
@@ -22,18 +22,14 @@ sort (int nx, double& x0, double& x1, double& x2)
 {
     if (nx == 2)
     {
-        if (x0 > x1)
-            swap (x0, x1);
+        if (x0 > x1) swap (x0, x1);
     }
 
     if (nx == 3)
     {
-        if (x0 > x1)
-            swap (x0, x1);
-        if (x1 > x2)
-            swap (x1, x2);
-        if (x0 > x1)
-            swap (x0, x1);
+        if (x0 > x1) swap (x0, x1);
+        if (x1 > x2) swap (x1, x2);
+        if (x0 > x1) swap (x0, x1);
     }
 }
 
@@ -42,40 +38,37 @@ sort (int nx, double x[])
 {
     if (nx == 2)
     {
-        if (x[0] > x[1])
-            swap (x[0], x[1]);
+        if (x[0] > x[1]) swap (x[0], x[1]);
     }
 
     if (nx == 3)
     {
-        if (x[0] > x[1])
-            swap (x[0], x[1]);
-        if (x[1] > x[2])
-            swap (x[1], x[2]);
-        if (x[0] > x[1])
-            swap (x[0], x[1]);
+        if (x[0] > x[1]) swap (x[0], x[1]);
+        if (x[1] > x[2]) swap (x[1], x[2]);
+        if (x[0] > x[1]) swap (x[0], x[1]);
     }
 }
 
 void
-solve (double a,
-       double b,
-       double c,
-       double d, // coefficients
-       int nx,   // number of expected solutions
-       double x0,
-       double x1,
-       double x2) // expected solutions
+solve (
+    double a,
+    double b,
+    double c,
+    double d,  // coefficients
+    int    nx, // number of expected solutions
+    double x0,
+    double x1,
+    double x2) // expected solutions
 {
-    cout << "coefficients: " << setw (3) << a << ' ' << setw (3) << b << ' ' << setw (3) << c << ' '
-         << setw (3) << d << ' ';
+    cout << "coefficients: " << setw (3) << a << ' ' << setw (3) << b << ' '
+         << setw (3) << c << ' ' << setw (3) << d << ' ';
 
     //
     // Solve the equation a*x^3 + b*x^2 + c*x +d
     //
 
     double x[3];
-    int n = IMATH_INTERNAL_NAMESPACE::solveCubic (a, b, c, d, x);
+    int    n = IMATH_INTERNAL_NAMESPACE::solveCubic (a, b, c, d, x);
 
     //
     // Sort the numerical solutions.
@@ -92,11 +85,9 @@ solve (double a,
 
     cout << " solutions: ";
 
-    if (n == -1)
-        cout << "[-inf, inf]";
+    if (n == -1) cout << "[-inf, inf]";
 
-    if (n == 0)
-        cout << "none";
+    if (n == 0) cout << "none";
 
     const double e = 0.0000001; // maximum expected error for
                                 // the test cases listed below
@@ -120,21 +111,22 @@ solve (double a,
 }
 
 void
-solve (double a,
-       double b,
-       double c, // coefficients
-       int nx,   // number of expected solutions
-       double x0,
-       double x1) // expected solutions
+solve (
+    double a,
+    double b,
+    double c,  // coefficients
+    int    nx, // number of expected solutions
+    double x0,
+    double x1) // expected solutions
 {
-    cout << "coefficients: " << setw (3) << a << ' ' << setw (3) << b << ' ' << setw (3) << c
-         << ' ';
+    cout << "coefficients: " << setw (3) << a << ' ' << setw (3) << b << ' '
+         << setw (3) << c << ' ';
     //
     // Solve the equation a*x^2 + b*x^1 + c*x
     //
 
-    double x[2] = { 0.0, 0.0 };
-    int n       = IMATH_INTERNAL_NAMESPACE::solveQuadratic (a, b, c, x);
+    double x[2] = {0.0, 0.0};
+    int    n    = IMATH_INTERNAL_NAMESPACE::solveQuadratic (a, b, c, x);
 
     //
     // Sort the numerical solutions.
@@ -152,11 +144,9 @@ solve (double a,
     assert (n == nx);
     cout << " solutions: ";
 
-    if (n == -1)
-        cout << "[-inf, inf]";
+    if (n == -1) cout << "[-inf, inf]";
 
-    if (n == 0)
-        cout << "none";
+    if (n == 0) cout << "none";
 
     const double e = 0.0000001; // maximum expected error for
                                 // the test cases listed below
@@ -177,7 +167,7 @@ solve (double a,
 }
 
 void
-testRoots()
+testRoots ()
 {
     cout << "Testing functions in ImathRoots.h" << endl;
 

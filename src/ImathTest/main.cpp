@@ -9,24 +9,22 @@
 
 #include "testArithmetic.h"
 #include "testBitPatterns.h"
-#include "testClassification.h"
-#include "testError.h"
-#include "testFunction.h"
-#include "testLimits.h"
-#include "testSize.h"
-#include "testToFloat.h"
 #include "testBox.h"
 #include "testBoxAlgo.h"
+#include "testClassification.h"
 #include "testColor.h"
+#include "testError.h"
 #include "testExtractEuler.h"
 #include "testExtractSHRT.h"
 #include "testFrustum.h"
 #include "testFrustumTest.h"
 #include "testFun.h"
+#include "testFunction.h"
 #include "testInterop.h"
 #include "testInterval.h"
 #include "testInvert.h"
 #include "testJacobiEigenSolver.h"
+#include "testLimits.h"
 #include "testLineAlgo.h"
 #include "testMatrix.h"
 #include "testMiscMatrixAlgo.h"
@@ -37,15 +35,16 @@
 #include "testRandom.h"
 #include "testRoots.h"
 #include "testShear.h"
+#include "testSize.h"
 #include "testTinySVD.h"
+#include "testToFloat.h"
 #include "testVec.h"
 
 #include <iostream>
 #include <string.h>
 
-#define TEST(x)                                                                                    \
-    if (argc < 2 || !strcmp (argv[1], #x))                                                         \
-        x();
+#define TEST(x)                                                                \
+    if (argc < 2 || !strcmp (argv[1], #x)) x ();
 
 int
 main (int argc, char* argv[])

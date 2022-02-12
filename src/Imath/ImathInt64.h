@@ -19,24 +19,24 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 #if (defined _WIN32 || defined _WIN64) && _MSC_VER >= 1300
 /// Int64 - unsigned 64-bit integer
-IMATH_DEPRECATED("use uint64_t")
+IMATH_DEPRECATED ("use uint64_t")
 typedef unsigned __int64 Int64;
 /// SInt64 - signed 64-bit integer
-IMATH_DEPRECATED("use sint64_t")
+IMATH_DEPRECATED ("use sint64_t")
 typedef __int64 SInt64;
 #elif ULONG_MAX == 18446744073709551615LU
 /// Int64 - unsigned 64-bit integer
-IMATH_DEPRECATED("use uint64_t")
+IMATH_DEPRECATED ("use uint64_t")
 typedef long unsigned int Int64;
 /// SInt64 - signed 64-bit integer
-IMATH_DEPRECATED("use sint64_t")
+IMATH_DEPRECATED ("use sint64_t")
 typedef long int SInt64;
 #else
 /// Int64 - unsigned 64-bit integer
-IMATH_DEPRECATED("use uint64_t")
+IMATH_DEPRECATED ("use uint64_t")
 typedef long long unsigned int Int64;
 /// SInt64 - signed 64-bit integer
-IMATH_DEPRECATED("use sint64_t")
+IMATH_DEPRECATED ("use sint64_t")
 typedef long long int SInt64;
 #endif
 

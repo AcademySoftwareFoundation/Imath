@@ -7,11 +7,11 @@
 #    undef NDEBUG
 #endif
 
-#include <half.h>
+#include "testClassification.h"
 #include <assert.h>
+#include <half.h>
 #include <iostream>
 #include <type_traits>
-#include "testClassification.h"
 
 using namespace std;
 
@@ -19,19 +19,21 @@ namespace
 {
 
 #if __cplusplus >= 201402L
-static_assert (std::is_trivially_default_constructible<half>::value,
-               "half is trivial and default constructible");
+static_assert (
+    std::is_trivially_default_constructible<half>::value,
+    "half is trivial and default constructible");
 #endif
 
 void
-testClass (half h,
-           bool finite,
-           bool normalized,
-           bool denormalized,
-           bool zero,
-           bool nan,
-           bool infinity,
-           bool negative)
+testClass (
+    half h,
+    bool finite,
+    bool normalized,
+    bool denormalized,
+    bool zero,
+    bool nan,
+    bool infinity,
+    bool negative)
 {
     cout.width (15);
     cout.precision (8);
@@ -40,40 +42,33 @@ testClass (half h,
     printBits (cout, h);
     cout << "    ";
 
-    if (h.isFinite())
-        cout << "finite ";
+    if (h.isFinite ()) cout << "finite ";
 
-    if (h.isNormalized())
-        cout << "normalized ";
+    if (h.isNormalized ()) cout << "normalized ";
 
-    if (h.isDenormalized())
-        cout << "denormalized ";
+    if (h.isDenormalized ()) cout << "denormalized ";
 
-    if (h.isZero())
-        cout << "zero ";
+    if (h.isZero ()) cout << "zero ";
 
-    if (h.isNan())
-        cout << "nan ";
+    if (h.isNan ()) cout << "nan ";
 
-    if (h.isInfinity())
-        cout << "infinity ";
+    if (h.isInfinity ()) cout << "infinity ";
 
-    if (h.isNegative())
-        cout << "negative ";
+    if (h.isNegative ()) cout << "negative ";
 
     cout << endl;
 
-    assert (h.isFinite() == finite);
-    assert (h.isNormalized() == normalized);
-    assert (h.isDenormalized() == denormalized);
-    assert (h.isZero() == zero);
-    assert (h.isNan() == nan);
-    assert (h.isInfinity() == infinity);
-    assert (h.isNegative() == negative);
+    assert (h.isFinite () == finite);
+    assert (h.isNormalized () == normalized);
+    assert (h.isDenormalized () == denormalized);
+    assert (h.isZero () == zero);
+    assert (h.isNan () == nan);
+    assert (h.isInfinity () == infinity);
+    assert (h.isNegative () == negative);
 }
 
 float
-floatPosInfinity()
+floatPosInfinity ()
 {
     half::uif x;
     x.i = 0x7f800000;
@@ -81,7 +76,7 @@ floatPosInfinity()
 }
 
 float
-floatNegInfinity()
+floatNegInfinity ()
 {
     half::uif x;
     x.i = 0xff800000;
@@ -89,7 +84,7 @@ floatNegInfinity()
 }
 
 float
-floatPosQNan1()
+floatPosQNan1 ()
 {
     half::uif x;
     x.i = 0x7fffffff;
@@ -97,7 +92,7 @@ floatPosQNan1()
 }
 
 float
-floatNegQNan1()
+floatNegQNan1 ()
 {
     half::uif x;
     x.i = 0xffffffff;
@@ -105,7 +100,7 @@ floatNegQNan1()
 }
 
 float
-floatPosQNan2()
+floatPosQNan2 ()
 {
     half::uif x;
     x.i = 0x7fd55555;
@@ -113,7 +108,7 @@ floatPosQNan2()
 }
 
 float
-floatNegQNan2()
+floatNegQNan2 ()
 {
     half::uif x;
     x.i = 0xffd55555;
@@ -123,7 +118,7 @@ floatNegQNan2()
 } // namespace
 
 void
-testClassification()
+testClassification ()
 {
     cout << "classification of bit patterns\n\n";
 
@@ -146,9 +141,9 @@ testClassification()
     testClass (0.2f, 1, 1, 0, 0, 0, 0, 0);
     testClass (0.3f, 1, 1, 0, 0, 0, 0, 0);
     testClass (HALF_MAX, 1, 1, 0, 0, 0, 0, 0);
-    testClass (floatPosInfinity(), 0, 0, 0, 0, 0, 1, 0);
-    testClass (floatPosQNan1(), 0, 0, 0, 0, 1, 0, 0);
-    testClass (floatPosQNan2(), 0, 0, 0, 0, 1, 0, 0);
+    testClass (floatPosInfinity (), 0, 0, 0, 0, 0, 1, 0);
+    testClass (floatPosQNan1 (), 0, 0, 0, 0, 1, 0, 0);
+    testClass (floatPosQNan2 (), 0, 0, 0, 0, 1, 0, 0);
 
     testClass (-1.0f, 1, 1, 0, 0, 0, 0, 1);
     testClass (-1.0f - HALF_EPSILON, 1, 1, 0, 0, 0, 0, 1);
@@ -163,16 +158,16 @@ testClassification()
     testClass (-0.2f, 1, 1, 0, 0, 0, 0, 1);
     testClass (-0.3f, 1, 1, 0, 0, 0, 0, 1);
     testClass (-HALF_MAX, 1, 1, 0, 0, 0, 0, 1);
-    testClass (floatNegInfinity(), 0, 0, 0, 0, 0, 1, 1);
-    testClass (floatNegQNan1(), 0, 0, 0, 0, 1, 0, 1);
-    testClass (floatNegQNan2(), 0, 0, 0, 0, 1, 0, 1);
+    testClass (floatNegInfinity (), 0, 0, 0, 0, 0, 1, 1);
+    testClass (floatNegQNan1 (), 0, 0, 0, 0, 1, 0, 1);
+    testClass (floatNegQNan2 (), 0, 0, 0, 0, 1, 0, 1);
 
     cout << "\n";
 
-    testClass (half::posInf(), 0, 0, 0, 0, 0, 1, 0);
-    testClass (half::negInf(), 0, 0, 0, 0, 0, 1, 1);
-    testClass (half::qNan(), 0, 0, 0, 0, 1, 0, 0);
-    testClass (half::sNan(), 0, 0, 0, 0, 1, 0, 0);
+    testClass (half::posInf (), 0, 0, 0, 0, 0, 1, 0);
+    testClass (half::negInf (), 0, 0, 0, 0, 0, 1, 1);
+    testClass (half::qNan (), 0, 0, 0, 0, 1, 0, 0);
+    testClass (half::sNan (), 0, 0, 0, 0, 1, 0, 0);
 
     cout << "ok\n\n" << flush;
 }

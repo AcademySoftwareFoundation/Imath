@@ -27,7 +27,7 @@ hsv2rgb_d (const Vec3<double>& hsv) IMATH_NOEXCEPT
     else
         hue *= 6;
 
-    int i    = int (std::floor (hue));
+    int    i = int (std::floor (hue));
     double f = hue - i;
     double p = val * (1 - sat);
     double q = val * (1 - (sat * f));
@@ -35,36 +35,36 @@ hsv2rgb_d (const Vec3<double>& hsv) IMATH_NOEXCEPT
 
     switch (i)
     {
-    case 0:
-        x = val;
-        y = t;
-        z = p;
-        break;
-    case 1:
-        x = q;
-        y = val;
-        z = p;
-        break;
-    case 2:
-        x = p;
-        y = val;
-        z = t;
-        break;
-    case 3:
-        x = p;
-        y = q;
-        z = val;
-        break;
-    case 4:
-        x = t;
-        y = p;
-        z = val;
-        break;
-    case 5:
-        x = val;
-        y = p;
-        z = q;
-        break;
+        case 0:
+            x = val;
+            y = t;
+            z = p;
+            break;
+        case 1:
+            x = q;
+            y = val;
+            z = p;
+            break;
+        case 2:
+            x = p;
+            y = val;
+            z = t;
+            break;
+        case 3:
+            x = p;
+            y = q;
+            z = val;
+            break;
+        case 4:
+            x = t;
+            y = p;
+            z = val;
+            break;
+        case 5:
+            x = val;
+            y = p;
+            z = q;
+            break;
     }
 
     return Vec3<double> (x, y, z);
@@ -84,7 +84,7 @@ hsv2rgb_d (const Color4<double>& hsv) IMATH_NOEXCEPT
     else
         hue *= 6;
 
-    int i    = int (std::floor (hue));
+    int    i = int (std::floor (hue));
     double f = hue - i;
     double p = val * (1 - sat);
     double q = val * (1 - (sat * f));
@@ -92,36 +92,36 @@ hsv2rgb_d (const Color4<double>& hsv) IMATH_NOEXCEPT
 
     switch (i)
     {
-    case 0:
-        r = val;
-        g = t;
-        b = p;
-        break;
-    case 1:
-        r = q;
-        g = val;
-        b = p;
-        break;
-    case 2:
-        r = p;
-        g = val;
-        b = t;
-        break;
-    case 3:
-        r = p;
-        g = q;
-        b = val;
-        break;
-    case 4:
-        r = t;
-        g = p;
-        b = val;
-        break;
-    case 5:
-        r = val;
-        g = p;
-        b = q;
-        break;
+        case 0:
+            r = val;
+            g = t;
+            b = p;
+            break;
+        case 1:
+            r = q;
+            g = val;
+            b = p;
+            break;
+        case 2:
+            r = p;
+            g = val;
+            b = t;
+            break;
+        case 3:
+            r = p;
+            g = q;
+            b = val;
+            break;
+        case 4:
+            r = t;
+            g = p;
+            b = val;
+            break;
+        case 5:
+            r = val;
+            g = p;
+            b = q;
+            break;
     }
 
     return Color4<double> (r, g, b, hsv.a);
@@ -141,8 +141,7 @@ rgb2hsv_d (const Vec3<double>& c) IMATH_NOEXCEPT
     double sat   = 0;
     double hue   = 0;
 
-    if (max != 0)
-        sat = range / max;
+    if (max != 0) sat = range / max;
 
     if (sat != 0)
     {
@@ -157,8 +156,7 @@ rgb2hsv_d (const Vec3<double>& c) IMATH_NOEXCEPT
 
         hue = h / 6.;
 
-        if (hue < 0.)
-            hue += 1.0;
+        if (hue < 0.) hue += 1.0;
     }
     return Vec3<double> (hue, sat, val);
 }
@@ -177,8 +175,7 @@ rgb2hsv_d (const Color4<double>& c) IMATH_NOEXCEPT
     double sat   = 0;
     double hue   = 0;
 
-    if (max != 0)
-        sat = range / max;
+    if (max != 0) sat = range / max;
 
     if (sat != 0)
     {
@@ -193,8 +190,7 @@ rgb2hsv_d (const Color4<double>& c) IMATH_NOEXCEPT
 
         hue = h / 6.;
 
-        if (hue < 0.)
-            hue += 1.0;
+        if (hue < 0.) hue += 1.0;
     }
     return Color4<double> (hue, sat, val, c.a);
 }

@@ -17,11 +17,21 @@
 
 /// Call gluLookAt with the given position, interest, and up-vector.
 inline void
-gluLookAt (const IMATH_INTERNAL_NAMESPACE::V3f& pos,
-           const IMATH_INTERNAL_NAMESPACE::V3f& interest,
-           const IMATH_INTERNAL_NAMESPACE::V3f& up)
+gluLookAt (
+    const IMATH_INTERNAL_NAMESPACE::V3f& pos,
+    const IMATH_INTERNAL_NAMESPACE::V3f& interest,
+    const IMATH_INTERNAL_NAMESPACE::V3f& up)
 {
-    gluLookAt (pos.x, pos.y, pos.z, interest.x, interest.y, interest.z, up.x, up.y, up.z);
+    gluLookAt (
+        pos.x,
+        pos.y,
+        pos.z,
+        interest.x,
+        interest.y,
+        interest.z,
+        up.x,
+        up.y,
+        up.z);
 }
 
 #endif

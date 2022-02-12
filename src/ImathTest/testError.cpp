@@ -7,12 +7,12 @@
 #    undef NDEBUG
 #endif
 
+#include "testError.h"
 #include "half.h"
 #include <assert.h>
 #include <iostream>
 #include <random>
 #include <stdlib.h>
-#include "testError.h"
 
 using namespace std;
 
@@ -20,18 +20,18 @@ namespace
 {
 
 float
-drand()
+drand ()
 {
-    static std::default_random_engine generator;
+    static std::default_random_engine            generator;
     static std::uniform_real_distribution<float> distribution (0.0f, 1.0f);
-    float r = distribution (generator);
+    float                                        r = distribution (generator);
     return r;
 }
 
 } // namespace
 
 void
-testNormalizedConversionError()
+testNormalizedConversionError ()
 {
     cout << "float-to-half conversion error for normalized half numbers\n";
 
@@ -39,29 +39,26 @@ testNormalizedConversionError()
 
     for (int i = 0; i < 20000000; i++)
     {
-        float f (drand() * HALF_MAX);
+        float f (drand () * HALF_MAX);
 
-        if (f < HALF_NRM_MIN)
-            continue;
+        if (f < HALF_NRM_MIN) continue;
 
-        if (i & 1)
-            f = -f;
+        if (i & 1) f = -f;
 
-        half h (f);
+        half  h (f);
         float e = 1.0f - h / f;
 
-        if (e < 0)
-            e = -e;
+        if (e < 0) e = -e;
 
         if (e > HALF_EPSILON * 0.5)
         {
-            cout << "float = " << f << ", half = " << h << ", error = " << e << endl;
+            cout << "float = " << f << ", half = " << h << ", error = " << e
+                 << endl;
 
             assert (false);
         }
 
-        if (e > eMax)
-            eMax = e;
+        if (e > eMax) eMax = e;
     }
 
     cout << "max error          = " << eMax << endl;
@@ -70,7 +67,7 @@ testNormalizedConversionError()
 }
 
 void
-testDenormalizedConversionError()
+testDenormalizedConversionError ()
 {
     cout << "float-to-half conversion error for denormalized half numbers\n";
 
@@ -78,26 +75,24 @@ testDenormalizedConversionError()
 
     for (int i = 0; i < 20000000; i++)
     {
-        float f (drand() * (HALF_NRM_MIN - HALF_DENORM_MIN));
+        float f (drand () * (HALF_NRM_MIN - HALF_DENORM_MIN));
 
-        if (i & 1)
-            f = -f;
+        if (i & 1) f = -f;
 
-        half h (f);
+        half  h (f);
         float e = h - f;
 
-        if (e < 0)
-            e = -e;
+        if (e < 0) e = -e;
 
         if (e > HALF_DENORM_MIN * 0.5)
         {
-            cout << "float = " << f << ", half = " << h << ", error = " << e << endl;
+            cout << "float = " << f << ", half = " << h << ", error = " << e
+                 << endl;
 
             assert (false);
         }
 
-        if (e > eMax)
-            eMax = e;
+        if (e > eMax) eMax = e;
     }
 
     cout << "max error          = " << eMax << endl;
@@ -118,19 +113,16 @@ testNormalizedRounding (int n)
 
     for (int i = 0; i < 200000; i++)
     {
-        half h (drand() * HALF_MAX);
+        half h (drand () * HALF_MAX);
 
-        if (h < HALF_NRM_MIN)
-            continue;
+        if (h < HALF_NRM_MIN) continue;
 
-        if (i & 1)
-            h = -h;
+        if (i & 1) h = -h;
 
-        half r (h.round (n));
+        half  r (h.round (n));
         float e = 1.0f - r / h;
 
-        if (e < 0)
-            e = -e;
+        if (e < 0) e = -e;
 
         if (e > eExpected)
         {
@@ -145,8 +137,7 @@ testNormalizedRounding (int n)
             assert (false);
         }
 
-        if (e > eMax)
-            eMax = e;
+        if (e > eMax) eMax = e;
     }
 
     cout << "max error          = " << eMax << endl;
@@ -164,16 +155,14 @@ testDenormalizedRounding (int n)
 
     for (int i = 0; i < 200000; i++)
     {
-        half h (drand() * (HALF_NRM_MIN - HALF_DENORM_MIN));
+        half h (drand () * (HALF_NRM_MIN - HALF_DENORM_MIN));
 
-        if (i & 1)
-            h = -h;
+        if (i & 1) h = -h;
 
-        half r (h.round (n));
+        half  r (h.round (n));
         float e = r - h;
 
-        if (e < 0)
-            e = -e;
+        if (e < 0) e = -e;
 
         if (e > eExpected)
         {
@@ -188,8 +177,7 @@ testDenormalizedRounding (int n)
             assert (false);
         }
 
-        if (e > eMax)
-            eMax = e;
+        if (e > eMax) eMax = e;
     }
 
     cout << "max error          = " << eMax << endl;
@@ -200,7 +188,7 @@ testDenormalizedRounding (int n)
 } // namespace
 
 void
-testRoundingError()
+testRoundingError ()
 {
     testNormalizedRounding (10);
     testDenormalizedRounding (10);

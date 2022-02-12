@@ -3,4 +3,4 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-void testMiscMatrixAlgo();
+void testMiscMatrixAlgo ();

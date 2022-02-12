@@ -31,8 +31,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// length of 2^32.
 class IMATH_EXPORT Rand32
 {
-  public:
-
+public:
     /// Constructor, given a seed
     IMATH_HOSTDEVICE Rand32 (unsigned long int seed = 0);
 
@@ -40,19 +39,19 @@ class IMATH_EXPORT Rand32
     IMATH_HOSTDEVICE void init (unsigned long int seed);
 
     /// Get the next value in the sequence (range: [false, true])
-    IMATH_HOSTDEVICE bool nextb();
+    IMATH_HOSTDEVICE bool nextb ();
 
     /// Get the next value in the sequence (range: [0 ... 0xffffffff])
-    IMATH_HOSTDEVICE unsigned long int nexti();
+    IMATH_HOSTDEVICE unsigned long int nexti ();
 
     /// Get the next value in the sequence (range: [0 ... 1[)
-    IMATH_HOSTDEVICE float nextf();
+    IMATH_HOSTDEVICE float nextf ();
 
     /// Get the next value in the sequence (range [rangeMin ... rangeMax[)
     IMATH_HOSTDEVICE float nextf (float rangeMin, float rangeMax);
 
-  private:
-    IMATH_HOSTDEVICE void next();
+private:
+    IMATH_HOSTDEVICE void next ();
 
     unsigned long int _state;
 };
@@ -62,8 +61,7 @@ class IMATH_EXPORT Rand32
 /// uniformly distributed sequence.
 class Rand48
 {
-  public:
-
+public:
     /// Constructor
     IMATH_HOSTDEVICE Rand48 (unsigned long int seed = 0);
 
@@ -71,28 +69,30 @@ class Rand48
     IMATH_HOSTDEVICE void init (unsigned long int seed);
 
     /// Get the next value in the sequence (range: [false, true])
-    IMATH_HOSTDEVICE bool nextb();
+    IMATH_HOSTDEVICE bool nextb ();
 
     /// Get the next value in the sequence (range: [0 ... 0x7fffffff])
-    IMATH_HOSTDEVICE long int nexti();
+    IMATH_HOSTDEVICE long int nexti ();
 
     /// Get the next value in the sequence (range: [0 ... 1[)
-    IMATH_HOSTDEVICE double nextf();
+    IMATH_HOSTDEVICE double nextf ();
 
     /// Get the next value in the sequence (range [rangeMin ... rangeMax[)
     IMATH_HOSTDEVICE double nextf (double rangeMin, double rangeMax);
 
-  private:
+private:
     unsigned short int _state[3];
 };
 
 /// Return random points uniformly distributed in a sphere with
 /// radius 1 around the origin (distance from origin <= 1).
-template <class Vec, class Rand> IMATH_HOSTDEVICE Vec solidSphereRand (Rand& rand);
+template <class Vec, class Rand>
+IMATH_HOSTDEVICE Vec solidSphereRand (Rand& rand);
 
 /// Return random points uniformly distributed on the surface of
 /// a sphere with radius 1 around the origin.
-template <class Vec, class Rand> IMATH_HOSTDEVICE Vec hollowSphereRand (Rand& rand);
+template <class Vec, class Rand>
+IMATH_HOSTDEVICE Vec hollowSphereRand (Rand& rand);
 
 /// Return random numbers with a normal (Gaussian)
 /// distribution with zero mean and unit variance.
@@ -101,18 +101,19 @@ template <class Rand> IMATH_HOSTDEVICE float gaussRand (Rand& rand);
 /// Return random points whose distance from the origin
 /// has a normal (Gaussian) distribution with zero mean
 /// and unit variance.
-template <class Vec, class Rand> IMATH_HOSTDEVICE Vec gaussSphereRand (Rand& rand);
+template <class Vec, class Rand>
+IMATH_HOSTDEVICE Vec gaussSphereRand (Rand& rand);
 
 //---------------------------------
 // erand48(), nrand48() and friends
 //---------------------------------
 
 /// @cond Doxygen_Suppress
-IMATH_HOSTDEVICE IMATH_EXPORT double erand48 (unsigned short state[3]);
-IMATH_HOSTDEVICE IMATH_EXPORT double drand48();
+IMATH_HOSTDEVICE IMATH_EXPORT double   erand48 (unsigned short state[3]);
+IMATH_HOSTDEVICE IMATH_EXPORT double   drand48 ();
 IMATH_HOSTDEVICE IMATH_EXPORT long int nrand48 (unsigned short state[3]);
-IMATH_HOSTDEVICE IMATH_EXPORT long int lrand48();
-IMATH_HOSTDEVICE IMATH_EXPORT void srand48 (long int seed);
+IMATH_HOSTDEVICE IMATH_EXPORT long int lrand48 ();
+IMATH_HOSTDEVICE IMATH_EXPORT void     srand48 (long int seed);
 /// @endcond
 
 //---------------
@@ -131,30 +132,30 @@ IMATH_HOSTDEVICE inline Rand32::Rand32 (unsigned long int seed)
 }
 
 IMATH_HOSTDEVICE inline void
-Rand32::next()
+Rand32::next ()
 {
     _state = 1664525L * _state + 1013904223L;
 }
 
 IMATH_HOSTDEVICE inline bool
-Rand32::nextb()
+Rand32::nextb ()
 {
-    next();
+    next ();
     // Return the 31st (most significant) bit, by and-ing with 2 ^ 31.
     return !!(_state & 2147483648UL);
 }
 
 IMATH_HOSTDEVICE inline unsigned long int
-Rand32::nexti()
+Rand32::nexti ()
 {
-    next();
+    next ();
     return _state & 0xffffffff;
 }
 
 IMATH_HOSTDEVICE inline float
 Rand32::nextf (float rangeMin, float rangeMax)
 {
-    float f = nextf();
+    float f = nextf ();
     return rangeMin * (1 - f) + rangeMax * f;
 }
 
@@ -174,19 +175,19 @@ IMATH_HOSTDEVICE inline Rand48::Rand48 (unsigned long int seed)
 }
 
 IMATH_HOSTDEVICE inline bool
-Rand48::nextb()
+Rand48::nextb ()
 {
     return nrand48 (_state) & 1;
 }
 
 IMATH_HOSTDEVICE inline long int
-Rand48::nexti()
+Rand48::nexti ()
 {
     return nrand48 (_state);
 }
 
 IMATH_HOSTDEVICE inline double
-Rand48::nextf()
+Rand48::nextf ()
 {
     return erand48 (_state);
 }
@@ -194,7 +195,7 @@ Rand48::nextf()
 IMATH_HOSTDEVICE inline double
 Rand48::nextf (double rangeMin, double rangeMax)
 {
-    double f = nextf();
+    double f = nextf ();
     return rangeMin * (1 - f) + rangeMax * f;
 }
 
@@ -206,9 +207,9 @@ solidSphereRand (Rand& rand)
 
     do
     {
-        for (unsigned int i = 0; i < Vec::dimensions(); i++)
+        for (unsigned int i = 0; i < Vec::dimensions (); i++)
             v[i] = (typename Vec::BaseType) rand.nextf (-1, 1);
-    } while (v.length2() > 1);
+    } while (v.length2 () > 1);
 
     return v;
 }
@@ -217,15 +218,15 @@ template <class Vec, class Rand>
 IMATH_HOSTDEVICE Vec
 hollowSphereRand (Rand& rand)
 {
-    Vec v;
+    Vec                    v;
     typename Vec::BaseType length;
 
     do
     {
-        for (unsigned int i = 0; i < Vec::dimensions(); i++)
+        for (unsigned int i = 0; i < Vec::dimensions (); i++)
             v[i] = (typename Vec::BaseType) rand.nextf (-1, 1);
 
-        length = v.length();
+        length = v.length ();
     } while (length > 1 || length == 0);
 
     return v / length;

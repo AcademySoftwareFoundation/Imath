@@ -3,4 +3,4 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-void testProcrustes();
+void testProcrustes ();

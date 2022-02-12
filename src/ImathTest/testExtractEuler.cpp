@@ -7,13 +7,13 @@
 #    undef NDEBUG
 #endif
 
+#include "testExtractEuler.h"
 #include <ImathEuler.h>
 #include <ImathFun.h>
 #include <ImathMatrixAlgo.h>
 #include <ImathRandom.h>
 #include <assert.h>
 #include <iostream>
-#include "testExtractEuler.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
@@ -37,7 +37,7 @@ matrixEulerMatrix_1 (const M44f& M, Eulerf::Order order)
     else
         extractEulerZYX (M, f);
 
-    return Eulerf (f, order).toMatrix44();
+    return Eulerf (f, order).toMatrix44 ();
 }
 
 M44f
@@ -45,13 +45,14 @@ matrixEulerMatrix_2 (const M44f& M, Eulerf::Order order)
 {
     Eulerf f (order);
     f.extract (M);
-    return f.toMatrix44();
+    return f.toMatrix44 ();
 }
 
 void
-testMatrix (const M44f M,
-            M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order),
-            Eulerf::Order order)
+testMatrix (
+    const M44f M,
+    M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order),
+    Eulerf::Order order)
 {
     //
     // Extract Euler angles from M, and convert the
@@ -90,7 +91,8 @@ testMatrix (const M44f M,
 }
 
 void
-testRandomAngles (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order order)
+testRandomAngles (
+    M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order order)
 {
     Rand48 r (0);
 
@@ -100,12 +102,13 @@ testRandomAngles (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf
         // Create a rotation matrix, M
         //
 
-        Eulerf e (rad (r.nextf (-180, 180)),
-                  rad (r.nextf (-180, 180)),
-                  rad (r.nextf (-180, 180)),
-                  Eulerf::XYZ);
+        Eulerf e (
+            rad (r.nextf (-180, 180)),
+            rad (r.nextf (-180, 180)),
+            rad (r.nextf (-180, 180)),
+            Eulerf::XYZ);
 
-        M44f M (e.toMatrix44());
+        M44f M (e.toMatrix44 ());
 
         //
         // Add a small random error to the elements of M
@@ -126,11 +129,14 @@ testRandomAngles (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf
 }
 
 void
-testAngles (V3f angles, M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order order)
+testAngles (
+    V3f angles,
+    M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order),
+    Eulerf::Order order)
 {
     Eulerf e (rad (angles.x), rad (angles.y), rad (angles.z), order);
 
-    M44f M (e.toMatrix44());
+    M44f M (e.toMatrix44 ());
 
     //
     // With rounding errors from e.toMatrix.
@@ -156,7 +162,8 @@ testAngles (V3f angles, M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), 
 }
 
 void
-test (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order order)
+test (
+    M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order order)
 {
     cout << "order = " << setbase (16) << int (order) << setbase (10) << endl;
 
@@ -173,11 +180,11 @@ test (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order orde
 }
 
 void
-testRandomAngles33()
+testRandomAngles33 ()
 {
     Rand48 r (0);
 
-    float eps = 8.0 * std::numeric_limits<float>::epsilon();
+    float eps = 8.0 * std::numeric_limits<float>::epsilon ();
 
     for (int i = 0; i < 100000; ++i)
     {
@@ -196,10 +203,10 @@ testRandomAngles33()
 } // namespace
 
 void
-testExtractEuler()
+testExtractEuler ()
 {
     cout << "Testing extraction of rotation angle from 3x3 matrices" << endl;
-    testRandomAngles33();
+    testRandomAngles33 ();
 
     cout << "Testing extraction of Euler angles from matrices" << endl;
 

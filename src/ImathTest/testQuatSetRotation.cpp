@@ -7,11 +7,11 @@
 #    undef NDEBUG
 #endif
 
+#include "testQuatSetRotation.h"
 #include <ImathQuat.h>
 #include <ImathRandom.h>
 #include <assert.h>
 #include <iostream>
-#include "testQuatSetRotation.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
@@ -28,19 +28,19 @@ testRotation (const V3f& from, const V3f& to)
 
     Quatf Q;
     Q.setRotation (from, to);
-    M44f M = Q.toMatrix44();
+    M44f M = Q.toMatrix44 ();
 
     //
     // Verify that the quaternion rotates vector from into vector to.
     //
 
-    float e = 20 * std::numeric_limits<float>::epsilon();
+    float e = 20 * std::numeric_limits<float>::epsilon ();
 
     V3f fromM = from * M;
     V3f fromQ = from * Q;
-    V3f t0    = to.normalized();
-    V3f fM0   = fromM.normalized();
-    V3f fQ0   = fromQ.normalized();
+    V3f t0    = to.normalized ();
+    V3f fM0   = fromM.normalized ();
+    V3f fQ0   = fromQ.normalized ();
 
     assert (t0.equalWithAbsError (fM0, e));
     assert (t0.equalWithAbsError (fQ0, e));
@@ -49,11 +49,11 @@ testRotation (const V3f& from, const V3f& to)
     // Verify that the rotation axis is the cross product of from and to.
     //
 
-    V3f f0 = from.normalized();
+    V3f f0 = from.normalized ();
 
     if (abs (f0 ^ t0) < 0.9)
     {
-        V3f n0  = (from % to).normalized();
+        V3f n0  = (from % to).normalized ();
         V3f n0M = n0 * M;
 
         assert (n0.equalWithAbsError (n0M, e));
@@ -61,7 +61,7 @@ testRotation (const V3f& from, const V3f& to)
 }
 
 void
-specificVectors()
+specificVectors ()
 {
     cout << "  exact 90-degree rotations" << endl;
 
@@ -108,7 +108,7 @@ specificVectors()
 }
 
 void
-randomVectors()
+randomVectors ()
 {
     cout << "  random from and to vectors" << endl;
 
@@ -123,12 +123,12 @@ randomVectors()
 }
 
 void
-nearlyEqualVectors()
+nearlyEqualVectors ()
 {
     cout << "  nearly equal from and to vectors" << endl;
 
     Rand48 rand (19);
-    float e = 100 * std::numeric_limits<float>::epsilon();
+    float  e = 100 * std::numeric_limits<float>::epsilon ();
 
     for (int i = 0; i < 500000; ++i)
     {
@@ -139,12 +139,12 @@ nearlyEqualVectors()
 }
 
 void
-nearlyOppositeVectors()
+nearlyOppositeVectors ()
 {
     cout << "  nearly opposite from and to vectors" << endl;
 
     Rand48 rand (19);
-    float e = 100 * std::numeric_limits<float>::epsilon();
+    float  e = 100 * std::numeric_limits<float>::epsilon ();
 
     for (int i = 0; i < 500000; ++i)
     {
@@ -157,14 +157,14 @@ nearlyOppositeVectors()
 } // namespace
 
 void
-testQuatSetRotation()
+testQuatSetRotation ()
 {
     cout << "Testing quaternion rotations" << endl;
 
-    specificVectors();
-    randomVectors();
-    nearlyEqualVectors();
-    nearlyOppositeVectors();
+    specificVectors ();
+    randomVectors ();
+    nearlyEqualVectors ();
+    nearlyOppositeVectors ();
 
     cout << "ok\n" << endl;
 }

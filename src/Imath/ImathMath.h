@@ -36,59 +36,59 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// @cond Doxygen_Suppress
 template <class T> struct Math
 {
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T acos (T x) { return std::acos (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T asin (T x) { return std::asin (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T atan (T x) { return std::atan (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T atan2 (T x, T y) { return std::atan2 (x, y); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T cos (T x) { return std::cos (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T sin (T x) { return std::sin (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T tan (T x) { return std::tan (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T cosh (T x) { return std::cosh (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T sinh (T x) { return std::sinh (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T tanh (T x) { return std::tanh (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T exp (T x) { return std::exp (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T log (T x) { return std::log (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T log10 (T x) { return std::log10 (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T modf (T x, T* iptr)
     {
@@ -98,36 +98,35 @@ template <class T> struct Math
         return rval;
     }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T pow (T x, T y) { return std::pow (x, y); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T sqrt (T x) { return std::sqrt (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T ceil (T x) { return std::ceil (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T fabs (T x) { return std::fabs (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T floor (T x) { return std::floor (x); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T fmod (T x, T y) { return std::fmod (x, y); }
 
-    IMATH_DEPRECATED("use std::math functions")
+    IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T hypot (T x, T y) { return std::hypot (x, y); }
 };
 /// @endcond
-
 
 /// Don Hatch's version of sin(x)/x, which is accurate for very small x.
 /// Returns 1 for x == 0.
@@ -135,7 +134,7 @@ template <class T>
 IMATH_HOSTDEVICE inline T
 sinx_over_x (T x)
 {
-    if (x * x < std::numeric_limits<T>::epsilon())
+    if (x * x < std::numeric_limits<T>::epsilon ())
         return T (1);
     else
         return std::sin (x) / x;

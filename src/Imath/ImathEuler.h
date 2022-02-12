@@ -119,12 +119,11 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
 {
-  public:
+public:
     using Vec3<T>::x;
     using Vec3<T>::y;
     using Vec3<T>::z;
 
-    
     ///
     ///  All 24 possible orderings
     ///
@@ -160,15 +159,16 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
         //       ||||
         //       VVVV
         //       ABCD
-        // Legend: 
+        // Legend:
         //  A -> Initial Axis (0==x, 1==y, 2==z)
         //  B -> Parity Even (1==true)
         //  C -> Initial Repeated (1==true)
         //  D -> Frame Static (1==true)
         //
 
-        Legal = XYZ | XZY | YZX | YXZ | ZXY | ZYX | XZX | XYX | YXY | YZY | ZYZ | ZXZ | XYZr |
-                XZYr | YZXr | YXZr | ZXYr | ZYXr | XZXr | XYXr | YXYr | YZYr | ZYZr | ZXZr,
+        Legal = XYZ | XZY | YZX | YXZ | ZXY | ZYX | XZX | XYX | YXY | YZY |
+                ZYZ | ZXZ | XYZr | XZYr | YZXr | YXZr | ZXYr | ZYXr | XZXr |
+                XYXr | YXYr | YZYr | ZYZr | ZXZr,
 
         Min     = 0x0000,
         Max     = 0x2111,
@@ -188,7 +188,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
     ///
     /// Layout
     ///
-    
+
     enum IMATH_EXPORT_ENUM InputLayout
     {
         XYZLayout,
@@ -208,7 +208,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
     /// function, defined in ImathMatrixAlgo.h.
 
     /// No initialization by default
-    IMATH_HOSTDEVICE constexpr Euler() IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr Euler () IMATH_NOEXCEPT;
 
     /// Copy constructor
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Euler&) IMATH_NOEXCEPT;
@@ -217,59 +217,75 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (Order p) IMATH_NOEXCEPT;
 
     /// Construct from vector, order, layout
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Vec3<T>& v,
-                                              Order o       = Default,
-                                              InputLayout l = IJKLayout) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (
+        const Vec3<T>& v,
+        Order          o = Default,
+        InputLayout    l = IJKLayout) IMATH_NOEXCEPT;
     /// Construct from explicit axes, order, layout
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14
-    Euler (T i, T j, T k, Order o = Default, InputLayout l = IJKLayout) IMATH_NOEXCEPT;
+    Euler (T i, T j, T k, Order o = Default, InputLayout l = IJKLayout)
+        IMATH_NOEXCEPT;
 
     /// Copy constructor with new Order
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Euler<T>& euler, Order newp) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Euler<T>& euler, Order newp)
+        IMATH_NOEXCEPT;
 
     /// Construct from Matrix33
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Matrix33<T>&, Order o = Default) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14
+    Euler (const Matrix33<T>&, Order o = Default) IMATH_NOEXCEPT;
 
     /// Construct from Matrix44
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Matrix44<T>&, Order o = Default) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14
+    Euler (const Matrix44<T>&, Order o = Default) IMATH_NOEXCEPT;
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Euler() = default;
+    IMATH_HOSTDEVICE ~Euler () = default;
 
     /// @}
-    
+
     /// @{
     /// @name Query
-    
+
     /// Return whether the given value is a legal Order
     IMATH_HOSTDEVICE constexpr static bool legal (Order) IMATH_NOEXCEPT;
 
     /// Return the order
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Order order() const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Order order () const IMATH_NOEXCEPT;
 
     /// Return frameStatic
-    IMATH_HOSTDEVICE constexpr bool frameStatic() const { return _frameStatic; }
+    IMATH_HOSTDEVICE constexpr bool frameStatic () const
+    {
+        return _frameStatic;
+    }
 
     /// Return intialRepeated
-    IMATH_HOSTDEVICE constexpr bool initialRepeated() const { return _initialRepeated; }
+    IMATH_HOSTDEVICE constexpr bool initialRepeated () const
+    {
+        return _initialRepeated;
+    }
 
     /// Return partityEven
-    IMATH_HOSTDEVICE constexpr bool parityEven() const { return _parityEven; }
+    IMATH_HOSTDEVICE constexpr bool parityEven () const { return _parityEven; }
 
-    /// Return initialAxis 
-    IMATH_HOSTDEVICE constexpr Axis initialAxis() const { return _initialAxis; }
+    /// Return initialAxis
+    IMATH_HOSTDEVICE constexpr Axis initialAxis () const
+    {
+        return _initialAxis;
+    }
 
     /// Unpack angles from ijk form
-    IMATH_HOSTDEVICE void angleOrder (int& i, int& j, int& k) const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE void
+    angleOrder (int& i, int& j, int& k) const IMATH_NOEXCEPT;
 
     /// Determine mapping from xyz to ijk (reshuffle the xyz to match the order)
-    IMATH_HOSTDEVICE void angleMapping (int& i, int& j, int& k) const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE void
+    angleMapping (int& i, int& j, int& k) const IMATH_NOEXCEPT;
 
     /// @}
 
     /// @{
     /// @name Set Value
-    
+
     /// Set the order. This does NOT convert the angles, but it
     /// does reorder the input vector.
     IMATH_HOSTDEVICE void setOrder (Order) IMATH_NOEXCEPT;
@@ -279,19 +295,23 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
     IMATH_HOSTDEVICE void setXYZVector (const Vec3<T>&) IMATH_NOEXCEPT;
 
     /// Set the value.
-    IMATH_HOSTDEVICE void set (Axis initial, bool relative, bool parityEven, bool firstRepeats) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE void
+    set (Axis initial, bool relative, bool parityEven, bool firstRepeats)
+        IMATH_NOEXCEPT;
 
     /// @}
-    
+
     /// @{
     /// @name Assignments and Conversions
     ///
 
     /// Assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>& operator= (const Euler<T>&) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>&
+    operator= (const Euler<T>&) IMATH_NOEXCEPT;
 
     /// Assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>& operator= (const Vec3<T>&) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Euler<T>&
+    operator= (const Vec3<T>&) IMATH_NOEXCEPT;
 
     /// Assign from Matrix33, assumed to be affine
     IMATH_HOSTDEVICE void extract (const Matrix33<T>&) IMATH_NOEXCEPT;
@@ -303,21 +323,21 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
     IMATH_HOSTDEVICE void extract (const Quat<T>&) IMATH_NOEXCEPT;
 
     /// Convert to Matrix33
-    IMATH_HOSTDEVICE Matrix33<T> toMatrix33() const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE Matrix33<T> toMatrix33 () const IMATH_NOEXCEPT;
 
     /// Convert to Matrix44
-    IMATH_HOSTDEVICE Matrix44<T> toMatrix44() const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE Matrix44<T> toMatrix44 () const IMATH_NOEXCEPT;
 
     /// Convert to Quat
-    IMATH_HOSTDEVICE Quat<T> toQuat() const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE Quat<T> toQuat () const IMATH_NOEXCEPT;
 
     /// Reorder the angles so that the X rotation comes first,
     ///  followed by the Y and Z in cases like XYX ordering, the
     ///  repeated angle will be in the "z" component
-    IMATH_HOSTDEVICE Vec3<T> toXYZVector() const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE Vec3<T> toXYZVector () const IMATH_NOEXCEPT;
 
     /// @}
-    
+
     /// @{
     /// @name Utility Methods
     ///
@@ -326,15 +346,19 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
     ///  that is the intent).
 
     /// Convert an angle to its equivalent in [-PI, PI]
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 static float angleMod (T angle) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 static float
+    angleMod (T angle) IMATH_NOEXCEPT;
 
     /// Adjust xyzRot so that its components differ from targetXyzRot by no more than +/-PI
-    IMATH_HOSTDEVICE static void simpleXYZRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE static void simpleXYZRotation (
+        Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot) IMATH_NOEXCEPT;
 
     /// Adjust xyzRot so that its components differ from targetXyzRot by as little as possible.
     /// Note that xyz here really means ijk, because the order must be provided.
-    IMATH_HOSTDEVICE static void
-    nearestRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot, Order order = XYZ) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE static void nearestRotation (
+        Vec3<T>&       xyzRot,
+        const Vec3<T>& targetXyzRot,
+        Order          order = XYZ) IMATH_NOEXCEPT;
 
     /// Adjusts "this" Euler so that its components differ from target
     /// by as little as possible. This method might not make sense for
@@ -344,23 +368,22 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
 
     /// @}
 
-  protected:
-
+protected:
     /// relative or static rotations
-    bool _frameStatic : 1;     
+    bool _frameStatic : 1;
 
     /// init axis repeated as last
-    bool _initialRepeated : 1; 
+    bool _initialRepeated : 1;
 
     /// "parity of axis permutation"
-    bool _parityEven : 1;      
+    bool _parityEven : 1;
 
 #if defined _WIN32 || defined _WIN64
     /// First axis of rotation
-    Axis _initialAxis; 
+    Axis _initialAxis;
 #else
     /// First axis of rotation
-    Axis _initialAxis : 2; 
+    Axis _initialAxis : 2;
 #endif
 };
 
@@ -415,7 +438,7 @@ Euler<T>::setXYZVector (const Vec3<T>& v) IMATH_NOEXCEPT
 
 template <class T>
 IMATH_HOSTDEVICE inline Vec3<T>
-Euler<T>::toXYZVector() const IMATH_NOEXCEPT
+Euler<T>::toXYZVector () const IMATH_NOEXCEPT
 {
     int i, j, k;
     angleMapping (i, j, k);
@@ -423,7 +446,7 @@ Euler<T>::toXYZVector() const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_HOSTDEVICE constexpr inline Euler<T>::Euler() IMATH_NOEXCEPT
+IMATH_HOSTDEVICE constexpr inline Euler<T>::Euler () IMATH_NOEXCEPT
     : Vec3<T> (0, 0, 0),
       _frameStatic (true),
       _initialRepeated (false),
@@ -432,20 +455,21 @@ IMATH_HOSTDEVICE constexpr inline Euler<T>::Euler() IMATH_NOEXCEPT
 {}
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (typename Euler<T>::Order p) IMATH_NOEXCEPT
-    : Vec3<T> (0, 0, 0),
-      _frameStatic (true),
-      _initialRepeated (false),
-      _parityEven (true),
-      _initialAxis (X)
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (
+    typename Euler<T>::Order p) IMATH_NOEXCEPT : Vec3<T> (0, 0, 0),
+                                                 _frameStatic (true),
+                                                 _initialRepeated (false),
+                                                 _parityEven (true),
+                                                 _initialAxis (X)
 {
     setOrder (p);
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (const Vec3<T>& v,
-                                          typename Euler<T>::Order p,
-                                          typename Euler<T>::InputLayout l) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (
+    const Vec3<T>&                 v,
+    typename Euler<T>::Order       p,
+    typename Euler<T>::InputLayout l) IMATH_NOEXCEPT
 {
     setOrder (p);
     if (l == XYZLayout)
@@ -459,23 +483,28 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (const Vec3<T>& v,
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (const Euler<T>& euler) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (
+    const Euler<T>& euler) IMATH_NOEXCEPT
 {
     operator= (euler);
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (const Euler<T>& euler, Order p) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (
+    const Euler<T>& euler, Order p) IMATH_NOEXCEPT
 {
     setOrder (p);
-    Matrix33<T> M = euler.toMatrix33();
+    Matrix33<T> M = euler.toMatrix33 ();
     extract (M);
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline
-Euler<T>::Euler (T xi, T yi, T zi, typename Euler<T>::Order p,
-                 typename Euler<T>::InputLayout l) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (
+    T                              xi,
+    T                              yi,
+    T                              zi,
+    typename Euler<T>::Order       p,
+    typename Euler<T>::InputLayout l) IMATH_NOEXCEPT
 {
     setOrder (p);
     if (l == XYZLayout)
@@ -489,14 +518,16 @@ Euler<T>::Euler (T xi, T yi, T zi, typename Euler<T>::Order p,
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (const Matrix33<T>& M, typename Euler::Order p) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (
+    const Matrix33<T>& M, typename Euler::Order p) IMATH_NOEXCEPT
 {
     setOrder (p);
     extract (M);
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (const Matrix44<T>& M, typename Euler::Order p) IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Euler<T>::Euler (
+    const Matrix44<T>& M, typename Euler::Order p) IMATH_NOEXCEPT
 {
     setOrder (p);
     extract (M);
@@ -506,7 +537,7 @@ template <class T>
 IMATH_HOSTDEVICE inline void
 Euler<T>::extract (const Quat<T>& q) IMATH_NOEXCEPT
 {
-    extract (q.toMatrix33());
+    extract (q.toMatrix33 ());
 }
 
 template <class T>
@@ -536,22 +567,23 @@ Euler<T>::extract (const Matrix33<T>& M) IMATH_NOEXCEPT
         Matrix44<T> N;
         N.rotate (r);
 
-        N = N * Matrix44<T> (M[0][0],
-                             M[0][1],
-                             M[0][2],
-                             0,
-                             M[1][0],
-                             M[1][1],
-                             M[1][2],
-                             0,
-                             M[2][0],
-                             M[2][1],
-                             M[2][2],
-                             0,
-                             0,
-                             0,
-                             0,
-                             1);
+        N = N * Matrix44<T> (
+                    M[0][0],
+                    M[0][1],
+                    M[0][2],
+                    0,
+                    M[1][0],
+                    M[1][1],
+                    M[1][2],
+                    0,
+                    M[2][0],
+                    M[2][1],
+                    M[2][2],
+                    0,
+                    0,
+                    0,
+                    0,
+                    1);
         //
         // Extract the other two angles, y and z, from N.
         //
@@ -580,22 +612,23 @@ Euler<T>::extract (const Matrix33<T>& M) IMATH_NOEXCEPT
         Matrix44<T> N;
         N.rotate (r);
 
-        N = N * Matrix44<T> (M[0][0],
-                             M[0][1],
-                             M[0][2],
-                             0,
-                             M[1][0],
-                             M[1][1],
-                             M[1][2],
-                             0,
-                             M[2][0],
-                             M[2][1],
-                             M[2][2],
-                             0,
-                             0,
-                             0,
-                             0,
-                             1);
+        N = N * Matrix44<T> (
+                    M[0][0],
+                    M[0][1],
+                    M[0][2],
+                    0,
+                    M[1][0],
+                    M[1][1],
+                    M[1][2],
+                    0,
+                    M[2][0],
+                    M[2][1],
+                    M[2][2],
+                    0,
+                    0,
+                    0,
+                    0,
+                    1);
         //
         // Extract the other two angles, y and z, from N.
         //
@@ -605,8 +638,7 @@ Euler<T>::extract (const Matrix33<T>& M) IMATH_NOEXCEPT
         z    = std::atan2 (-N[j][i], N[j][j]);
     }
 
-    if (!_parityEven)
-        *this *= -1;
+    if (!_parityEven) *this *= -1;
 
     if (!_frameStatic)
     {
@@ -682,8 +714,7 @@ Euler<T>::extract (const Matrix44<T>& M) IMATH_NOEXCEPT
         z    = std::atan2 (-N[j][i], N[j][j]);
     }
 
-    if (!_parityEven)
-        *this *= -1;
+    if (!_parityEven) *this *= -1;
 
     if (!_frameStatic)
     {
@@ -695,7 +726,7 @@ Euler<T>::extract (const Matrix44<T>& M) IMATH_NOEXCEPT
 
 template <class T>
 IMATH_HOSTDEVICE Matrix33<T>
-Euler<T>::toMatrix33() const IMATH_NOEXCEPT
+                 Euler<T>::toMatrix33 () const IMATH_NOEXCEPT
 {
     int i, j, k;
     angleOrder (i, j, k);
@@ -707,8 +738,7 @@ Euler<T>::toMatrix33() const IMATH_NOEXCEPT
     else
         angles = Vec3<T> (z, y, x);
 
-    if (!_parityEven)
-        angles *= -1.0;
+    if (!_parityEven) angles *= -1.0;
 
     T ci = std::cos (angles.x);
     T cj = std::cos (angles.y);
@@ -754,7 +784,7 @@ Euler<T>::toMatrix33() const IMATH_NOEXCEPT
 
 template <class T>
 IMATH_HOSTDEVICE Matrix44<T>
-Euler<T>::toMatrix44() const IMATH_NOEXCEPT
+                 Euler<T>::toMatrix44 () const IMATH_NOEXCEPT
 {
     int i, j, k;
     angleOrder (i, j, k);
@@ -766,8 +796,7 @@ Euler<T>::toMatrix44() const IMATH_NOEXCEPT
     else
         angles = Vec3<T> (z, y, x);
 
-    if (!_parityEven)
-        angles *= -1.0;
+    if (!_parityEven) angles *= -1.0;
 
     T ci = std::cos (angles.x);
     T cj = std::cos (angles.y);
@@ -813,10 +842,10 @@ Euler<T>::toMatrix44() const IMATH_NOEXCEPT
 
 template <class T>
 IMATH_HOSTDEVICE Quat<T>
-Euler<T>::toQuat() const IMATH_NOEXCEPT
+                 Euler<T>::toQuat () const IMATH_NOEXCEPT
 {
     Vec3<T> angles;
-    int i, j, k;
+    int     i, j, k;
     angleOrder (i, j, k);
 
     if (_frameStatic)
@@ -824,8 +853,7 @@ Euler<T>::toQuat() const IMATH_NOEXCEPT
     else
         angles = Vec3<T> (z, y, x);
 
-    if (!_parityEven)
-        angles.y = -angles.y;
+    if (!_parityEven) angles.y = -angles.y;
 
     T ti = angles.x * 0.5;
     T tj = angles.y * 0.5;
@@ -848,15 +876,17 @@ Euler<T>::toQuat() const IMATH_NOEXCEPT
 
     if (_initialRepeated)
     {
-        a[i]     = cj * (cs + sc);
-        a[j]     = sj * (cc + ss) * parity, // NOSONAR - suppress SonarCloud bug report.
+        a[i] = cj * (cs + sc);
+        a[j] = sj * (cc + ss) *
+               parity, // NOSONAR - suppress SonarCloud bug report.
             a[k] = sj * (cs - sc);
         q.r      = cj * (cc - ss);
     }
     else
     {
-        a[i]     = cj * sc - sj * cs,
-        a[j]     = (cj * ss + sj * cc) * parity, // NOSONAR - suppress SonarCloud bug report.
+        a[i] = cj * sc - sj * cs,
+        a[j] = (cj * ss + sj * cc) *
+               parity, // NOSONAR - suppress SonarCloud bug report.
             a[k] = cj * cs - sj * sc;
         q.r      = cj * cc + sj * ss;
     }
@@ -875,16 +905,13 @@ Euler<T>::legal (typename Euler<T>::Order order) IMATH_NOEXCEPT
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 typename Euler<T>::Order
-Euler<T>::order() const IMATH_NOEXCEPT
+                 Euler<T>::order () const IMATH_NOEXCEPT
 {
     int foo = (_initialAxis == Z ? 0x2000 : (_initialAxis == Y ? 0x1000 : 0));
 
-    if (_parityEven)
-        foo |= 0x0100;
-    if (_initialRepeated)
-        foo |= 0x0010;
-    if (_frameStatic)
-        foo++;
+    if (_parityEven) foo |= 0x0100;
+    if (_initialRepeated) foo |= 0x0010;
+    if (_frameStatic) foo++;
 
     return (Order) foo;
 }
@@ -893,15 +920,20 @@ template <class T>
 IMATH_HOSTDEVICE inline void
 Euler<T>::setOrder (typename Euler<T>::Order p) IMATH_NOEXCEPT
 {
-    set (p & 0x2000 ? Z : (p & 0x1000 ? Y : X), // initial axis
-         !(p & 0x1),                            // static?
-         !!(p & 0x100),                         // permutation even?
-         !!(p & 0x10));                         // initial repeats?
+    set (
+        p & 0x2000 ? Z : (p & 0x1000 ? Y : X), // initial axis
+        !(p & 0x1),                            // static?
+        !!(p & 0x100),                         // permutation even?
+        !!(p & 0x10));                         // initial repeats?
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline void
-Euler<T>::set (typename Euler<T>::Axis axis, bool relative, bool parityEven, bool firstRepeats) IMATH_NOEXCEPT
+Euler<T>::set (
+    typename Euler<T>::Axis axis,
+    bool                    relative,
+    bool                    parityEven,
+    bool                    firstRepeats) IMATH_NOEXCEPT
 {
     _initialAxis     = axis;
     _frameStatic     = !relative;
@@ -940,17 +972,16 @@ Euler<T>::angleMod (T angle) IMATH_NOEXCEPT
     const T pi = static_cast<T> (M_PI);
     angle      = fmod (T (angle), T (2 * pi));
 
-    if (angle < -pi)
-        angle += 2 * pi;
-    if (angle > +pi)
-        angle -= 2 * pi;
+    if (angle < -pi) angle += 2 * pi;
+    if (angle > +pi) angle -= 2 * pi;
 
     return angle;
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline void
-Euler<T>::simpleXYZRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot) IMATH_NOEXCEPT
+Euler<T>::simpleXYZRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot)
+    IMATH_NOEXCEPT
 {
     Vec3<T> d = xyzRot - targetXyzRot;
     xyzRot[0] = targetXyzRot[0] + angleMod (d[0]);
@@ -960,9 +991,10 @@ Euler<T>::simpleXYZRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot) IMATH
 
 template <class T>
 IMATH_HOSTDEVICE void
-Euler<T>::nearestRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot, Order order) IMATH_NOEXCEPT
+Euler<T>::nearestRotation (
+    Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot, Order order) IMATH_NOEXCEPT
 {
-    int i, j, k;
+    int      i, j, k;
     Euler<T> e (0, 0, 0, order);
     e.angleOrder (i, j, k);
 
@@ -975,34 +1007,31 @@ Euler<T>::nearestRotation (Vec3<T>& xyzRot, const Vec3<T>& targetXyzRot, Order o
 
     simpleXYZRotation (otherXyzRot, targetXyzRot);
 
-    Vec3<T> d  = xyzRot - targetXyzRot;
-    Vec3<T> od = otherXyzRot - targetXyzRot;
-    T dMag     = d.dot (d);
-    T odMag    = od.dot (od);
+    Vec3<T> d     = xyzRot - targetXyzRot;
+    Vec3<T> od    = otherXyzRot - targetXyzRot;
+    T       dMag  = d.dot (d);
+    T       odMag = od.dot (od);
 
-    if (odMag < dMag)
-    {
-        xyzRot = otherXyzRot;
-    }
+    if (odMag < dMag) { xyzRot = otherXyzRot; }
 }
 
 template <class T>
 IMATH_HOSTDEVICE void
 Euler<T>::makeNear (const Euler<T>& target) IMATH_NOEXCEPT
 {
-    Vec3<T> xyzRot = toXYZVector();
+    Vec3<T> xyzRot = toXYZVector ();
     Vec3<T> targetXyz;
-    if (order() != target.order())
+    if (order () != target.order ())
     {
-        Euler<T> targetSameOrder = Euler<T> (target, order());
-        targetXyz                = targetSameOrder.toXYZVector();
+        Euler<T> targetSameOrder = Euler<T> (target, order ());
+        targetXyz                = targetSameOrder.toXYZVector ();
     }
     else
     {
-        targetXyz = target.toXYZVector();
+        targetXyz = target.toXYZVector ();
     }
 
-    nearestRotation (xyzRot, targetXyz, order());
+    nearestRotation (xyzRot, targetXyz, order ());
 
     setXYZVector (xyzRot);
 }
@@ -1014,23 +1043,21 @@ template <class T>
 std::ostream&
 operator<< (std::ostream& o, const Euler<T>& euler)
 {
-    char a[3] = { 'X', 'Y', 'Z' };
+    char a[3] = {'X', 'Y', 'Z'};
 
-    const char* r = euler.frameStatic() ? "" : "r";
-    int i, j, k;
+    const char* r = euler.frameStatic () ? "" : "r";
+    int         i, j, k;
     euler.angleOrder (i, j, k);
 
-    if (euler.initialRepeated())
-        k = i;
+    if (euler.initialRepeated ()) k = i;
 
-    return o << "(" << euler.x << " " << euler.y << " " << euler.z << " " << a[i] << a[j] << a[k]
-             << r << ")";
+    return o << "(" << euler.x << " " << euler.y << " " << euler.z << " "
+             << a[i] << a[j] << a[k] << r << ")";
 }
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 #    pragma warning(pop)
 #endif
-
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
 

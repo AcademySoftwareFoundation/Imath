@@ -7,11 +7,11 @@
 #    undef NDEBUG
 #endif
 
+#include "testInvert.h"
 #include <ImathMatrix.h>
 #include <ImathMatrixAlgo.h>
 #include <assert.h>
 #include <iostream>
-#include "testInvert.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
@@ -20,10 +20,10 @@ namespace
 {
 
 void
-invertM44f (const M44f &m, float e)
+invertM44f (const M44f& m, float e)
 {
-    M44f inv1 = m.inverse();
-    M44f inv2 = m.gjInverse();
+    M44f inv1   = m.inverse ();
+    M44f inv2   = m.gjInverse ();
     M44f ident1 = m * inv1;
     M44f ident2 = m * inv2;
 
@@ -35,12 +35,11 @@ invertM44f (const M44f &m, float e)
     assert (ident2.equalWithAbsError (identity44f, e));
 }
 
-
 void
-invertM33f (const M33f &m, float e)
+invertM33f (const M33f& m, float e)
 {
-    M33f inv1 = m.inverse();
-    M33f inv2 = m.gjInverse();
+    M33f inv1   = m.inverse ();
+    M33f inv2   = m.gjInverse ();
     M33f ident1 = m * inv1;
     M33f ident2 = m * inv2;
 
@@ -52,9 +51,7 @@ invertM33f (const M33f &m, float e)
     assert (ident2.equalWithAbsError (identity33f, e));
 }
 
-
 } // namespace
-
 
 void
 testInvert ()
@@ -62,7 +59,7 @@ testInvert ()
     cout << "Testing 4x4 and 3x3 matrix inversion:" << endl;
 
     {
-	cout << "M44f" << endl;
+        cout << "M44f" << endl;
 
         // clang-format off
 
@@ -93,15 +90,15 @@ testInvert ()
 
         // clang-format on
 
-	invertM44f (m1, 0);
-	invertM44f (m2, 0);
-	invertM44f (m3, 0);
-	invertM44f (m4, 1e-6);
-	invertM44f (m5, 1e-6);
+        invertM44f (m1, 0);
+        invertM44f (m2, 0);
+        invertM44f (m3, 0);
+        invertM44f (m4, 1e-6);
+        invertM44f (m5, 1e-6);
     }
 
     {
-	cout << "M33f" << endl;
+        cout << "M33f" << endl;
 
         // clang-format off
 
@@ -127,11 +124,11 @@ testInvert ()
 
         // clang-format on
 
-	invertM33f (m1, 0);
-	invertM33f (m2, 0);
-	invertM33f (m3, 0);
-	invertM33f (m4, 1e-6);
-	invertM33f (m5, 1e-6);
+        invertM33f (m1, 0);
+        invertM33f (m2, 0);
+        invertM33f (m3, 0);
+        invertM33f (m4, 1e-6);
+        invertM33f (m5, 1e-6);
     }
 
     cout << "ok\n" << endl;

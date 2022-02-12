@@ -76,14 +76,13 @@ operator>> (istream& is, half& h)
 IMATH_EXPORT void
 printBits (ostream& os, half h)
 {
-    unsigned short b = h.bits();
+    unsigned short b = h.bits ();
 
     for (int i = 15; i >= 0; i--)
     {
         os << (((b >> i) & 1) ? '1' : '0');
 
-        if (i == 15 || i == 10)
-            os << ' ';
+        if (i == 15 || i == 10) os << ' ';
     }
 }
 
@@ -97,22 +96,20 @@ printBits (ostream& os, float f)
     {
         os << (((x.i >> i) & 1) ? '1' : '0');
 
-        if (i == 31 || i == 23)
-            os << ' ';
+        if (i == 31 || i == 23) os << ' ';
     }
 }
 
 IMATH_EXPORT void
 printBits (char c[19], half h)
 {
-    unsigned short b = h.bits();
+    unsigned short b = h.bits ();
 
     for (int i = 15, j = 0; i >= 0; i--, j++)
     {
         c[j] = (((b >> i) & 1) ? '1' : '0');
 
-        if (i == 15 || i == 10)
-            c[++j] = ' ';
+        if (i == 15 || i == 10) c[++j] = ' ';
     }
 
     c[18] = 0;
@@ -128,8 +125,7 @@ printBits (char c[35], float f)
     {
         c[j] = (((x.i >> i) & 1) ? '1' : '0');
 
-        if (i == 31 || i == 23)
-            c[++j] = ' ';
+        if (i == 31 || i == 23) c[++j] = ' ';
     }
 
     c[34] = 0;

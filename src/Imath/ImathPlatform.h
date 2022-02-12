@@ -25,27 +25,27 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 //
 // Helpful macros for checking which C++ standard we are compiling with.
 //
-#if (__cplusplus >= 202002L)
-#    define IMATH_CPLUSPLUS_VERSION 20
-#elif (__cplusplus >= 201703L)
-#    define IMATH_CPLUSPLUS_VERSION 17
-#elif (__cplusplus >= 201402L) || (defined(_MSC_VER) && _MSC_VER >= 1914)
-#    define IMATH_CPLUSPLUS_VERSION 14
-#elif (__cplusplus >= 201103L) || (defined(_MSC_VER) && _MSC_VER >= 1900)
-#    define IMATH_CPLUSPLUS_VERSION 11
-#else
-#    error "This version of Imath is meant to work only with C++11 and above"
-#endif
-
+#    if (__cplusplus >= 202002L)
+#        define IMATH_CPLUSPLUS_VERSION 20
+#    elif (__cplusplus >= 201703L)
+#        define IMATH_CPLUSPLUS_VERSION 17
+#    elif (__cplusplus >= 201402L) || (defined(_MSC_VER) && _MSC_VER >= 1914)
+#        define IMATH_CPLUSPLUS_VERSION 14
+#    elif (__cplusplus >= 201103L) || (defined(_MSC_VER) && _MSC_VER >= 1900)
+#        define IMATH_CPLUSPLUS_VERSION 11
+#    else
+#        error                                                                 \
+            "This version of Imath is meant to work only with C++11 and above"
+#    endif
 
 //
 // Constexpr C++14 conditional definition
 //
-#if (IMATH_CPLUSPLUS_VERSION >= 14)
-  #define IMATH_CONSTEXPR14 constexpr
-#else
-  #define IMATH_CONSTEXPR14 /* can not be constexpr before c++14 */
-#endif
+#    if (IMATH_CPLUSPLUS_VERSION >= 14)
+#        define IMATH_CONSTEXPR14 constexpr
+#    else
+#        define IMATH_CONSTEXPR14 /* can not be constexpr before c++14 */
+#    endif
 
 #endif // __cplusplus
 
@@ -64,7 +64,8 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 //
 //-----------------------------------------------------------------------------
 
-#if defined(__GNUC__) || defined(__clang__) || defined(_MSC_VER) || defined(__INTEL_COMPILER)
+#if defined(__GNUC__) || defined(__clang__) || defined(_MSC_VER) ||            \
+    defined(__INTEL_COMPILER)
 #    define IMATH_RESTRICT __restrict
 #else
 #    define IMATH_RESTRICT

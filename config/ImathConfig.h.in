@@ -12,6 +12,9 @@
 // Options / configuration based on O.S. / compiler
 //
 
+// automated formatting does not handle the cmake tags well
+// clang-format off
+
 //
 // Define whether the half-to-float conversion should use the lookup
 // table method. Note that this is overriden by F16C compiler
@@ -51,12 +54,15 @@
 #define IMATH_VERSION_PATCH @Imath_VERSION_PATCH@
 #define IMATH_VERSION_RELEASE_TYPE "@IMATH_VERSION_RELEASE_TYPE@"
 
-#define IMATH_VERSION_HEX ((uint32_t(IMATH_VERSION_MAJOR) << 24) | \
-                             (uint32_t(IMATH_VERSION_MINOR) << 16) | \
-                             (uint32_t(IMATH_VERSION_PATCH) <<  8))
+#define IMATH_VERSION_HEX                                                      \
+    ((uint32_t (IMATH_VERSION_MAJOR) << 24) |                                  \
+     (uint32_t (IMATH_VERSION_MINOR) << 16) |                                  \
+     (uint32_t (IMATH_VERSION_PATCH) << 8))
 
 // IMATH_LIB_VERSION is the library API version: SOCURRENT.SOAGE.SOREVISION
 #define IMATH_LIB_VERSION_STRING "@IMATH_LIB_VERSION@"
+
+// clang-format on
 
 //
 // Code that depends on the v2 ExcMath mechanism of signal handlers
@@ -69,9 +75,9 @@
 
 #cmakedefine01 IMATH_USE_NOEXCEPT
 #if IMATH_USE_NOEXCEPT
-#define IMATH_NOEXCEPT noexcept
+#    define IMATH_NOEXCEPT noexcept
 #else
-#define IMATH_NOEXCEPT
+#    define IMATH_NOEXCEPT
 #endif
 
 //
@@ -84,24 +90,22 @@
 // templates from compiling correctly.
 //
 #ifndef IMATH_FOREIGN_VECTOR_INTEROP
-#  if defined(__GNUC__) && __GNUC__ == 4 && !defined(__clang__)
-#    define IMATH_FOREIGN_VECTOR_INTEROP 0
-#  else
-#    define IMATH_FOREIGN_VECTOR_INTEROP 1
-#  endif
+#    if defined(__GNUC__) && __GNUC__ == 4 && !defined(__clang__)
+#        define IMATH_FOREIGN_VECTOR_INTEROP 0
+#    else
+#        define IMATH_FOREIGN_VECTOR_INTEROP 1
+#    endif
 #endif
-
 
 //
 // Decorator that makes a function available for both CPU and GPU, when
 // compiling for Cuda.
 //
 #ifdef __CUDACC__
-  #define IMATH_HOSTDEVICE __host__ __device__
+#    define IMATH_HOSTDEVICE __host__ __device__
 #else
-  #define IMATH_HOSTDEVICE
+#    define IMATH_HOSTDEVICE
 #endif
-
 
 //
 // Some compilers define a special intrinsic to use in conditionals that can
@@ -118,17 +122,17 @@
 //
 #if defined(__GNUC__) || defined(__clang__) || defined(__INTEL_COMPILER)
 #    ifdef __cplusplus
-#        define IMATH_LIKELY(x) (__builtin_expect(static_cast<bool>(x), true))
-#        define IMATH_UNLIKELY(x) (__builtin_expect(static_cast<bool>(x), false))
+#        define IMATH_LIKELY(x) (__builtin_expect (static_cast<bool> (x), true))
+#        define IMATH_UNLIKELY(x)                                              \
+            (__builtin_expect (static_cast<bool> (x), false))
 #    else
-#        define IMATH_LIKELY(x) (__builtin_expect((x), 1))
-#        define IMATH_UNLIKELY(x) (__builtin_expect((x), 0))
+#        define IMATH_LIKELY(x) (__builtin_expect ((x), 1))
+#        define IMATH_UNLIKELY(x) (__builtin_expect ((x), 0))
 #    endif
 #else
 #    define IMATH_LIKELY(x) (x)
 #    define IMATH_UNLIKELY(x) (x)
 #endif
-
 
 // On modern versions of gcc & clang, __has_attribute can test support for
 // __attribute__((attr)).  Make sure it's safe for other compilers.
@@ -136,20 +140,19 @@
 #    define __has_attribute(x) 0
 #endif
 
-
 //
 // Simple way to mark things as deprecated.
 // When we are sure that C++14 is our true minimum, then we can just
 // directly use [[deprecated(msg)]].
 //
 #if defined(_MSC_VER)
-# define IMATH_DEPRECATED(msg) __declspec(deprecated(msg))
+#    define IMATH_DEPRECATED(msg) __declspec(deprecated (msg))
 #elif defined(__cplusplus) && __cplusplus >= 201402L
-# define IMATH_DEPRECATED(msg) [[deprecated(msg)]]
+#    define IMATH_DEPRECATED(msg) [[deprecated (msg)]]
 #elif defined(__GNUC__) || defined(__clang__)
-# define IMATH_DEPRECATED(msg) __attribute__((deprecated(msg)))
+#    define IMATH_DEPRECATED(msg) __attribute__ ((deprecated (msg)))
 #else
-# define IMATH_DEPRECATED(msg) /* unsupported on this platform */
+#    define IMATH_DEPRECATED(msg) /* unsupported on this platform */
 #endif
 
 // Whether the user configured the library to have symbol visibility
@@ -159,13 +162,16 @@
 // MSVC does not do the same visibility attributes, and when we are
 // compiling a static library we won't be in DLL mode, but just don't
 // define these and the export headers will work out
-#if ! defined(_MSC_VER) && defined(IMATH_ENABLE_API_VISIBILITY)
-#  define IMATH_PUBLIC_SYMBOL_ATTRIBUTE __attribute__ ((__visibility__ ("default")))
-#  define IMATH_PRIVATE_SYMBOL_ATTRIBUTE __attribute__ ((__visibility__ ("hidden")))
+#if !defined(_MSC_VER) && defined(IMATH_ENABLE_API_VISIBILITY)
+#    define IMATH_PUBLIC_SYMBOL_ATTRIBUTE                                      \
+        __attribute__ ((__visibility__ ("default")))
+#    define IMATH_PRIVATE_SYMBOL_ATTRIBUTE                                     \
+        __attribute__ ((__visibility__ ("hidden")))
 // clang differs from gcc and has type visibility which is needed for enums and templates
-#  if __has_attribute(__type_visibility__)
-#    define IMATH_PUBLIC_TYPE_VISIBILITY_ATTRIBUTE __attribute__ ((__type_visibility__ ("default")))
-#  endif
+#    if __has_attribute(__type_visibility__)
+#        define IMATH_PUBLIC_TYPE_VISIBILITY_ATTRIBUTE                         \
+            __attribute__ ((__type_visibility__ ("default")))
+#    endif
 #endif
 
 #endif // INCLUDED_IMATH_CONFIG_H

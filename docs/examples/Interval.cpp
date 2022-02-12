@@ -1,18 +1,18 @@
 #include <Imath/ImathInterval.h>
 
 void
-interval_example()
+interval_example ()
 {
     Imath::Intervalf v;
 
-    assert (v.isEmpty());
-    assert (!v.hasVolume());
-    assert (!v.isInfinite());
+    assert (v.isEmpty ());
+    assert (!v.hasVolume ());
+    assert (!v.isInfinite ());
 
     v.extendBy (1.0f);
-    assert (!v.isEmpty());
-    
+    assert (!v.isEmpty ());
+
     v.extendBy (2.0f);
-    assert (v.hasVolume());
+    assert (v.hasVolume ());
     assert (v.intersects (1.5f));
 }

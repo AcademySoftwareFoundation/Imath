@@ -3,5 +3,5 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-void testLimits();
-void testHalfLimits();
+void testLimits ();
+void testHalfLimits ();

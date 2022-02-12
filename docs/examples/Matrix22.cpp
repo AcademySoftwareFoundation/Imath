@@ -2,21 +2,21 @@
 #include <Imath/ImathMatrixAlgo.h>
 
 void
-matrix22_example()
+matrix22_example ()
 {
     Imath::M22f M (Imath::UNINITIALIZED); // uninitialized
 
-    M.makeIdentity();
+    M.makeIdentity ();
     assert (M[0][0] == 1.0f);
     assert (M[0][1] == 0.0f);
 
-    Imath::M22f Minv = M.inverse();
+    Imath::M22f Minv = M.inverse ();
 
     Imath::M22f R;
     assert (R == Imath::identity22f);
 
-    R.rotate (M_PI/4);
-    
+    R.rotate (M_PI / 4);
+
     M = R * M;
 
     Imath::V2f v2 (1.0f, 0.0f);

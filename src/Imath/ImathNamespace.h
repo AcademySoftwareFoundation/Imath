@@ -79,15 +79,15 @@ using namespace IMATH_INTERNAL_NAMESPACE;
 // project source code.
 //
 
-#define IMATH_INTERNAL_NAMESPACE_HEADER_ENTER                                                      \
-    namespace IMATH_INTERNAL_NAMESPACE                                                             \
-    {
-#define IMATH_INTERNAL_NAMESPACE_HEADER_EXIT }
+#    define IMATH_INTERNAL_NAMESPACE_HEADER_ENTER                              \
+        namespace IMATH_INTERNAL_NAMESPACE                                     \
+        {
+#    define IMATH_INTERNAL_NAMESPACE_HEADER_EXIT }
 
-#define IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER                                                      \
-    namespace IMATH_INTERNAL_NAMESPACE                                                             \
-    {
-#define IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT }
+#    define IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER                              \
+        namespace IMATH_INTERNAL_NAMESPACE                                     \
+        {
+#    define IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT }
 
 #endif // __cplusplus
 

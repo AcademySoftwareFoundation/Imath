@@ -1,7 +1,7 @@
 #include <Imath/ImathGL.h>
 
 void
-gl_example()
+gl_example ()
 {
     Imath::M44f M;
     glPushMatrix (M);
@@ -9,4 +9,3 @@ gl_example()
     Imath::V3f v (0.0f, 1.0f, 2.0f);
     glVertex (v);
 }
-

@@ -7,22 +7,22 @@
 #    undef NDEBUG
 #endif
 
-#include <half.h>
-#include <assert.h>
-#include <iostream>
 #include "testArithmetic.h"
+#include <assert.h>
+#include <half.h>
+#include <iostream>
 
 using namespace std;
 
 void
-testArithmetic()
+testArithmetic ()
 {
     cout << "basic arithmetic operations:\n";
 
     float f1 (1);
     float f2 (2);
-    half h1 (3);
-    half h2 (4);
+    half  h1 (3);
+    half  h2 (4);
 
     cout << "f1 = " << f1
          << ", "

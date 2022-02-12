@@ -3,4 +3,4 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-void testBitPatterns();
+void testBitPatterns ();

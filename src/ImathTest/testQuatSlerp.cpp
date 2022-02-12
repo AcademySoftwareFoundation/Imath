@@ -7,12 +7,12 @@
 #    undef NDEBUG
 #endif
 
+#include "testQuatSlerp.h"
 #include <ImathQuat.h>
 #include <ImathRandom.h>
 #include <assert.h>
 #include <iostream>
 #include <math.h>
-#include "testQuatSlerp.h"
 
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
@@ -62,11 +62,11 @@ testSlerp (const Quatf q1, const Quatf q2, int m, int n)
     //
 
     Quatf qi;
-    Quatf q3   = q1.inverse() * q2;
+    Quatf q3   = q1.inverse () * q2;
     Quatf q1q2 = slerp (q1, q2, float (m) / float (n));
     Quatf qiq3 = slerp (qi, q3, float (m) / float (n));
-    float e1   = 60 * std::numeric_limits<float>::epsilon();
-    float e2   = 600 * std::numeric_limits<float>::epsilon();
+    float e1   = 60 * std::numeric_limits<float>::epsilon ();
+    float e2   = 600 * std::numeric_limits<float>::epsilon ();
 
     compareQuats (q1q2, q1 * qiq3, e1);
     compareQuats (pow (qiq3, n), pow (q3, m), e2);
@@ -82,7 +82,7 @@ testSlerp (const Quatf q1, const Quatf q2)
 }
 
 void
-specificRotations()
+specificRotations ()
 {
     cout << "  combinations of 90-degree rotations around x, y and z" << endl;
 
@@ -125,7 +125,7 @@ specificRotations()
 }
 
 void
-randomRotations()
+randomRotations ()
 {
     cout << "  random rotations" << endl;
 
@@ -133,8 +133,8 @@ randomRotations()
 
     for (int i = 0; i < 10000; ++i)
     {
-        V3f axis1    = hollowSphereRand<V3f> (rand);
-        V3f axis2    = hollowSphereRand<V3f> (rand);
+        V3f   axis1  = hollowSphereRand<V3f> (rand);
+        V3f   axis2  = hollowSphereRand<V3f> (rand);
         float angle1 = rand.nextf (0, M_PI);
         float angle2 = rand.nextf (0, M_PI);
 
@@ -156,12 +156,12 @@ randomRotations()
 } // namespace
 
 void
-testQuatSlerp()
+testQuatSlerp ()
 {
     cout << "Testing quaternion spherical linear interpolation" << endl;
 
-    specificRotations();
-    randomRotations();
+    specificRotations ();
+    randomRotations ();
 
     cout << "ok\n" << endl;
 }

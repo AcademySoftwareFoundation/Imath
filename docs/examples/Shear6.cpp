@@ -1,8 +1,8 @@
-#include <Imath/ImathShear.h>
 #include <Imath/ImathMatrix.h>
+#include <Imath/ImathShear.h>
 
 void
-shear6_example()
+shear6_example ()
 {
     Imath::Shear6f s (0.330f, 0.710f, 0.010f, 0.999f, -0.531f, -0.012f);
 
