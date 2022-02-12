@@ -7,9 +7,9 @@ objects, functions, and data types common in computer graphics
 applications, including the ``half`` 16-bit floating-point type.
 
 - Download: https://github.com/AcademySoftwareFoundation/Imath
-- Install Help: `INSTALL.md <https://github.com/AcademySoftwareFoundation/Imath/blob/master/INSTALL>`_
-- Porting Help: `Imath/OpenEXR Version 2->3 Porting Guide <https://github.com/AcademySoftwareFoundation/Imath/blob/master/docs/PortingGuide2-3.md>`_
-- License: `BSD License <https://github.com/AcademySoftwareFoundation/Imath/blob/master/LICENSE.md>`_
+- Install Help: `INSTALL.md <https://github.com/AcademySoftwareFoundation/Imath/blob/main/INSTALL>`_
+- Porting Help: `Imath/OpenEXR Version 2->3 Porting Guide <https://github.com/AcademySoftwareFoundation/Imath/blob/main/docs/PortingGuide2-3.md>`_
+- License: `BSD License <https://github.com/AcademySoftwareFoundation/Imath/blob/main/LICENSE.md>`_
 
 Introduction
 ############

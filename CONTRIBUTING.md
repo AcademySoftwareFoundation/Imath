@@ -15,9 +15,9 @@ Imath is a sub-project of
 follows OpenEXR's governance and contribution policies.
 
 For a description of the roles and responsibilities of the various
-members of the OpeneEXR community, see [GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/master/GOVERNANCE.md),
+members of the OpeneEXR community, see [GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/main/GOVERNANCE.md),
 and for further details, see the OpenEXR project's [Technical
-Charter](https://github.com/AcademySoftwareFoundation/openexr/blob/master/ASWF/charter/OpenEXR-Technical-Charter.md).
+Charter](https://github.com/AcademySoftwareFoundation/openexr/blob/main/ASWF/charter/OpenEXR-Technical-Charter.md).
 Briefly, a "contributor" is anyone who submits content to the project,
 a "committer" is someone who reviews and approves such submissions,
 and the Technical Steering Committee provides general project
@@ -74,7 +74,7 @@ refer to [SECURITY.md](SECURITY.md) to responsibly disclose it.
 ### How to Contribute a Bug Fix or Change
 
 To contribute code to the project, first read over the
-[GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/master/GOVERNANCE.md)
+[GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/main/GOVERNANCE.md)
 page to understand the roles involved. You'll need:
 
 * A good knowledge of git.
@@ -109,16 +109,16 @@ can be merged.
 
 * If you are an individual writing the code on your own time and
   you're SURE you are the sole owner of any intellectual property you
-  contribute, you can [sign the CLA as an individual contributor](https://github.com/communitybridge/easycla/blob/master/contributors/sign-a-cla-as-an-individual-contributor-to-github.md).
+  contribute, you can [sign the CLA as an individual contributor](https://github.com/communitybridge/easycla/blob/main/contributors/sign-a-cla-as-an-individual-contributor-to-github.md).
 
 * If you are writing the code as part of your job, or if there is any
   possibility that your employers might think they own any
   intellectual property you create, then you should use the [Corporate
   Contributor Licence
-  Agreement](https://github.com/communitybridge/easycla/blob/master/contributors/contribute-to-a-github-company-project.md).
+  Agreement](https://github.com/communitybridge/easycla/blob/main/contributors/contribute-to-a-github-company-project.md).
 
 The Imath CLAs are the standard forms used by Linux Foundation
-projects and [recommended by the ASWF TAC](https://github.com/AcademySoftwareFoundation/tac/blob/master/process/contributing.md#contributor-license-agreement-cla).
+projects and [recommended by the ASWF TAC](https://github.com/AcademySoftwareFoundation/tac/blob/main/process/contributing.md#contributor-license-agreement-cla).
 
 ### Commit Sign-Off
 
@@ -126,7 +126,7 @@ Every commit must be signed off.  That is, every commit log message
 must include a “`Signed-off-by`” line (generated, for example, with
 “`git commit --signoff`”), indicating that the committer wrote the
 code and has the right to release it under the [BSD-3-Clause](LICENSE.md)
-license. See https://github.com/AcademySoftwareFoundation/tac/blob/master/process/contributing.md#contribution-sign-off for more information on this requirement.
+license. See https://github.com/AcademySoftwareFoundation/tac/blob/main/process/contributing.md#contribution-sign-off for more information on this requirement.
 
 ## Development Workflow
 
@@ -149,21 +149,21 @@ Documentation](https://git-scm.com/doc).
 
 The Imath repository uses a simple branching and merging strategy.
 
-All development work is done directly on the master branch. The master
+All development work is done directly on the ``main`` branch. The ``main``
 branch represents the bleeding-edge of the project and most
 contributions should be done on top of it.
 
-After sufficient work is done on the master branch and the Imath
+After sufficient work is done on the ``main`` branch and the Imath
 leadership determines that a release is due, we will bump the relevant
 internal versioning and tag a commit with the corresponding version
 number, e.g. v2.0.1. Each minor version also has its own “Release
 Branch”, e.g. RB-1.1. This marks a branch of code dedicated to that
 ``major.minor version``, which allows upstream bug fixes to be
-cherry-picked to a given version while still allowing the master
+cherry-picked to a given version while still allowing the ``main``
 branch to continue forward onto higher versions. This basic repository
 structure keeps maintenance low, while remaining simple to understand.
 
-To reiterate, the master branch represents the latest development
+To reiterate, the ``main`` branch represents the latest development
 version, so beware that it may include untested features and is not
 generally stable enough for release.  To retrieve a stable version of
 the source code, use one of the release branches.
@@ -224,7 +224,7 @@ the work.
 
 6. Upon receiving the required number of committer approvals (as
 outlined in [Required Approvals](#required-approvals)), a committer
-other than the PR contributor may merge changes into the master
+other than the PR contributor may merge changes into the ``main``
 branch.
 
 ### Code Review and Required Approvals
@@ -307,7 +307,7 @@ pull request.
 
 Code formattting is controlled by ``clang-format``, with the style
 specified via the project
-[.clang-format](https://github.com/AcademySoftwareFoundation/Imath/blob/master/.clang-format)
+[.clang-format](https://github.com/AcademySoftwareFoundation/Imath/blob/main/.clang-format)
 file.
 
 * Indent with spaces, never tabs. Each indent level should be 4 spaces.

@@ -10,7 +10,7 @@ To build from the latest development version, clone the GitHub repo directly via
 
     % git clone https://github.com/AcademySoftwareFoundation/Imath.git
 
-The ``master`` branch is the most recent development version, which
+The ``main`` branch is the most recent development version, which
 may be unstable, but the ``release`` branch always points to the most
 recent and most modern, stable, released version.
 

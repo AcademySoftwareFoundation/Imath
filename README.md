@@ -78,7 +78,7 @@ project.
 Imath continues to be maintained as a sub-project of OpenEXR, which is
 now a project of the [Academy Software
 Foundation](https://www.aswf.io).  See
-the OpenEXR project's [GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/master/GOVERNANCE.md)
+the OpenEXR project's [GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/main/GOVERNANCE.md)
 for more information about how the project operates.
 
 The OpenEXR project is dedicated to promoting a harassment-free
@@ -94,7 +94,7 @@ from source.
 
 If you encounter problems compiling code or building projects written
 with an earlier release of Imath, the [porting
-guide](https://github.com/AcademySoftwareFoundation/Imath/blob/master/docs/PortingGuide2-3.md)
+guide](https://github.com/AcademySoftwareFoundation/Imath/blob/main/docs/PortingGuide2-3.md)
 explains some of the differences and how to address them.
 
 ### A Note about Versioning
@@ -133,4 +133,4 @@ Imath is released under OpenEXR's [BSD-3-Clause](LICENSE.md) license.
 
 ---
 
-![aswf](https://github.com/AcademySoftwareFoundation/openexr/blob/master/ASWF/images/aswf.png)
+![aswf](https://github.com/AcademySoftwareFoundation/openexr/blob/main/ASWF/images/aswf.png)
