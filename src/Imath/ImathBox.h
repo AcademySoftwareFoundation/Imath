@@ -230,7 +230,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<V>::Box (Box&& b) IMATH_NOEXCEPT
 }
 
 template <typename V>
-IMATH_HOSTDEVICE constexpr inline Box<V>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<V>&
 Box<V>::operator= (const Box& src) IMATH_NOEXCEPT
 {
     min = src.min;
@@ -239,7 +239,7 @@ Box<V>::operator= (const Box& src) IMATH_NOEXCEPT
 }
 
 template <typename V>
-IMATH_HOSTDEVICE constexpr inline Box<V>&
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<V>&
 Box<V>::operator= (Box&& src) IMATH_NOEXCEPT
 {
     min = std::move (src.min);
@@ -518,7 +518,7 @@ public:
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const APIStorageType& src)
         IMATH_NOEXCEPT;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box& operator= (const APIStorageType&) IMATH_NOEXCEPT;
-    IMATH_HOSTDEVICE constexpr operator APIStorageType& () IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE operator APIStorageType& () IMATH_NOEXCEPT;
     IMATH_HOSTDEVICE constexpr operator const APIStorageType& () const IMATH_NOEXCEPT;
 
     /// @}
@@ -673,8 +673,8 @@ Box<Vec2<T>>::operator= (const APIStorageType& b) IMATH_NOEXCEPT
 }
 
 template <typename T>
-IMATH_HOSTDEVICE constexpr inline
-Box<Vec2<T>>::operator Box<Vec2<T>>::APIStorageType& () IMATH_NOEXCEPT
+IMATH_HOSTDEVICE inline
+Box<Vec2<T>>::operator typename Box<Vec2<T>>::APIStorageType& () IMATH_NOEXCEPT
 {
     static_assert (
         sizeof (Box) == sizeof (APIStorageType),
@@ -691,7 +691,7 @@ Box<Vec2<T>>::operator Box<Vec2<T>>::APIStorageType& () IMATH_NOEXCEPT
 
 template <typename T>
 IMATH_HOSTDEVICE constexpr inline
-Box<Vec2<T>>::operator const Box<Vec2<T>>::APIStorageType& () const IMATH_NOEXCEPT
+Box<Vec2<T>>::operator const typename Box<Vec2<T>>::APIStorageType& () const IMATH_NOEXCEPT
 {
     static_assert (
         sizeof (Box) == sizeof (APIStorageType),
@@ -900,7 +900,7 @@ public:
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const APIStorageType& src)
         IMATH_NOEXCEPT;
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box& operator= (const APIStorageType&) IMATH_NOEXCEPT;
-    IMATH_HOSTDEVICE constexpr operator APIStorageType& () IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE operator APIStorageType& () IMATH_NOEXCEPT;
     IMATH_HOSTDEVICE constexpr operator const APIStorageType& () const IMATH_NOEXCEPT;
 
     /// @}
@@ -1055,8 +1055,8 @@ Box<Vec3<T>>::operator= (const APIStorageType& b) IMATH_NOEXCEPT
 }
 
 template <typename T>
-IMATH_HOSTDEVICE constexpr inline
-Box<Vec3<T>>::operator Box<Vec3<T>>::APIStorageType& () IMATH_NOEXCEPT
+IMATH_HOSTDEVICE inline
+Box<Vec3<T>>::operator typename Box<Vec3<T>>::APIStorageType& () IMATH_NOEXCEPT
 {
     static_assert (
         sizeof (Box) == sizeof (APIStorageType),
@@ -1073,7 +1073,7 @@ Box<Vec3<T>>::operator Box<Vec3<T>>::APIStorageType& () IMATH_NOEXCEPT
 
 template <typename T>
 IMATH_HOSTDEVICE constexpr inline
-Box<Vec3<T>>::operator const Box<Vec3<T>>::APIStorageType& () const IMATH_NOEXCEPT
+Box<Vec3<T>>::operator const typename Box<Vec3<T>>::APIStorageType& () const IMATH_NOEXCEPT
 {
     static_assert (
         sizeof (Box) == sizeof (APIStorageType),
