@@ -8,6 +8,9 @@
 
 #include "ImathExport.h"
 #include "ImathNamespace.h"
+#include "ImathBaseTypes.h"
+
+#ifdef __cplusplus
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
@@ -47,8 +50,8 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Interval;
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Line3;
 #endif
 #ifndef INCLUDED_IMATHMATRIX_H
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix33;
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44;
+template <class T, class Storage> class IMATH_EXPORT_TEMPLATE_TYPE Matrix33;
+template <class T, class Storage> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44;
 #endif
 #ifndef INCLUDED_IMATHPLANE_H
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Plane3;
@@ -63,9 +66,9 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Shear6;
 template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Sphere3;
 #endif
 #ifndef INCLUDED_IMATHVEC_H
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec2;
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec3;
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Vec4;
+template <class T, class Storage> class IMATH_EXPORT_TEMPLATE_TYPE Vec2;
+template <class T, class Storage> class IMATH_EXPORT_TEMPLATE_TYPE Vec3;
+template <class T, class Storage> class IMATH_EXPORT_TEMPLATE_TYPE Vec4;
 #endif
 
 #ifndef INCLUDED_IMATHRANDOM_H
@@ -76,5 +79,7 @@ class IMATH_EXPORT_TYPE Rand48;
 /// @endcond
 
 IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+
+#endif // __cplusplus
 
 #endif // INCLUDED_IMATHFORWARD_H
