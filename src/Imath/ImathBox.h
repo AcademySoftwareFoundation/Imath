@@ -33,8 +33,13 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 /// number of dimensions in the class (since its assumed its a vector) --
 /// preferably, this returns a constant expression, typically 2 or 3.
 ///
+/// NB: Because of the above operator requirements, we don't use a
+/// base storage mechanism for passing to / from public API types
+/// provided by \ref BaseTypes, instead favoring type cast operators
+/// provided in the explict template specializations below.
+///
 
-template <class V> class IMATH_EXPORT_TEMPLATE_TYPE Box
+template <typename V> class IMATH_EXPORT_TEMPLATE_TYPE Box
 {
 public:
     /// @{
@@ -63,6 +68,20 @@ public:
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const V& minV, const V& maxV)
         IMATH_NOEXCEPT;
 
+    /// Copy constructor
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Box&) IMATH_NOEXCEPT;
+
+    /// Move constructor
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (Box&&) IMATH_NOEXCEPT;
+
+    /// Copy assign
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box&
+    operator= (const Box&) IMATH_NOEXCEPT;
+
+    /// Move assign
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box& operator= (Box&&) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE ~Box () = default;
     /// @}
 
     /// @{
@@ -70,11 +89,11 @@ public:
 
     /// Equality
     IMATH_HOSTDEVICE constexpr bool
-    operator== (const Box<V>& src) const IMATH_NOEXCEPT;
+    operator== (const Box& src) const IMATH_NOEXCEPT;
 
     /// Inequality
     IMATH_HOSTDEVICE constexpr bool
-    operator!= (const Box<V>& src) const IMATH_NOEXCEPT;
+    operator!= (const Box& src) const IMATH_NOEXCEPT;
 
     /// @}
 
@@ -90,7 +109,7 @@ public:
     IMATH_HOSTDEVICE void extendBy (const V& point) IMATH_NOEXCEPT;
 
     /// Extend the box to include the given box.
-    IMATH_HOSTDEVICE void extendBy (const Box<V>& box) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE void extendBy (const Box& box) IMATH_NOEXCEPT;
 
     /// Make the box include the entire range of `V`.
     IMATH_HOSTDEVICE void makeInfinite () IMATH_NOEXCEPT;
@@ -115,7 +134,7 @@ public:
 
     /// Return true if the given box is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-    intersects (const Box<V>& box) const IMATH_NOEXCEPT;
+    intersects (const Box& box) const IMATH_NOEXCEPT;
 
     /// Return the major axis of the box. The major axis is the dimension with
     /// the greatest difference between maximum and minimum.
@@ -171,13 +190,15 @@ typedef Box<V3f> Box3f;
 /// 3D box of base type `double`.
 typedef Box<V3d> Box3d;
 
-template <class V>
+////////////////////////////////////////
+
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<V>::Box () IMATH_NOEXCEPT
 {
     makeEmpty ();
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE
     IMATH_CONSTEXPR14 inline Box<V>::Box (const V& point) IMATH_NOEXCEPT
 {
@@ -185,7 +206,7 @@ IMATH_HOSTDEVICE
     max = point;
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<V>::Box (
     const V& minV, const V& maxV) IMATH_NOEXCEPT
 {
@@ -193,21 +214,54 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<V>::Box (
     max = maxV;
 }
 
-template <class V>
+template <typename V>
+IMATH_HOSTDEVICE
+    IMATH_CONSTEXPR14 inline Box<V>::Box (const Box& b) IMATH_NOEXCEPT
+{
+    min = b.min;
+    max = b.max;
+}
+
+template <typename V>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<V>::Box (Box&& b) IMATH_NOEXCEPT
+{
+    min = std::move (b.min);
+    max = std::move (b.max);
+}
+
+template <typename V>
+IMATH_HOSTDEVICE constexpr inline Box<V>&
+Box<V>::operator= (const Box& src) IMATH_NOEXCEPT
+{
+    min = src.min;
+    max = src.max;
+    return *this;
+}
+
+template <typename V>
+IMATH_HOSTDEVICE constexpr inline Box<V>&
+Box<V>::operator= (Box&& src) IMATH_NOEXCEPT
+{
+    min = std::move (src.min);
+    max = std::move (src.max);
+    return *this;
+}
+
+template <typename V>
 IMATH_HOSTDEVICE constexpr inline bool
 Box<V>::operator== (const Box<V>& src) const IMATH_NOEXCEPT
 {
     return (min == src.min && max == src.max);
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE constexpr inline bool
 Box<V>::operator!= (const Box<V>& src) const IMATH_NOEXCEPT
 {
     return (min != src.min || max != src.max);
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE inline void
 Box<V>::makeEmpty () IMATH_NOEXCEPT
 {
@@ -215,7 +269,7 @@ Box<V>::makeEmpty () IMATH_NOEXCEPT
     max = V (V::baseTypeLowest ());
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE inline void
 Box<V>::makeInfinite () IMATH_NOEXCEPT
 {
@@ -223,7 +277,7 @@ Box<V>::makeInfinite () IMATH_NOEXCEPT
     max = V (V::baseTypeMax ());
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE inline void
 Box<V>::extendBy (const V& point) IMATH_NOEXCEPT
 {
@@ -235,7 +289,7 @@ Box<V>::extendBy (const V& point) IMATH_NOEXCEPT
     }
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE inline void
 Box<V>::extendBy (const Box<V>& box) IMATH_NOEXCEPT
 {
@@ -247,7 +301,7 @@ Box<V>::extendBy (const Box<V>& box) IMATH_NOEXCEPT
     }
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<V>::intersects (const V& point) const IMATH_NOEXCEPT
 {
@@ -259,7 +313,7 @@ Box<V>::intersects (const V& point) const IMATH_NOEXCEPT
     return true;
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<V>::intersects (const Box<V>& box) const IMATH_NOEXCEPT
 {
@@ -271,7 +325,7 @@ Box<V>::intersects (const Box<V>& box) const IMATH_NOEXCEPT
     return true;
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline V
 Box<V>::size () const IMATH_NOEXCEPT
 {
@@ -280,14 +334,14 @@ Box<V>::size () const IMATH_NOEXCEPT
     return max - min;
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE constexpr inline V
 Box<V>::center () const IMATH_NOEXCEPT
 {
     return (max + min) / 2;
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<V>::isEmpty () const IMATH_NOEXCEPT
 {
@@ -299,7 +353,7 @@ Box<V>::isEmpty () const IMATH_NOEXCEPT
     return false;
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<V>::isInfinite () const IMATH_NOEXCEPT
 {
@@ -312,7 +366,7 @@ Box<V>::isInfinite () const IMATH_NOEXCEPT
     return true;
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<V>::hasVolume () const IMATH_NOEXCEPT
 {
@@ -324,7 +378,7 @@ Box<V>::hasVolume () const IMATH_NOEXCEPT
     return true;
 }
 
-template <class V>
+template <typename V>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline unsigned int
 Box<V>::majorAxis () const IMATH_NOEXCEPT
 {
@@ -345,25 +399,86 @@ Box<V>::majorAxis () const IMATH_NOEXCEPT
 //
 //-------------------------------------------------------------------
 
-template <typename V> class Box;
+namespace detail
+{
+/// implementation detail to provide storage type for
+/// conversion
+template <typename T> struct BoxStorageAdapter
+{};
+// exposed / created by python, seems useless...
+template <> struct BoxStorageAdapter<Vec2<uint8_t>>
+{
+    using type = imath_box2b_t;
+};
+template <> struct BoxStorageAdapter<V2s>
+{
+    using type = imath_box2s_t;
+};
+template <> struct BoxStorageAdapter<V2i>
+{
+    using type = imath_box2i_t;
+};
+template <> struct BoxStorageAdapter<V2i64>
+{
+    using type = imath_box2i64_t;
+};
+template <> struct BoxStorageAdapter<V2f>
+{
+    using type = imath_box2f_t;
+};
+template <> struct BoxStorageAdapter<V2d>
+{
+    using type = imath_box2d_t;
+};
+// exposed / created by python, seems useless...
+template <> struct BoxStorageAdapter<Vec3<uint8_t>>
+{
+    using type = imath_box3b_t;
+};
+template <> struct BoxStorageAdapter<V3s>
+{
+    using type = imath_box3s_t;
+};
+template <> struct BoxStorageAdapter<V3i>
+{
+    using type = imath_box3i_t;
+};
+template <> struct BoxStorageAdapter<V3i64>
+{
+    using type = imath_box3i64_t;
+};
+template <> struct BoxStorageAdapter<V3f>
+{
+    using type = imath_box3f_t;
+};
+template <> struct BoxStorageAdapter<V3d>
+{
+    using type = imath_box3d_t;
+};
+
+} // namespace detail
 
 ///
 /// The Box<Vec2<T>> template represents a 2D bounding box defined by
 /// minimum and maximum values of type Vec2<T>. The min and max members are
 /// public.
 ///
+/// NB: we don't directly derive from the public API storage, such that min
+///
 
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
+template <typename T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec2<T>>
 {
 public:
+    using BaseVecType = Vec2<T>;
+
     /// @{
     /// @name Direct access to bounds
 
     /// The minimum value of the box.
-    Vec2<T> min;
+    BaseVecType min;
 
     /// The maximum value of the box.
-    Vec2<T> max;
+    BaseVecType max;
 
     /// @}
 
@@ -374,12 +489,37 @@ public:
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box () IMATH_NOEXCEPT;
 
     /// Construct a bounding box that contains a single point.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec2<T>& point)
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const BaseVecType& point)
         IMATH_NOEXCEPT;
 
     /// Construct a bounding box with the given minimum and maximum points
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14
-    Box (const Vec2<T>& minT, const Vec2<T>& maxT) IMATH_NOEXCEPT;
+    Box (const BaseVecType& minT, const BaseVecType& maxT) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Box& src) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (Box&& src) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box&
+    operator= (const Box& src) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box&
+    operator= (Box&& src) IMATH_NOEXCEPT;
+
+    ~Box () = default;
+    /// @}
+
+    /// @{
+    /// @name API Conversion
+
+    using APIStorageType =
+        typename detail::BoxStorageAdapter<BaseVecType>::type;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const APIStorageType& src)
+        IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box& operator= (const APIStorageType&) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr operator APIStorageType& () IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr operator const APIStorageType& () const IMATH_NOEXCEPT;
 
     /// @}
 
@@ -388,11 +528,11 @@ public:
 
     /// Equality
     IMATH_HOSTDEVICE constexpr bool
-    operator== (const Box<Vec2<T>>& src) const IMATH_NOEXCEPT;
+    operator== (const Box& src) const IMATH_NOEXCEPT;
 
     /// Inequality
     IMATH_HOSTDEVICE constexpr bool
-    operator!= (const Box<Vec2<T>>& src) const IMATH_NOEXCEPT;
+    operator!= (const Box& src) const IMATH_NOEXCEPT;
 
     /// @}
 
@@ -406,10 +546,10 @@ public:
     IMATH_HOSTDEVICE void makeEmpty () IMATH_NOEXCEPT;
 
     /// Extend the Box to include the given point.
-    IMATH_HOSTDEVICE void extendBy (const Vec2<T>& point) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE void extendBy (const BaseVecType& point) IMATH_NOEXCEPT;
 
     /// Extend the Box to include the given box.
-    IMATH_HOSTDEVICE void extendBy (const Box<Vec2<T>>& box) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE void extendBy (const Box& box) IMATH_NOEXCEPT;
 
     /// Make the box include the entire range of T.
     IMATH_HOSTDEVICE void makeInfinite () IMATH_NOEXCEPT;
@@ -421,19 +561,19 @@ public:
 
     /// Return the size of the box. The size is of type `V`, defined as
     /// `(max-min)`. An empty box has a size of `V(0)`, i.e. 0 in each dimension.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2<T> size () const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 BaseVecType size () const IMATH_NOEXCEPT;
 
     /// Return the center of the box. The center is defined as
     /// `(max+min)/2`. The center of an empty box is undefined.
-    IMATH_HOSTDEVICE constexpr Vec2<T> center () const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr BaseVecType center () const IMATH_NOEXCEPT;
 
     /// Return true if the given point is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-    intersects (const Vec2<T>& point) const IMATH_NOEXCEPT;
+    intersects (const BaseVecType& point) const IMATH_NOEXCEPT;
 
     /// Return true if the given box is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-    intersects (const Box<Vec2<T>>& box) const IMATH_NOEXCEPT;
+    intersects (const Box& box) const IMATH_NOEXCEPT;
 
     /// Return the major axis of the box. The major axis is the dimension with
     /// the greatest difference between maximum and minimum.
@@ -459,13 +599,13 @@ public:
 //  Implementation
 //----------------
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box () IMATH_NOEXCEPT
 {
     makeEmpty ();
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (
     const Vec2<T>& point) IMATH_NOEXCEPT
 {
@@ -473,7 +613,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (
     max = point;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (
     const Vec2<T>& minT, const Vec2<T>& maxT) IMATH_NOEXCEPT
 {
@@ -481,21 +621,106 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (
     max = maxT;
 }
 
-template <class T>
+template <typename T>
+IMATH_HOSTDEVICE
+    IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (const Box& b) IMATH_NOEXCEPT
+{
+    min = b.min;
+    max = b.max;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE
+    IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (Box&& b) IMATH_NOEXCEPT
+{
+    min = std::move (b.min);
+    max = std::move (b.max);
+}
+
+template <typename T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec2<T>>&
+Box<Vec2<T>>::operator= (const Box& src) IMATH_NOEXCEPT
+{
+    min = src.min;
+    max = src.max;
+    return *this;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec2<T>>&
+Box<Vec2<T>>::operator= (Box&& src) IMATH_NOEXCEPT
+{
+    min = src.min;
+    max = src.max;
+    return *this;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE
+    IMATH_CONSTEXPR14 inline Box<Vec2<T>>::Box (const APIStorageType& b) IMATH_NOEXCEPT
+{
+    min = b.min;
+    max = b.max;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec2<T>>&
+Box<Vec2<T>>::operator= (const APIStorageType& b) IMATH_NOEXCEPT
+{
+    min = b.min;
+    max = b.max;
+    return *this;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE constexpr inline
+Box<Vec2<T>>::operator Box<Vec2<T>>::APIStorageType& () IMATH_NOEXCEPT
+{
+    static_assert (
+        sizeof (Box) == sizeof (APIStorageType),
+        "size must match with api storage type");
+    static_assert (
+        offsetof (Box, min) == offsetof (APIStorageType, min),
+        "offset of min with api storage type");
+    static_assert (
+        offsetof (Box, max) == offsetof (APIStorageType, max),
+        "offset of min with api storage type");
+
+    return *(reinterpret_cast<APIStorageType *>(this));
+}
+
+template <typename T>
+IMATH_HOSTDEVICE constexpr inline
+Box<Vec2<T>>::operator const Box<Vec2<T>>::APIStorageType& () const IMATH_NOEXCEPT
+{
+    static_assert (
+        sizeof (Box) == sizeof (APIStorageType),
+        "size must match with api storage type");
+    static_assert (
+        offsetof (Box, min) == offsetof (APIStorageType, min),
+        "offset of min with api storage type");
+    static_assert (
+        offsetof (Box, max) == offsetof (APIStorageType, max),
+        "offset of min with api storage type");
+
+    return *(reinterpret_cast<const APIStorageType *>(this));
+}
+
+template <typename T>
 IMATH_HOSTDEVICE constexpr inline bool
-Box<Vec2<T>>::operator== (const Box<Vec2<T>>& src) const IMATH_NOEXCEPT
+Box<Vec2<T>>::operator== (const Box& src) const IMATH_NOEXCEPT
 {
     return (min == src.min && max == src.max);
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE constexpr inline bool
-Box<Vec2<T>>::operator!= (const Box<Vec2<T>>& src) const IMATH_NOEXCEPT
+Box<Vec2<T>>::operator!= (const Box& src) const IMATH_NOEXCEPT
 {
     return (min != src.min || max != src.max);
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE inline void
 Box<Vec2<T>>::makeEmpty () IMATH_NOEXCEPT
 {
@@ -503,7 +728,7 @@ Box<Vec2<T>>::makeEmpty () IMATH_NOEXCEPT
     max = Vec2<T> (Vec2<T>::baseTypeLowest ());
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE inline void
 Box<Vec2<T>>::makeInfinite () IMATH_NOEXCEPT
 {
@@ -511,7 +736,7 @@ Box<Vec2<T>>::makeInfinite () IMATH_NOEXCEPT
     max = Vec2<T> (Vec2<T>::baseTypeMax ());
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE inline void
 Box<Vec2<T>>::extendBy (const Vec2<T>& point) IMATH_NOEXCEPT
 {
@@ -524,9 +749,9 @@ Box<Vec2<T>>::extendBy (const Vec2<T>& point) IMATH_NOEXCEPT
     if (point[1] > max[1]) max[1] = point[1];
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE inline void
-Box<Vec2<T>>::extendBy (const Box<Vec2<T>>& box) IMATH_NOEXCEPT
+Box<Vec2<T>>::extendBy (const Box& box) IMATH_NOEXCEPT
 {
     if (box.min[0] < min[0]) min[0] = box.min[0];
 
@@ -537,7 +762,7 @@ Box<Vec2<T>>::extendBy (const Box<Vec2<T>>& box) IMATH_NOEXCEPT
     if (box.max[1] > max[1]) max[1] = box.max[1];
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T>>::intersects (const Vec2<T>& point) const IMATH_NOEXCEPT
 {
@@ -548,9 +773,9 @@ Box<Vec2<T>>::intersects (const Vec2<T>& point) const IMATH_NOEXCEPT
     return true;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
-Box<Vec2<T>>::intersects (const Box<Vec2<T>>& box) const IMATH_NOEXCEPT
+Box<Vec2<T>>::intersects (const Box& box) const IMATH_NOEXCEPT
 {
     if (box.max[0] < min[0] || box.min[0] > max[0] || box.max[1] < min[1] ||
         box.min[1] > max[1])
@@ -559,23 +784,23 @@ Box<Vec2<T>>::intersects (const Box<Vec2<T>>& box) const IMATH_NOEXCEPT
     return true;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Vec2<T>
                  Box<Vec2<T>>::size () const IMATH_NOEXCEPT
 {
-    if (isEmpty ()) return Vec2<T> (0);
+    if (isEmpty ()) return Vec2<T> (T (0));
 
     return max - min;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE constexpr inline Vec2<T>
 Box<Vec2<T>>::center () const IMATH_NOEXCEPT
 {
     return (max + min) / 2;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T>>::isEmpty () const IMATH_NOEXCEPT
 {
@@ -584,7 +809,7 @@ Box<Vec2<T>>::isEmpty () const IMATH_NOEXCEPT
     return false;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T>>::isInfinite () const IMATH_NOEXCEPT
 {
@@ -597,7 +822,7 @@ Box<Vec2<T>>::isInfinite () const IMATH_NOEXCEPT
     return true;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec2<T>>::hasVolume () const IMATH_NOEXCEPT
 {
@@ -606,7 +831,7 @@ Box<Vec2<T>>::hasVolume () const IMATH_NOEXCEPT
     return true;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline unsigned int
 Box<Vec2<T>>::majorAxis () const IMATH_NOEXCEPT
 {
@@ -622,17 +847,20 @@ Box<Vec2<T>>::majorAxis () const IMATH_NOEXCEPT
 /// The Box<Vec3> template represents a 3D bounding box defined by
 /// minimum and maximum values of type Vec3.
 ///
-template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec3<T>>
+template <typename T>
+class IMATH_EXPORT_TEMPLATE_TYPE Box<Vec3<T>>
 {
 public:
+    using BaseVecType = Vec3<T>;
+
     /// @{
     /// @name Direct access to bounds
 
     /// The minimum value of the box.
-    Vec3<T> min;
+    BaseVecType min;
 
     /// The maximum value of the box.
-    Vec3<T> max;
+    BaseVecType max;
 
     /// @}
 
@@ -643,22 +871,55 @@ public:
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box () IMATH_NOEXCEPT;
 
     /// Construct a bounding box that contains a single point.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Vec3<T>& point)
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const BaseVecType& point)
         IMATH_NOEXCEPT;
 
     /// Construct a bounding box with the given minimum and maximum points
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14
-    Box (const Vec3<T>& minT, const Vec3<T>& maxT) IMATH_NOEXCEPT;
+    Box (const BaseVecType& minT, const BaseVecType& maxT) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const Box& src) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (Box&& src) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box&
+    operator= (const Box& src) IMATH_NOEXCEPT;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box&
+    operator= (Box&& src) IMATH_NOEXCEPT;
+
+    ~Box () = default;
+    /// @}
+
+    /// @{
+    /// @name API Conversion
+
+    using APIStorageType =
+        typename detail::BoxStorageAdapter<BaseVecType>::type;
+
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box (const APIStorageType& src)
+        IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Box& operator= (const APIStorageType&) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr operator APIStorageType& () IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr operator const APIStorageType& () const IMATH_NOEXCEPT;
 
     /// @}
 
+    /// @{
+    /// @name Comparison
+
     /// Equality
     IMATH_HOSTDEVICE constexpr bool
-    operator== (const Box<Vec3<T>>& src) const IMATH_NOEXCEPT;
+    operator== (const Box<BaseVecType>& src) const IMATH_NOEXCEPT;
 
     /// Inequality
     IMATH_HOSTDEVICE constexpr bool
-    operator!= (const Box<Vec3<T>>& src) const IMATH_NOEXCEPT;
+    operator!= (const Box<BaseVecType>& src) const IMATH_NOEXCEPT;
+
+    /// @}
+
+    /// @{
+    /// @name Manipulation
 
     /// Set the Box to be empty. A Box is empty if the mimimum is
     /// greater than the maximum. makeEmpty() sets the mimimum to
@@ -667,29 +928,34 @@ public:
     IMATH_HOSTDEVICE void makeEmpty () IMATH_NOEXCEPT;
 
     /// Extend the Box to include the given point.
-    IMATH_HOSTDEVICE void extendBy (const Vec3<T>& point) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE void extendBy (const BaseVecType& point) IMATH_NOEXCEPT;
     /// Extend the Box to include the given box.
 
-    IMATH_HOSTDEVICE void extendBy (const Box<Vec3<T>>& box) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE void extendBy (const Box<BaseVecType>& box) IMATH_NOEXCEPT;
 
     /// Make the box include the entire range of T.
     IMATH_HOSTDEVICE void makeInfinite () IMATH_NOEXCEPT;
 
+    /// @}
+
+    /// @{
+    /// @name Query
+
     /// Return the size of the box. The size is of type `V`, defined as
     /// (max-min). An empty box has a size of V(0), i.e. 0 in each dimension.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3<T> size () const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 BaseVecType size () const IMATH_NOEXCEPT;
 
     /// Return the center of the box. The center is defined as
     /// (max+min)/2. The center of an empty box is undefined.
-    IMATH_HOSTDEVICE constexpr Vec3<T> center () const IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr BaseVecType center () const IMATH_NOEXCEPT;
 
     /// Return true if the given point is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-    intersects (const Vec3<T>& point) const IMATH_NOEXCEPT;
+    intersects (const BaseVecType& point) const IMATH_NOEXCEPT;
 
     /// Return true if the given box is inside the box, false otherwise.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
-    intersects (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT;
+    intersects (const Box<BaseVecType>& box) const IMATH_NOEXCEPT;
 
     /// Return the major axis of the box. The major axis is the dimension with
     /// the greatest difference between maximum and minimum.
@@ -707,19 +973,21 @@ public:
     /// An infinite box has a mimimum of`V::baseTypeMin()`
     /// and a maximum of `V::baseTypeMax()`.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool isInfinite () const IMATH_NOEXCEPT;
+
+    /// @}
 };
 
 //----------------
 //  Implementation
 //----------------
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box () IMATH_NOEXCEPT
 {
     makeEmpty ();
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (
     const Vec3<T>& point) IMATH_NOEXCEPT
 {
@@ -727,7 +995,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (
     max = point;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (
     const Vec3<T>& minT, const Vec3<T>& maxT) IMATH_NOEXCEPT
 {
@@ -735,21 +1003,106 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (
     max = maxT;
 }
 
-template <class T>
+template <typename T>
+IMATH_HOSTDEVICE
+    IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (const Box& b) IMATH_NOEXCEPT
+{
+    min = b.min;
+    max = b.max;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE
+    IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (Box&& b) IMATH_NOEXCEPT
+{
+    min = std::move (b.min);
+    max = std::move (b.max);
+}
+
+template <typename T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec3<T>>&
+Box<Vec3<T>>::operator= (const Box& src) IMATH_NOEXCEPT
+{
+    min = src.min;
+    max = src.max;
+    return *this;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec3<T>>&
+Box<Vec3<T>>::operator= (Box&& src) IMATH_NOEXCEPT
+{
+    min = src.min;
+    max = src.max;
+    return *this;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE
+    IMATH_CONSTEXPR14 inline Box<Vec3<T>>::Box (const APIStorageType& b) IMATH_NOEXCEPT
+{
+    min = b.min;
+    max = b.max;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Box<Vec3<T>>&
+Box<Vec3<T>>::operator= (const APIStorageType& b) IMATH_NOEXCEPT
+{
+    min = b.min;
+    max = b.max;
+    return *this;
+}
+
+template <typename T>
+IMATH_HOSTDEVICE constexpr inline
+Box<Vec3<T>>::operator Box<Vec3<T>>::APIStorageType& () IMATH_NOEXCEPT
+{
+    static_assert (
+        sizeof (Box) == sizeof (APIStorageType),
+        "size must match with api storage type");
+    static_assert (
+        offsetof (Box, min) == offsetof (APIStorageType, min),
+        "offset of min with api storage type");
+    static_assert (
+        offsetof (Box, max) == offsetof (APIStorageType, max),
+        "offset of min with api storage type");
+
+    return *(reinterpret_cast<APIStorageType *>(this));
+}
+
+template <typename T>
+IMATH_HOSTDEVICE constexpr inline
+Box<Vec3<T>>::operator const Box<Vec3<T>>::APIStorageType& () const IMATH_NOEXCEPT
+{
+    static_assert (
+        sizeof (Box) == sizeof (APIStorageType),
+        "size must match with api storage type");
+    static_assert (
+        offsetof (Box, min) == offsetof (APIStorageType, min),
+        "offset of min with api storage type");
+    static_assert (
+        offsetof (Box, max) == offsetof (APIStorageType, max),
+        "offset of min with api storage type");
+
+    return *(reinterpret_cast<const APIStorageType *>(this));
+}
+
+template <typename T>
 IMATH_HOSTDEVICE constexpr inline bool
 Box<Vec3<T>>::operator== (const Box<Vec3<T>>& src) const IMATH_NOEXCEPT
 {
     return (min == src.min && max == src.max);
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE constexpr inline bool
 Box<Vec3<T>>::operator!= (const Box<Vec3<T>>& src) const IMATH_NOEXCEPT
 {
     return (min != src.min || max != src.max);
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE inline void
 Box<Vec3<T>>::makeEmpty () IMATH_NOEXCEPT
 {
@@ -757,7 +1110,7 @@ Box<Vec3<T>>::makeEmpty () IMATH_NOEXCEPT
     max = Vec3<T> (Vec3<T>::baseTypeLowest ());
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE inline void
 Box<Vec3<T>>::makeInfinite () IMATH_NOEXCEPT
 {
@@ -765,7 +1118,7 @@ Box<Vec3<T>>::makeInfinite () IMATH_NOEXCEPT
     max = Vec3<T> (Vec3<T>::baseTypeMax ());
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE inline void
 Box<Vec3<T>>::extendBy (const Vec3<T>& point) IMATH_NOEXCEPT
 {
@@ -782,7 +1135,7 @@ Box<Vec3<T>>::extendBy (const Vec3<T>& point) IMATH_NOEXCEPT
     if (point[2] > max[2]) max[2] = point[2];
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE inline void
 Box<Vec3<T>>::extendBy (const Box<Vec3<T>>& box) IMATH_NOEXCEPT
 {
@@ -799,7 +1152,7 @@ Box<Vec3<T>>::extendBy (const Box<Vec3<T>>& box) IMATH_NOEXCEPT
     if (box.max[2] > max[2]) max[2] = box.max[2];
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T>>::intersects (const Vec3<T>& point) const IMATH_NOEXCEPT
 {
@@ -810,7 +1163,7 @@ Box<Vec3<T>>::intersects (const Vec3<T>& point) const IMATH_NOEXCEPT
     return true;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T>>::intersects (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT
 {
@@ -821,23 +1174,23 @@ Box<Vec3<T>>::intersects (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT
     return true;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Vec3<T>
                  Box<Vec3<T>>::size () const IMATH_NOEXCEPT
 {
-    if (isEmpty ()) return Vec3<T> (0);
+    if (isEmpty ()) return Vec3<T> (T (0));
 
     return max - min;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE constexpr inline Vec3<T>
 Box<Vec3<T>>::center () const IMATH_NOEXCEPT
 {
     return (max + min) / 2;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T>>::isEmpty () const IMATH_NOEXCEPT
 {
@@ -846,7 +1199,7 @@ Box<Vec3<T>>::isEmpty () const IMATH_NOEXCEPT
     return false;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T>>::isInfinite () const IMATH_NOEXCEPT
 {
@@ -861,7 +1214,7 @@ Box<Vec3<T>>::isInfinite () const IMATH_NOEXCEPT
     return true;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Box<Vec3<T>>::hasVolume () const IMATH_NOEXCEPT
 {
@@ -870,7 +1223,7 @@ Box<Vec3<T>>::hasVolume () const IMATH_NOEXCEPT
     return true;
 }
 
-template <class T>
+template <typename T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline unsigned int
 Box<Vec3<T>>::majorAxis () const IMATH_NOEXCEPT
 {
