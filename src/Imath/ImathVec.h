@@ -2085,7 +2085,7 @@ Vec3<T, Storage>::operator= (std::initializer_list<T> v) IMATH_NOEXCEPT
 
 template <typename T, typename Storage>
 template <typename S, typename SStorage>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Vec3<T, Storage>::Vec3 (
+IMATH_HOSTDEVICE constexpr inline Vec3<T, Storage>::Vec3 (
     const Vec4<S, SStorage>& v) IMATH_NOEXCEPT
     : BaseStorage (T (v.x / v.w), T (v.y / v.w), T (v.z / v.w))
 {}
