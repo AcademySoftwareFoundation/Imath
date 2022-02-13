@@ -15,6 +15,7 @@ imath_define_library(Imath
     half.h
     halfFunction.h
     halfLimits.h
+    ImathBaseTypes.h
     ImathBox.h
     ImathBoxAlgo.h
     ImathColor.h
