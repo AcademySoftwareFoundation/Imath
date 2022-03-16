@@ -7,7 +7,8 @@
 #    undef NDEBUG
 #endif
 
-#include "halfLimits.h"
+#include "testLimits.h"
+#include "half.h"
 #include <assert.h>
 #include <cmath>
 #include <iostream>
