@@ -180,7 +180,9 @@
 #ifdef _WIN32
 #        include <intrin.h>
 #elif defined(__x86_64__)
-#        include <x86intrin.h>
+#    include <x86intrin.h>
+#elif defined(__F16C__)
+#    include <immintrin.h>
 #endif
 
 #include <stdint.h>
