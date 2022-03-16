@@ -25,7 +25,7 @@
 static const unsigned short imath_float_half_exp_table[1 << 9] =
 #include "eLut.h"
 
-using namespace IMATH_NAMESPACE;
+    using namespace IMATH_NAMESPACE;
 
 #ifdef IMATH_USE_HALF_LOOKUP_TABLE
 
