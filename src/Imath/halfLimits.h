@@ -13,7 +13,11 @@
 // from the half class.
 //
 
+#ifdef __GNUC__
 #warning "ImathLimits is deprecated; use #include <half.h>"
+#else
+#pragma message("ImathLimits is deprecated; use #include <half.h>")
+#endif
 
 #include "half.h"
 
