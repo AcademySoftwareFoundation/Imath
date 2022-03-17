@@ -3,7 +3,7 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 #    define _CRT_RAND_S
 #endif
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef _MSC_VER
+#ifdef _WIN32
 #    include <windows.h>
 #else
 #    include <time.h>
@@ -271,7 +271,7 @@ exptable_half_constructor (float f)
 int64_t
 get_ticks (void)
 {
-#ifdef _MSC_VER
+#ifdef _WIN32
     static uint64_t scale = 0;
     if (scale == 0)
     {
@@ -387,7 +387,7 @@ main (int argc, char* argv[])
             perf_test_half_to_float (floats, halfs, numentries);
 
             // test float -> half with real-world values
-#ifdef _MSC_VER
+#ifdef _WIN32
             unsigned int rv;
             for (int i = 0; i < numentries; ++i)
             {
