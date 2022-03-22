@@ -1,5 +1,6 @@
 # Imath Release Notes
 
+* [Version 3.1.5](#version-315-march-28-2022) March 28, 2022
 * [Version 3.1.4](#version-314-january-21-2022) January 21, 2022
 * [Version 3.1.3](#version-313-september-2-2021) September 2, 2021
 * [Version 3.1.2](#version-312-july-31-2021) July 31, 2021
@@ -12,6 +13,23 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.5 (March 28, 2022)
+
+Patch release with miscellaneous bug/doc/build fixes.
+
+In particular, this fixes an issue that could lead to incorrect values
+for `numeric_limits<half>`. This also updates the CI workflow matrix
+to VFX-CY2022.
+
+* \[[#245](https://github.com/AcademySoftwareFoundation/Imath/pull/245)\] 
+Use `_WIN32` instead of `_MSC_VER` to fix mingw build
+* \[[#244](https://github.com/AcademySoftwareFoundation/Imath/pull/244)\] 
+Fix 32-bit x86 build failure with 16c instructions
+* \[[#241](https://github.com/AcademySoftwareFoundation/Imath/pull/241)\] 
+Move `numeric_limits<half>` specializations into half.h
+* \[[#236](https://github.com/AcademySoftwareFoundation/Imath/pull/236)\] 
+Change references to "master" branch to "main"
 
 ## Version 3.1.4 (January 21, 2022)
 
