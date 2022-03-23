@@ -22,6 +22,8 @@ In particular, this fixes an issue that could lead to incorrect values
 for `numeric_limits<half>`. This also updates the CI workflow matrix
 to VFX-CY2022.
 
+* \[[#246](https://github.com/AcademySoftwareFoundation/Imath/pull/246)\] 
+Update CI workflow matrix for VFX-CY2022
 * \[[#245](https://github.com/AcademySoftwareFoundation/Imath/pull/245)\] 
 Use `_WIN32` instead of `_MSC_VER` to fix mingw build
 * \[[#244](https://github.com/AcademySoftwareFoundation/Imath/pull/244)\] 
