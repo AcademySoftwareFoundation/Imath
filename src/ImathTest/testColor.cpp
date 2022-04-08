@@ -38,7 +38,7 @@ testColor ()
     assert (in3 == out3);
 
     IMATH_INTERNAL_NAMESPACE::C4c testConstructor1;
-    IMATH_INTERNAL_NAMESPACE::C4c testConstructor1i (0.f);
+    IMATH_INTERNAL_NAMESPACE::C4c testConstructor1i (0);
     IMATH_INTERNAL_NAMESPACE::C4c testConstructor2 (testConstructor1i);
 
     testConstructor1 =

@@ -32,7 +32,7 @@ namespace
 float
 rad (float deg)
 {
-    return deg * (M_PI / 180);
+    return deg * float(M_PI / 180);
 }
 
 void
@@ -108,7 +108,8 @@ testRandomAngles33 ()
         // Scale M.
         //
 
-        V2f s (random.nextf (0.000001, 2.0), random.nextf (0.000001, 2.0));
+        V2f s (float(random.nextf (0.000001, 2.0)), 
+               float(random.nextf (0.000001, 2.0)));
 
         for (int j = 0; j < 2; j++)
             if (random.nextf (0.0, 1.0) >= 0.5) s[j] *= -1;
@@ -119,7 +120,7 @@ testRandomAngles33 ()
         // Shear M.
         //
 
-        float h = random.nextf (0.000001, 2.);
+        float h = float(random.nextf (0.000001, 2.));
         if (random.nextf (0.0, 1.0) >= 0.5) h *= -1;
 
         M *= M33f ().setShear (h);
@@ -128,7 +129,7 @@ testRandomAngles33 ()
         // Rotate M.
         //
 
-        float r = rad (random.nextf (-180, 180));
+        float r = rad (float(random.nextf (-180, 180)));
 
         M *= M33f ().setRotation (r);
 
@@ -136,7 +137,8 @@ testRandomAngles33 ()
         // Translate M.
         //
 
-        V2f t (random.nextf (-10, 10), random.nextf (-10, 10));
+        V2f t (float(random.nextf (-10, 10)),
+               float(random.nextf (-10, 10)));
 
         M *= M33f ().setTranslation (t);
 
@@ -146,7 +148,7 @@ testRandomAngles33 ()
 
         for (int j = 0; j < 3; ++j)
             for (int k = 0; k < 2; ++k)
-                M[j][k] += random.nextf (-1e-7, 1e-7);
+                M[j][k] += float(random.nextf (-1e-7, 1e-7));
 
         debug (("Scale   : %f %f\n", s[0], s[1]));
         debug (("Shear   : %f\n", h));
@@ -263,9 +265,9 @@ testRandomAngles44 ()
         //
 
         V3f t (
-            random.nextf (-10, 10),
-            random.nextf (-10, 10),
-            random.nextf (-10, 10));
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)));
 
         M.translate (t);
 
@@ -274,9 +276,9 @@ testRandomAngles44 ()
         //
 
         V3f r (
-            rad (random.nextf (-180, 180)),
-            rad (random.nextf (-180, 180)),
-            rad (random.nextf (-180, 180)));
+            rad (float(random.nextf (-180, 180))),
+            rad (float(random.nextf (-180, 180))),
+            rad (float(random.nextf (-180, 180))));
 
         M.rotate (r);
 
@@ -285,9 +287,9 @@ testRandomAngles44 ()
         //
 
         V3f h (
-            random.nextf (0.000001, 2.0),
-            random.nextf (0.000001, 2.0),
-            random.nextf (0.000001, 2.0));
+            float(random.nextf (0.000001, 2.0)),
+            float(random.nextf (0.000001, 2.0)),
+            float(random.nextf (0.000001, 2.0)));
 
         for (int j = 0; j < 3; j++)
             if (random.nextf (0.0, 1.0) >= 0.5) h[j] *= -1;
@@ -299,9 +301,9 @@ testRandomAngles44 ()
         //
 
         V3f s (
-            random.nextf (0.000001, 2.0),
-            random.nextf (0.000001, 2.0),
-            random.nextf (0.000001, 2.0));
+            float(random.nextf (0.000001, 2.0)),
+            float(random.nextf (0.000001, 2.0)),
+            float(random.nextf (0.000001, 2.0)));
 
         for (int j = 0; j < 3; j++)
             if (random.nextf (0.0, 1.0) >= 0.5) s[j] *= -1;
@@ -314,7 +316,7 @@ testRandomAngles44 ()
 
         for (int j = 0; j < 4; ++j)
             for (int k = 0; k < 3; ++k)
-                M[j][k] += random.nextf (-1e-7, 1e-7);
+                M[j][k] += float(random.nextf (-1e-7, 1e-7));
 
         debug (("Scale   : %f %f %f\n", s[0], s[1], s[2]));
         debug (("Shear   : %f %f %f\n", h[0], h[1], h[2]));
@@ -384,7 +386,7 @@ test ()
     for (int i = 0; i < 360; i += 90)
         for (int j = 0; j < 360; j += 90)
             for (int k = 0; k < 360; k += 90)
-                testAngles44 (V3f (i, j, k));
+                testAngles44 (V3f (float(i), float(j), float(k)));
 }
 
 } // namespace

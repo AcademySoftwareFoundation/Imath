@@ -93,7 +93,7 @@ specificRotations ()
 
         for (int n1 = 0; n1 < 4; ++n1)
         {
-            float angle1 = n1 * M_PI / 2;
+            float angle1 = n1 * float(M_PI / 2);
 
             Quatf q1;
             q1.setAxisAngle (axis1, angle1);
@@ -105,7 +105,7 @@ specificRotations ()
 
                 for (int n2 = 0; n2 < 4; ++n2)
                 {
-                    float angle2 = n2 * M_PI / 2;
+                    float angle2 = n2 * float(M_PI / 2);
 
                     Quatf q2;
                     q2.setAxisAngle (axis2, angle2);
@@ -135,8 +135,8 @@ randomRotations ()
     {
         V3f   axis1  = hollowSphereRand<V3f> (rand);
         V3f   axis2  = hollowSphereRand<V3f> (rand);
-        float angle1 = rand.nextf (0, M_PI);
-        float angle2 = rand.nextf (0, M_PI);
+        float angle1 = float(rand.nextf (0, M_PI));
+        float angle2 = float(rand.nextf (0, M_PI));
 
         Quatf q1, q2;
         q1.setAxisAngle (axis1, angle1);

@@ -51,9 +51,9 @@ testEntryAndExitPoints (const Box3f& box)
         for (int i = 0; i < 100000; ++i)
         {
             V3f p1 (
-                random.nextf (box.max.x, box.min.x),
-                random.nextf (box.max.y, box.min.y),
-                random.nextf (box.max.z, box.min.z));
+                float(random.nextf (box.max.x, box.min.x)),
+                float(random.nextf (box.max.y, box.min.y)),
+                float(random.nextf (box.max.z, box.min.z)));
 
             V3f p2 (p1 + hollowSphereRand<V3f> (random));
 
@@ -99,8 +99,8 @@ testEntryAndExitPoints (const Box3f& box)
             // box, and it passes the box at a minimum distance of r1.
             //
 
-            const float r1 = 0.00001;
-            const float r2 = 1.0;
+            const float r1 = 0.00001f;
+            const float r2 = 1.0f;
 
             V3f   p1 = box.min + r2 * hollowSphereRand<V3f> (random);
             V3f   p2;
@@ -142,9 +142,9 @@ testEntryAndExitPoints (const Box3f& box)
         do
         {
             p1 = V3f (
-                random.nextf (bigBox.min.x, bigBox.max.x),
-                random.nextf (bigBox.min.y, bigBox.max.y),
-                random.nextf (bigBox.min.z, bigBox.max.z));
+                float(random.nextf (bigBox.min.x, bigBox.max.x)),
+                float(random.nextf (bigBox.min.y, bigBox.max.y)),
+                float(random.nextf (bigBox.min.z, bigBox.max.z)));
         } while (box.intersects (p1));
 
         V3f p2;
@@ -152,9 +152,9 @@ testEntryAndExitPoints (const Box3f& box)
         do
         {
             p2 = V3f (
-                random.nextf (box.min.x, box.max.x),
-                random.nextf (box.min.y, box.max.y),
-                random.nextf (box.min.z, box.max.z));
+                float(random.nextf (box.min.x, box.max.x)),
+                float(random.nextf (box.min.y, box.max.y)),
+                float(random.nextf (box.min.z, box.max.z)));
         } while (approximatelyEqual (p1, p2, e));
 
         Line3f ray (p1, p2);
@@ -423,9 +423,9 @@ testRayBoxIntersection (const Box3f& box)
         for (int i = 0; i < 100000; ++i)
         {
             V3f p1 (
-                random.nextf (box.max.x, box.min.x),
-                random.nextf (box.max.y, box.min.y),
-                random.nextf (box.max.z, box.min.z));
+                float(random.nextf (box.max.x, box.min.x)),
+                float(random.nextf (box.max.y, box.min.y)),
+                float(random.nextf (box.max.z, box.min.z)));
 
             V3f p2 (p1 + hollowSphereRand<V3f> (random));
 
@@ -471,8 +471,8 @@ testRayBoxIntersection (const Box3f& box)
             // box, and it passes the box at a minimum distance of r1.
             //
 
-            const float r1 = 0.00001;
-            const float r2 = 1.0;
+            const float r1 = 0.00001f;
+            const float r2 = 1.0f;
 
             V3f   p1 = box.min + r2 * hollowSphereRand<V3f> (random);
             V3f   p2;
@@ -504,9 +504,9 @@ testRayBoxIntersection (const Box3f& box)
     for (int i = 0; i < 1000; ++i)
     {
         V3f p1 (
-            random.nextf (box.min.x, box.max.x),
-            random.nextf (box.min.y, box.max.y),
-            random.nextf (box.min.z, box.max.z));
+            float(random.nextf (box.min.x, box.max.x)),
+            float(random.nextf (box.min.y, box.max.y)),
+            float(random.nextf (box.min.z, box.max.z)));
 
         V3f p2 (p1 + hollowSphereRand<V3f> (random));
 
@@ -531,9 +531,9 @@ testRayBoxIntersection (const Box3f& box)
         do
         {
             p1 = V3f (
-                random.nextf (bigBox.min.x, bigBox.max.x),
-                random.nextf (bigBox.min.y, bigBox.max.y),
-                random.nextf (bigBox.min.z, bigBox.max.z));
+                float(random.nextf (bigBox.min.x, bigBox.max.x)),
+                float(random.nextf (bigBox.min.y, bigBox.max.y)),
+                float(random.nextf (bigBox.min.z, bigBox.max.z)));
         } while (box.intersects (p1));
 
         V3f p2;
@@ -541,9 +541,9 @@ testRayBoxIntersection (const Box3f& box)
         do
         {
             p2 = V3f (
-                random.nextf (box.min.x, box.max.x),
-                random.nextf (box.min.y, box.max.y),
-                random.nextf (box.min.z, box.max.z));
+                float(random.nextf (box.min.x, box.max.x)),
+                float(random.nextf (box.min.y, box.max.y)),
+                float(random.nextf (box.min.z, box.max.z)));
         } while (approximatelyEqual (p1, p2, e));
 
         Line3f ray (p1, p2);

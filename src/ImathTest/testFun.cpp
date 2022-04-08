@@ -90,11 +90,11 @@ testd (double d, bool changeExpected = true)
     double psd =
         IMATH_INTERNAL_NAMESPACE::predd (IMATH_INTERNAL_NAMESPACE::succd (d));
 
-    printf ("d   %0.18lg %lx\n", d, bit_cast<uint64_t> (d));
-    printf ("sd  %0.18lg %lx\n", sd, bit_cast<uint64_t> (sd));
-    printf ("pd  %0.18lg %lx\n", pd, bit_cast<uint64_t> (pd));
-    printf ("spd %0.18lg %lx\n", spd, bit_cast<uint64_t> (spd));
-    printf ("psd %0.18lg %lx\n", psd, bit_cast<uint64_t> (psd));
+    printf ("d   %0.18lg %llx\n", d, bit_cast<uint64_t> (d));
+    printf ("sd  %0.18lg %llx\n", sd, bit_cast<uint64_t> (sd));
+    printf ("pd  %0.18lg %llx\n", pd, bit_cast<uint64_t> (pd));
+    printf ("spd %0.18lg %llx\n", spd, bit_cast<uint64_t> (spd));
+    printf ("psd %0.18lg %llx\n", psd, bit_cast<uint64_t> (psd));
 
     fflush (stdout);
 
@@ -299,12 +299,12 @@ testFun ()
     cout << "successor, predecessor" << endl;
 
     testf (0);
-    testf (0.0 * -1.0);
+    testf (0.0f * -1.0f);
     testf (1);
     testf (-1);
     testf (16);
     testf (7);
-    testf (0.7);
+    testf (0.7f);
 
     union
     {
