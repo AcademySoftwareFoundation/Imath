@@ -1,9 +1,9 @@
+# Imath
+
 [![License](https://img.shields.io/github/license/AcademySoftwareFoundation/Imath)](LICENSE.md)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2799/badge)](https://bestpractices.coreinfrastructure.org/projects/2799)
 [![Build Status](https://dev.azure.com/academysoftwarefoundation/Academy%20Software%20Foundation/_apis/build/status/academysoftwarefoundation.Imath)](https://dev.azure.com/academysoftwarefoundation/Academy%20Software%20Foundation/_build?definitionId=4&_a=summary)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AcademySoftwareFoundation_Imath&metric=alert_status)](https://sonarcloud.io/dashboard?id=AcademySoftwareFoundation_Imath)
-
-# Imath
 
 Imath is a basic, light-weight, and efficient C++ representation of 2D
 and 3D vectors and matrices and other simple but useful mathematical
@@ -12,22 +12,22 @@ applications, including the “half” 16-bit floating-point type.
 
 Imath also includes optional python bindings for all types and
 functions, including optimized implementations of vector and matrix
-arrays. 
+arrays.
 
-### Project Mission
+## Project Mission
 
 The goals of the Imath project are simplicity, ease of use,
 correctness and verifiability, performance, and breadth of
 adoption. Imath is not intended to be a comprehensive linear algebra
 or numerical analysis package.
 
-### Features
+## Features
 
 * half: 16-bit floating-point type
-* Vector: V2s, V2i, V2i64, V2f, V2d, V3s, V3i, V4i64, V3f, V3d, V4s, V4i, V4i64, V4f, V4d 
-* Matrix: M22f, M22d, M33f, M33d, M44f, M44d 
+* Vector: V2s, V2i, V2i64, V2f, V2d, V3s, V3i, V4i64, V3f, V3d, V4s, V4i, V4i64, V4f, V4d
+* Matrix: M22f, M22d, M33f, M33d, M44f, M44d
 * Bounding box: Box2s, Box2i, Box2i64, Box2f, Box2d, Box3s, Box3i, Box3i64, Box3f, Box3d
-* Color: C3h, C3f, C3c, C4f, C4h, C4c 
+* Color: C3h, C3f, C3c, C4f, C4h, C4c
 * Euler angles: Eulerf, Eulerd
 * Quaternion: Quatf, Quatd
 * Viewing frustum: Frustrumf, Frustumd
@@ -38,7 +38,7 @@ or numerical analysis package.
 * Shear: Shear3f, Shear3d, Shear6f, Shear6
 * Miscellaneous math functions
   
-### New Features in 3.1
+## New Features in 3.1
 
 The 3.1 release of Imath introduces optimized half-to-float and
 float-to-half conversion using the F16C SSE instruction set extension,
@@ -55,20 +55,20 @@ architectures where memory is limited. The float-to-half conversion
 also no longer requires an exponent lookup table, further reducing
 memory requirements.
 
-These new conversions generate the same values as the tranditional
+These new conversions generate the same values as the traditional
 methods, which ensures backwards compatibility.  See
 [INSTALL.md](INSTALL.md#imath-configuration-settings) for more
-installation and configuation options.
+installation and configuration options.
 
 Also, ``half.h`` can now be included in pure C code for a definition
 of the type and for conversions between half and float.
 
-### Supported Platforms
+## Supported Platforms
 
 Imath builds on Linux, macOS, Microsoft Windows, and is
 cross-compilable on other systems.
 
-### About Imath
+## About Imath
 
 Imath was originally developed at Industrial Light & Magic in the
 early 2000's and was originally distributed as open source as a part
@@ -84,7 +84,7 @@ for more information about how the project operates.
 The OpenEXR project is dedicated to promoting a harassment-free
 community. Read our [code of conduct](CODE_OF_CONDUCT.md).
 
-### Developer Quick Start
+## Developer Quick Start
 
 Technical documentation for the Imath classes and functions can be found at
 [imath.readthedocs.io](https://imath.readthedocs.io).
@@ -97,16 +97,16 @@ with an earlier release of Imath, the [porting
 guide](https://github.com/AcademySoftwareFoundation/Imath/blob/main/docs/PortingGuide2-3.md)
 explains some of the differences and how to address them.
 
-### A Note about Versioning
+## A Note about Versioning
 
 Because Imath was originally distributed as a part of OpenEXR, it has
-already had two major release versions, as a part of OpenEXR v1.* and
-v2.*. To avoid confusion with these original releases, the first
+already had two major release versions, as a part of OpenEXR v1 and
+v2. To avoid confusion with these original releases, the first
 version of Imath released independently of OpenEXR is Version v3.0. To
 be clear, the versioning and release of Imath is no longer tied to
 OpenEXR.
 
-### Getting Help
+## Getting Help
 
 Connect with the project through:
 
@@ -119,9 +119,9 @@ Connect with the project through:
   
 * GitHub Issues: GitHub issues are used both to track bugs and to
   discuss feature requests. Submit an issue here:
-  https://github.com/AcademySoftwareFoundation/imath/issues. 
+  <https://github.com/AcademySoftwareFoundation/imath/issues>.
 
-### Getting Involved
+## Getting Involved
 
 The OpenEXR developer community welcomes contributions to the
 project. See [CONTRIBUTING.md](CONTRIBUTING.md) for more information
