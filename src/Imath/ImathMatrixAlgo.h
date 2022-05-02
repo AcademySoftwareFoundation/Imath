@@ -1033,7 +1033,7 @@ addOffset (const Matrix44<T>& inMat,
     Matrix44<T> O;
 
     Vec3<T> _rOffset (rOffset);
-    _rOffset *= M_PI / 180.0;
+    _rOffset *= T(M_PI / 180.0);
     O.rotate (_rOffset);
 
     O[3][0] = tOffset[0];

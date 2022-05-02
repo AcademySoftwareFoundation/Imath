@@ -39,7 +39,7 @@ addItem (const std::vector<int>& value, std::vector<T>& perms)
     T p;
     for (unsigned int i = 0; i < value.size(); i++)
     {
-        p[i] = value[i];
+        p[i] = static_cast<typename T::BaseType>(value[i]);
     }
     perms.push_back (p);
 }
@@ -92,8 +92,8 @@ testConstructors (const char* type)
     //
     {
         T p;
-        for (unsigned int i = 0; i < T::dimensions(); i++)
-            p[i] = i;
+        for (unsigned int i = 0; i < T::dimensions (); i++)
+            p[i] = static_cast<typename T::BaseType>(i);
 
         IMATH_INTERNAL_NAMESPACE::Box<T> b (p);
         assert (b.min == p && b.max == p);
@@ -107,8 +107,8 @@ testConstructors (const char* type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p0[i] = i;
-            p1[i] = 10 * T::dimensions() - i - 1;
+            p0[i] = static_cast<typename T::BaseType>(i);
+            p1[i] = static_cast<typename T::BaseType>(10 * T::dimensions () - i - 1);
         }
 
         IMATH_INTERNAL_NAMESPACE::Box<T> b (p0, p1);
@@ -610,7 +610,7 @@ testSize (const char* type)
         T p;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p[i] = i;
+            p[i] = static_cast<typename T::BaseType>(i);
         }
         IMATH_INTERNAL_NAMESPACE::Box<T> b1 (-p, p);
         assert (b1.size() == p * T (2));
@@ -669,8 +669,10 @@ testCenter (const char* type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p0[i] = -typename T::BaseType (1 << (i + 1));
-            p1[i] = typename T::BaseType (1 << (T::dimensions() - i));
+            int lo = 1 << (i + 1);
+            int hi = 1 << (T::dimensions () - i);
+            p0[i] = -static_cast<typename T::BaseType>(lo);
+            p1[i] = static_cast<typename T::BaseType>(hi);
         }
         IMATH_INTERNAL_NAMESPACE::Box<T> b1 (p0, p1);
         assert (b1.center() == (p1 + p0) / 2);
@@ -722,8 +724,10 @@ testIsEmpty (const char* type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p0[i] = -typename T::BaseType (1 << (i + 1));
-            p1[i] = typename T::BaseType (1 << (T::dimensions() - i));
+            int lo = 1 << (i + 1);
+            int hi = 1 << (T::dimensions () - i);
+            p0[i] = -static_cast<typename T::BaseType>(lo);
+            p1[i] = static_cast<typename T::BaseType>(hi);
         }
         IMATH_INTERNAL_NAMESPACE::Box<T> b1 (p0, p1);
         assert (!b1.isEmpty());
@@ -776,8 +780,10 @@ testIsInfinite (const char* type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p0[i] = -typename T::BaseType (1 << (i + 1));
-            p1[i] = typename T::BaseType (1 << (T::dimensions() - i));
+            int lo = 1 << (i + 1);
+            int hi = 1 << (T::dimensions () - i);
+            p0[i] = -static_cast<typename T::BaseType>(lo);
+            p1[i] = static_cast<typename T::BaseType>(hi);
         }
         IMATH_INTERNAL_NAMESPACE::Box<T> b1 (p0, p1);
         assert (!b1.isInfinite());
@@ -838,8 +844,10 @@ testHasVolume (const char* type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p0[i] = -typename T::BaseType (1 << (i + 1));
-            p1[i] = typename T::BaseType (1 << (T::dimensions() - i));
+            int lo = 1 << (i + 1);
+            int hi = 1 << (T::dimensions () - i);
+            p0[i] = -static_cast<typename T::BaseType>(lo);
+            p1[i] = static_cast<typename T::BaseType>(hi);
         }
         IMATH_INTERNAL_NAMESPACE::Box<T> b1 (p0, p1);
         assert (b1.hasVolume());

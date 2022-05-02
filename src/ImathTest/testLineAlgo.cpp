@@ -342,8 +342,8 @@ testIntersect()
 
             do
             {
-                b.x = rand.nextf (0.001, 0.999);
-                b.y = rand.nextf (0.001, 0.999);
+                b.x = float(rand.nextf (0.001, 0.999));
+                b.y = float(rand.nextf (0.001, 0.999));
                 b.z = 1 - b.x - b.y;
             } while (b.x + b.y > 0.999);
 
@@ -384,8 +384,8 @@ testIntersect()
 
             do
             {
-                b.x = rand.nextf (-3, 3);
-                b.y = rand.nextf (-3, 3);
+                b.x = float(rand.nextf (-3, 3));
+                b.y = float(rand.nextf (-3, 3));
                 b.z = 1 - b.x - b.y;
             } while (b.x > -0.001 && b.y > -0.001 && b.z > -0.001);
 

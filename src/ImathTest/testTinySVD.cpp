@@ -262,75 +262,85 @@ testTinySVDImp()
     testTinySVD_3x3<T> (0, 0, 0, 0, 0, 0, 0, 0, 1);
     testTinySVD_3x3<T> (1, 0, 0, 0, 1, 0, 0, 0, 0);
     testTinySVD_3x3<T> (1, 0, 0, 0, 0, 0, 0, 0, 0);
-    testTinySVD_3x3<T> (1, 0, 0, 1e-10, 0, 0, 0, 0, 0);
-    testTinySVD_3x3<T> (1, 0, 0, 1e-10, 0, 0, 0, 0, 100000);
+    testTinySVD_3x3<T> (1, 0, 0, T(1e-10), 0, 0, 0, 0, 0);
+    testTinySVD_3x3<T> (1, 0, 0, T(1e-10), 0, 0, 0, 0, 100000);
     testTinySVD_3x3<T> (1, 2, 3, 4, 5, 6, 7, 8, 9);
     testTinySVD_3x3<T> (1, 2, 3, 4, 5, 6, 7, 8, 9);
-    testTinySVD_3x3<T> (outerProduct (IMATH_INTERNAL_NAMESPACE::Vec3<T> (100, 1e-5, 0),
-                                      IMATH_INTERNAL_NAMESPACE::Vec3<T> (100, 1e-5, 0)));
-    testTinySVD_3x3<T> (outerProduct (IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1),
-                                      IMATH_INTERNAL_NAMESPACE::Vec3<T> (256, 300, 20)));
-    testTinySVD_3x3<T> (outerProduct (IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1),
-                                      IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1)) +
-                        outerProduct (IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 2, 3),
-                                      IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 2, 3)));
+    testTinySVD_3x3<T> (outerProduct (
+        IMATH_INTERNAL_NAMESPACE::Vec3<T> (100, T(1e-5), 0),
+        IMATH_INTERNAL_NAMESPACE::Vec3<T> (100, T(1e-5), 0)));
+    testTinySVD_3x3<T> (outerProduct (
+        IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1),
+        IMATH_INTERNAL_NAMESPACE::Vec3<T> (256, 300, 20)));
+    testTinySVD_3x3<T> (
+        outerProduct (
+            IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1),
+            IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1)) +
+        outerProduct (
+            IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 2, 3),
+            IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 2, 3)));
 
     // Some problematic matrices from SVDTest:
-    testTinySVD_3x3<T> (0.0023588321752040036,
-                        -0.0096558131480729038,
-                        0.0010959850449366493,
-                        0.0088671829608044754,
-                        0.0016771794267033666,
-                        -0.0043081475729438235,
-                        0.003976050440932701,
-                        0.0019880497026345716,
-                        0.0089576046614601966);
-    testTinySVD_3x3<T> (2.3588321752040035e-09,
-                        -9.6558131480729038e-09,
-                        1.0959850449366498e-09,
-                        8.8671829608044748e-09,
-                        1.6771794267033661e-09,
-                        -4.3081475729438225e-09,
-                        3.9760504409327016e-09,
-                        1.9880497026345722e-09,
-                        8.9576046614601957e-09);
-    testTinySVD_3x3<T> (-0.46673855799602715,
-                        0.67466260360310948,
-                        0.97646986796448998,
-                        -0.032460753747103721,
-                        0.046584527749418278,
-                        0.067431228641151142,
-                        -0.088885055229687815,
-                        0.1280389179308779,
-                        0.18532617511453064);
-    testTinySVD_3x3<T> (1e-8, 0, 0, 0, 1e-8, 0, 0, 0, 1e-8);
-    testTinySVD_3x3<T> (1, 0, 0, 0, .00036, 0, 1e-18, 0, .00018);
-    testTinySVD_3x3<T> (1.3, 0, 0, 0, .0003, 0, 1e-17, 0, 0);
-    testTinySVD_3x3<T> (1, 0, 0, 0, 1e-2, 0, 0, 0, 1e-2);
+    testTinySVD_3x3<T> (
+        T(0.0023588321752040036),
+        T(-0.0096558131480729038),
+        T(0.0010959850449366493),
+        T(0.0088671829608044754),
+        T(0.0016771794267033666),
+        T(-0.0043081475729438235),
+        T(0.003976050440932701),
+        T(0.0019880497026345716),
+        T(0.0089576046614601966));
+    testTinySVD_3x3<T> (
+        T(2.3588321752040035e-09),
+        T(-9.6558131480729038e-09),
+        T(1.0959850449366498e-09),
+        T(8.8671829608044748e-09),
+        T(1.6771794267033661e-09),
+        T(-4.3081475729438225e-09),
+        T(3.9760504409327016e-09),
+        T(1.9880497026345722e-09),
+        T(8.9576046614601957e-09));
+    testTinySVD_3x3<T> (
+        T(-0.46673855799602715),
+        T(0.67466260360310948),
+        T(0.97646986796448998),
+        T(-0.032460753747103721),
+        T(0.046584527749418278),
+        T(0.067431228641151142),
+        T(-0.088885055229687815),
+        T(0.1280389179308779),
+        T(0.18532617511453064));
+    testTinySVD_3x3<T> (T(1e-8), 0, 0, 0, T(1e-8), 0, 0, 0, T(1e-8));
+    testTinySVD_3x3<T> (1, 0, 0, 0, T(.00036), 0, T(1e-18), 0, T(.00018));
+    testTinySVD_3x3<T> (T(1.3), 0, 0, 0, T(.0003), 0, T(1e-17), 0, 0);
+    testTinySVD_3x3<T> (1, 0, 0, 0, T(1e-2), 0, 0, 0, T(1e-2));
     testTinySVD_3x3<T> (1, 0, 0, 0, 1, 0, 0, 0, 0);
-    testTinySVD_3x3<T> (1, 0, 0, 0, 1e-3, 0, 0, 0, 1e-6);
-    testTinySVD_3x3<T> (0.59588638570136332,
-                        -0.79761234126107794,
-                        -1,
-                        0.39194500425202045,
-                        0.91763115383440363,
-                        -0.341818175044664,
-                        -0.45056075218951946,
-                        -0.71259057727425101,
-                        0.47125008216720271);
-    testTinySVD_3x3<T> (4.38805348e-09,
-                        -2.53189691e-09,
-                        -4.65678607e-09,
-                        -3.23000099e-10,
-                        1.86370294e-10,
-                        3.42781192e-10,
-                        -4.61572824e-09,
-                        2.6632645e-09,
-                        4.89840346e-09);
+    testTinySVD_3x3<T> (1, 0, 0, 0, T(1e-3), 0, 0, 0, T(1e-6));
+    testTinySVD_3x3<T> (
+        T(0.59588638570136332),
+        T(-0.79761234126107794),
+        -1,
+        T(0.39194500425202045),
+        T(0.91763115383440363),
+        T(-0.341818175044664),
+        T(-0.45056075218951946),
+        T(-0.71259057727425101),
+        T(0.47125008216720271));
+    testTinySVD_3x3<T> (
+        T(4.38805348e-09),
+        T(-2.53189691e-09),
+        T(-4.65678607e-09),
+        T(-3.23000099e-10),
+        T(1.86370294e-10),
+        T(3.42781192e-10),
+        T(-4.61572824e-09),
+        T(2.6632645e-09),
+        T(4.89840346e-09));
     // problematic 2x2 one for lapack on suse (see below), padded with 0's
-    testTinySVD_3x3<T> (0, -1.00000003e-22, 0, 1.00000001e-07, 0, 0, 0, 0, 0);
+    testTinySVD_3x3<T> (0, T(-1.00000003e-22), 0, T(1.00000001e-07), 0, 0, 0, 0, 0);
     // problematic 2x2 one for lapack on suse (see below), padded with 0's and 1
-    testTinySVD_3x3<T> (0, -1.00000003e-22, 0, 1.00000001e-07, 0, 0, 0, 0, 1);
+    testTinySVD_3x3<T> (0, T(-1.00000003e-22), 0, T(1.00000001e-07), 0, 0, 0, 0, 1);
 
     // Now, 4x4 matrices:
     testTinySVD_4x4<T> (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
@@ -340,15 +350,36 @@ testTinySVDImp()
     testTinySVD_4x4<T> (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     testTinySVD_4x4<T> (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     testTinySVD_4x4<T> (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
-    testTinySVD_4x4<T> (0, -1.00000003e-22, 0, 0, 00000001e-07, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    testTinySVD_4x4<T> (outerProduct (IMATH_INTERNAL_NAMESPACE::Vec4<T> (100, 1e-5, 0, 0),
-                                      IMATH_INTERNAL_NAMESPACE::Vec4<T> (100, 1e-5, 0, 0)));
-    testTinySVD_4x4<T> (outerProduct (IMATH_INTERNAL_NAMESPACE::Vec4<T> (245, 20, 1, 0.5),
-                                      IMATH_INTERNAL_NAMESPACE::Vec4<T> (256, 300, 20, 10)));
-    testTinySVD_4x4<T> (outerProduct (IMATH_INTERNAL_NAMESPACE::Vec4<T> (245, 20, 1, 0.5),
-                                      IMATH_INTERNAL_NAMESPACE::Vec4<T> (256, 300, 20, 10)) +
-                        outerProduct (IMATH_INTERNAL_NAMESPACE::Vec4<T> (30, 10, 10, 10),
-                                      IMATH_INTERNAL_NAMESPACE::Vec4<T> (1, 2, 3, 3)));
+    testTinySVD_4x4<T> (
+        0,
+        T(-1.00000003e-22),
+        0,
+        0,
+        T(00000001e-07),
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1);
+    testTinySVD_4x4<T> (outerProduct (
+        IMATH_INTERNAL_NAMESPACE::Vec4<T> (100, T(1e-5), 0, 0),
+        IMATH_INTERNAL_NAMESPACE::Vec4<T> (100, T(1e-5), 0, 0)));
+    testTinySVD_4x4<T> (outerProduct (
+        IMATH_INTERNAL_NAMESPACE::Vec4<T> (245, 20, 1, T(0.5)),
+        IMATH_INTERNAL_NAMESPACE::Vec4<T> (256, 300, 20, 10)));
+    testTinySVD_4x4<T> (
+        outerProduct (
+            IMATH_INTERNAL_NAMESPACE::Vec4<T> (245, 20, 1, T(0.5)),
+            IMATH_INTERNAL_NAMESPACE::Vec4<T> (256, 300, 20, 10)) +
+        outerProduct (
+            IMATH_INTERNAL_NAMESPACE::Vec4<T> (30, 10, 10, 10),
+            IMATH_INTERNAL_NAMESPACE::Vec4<T> (1, 2, 3, 3)));
 }
 
 void

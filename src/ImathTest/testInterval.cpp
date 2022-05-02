@@ -154,7 +154,7 @@ testExtendByPoint (const char* type)
     //
     for (unsigned int i = 0; i < iters; i++)
     {
-        T p (rand.nextf (-12345, 12345));
+        T p (static_cast<T>(rand.nextf (-12345, 12345)));
         IMATH_INTERNAL_NAMESPACE::Interval<T> b;
         b.extendBy (p);
         assert (b.min == p && b.max == p);
@@ -173,7 +173,7 @@ testExtendByPoint (const char* type)
 
         for (unsigned int j = 0; j < i; j++)
         {
-            T p (rand.nextf (-12345, 12345));
+            T p (static_cast<T>(rand.nextf (-12345, 12345)));
 
             if (j == 0)
             {
@@ -234,8 +234,8 @@ testExtendByInterval (const char* type)
 
         for (unsigned int i = 1; i < iters; i++)
         {
-            T p0 (rand.nextf (0, 999));
-            T p1 (rand.nextf (1000, 1999));
+            T p0 (static_cast<T>(rand.nextf (0, 999)));
+            T p1 (static_cast<T>(rand.nextf (1000, 1999)));
 
             min = b.min;
             max = b.max;

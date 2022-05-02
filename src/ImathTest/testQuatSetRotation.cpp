@@ -116,8 +116,8 @@ randomVectors()
 
     for (int i = 0; i < 500000; ++i)
     {
-        V3f from = hollowSphereRand<V3f> (rand) * rand.nextf (0.1, 10.0);
-        V3f to   = hollowSphereRand<V3f> (rand) * rand.nextf (0.1, 10.0);
+        V3f from = hollowSphereRand<V3f> (rand) * float(rand.nextf (0.1, 10.0));
+        V3f to   = hollowSphereRand<V3f> (rand) * float(rand.nextf (0.1, 10.0));
         testRotation (from, to);
     }
 }
