@@ -90,7 +90,7 @@ testGenerator()
 
     for (int i = 0; i < M * N; ++i)
     {
-        float r    = rand.nextf (0.0, 1.0);
+        float r    = float(rand.nextf (0.0, 1.0));
         float diff = r - previous;
         previous   = r;
 

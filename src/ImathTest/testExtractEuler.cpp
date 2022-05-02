@@ -24,7 +24,7 @@ namespace
 float
 rad (float deg)
 {
-    return deg * (M_PI / 180);
+    return deg * float(M_PI / 180);
 }
 
 M44f
@@ -100,10 +100,11 @@ testRandomAngles (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf
         // Create a rotation matrix, M
         //
 
-        Eulerf e (rad (r.nextf (-180, 180)),
-                  rad (r.nextf (-180, 180)),
-                  rad (r.nextf (-180, 180)),
-                  Eulerf::XYZ);
+        Eulerf e (
+            rad (float(r.nextf (-180, 180))),
+            rad (float(r.nextf (-180, 180))),
+            rad (float(r.nextf (-180, 180))),
+            Eulerf::XYZ);
 
         M44f M (e.toMatrix44());
 
@@ -113,7 +114,7 @@ testRandomAngles (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf
 
         for (int j = 0; j < 3; ++j)
             for (int k = 0; k < 3; ++k)
-                M[j][k] += r.nextf (-1e-7, 1e-7);
+                M[j][k] += float(r.nextf (-1e-7, 1e-7));
 
         //
         // Extract Euler angles from M, convert the Euler angles
@@ -169,7 +170,7 @@ test (M44f (*matrixEulerMatrix) (const M44f&, Eulerf::Order), Eulerf::Order orde
     for (int i = 0; i < 360; i += 90)
         for (int j = 0; j < 360; j += 90)
             for (int k = 0; k < 360; k += 90)
-                testAngles (V3f (i, j, k), matrixEulerMatrix, order);
+                testAngles (V3f (float(i), float(j), float(k)), matrixEulerMatrix, order);
 }
 
 void
@@ -177,11 +178,11 @@ testRandomAngles33()
 {
     Rand48 r (0);
 
-    float eps = 8.0 * std::numeric_limits<float>::epsilon();
+    float eps = 8.0f * std::numeric_limits<float>::epsilon ();
 
     for (int i = 0; i < 100000; ++i)
     {
-        float angle = rad (r.nextf (-180, 180));
+        float angle = rad (float(r.nextf (-180, 180)));
 
         M33f M;
         M.setRotation (angle);

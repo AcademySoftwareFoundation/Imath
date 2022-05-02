@@ -47,7 +47,7 @@ testTranslationRotationMatrix (const IMATH_INTERNAL_NAMESPACE::M44d& mat)
     const IMATH_INTERNAL_NAMESPACE::M44d m2 =
         procrustesRotationAndTranslation (&from[0], &to[0], numPoints);
 
-    const T eps = sizeof (T) == 8 ? 1e-8 : 1e-4;
+    const T eps = sizeof (T) == 8 ? T(1e-8) : T(1e-4);
     for (size_t i = 0; i < numPoints; ++i)
     {
         const IMATH_INTERNAL_NAMESPACE::V3d a  = from[i];
@@ -74,13 +74,16 @@ testWithTranslateRotateAndScale (const IMATH_INTERNAL_NAMESPACE::M44d& m)
     std::vector<V3> from;
     std::vector<T> weights;
 
-    const float eps = 1e-4;
+    const float eps = 1e-4f;
     std::cout << "numPoints: " << std::flush;
     for (size_t numPoints = 1; numPoints < 10; ++numPoints)
     {
-        from.push_back (V3 (rand.nextf(), rand.nextf(), rand.nextf()));
-        weights.push_back (rand.nextf());
-        std::cout << from.size() << " ";
+        from.push_back (V3(
+            static_cast<T>(rand.nextf()),
+            static_cast<T>(rand.nextf()),
+            static_cast<T>(rand.nextf())));
+        weights.push_back(static_cast<T>(rand.nextf()));
+        std::cout << from.size () << " ";
 
         std::vector<V3> to;
         for (size_t i = 0; i < from.size(); ++i)
@@ -155,8 +158,8 @@ verifyProcrustes (const std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>>& from,
             assert (std::abs (m1[i][j] - m2[i][j]) < eps);
 
     // Now try the weighted version:
-    for (size_t i = 0; i < weights.size(); ++i)
-        weights[i] = i + 1;
+    for (size_t i = 0; i < weights.size (); ++i)
+        weights[i] = static_cast<T>(i + 1);
 
     IMATH_INTERNAL_NAMESPACE::M44d m =
         procrustesRotationAndTranslation (&from[0], &to[0], &weights[0], n);
@@ -166,7 +169,7 @@ verifyProcrustes (const std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>>& from,
         procrustesRotationAndTranslation (&from[0], &to[0], &weights[0], n, true);
 
     // Verify that it's orthonormal w/ positive determinant.
-    const T det = m.determinant();
+    const T det = static_cast<T>(m.determinant ());
     assert (std::abs (det - T (1)) < eps);
 
     // Verify orthonormal:
@@ -209,16 +212,16 @@ verifyProcrustes (const std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>>& from,
     }
 
     // Try a small scale:
-    IMATH_INTERNAL_NAMESPACE::M44d newMat = ms;
-    const double scaleDiff                = delta;
-    for (size_t i = 0; i < 3; ++i)
-        for (size_t j = 0; j < 3; ++j)
+    IMATH_INTERNAL_NAMESPACE::M44d newMat    = ms;
+    const double                   scaleDiff = delta;
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
             newMat[i][j] = ms[i][j] * (1.0 + scaleDiff);
     assert (procrustesError (&from[0], &to[0], &weights[0], n, newMat) >
             procrustesError (&from[0], &to[0], &weights[0], n, ms));
 
-    for (size_t i = 0; i < 3; ++i)
-        for (size_t j = 0; j < 3; ++j)
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
             newMat[i][j] = ms[i][j] * (1.0 - scaleDiff);
     assert (procrustesError (&from[0], &to[0], &weights[0], n, newMat) >
             procrustesError (&from[0], &to[0], &weights[0], n, ms));
@@ -342,10 +345,11 @@ testProcrustesImp()
     for (size_t i = 0; i < 4; ++i)
     {
         const T theta = T (2 * i) / T (M_PI);
-        fromPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (cos (theta), sin (theta), 0));
-        toPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (cos (theta + M_PI / 3.0),
-                                                               sin (theta + M_PI / 3.0),
-                                                               0));
+        const T offset = T(M_PI / 3.0);
+        fromPoints.push_back (
+            IMATH_INTERNAL_NAMESPACE::Vec3<T> (cos (theta), sin (theta), 0));
+        toPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (
+            cos (theta + offset), sin (theta + offset), 0));
     }
     verifyProcrustes (fromPoints, toPoints);
 
@@ -356,10 +360,14 @@ testProcrustesImp()
         toPoints.clear();
         for (size_t i = 0; i < numPoints; ++i)
         {
-            fromPoints.push_back (
-                IMATH_INTERNAL_NAMESPACE::Vec3<T> (random.nextf(), random.nextf(), random.nextf()));
-            toPoints.push_back (
-                IMATH_INTERNAL_NAMESPACE::Vec3<T> (random.nextf(), random.nextf(), random.nextf()));
+            fromPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (
+                static_cast<T>(random.nextf ()),
+                static_cast<T>(random.nextf ()),
+                static_cast<T>(random.nextf ())));
+            toPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (
+                static_cast<T>(random.nextf ()),
+                static_cast<T>(random.nextf ()),
+                static_cast<T>(random.nextf ())));
         }
     }
     verifyProcrustes (fromPoints, toPoints);
@@ -377,7 +385,7 @@ testProcrustesImp()
     m = m * rot.toMatrix44();
     testProcrustesWithMatrix<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (1.5, 6.4, 2.0));
+    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (T(1.5), T(6.4), T(2.0)));
     testProcrustesWithMatrix<T> (m);
 
     IMATH_INTERNAL_NAMESPACE::Eulerd rot2 (1.0, M_PI, M_PI / 3.0);
@@ -386,7 +394,7 @@ testProcrustesImp()
     m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (-1, 1, 1));
     testProcrustesWithMatrix<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 0.001, 1));
+    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, T(0.001), 1));
     testProcrustesWithMatrix<T> (m);
 
     m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 1, 0));
