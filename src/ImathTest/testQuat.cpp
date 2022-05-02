@@ -95,7 +95,7 @@ testQuatT ()
 
     {
         Quat<T> q;
-        q.setAxisAngle (Vec3<T> (0, 0, 1), M_PI_2);
+        q.setAxisAngle (Vec3<T> (0, 0, 1), T(M_PI_2));
         Vec3<T> v = q.axis ();
         T       a = q.angle ();
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
@@ -117,8 +117,8 @@ testQuatT ()
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
         assert (IMATH_INTERNAL_NAMESPACE::equal (a, t, t * e));
 
-        q.r *= 1.1;
-        q.v *= 1.1;
+        q.r *= T(1.1);
+        q.v *= T(1.1);
         v = q.axis ();
         a = q.angle ();
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
@@ -126,7 +126,7 @@ testQuatT ()
     }
 
     {
-        T t = 0.001 * std::sqrt (s);
+        T t = T(0.001) * std::sqrt (s);
 
         Quat<T> q;
         q.setAxisAngle (Vec3<T> (0, 0, 1), t);
@@ -135,8 +135,8 @@ testQuatT ()
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
         assert (IMATH_INTERNAL_NAMESPACE::equal (a, t, t * e));
 
-        q.r *= 1.1;
-        q.v *= 1.1;
+        q.r *= T(1.1);
+        q.v *= T(1.1);
         v = q.axis ();
         a = q.angle ();
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));

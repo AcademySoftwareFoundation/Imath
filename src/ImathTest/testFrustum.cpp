@@ -28,7 +28,7 @@ testFrustumPlanes (IMATH_INTERNAL_NAMESPACE::Frustumf& frustum)
 {
     bool                          ortho = frustum.orthographic ();
     IMATH_INTERNAL_NAMESPACE::V3f o (0.0f, 0.0f, 0.0f);
-    float                         eps = 5.0e-4;
+    float                         eps = 5.0e-4f;
 
     for (auto xRo: {0.0f, 100.0f, 200.0f})
     {
@@ -174,12 +174,12 @@ testFrustum ()
 
     cout << "\nperspective ";
 
-    float n = 1.7;
-    float f = 567.0;
-    float l = -3.5;
-    float r = 2.0;
-    float b = -1.3;
-    float t = 0.9;
+    float n = 1.7f;
+    float f = 567.0f;
+    float l = -3.5f;
+    float r = 2.0f;
+    float b = -1.3f;
+    float t = 0.9f;
 
     IMATH_INTERNAL_NAMESPACE::Frustum<float> frustum (n, f, l, r, t, b, false);
 
@@ -201,51 +201,51 @@ testFrustum ()
     IMATH_INTERNAL_NAMESPACE::M44f m = frustum.projectionMatrixExc ();
     assert (
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][0] - ((2 * n) / (r - l))) <
-            1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][3]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][0]) < 1e-6 &&
+            1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][3]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][0]) < 1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][1] - ((2 * n) / (t - b))) <
-            1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][2]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][3]) < 1e-6 &&
+            1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][2]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][3]) < 1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][0] - ((r + l) / (r - l))) <
-            1e-6 &&
+            1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][1] - ((t + b) / (t - b))) <
-            1e-6 &&
+            1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][2] - (-(f + n) / (f - n))) <
-            1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][3] - -1.0) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][0]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][1]) < 1e-6 &&
+            1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][3] - -1.0f) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][0]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][1]) < 1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (
-            m[3][2] - ((-2 * f * n) / (f - n))) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3]) < 1e-6);
+            m[3][2] - ((-2 * f * n) / (f - n))) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3]) < 1e-6f);
     m = frustum.projectionMatrix ();
     assert (
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][0] - ((2 * n) / (r - l))) <
-            1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][3]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][0]) < 1e-6 &&
+            1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][3]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][0]) < 1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][1] - ((2 * n) / (t - b))) <
-            1e-6 &&
+            1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][2]) < 1e-6 &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][3]) < 1e-6 &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][0] - ((r + l) / (r - l))) <
-            1e-6 &&
+            1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][1] - ((t + b) / (t - b))) <
-            1e-6 &&
+            1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][2] - (-(f + n) / (f - n))) <
-            1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][3] - -1.0) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][0]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][1]) < 1e-6 &&
+            1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][3] - -1.0f) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][0]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][1]) < 1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (
-            m[3][2] - ((-2 * f * n) / (f - n))) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3]) < 1e-6);
+            m[3][2] - ((-2 * f * n) / (f - n))) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3]) < 1e-6f);
     cout << "3";
 
     cout << "\nplanes ";
@@ -304,26 +304,26 @@ testFrustum ()
 
     m = frustum.projectionMatrix ();
     assert (
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][0] - (2 / (r - l))) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][3]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][0]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][1] - (2 / (t - b))) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][2]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][3]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][0]) < 1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][1]) < 1e-6 &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][0] - (2 / (r - l))) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][1]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][2]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[0][3]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][0]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][1] - (2 / (t - b))) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][2]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[1][3]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][0]) < 1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][1]) < 1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][2] - (-2 / (f - n))) <
-            1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][3]) < 1e-6 &&
+            1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[2][3]) < 1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][0] - (-(r + l) / (r - l))) <
-            1e-6 &&
+            1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][1] - (-(t + b) / (t - b))) <
-            1e-6 &&
+            1e-6f &&
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][2] - (-(f + n) / (f - n))) <
-            1e-6 &&
-        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3] - 1.0) < 1e-6);
+            1e-6f &&
+        IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3] - 1.0f) < 1e-6f);
     cout << "1";
 
     cout << "\nplanes ";
@@ -336,17 +336,17 @@ testFrustum ()
     IMATH_INTERNAL_NAMESPACE::Frustum<float> f1 (n, f, l, r, t, b, false);
     IMATH_INTERNAL_NAMESPACE::Frustum<float> f2 (n, f, l, r, t, b, true);
     assert (f1 != f2);
-    f2.set (n + 0.1, f, l, r, t, b, false);
+    f2.set (n + 0.1f, f, l, r, t, b, false);
     assert (f1 != f2);
-    f2.set (n, f + 0.1, l, r, t, b, false);
+    f2.set (n, f + 0.1f, l, r, t, b, false);
     assert (f1 != f2);
-    f2.set (n, f, l + 0.1, r, t, b, false);
+    f2.set (n, f, l + 0.1f, r, t, b, false);
     assert (f1 != f2);
-    f2.set (n, f, l, r + 0.1, t, b, false);
+    f2.set (n, f, l, r + 0.1f, t, b, false);
     assert (f1 != f2);
-    f2.set (n, f, l, r, t + 0.1, b, false);
+    f2.set (n, f, l, r, t + 0.1f, b, false);
     assert (f1 != f2);
-    f2.set (n, f, l, r, t, b + 0.1, false);
+    f2.set (n, f, l, r, t, b + 0.1f, false);
     assert (f1 != f2);
     cout << "\npassed inequality test";
 
@@ -367,7 +367,7 @@ testFrustum ()
 
     assert (
         f1.ZToDepth (zMin, zMin, zMax) == f1.ZToDepthExc (zMin, zMin, zMax));
-    assert (f1.normalizedZToDepth (zMin) == f1.normalizedZToDepthExc (zMin));
+    assert (f1.normalizedZToDepth (float(zMin)) == f1.normalizedZToDepthExc (float(zMin)));
     assert (f1.DepthToZ (n, zMin, zMax) == f1.DepthToZExc (n, zMin, zMax));
     assert (f1.worldRadius (v3, one) == f1.worldRadiusExc (v3, one));
     assert (f1.screenRadius (v3, one) == f1.screenRadiusExc (v3, one));

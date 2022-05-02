@@ -27,12 +27,12 @@ testFrustumTest ()
 
     cout << "\nisVisible(Vec3) ";
 
-    float n = 1.7;
-    float f = 567.0;
-    float l = -3.5;
-    float r = 2.0;
-    float b = -1.3;
-    float t = 0.9;
+    float n = 1.7f;
+    float f = 567.0f;
+    float l = -3.5f;
+    float r = 2.0f;
+    float b = -1.3f;
+    float t = 0.9f;
 
     IMATH_INTERNAL_NAMESPACE::Frustum<float> frustum (n, f, l, r, t, b, false);
 

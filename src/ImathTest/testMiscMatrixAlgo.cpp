@@ -30,13 +30,13 @@ namespace
 float
 rad (float deg)
 {
-    return deg * (M_PI / 180);
+    return deg * float(M_PI / 180);
 }
 
 void
 testComputeLocalFrame ()
 {
-    float  eps = 0.00005;
+    float  eps = 0.00005f;
     Rand48 random (0);
     for (int i = 0; i < 100000; ++i)
     {
@@ -44,21 +44,21 @@ testComputeLocalFrame ()
 
         // Random pos
         V3f p (
-            random.nextf (-10, 10),
-            random.nextf (-10, 10),
-            random.nextf (-10, 10));
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)));
 
         // Random xDir
         V3f xDir (
-            random.nextf (-10, 10),
-            random.nextf (-10, 10),
-            random.nextf (-10, 10));
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)));
 
         // Random normalDir
         V3f normalDir (
-            random.nextf (-10, 10),
-            random.nextf (-10, 10),
-            random.nextf (-10, 10));
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)));
 
         // Run computeLocalFrame we want to test
         M44f L = computeLocalFrame (p, xDir, normalDir);
@@ -101,18 +101,20 @@ getRandTRS (Rand48& random, V3f& trans, V3f& rot, V3f& scale)
 {
     // Translate
     trans = V3f (
-        random.nextf (-10, 10), random.nextf (-10, 10), random.nextf (-10, 10));
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)),
+            float(random.nextf (-10, 10)));
     // Rotate
     rot = V3f (
-        rad (random.nextf (-180, 180)),
-        rad (random.nextf (-180, 180)),
-        rad (random.nextf (-180, 180)));
+        rad (float(random.nextf (-180, 180))),
+        rad (float(random.nextf (-180, 180))),
+        rad (float(random.nextf (-180, 180))));
 
     // Scale
     V3f s (
-        random.nextf (0.000001, 2.0),
-        random.nextf (0.000001, 2.0),
-        random.nextf (0.000001, 2.0));
+        float(random.nextf (0.000001, 2.0)),
+        float(random.nextf (0.000001, 2.0)),
+        float(random.nextf (0.000001, 2.0)));
     for (int j = 0; j < 3; j++)
         if (random.nextf (0.0, 1.0) >= 0.5) s[j] *= -1;
     scale = s;
@@ -131,9 +133,9 @@ createRandomMat (Rand48& random, V3f& trans, V3f& rot, V3f& scale)
 
     // Shear M.
     V3f h (
-        random.nextf (0.000001, 2.0),
-        random.nextf (0.000001, 2.0),
-        random.nextf (0.000001, 2.0));
+        float(random.nextf (0.000001, 2.0)),
+        float(random.nextf (0.000001, 2.0)),
+        float(random.nextf (0.000001, 2.0)));
 
     for (int j = 0; j < 3; j++)
         if (random.nextf (0.0, 1.0) >= 0.5) h[j] *= -1;
@@ -146,7 +148,7 @@ createRandomMat (Rand48& random, V3f& trans, V3f& rot, V3f& scale)
     //
     for (int j = 0; j < 4; ++j)
         for (int k = 0; k < 3; ++k)
-            M[j][k] += random.nextf (-1e-7, 1e-7);
+            M[j][k] += float(random.nextf (-1e-7, 1e-7));
 
     V3f sh;
     extractSHRT (M, scale, sh, rot, trans);
@@ -162,7 +164,7 @@ createRandomMat (Rand48& random, V3f& trans, V3f& rot, V3f& scale)
 void
 compareMat (M44f& M, M44f& N)
 {
-    float eps = 0.0001;
+    float eps = 0.0001f;
 
     /// Verify that the entries in M and N do not
     // differ too much.

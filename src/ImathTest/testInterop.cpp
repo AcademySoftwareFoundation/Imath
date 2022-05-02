@@ -582,8 +582,8 @@ testInteropMx2 ()
         for (int j = 0; j < 2; ++j)
             for (int i = 0; i < 2; ++i)
             {
-                s[j][i]   = i + j * 2;
-                ref[j][i] = i + j * 2;
+                s[j][i]   = float(i + j * 2);
+                ref[j][i] = float(i + j * 2);
             }
         Matrix22<float> v (s);
         assert (v[0][0] == 0 && v[0][1] == 1 && v[1][0] == 2 && v[1][1] == 3);
@@ -626,8 +626,8 @@ testInteropMx3 ()
         for (int j = 0; j < 3; ++j)
             for (int i = 0; i < 3; ++i)
             {
-                s[j][i]   = i + j * 3;
-                ref[j][i] = i + j * 3;
+                s[j][i]   = float(i + j * 3);
+                ref[j][i] = float(i + j * 3);
             }
         Matrix33<float> v (s);
         assert (
@@ -676,8 +676,8 @@ testInteropMx4 ()
         for (int j = 0; j < 4; ++j)
             for (int i = 0; i < 4; ++i)
             {
-                s[j][i]   = i + j * 4;
-                ref[j][i] = i + j * 4;
+                s[j][i]   = float(i + j * 4);
+                ref[j][i] = float(i + j * 4);
             }
         Matrix44<float> v (s);
         assert (

@@ -63,8 +63,8 @@ void
 verifyOrthonormal (const TM& A, const typename TM::BaseType threshold)
 {
     const TM prod = A * A.transposed ();
-    for (size_t i = 0; i < TM::dimensions (); ++i)
-        for (size_t j = 0; j < TM::dimensions (); ++j)
+    for (unsigned int i = 0; i < TM::dimensions (); ++i)
+        for (unsigned int j = 0; j < TM::dimensions (); ++j)
             if (i == j)
                 assert (std::abs (prod[i][j] - 1) < threshold);
             else
@@ -78,8 +78,8 @@ computeThreshold (const TM& A)
     typedef typename TM::BaseType T;
     T                             maxAbsEntry (0);
 
-    for (size_t i = 0; i < TM::dimensions (); ++i)
-        for (size_t j = 0; j < TM::dimensions (); ++j)
+    for (unsigned int i = 0; i < TM::dimensions (); ++i)
+        for (unsigned int j = 0; j < TM::dimensions (); ++j)
             maxAbsEntry = std::max (maxAbsEntry, std::abs (A[i][j]));
 
     const T eps = std::numeric_limits<T>::epsilon ();
@@ -113,8 +113,8 @@ testJacobiEigenSolver (const TM& A)
 
     // Determinant of A and S
     TM MS;
-    for (size_t i = 0; i < TM::dimensions (); ++i)
-        for (size_t j = 0; j < TM::dimensions (); ++j)
+    for (unsigned int i = 0; i < TM::dimensions (); ++i)
+        for (unsigned int j = 0; j < TM::dimensions (); ++j)
             if (i == j)
                 MS[i][j] = S[i];
             else
@@ -125,8 +125,8 @@ testJacobiEigenSolver (const TM& A)
     // A = V * S * V^T
     TM MA = V * MS * V.transposed ();
 
-    for (size_t i = 0; i < TM::dimensions (); ++i)
-        for (size_t j = 0; j < TM::dimensions (); ++j)
+    for (unsigned int i = 0; i < TM::dimensions (); ++i)
+        for (unsigned int j = 0; j < TM::dimensions (); ++j)
             assert (abs (A[i][j] - MA[i][j]) < threshold);
 }
 
