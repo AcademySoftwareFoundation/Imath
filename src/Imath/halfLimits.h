@@ -6,6 +6,8 @@
 #ifndef INCLUDED_HALF_LIMITS_H
 #define INCLUDED_HALF_LIMITS_H
 
+// Warn if half.h hasn't being included
+#ifndef IMATH_HALF_H_
 //
 // This file is now deprecated. It previously included the
 // specialization of std::numeric_limits<half>, but those now appear
@@ -20,5 +22,5 @@
 #endif
 
 #include "half.h"
-
+#endif
 #endif
