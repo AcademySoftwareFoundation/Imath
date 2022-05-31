@@ -50,7 +50,7 @@ public:
     IMATH_HOSTDEVICE constexpr Color3 (const Vec3<S>& v) IMATH_NOEXCEPT;
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Color3 () = default;
+    ~Color3() = default;
 
     /// Component-wise assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3&
@@ -156,7 +156,7 @@ public:
         IMATH_NOEXCEPT;
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Color4 () = default;
+    ~Color4() = default;
 
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4&

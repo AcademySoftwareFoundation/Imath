@@ -89,7 +89,7 @@ public:
     operator= (const Quat<T>& q) IMATH_NOEXCEPT;
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Quat () IMATH_NOEXCEPT = default;
+    ~Quat () IMATH_NOEXCEPT = default;
 
     /// @}
 

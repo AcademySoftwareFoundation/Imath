@@ -239,7 +239,7 @@ public:
     Euler (const Matrix44<T>&, Order o = Default) IMATH_NOEXCEPT;
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Euler () = default;
+    ~Euler () = default;
 
     /// @}
 

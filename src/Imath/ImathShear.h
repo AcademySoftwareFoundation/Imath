@@ -165,7 +165,7 @@ public:
     operator= (const Vec3<S>& v);
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Shear6 () = default;
+    ~Shear6() = default;
 
     /// @}
 
