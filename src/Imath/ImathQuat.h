@@ -87,7 +87,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Quat
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Quat<T>& operator= (const Quat<T>& q) IMATH_NOEXCEPT;
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Quat() IMATH_NOEXCEPT = default;
+    ~Quat () IMATH_NOEXCEPT = default;
 
     /// @}
 

@@ -234,7 +234,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Euler : public Vec3<T>
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Euler (const Matrix44<T>&, Order o = Default) IMATH_NOEXCEPT;
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Euler() = default;
+    ~Euler () = default;
 
     /// @}
     

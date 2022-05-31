@@ -167,7 +167,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Shear6
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Shear6& operator= (const Vec3<S>& v);
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Shear6() = default;
+    ~Shear6() = default;
 
     /// @}
     

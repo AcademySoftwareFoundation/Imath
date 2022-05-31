@@ -50,7 +50,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Color3 : public Vec3<T>
     template <class S> IMATH_HOSTDEVICE constexpr Color3 (const Vec3<S>& v) IMATH_NOEXCEPT; 
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Color3() = default;
+    ~Color3() = default;
 
     /// Component-wise assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color3& operator= (const Color3& c) IMATH_NOEXCEPT; 
@@ -143,7 +143,7 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Color4
     template <class S> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Color4 (const Color4<S>& v) IMATH_NOEXCEPT; 
 
     /// Destructor
-    IMATH_HOSTDEVICE ~Color4() = default;
+    ~Color4() = default;
 
     /// Assignment
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Color4& operator= (const Color4& v) IMATH_NOEXCEPT; 
