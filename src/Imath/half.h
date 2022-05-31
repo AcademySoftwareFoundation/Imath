@@ -177,8 +177,10 @@
 /// floats in question.
 ///
 
-#ifdef _WIN32
-#        include <intrin.h>
+#ifdef __CUDA_ARCH__
+// do not include intrinsics headers on Cuda
+#elif defined(_WIN32)
+#    include <intrin.h>
 #elif defined(__x86_64__)
 #    include <x86intrin.h>
 #elif defined(__F16C__)
