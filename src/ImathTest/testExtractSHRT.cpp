@@ -206,7 +206,11 @@ testMatrix (const M44f M)
 
     V3f s, h, r, t;
 
-    extractSHRT (M, s, h, r, t, true);
+    if (!extractSHRT (M, s, h, r, t, true))
+    {
+        cout << "Unable to extractSHRT" << std::endl;
+        assert (false);
+    }
 
     M44f N;
 
