@@ -67,12 +67,12 @@ solve (
     // Solve the equation a*x^3 + b*x^2 + c*x +d
     //
 
-    double x[3];
+    double x[3] = { 0, 0, 0 };
     int    n = IMATH_INTERNAL_NAMESPACE::solveCubic (a, b, c, d, x);
 
     //
     // Sort the numerical solutions.
-    // Sorte the expected solutions.
+    // Sort the expected solutions.
     //
     sort (nx, x0, x1, x2);
     sort (n, x);
