@@ -7,6 +7,10 @@ project(imath-examples)
 
 find_package(Imath)
 
+# The introductory example on the main docs page
+add_executable(imath-intro intro.cpp)
+
+# A main() that executes all the example code snippets
 add_executable(imath-examples
   main.cpp
   Color3.cpp
@@ -28,17 +32,17 @@ add_executable(imath-examples
   half.cpp
 )
 
-
+target_link_libraries(imath-intro Imath::Imath)
 target_link_libraries(imath-examples Imath::Imath)
 
-add_executable(imath-intro intro.cpp)
-target_link_libraries(imath-intro Imath::Imath)
-
+set_target_properties(imath-examples PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
 set_target_properties(imath-intro PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
 add_test(NAME Imath.imath-intro COMMAND $<TARGET_FILE:imath-intro>)
-#add_test(NAME Imath.imath-examples COMMAND $<TARGET_FILE:imath-examples>)
+add_test(NAME Imath.imath-examples COMMAND $<TARGET_FILE:imath-examples>)
 
 enable_testing()
