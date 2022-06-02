@@ -1,4 +1,5 @@
 #include <Imath/ImathVec.h>
+#include <cassert>
 
 void
 vec2_example ()

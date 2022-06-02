@@ -1,4 +1,5 @@
 #include <Imath/ImathFrustum.h>
+#include <cassert>
 
 void
 frustum_example ()

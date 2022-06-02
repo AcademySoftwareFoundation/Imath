@@ -28,4 +28,17 @@ add_executable(imath-examples
   half.cpp
 )
 
+
 target_link_libraries(imath-examples Imath::Imath)
+
+add_executable(imath-intro intro.cpp)
+target_link_libraries(imath-intro Imath::Imath)
+
+set_target_properties(imath-intro PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+add_test(NAME Imath.imath-intro COMMAND $<TARGET_FILE:imath-intro>)
+#add_test(NAME Imath.imath-examples COMMAND $<TARGET_FILE:imath-examples>)
+
+enable_testing()

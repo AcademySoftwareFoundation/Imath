@@ -1,4 +1,5 @@
 #include <Imath/ImathLine.h>
+#include <cassert>
 
 void
 line3_example ()

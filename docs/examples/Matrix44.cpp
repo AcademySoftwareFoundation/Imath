@@ -1,5 +1,6 @@
 #include <Imath/ImathMatrix.h>
 #include <Imath/ImathMatrixAlgo.h>
+#include <cassert>
 
 void
 matrix44_example ()
