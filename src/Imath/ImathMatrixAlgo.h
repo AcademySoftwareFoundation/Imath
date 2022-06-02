@@ -1063,7 +1063,8 @@ computeRSMatrix (bool keepRotateA, bool keepScaleA, const Matrix44<T>& A, const 
     extractSHRT (A, as, ah, ar, at);
 
     Vec3<T> bs, bh, br, bt;
-    extractSHRT (B, bs, bh, br, bt);
+    if (!extractSHRT (B, bs, bh, br, bt))
+        throw std::domain_error ("degenerate B matrix in computeRSMatrix");
 
     if (!keepRotateA)
         ar = br;
