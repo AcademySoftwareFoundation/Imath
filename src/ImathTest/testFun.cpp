@@ -90,11 +90,11 @@ testd (double d, bool changeExpected = true)
     double psd =
         IMATH_INTERNAL_NAMESPACE::predd (IMATH_INTERNAL_NAMESPACE::succd (d));
 
-    printf ("d   %0.18lg %lx\n", d, bit_cast<unsigned long> (d));
-    printf ("sd  %0.18lg %lx\n", sd, bit_cast<unsigned long> (sd));
-    printf ("pd  %0.18lg %lx\n", pd, bit_cast<unsigned long> (pd));
-    printf ("spd %0.18lg %lx\n", spd, bit_cast<unsigned long> (spd));
-    printf ("psd %0.18lg %lx\n", psd, bit_cast<unsigned long> (psd));
+    printf ("d   %0.18lg %llx\n", d, bit_cast<unsigned long long> (d));
+    printf ("sd  %0.18lg %llx\n", sd, bit_cast<unsigned long long> (sd));
+    printf ("pd  %0.18lg %llx\n", pd, bit_cast<unsigned long long> (pd));
+    printf ("spd %0.18lg %llx\n", spd, bit_cast<unsigned long long> (spd));
+    printf ("psd %0.18lg %llx\n", psd, bit_cast<unsigned long long> (psd));
 
     fflush (stdout);
 
