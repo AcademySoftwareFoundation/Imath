@@ -1,4 +1,5 @@
 #include <Imath/ImathColor.h>
+#include <cassert>
 
 void
 color4_example ()
