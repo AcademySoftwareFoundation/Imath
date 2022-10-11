@@ -1,4 +1,5 @@
 #include <Imath/ImathInterval.h>
+#include <cassert>
 
 void
 interval_example()

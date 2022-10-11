@@ -284,6 +284,9 @@ jobs:
         working-directory: _build
       - name: Examples
         run: |
+          # Confirm the python module loads. Query the site-packages directory and substitute ../_install
+          export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`          
+          python -c "import imath;print(imath.__version__)"
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
           # Imath library.
@@ -295,10 +298,17 @@ jobs:
           cmake --build . \
                 --config ${{ matrix.build-type }}
           # Confirm the tests run
-          #./bin/ImathTest
-          # Confirm the python module loads. Query the site-packages directory and substitute ../_install
-          export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`          
-          python -c "import imath;print(imath.__version__)"
+          ./bin/ImathTest
+          # Confirm the examples compile and execute
+          rm -rf bin CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
+          cmake ../docs/examples \
+                -DCMAKE_PREFIX_PATH=../../_install \
+                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
+                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
+                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }}
+          cmake --build . \
+                --config ${{ matrix.build-type }}
+          ctest
         working-directory: _examples 
       - name: Test
         run: |
