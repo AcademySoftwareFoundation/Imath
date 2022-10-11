@@ -1,5 +1,6 @@
 #include <Imath/ImathEuler.h>
-#include <ImathMatrixAlgo.h>
+#include <Imath/ImathMatrixAlgo.h>
+#include <cassert>
 
 void
 euler_example()

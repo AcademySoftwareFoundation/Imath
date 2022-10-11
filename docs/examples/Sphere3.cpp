@@ -1,4 +1,5 @@
 #include <Imath/ImathSphere.h>
+#include <cassert>
 
 void
 sphere3_example()

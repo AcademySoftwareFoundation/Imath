@@ -1,4 +1,5 @@
 #include <Imath/ImathQuat.h>
+#include <cassert>
 
 void
 quat_example()

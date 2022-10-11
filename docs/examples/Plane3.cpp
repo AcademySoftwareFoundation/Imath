@@ -1,4 +1,5 @@
 #include <Imath/ImathPlane.h>
+#include <cassert>
 
 void
 plane3_example()
