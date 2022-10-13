@@ -361,6 +361,7 @@ fixedArrayFromBuffer (PyObject *obj)
 
     ArrayT *array = new ArrayT (view.shape[0], PyImath::UNINITIALIZED);
     memcpy (&array->direct_index(0), view.buf, view.len);
+    PyBuffer_Release(&view);
 
     return array;
 }
