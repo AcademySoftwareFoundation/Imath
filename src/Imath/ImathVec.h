@@ -18,6 +18,7 @@
 
 #include <iostream>
 #include <limits>
+#include <cstdint>
 #include <stdexcept>
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
