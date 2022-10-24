@@ -16,7 +16,7 @@
 #include <iostream>
 #include <cstdint>
 #include <stdio.h>
-#include "testFun.h"
+#include <inttypes.h>
 
 using namespace std;
 
@@ -46,11 +46,11 @@ testf (float f, bool changeExpected = true)
     float spf = IMATH_INTERNAL_NAMESPACE::succf (IMATH_INTERNAL_NAMESPACE::predf (f));
     float psf = IMATH_INTERNAL_NAMESPACE::predf (IMATH_INTERNAL_NAMESPACE::succf (f));
 
-    printf ("f %.9g %x\n", f, bit_cast<uint32_t>(f));
-    printf ("sf %.9g %x\n", sf, bit_cast<uint32_t>(sf));
-    printf ("pf %.9g %x\n", pf, bit_cast<uint32_t>(pf));
-    printf ("spf %.9g %x\n", spf, bit_cast<uint32_t>(spf));
-    printf ("psf %.9g %x\n", psf, bit_cast<uint32_t>(psf));
+    printf ("f %.9g %" PRIx32 "\n", f, bit_cast<uint32_t> (f));
+    printf ("sf %.9g %" PRIx32 "\n", sf, bit_cast<uint32_t> (sf));
+    printf ("pf %.9g %" PRIx32 "\n", pf, bit_cast<uint32_t> (pf));
+    printf ("spf %.9g %" PRIx32 "\n", spf, bit_cast<uint32_t> (spf));
+    printf ("psf %.9g %" PRIx32 "\n", psf, bit_cast<uint32_t> (psf));
 
     fflush (stdout);
 
@@ -87,11 +87,11 @@ testd (double d, bool changeExpected = true)
     double spd = IMATH_INTERNAL_NAMESPACE::succd (IMATH_INTERNAL_NAMESPACE::predd (d));
     double psd = IMATH_INTERNAL_NAMESPACE::predd (IMATH_INTERNAL_NAMESPACE::succd (d));
 
-    printf ("d   %0.18lg %llx\n", d, bit_cast<uint64_t> (d));
-    printf ("sd  %0.18lg %llx\n", sd, bit_cast<uint64_t> (sd));
-    printf ("pd  %0.18lg %llx\n", pd, bit_cast<uint64_t> (pd));
-    printf ("spd %0.18lg %llx\n", spd, bit_cast<uint64_t> (spd));
-    printf ("psd %0.18lg %llx\n", psd, bit_cast<uint64_t> (psd));
+    printf ("d   %0.18lg %" PRIx64 "\n", d, bit_cast<uint64_t> (d));
+    printf ("sd  %0.18lg %" PRIx64 "\n", sd, bit_cast<uint64_t> (sd));
+    printf ("pd  %0.18lg %" PRIx64 "\n", pd, bit_cast<uint64_t> (pd));
+    printf ("spd %0.18lg %" PRIx64 "\n", spd, bit_cast<uint64_t> (spd));
+    printf ("psd %0.18lg %" PRIx64 "\n", psd, bit_cast<uint64_t> (psd));
 
     fflush (stdout);
 
