@@ -1,5 +1,6 @@
 # Imath Release Notes
 
+* [Version 3.1.6](#version-316-november-4-2022) November 4, 2022
 * [Version 3.1.5](#version-315-march-28-2022) March 28, 2022
 * [Version 3.1.4](#version-314-january-21-2022) January 21, 2022
 * [Version 3.1.3](#version-313-september-2-2021) September 2, 2021
@@ -13,6 +14,23 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.6 (November 4, 2022)
+
+Patch release with miscellaneous bug/doc/build fixes.
+
+* \[[#269](https://github.com/AcademySoftwareFoundation/Imath/pull/269)\] fix memory leak in V3fArrayFromBuffer
+* \[[#268](https://github.com/AcademySoftwareFoundation/Imath/pull/268)\] Add <cstdint> for int64_t
+* \[[#263](https://github.com/AcademySoftwareFoundation/Imath/pull/263)\] Initialize x in testRoots.cpp:solve() to suppress compiler warning
+* \[[#262](https://github.com/AcademySoftwareFoundation/Imath/pull/262)\] Fix gcc compiler warning in testFun.cpp
+* \[[#261](https://github.com/AcademySoftwareFoundation/Imath/pull/261)\] Test return value of extractSHRT to avoid uninitialized reference
+* \[[#260](https://github.com/AcademySoftwareFoundation/Imath/pull/260)\] Fix example code so it compiles as is 
+* \[[#259](https://github.com/AcademySoftwareFoundation/Imath/pull/259)\] Cuda safety in several headers
+* \[[#256](https://github.com/AcademySoftwareFoundation/Imath/pull/256)\] Fix markdown and typos in README.md
+* \[[#255](https://github.com/AcademySoftwareFoundation/Imath/pull/255)\] Do not warn if half.h has already being included
+* \[[#250](https://github.com/AcademySoftwareFoundation/Imath/pull/250)\] Fix compiler warnings on windows
+* \[[#249](https://github.com/AcademySoftwareFoundation/Imath/pull/249)\] Remove irrelevant cvs ignore files
+* \[[#248](https://github.com/AcademySoftwareFoundation/Imath/pull/248)\] Update sphinx version
 
 ## Version 3.1.5 (March 28, 2022)
 
