@@ -1,6 +1,6 @@
 # Imath Release Notes
 
-* [Version 3.1.6](#version-316-november-4-2022) November 4, 2022
+* [Version 3.1.6](#version-316-november-7-2022) November 7, 2022
 * [Version 3.1.5](#version-315-march-28-2022) March 28, 2022
 * [Version 3.1.4](#version-314-january-21-2022) January 21, 2022
 * [Version 3.1.3](#version-313-september-2-2021) September 2, 2021
@@ -15,7 +15,7 @@
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
 
-## Version 3.1.6 (November 4, 2022)
+## Version 3.1.6 (November 7, 2022)
 
 Patch release with miscellaneous bug/doc/build fixes.
 
