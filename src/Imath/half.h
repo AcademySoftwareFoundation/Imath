@@ -620,10 +620,10 @@ class IMATH_EXPORT_TYPE half
     /// @name Access to the internal representation
 
     /// Return the bit pattern
-    IMATH_EXPORT constexpr uint16_t bits() const IMATH_NOEXCEPT;
+    constexpr uint16_t bits () const IMATH_NOEXCEPT;
 
     /// Set the bit pattern
-    IMATH_EXPORT IMATH_CONSTEXPR14 void setBits (uint16_t bits) IMATH_NOEXCEPT;
+    IMATH_CONSTEXPR14 void setBits (uint16_t bits) IMATH_NOEXCEPT;
 
     /// @}
 
