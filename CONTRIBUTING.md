@@ -15,13 +15,12 @@ Imath is a sub-project of
 follows OpenEXR's governance and contribution policies.
 
 For a description of the roles and responsibilities of the various
-members of the OpeneEXR community, see [GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/main/GOVERNANCE.md),
-and for further details, see the OpenEXR project's [Technical
-Charter](https://github.com/AcademySoftwareFoundation/openexr/blob/main/ASWF/charter/OpenEXR-Technical-Charter.md).
-Briefly, a "contributor" is anyone who submits content to the project,
-a "committer" is someone who reviews and approves such submissions,
-and the Technical Steering Committee provides general project
-oversight.
+members of the OpenEXR community, see [GOVERNANCE](GOVERNANCE.md), and
+for further details, see the project's [Technical
+Charter](ASWF/charter/OpenEXR-Technical-Charter.md). Briefly,
+Contributors are anyone who submits content to the project, Committers
+review and approve such submissions, and the Technical Steering
+Committee provides general project oversight.
 
 ## Getting Information
 
@@ -73,9 +72,7 @@ refer to [SECURITY.md](SECURITY.md) to responsibly disclose it.
 
 ### How to Contribute a Bug Fix or Change
 
-To contribute code to the project, first read over the
-[GOVERNANCE.md](https://github.com/AcademySoftwareFoundation/openexr/blob/main/GOVERNANCE.md)
-page to understand the roles involved. You'll need:
+To contribute code to the project, first read over the [GOVERNANCE](GOVERNANCE.md) page to understand the roles involved. You'll need:
 
 * A good knowledge of git.
 
@@ -100,25 +97,39 @@ license.
 ### Contributor License Agreements
 
 Developers who wish to contribute code to be considered for inclusion
-in the Imath distribution must first complete a **Contributor License
-Agreement** for the OpenEXR project.
+in the OpenEXR distribution must first complete a **Contributor
+License Agreement**.
 
-Imath uses EasyCLA for managing CLAs, which automatically
-checks to ensure CLAs are signed by a contributor before a commit
-can be merged. 
+To contribute to OpenEXR, you must sign a CLA through the
+[EasyCLA](https://contributor.easycla.lfx.linuxfoundation.org/#/cla/project/2e8710cb-e379-4116-a9ba-964f83618cc5/user/564e571e-12d7-4857-abd4-898939accdd7?redirect=https:%2F%2Fgithub.com%2FAcademySoftwareFoundation%2Fopenexr%2Fpull%2F1154)
+system, which is integrated with GitHub as a pull request check.
+
+Sign the form through [this
+link](https://contributor.easycla.lfx.linuxfoundation.org/#/cla/project/2e8710cb-e379-4116-a9ba-964f83618cc5/user/564e571e-12d7-4857-abd4-898939accdd7?redirect=https:%2F%2Fgithub.com%2FAcademySoftwareFoundation%2Fopenexr%2Fpull%2F1154)
+prior to submitting a pull request. If you submit a pull request
+before the form is signed, the "linux-foundation-easycla" check will
+fail and a red "NOT COVERED" button will appear in the PR
+comments. Click that link to sign the form.
 
 * If you are an individual writing the code on your own time and
-  you're SURE you are the sole owner of any intellectual property you
-  contribute, you can [sign the CLA as an individual contributor](https://github.com/communitybridge/easycla/blob/main/contributors/sign-a-cla-as-an-individual-contributor-to-github.md).
+  you're **sure** you are the sole owner of any intellectual property you
+  contribute, you can sign the CLA as an **Individual Contributor**.
 
-* If you are writing the code as part of your job, or if there is any
-  possibility that your employers might think they own any
-  intellectual property you create, then you should use the [Corporate
-  Contributor Licence
-  Agreement](https://github.com/communitybridge/easycla/blob/main/contributors/contribute-to-a-github-company-project.md).
+* If you are writing the code as part of your job, or if your employer
+  retains ownership to intellectual property you create, no matter how
+  small, then your company's legal affairs representatives should sign
+  a **Corporate Contributor Licence Agreement**. If your company already
+  has a signed CCLA on file, ask your local CLA manager to add you
+  (via your GitHub account name/email address) to your company's
+  "approved" list.
 
-The Imath CLAs are the standard forms used by Linux Foundation
-projects and [recommended by the ASWF TAC](https://github.com/AcademySoftwareFoundation/tac/blob/main/process/contributing.md#contributor-license-agreement-cla).
+The downloadable PDF's on the EasyCLA page are provided for reference
+only. To execute the signature, sign the form online through the
+relevant links.
+
+The OpenEXR CLAs are the standard forms used by Linux Foundation
+projects and [recommended by the ASWF
+TAC](https://github.com/AcademySoftwareFoundation/tac/blob/main/process/contributing.md#contributor-license-agreement-cla).
 
 ### Commit Sign-Off
 
@@ -243,13 +254,14 @@ approval rules for merging:
 
 * Core design decisions, large new features, or anything that might be
 perceived as changing the overall direction of the project should be
-discussed at length in the mail list before any PR is submitted, in
-order to: solicit feedback, try to get as much consensus as possible,
-and alert all the stakeholders to be on the lookout for the eventual
-PR when it appears.
+discussed at length in the mail list or TSC meetings before any PR is
+submitted, in order to solicit feedback, try to get as much consensus
+as possible, and alert all the stakeholders to be on the lookout for
+the eventual PR when it appears.
 
-* Small changes (bug fixes, docs, tests, cleanups) can be approved and
-merged by a single committer.
+* Trivial changes that don't affect functionality (typos, docs, tests)
+can be approved by the committer without review, after waiting at
+least 48 hours.
 
 * Big changes that can alter behavior, add major features, or present
 a high degree of risk should be signed off by TWO committers, ideally
@@ -292,23 +304,27 @@ test. Each library has a companion ``Test`` project,
 i.e. ``ImathTest`` and ``HalfTest``.  This test suite is collectively
 expected to validate the behavior of very part of the library.
 
-* Any new functionality should be accompanied by a test that validates
+* all new functionality should be accompanied by a test that validates
   its behavior.
 
 * Any change to existing functionality should have tests added if they
   don't already exist.
 
-The test should should be run, via ``make test``, before submitting a
-pull request.
+The test should should be run, via:
+
+    make test
+
+before submitting a pull request.
 
 ## Coding Style
 
 #### Formatting
 
-Code formattting is controlled by ``clang-format``, with the style
-specified via the project
-[.clang-format](https://github.com/AcademySoftwareFoundation/Imath/blob/main/.clang-format)
-file.
+The coding style of the library source code is enforced via Clang format, with the configuration defined in [.clang-format](.clang-format).
+
+When modifying existing code, follow the surrounding formatting
+conventions so that new or modified code blends in with the current
+code.
 
 * Indent with spaces, never tabs. Each indent level should be 4 spaces.
 
@@ -348,12 +364,6 @@ All headers should contain:
 
 #### Type Conventions
 
-Because Imath must deal properly with large images, whose width
-and/or height approach the maximum allowable in 32-bit signed
-integers, take special care that integer arithmatic doesn't overlow,
-and make it as clear as possible exactly what the code is doing,
-especially in the edge cases.
-
 To clarify the intention, prefer to cast between types using
 ``static_cast<>()`` rather than the basic C-style ``()`` notation:
 
@@ -364,7 +374,7 @@ To clarify the intention, prefer to cast between types using
     x = (size_t) y;
     x = size_t (y);
 
-Prefer to use ``std::numeric_limits<>`` instead of preprocesser
+Prefer to use ``std::numeric_limits<>`` instead of preprocessor
 define's such as ``INT_MAX``:
 
     // good:
@@ -376,15 +386,26 @@ define's such as ``INT_MAX``:
 
 #### Copyright Notices
 
-All new source files should begin with a copyright and license referencing the OpenEXR project:
+All new source files should begin with a copyright and license stating:
 
-    // Copyright (c) Contributors to the OpenEXR Project. All rights reserved.
+    //
     // SPDX-License-Identifier: BSD-3-Clause
+    // Copyright (c) Contributors to the OpenEXR Project. 
+    //
+    
+#### Third-party libraries
+
+Prefer C++11 `std` over boost where possible.  Use boost classes you
+already see in the code base, but check with the project leadership
+before adding new boost usage.
 
 #### Comments and Doxygen
 
-Use C++ comments (starting line with `//`) rather than C comments (`/*
-... */`).
+Comment philosophy: try to be clear, try to help teach the reader
+what's going on in your code.
+
+Prefer C++ comments (starting line with `//`) rather than C comments
+(`/* ... */`).
 
 For public APIs, use Doxygen-style comments (start with `///`), such as:
 
@@ -396,4 +417,41 @@ For public APIs, use Doxygen-style comments (start with `///`), such as:
         ....
         float foo;  ///< Doxygen comments on same line look like this
     }
+
+## Versioning Policy
+
+OpenEXR uses [semantic versioning](https://semver.org), which labels
+each version with three numbers: Major.Minor.Patch, where:
+
+* **MAJOR** indicates incompatible API changes
+* **MINOR** indicates functionality added in a backwards-compatible manner
+* **PATCH** indicates backwards-compatible bug fixes 
+
+## Creating a Release
+
+To create a new release from the ``main`` branch:
+
+1. Update the release notes in ``CHANGES.md``.
+
+   Write a high-level summary of the features and
+   improvements. Include the summary in ``CHANGES.md`` and also in the
+   Release comments.
+
+   Include the log of all changes since the last release, via:
+
+        git log v2.2.1...v2.3.0 --date=short --pretty=format:"[%s](https://github.com/AcademySoftwareFoundation/openexr/commit/%H) ([%an](@%ae) %ad)"
+
+   Include diff status via:
+
+        git diff --stat v2.2.1
+       
+2. Create a new release on the GitHub Releases page.
+
+3. Tag the release with name beginning with '``v``', e.g. '``v2.3.0``'.
+
+4. Download and sign the release tarball, as described
+[here](https://wiki.debian.org/Creating%20signed%20GitHub%20releases),
+
+5. Attach the detached ``.asc`` signature file to the GitHub release as a
+binary file.
 
