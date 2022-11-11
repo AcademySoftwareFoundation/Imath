@@ -8,6 +8,7 @@
 #define BOOST_PYTHON_MAX_ARITY 17
 
 #include <Python.h>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <boost/python/make_constructor.hpp>
 #include <boost/format.hpp>

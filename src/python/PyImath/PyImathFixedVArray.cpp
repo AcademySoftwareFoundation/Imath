@@ -6,6 +6,7 @@
 // clang-format off
 
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <boost/shared_array.hpp>
 #include <boost/any.hpp>
