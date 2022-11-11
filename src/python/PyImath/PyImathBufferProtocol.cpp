@@ -56,7 +56,7 @@ class BufferAPI
     {
         shape[0]  = Py_ssize_t (length);
         stride[0] = atomicSize() * FixedArrayWidth<T>::value * interleave;
-        for (unsigned int d=1; d<dimensions; d++)
+        for (int d=1; d<dimensions; d++)
         {
             shape[d]  = FixedArrayWidth<T>::value * interleave;
             stride[d] = atomicSize();
@@ -360,7 +360,7 @@ fixedArrayFromBuffer (PyObject *obj)
     }
 
     ArrayT *array = new ArrayT (view.shape[0], PyImath::UNINITIALIZED);
-    memcpy (&array->direct_index(0), view.buf, view.len);
+    memcpy (reinterpret_cast<void*>(&array->direct_index(0)), view.buf, view.len);
     PyBuffer_Release(&view);
 
     return array;

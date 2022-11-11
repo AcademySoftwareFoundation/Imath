@@ -367,19 +367,19 @@ FixedVArray<T>::setitem_scalar (PyObject* index, const FixedArray<T>& data)
         for (size_t i = 0; i < sliceLength; ++i)
         {
             std::vector<T> &d =_ptr[raw_ptr_index(start + i*step)*_stride];
-            if (data.len() != d.size())
+            if (data.len() != static_cast<Py_ssize_t>(d.size()))
                 throw std::invalid_argument("FixedVArray::setitem: length of data does not match length of array element");
 
             if (data.isMaskedReference())
             {
-                for (size_t j = 0; j < data.len(); ++j)
+                for (Py_ssize_t j = 0; j < data.len(); ++j)
                 {
                     d[j] = data[j];
                 }
             }
             else
             {
-                for (size_t j = 0; j < data.len(); ++j)
+                for (Py_ssize_t j = 0; j < data.len(); ++j)
                 {
                     d[j] = data.direct_index(j);
                 }
@@ -391,19 +391,19 @@ FixedVArray<T>::setitem_scalar (PyObject* index, const FixedArray<T>& data)
         for (size_t i = 0; i < sliceLength; ++i)
         {
             std::vector<T> &d =_ptr[(start + i*step)*_stride];
-            if (data.len() != d.size())
+            if (data.len() != static_cast<Py_ssize_t>(d.size()))
                 throw std::invalid_argument("FixedVArray::setitem: length of data does not match length of array element");
 
             if (data.isMaskedReference())
             {
-                for (size_t j = 0; j < data.len(); ++j)
+                for (Py_ssize_t j = 0; j < data.len(); ++j)
                 {
                     d[j] = data[j];
                 }
             }
             else
             {
-                for (size_t j = 0; j < data.len(); ++j)
+                for (Py_ssize_t j = 0; j < data.len(); ++j)
                 {
                     d[j] = data.direct_index(j);
                 }
@@ -428,19 +428,19 @@ FixedVArray<T>::setitem_scalar_mask (const FixedArray<int>& mask, const FixedArr
             // We don't need to actually look at 'mask' because
             // match_dimensions has already forced some expected condition.
             std::vector<T> &d =_ptr[raw_ptr_index(i)*_stride];
-            if (data.len() != d.size())
+            if (data.len() != static_cast<Py_ssize_t>(d.size()))
                 throw std::invalid_argument("FixedVArray::setitem: length of data does not match length of array element");
 
             if (data.isMaskedReference())
             {
-                for (size_t j = 0; j < data.len(); ++j)
+                for (Py_ssize_t j = 0; j < data.len(); ++j)
                 {
                     d[j] = data[j];
                 }
             }
             else
             {
-                for (size_t j = 0; j < data.len(); ++j)
+                for (Py_ssize_t j = 0; j < data.len(); ++j)
                 {
                     d[j] = data.direct_index(j);
                 }
@@ -454,19 +454,19 @@ FixedVArray<T>::setitem_scalar_mask (const FixedArray<int>& mask, const FixedArr
             if (mask[i])
             {
                 std::vector<T> &d = _ptr[i*_stride];
-                if (data.len() != d.size())
+                if (data.len() != static_cast<Py_ssize_t>(d.size()))
                     throw std::invalid_argument("FixedVArray::setitem: length of data does not match length of array element");
 
                 if (data.isMaskedReference())
                 {
-                    for (size_t j = 0; j < data.len(); ++j)
+                    for (Py_ssize_t j = 0; j < data.len(); ++j)
                     {
                         d[j] = data[j];
                     }
                 }
                 else
                 {
-                    for (size_t j = 0; j < data.len(); ++j)
+                    for (Py_ssize_t j = 0; j < data.len(); ++j)
                     {
                         d[j] = data.direct_index(j);
                     }
@@ -623,7 +623,7 @@ FixedVArray<T>::SizeHelper::getitem_mask (const FixedArray<int>& mask) const
     }
     
     int count = 0;
-    for (size_t i = 0; i < mask.len(); ++i)
+    for (Py_ssize_t i = 0; i < mask.len(); ++i)
     {
         if (mask[i]) count += 1;
     }
@@ -633,7 +633,7 @@ FixedVArray<T>::SizeHelper::getitem_mask (const FixedArray<int>& mask) const
     if (_a._indices)
     {
         size_t index = 0;
-        for (size_t i = 0; i < mask.len(); ++i)
+        for (Py_ssize_t i = 0; i < mask.len(); ++i)
         {
             if (mask[i])
             {
@@ -645,7 +645,7 @@ FixedVArray<T>::SizeHelper::getitem_mask (const FixedArray<int>& mask) const
     else
     {
         size_t index = 0;
-        for (size_t i = 0; i < mask.len(); ++i)
+        for (Py_ssize_t i = 0; i < mask.len(); ++i)
         {
             if (mask[i])
             {
@@ -730,7 +730,7 @@ FixedVArray<T>::SizeHelper::setitem_vector(PyObject *index, const FixedArray<int
     extract_slice_indices(index,start,end,step,slicelength,_a._length);
         
     // we have a valid range of indices
-    if (size.len() != slicelength) {
+    if (size.len() != static_cast<Py_ssize_t>(slicelength)) {
         PyErr_SetString(PyExc_IndexError, "Dimensions of source do not match destination");
         boost::python::throw_error_already_set();
     }
@@ -762,16 +762,16 @@ FixedVArray<T>::SizeHelper::setitem_vector_mask(const FixedArray<int> &mask, con
         throw std::invalid_argument("We don't support setting item masks for masked reference arrays.");
     }
 
-    size_t len = _a.match_dimension(mask);
+    Py_ssize_t len = _a.match_dimension(mask);
     if (size.len() == len)
     {
-        for (size_t i = 0; i < len; ++i)
+        for (Py_ssize_t i = 0; i < len; ++i)
             if (mask[i]) _a._ptr[i*_a._stride].resize(size[i]);
     }
     else
     {
-        size_t count = 0;
-        for (size_t i = 0; i < len; ++i)
+        Py_ssize_t count = 0;
+        for (Py_ssize_t i = 0; i < len; ++i)
             if (mask[i]) count++;
 
         if (size.len() != count) {
@@ -779,7 +779,7 @@ FixedVArray<T>::SizeHelper::setitem_vector_mask(const FixedArray<int> &mask, con
         }
 
         Py_ssize_t sizeIndex = 0;
-        for (size_t i = 0; i < len; ++i)
+        for (Py_ssize_t i = 0; i < len; ++i)
         {
             if (mask[i])
             {
