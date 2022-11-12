@@ -550,7 +550,7 @@ class FixedArray
         }
         else
         {
-            size_t count = 0;
+            Py_ssize_t count = 0;
             for (size_t i = 0; i < len; ++i)
                 if (mask[i]) count++;
 
@@ -691,7 +691,7 @@ class FixedArray
             throwExc = true;
         else if (isMaskedReference())
         {
-            if (_unmaskedLength != a1.len())
+            if (static_cast<Py_ssize_t>(_unmaskedLength) != a1.len())
                 throwExc = true;
         }
         else
