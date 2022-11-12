@@ -1093,7 +1093,7 @@ M33Array_constructor(const FixedArray<T> &a, const FixedArray<T> &b, const Fixed
                      const FixedArray<T> &g, const FixedArray<T> &h, const FixedArray<T> &i)
 {
     MATH_EXC_ON;
-    size_t len = a.len();
+    Py_ssize_t len = a.len();
     if (!( a.len() == len && b.len() == len && c.len() == len && 
            d.len() == len && e.len() == len && f.len() == len && 
            g.len() == len && h.len() == len && i.len() == len))
