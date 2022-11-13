@@ -292,6 +292,9 @@ public:
     /// Determinant
     IMATH_HOSTDEVICE constexpr T determinant () const IMATH_NOEXCEPT;
 
+    /// Trace
+    IMATH_HOSTDEVICE constexpr T trace() const IMATH_NOEXCEPT;
+
     /// Set matrix to rotation by r (in radians)
     /// @return const referenced to this
     template <class S>
@@ -677,6 +680,9 @@ public:
 
     /// Determinant
     IMATH_HOSTDEVICE constexpr T determinant () const IMATH_NOEXCEPT;
+
+    /// Trace
+    IMATH_HOSTDEVICE constexpr T trace() const IMATH_NOEXCEPT;
 
     /// Set matrix to rotation by r (in radians)
     /// @return const referenced to this
@@ -1161,6 +1167,9 @@ public:
 
     /// Determinant
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T determinant () const IMATH_NOEXCEPT;
+
+    /// Trace
+    IMATH_HOSTDEVICE constexpr T trace() const IMATH_NOEXCEPT;
 
     /// Set matrix to rotation by XYZ euler angles (in radians)
     /// @return const referenced to this
@@ -1913,6 +1922,13 @@ IMATH_HOSTDEVICE constexpr inline T
 Matrix22<T>::determinant () const IMATH_NOEXCEPT
 {
     return x[0][0] * x[1][1] - x[1][0] * x[0][1];
+}
+
+template <class T>
+IMATH_HOSTDEVICE constexpr inline T
+Matrix22<T>::trace () const IMATH_NOEXCEPT
+{
+    return x[0][0] + x[1][1];
 }
 
 template <class T>
@@ -3084,6 +3100,13 @@ Matrix33<T>::determinant () const IMATH_NOEXCEPT
     return x[0][0] * (x[1][1] * x[2][2] - x[1][2] * x[2][1]) +
            x[0][1] * (x[1][2] * x[2][0] - x[1][0] * x[2][2]) +
            x[0][2] * (x[1][0] * x[2][1] - x[1][1] * x[2][0]);
+}
+
+template <class T>
+IMATH_HOSTDEVICE constexpr inline T
+Matrix33<T>::trace () const IMATH_NOEXCEPT
+{
+    return x[0][0] + x[1][1] + x[2][2];
 }
 
 template <class T>
@@ -4590,6 +4613,13 @@ Matrix44<T>::determinant () const IMATH_NOEXCEPT
     if (x[3][3] != 0.) sum += x[3][3] * fastMinor (0, 1, 2, 0, 1, 2);
 
     return sum;
+}
+
+template <class T>
+IMATH_HOSTDEVICE constexpr inline T
+Matrix44<T>::trace () const IMATH_NOEXCEPT
+{
+    return x[0][0] + x[1][1] + x[2][2] + x[3][3];
 }
 
 template <class T>

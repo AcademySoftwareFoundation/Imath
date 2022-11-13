@@ -779,18 +779,17 @@ extractQuat (const Matrix44<T>& mat)
 {
     Matrix44<T> rot;
 
-    T       tr, s;
+    T       s;
     T       q[4];
     int     i, j, k;
     Quat<T> quat;
 
     int nxt[3] = {1, 2, 0};
-    tr         = mat[0][0] + mat[1][1] + mat[2][2];
 
     // check the diagonal
-    if (tr > 0.0)
+    if (mat.trace () > 0.0)
     {
-        s      = std::sqrt (tr + T (1.0));
+        s      = std::sqrt (mat.trace () + T (1.0));
         quat.r = s / T (2.0);
         s      = T (0.5) / s;
 
