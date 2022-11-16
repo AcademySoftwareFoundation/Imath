@@ -640,6 +640,116 @@ testMatrix ()
             u.baseTypeEpsilon ());
     }
 
+    // Trace
+    {
+        cout << "2x2 trace" << endl;
+
+        IMATH_INTERNAL_NAMESPACE::Rand32 random;
+
+        IMATH_INTERNAL_NAMESPACE::M22f u;
+        float                          trace = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                const float randomNum = random.nextf ();
+                u[i][j]               = randomNum;
+                if (i == j) { trace += randomNum; }
+            }
+        }
+
+        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+    }
+    {
+        IMATH_INTERNAL_NAMESPACE::Rand32 random;
+
+        IMATH_INTERNAL_NAMESPACE::M22d u;
+        double                         trace = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                const double randomNum = random.nextf ();
+                u[i][j]                = randomNum;
+                if (i == j) { trace += randomNum; }
+            }
+        }
+
+        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+    }
+    {
+        cout << "3x3 trace" << endl;
+
+        IMATH_INTERNAL_NAMESPACE::Rand32 random;
+
+        IMATH_INTERNAL_NAMESPACE::M33f u;
+        float                          trace = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                const float randomNum = random.nextf ();
+                u[i][j]               = randomNum;
+                if (i == j) { trace += randomNum; }
+            }
+        }
+
+        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+    }
+    {
+        IMATH_INTERNAL_NAMESPACE::Rand32 random;
+
+        IMATH_INTERNAL_NAMESPACE::M33d u;
+        double                         trace = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                const double randomNum = random.nextf ();
+                u[i][j]                = randomNum;
+                if (i == j) { trace += randomNum; }
+            }
+        }
+
+        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+    }
+    {
+        cout << "4x4 trace" << endl;
+
+        IMATH_INTERNAL_NAMESPACE::Rand32 random;
+
+        IMATH_INTERNAL_NAMESPACE::M44f u;
+        float                          trace = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                const float randomNum = random.nextf ();
+                u[i][j]               = randomNum;
+                if (i == j) { trace += randomNum; }
+            }
+        }
+
+        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+    }
+    {
+        IMATH_INTERNAL_NAMESPACE::Rand32 random;
+
+        IMATH_INTERNAL_NAMESPACE::M44d u;
+        double                         trace = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                const double randomNum = random.nextf ();
+                u[i][j]                = randomNum;
+                if (i == j) { trace += randomNum; }
+            }
+        }
+
+        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+    }
+
     // Matrix minors
     {
         cout << "4x4 matrix minors" << endl;
