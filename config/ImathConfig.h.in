@@ -65,6 +65,11 @@
 // clang-format on
 
 //
+// Imath alias for constexpr
+//
+#define IMATH_CONSTEXPR14 constexpr
+
+//
 // Code that depends on the v2 ExcMath mechanism of signal handlers
 // that throw exceptions is incompatible with noexcept, since
 // floating-point overflow and underflow can occur in a wide variety
