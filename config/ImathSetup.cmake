@@ -81,9 +81,6 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 # Add the automatically determined parts of the rpath which point to
 # directories outside the build tree to the install RPATH
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-if(APPLE)
-  set(CMAKE_MACOSX_RPATH ON)
-endif()
 
 # If the user sets an install rpath then just use that, or otherwise
 # set one for them.
