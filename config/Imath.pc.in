@@ -5,8 +5,8 @@
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-libdir=@libdir@
-includedir=@includedir@
+libdir=${exec_prefix}/@libdir@
+includedir=${prefix}/@includedir@
 libsuffix=@LIB_SUFFIX_DASH@
 Name: Imath
 Description: Imath library: vector/matrix and math operations, plus the half type.
