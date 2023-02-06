@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright Contributors to the OpenEXR Project.
+
 #Look for an executable called sphinx-build
 find_program(SPHINX_EXECUTABLE
              NAMES sphinx-build

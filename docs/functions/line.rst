@@ -1,3 +1,7 @@
+..
+  SPDX-License-Identifier: BSD-3-Clause
+  Copyright Contributors to the OpenEXR Project.
+
 .. _line-functions:
 
 Line3 Functions
