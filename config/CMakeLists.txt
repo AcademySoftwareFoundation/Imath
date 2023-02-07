@@ -31,12 +31,23 @@ install(TARGETS ImathConfig EXPORT ${PROJECT_NAME})
 add_library(Imath::Config ALIAS ImathConfig)
 
 if(IMATH_INSTALL_PKG_CONFIG)
+
+  # Prepend prefix for includedir only if CMAKE_INSTALL_INCLUDEDIR is relative
+  if(IS_ABSOLUTE "${CMAKE_INSTALL_INCLUDEDIR}")
+      set(PKG_CONFIG_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+  else()
+      set(PKG_CONFIG_INSTALL_INCLUDEDIR "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+  endif()
+
+  # Prepend exec_prefix for libdir only if CMAKE_INSTALL_LIBDIR is relative
+  if(IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}")
+      set(PKG_CONFIG_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
+  else()
+      set(PKG_CONFIG_INSTALL_LIBDIR "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+  endif()
+
   # use a helper function to avoid variable pollution, but pretty simple
   function(imath_pkg_config_help pcinfile)
-    set(prefix ${CMAKE_INSTALL_PREFIX})
-    set(exec_prefix "\${prefix}")
-    set(libdir ${CMAKE_INSTALL_FULL_LIBDIR})
-    set(includedir ${CMAKE_INSTALL_FULL_INCLUDEDIR})
     string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
     set(LIB_SUFFIX_DASH ${IMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX})
     string(REPLACE ".in" "" pcout ${pcinfile})
