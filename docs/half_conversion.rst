@@ -1,3 +1,7 @@
+..
+  SPDX-License-Identifier: BSD-3-Clause
+  Copyright Contributors to the OpenEXR Project.
+
 .. _half-float-conversion-configuration-options:
 
 half-float Conversion Configuration Options
