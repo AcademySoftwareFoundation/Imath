@@ -17,7 +17,7 @@ open source in 2003.
 
 Read the origin story of OpenEXR and Imath, and the ``half`` 16-bit
 float type, in particular, on the `ASWF Blog
-<https://www.aswf.io/news/aswf-deep-dive-openexr-origin-story-part-1>`_. 
+<https://www.aswf.io/news/aswf-deep-dive-openexr-origin-story-part-1>`_.
 
 Imath is Version 3 because it was previously distributed as a
 component of OpenEXR v1 and v2.

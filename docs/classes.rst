@@ -9,8 +9,9 @@ Imath Classes
 
 .. toctree::
    :caption: Classes
-   :maxdepth: 3
+   :maxdepth: 2
 
+   classes/half
    classes/Box
    classes/Color3
    classes/Color4

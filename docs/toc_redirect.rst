@@ -5,7 +5,7 @@
 .. toctree::
    :hidden:
 
-   half
+   concepts
 
 .. toctree::
    :hidden:

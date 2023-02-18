@@ -36,6 +36,7 @@ jobs:
        ${{ matrix.python-desc }},
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
+       docs=${{ matrix.build-docs }}, 
        cxx=${{ matrix.cxx-standard }}>'
     # GH-hosted VM. The build runs in CentOS 7 'container' defined below.
     runs-on: ubuntu-latest
@@ -60,6 +61,7 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.9.7
+            build-docs: 'ON'
             vfx-cy: 2022
 
           # C++17, Python 3.9.7, Debug
@@ -264,6 +266,9 @@ jobs:
           mkdir _install
           mkdir _build
           mkdir _examples
+      - name: Install docs env
+        run: share/ci/scripts/linux/yum/install_docs_env.sh
+        if: matrix.build-docs == 'ON'
       - name: Configure
         run: |
           cmake .. \
@@ -274,7 +279,8 @@ jobs:
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
                 -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
                 -DPYTHON=${{ matrix.python }} \
-                -DUSE_PYTHON2=${{ matrix.use-python2 }}
+                -DUSE_PYTHON2=${{ matrix.use-python2 }} \
+                -DDOCS=${{ matrix.build-docs }}
         working-directory: _build
       - name: Build
         run: |
