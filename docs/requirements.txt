@@ -1,2 +1,3 @@
 breathe
 sphinx == 4.4.0
+sphinx-press-theme
