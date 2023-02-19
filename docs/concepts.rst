@@ -2,39 +2,36 @@
   SPDX-License-Identifier: BSD-3-Clause
   Copyright Contributors to the OpenEXR Project.
 
-Overview
+.. _Concepts:
+
+Concepts
 ########
 
-Imath is a basic, light-weight, and efficient C++ representation of 2D
-and 3D vectors and matrices and other simple but useful mathematical
-objects, functions, and data types common in computer graphics
-applications, including the ``half`` 16-bit floating-point type.
-
-Imath also includes optional python bindings for all types and
-functions, including optimized implementations of vector and matrix
-arrays.
-
+.. toctree::
+   :caption: Concepts
+   :maxdepth: 0
+              
 The Imath library emphasizes simplicity, ease of use, correctness and
 verifiability, performance, and breadth of adoption. Imath is not
 intended to be a comprehensive linear algebra or numerical analysis
 package.
 
-Imath is not `Eigen <https://eigen.tuxfamily.org>`_! It's not a
-full-featured linear algebra package, and it doesn't represent vectors
-and matrices of arbitrary dimension. Its greatest utility is as a
-geometric data representation, primarily for 2D images and 3D scenes
-and coordinate transformations, along with an accompanying set of
-utility methods and functions.
+Imath is not a substitute for `Eigen <https://eigen.tuxfamily.org>`_!
+It's not a full-featured linear algebra package, and it doesn't
+represent vectors and matrices of arbitrary dimension. Its greatest
+utility is as a geometric data representation, primarily for 2D images
+and 3D scenes and coordinate transformations, along with an
+accompanying set of utility methods and functions.
 
 Example
--------
+=======
 
 A basic program:
 
 .. literalinclude:: examples/intro.cpp
 
 Matrices Are Row-Major
-----------------------
+======================
 
 Imath stores matrices in row-major layout, originally inspired by
 compatibility with OpenGL matrices. 
@@ -144,18 +141,3 @@ as pre-multiplication:
   \end{bmatrix}
 
 
-About
------
-
-Imath originated at Industrial Light & Magic in the late 1990's and
-early 2000's, and it was originally distributed publicly as a
-component of `OpenEXR
-<https:://github.com/AcademySoftwareFoundation/openexr>`_.  Imath is
-now a project of the `Academy Software Foundation
-<https://www.aswf.io>`_ and is still maintained by the OpenEXR
-project.
-
-Imath is Version 3 because it was previously distributed as a
-component of OpenEXR v1 and v2.
-
-  

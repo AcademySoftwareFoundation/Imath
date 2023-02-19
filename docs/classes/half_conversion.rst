@@ -4,8 +4,8 @@
 
 .. _half-float-conversion-configuration-options:
 
-half-float Conversion Configuration Options
-###########################################
+Build-time half-float Conversion Configuration Options
+######################################################
 
 The Imath library supports three options for conversion between 16-bit
 half and 32-bit float:
@@ -25,7 +25,7 @@ application that includes ``half.h``. For g++ and clang,
 for example:
 ::
 
-    % cmake -DCMAKE_CXX_FLAGS="-m16fc" <source directory> 
+    $ cmake -DCMAKE_CXX_FLAGS="-m16fc" <source directory> 
     
 When code including ``half.h`` is compiled with F16C enabled, it will
 automatically perform conversions using the instruction set. F16C
@@ -37,7 +37,7 @@ compile-time between the bit-shift conversion and lookup table
 conversion via the ``IMATH_HALF_USE_LOOKUP_TABLE`` CMake option:
 ::
 
-    % cmake -DIMATH_HALF_USE_LOOKUP_TABLE=OFF <source directory>
+    $ cmake -DIMATH_HALF_USE_LOOKUP_TABLE=OFF <source directory>
 
 Note that when building and installing the Imath library itself, the
 65,536-entry lookup table symbol will be compiled into the library

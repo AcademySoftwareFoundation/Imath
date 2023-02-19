@@ -140,8 +140,15 @@ pygments_style = 'sphinx'
 #html_theme = 'agogo'
 #html_theme = 'default' # good
 #html_theme = 'nature' # too green
-html_theme = 'bizstyle' # OK
+#html_theme = 'bizstyle' # OK
 #html_theme = 'sphinxdoc'
+
+html_theme = "press"
+html_theme_options = {
+  "external_links": [
+      ("Github", "https://github.com/AcademySoftwareFoundation/Imath"),
+  ]
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -165,7 +172,7 @@ html_logo = "images/imath-logo-blue.png"
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-#html_favicon = None
+html_favicon = "images/imath-fav.ico"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -224,7 +231,7 @@ htmlhelp_basename = 'Imath'
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements = {
+#latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
 #'papersize': 'letterpaper',
 
@@ -233,15 +240,15 @@ latex_elements = {
 
 # Additional stuff for the LaTeX preamble.
 #'preamble': '',
-}
+#}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-  ('index', 'Imath.tex', 'Imath Documentation',
-   'Contributors to the OpenEXR Project', 'manual'),
-]
+#latex_documents = [
+#  ('index', 'Imath.tex', 'Imath Documentation',
+#   'Contributors to the OpenEXR Project', 'manual'),
+#]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.

@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<!-- Copyright (c) Contributors to the OpenEXR Project -->
+
 # Contributing to Imath
 
 Thank you for your interest in contributing to Imath. This document
@@ -17,7 +20,7 @@ follows OpenEXR's governance and contribution policies.
 For a description of the roles and responsibilities of the various
 members of the OpenEXR community, see [GOVERNANCE](GOVERNANCE.md), and
 for further details, see the OpenEXR project's [Technical
-Charter](https://github.com/AcademySoftwareFoundation/openexr/blob/main/ASWF/charter/OpenEXR-Technical-Charter.md). Briefly,
+Charter](ASWF/charter/OpenEXR-Technical-Charter.md). Briefly,
 a "contributor" is anyone who submits content to the project, a
 "committer" reviews and approves such submissions, and the "Technical
 Steering Committee" provides general project oversight and governance.
