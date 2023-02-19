@@ -446,7 +446,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 ///
 ///
-/// class half -- 16-bit floating point number
+/// class half represents a 16-bit floating point number
 ///
 /// Type half can represent positive and negative numbers whose
 /// magnitude is between roughly 6.1e-5 and 6.5e+4 with a relative

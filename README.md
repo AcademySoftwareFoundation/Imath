@@ -51,10 +51,10 @@ OpenEXR.
 # Quick Start
 
 Technical documentation for the Imath classes and functions can be found at
-[imath.readthedocs.io](https://imath.readthedocs.io).
+https://imath.readthedocs.io.
 
-See [Install](https://imath.readthedocs.io) for instructions on
-downloading and building Imath.
+See the [Install](https://imath.readthedocs.io) instructions for
+how to download, install, or build Imath from source.
 
 If you encounter problems compiling code or building projects written
 with an earlier release of Imath, the [porting
