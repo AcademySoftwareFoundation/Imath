@@ -113,7 +113,6 @@ jobs:
             # compiler-desc: gcc9.3.1
             # python: 'OFF'
             # python-desc: no python
-            build-docs: 'OFF'
             # vfx-cy: 2022
 
           # -------------------------------------------------------------------
@@ -468,7 +467,7 @@ jobs:
        shared=${{ matrix.build-shared }}, 
        cxx=${{ matrix.cxx-standard }}, 
        python=OFF, 
-       docs=OFF'
+       docs=OFF>'
     runs-on: windows-${{ matrix.osver }}
     strategy:
       matrix:
