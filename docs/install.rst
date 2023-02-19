@@ -151,7 +151,7 @@ The Imath technical documentation at `https://imath.readthedocs.io
 extracted from header comments by `Doxygen <https://www.doxygen.nl>`_.
 
 To build the documentation locally from the source headers and
-``.rst`` files, set the CMake option ``DOCS=ON``. This adds
+``.rst`` files, set the CMake option ``BUILD_DOCS=ON``. This adds
 ``Doxygen`` and ``Sphinx`` CMake targets and enables building the docs
 by default.  generation is off by default.
 

@@ -280,7 +280,7 @@ jobs:
                 -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
                 -DPYTHON=${{ matrix.python }} \
                 -DUSE_PYTHON2=${{ matrix.use-python2 }} \
-                -DDOCS=${{ matrix.build-docs }}
+                -DBUILD_DOCS=${{ matrix.build-docs }}
         working-directory: _build
       - name: Build
         run: |

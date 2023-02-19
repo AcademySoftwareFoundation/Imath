@@ -9,7 +9,8 @@ Concepts
 
 .. toctree::
    :caption: Concepts
-
+   :maxdepth: 0
+              
 The Imath library emphasizes simplicity, ease of use, correctness and
 verifiability, performance, and breadth of adoption. Imath is not
 intended to be a comprehensive linear algebra or numerical analysis
@@ -140,4 +141,3 @@ as pre-multiplication:
   \end{bmatrix}
 
 
-  

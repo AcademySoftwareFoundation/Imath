@@ -24,7 +24,8 @@ component of OpenEXR v1 and v2.
 
 OpenEXR and Imath is included in the `VFX Reference Platform <https://vfxplatform.com>`_.
 
-## New Features in 3.1
+New Features in 3.1
+-------------------
 
 The 3.1 release of Imath introduces optimized half-to-float and
 float-to-half conversion using the F16C SSE instruction set extension,
@@ -48,17 +49,22 @@ for more installation and configuration options.
 Also, ``half.h`` can now be included in pure C code for a definition
 of the type and for conversions between half and float.
 
+OpenEXR/Imath 2.x to 3.x Porting Guide
+--------------------------------------
+
+See the :doc:`PortingGuide` for help in restructing old code to work
+with recent releases of OpenEXR and Imath.
+
 Credits
-=======
+-------
 
 The ILM Imath library and the ``half`` data type were originally
 designed and implemented at Industrial Light & Magic by Florian Kainz,
 Wojciech Jarosz, Rod Bogart, and others. Drew Hess packaged and
 adapted ILM's internal source code for public release.
 
-For a complete list of contributors see the `CONTRIBUTORS.md
-<https://github.com/AcademySoftwareFoundation/Imath/blob/main/CONTRIBUTORS.md>`_
-file.
+For a complete list of contributors see `CONTRIBUTORS.md
+<https://github.com/AcademySoftwareFoundation/Imath/blob/main/CONTRIBUTORS.md>`_.
 
 
 

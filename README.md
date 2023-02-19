@@ -39,6 +39,15 @@ community. Read our [code of conduct](CODE_OF_CONDUCT.md).
 Imath builds on Linux, macOS, Microsoft Windows, and is
 cross-compilable on other systems.
 
+## A Note about Versioning
+
+Because Imath was originally distributed as a part of OpenEXR, it has
+already had two major release versions, as a part of OpenEXR v1 and
+v2. To avoid confusion with these original releases, the first
+version of Imath released independently of OpenEXR is Version v3.0. To
+be clear, the versioning and release of Imath is no longer tied to
+OpenEXR.
+
 # Quick Start
 
 Technical documentation for the Imath classes and functions can be found at
@@ -51,15 +60,6 @@ If you encounter problems compiling code or building projects written
 with an earlier release of Imath, the [porting
 guide](https://openexr.readthedocs.io/en/latest/PortingGuide.html)
 explains some of the differences and how to address them.
-
-## A Note about Versioning
-
-Because Imath was originally distributed as a part of OpenEXR, it has
-already had two major release versions, as a part of OpenEXR v1 and
-v2. To avoid confusion with these original releases, the first
-version of Imath released independently of OpenEXR is Version v3.0. To
-be clear, the versioning and release of Imath is no longer tied to
-OpenEXR.
 
 # Community
 
@@ -84,14 +84,14 @@ OpenEXR.
 
   - Email to security@openexr.com
 
-* **Make a contribution:**
+* **Contribute a Fix, Feature, or Improvement:**
 
-  - Read the [contribution guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md)
+  - Read the [Contribution Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md)
 
-  - Sign the [contributor license
-    agreement](https://contributor.easycla.lfx.linuxfoundation.org/#/cla/project/2e8710cb-e379-4116-a9ba-964f83618cc5/user/564e571e-12d7-4857-abd4-898939accdd7)
+  - Sign the [Contributor License
+    Agreement](https://contributor.easycla.lfx.linuxfoundation.org/#/cla/project/2e8710cb-e379-4116-a9ba-964f83618cc5/user/564e571e-12d7-4857-abd4-898939accdd7)
   
-  - Submit a PR: https://github.com/AcademySoftwareFoundation/Imath/pulls
+  - Submit a Pull Request: https://github.com/AcademySoftwareFoundation/Imath/pulls
 
 # Resources
 
