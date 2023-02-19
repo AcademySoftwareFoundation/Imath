@@ -2,83 +2,71 @@
   SPDX-License-Identifier: BSD-3-Clause
   Copyright Contributors to the OpenEXR Project.
 
-Imath |version| Technical Documentation
-=======================================
+.. _Overview:
 
-Imath is a basic, light-weight, and efficient C++ representation of 2D
-and 3D vectors and matrices and other simple but useful mathematical
-objects, functions, and data types common in computer graphics
-applications, including the ``half`` 16-bit floating-point type.
-
-- Download: https://github.com/AcademySoftwareFoundation/Imath
-- Install Help: `INSTALL.md <https://github.com/AcademySoftwareFoundation/Imath/blob/main/INSTALL>`_
-- Porting Help: `Imath/OpenEXR Version 2->3 Porting Guide <https://github.com/AcademySoftwareFoundation/Imath/blob/main/docs/PortingGuide2-3.md>`_
-- License: `BSD License <https://github.com/AcademySoftwareFoundation/Imath/blob/main/LICENSE.md>`_
-
-Introduction
-############
+Overview
+########
 
 .. toctree::
-   :maxdepth: 3
-
-   intro
-   
-   install
-
-The half Type
-#############
-
-.. toctree::
+   :caption: Overview
    :maxdepth: 1
 
-   classes/half
-   half_limits
-   functions/half_c
-   half_conversion
-   float
-              
-Imath Classes
-#############
+Imath is a basic, light-weight, and efficient C++ representation of 2D
+and 3D vectors, 2x2, 3x3, and 4x4 matrices, and other simple but useful
+mathematical objects, functions, and data types common in computer
+graphics applications, including the :doc:`classes/half` 16-bit floating-point
+type.
 
-.. toctree::
-   :maxdepth: 3
+Imath also includes optional python bindings for all types and
+functions, including optimized implementations of vector and matrix
+arrays.
 
-   classes/Box
-   classes/Color3
-   classes/Color4
-   classes/Euler
-   classes/Frustum
-   classes/Interval
-   classes/Line3
-   classes/Matrix22
-   classes/Matrix33
-   classes/Matrix44
-   classes/Plane3
-   classes/Quat
-   classes/Rand32
-   classes/Rand48
-   classes/Shear6
-   classes/Sphere3
-   classes/Vec2
-   classes/Vec3
-   classes/Vec4
+Imath is maintained by the `OpenEXR project <https://openexr.com>`_, a part of the `Academy
+Software Foundation <https://www.aswf.io>`_.
 
-Imath Functions
-###############
+Community
+=========
 
-.. toctree::
-   :maxdepth: 3
+* **Ask a question:**
 
-   functions/box
-   functions/color
-   functions/frame
-   functions/gl
-   functions/glu
-   functions/line
-   functions/matrix
-   functions/random
-   functions/roots
-   functions/vec
-   
-:ref:`genindex`
+  - Email: `openexr-dev@lists.aswf.io <https://lists.aswf.io/g/openexr-dev>`_
+
+  - Slack: `academysoftwarefdn#openexr <https://academysoftwarefdn.slack.com/archives/CMLRW4N73>`_
+
+* **Attend a meeting:**
+
+  - Technical Steering Committee meetings are open to the
+    public, fortnightly on Thursdays, 1:30pm Pacific Time.
+
+  - Calendar: https://lists.aswf.io/g/openexr-dev/calendar
+
+* **Report a bug:**
+
+  - Submit an Issue: https://github.com/AcademySoftwareFoundation/Imath/issues
+
+* **Report a security vulnerability:**
+
+  - Email security@openexr.com
+
+* **Contribute a Fix, Feature, or Improvement:**
+
+  - Read the `Contribution guidelines
+    <https://github.com/AcademySoftwareFoundation/openexr/blob/main/CONTRIBUTING.md>`_
+    and `Code of Conduct <https://github.com/AcademySoftwareFoundation/openexr/blob/main/CODE_OF_CONDUCT.md>`_
+
+  - Sign the `Contributor License Agreement
+    <https://contributor.easycla.lfx.linuxfoundation.org/#/cla/project/2e8710cb-e379-4116-a9ba-964f83618cc5/user/564e571e-12d7-4857-abd4-898939accdd7>`_
+  
+  - Submit a Pull Request: https://github.com/AcademySoftwareFoundation/Imath/pulls
+
+Resources
+=========
+
+- Security policy: `SECURITY.md <https://github.com/AcademySoftwareFoundation/Imath/blob/main/SECURITY.md>`_
+- Release notes: `CHANGES.md
+  <https://github.com/AcademySoftwareFoundation/Imath/blob/main/CHANGES.md>`_
+- Contributors: `CONTRIBUTORS.md <https://github.com/AcademySoftwareFoundation/Imath/blob/main/CONTRIBUTORS.md>`_
+- Porting Guide: :doc:`PortingGuide`
+
+.. include:: toc_redirect.rst
 

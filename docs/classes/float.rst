@@ -30,15 +30,15 @@ floating point number, whose bits are arranged as follows:
 
 If ``e`` is between 1 and 254, ``f`` is a normalized number:
 
-    f = (-1)\ :sup:`s`  * 2\ :sup:`e-127` * 1.m
+.. math::    {\tt f} = (-1)^{\tt s} \times 2^{\tt e-127} \times {\tt 1.m}
 
 If ``e`` is 0, and ``m`` is not zero, ``f`` is a denormalized number:
 
-    f = (-1)\ :sup:`s`  * 2\ :sup:`-126` * 0.m
-
+.. math::    {\tt f} = (-1)^{\tt s} \times 2^{\tt e-126} \times {\tt 0.m}
+    
 If ``e`` and ``m`` are both zero, ``f`` is zero:
 
-    f = 0.0
+.. math::    {\tt f} = 0.0
 
 If ``e`` is 255, ``f`` is an "infinity" or "not a number" (NAN),
 depending on whether ``m`` is zero or not.
@@ -79,15 +79,15 @@ Here is the bit-layout for a half number, ``h``:
 
 If ``e`` is between 1 and 30, ``h`` is a normalized number:
 
-    h = (-1)\ :sup:`s`  * 2\ :sup:`e-15` * 1.m
-
+.. math::    {\tt h} = (-1)^{\tt s} \times 2^{\tt e-15} \times {\tt 1.m}
+    
 If ``e`` is 0, and ``m`` is not zero, ``h`` is a denormalized number:
 
-    h = (-1) :sup:`s`  * 2\ :sup:`-14` * 0.m
+.. math::    {\tt h} = (-1)^{\tt s} \times 2^{\tt -14} \times {\tt 0.m}
 
 If ``e`` and ``m`` are both zero, ``h`` is zero:
 
-    h = 0.0
+.. math::    {\tt h} = 0.0
 
 If ``e`` is 31, ``h`` is an "infinity" or "not a number" (NAN),
 depending on whether ``m`` is zero or not.
