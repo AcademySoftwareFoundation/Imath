@@ -1,4 +1,7 @@
-This is a list of contributors to the OpenEXR project, sorted
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<!-- Copyright (c) Contributors to the OpenEXR Project -->
+
+This is a list of contributors to the Imath project, sorted
 alphabetically by first name.
 
 If you know of missing, please email: info@openexr.com.
