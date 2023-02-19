@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<!-- Copyright (c) Contributors to the OpenEXR Project -->
+
 # OpenEXR Project Roles and Responsibilities
 
 Imath is a subproject of OpenEXR and follows OpenEXR's governance and
@@ -72,9 +75,9 @@ info@openexr.com.
 ## Technical Steering Committee
 
 The Technical Steering Committee (TSC) oversees the overall technical
-direction of OpenEXR, as defined in the project [Technical
-Charter](https://github.com/AcademySoftwareFoundation/openexr/blob/main/ASWF/charter/OpenEXR-Technical-Charter.md)
-This charter defines the TSC member terms and succession policies.
+direction of OpenEXR, as defined in the project
+[charter](ASWF/charter/OpenEXR-Technical-Charter.md).  This
+charter defines the TSC member terms and succession policies.
 
 The responsibilities of the TSC include:
 
