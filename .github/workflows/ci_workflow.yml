@@ -74,6 +74,7 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.9.7
+            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++17, Python 3.9.7, Static
@@ -86,6 +87,7 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.9.7
+            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++14, Python 3.9.7, Static
@@ -98,6 +100,7 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.9.7
+            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++17, no Python
@@ -110,6 +113,7 @@ jobs:
             # compiler-desc: gcc9.3.1
             # python: 'OFF'
             # python-desc: no python
+            build-docs: 'OFF'
             # vfx-cy: 2022
 
           # -------------------------------------------------------------------
@@ -125,6 +129,7 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.7.9
+            build-docs: 'OFF'
             vfx-cy: 2021
 
           # -------------------------------------------------------------------
@@ -140,6 +145,7 @@ jobs:
             compiler-desc: gcc6.3.1
             python: 'ON'
             python-desc: python3.7.3
+            build-docs: 'OFF'
             vfx-cy: 2020
 
           # -------------------------------------------------------------------
@@ -156,6 +162,7 @@ jobs:
             compiler-desc: gcc6.3.1
             python: 'ON'
             python-desc: python2.7.15
+            build-docs: 'OFF'
             vfx-cy: 2019
 
           # -------------------------------------------------------------------
@@ -171,6 +178,7 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.9.7
+            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++17, Python 3.9.7, Debug
@@ -183,6 +191,7 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.9.7
+            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++17, Python 3.9.7, Static
@@ -195,6 +204,7 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.9.7
+            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++14, Python 3.9.7, Static
@@ -207,6 +217,7 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.9.7
+            build-docs: 'OFF'
             vfx-cy: 2022
 
           # -------------------------------------------------------------------
@@ -222,6 +233,7 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.7.9
+            build-docs: 'OFF'
             vfx-cy: 2021
 
           # -------------------------------------------------------------------
@@ -237,6 +249,7 @@ jobs:
             compiler-desc: clang7.8
             python: 'ON'
             python-desc: python3.7.3
+            build-docs: 'OFF'
             vfx-cy: 2020
 
           # -------------------------------------------------------------------
@@ -253,6 +266,7 @@ jobs:
             compiler-desc: clang7.8
             python: 'ON'
             python-desc: python2.7.15
+            build-docs: 'OFF'
             vfx-cy: 2019
 
     env:
@@ -335,7 +349,7 @@ jobs:
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
        cxx=${{ matrix.cxx-standard }}, 
-       docs=${{ matrix.build-docs }}>'
+       docs=OFF>'
     runs-on: macos-10.15
     strategy:
       matrix:
@@ -454,7 +468,7 @@ jobs:
        shared=${{ matrix.build-shared }}, 
        cxx=${{ matrix.cxx-standard }}, 
        python=OFF, 
-       docs=${{ matrix.build-docs }}>'
+       docs=OFF'
     runs-on: windows-${{ matrix.osver }}
     strategy:
       matrix:
@@ -467,7 +481,6 @@ jobs:
           - build: 1
             build-type: Release
             build-shared: 'ON'
-            build-docs: 'ON'
             compiler-desc: msvc16.11
             cxx-standard: 17
             vfx-cy: 2022
@@ -478,7 +491,6 @@ jobs:
           ## - build: 2
           ##   build-type: Debug
           ##   build-shared: 'ON'
-          ##   build-docs: 'OFF'
           ##   cxx-standard: 17
           ##   exclude-tests:
 
@@ -486,7 +498,6 @@ jobs:
           - build: 3
             build-type: Release
             build-shared: 'OFF'
-            build-docs: 'OFF'
             compiler-desc: msvc16.11
             cxx-standard: 17
             vfx-cy: 2022
@@ -500,7 +511,6 @@ jobs:
           - build: 4
             build-type: Release
             build-shared: 'ON'
-            build-docs: 'ON'
             compiler-desc: msvc17.1
             cxx-standard: 17
             vfx-cy: 2022
@@ -511,7 +521,6 @@ jobs:
           ## - build: 5
           ##   build-type: Debug
           ##   build-shared: 'ON'
-          ##   build-docs: 'OFF'
           ##   cxx-standard: 17
           ##   exclude-tests:
 
@@ -519,7 +528,6 @@ jobs:
           - build: 6
             build-type: Release
             build-shared: 'OFF'
-            build-docs: 'OFF'
             compiler-desc: msvc17.1
             cxx-standard: 17
             vfx-cy: 2022
@@ -533,7 +541,6 @@ jobs:
           - build: 7
             build-type: Release
             build-shared: 'ON'
-            build-docs: 'OFF'
             compiler-desc: msvc16.11
             cxx-standard: 14
             vfx-cy: 2020
@@ -547,7 +554,6 @@ jobs:
           - build: 8
             build-type: Release
             build-shared: 'ON'
-            build-docs: 'OFF'
             compiler-desc: msvc16.11
             cxx-standard: 11
             exclude-tests:
