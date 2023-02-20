@@ -10,6 +10,7 @@
 #define _PyImathAutovectorize_h_
 
 #include <Python.h>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/pop_front.hpp>

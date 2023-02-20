@@ -8,6 +8,7 @@
 #ifndef _PyImathFixedVArray_h_
 #define _PyImathFixedVArray_h_
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <boost/any.hpp>
 #include <vector>

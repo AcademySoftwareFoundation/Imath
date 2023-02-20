@@ -8,6 +8,7 @@
 #ifndef INCLUDED_PYIMATH_DECORATORS_H
 #define INCLUDED_PYIMATH_DECORATORS_H
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 
 namespace PyImath
