@@ -9,6 +9,7 @@
 #define _PyImathEuler_h_
 
 #include <Python.h>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <ImathEuler.h>
 #include <ImathVec.h>

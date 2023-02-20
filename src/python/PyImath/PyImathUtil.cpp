@@ -5,6 +5,7 @@
 
 // clang-format off
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <pystate.h>
 #include "PyImathUtil.h"

@@ -9,6 +9,7 @@
 #define _PyImathFrustum_h_
 
 #include <Python.h>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <ImathFrustum.h>
 #include <ImathFrustumTest.h>
