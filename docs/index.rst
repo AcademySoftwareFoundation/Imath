@@ -4,11 +4,11 @@
 
 .. _Overview:
 
-Overview
-########
+Imath
+#####
 
 .. toctree::
-   :caption: Overview
+   :caption: Imath
    :maxdepth: 1
 
 Imath is a basic, light-weight, and efficient C++ representation of 2D
@@ -50,7 +50,7 @@ Community
 
 * **Contribute a Fix, Feature, or Improvement:**
 
-  - Read the `Contribution guidelines
+  - Read the `Contribution Guidelines
     <https://github.com/AcademySoftwareFoundation/openexr/blob/main/CONTRIBUTING.md>`_
     and `Code of Conduct <https://github.com/AcademySoftwareFoundation/openexr/blob/main/CODE_OF_CONDUCT.md>`_
 
