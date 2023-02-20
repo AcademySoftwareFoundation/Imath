@@ -8,6 +8,7 @@
 #ifndef _PyImathFixedArray2D_h_
 #define _PyImathFixedArray2D_h_
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <boost/operators.hpp>
 #include <boost/shared_array.hpp>

@@ -8,6 +8,7 @@
 #ifndef _PyImathFixedMatrix_h_
 #define _PyImathFixedMatrix_h_
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <iostream>
 #include "PyImathFixedArray.h"

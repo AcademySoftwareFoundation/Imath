@@ -9,6 +9,7 @@
 #define _PyImathBox_h_
 
 #include <Python.h>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/python.hpp>
 #include <ImathBox.h>
 #include "PyImathVec.h"
