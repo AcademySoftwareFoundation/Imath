@@ -2,6 +2,8 @@
   SPDX-License-Identifier: BSD-3-Clause
   Copyright Contributors to the OpenEXR Project.
 
+:orphan:
+
 .. _porting:
 
 OpenEXR/Imath 2.x to 3.x Porting Guide
