@@ -2,6 +2,8 @@
   SPDX-License-Identifier: BSD-3-Clause
   Copyright Contributors to the OpenEXR Project.
 
+:orphan:
+
 .. _Symbol Visibility in Imath/OpenEXR:
 
 Symbol Visibility in Imath/OpenEXR

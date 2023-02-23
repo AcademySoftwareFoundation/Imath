@@ -68,5 +68,10 @@ Resources
 - Contributors: `CONTRIBUTORS.md <https://github.com/AcademySoftwareFoundation/Imath/blob/main/CONTRIBUTORS.md>`_
 - Porting Guide: :doc:`PortingGuide`
 
+Index
+=====
+
+:ref:`genindex`
+
 .. include:: toc_redirect.rst
 
