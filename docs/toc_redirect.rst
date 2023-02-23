@@ -20,11 +20,6 @@
 .. toctree::
    :hidden:
 
-   genindex
-
-.. toctree::
-   :hidden:
-
    install
    
 .. toctree::
