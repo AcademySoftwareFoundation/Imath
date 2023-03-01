@@ -234,10 +234,10 @@ testColor ()
     
     IMATH_INTERNAL_NAMESPACE::Color4<double> c4d, r4d, tmp4d;
 
-    c4d.r = 1.0d;
-    c4d.g = 1.0d;
-    c4d.b = 1.0d;
-    c4d.a = 1.0d;
+    c4d.r = 1.0;
+    c4d.g = 1.0;
+    c4d.b = 1.0;
+    c4d.a = 1.0;
     tmp4d = rgb2hsv(c4d);
     r4d = hsv2rgb(tmp4d);
     assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.r, c4d.r, 1e-5d));
@@ -245,10 +245,10 @@ testColor ()
     assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.b, c4d.b, 1e-5d));
     assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.a, c4d.a, 1e-5d));
 
-    c4d.r = 1.0d;
-    c4d.g = 1.0d;
-    c4d.b = 0.0d;
-    c4d.a = 0.0d;
+    c4d.r = 1.0;
+    c4d.g = 1.0;
+    c4d.b = 0.0;
+    c4d.a = 0.0;
     tmp4d = rgb2hsv(c4d);
     r4d = hsv2rgb(tmp4d);
     assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.r, c4d.r, 1e-5d));
@@ -260,18 +260,18 @@ testColor ()
     
     IMATH_INTERNAL_NAMESPACE::Color3<double> c3d, r3d, tmp3d;
 
-    c3d.x = 1.0d;
-    c3d.y = 1.0d;
-    c3d.z = 1.0d;
+    c3d.x = 1.0;
+    c3d.y = 1.0;
+    c3d.z = 1.0;
     tmp3d = rgb2hsv(c3d);
     r3d = hsv2rgb(tmp3d);
     assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.x, c3d.x, 1e-5d));
     assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.y, c3d.y, 1e-5d));
     assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.z, c3d.z, 1e-5d));
 
-    c3d.x = 1.0d;
-    c3d.y = 1.0d;
-    c3d.z = 0.0d;
+    c3d.x = 1.0;
+    c3d.y = 1.0;
+    c3d.z = 0.0;
     tmp3d = rgb2hsv(c3d);
     r3d = hsv2rgb(tmp3d);
     assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.x, c3d.x, 1e-5d));
