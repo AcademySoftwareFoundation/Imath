@@ -843,6 +843,19 @@ boxMatrixTransform ()
     assert (approximatelyEqual (b5.min, b6.min, e));
     assert (approximatelyEqual (b5.max, b6.max, e));
     assert (b51 == b5);
+
+    Box3f b7;
+    Box3f r;
+    b7.makeEmpty();
+    assert (b7.isEmpty() && !b7.isInfinite());
+    affineTransform (b7, M, r);
+    assert (r.isEmpty());
+
+    Box3f b8;
+    b8.makeInfinite();
+    assert (b8.isInfinite() && !b8.isEmpty());
+    affineTransform (b8, M, r);
+    assert (r.isInfinite());
 }
 
 void
