@@ -22,6 +22,7 @@ Patch release with miscellaneous bug/doc/build fixes. In particular:
 
 - Support for relative prefix in pkg-config
 - Reorganization of documentation at https://imath.readthedocs.io
+- The CMake config for building the docs is now BUILD_DOCS instead of DOCS
 - Add a ``trace()`` method on Matrix types
 
 ### Merged Pull Requests
