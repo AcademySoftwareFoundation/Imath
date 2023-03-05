@@ -894,13 +894,10 @@ IMATH_EXPORT std::istream&
 
 #include <limits>
 
-namespace std
-{
-
-template <> class numeric_limits<IMATH_INTERNAL_NAMESPACE::half>
+template <> class std::numeric_limits<IMATH_INTERNAL_NAMESPACE::half>
 {
 public:
-    static const bool is_specialized = true;
+    static constexpr bool is_specialized = true;
 
     static constexpr IMATH_INTERNAL_NAMESPACE::half min () IMATH_NOEXCEPT
     {
@@ -939,7 +936,7 @@ public:
     static constexpr bool               has_infinity      = true;
     static constexpr bool               has_quiet_NaN     = true;
     static constexpr bool               has_signaling_NaN = true;
-    static constexpr float_denorm_style has_denorm        = denorm_present;
+    static constexpr std::float_denorm_style has_denorm   = std::denorm_present;
     static constexpr bool               has_denorm_loss   = false;
     static constexpr IMATH_INTERNAL_NAMESPACE::half               infinity () IMATH_NOEXCEPT
     {
@@ -962,12 +959,10 @@ public:
     static constexpr bool is_bounded = false;
     static constexpr bool is_modulo  = false;
 
-    static constexpr bool              traps           = true;
-    static constexpr bool              tinyness_before = false;
-    static constexpr float_round_style round_style     = round_to_nearest;
+    static constexpr bool              traps            = true;
+    static constexpr bool              tinyness_before  = false;
+    static constexpr std::float_round_style round_style = std::round_to_nearest;
 };
-
-} // namespace std
 
 //----------
 // Debugging
