@@ -675,7 +675,7 @@ testMatrix ()
             }
         }
 
-        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+        assert (fabs (u.trace () - trace) <= u.baseTypeEpsilon ());
     }
     {
         cout << "3x3 trace" << endl;
@@ -711,7 +711,7 @@ testMatrix ()
             }
         }
 
-        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+        assert (fabs (u.trace () - trace) <= u.baseTypeEpsilon ());
     }
     {
         cout << "4x4 trace" << endl;
@@ -747,7 +747,7 @@ testMatrix ()
             }
         }
 
-        assert (fabsf (u.trace () - trace) <= u.baseTypeEpsilon ());
+        assert (fabs (u.trace () - trace) <= u.baseTypeEpsilon ());
     }
 
     // Matrix minors
