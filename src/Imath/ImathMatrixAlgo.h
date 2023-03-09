@@ -777,8 +777,6 @@ template <class T>
 Quat<T>
 extractQuat (const Matrix44<T>& mat)
 {
-    Matrix44<T> rot;
-
     T       tr, s;
     T       q[4];
     int     i, j, k;

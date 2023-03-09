@@ -243,8 +243,6 @@ verifyProcrustes (
     // there is zero net force and zero net torque.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::V3d center (0, 0, 0);
-
         IMATH_INTERNAL_NAMESPACE::V3d netForce (0);
         IMATH_INTERNAL_NAMESPACE::V3d netTorque (0);
         for (size_t iPoint = 0; iPoint < n; ++iPoint)
