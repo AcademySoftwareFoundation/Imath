@@ -580,7 +580,6 @@ setShear44Tuple(Matrix44<T> &mat, const tuple &t)
         s.x = extract<T>(t[0]);
         s.y = extract<T>(t[1]);
         s.z = extract<T>(t[2]);
-//        Shear6<T> shear(s);
         
         return mat.setShear(s);
     }
