@@ -75,6 +75,7 @@ set_target_properties(ImathHalfPerfTest PROPERTIES
 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 target_link_libraries(ImathHalfPerfTest Imath::Imath)
+add_test(NAME Imath.half_perf_test COMMAND $<TARGET_FILE:ImathHalfPerfTest>)
 
 function(DEFINE_IMATH_TESTS)
   foreach(curtest IN LISTS ARGN)
