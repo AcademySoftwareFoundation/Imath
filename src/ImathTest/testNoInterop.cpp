@@ -16,12 +16,6 @@
 
 using namespace std;
 
-IMATH_EXPORT
-void
-stopper()
-{
-}
-
 void
 testNoInterop ()
 {
@@ -33,10 +27,9 @@ testNoInterop ()
     
     {
         const float a[2][2] = {
-            1.0f, 0.0f,
-            0.0f, 1.0f,
+            { 1.0f, 0.0f },
+            { 0.0f, 1.0f }
         };
-        stopper();
         IMATH_INTERNAL_NAMESPACE::M22f m(a);
         assert (m[0][0] == a[0][0]);
         assert (m[0][1] == a[0][1]);
@@ -46,9 +39,9 @@ testNoInterop ()
     
     {
         const float a[3][3] = {
-            1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 
+            { 1.0f, 0.0f, 0.0f },
+            { 0.0f, 1.0f, 0.0f },
+            { 0.0f, 0.0f, 1.0f } 
         };
         IMATH_INTERNAL_NAMESPACE::M33f m(a);
         assert (m[0][0] == a[0][0]);
@@ -64,10 +57,10 @@ testNoInterop ()
     
     {
         const float a[4][4] = {
-            1.0f, 0.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 1.0f, 
+            { 1.0f, 0.0f, 0.0f, 0.0f },
+            { 0.0f, 1.0f, 0.0f, 0.0f },
+            { 0.0f, 0.0f, 1.0f, 0.0f },
+            { 0.0f, 0.0f, 0.0f, 1.0f } 
         };
         IMATH_INTERNAL_NAMESPACE::M44f m(a);
         assert (m[0][0] == a[0][0]);
