@@ -20,6 +20,8 @@
 using namespace std;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
+#if IMATH_FOREIGN_VECTOR_INTEROP
+
 // Imath::has_subscript fails for std::vector because its length does not
 // appear to be the length of N elements. Carve out an exception here that
 // allows this to work.
@@ -29,7 +31,6 @@ struct has_subscript<std::vector<T>, T, N> : public std::true_type
 {};
 IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT
 
-#if IMATH_FOREIGN_VECTOR_INTEROP
 
 namespace
 {
@@ -701,9 +702,10 @@ testInteropMx4 ()
 void
 testInterop ()
 {
+#if IMATH_FOREIGN_VECTOR_INTEROP
+    
     cout << "Testing interoperability with foreign types" << endl;
 
-#if IMATH_FOREIGN_VECTOR_INTEROP
     testInteropVec2 ();
     testInteropVec3 ();
     testInteropVec4 ();

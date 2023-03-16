@@ -45,6 +45,7 @@ add_executable(ImathTest
   testSize.cpp
   testToFloat.cpp
   testInterop.cpp
+  testNoInterop.cpp
 )
 
 target_link_libraries(ImathTest Imath::Imath)
@@ -118,5 +119,6 @@ define_imath_tests(
   testJacobiEigenSolver
   testFrustumTest
   testInterop
+  testNoInterop
 )
 
