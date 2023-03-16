@@ -16,6 +16,7 @@
 #include <ImathVec.h>
 #include <assert.h>
 #include <iostream>
+#include <sstream>
 
 // Include ImathForward *after* other headers to validate forward declarations
 #include <ImathForward.h>
