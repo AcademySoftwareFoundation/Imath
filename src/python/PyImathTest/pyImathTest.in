@@ -4929,7 +4929,7 @@ def testM22 ():
     print ("M22d")
     testM22x (M22d, V2d)
 
-#testList.append (('testM22',testM22))
+testList.append (('testM22',testM22))
 
 
 # -------------------------------------------------------------------------
@@ -6107,6 +6107,20 @@ def testM44x (Mat, Vec):
     m.extractEulerXYZ(v)
     assert v.equalWithAbsError((0, 0, -a), v.baseTypeEpsilon())
 
+    e = Vec(0,0,-a)
+    m.setEulerAngles(e)
+    assert (equal(m[0][0], cos(a), 0.0001))
+    assert (equal(m[0][1], -sin(a), 0.0001))
+    assert (equal(m[1][0], sin(a), 0.0001))
+    assert (equal(m[1][1], cos(a), 0.0001))
+    
+    axis = Vec(0,0,1)
+    m.setAxisAngle(axis,-a)
+    assert (equal(m[0][0], cos(a), 0.0001))
+    assert (equal(m[0][1], -sin(a), 0.0001))
+    assert (equal(m[1][0], sin(a), 0.0001))
+    assert (equal(m[1][1], cos(a), 0.0001))
+
     # Extract scale, shear, rotation, translation.
 
     s = Vec(1, 2, 3)
@@ -6326,6 +6340,12 @@ def testM22xConversions (Mat):
     m2 = M22d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 1
 
+    m2 = M22f(42)
+    assert m2[0][0] == 42 and m2[0][1] == 42
+    
+    m2 = M22d(42)
+    assert m2[0][0] == 42 and m2[0][1] == 42
+    
     # The += operator
 
     m2 = Mat(0,1, 2,3)
@@ -6336,6 +6356,9 @@ def testM22xConversions (Mat):
     m2 += M22d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 2
     
+    m2 += 1
+    assert m2[0][0] == 1 and m2[0][1] == 3
+    
     # The -= operator
 
     m2 = Mat(0,1, 2,3)
@@ -6345,6 +6368,9 @@ def testM22xConversions (Mat):
     m2 = Mat(0,1, 2,3)
     m2 -= M22d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 0
+
+    m2 -= 1
+    assert m2[0][0] == -1 and m2[0][1] == -1
 
     # The *= operator
 
@@ -6357,6 +6383,15 @@ def testM22xConversions (Mat):
     m2 *= M22d (m1)
     assert m2[0][0] == 0*0 + 1*2
     assert m2[0][1] == 0*1 + 1*3
+        
+    m2 *= 10
+    assert m2[0][0] == 20 and m2[0][1] == 30
+    
+    # The /= operator
+
+    m2.makeIdentity()
+    m2 /= 10
+    assert equalWithRelErrorScalar(m2[0][0], 1/10.0, 0.0001)
         
     print ("ok")
     return
@@ -6374,6 +6409,12 @@ def testM33xConversions (Mat):
     m2 = M33d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 1
 
+    m2 = M33f(42)
+    assert m2[0][0] == 42 and m2[0][1] == 42
+    
+    m2 = M33d(42)
+    assert m2[0][0] == 42 and m2[0][1] == 42
+    
     # The += operator
 
     m2 = Mat(0,1,2, 3,4,5, 6,7,8)
@@ -6384,6 +6425,9 @@ def testM33xConversions (Mat):
     m2 += M33d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 2
     
+    m2 += 1
+    assert m2[0][0] == 1 and m2[0][1] == 3
+    
     # The -= operator
 
     m2 = Mat(0,1,2, 3,4,5, 6,7,8)
@@ -6393,6 +6437,9 @@ def testM33xConversions (Mat):
     m2 = Mat(0,1,2, 3,4,5, 6,7,8)
     m2 -= M33d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 0
+
+    m2 -= 1
+    assert m2[0][0] == -1 and m2[0][1] == -1
 
     # The *= operator
 
@@ -6405,6 +6452,15 @@ def testM33xConversions (Mat):
     m2 *= M33d (m1)
     assert m2[0][0] == 0*0 + 1*3 + 2*6
     assert m2[0][1] == 0*1 + 1*4 + 2*7
+        
+    m2 *= 10
+    assert m2[0][0] == (0*0 + 1*3 + 2*6)*10 and m2[0][1] == (0*1 + 1*4 + 2*7)*10
+    
+    # The /= operator
+
+    m2.makeIdentity()
+    m2 /= 10
+    assert equalWithRelErrorScalar(m2[0][0], 1/10.0, 0.0001)
         
     print ("ok")
     return
@@ -6422,6 +6478,12 @@ def testM44xConversions (Mat):
     m2 = M44d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 1 and m2[0][2] == 2
 
+    m2 = M44f(42)
+    assert m2[0][0] == 42 and m2[0][1] == 42
+    
+    m2 = M44d(42)
+    assert m2[0][0] == 42 and m2[0][1] == 42
+    
     # The += operator
 
     m2 = Mat((0,1,2,3), (4,5,6,7), (8,9,10,11), (12,13,14,15))
@@ -6432,6 +6494,9 @@ def testM44xConversions (Mat):
     m2 += M44d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 2
     
+    m2 += 1
+    assert m2[0][0] == 1 and m2[0][1] == 3
+
     # The -= operator
 
     m2 = Mat((0,1,2,3), (4,5,6,7), (8,9,10,11), (12,13,14,15))
@@ -6442,6 +6507,9 @@ def testM44xConversions (Mat):
     m2 -= M44d (m1)
     assert m2[0][0] == 0 and m2[0][1] == 0
     
+    m2 -= 1
+    assert m2[0][0] == -1 and m2[0][1] == -1
+
     # The *= operator
 
     m2 = Mat((0,1,2,3), (4,5,6,7), (8,9,10,11), (12,13,14,15))
@@ -6454,6 +6522,15 @@ def testM44xConversions (Mat):
     assert m2[0][0] == 0*0 + 1*4 + 2*8 + 3*12
     assert m2[0][1] == 0*1 + 1*5 + 2*9 + 3*13
                 
+    m2 *= 10
+    assert m2[0][0] == (0*0 + 1*4 + 2*8 + 3*12)*10 and m2[0][1] == (0*1 + 1*5 + 2*9 + 3*13)*10
+    
+    # The /= operator
+
+    m2.makeIdentity()
+    m2 /= 10
+    assert equalWithRelErrorScalar(m2[0][0], 1/10.0, 0.0001)
+        
     print ("ok")
     return
 
@@ -6483,7 +6560,7 @@ def testM22xM44xConversion (MatA, MatB):
 def testMatConversions ():
 
     print ("M22f")
-#    testM22xConversions (M22f)
+    testM22xConversions (M22f)
     print ("M22d")
     testM22xConversions (M22d)
 

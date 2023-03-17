@@ -463,8 +463,7 @@ static const Matrix33<T> &
 setScaleSc33(Matrix33<T> &mat, const T &s)
 {
     MATH_EXC_ON;
-    Vec2<T> sVec(s, s);
-    return mat.setScale(sVec);
+    return mat.setScale(s);
 }
 
 template <class T>

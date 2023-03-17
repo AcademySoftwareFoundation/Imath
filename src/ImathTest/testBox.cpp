@@ -169,8 +169,21 @@ testMakeInfinite (const char* type)
     //
     {
         IMATH_INTERNAL_NAMESPACE::Box<T> b;
-        b.makeInfinite();
-        assert (b.min == T (T::baseTypeLowest()) && b.max == T (T::baseTypeMax()));
+        b.makeInfinite ();
+        assert (
+            b.min == T (T::baseTypeLowest ()) &&
+            b.max == T (T::baseTypeMax ()));
+
+        for (unsigned int i=0; i<b.min.dimensions(); i++)
+        {
+            IMATH_INTERNAL_NAMESPACE::Box<T> c = b;
+            c.max[i] = 0;
+            assert (!c.isInfinite());
+
+            c = b;
+            c.min[i] = 0;
+            assert (!c.isInfinite());
+        }
     }
 
     //
