@@ -78,12 +78,6 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix22
     ///     a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (T a) IMATH_NOEXCEPT;
 
-    /// Construct from 2x2 array:
-    ///
-    ///     a[0][0] a[0][1]
-    ///     a[1][0] a[1][1]
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const T a[2][2]) IMATH_NOEXCEPT;
-
     /// Construct from given scalar values:
     ///
     ///     a b
@@ -134,6 +128,13 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix22
         return *this;
     }
     /// @}
+#else
+    /// Construct from 2x2 array:
+    ///
+    ///     a[0][0] a[0][1]
+    ///     a[1][0] a[1][1]
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const T a[2][2])
+        IMATH_NOEXCEPT;
 #endif
 
     /// @{
@@ -354,12 +355,6 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix33
     ///     a a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (T a) IMATH_NOEXCEPT;
 
-    /// Construct from 3x3 array 
-    ///     a[0][0] a[0][1] a[0][2]
-    ///     a[1][0] a[1][1] a[1][2]
-    ///     a[2][0] a[2][1] a[2][2]
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const T a[3][3]) IMATH_NOEXCEPT;
-
     /// Construct from given scalar values
     ///     a b c
     ///     d e f
@@ -416,6 +411,13 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix33
         return *this;
     }
     /// @}
+#else
+    /// Construct from 3x3 array
+    ///     a[0][0] a[0][1] a[0][2]
+    ///     a[1][0] a[1][1] a[1][2]
+    ///     a[2][0] a[2][1] a[2][2]
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const T a[3][3])
+        IMATH_NOEXCEPT;    
 #endif
 
     /// @{
@@ -703,13 +705,6 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
     ///     a a a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (T a) IMATH_NOEXCEPT;
 
-    /// Construct from 4x4 array 
-    ///     a[0][0] a[0][1] a[0][2] a[0][3]
-    ///     a[1][0] a[1][1] a[1][2] a[1][3]
-    ///     a[2][0] a[2][1] a[2][2] a[2][3]
-    ///     a[3][0] a[3][1] a[3][2] a[3][3]
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const T a[4][4]) IMATH_NOEXCEPT;
-
     /// Construct from given scalar values
     ///     a b c d
     ///     e f g h
@@ -778,6 +773,14 @@ template <class T> class IMATH_EXPORT_TEMPLATE_TYPE Matrix44
         return *this;
     }
     /// @}
+#else
+    /// Construct from 4x4 array
+    ///     a[0][0] a[0][1] a[0][2] a[0][3]
+    ///     a[1][0] a[1][1] a[1][2] a[1][3]
+    ///     a[2][0] a[2][1] a[2][2] a[2][3]
+    ///     a[3][0] a[3][1] a[3][2] a[3][3]
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const T a[4][4])
+        IMATH_NOEXCEPT;
 #endif
 
     /// @{
@@ -1182,7 +1185,11 @@ template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix
     x[1][1] = a;
 }
 
-template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (const T a[2][2]) IMATH_NOEXCEPT
+#if !IMATH_FOREIGN_VECTOR_INTEROP
+
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (
+    const T a[2][2]) IMATH_NOEXCEPT
 {
     // Function calls and aliasing issues can inhibit vectorization versus
     // straight assignment of data members, so instead of this:
@@ -1194,7 +1201,11 @@ template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix
     x[1][1] = a[1][1];
 }
 
-template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (T a, T b, T c, T d) IMATH_NOEXCEPT
+#endif
+
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>::Matrix22 (
+    T a, T b, T c, T d) IMATH_NOEXCEPT
 {
     x[0][0] = a;
     x[0][1] = b;
@@ -1779,7 +1790,11 @@ template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix
     x[2][2] = a;
 }
 
-template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (const T a[3][3]) IMATH_NOEXCEPT
+#if !IMATH_FOREIGN_VECTOR_INTEROP
+
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (
+    const T a[3][3]) IMATH_NOEXCEPT
 {
     // Function calls and aliasing issues can inhibit vectorization versus
     // straight assignment of data members, so instead of this:
@@ -1795,6 +1810,8 @@ template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix
     x[2][1] = a[2][1];
     x[2][2] = a[2][2];
 }
+
+#endif
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>::Matrix33 (T a, T b, T c, T d, T e, T f, T g, T h, T i) IMATH_NOEXCEPT
@@ -3057,7 +3074,11 @@ template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix
     x[3][3] = a;
 }
 
-template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (const T a[4][4]) IMATH_NOEXCEPT
+#if !IMATH_FOREIGN_VECTOR_INTEROP
+
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix44 (
+    const T a[4][4]) IMATH_NOEXCEPT
 {
     x[0][0] = a[0][0];
     x[0][1] = a[0][1];
@@ -3076,6 +3097,8 @@ template <class T> IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>::Matrix
     x[3][2] = a[3][2];
     x[3][3] = a[3][3];
 }
+
+#endif
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<

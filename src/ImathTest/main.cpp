@@ -24,6 +24,7 @@
 #include "testFrustumTest.h"
 #include "testFun.h"
 #include "testInterop.h"
+#include "testNoInterop.h"
 #include "testInterval.h"
 #include "testInvert.h"
 #include "testJacobiEigenSolver.h"
@@ -87,6 +88,7 @@ main (int argc, char* argv[])
     TEST (testJacobiEigenSolver);
     TEST (testFrustumTest);
     TEST (testInterop);
+    TEST (testNoInterop);
     // NB: If you add a test here, make sure to enumerate it in the
     // CMakeLists.txt so it runs as part of the test suite
 
