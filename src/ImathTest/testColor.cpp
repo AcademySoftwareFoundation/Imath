@@ -11,6 +11,7 @@
 #include <ImathColor.h>
 #include <ImathColorAlgo.h>
 #include <ImathMath.h>
+#include <ImathFun.h>
 #include <assert.h>
 #include <iostream>
 
@@ -179,5 +180,103 @@ testColor ()
         std::fabs ((X.b / Y.b) - tmp.b) <= 1e-5f &&
         std::fabs ((X.a / Y.a) - tmp.a) <= 1e-5f);
 
+    cout << "rgb2hsv and hsv2rgb" << endl;
+
+    // C4f
+    
+    IMATH_INTERNAL_NAMESPACE::C4f c4f, r4f, tmp4f;
+
+    c4f.r = 1.0f;
+    c4f.g = 1.0f;
+    c4f.b = 1.0f;
+    c4f.a = 1.0f;
+    tmp4f = rgb2hsv(c4f);
+    r4f = hsv2rgb(tmp4f);
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4f.r, c4f.r, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4f.g, c4f.g, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4f.b, c4f.b, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4f.a, c4f.a, 1e-5f));
+
+    c4f.r = 1.0f;
+    c4f.g = 1.0f;
+    c4f.b = 0.0f;
+    c4f.a = 0.0f;
+    tmp4f = rgb2hsv(c4f);
+    r4f = hsv2rgb(tmp4f);
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4f.r, c4f.r, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4f.g, c4f.g, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4f.b, c4f.b, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4f.a, c4f.a, 1e-5f));
+
+    // C3f
+    
+    IMATH_INTERNAL_NAMESPACE::C3f c3f, r3f, tmp3f;
+
+    c3f.x = 1.0f;
+    c3f.y = 1.0f;
+    c3f.z = 1.0f;
+    tmp3f = rgb2hsv(c3f);
+    r3f = hsv2rgb(tmp3f);
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3f.x, c3f.x, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3f.y, c3f.y, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3f.z, c3f.z, 1e-5f));
+
+    c3f.x = 1.0f;
+    c3f.y = 1.0f;
+    c3f.z = 0.0f;
+    tmp3f = rgb2hsv(c3f);
+    r3f = hsv2rgb(tmp3f);
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3f.x, c3f.x, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3f.y, c3f.y, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3f.z, c3f.z, 1e-5f));
+
+    // C4d
+    
+    IMATH_INTERNAL_NAMESPACE::Color4<double> c4d, r4d, tmp4d;
+
+    c4d.r = 1.0;
+    c4d.g = 1.0;
+    c4d.b = 1.0;
+    c4d.a = 1.0;
+    tmp4d = rgb2hsv(c4d);
+    r4d = hsv2rgb(tmp4d);
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.r, c4d.r, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.g, c4d.g, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.b, c4d.b, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.a, c4d.a, 1e-5f));
+
+    c4d.r = 1.0;
+    c4d.g = 1.0;
+    c4d.b = 0.0;
+    c4d.a = 0.0;
+    tmp4d = rgb2hsv(c4d);
+    r4d = hsv2rgb(tmp4d);
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.r, c4d.r, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.g, c4d.g, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.b, c4d.b, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r4d.a, c4d.a, 1e-5f));
+
+    // C3d
+    
+    IMATH_INTERNAL_NAMESPACE::Color3<double> c3d, r3d, tmp3d;
+
+    c3d.x = 1.0;
+    c3d.y = 1.0;
+    c3d.z = 1.0;
+    tmp3d = rgb2hsv(c3d);
+    r3d = hsv2rgb(tmp3d);
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.x, c3d.x, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.y, c3d.y, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.z, c3d.z, 1e-5f));
+
+    c3d.x = 1.0;
+    c3d.y = 1.0;
+    c3d.z = 0.0;
+    tmp3d = rgb2hsv(c3d);
+    r3d = hsv2rgb(tmp3d);
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.x, c3d.x, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.y, c3d.y, 1e-5f));
+    assert (IMATH_INTERNAL_NAMESPACE::equal (r3d.z, c3d.z, 1e-5f));
+    
     cout << "ok\n" << endl;
 }

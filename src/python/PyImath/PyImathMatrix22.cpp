@@ -337,8 +337,7 @@ static const Matrix22<T> &
 setScaleSc22(Matrix22<T> &mat, const T &s)
 {
     MATH_EXC_ON;
-    Vec2<T> sVec(s, s);
-    return mat.setScale(sVec);
+    return mat.setScale(s);
 }
 
 template <class T>
