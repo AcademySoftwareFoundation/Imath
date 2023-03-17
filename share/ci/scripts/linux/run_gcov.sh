@@ -8,12 +8,12 @@ set -ex
 if [ $# -gt 0 ]
 then
    build=$1  # use explicity-provided build directory
+   coverage="$build/_coverage"
 else
-   build=`pwd`/'_build'  # from with CI, use the _build subdirectory
+   build='../_build'  # from with CI, use the _build subdirectory
+   coverage="_coverage"
 fi
    
-coverage="$build/_coverage"
-
 mkdir -p $coverage
 cd $coverage
 
