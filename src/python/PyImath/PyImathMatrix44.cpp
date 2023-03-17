@@ -523,8 +523,7 @@ static const Matrix44<T> &
 setScaleSc44(Matrix44<T> &mat, const T &s)
 {
     MATH_EXC_ON;
-    Vec3<T> sVec(s, s, s);
-    return mat.setScale(sVec);
+    return mat.setScale(s);
 }
 
 template <class T>
@@ -559,8 +558,7 @@ static const Matrix44<T> &
 setShearV44(Matrix44<T> &mat, const Vec3<T> &sVec)
 {
     MATH_EXC_ON;
-    IMATH_NAMESPACE::Shear6<T> shear(sVec[0], sVec[1], sVec[2], T (0), T (0), T (0));
-    return mat.setShear(shear);
+    return mat.setShear(sVec);
 }
 
 template <class T>
@@ -582,9 +580,8 @@ setShear44Tuple(Matrix44<T> &mat, const tuple &t)
         s.x = extract<T>(t[0]);
         s.y = extract<T>(t[1]);
         s.z = extract<T>(t[2]);
-        Shear6<T> shear(s);
         
-        return mat.setShear(shear);
+        return mat.setShear(s);
     }
     else if(t.attr("__len__")() == 6)
     {
@@ -649,6 +646,22 @@ setValue44(Matrix44<T> &mat, const Matrix44<T> &value)
 {
     MATH_EXC_ON;
     mat.setValue(value);
+}
+
+template <class T>
+static void
+setEulerAngles44(Matrix44<T> &mat, const Vec3<T> &value)
+{
+    MATH_EXC_ON;
+    mat.setEulerAngles(value);
+}
+
+template <class T>
+static void
+setAxisAngle44(Matrix44<T> &mat, const Vec3<T> &axis, T angle)
+{
+    MATH_EXC_ON;
+    mat.setAxisAngle(axis, angle);
 }
 
 template <class T>
@@ -1112,6 +1125,8 @@ register_Matrix44()
         .def("setTranslation", &setTranslation44Tuple<T>, return_internal_reference<>(),"setTranslation()")
         .def("setTranslation", &setTranslation44Obj<T>, return_internal_reference<>(),"setTranslation()")
         .def("setValue", &setValue44<T>, "setValue()")
+        .def("setEulerAngles", &setEulerAngles44<T>, "setEulerAngles()")
+        .def("setAxisAngle", &setAxisAngle44<T>, "setAxisAngle()")
         .def("shear", &shearV44<T>, return_internal_reference<>(),"shear()")
         .def("shear", &shearS44<T>, return_internal_reference<>(),"shear()")
         .def("shear", &shear44Tuple<T>, return_internal_reference<>(),"shear()")
