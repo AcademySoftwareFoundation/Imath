@@ -35,6 +35,28 @@ using IMATH_INTERNAL_NAMESPACE::Int64;
 //
 
 void
+testMatrix22ArrayConstructor(const float a[2][2])
+{
+    IMATH_INTERNAL_NAMESPACE::M22f m(a);
+    assert(m == IMATH_INTERNAL_NAMESPACE::M22f());
+}
+
+void
+testMatrix33ArrayConstructor(const float a[3][3])
+{
+    IMATH_INTERNAL_NAMESPACE::M33f m(a);
+    assert(m == IMATH_INTERNAL_NAMESPACE::M33f());
+}
+
+void
+testMatrix44ArrayConstructor(const float a[4][4])
+{
+    IMATH_INTERNAL_NAMESPACE::M44f m(a);
+    assert(m == IMATH_INTERNAL_NAMESPACE::M44f());
+}
+
+
+void
 testMatrix ()
 {
     cout << "Testing functions in ImathMatrix.h" << endl;
@@ -70,6 +92,12 @@ testMatrix ()
         test3.makeIdentity ();
         assert (test2 == test3);
 
+        const float a[2][2] = {
+            { 1.0f, 0.0f },
+            { 0.0f, 1.0f }
+        };
+        testMatrix22ArrayConstructor(a);
+        
         m1 = 42;
         assert (m1[0][0] == 42 && m1[0][1] == 42 && m1[1][0] == 42 && m1[1][1] == 42);
 
@@ -118,6 +146,13 @@ testMatrix ()
 
         assert (test5[1][0] == 3.0);
         assert (test5[1][1] == 4.0);
+
+        const float a[3][3] = {
+            { 1.0f, 0.0f, 0.0f },
+            { 0.0f, 1.0f, 0.0f },
+            { 0.0f, 0.0f, 1.0f }
+        };
+        testMatrix33ArrayConstructor(a);
     }
 
     {
@@ -324,6 +359,14 @@ testMatrix ()
         IMATH_INTERNAL_NAMESPACE::M44d test3;
         test3.makeIdentity ();
         assert (test2 == test3);
+
+        const float a[4][4] = {
+            { 1.0f, 0.0f, 0.0f, 0.0f },
+            { 0.0f, 1.0f, 0.0f, 0.0f },
+            { 0.0f, 0.0f, 1.0f, 0.0f },
+            { 0.0f, 0.0f, 0.0f, 1.0f }
+        };
+        testMatrix44ArrayConstructor(a);
 
         //
         // Test non-equality when a NAN is in the same
