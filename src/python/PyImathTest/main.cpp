@@ -231,7 +231,6 @@ testBox2 ()
 
     handle<> ignored (PyRun_String (code.c_str(), Py_file_input, 
                                     mainNamespace.ptr(), mainNamespace.ptr()));
-
     //
 
     extract <object> eb2i (mainNamespace ["b2i"]);
@@ -2071,7 +2070,7 @@ testV2 ()
         "i = 1\n"
         "from wrap import *\n"
         "w = wrap ('V2i')\n"
-        "assert w == V2i (1, 2)\n";
+        "assert w == V2i (1, 2)\n"
         "w = wrap ('V2f')\n"
         "assert w.equalWithAbsError (V2f (1.1, 2.2), 1e-7)\n"
         "w = wrap ('V2d')\n"
@@ -2206,7 +2205,7 @@ testV3 ()
         "i = 1\n"
         "from wrap import *\n"
         "w = wrap ('V3i')\n"
-        "assert w == V3i (1, 2, 3)\n";
+        "assert w == V3i (1, 2, 3)\n"
         "w = wrap ('V3f')\n"
         "assert w.equalWithAbsError (V3f (1.1, 2.2, 3.3), 1e-7)\n"
         "w = wrap ('V3d')\n"
@@ -2323,43 +2322,9 @@ testV3 ()
     std::cerr << "ok\n";
 }
 
-
-std::string
-stripLastPath (std::string path)
-{
-    auto lastSlash = path.find_last_of('\\');
-    if (lastSlash != std::string::npos)
-        return path.substr (0, lastSlash);
-    return "";
-}
-
-
 int
 main (int argc, char *argv[])
 {
-#ifdef PLATFORM_WINDOWS
-    WSADATA info;
-    if (WSAStartup(MAKEWORD(2,0), &info)) {
-	//	    throw "Could not start WSA";
-    }
-
-    //
-    // Until we have something like the zenowrapper on Windows, we need to set
-    // the PYTHONPATH manually.
-    //
-    char exePath[_MAX_PATH];
-    GetModuleFileName (0, exePath, _MAX_PATH);
-    std::string startDir = stripLastPath (exePath);
-    // Find the build root by cutting everything after the second-last slash.
-    std::string buildRoot = stripLastPath (stripLastPath (startDir));
-    // Set the python path
-    char* startPythonPath = getenv ("PYTHONPATH");
-    std::string pythonPath = "PYTHONPATH=" + buildRoot + "\\win32\\PyModules";
-    if (startPythonPath)
-        pythonPath += ";" + std::string (startPythonPath);
-    putenv (pythonPath.c_str());
-#endif
-
     Py_Initialize();
     if (Py_IsInitialized())
     {
