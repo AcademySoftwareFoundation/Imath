@@ -1,7 +1,15 @@
+//
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
+//
+
+#ifdef NDEBUG
+#    undef NDEBUG
+#endif
+
 #include <PyImathStringTable.h>
 #include <iostream>
 #include <assert.h>
-#include <Iex.h>
 
 using namespace std;
 using namespace PyImath;
@@ -28,7 +36,7 @@ testString()
     bool thrown = false;
     try {
         index = st.lookup("bar");
-    } catch (Iex::ArgExc &e) {
+    } catch (std::exception &e) {
         thrown = true;
     }
     assert (thrown);
@@ -36,7 +44,7 @@ testString()
     thrown = false;
     try {
         std::string s = st.lookup(StringTableIndex(1));
-    } catch (Iex::ArgExc &e) {
+    } catch (std::exception &e) {
         thrown = true;
     }
     assert (thrown);
@@ -71,7 +79,7 @@ testWString()
     bool thrown = false;
     try {
         index = st.lookup(L"bar");
-    } catch (Iex::ArgExc &e) {
+    } catch (std::exception &e) {
         thrown = true;
     }
     assert (thrown);
@@ -79,7 +87,7 @@ testWString()
     thrown = false;
     try {
         std::wstring s = st.lookup(StringTableIndex(1));
-    } catch (Iex::ArgExc &e) {
+    } catch (std::exception &e) {
         thrown = true;
     }
     assert (thrown);

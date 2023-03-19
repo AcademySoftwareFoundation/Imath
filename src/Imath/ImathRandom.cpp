@@ -12,6 +12,7 @@
 
 #include "ImathRandom.h"
 #include <cstdint>
+#include <iostream>
 
 IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
 namespace

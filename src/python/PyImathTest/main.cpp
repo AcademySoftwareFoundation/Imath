@@ -1,3 +1,12 @@
+//
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright Contributors to the OpenEXR Project.
+//
+
+#ifdef NDEBUG
+#    undef NDEBUG
+#endif
+
 #include <boost/python.hpp>
 #include <boost/python/handle.hpp>
 #include <boost/python/object.hpp>
@@ -13,7 +22,6 @@
 #include <PyImathRandom.h>
 #include <PyImathVec.h>
 #include <PyImathShear.h>
-#include <PyIex.h>
 
 #include <testStringTable.h>
 
@@ -24,126 +32,135 @@ using namespace boost::python;
 PyObject *
 wrapTester (PyObject * /* self */, PyObject *args)
 {
-    PY_TRY;
+    try {
+        
+        char *type;
+        if (PyArg_ParseTuple (args, "s", &type))
+        {
+            std::string typeStr (type);
 
-    char *type;
-    if (PyArg_ParseTuple (args, "s", &type))
-    {
-        std::string typeStr (type);
+            if (typeStr == "Box2i")
+                return PyImath::Box2i::wrap (Imath::Box2i (Imath::V2i (1, 2), 
+                                                           Imath::V2i (3, 4)));
+            else if (typeStr == "Box2f")
+                return PyImath::Box2f::wrap (Imath::Box2f (Imath::V2f (1.1f, 2.2f), 
+                                                           Imath::V2f (3.3f, 4.4f)));
+            else if (typeStr == "Box2d")
+                return PyImath::Box2d::wrap (Imath::Box2d (Imath::V2d (1.1, 2.2), 
+                                                           Imath::V2d (3.3, 4.4)));
 
-        if (typeStr == "Box2i")
-            return PyImath::Box2i::wrap (Imath::Box2i (Imath::V2i (1, 2), 
-                                                       Imath::V2i (3, 4)));
-        else if (typeStr == "Box2f")
-            return PyImath::Box2f::wrap (Imath::Box2f (Imath::V2f (1.1f, 2.2f), 
-                                                       Imath::V2f (3.3f, 4.4f)));
-        else if (typeStr == "Box2d")
-            return PyImath::Box2d::wrap (Imath::Box2d (Imath::V2d (1.1, 2.2), 
-                                                       Imath::V2d (3.3, 4.4)));
+            if (typeStr == "Box3i")
+                return PyImath::Box3i::wrap (Imath::Box3i (Imath::V3i (1, 2, 3), 
+                                                           Imath::V3i (4, 5, 6)));
+            else if (typeStr == "Box3f")
+                return PyImath::Box3f::wrap (Imath::Box3f (Imath::V3f (1.1f, 2.2f, 3.3f), 
+                                                           Imath::V3f (4.4f, 5.5f, 6.6f)));
+            else if (typeStr == "Box3d")
+                return PyImath::Box3d::wrap (Imath::Box3d (Imath::V3d (1.1, 2.2, 3.3), 
+                                                           Imath::V3d (4.4, 5.5, 6.6)));
 
-        if (typeStr == "Box3i")
-            return PyImath::Box3i::wrap (Imath::Box3i (Imath::V3i (1, 2, 3), 
-                                                       Imath::V3i (4, 5, 6)));
-        else if (typeStr == "Box3f")
-            return PyImath::Box3f::wrap (Imath::Box3f (Imath::V3f (1.1f, 2.2f, 3.3f), 
-                                                       Imath::V3f (4.4f, 5.5f, 6.6f)));
-        else if (typeStr == "Box3d")
-            return PyImath::Box3d::wrap (Imath::Box3d (Imath::V3d (1.1, 2.2, 3.3), 
-                                                       Imath::V3d (4.4, 5.5, 6.6)));
+            else if (typeStr == "Color3c")
+                return PyImath::Color3c::wrap (Imath::Color3c (1, 2, 3));
+            else if (typeStr == "Color3f")
+                return PyImath::Color3f::wrap (Imath::Color3f (1.1f, 2.2f, 3.3f));
 
-        else if (typeStr == "Color3c")
-            return PyImath::Color3c::wrap (Imath::Color3c (1, 2, 3));
-        else if (typeStr == "Color3f")
-            return PyImath::Color3f::wrap (Imath::Color3f (1.1f, 2.2f, 3.3f));
+            else if (typeStr == "Color4c")
+                return PyImath::Color4c::wrap (Imath::Color4c (1, 2, 3, 4));
+            else if (typeStr == "Color4f")
+                return PyImath::Color4f::wrap (Imath::Color4f (1.1f, 2.2f, 3.3f, 4.4f));
 
-        else if (typeStr == "Color4c")
-            return PyImath::Color4c::wrap (Imath::Color4c (1, 2, 3, 4));
-        else if (typeStr == "Color4f")
-            return PyImath::Color4f::wrap (Imath::Color4f (1.1f, 2.2f, 3.3f, 4.4f));
+            else if (typeStr == "Eulerf")
+                return PyImath::Eulerf::wrap (Imath::Eulerf (Imath::V3f (1.1f, 2.2f, 3.3f), 
+                                                             Imath::Eulerf::XZY));
+            else if (typeStr == "Eulerd")
+                return PyImath::Eulerd::wrap (Imath::Eulerd (Imath::V3d (1.1f, 2.2f, 3.3f), 
+                                                             Imath::Eulerd::XZY));
 
-        else if (typeStr == "Eulerf")
-            return PyImath::Eulerf::wrap (Imath::Eulerf (Imath::V3f (1.1f, 2.2f, 3.3f), 
-                                                         Imath::Eulerf::XZY));
-        else if (typeStr == "Eulerd")
-            return PyImath::Eulerd::wrap (Imath::Eulerd (Imath::V3d (1.1f, 2.2f, 3.3f), 
-                                                         Imath::Eulerd::XZY));
+            else if (typeStr == "Frustumf")
+                return PyImath::Frustumf::wrap (Imath::Frustumf (1.1f, 2.2f, 3.3f,
+                                                                 4.4f, 5.5f, 6.6f));
+            else if (typeStr == "Frustumd")
+                return PyImath::Frustumd::wrap (Imath::Frustumd (1.1, 2.2, 3.3,
+                                                                 4.4, 5.5, 6.6));
 
-        else if (typeStr == "Frustumf")
-            return PyImath::Frustumf::wrap (Imath::Frustumf (1.1f, 2.2f, 3.3f,
-                                                             4.4f, 5.5f, 6.6f));
-        else if (typeStr == "Frustumd")
-            return PyImath::Frustumd::wrap (Imath::Frustumd (1.1, 2.2, 3.3,
-                                                             4.4, 5.5, 6.6));
+            else if (typeStr == "Line3f")
+                return PyImath::Line3f::wrap (Imath::Line3f (Imath::V3f (1.1f, 2.2f, 3.3f),
+                                                             Imath::V3f (4.4f, 5.5f, 6.6f)));
+            else if (typeStr == "Line3d")
+                return PyImath::Line3d::wrap (Imath::Line3d (Imath::V3d (1.1, 2.2, 3.3),
+                                                             Imath::V3d (4.4, 5.5, 6.6)));
 
-        else if (typeStr == "Line3f")
-            return PyImath::Line3f::wrap (Imath::Line3f (Imath::V3f (1.1f, 2.2f, 3.3f),
-                                                         Imath::V3f (4.4f, 5.5f, 6.6f)));
-        else if (typeStr == "Line3d")
-            return PyImath::Line3d::wrap (Imath::Line3d (Imath::V3d (1.1, 2.2, 3.3),
-                                                         Imath::V3d (4.4, 5.5, 6.6)));
+            else if (typeStr == "M33f")
+                return PyImath::M33f::wrap (Imath::M33f (1.1f, 2.2f, 3.3f,
+                                                         4.4f, 5.5f, 6.6f,
+                                                         7.7f, 8.8f, 9.9f));
+            else if (typeStr == "M33d")
+                return PyImath::M33d::wrap (Imath::M33d (1.1, 2.2, 3.3,
+                                                         4.4, 5.5, 6.6,
+                                                         7.7, 8.8, 9.9));
 
-        else if (typeStr == "M33f")
-            return PyImath::M33f::wrap (Imath::M33f (1.1f, 2.2f, 3.3f,
-                                                     4.4f, 5.5f, 6.6f,
-                                                     7.7f, 8.8f, 9.9f));
-        else if (typeStr == "M33d")
-            return PyImath::M33d::wrap (Imath::M33d (1.1, 2.2, 3.3,
-                                                     4.4, 5.5, 6.6,
-                                                     7.7, 8.8, 9.9));
+            else if (typeStr == "M44f")
+                return PyImath::M44f::wrap (Imath::M44f (1.1f, 2.2f, 3.3f, 4.4f,
+                                                         5.5f, 6.6f, 7.7f, 8.8f, 
+                                                         9.9f, 10.10f, 11.11f, 12.12f,
+                                                         13.13f, 14.14f, 15.15f, 16.16f));
+            else if (typeStr == "M44d")
+                return PyImath::M44d::wrap (Imath::M44d (1.1, 2.2, 3.3, 4.4,
+                                                         5.5, 6.6, 7.7, 8.8, 
+                                                         9.9, 10.10, 11.11, 12.12,
+                                                         13.13, 14.14, 15.15, 16.16));
 
-        else if (typeStr == "M44f")
-            return PyImath::M44f::wrap (Imath::M44f (1.1f, 2.2f, 3.3f, 4.4f,
-                                                     5.5f, 6.6f, 7.7f, 8.8f, 
-                                                     9.9f, 10.10f, 11.11f, 12.12f,
-                                                     13.13f, 14.14f, 15.15f, 16.16f));
-        else if (typeStr == "M44d")
-            return PyImath::M44d::wrap (Imath::M44d (1.1, 2.2, 3.3, 4.4,
-                                                     5.5, 6.6, 7.7, 8.8, 
-                                                     9.9, 10.10, 11.11, 12.12,
-                                                     13.13, 14.14, 15.15, 16.16));
+            else if (typeStr == "Plane3f")
+                return PyImath::Plane3f::wrap (Imath::Plane3f (Imath::V3f (1.1f, 2.2f, 3.3f), 4.4f));
+            else if (typeStr == "Plane3d")
+                return PyImath::Plane3d::wrap (Imath::Plane3d (Imath::V3d (1.1, 2.2, 3.3), 4.4));
 
-        else if (typeStr == "Plane3f")
-            return PyImath::Plane3f::wrap (Imath::Plane3f (Imath::V3f (1.1f, 2.2f, 3.3f), 4.4f));
-        else if (typeStr == "Plane3d")
-            return PyImath::Plane3d::wrap (Imath::Plane3d (Imath::V3d (1.1, 2.2, 3.3), 4.4));
+            else if (typeStr == "Quatf")
+                return PyImath::Quatf::wrap (Imath::Quatf (1.1f, 2.2f, 3.3f, 4.4f));
+            else if (typeStr == "Quatd")
+                return PyImath::Quatd::wrap (Imath::Quatd (1.1, 2.2, 3.3, 4.4));
 
-        else if (typeStr == "Quatf")
-            return PyImath::Quatf::wrap (Imath::Quatf (1.1f, 2.2f, 3.3f, 4.4f));
-        else if (typeStr == "Quatd")
-            return PyImath::Quatd::wrap (Imath::Quatd (1.1, 2.2, 3.3, 4.4));
+            else if (typeStr == "Rand32")
+                return PyImath::Rand32::wrap (Imath::Rand32 ());
+            else if (typeStr == "Rand48")
+                return PyImath::Rand48::wrap (Imath::Rand48 ());
 
-        else if (typeStr == "Rand32")
-            return PyImath::Rand32::wrap (Imath::Rand32 ());
-        else if (typeStr == "Rand48")
-            return PyImath::Rand48::wrap (Imath::Rand48 ());
+            else if (typeStr == "Shear6f")
+                return PyImath::Shear6f::wrap (Imath::Shear6f (1.1f, 2.2f, 3.3f,
+                                                               4.4f, 5.5f, 6.6f));
+            else if (typeStr == "Shear6d")
+                return PyImath::Shear6d::wrap (Imath::Shear6d (1.1, 2.2, 3.3,
+                                                               4.4, 5.5, 6.6));
 
-        else if (typeStr == "Shear6f")
-            return PyImath::Shear6f::wrap (Imath::Shear6f (1.1f, 2.2f, 3.3f,
-                                                           4.4f, 5.5f, 6.6f));
-        else if (typeStr == "Shear6d")
-            return PyImath::Shear6d::wrap (Imath::Shear6d (1.1, 2.2, 3.3,
-                                                           4.4, 5.5, 6.6));
+            else if (typeStr == "V2i")
+                return PyImath::V2i::wrap (Imath::V2i (1, 2));
+            else if (typeStr == "V2f")
+                return PyImath::V2f::wrap (Imath::V2f (1.1f, 2.2f));
+            else if (typeStr == "V2d")
+                return PyImath::V2d::wrap (Imath::V2d (1.1, 2.2));
 
-        else if (typeStr == "V2i")
-            return PyImath::V2i::wrap (Imath::V2i (1, 2));
-        else if (typeStr == "V2f")
-            return PyImath::V2f::wrap (Imath::V2f (1.1f, 2.2f));
-        else if (typeStr == "V2d")
-            return PyImath::V2d::wrap (Imath::V2d (1.1, 2.2));
+            else if (typeStr == "V3i")
+                return PyImath::V3i::wrap (Imath::V3i (1, 2, 3));
+            else if (typeStr == "V3f")
+                return PyImath::V3f::wrap (Imath::V3f (1.1f, 2.2f, 3.3f));
+            else if (typeStr == "V3d")
+                return PyImath::V3d::wrap (Imath::V3d (1.1, 2.2, 3.3));
+        }
+        PyErr_Clear();
 
-        else if (typeStr == "V3i")
-            return PyImath::V3i::wrap (Imath::V3i (1, 2, 3));
-        else if (typeStr == "V3f")
-            return PyImath::V3f::wrap (Imath::V3f (1.1f, 2.2f, 3.3f));
-        else if (typeStr == "V3d")
-            return PyImath::V3d::wrap (Imath::V3d (1.1, 2.2, 3.3));
+        PyErr_SetString(PyExc_TypeError, "wrap testing failed");
     }
-    PyErr_Clear();
+    catch (const boost::python::error_already_set& e)	\
+    {							\
+	return 0;					\
+    }							\
+    catch (...)						\
+    {							\
+	boost::python::handle_exception();		\
+	return 0;					\
+    }
 
-    PyErr_SetString(PyExc_TypeError, "wrap testing failed");
     return 0;
-
-    PY_CATCH;
 }
 
 PyMethodDef methods[] =
@@ -2310,7 +2327,7 @@ testV3 ()
 std::string
 stripLastPath (std::string path)
 {
-    int lastSlash = path.find_last_of('\\');
+    auto lastSlash = path.find_last_of('\\');
     if (lastSlash != std::string::npos)
         return path.substr (0, lastSlash);
     return "";

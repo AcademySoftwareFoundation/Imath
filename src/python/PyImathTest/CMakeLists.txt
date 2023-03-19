@@ -17,4 +17,18 @@ if(TARGET Python3::Interpreter)
   set_tests_properties(PyImath.PyImathTest_Python3 PROPERTIES
     ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}"
   )
+
+  add_executable(PyImathTestC main.cpp testStringTable.cpp)
+
+  target_link_libraries(PyImathTestC 
+        Imath::Config
+        Imath::PyImath_Python3_10
+        Python3::Python
+        Boost::${PYIMATH_BOOST_PY_COMPONENT})
+  set_target_properties(PyImathTestC PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    )
+  add_test(NAME Imath.PyImathTestC COMMAND $<TARGET_FILE:PyImathTestC>)
+
 endif()
+  
