@@ -22,7 +22,7 @@ if(TARGET Python3::Interpreter)
 
   target_link_libraries(PyImathTestC 
         Imath::Config
-        Imath::PyImath_Python3_10
+        Imath::PyImath_Python${Python_VERSION_MAJOR}_${Python_VERSION_MINOR}
         Python3::Python
         Boost::${PYIMATH_BOOST_PY_COMPONENT})
   set_target_properties(PyImathTestC PROPERTIES
