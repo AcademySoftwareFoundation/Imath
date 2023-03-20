@@ -67,6 +67,38 @@ testErand48 ()
     assert (state[2] == 0x306d);
 }
 
+void
+testDrand48 ()
+{
+    std::cout << "testDrand48()" << std::endl;
+    
+    //
+    // Confirm that drand48/lrand48 return the same values as
+    // erand48/nrand48 with the same seed.
+    //
+    
+    unsigned short state[3];
+    state[2] = 0;
+    state[1] = 0;
+    state[0] = 0x330e;
+
+    IMATH_INTERNAL_NAMESPACE::srand48(0);
+
+    double e = IMATH_INTERNAL_NAMESPACE::erand48(state);
+    double d = IMATH_INTERNAL_NAMESPACE::drand48();
+    assert (e == d);
+
+    state[2] = 0;
+    state[1] = 0;
+    state[0] = 0x330e;
+
+    IMATH_INTERNAL_NAMESPACE::srand48(0);
+
+    long int n = IMATH_INTERNAL_NAMESPACE::nrand48(state);
+    long int l = IMATH_INTERNAL_NAMESPACE::lrand48();
+    assert (l == n);
+}
+
 template <class Rand>
 void
 testGenerator ()
@@ -218,12 +250,19 @@ testRandom ()
     cout << "erand48(), nrand48()" << endl;
     testErand48 ();
 
+    cout << "drand48(), lrand48()" << endl;
+    testDrand48 ();
+
     cout << "Rand32" << endl;
     testGenerator<IMATH_INTERNAL_NAMESPACE::Rand32> ();
 
     cout << "Rand48" << endl;
     testGenerator<IMATH_INTERNAL_NAMESPACE::Rand48> ();
 
+    cout << "Rand48" << endl;
+    testGenerator<IMATH_INTERNAL_NAMESPACE::Rand48> ();
+    
+    
     cout << "solidSphereRand()" << endl;
     testSolidSphere<IMATH_INTERNAL_NAMESPACE::Rand32> ();
 

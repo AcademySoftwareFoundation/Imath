@@ -62,6 +62,7 @@ testFrustumTest ()
     assert (!frustumTest.isVisible (outsideVec_far));
     assert (!frustumTest.isVisible (outsideVec_side));
     assert (!frustumTest.isVisible (outsideVec_up));
+
     cout << "passed Vec3\n";
 
     /////////////////////////////////////////////////////
@@ -78,6 +79,10 @@ testFrustumTest ()
         IMATH_INTERNAL_NAMESPACE::Box<IMATH_INTERNAL_NAMESPACE::Vec3<float>> (
             insideVec + tinySize, insideVec + tinySize)));
 
+    assert (frustumTest.completelyContains (
+        IMATH_INTERNAL_NAMESPACE::Box<IMATH_INTERNAL_NAMESPACE::Vec3<float>> (
+            insideVec + tinySize, insideVec + tinySize)));
+    
     // Huge boxes inside and outside should be visible
     assert (frustumTest.isVisible (
         IMATH_INTERNAL_NAMESPACE::Box<IMATH_INTERNAL_NAMESPACE::Vec3<float>> (
@@ -117,6 +122,9 @@ testFrustumTest ()
 
     // Tiny sphere inside the frust should be visible
     assert (frustumTest.isVisible (
+        IMATH_INTERNAL_NAMESPACE::Sphere3<float> (insideVec, tinyRadius)));
+
+    assert (frustumTest.completelyContains(
         IMATH_INTERNAL_NAMESPACE::Sphere3<float> (insideVec, tinyRadius)));
 
     // Huge spheres inside and outside should be visible

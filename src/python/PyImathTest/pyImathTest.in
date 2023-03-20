@@ -8015,6 +8015,12 @@ def testFrustumx (Frustum, Vec3, Mat):
     assert p2[5].normal().equalWithAbsError(farPlaneN, farPlaneN.baseTypeEpsilon())
     assert equal(p2[5].distance(), farPlane, 2 * farPlaneN.baseTypeEpsilon())
 
+    m_near = f.nearPlane() - 0.1
+    m_far = f.farPlane() + 100
+    f.modifyNearAndFar(m_near, m_far)
+    assert equal(f.nearPlane(), m_near, 2 * farPlaneN.baseTypeEpsilon())
+    assert equal(f.farPlane(), m_far, 2 * farPlaneN.baseTypeEpsilon())
+
     # Fovy, aspect, projection matrix.
 
     nearPlane = 1
@@ -8038,6 +8044,9 @@ def testFrustumx (Frustum, Vec3, Mat):
     assert m[1][1] == F
     assert m[2][2] == C
     assert m[3][2] == D
+    # constructor w/ fov and aspect
+    g = Frustum(nearPlane, farPlane, f.fovx(), f.fovy(), f.aspect())
+    assert (g == f)
 
     # Window.
 
@@ -8087,7 +8096,17 @@ def testFrustumx (Frustum, Vec3, Mat):
     p3dd = V3d (p3d)
     p2d = f.projectPointToScreen(p3dd)
     assert p2d.equalWithAbsError((s, t), p2d.baseTypeEpsilon())
+    ortho = 1
+    f = Frustum(nearPlane, farPlane, left, right, top, bottom, ortho)
+    s = 0.5
+    t = 0.5
+    l = f.projectScreenToRay((s, t))
+    assert equalWithRelError (l.pos(), V3f(0.5, 0.5, 0), 0.001)
+    assert equalWithRelError (l.dir(), V3f(0.0, 0.0, -1), 0.001)    
 
+    p2d = f.projectPointToScreen(p3d)
+    assert equalWithRelError (p2d, V2f(0.5, 0.5), 0.001)
+    
     # Conversion between depth and Z.
 
     f = Frustum()
@@ -8104,7 +8123,11 @@ def testFrustumx (Frustum, Vec3, Mat):
 
     assert f.DepthToZ(-f.nearPlane(), zMin, zMax) == zMin
     assert f.DepthToZ(-f.farPlane(), zMin, zMax) == zMax
-
+    f.setOrthographic(True)
+    assert equalWithRelErrorScalar (f.normalizedZToDepth(-1), 999.8, 0.01)
+    assert equalWithRelErrorScalar (f.DepthToZ(-f.nearPlane(), zMin, zMax), 1.0, 0.001)
+    assert equalWithRelErrorScalar (f.DepthToZ(-f.farPlane(), zMin, zMax), 100.0, 0.001)
+    
     # Screen and world radius conversion.
 
     nearPlane = 1
@@ -8299,6 +8322,7 @@ def testC4xArray(Array, Color, Arrayx):
     a.r[0] = 1
     assert ar != a.r
 
+
 def testC4Array ():
     print ("C4fArray")
     testC4xArray (C4fArray, Color4f, FloatArray)
@@ -8366,6 +8390,7 @@ def testC3xArray(Array, Color, Arrayx):
 
     a.r[0] = 1
     assert ar != a.r
+
 
 def testC3xExplicitConversion(Array):
 
@@ -10198,6 +10223,94 @@ def testBufferProtocol():
     print ("ok")
 
 testList.append(("Buffer protocol test", testBufferProtocol))
+
+def testFloatArray2D():
+
+    a = FloatArray2D(2,3)
+    a[(0,0)] = 1.0
+    a[(0,1)] = 2.0
+    a[(0,2)] = 3.0
+    a[(1,0)] = 4.0
+    a[(1,1)] = 5.0
+    a[(1,2)] = 6.0
+
+    a += 1.0
+    a -= 0.5
+    a *= 4.0
+    a /= 2.0
+    b = 3 * a - a + (a * a / 2) / a
+
+    assert equalWithAbsError (b.item(0,0), 7.5, 0.001)
+    assert equalWithAbsError (b.item(0,1), 12.5, 0.001)
+    assert equalWithAbsError (b.item(0,2), 17.5, 0.001)
+    assert equalWithAbsError (b.item(1,0), 22.5, 0.001)
+    assert equalWithAbsError (b.item(1,1), 27.5, 0.001)
+    assert equalWithAbsError (b.item(1,2), 32.5, 0.001)
+
+    choice = IntArray2D(2,3)
+    choice[(0,0)] = 1
+    choice[(0,1)] = 0
+    choice[(0,2)] = 0
+    choice[(1,0)] = 0
+    choice[(1,1)] = 1
+    choice[(1,2)] = 0
+
+    d = b.ifelse(choice,a)
+
+    assert d.item(0,0) == b.item(0,0)
+    assert d.item(0,1) == a.item(0,1)
+    assert d.item(0,2) == a.item(0,2)
+    assert d.item(1,0) == a.item(1,0)
+    assert d.item(1,1) == b.item(1,1)
+    assert d.item(1,2) == a.item(1,2)
+
+    print ("ok")
+
+testList.append(("FloatArray2D test", testFloatArray2D))
+
+def testColor4Array2D():
+
+    a = Color4fArray2D(2,3)
+    a[(0,0)] = Color4f(1,0,0,0)
+    a[(0,1)] = Color4f(0,1,0,0)
+    a[(0,2)] = Color4f(0,0,1,0)
+    a[(1,0)] = Color4f(1,0,0,1)
+    a[(1,1)] = Color4f(0,1,0,1)
+    a[(1,2)] = Color4f(0,0,1,1)
+
+    a += Color4f(1.0, 1.0, 1.0, 1.0)
+    a -= Color4f(0.5, 0.5, 0.5, 0.5)
+    a *= 4.0
+    a /= 2.0
+    b = 3 * a - a + (a * a / 2) / a
+
+    assert equalWithAbsError (b.item(0,0), Color4f(7.5, 2.5, 2.5, 2.5), 0.001)
+    assert equalWithAbsError (b.item(0,1), Color4f(2.5, 7.5, 2.5, 2.5), 0.001)
+    assert equalWithAbsError (b.item(0,2), Color4f(2.5, 2.5, 7.5, 2.5), 0.001)
+    assert equalWithAbsError (b.item(1,0), Color4f(7.5, 2.5, 2.5, 7.5), 0.001)
+    assert equalWithAbsError (b.item(1,1), Color4f(2.5, 7.5, 2.5, 7.5), 0.001)
+    assert equalWithAbsError (b.item(1,2), Color4f(2.5, 2.5, 7.5, 7.5), 0.001)
+
+    choice = IntArray2D(2,3)
+    choice[(0,0)] = 1
+    choice[(0,1)] = 0
+    choice[(0,2)] = 0
+    choice[(1,0)] = 0
+    choice[(1,1)] = 1
+    choice[(1,2)] = 0
+
+    d = b.ifelse(choice,a)
+
+    assert d.item(0,0) == b.item(0,0)
+    assert d.item(0,1) == a.item(0,1)
+    assert d.item(0,2) == a.item(0,2)
+    assert d.item(1,0) == a.item(1,0)
+    assert d.item(1,1) == b.item(1,1)
+    assert d.item(1,2) == a.item(1,2)
+
+    print ("ok")
+
+testList.append(("Color4fArray2D test", testColor4Array2D))
 
 # -------------------------------------------------------------------------
 # Main loop
