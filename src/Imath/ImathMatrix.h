@@ -1406,7 +1406,7 @@ typedef Matrix44<double> M44d;
 //---------------------------
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
+IMATH_HOSTDEVICE inline T*
 Matrix22<T>::operator[] (int i) IMATH_NOEXCEPT
 {
     return x[i];
@@ -1515,7 +1515,7 @@ Matrix22<T>::operator= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
+IMATH_HOSTDEVICE inline T*
 Matrix22<T>::getValue () IMATH_NOEXCEPT
 {
     return (T*) &x[0][0];
@@ -2009,7 +2009,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix22<T>&
 //---------------------------
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
+IMATH_HOSTDEVICE inline T*
 Matrix33<T>::operator[] (int i) IMATH_NOEXCEPT
 {
     return x[i];
@@ -2158,7 +2158,7 @@ Matrix33<T>::operator= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
+IMATH_HOSTDEVICE inline T*
 Matrix33<T>::getValue () IMATH_NOEXCEPT
 {
     return (T*) &x[0][0];
@@ -2959,8 +2959,8 @@ Matrix33<T>::inverse (bool singExc) const
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>
-                                  Matrix33<T>::inverse () const IMATH_NOEXCEPT
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix33<T>
+Matrix33<T>::inverse () const IMATH_NOEXCEPT
 {
     if (x[0][2] != 0 || x[1][2] != 0 || x[2][2] != 1)
     {
@@ -3320,7 +3320,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Matrix33<T>&
 //---------------------------
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
+IMATH_HOSTDEVICE inline T*
 Matrix44<T>::operator[] (int i) IMATH_NOEXCEPT
 {
     return x[i];
@@ -3550,7 +3550,7 @@ Matrix44<T>::operator= (T a) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_HOSTDEVICE IMATH_HOSTDEVICE inline T*
+IMATH_HOSTDEVICE inline T*
 Matrix44<T>::getValue () IMATH_NOEXCEPT
 {
     return (T*) &x[0][0];
