@@ -343,17 +343,20 @@ jobs:
   # ---------------------------------------------------------------------------
   
   macos_no_python:
-    name: 'macOS 10.15 
+    name: 'macOS VFXP-${{matrix.vfx-cy }} macos-${{ matrix.osver }}
       <AppleClang 11.0 
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
        cxx=${{ matrix.cxx-standard }}, 
        docs=OFF>'
-    runs-on: macos-10.15
+    runs-on: macos-${{ matrix.osver }}
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 5]
+        build: [1, 2, 3, 4, 5, 6]
         include:
+          # --------------------------------------------------------------------
+          # VFX CY2023 - MacOS 11.0
+          # --------------------------------------------------------------------
           # C++11
           - build: 1
             build-type: Release
@@ -361,6 +364,7 @@ jobs:
             build-docs: 'ON'
             cxx-standard: 17
             exclude-tests:
+            osver: 11.0
 
           # Debug
           - build: 2
@@ -369,6 +373,8 @@ jobs:
             build-docs: 'OFF'
             cxx-standard: 17
             exclude-tests:
+            osver: 11.0
+
 
           # Static
           - build: 3
@@ -377,6 +383,8 @@ jobs:
             build-docs: 'OFF'
             cxx-standard: 17
             exclude-tests:
+            osver: 11.0
+
 
           # C++14
           - build: 4
@@ -385,6 +393,8 @@ jobs:
             build-docs: 'OFF'
             cxx-standard: 14
             exclude-tests:
+            osver: 11.0
+
 
           # C++11
           - build: 5
@@ -393,6 +403,20 @@ jobs:
             build-docs: 'OFF'
             cxx-standard: 11
             exclude-tests:
+            osver: 11.0
+              
+          # --------------------------------------------------------------------
+          # VFX CY2022 - MacOS 10.15
+          # --------------------------------------------------------------------
+          # C++11
+          - build: 6
+            build-type: Release
+            build-shared: 'ON'
+            build-docs: 'ON'
+            cxx-standard: 17
+            exclude-tests:
+            osver: 10.15
+
     steps:
       ## - name: Setup Python
       ##   uses: actions/setup-python@v1
@@ -461,7 +485,7 @@ jobs:
   # TODO: Fix boost script to install from sourceforge.
 
   windows:
-    name: 'Windows 2019 
+    name: 'Windows VFXP-${{ matrix.vfx-cy }}
       <${{ matrix.compiler-desc }},
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
@@ -474,17 +498,17 @@ jobs:
         build: [1, 3, 4, 6, 7, 8]
         include:
           # -------------------------------------------------------------------
-          # VFX CY2022 - C++17 - Windows 2019
+          # VFX CY2023 - C++17 - Windows 2022 runner - MSVC 2022 (17.5)
           # -------------------------------------------------------------------
           # C++17, Release Shared
           - build: 1
             build-type: Release
             build-shared: 'ON'
-            compiler-desc: msvc16.11
+            compiler-desc: msvc17.5
             cxx-standard: 17
-            vfx-cy: 2022
+            vfx-cy: 2023
             exclude-tests:
-            osver: 2019
+            osver: 2022
 
           # C++17, Debug -
           ## - build: 2
@@ -497,24 +521,24 @@ jobs:
           - build: 3
             build-type: Release
             build-shared: 'OFF'
-            compiler-desc: msvc16.11
+            compiler-desc: msvc17.5
             cxx-standard: 17
-            vfx-cy: 2022
+            vfx-cy: 2023
             exclude-tests:
-            osver: 2019
+            osver: 2022
 
           # -------------------------------------------------------------------
-          # VFX CY2022 - C++17 - Windows 2022
+          # VFX CY2022 - C++17 - Windows 2019
           # -------------------------------------------------------------------
           # C++17, Release Shared
           - build: 4
             build-type: Release
             build-shared: 'ON'
-            compiler-desc: msvc17.1
+            compiler-desc: msvc16.11
             cxx-standard: 17
             vfx-cy: 2022
             exclude-tests:
-            osver: 2022
+            osver: 2019
 
           # C++17, Debug -
           ## - build: 5
@@ -527,13 +551,13 @@ jobs:
           - build: 6
             build-type: Release
             build-shared: 'OFF'
-            compiler-desc: msvc17.1
+            compiler-desc: msvc16.11
             cxx-standard: 17
             vfx-cy: 2022
             exclude-tests:
-            osver: 2022
+            osver: 2019
 
-          # -------------------------------------------------------------------
+         # -------------------------------------------------------------------
           # VFX CY2020 - C++14 - Windows 2019
           # -------------------------------------------------------------------
           # C++14, Release Shared
