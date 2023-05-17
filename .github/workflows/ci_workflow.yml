@@ -381,7 +381,7 @@ jobs:
             osver: 11.0
               
           # --------------------------------------------------------------------
-          # VFX CY2022 - MacOS 10.15
+          # VFX CY2022 - MacOS 12
           # --------------------------------------------------------------------
           # C++11
           - build: 6
@@ -389,7 +389,7 @@ jobs:
             build-shared: 'ON'
             cxx-standard: 17
             exclude-tests:
-            osver: 10.15
+            osver: 12.0
 
     steps:
       ## - name: Setup Python
