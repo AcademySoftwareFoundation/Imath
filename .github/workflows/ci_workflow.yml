@@ -36,7 +36,6 @@ jobs:
        ${{ matrix.python-desc }},
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
-       docs=${{ matrix.build-docs }}, 
        cxx=${{ matrix.cxx-standard }}>'
     # GH-hosted VM. The build runs in CentOS 7 'container' defined below.
     runs-on: ubuntu-latest
@@ -61,7 +60,6 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.9.7
-            build-docs: 'ON'
             vfx-cy: 2022
 
           # C++17, Python 3.9.7, Debug
@@ -74,7 +72,6 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.9.7
-            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++17, Python 3.9.7, Static
@@ -87,7 +84,6 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.9.7
-            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++14, Python 3.9.7, Static
@@ -100,7 +96,6 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.9.7
-            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++17, no Python
@@ -128,7 +123,6 @@ jobs:
             compiler-desc: gcc9.3.1
             python: 'ON'
             python-desc: python3.7.9
-            build-docs: 'OFF'
             vfx-cy: 2021
 
           # -------------------------------------------------------------------
@@ -144,7 +138,6 @@ jobs:
             compiler-desc: gcc6.3.1
             python: 'ON'
             python-desc: python3.7.3
-            build-docs: 'OFF'
             vfx-cy: 2020
 
           # -------------------------------------------------------------------
@@ -161,7 +154,6 @@ jobs:
             compiler-desc: gcc6.3.1
             python: 'ON'
             python-desc: python2.7.15
-            build-docs: 'OFF'
             vfx-cy: 2019
 
           # -------------------------------------------------------------------
@@ -177,7 +169,6 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.9.7
-            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++17, Python 3.9.7, Debug
@@ -190,7 +181,6 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.9.7
-            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++17, Python 3.9.7, Static
@@ -203,7 +193,6 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.9.7
-            build-docs: 'OFF'
             vfx-cy: 2022
 
           # C++14, Python 3.9.7, Static
@@ -216,7 +205,6 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.9.7
-            build-docs: 'OFF'
             vfx-cy: 2022
 
           # -------------------------------------------------------------------
@@ -232,7 +220,6 @@ jobs:
             compiler-desc: clang10.4
             python: 'ON'
             python-desc: python3.7.9
-            build-docs: 'OFF'
             vfx-cy: 2021
 
           # -------------------------------------------------------------------
@@ -248,7 +235,6 @@ jobs:
             compiler-desc: clang7.8
             python: 'ON'
             python-desc: python3.7.3
-            build-docs: 'OFF'
             vfx-cy: 2020
 
           # -------------------------------------------------------------------
@@ -265,7 +251,6 @@ jobs:
             compiler-desc: clang7.8
             python: 'ON'
             python-desc: python2.7.15
-            build-docs: 'OFF'
             vfx-cy: 2019
 
     env:
@@ -279,9 +264,6 @@ jobs:
           mkdir _install
           mkdir _build
           mkdir _examples
-      - name: Install docs env
-        run: share/ci/scripts/linux/yum/install_docs_env.sh
-        if: matrix.build-docs == 'ON'
       - name: Configure
         run: |
           cmake .. \
@@ -292,8 +274,7 @@ jobs:
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
                 -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
                 -DPYTHON=${{ matrix.python }} \
-                -DUSE_PYTHON2=${{ matrix.use-python2 }} \
-                -DBUILD_DOCS=${{ matrix.build-docs }}
+                -DUSE_PYTHON2=${{ matrix.use-python2 }}
         working-directory: _build
       - name: Build
         run: |
@@ -347,8 +328,7 @@ jobs:
       <AppleClang 11.0 
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
-       cxx=${{ matrix.cxx-standard }}, 
-       docs=OFF>'
+       cxx=${{ matrix.cxx-standard }}' 
     runs-on: macos-${{ matrix.osver }}
     strategy:
       matrix:
@@ -361,7 +341,6 @@ jobs:
           - build: 1
             build-type: Release
             build-shared: 'ON'
-            build-docs: 'ON'
             cxx-standard: 17
             exclude-tests:
             osver: 11.0
@@ -370,7 +349,6 @@ jobs:
           - build: 2
             build-type: Debug
             build-shared: 'ON'
-            build-docs: 'OFF'
             cxx-standard: 17
             exclude-tests:
             osver: 11.0
@@ -380,7 +358,6 @@ jobs:
           - build: 3
             build-type: Debug
             build-shared: 'OFF'
-            build-docs: 'OFF'
             cxx-standard: 17
             exclude-tests:
             osver: 11.0
@@ -390,7 +367,6 @@ jobs:
           - build: 4
             build-type: Release
             build-shared: 'ON'
-            build-docs: 'OFF'
             cxx-standard: 14
             exclude-tests:
             osver: 11.0
@@ -400,22 +376,20 @@ jobs:
           - build: 5
             build-type: Release
             build-shared: 'ON'
-            build-docs: 'OFF'
             cxx-standard: 11
             exclude-tests:
             osver: 11.0
               
           # --------------------------------------------------------------------
-          # VFX CY2022 - MacOS 10.15
+          # VFX CY2022 - MacOS 12
           # --------------------------------------------------------------------
           # C++11
           - build: 6
             build-type: Release
             build-shared: 'ON'
-            build-docs: 'ON'
             cxx-standard: 17
             exclude-tests:
-            osver: 10.15
+            osver: 12.0
 
     steps:
       ## - name: Setup Python
@@ -490,8 +464,7 @@ jobs:
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
        cxx=${{ matrix.cxx-standard }}, 
-       python=OFF, 
-       docs=OFF>'
+       python=OFF>' 
     runs-on: windows-${{ matrix.osver }}
     strategy:
       matrix:
@@ -635,3 +608,34 @@ jobs:
                 -VV
         shell: bash
         working-directory: _build
+
+  Docs:
+
+    # Build the documentation, using a process that mimics the readthedoc build.
+    #
+    # Note that this job does not actually build Imath libraries,
+    # it just runs doxygen and sphinx.
+    
+    name: 'Docs'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create build directory
+        run: mkdir _build
+      - name: Install doxygen 
+        # Need help2man for tool manpages
+        run: sudo apt-get install -y doxygen help2man
+      - name: Install sphinx requirements
+        run: pip3 install -r docs/requirements.txt
+      - name: Configure
+        run: cmake .. -DBUILD_DOCS='ON'
+        working-directory: _build
+      - name: Build
+        run: |
+          cmake --build . \
+                --target docs \
+                --config Release
+        working-directory: _build
+    
