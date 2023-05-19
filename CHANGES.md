@@ -1,5 +1,6 @@
 # Imath Release Notes
 
+* [Version 3.1.8](#version-318-May-22-2023) May 22, 2023
 * [Version 3.1.7](#version-317-March-1-2023) March 1, 2023
 * [Version 3.1.6](#version-316-november-7-2022) November 7, 2022
 * [Version 3.1.5](#version-315-march-28-2022) March 28, 2022
@@ -15,6 +16,29 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.8 (May 22, 2023)
+
+Patch release that addresses miscellaneous minor compiler/build/doc
+issues and extends test coverage.
+
+### Merged Pull Requests
+
+* \[[#318](https://github.com/AcademySoftwareFoundation/Imath/pull/318)\] Separate CI job for docs 
+* \[[#317](https://github.com/AcademySoftwareFoundation/Imath/pull/317)\] fix the macro switching half-precision floating-point format implementation.
+* \[[#315](https://github.com/AcademySoftwareFoundation/Imath/pull/315)\] Updated Mac and Windows jobs for VFX platform 2023. 
+* \[[#314](https://github.com/AcademySoftwareFoundation/Imath/pull/314)\] Remove duplicate IMATH_HOSTDEVICE 
+* \[[#313](https://github.com/AcademySoftwareFoundation/Imath/pull/313)\] IMATH_EXPORT for Rand32::nextf() 
+* \[[#310](https://github.com/AcademySoftwareFoundation/Imath/pull/310)\] Extend test coverage 
+* \[[#309](https://github.com/AcademySoftwareFoundation/Imath/pull/309)\] Undo #307, restore array-based Matrix constructors 
+* \[[#308](https://github.com/AcademySoftwareFoundation/Imath/pull/308)\] Fix run_gcov.sh to use proper _build/_coverage dirs 
+* \[[#307](https://github.com/AcademySoftwareFoundation/Imath/pull/307)\] Conditionally include Matrix constructors duplicated by interop declarations 
+* \[[#306](https://github.com/AcademySoftwareFoundation/Imath/pull/306)\] Fix coverage analysis for .c files 
+* \[[#305](https://github.com/AcademySoftwareFoundation/Imath/pull/305)\] Extend test code coverage and add missing python bindings 
+* \[[#303](https://github.com/AcademySoftwareFoundation/Imath/pull/303)\] Remove unused variables 
+* \[[#302](https://github.com/AcademySoftwareFoundation/Imath/pull/302)\] In testMatrix(), call fabs() instead of fabsf() for double values 
+* \[[#300](https://github.com/AcademySoftwareFoundation/Imath/pull/300)\] Check return status of extractSHRT in computeRSMatrix 
+
 
 ## Version 3.1.7 (March 1, 2023)
 
