@@ -979,7 +979,7 @@ IMATH_EXPORT void printBits (std::ostream& os, float f);
 IMATH_EXPORT void printBits (char c[19], IMATH_INTERNAL_NAMESPACE::half h);
 IMATH_EXPORT void printBits (char c[35], float f);
 
-#    ifndef __CUDACC__
+#    if !defined(__CUDACC__) && !defined(__CUDA_FP16_HPP__)
 using half = IMATH_INTERNAL_NAMESPACE::half;
 #    else
 #        include <cuda_fp16.h>
