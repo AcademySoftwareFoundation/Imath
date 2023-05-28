@@ -109,9 +109,9 @@ projectScreenToRayTuple(Frustum<T> &f, const tuple &t)
     }
     else
         throw std::invalid_argument ( "projectScreenToRay expects tuple of length 2");
-    
 }
 
+// dead code?
 template <class T>
 static Vec2<T>
 projectPointToScreen (Frustum<T> &f, const Vec3<T> &p)
@@ -120,6 +120,7 @@ projectPointToScreen (Frustum<T> &f, const Vec3<T> &p)
     return f.projectPointToScreen(p);
 }
 
+// dead code?    
 template <class T>
 static Vec2<T>
 projectPointToScreenTuple(Frustum<T> &f, const tuple &t)
@@ -135,7 +136,6 @@ projectPointToScreenTuple(Frustum<T> &f, const tuple &t)
     }
     else
         throw std::invalid_argument ( "projectPointToScreen expects tuple of length 3");
-    
 }
 
 template <class T>
@@ -221,9 +221,10 @@ screenRadiusTuple(Frustum<T> &f, const tuple &t, T radius)
         return f.screenRadius(point, radius);
     }
     else
-      throw std::invalid_argument ("screenRadius expects tuple of length 3");
+        throw std::invalid_argument ("screenRadius expects tuple of length 3");
 }
 
+// dead code?
 template <class T>
 static void
 planes1(Frustum<T> &f, Plane3<T> *p)
@@ -232,6 +233,7 @@ planes1(Frustum<T> &f, Plane3<T> *p)
     f.planes(p);
 }
 
+// dead code?
 template <class T>
 static void
 planes2(Frustum<T> &f, Plane3<T> *p, const Matrix44<T> &m)
@@ -466,6 +468,7 @@ register_FrustumTest()
 {
     const char *name = FrustumTestName<T>::value;
     
+    // dead code? no wrapping for Sphere3
     bool (FrustumTest<T>::*isVisibleS)(const Sphere3<T> &) const = &FrustumTest<T>::isVisible;
     bool (FrustumTest<T>::*isVisibleB)(const Box<Vec3<T> > &) const = &FrustumTest<T>::isVisible;
     bool (FrustumTest<T>::*isVisibleV)(const Vec3<T> &) const = &FrustumTest<T>::isVisible;

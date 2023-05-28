@@ -23,6 +23,15 @@ testShear ()
 {
     cout << "Testing functions in ImathShear.h" << endl;
 
+    assert (IMATH_INTERNAL_NAMESPACE::Shear6f::baseTypeLowest() ==
+            std::numeric_limits<float>::lowest());
+    assert (IMATH_INTERNAL_NAMESPACE::Shear6f::baseTypeMax() ==
+            std::numeric_limits<float>::max());
+    assert (IMATH_INTERNAL_NAMESPACE::Shear6f::baseTypeSmallest() ==
+            std::numeric_limits<float>::min());
+    assert (IMATH_INTERNAL_NAMESPACE::Shear6f::baseTypeEpsilon() ==
+            std::numeric_limits<float>::epsilon());
+        
     cout << "Imath::Shear6 constructors" << endl;
 
     const float epsilon = std::numeric_limits<float>::epsilon ();
@@ -194,6 +203,42 @@ testShear ()
         std::fabs ((X.yx / Y.yx) - tmp.yx) <= 1e-5f &&
         std::fabs ((X.zx / Y.zx) - tmp.zx) <= 1e-5f &&
         std::fabs ((X.zy / Y.zy) - tmp.zy) <= 1e-5f);
+
+
+    IMATH_INTERNAL_NAMESPACE::Shear6f s (1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
+    tmp.setValue(s.xy, s.xz, s.yz, s.yx, s.zx, s.zy);
+    assert (tmp.xy == s.xy &&
+            tmp.xz == s.xz &&
+            tmp.yz == s.yz &&
+            tmp.yx == s.yx &&
+            tmp.zx == s.zx &&
+            tmp.zy == s.zy);
+    s = IMATH_INTERNAL_NAMESPACE::Shear6f();
+    tmp.getValue(s.xy, s.xz, s.yz, s.yx, s.zx, s.zy);
+    assert (tmp.xy == s.xy &&
+            tmp.xz == s.xz &&
+            tmp.yz == s.yz &&
+            tmp.yx == s.yx &&
+            tmp.zx == s.zx &&
+            tmp.zy == s.zy);
+
+    s = IMATH_INTERNAL_NAMESPACE::Shear6f();
+    s.setValue(tmp);
+    assert (tmp.xy == s.xy &&
+            tmp.xz == s.xz &&
+            tmp.yz == s.yz &&
+            tmp.yx == s.yx &&
+            tmp.zx == s.zx &&
+            tmp.zy == s.zy);
+
+    s = IMATH_INTERNAL_NAMESPACE::Shear6f();
+    tmp.getValue(s);
+    assert (tmp.xy == s.xy &&
+            tmp.xz == s.xz &&
+            tmp.yz == s.yz &&
+            tmp.yx == s.yx &&
+            tmp.zx == s.zx &&
+            tmp.zy == s.zy);
 
     cout << "ok\n" << endl;
 }

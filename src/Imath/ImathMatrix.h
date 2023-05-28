@@ -680,7 +680,7 @@ public:
     /// Trace
     IMATH_HOSTDEVICE constexpr T trace() const IMATH_NOEXCEPT;
 
-    /// Set matrix to rotation by r (in radians)
+    /// Set matrix to rotation by r (in radians, assumed to be a scalar) around (0, 0, 1)
     /// @return const referenced to this
     template <class S>
     IMATH_HOSTDEVICE const Matrix33& setRotation (S r) IMATH_NOEXCEPT;

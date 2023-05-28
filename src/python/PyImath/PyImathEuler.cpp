@@ -175,7 +175,7 @@ setXYZTuple(Euler<T> &euler, const tuple &t)
         euler.setXYZVector(v);
     }
     else
-        throw std::invalid_argument ("Color3 expects tuple of length 3");    
+        throw std::invalid_argument ("Euler expects tuple of length 3");
 }
 
 // needed to convert Eulerf::Order to Euler<T>::Order
@@ -288,6 +288,15 @@ static typename Euler<T>::Order interpretOrder(typename IMATH_NAMESPACE::Eulerf:
     return o;
 }
 
+// needed to convert Eulerf::InputLayout to Euler<T>::InputLayout
+template <class T>
+static typename Euler<T>::InputLayout interpretInputLayout(typename IMATH_NAMESPACE::Eulerf::InputLayout layout)
+{
+    if (layout == IMATH_NAMESPACE::Eulerf::XYZLayout)
+        return Euler<T>::XYZLayout;
+    return Euler<T>::IJKLayout;
+}
+
 // needed to convert Eulerf::Axis to Euler<T>::Axis
 template <class T>
 static typename Euler<T>::Axis interpretAxis(typename IMATH_NAMESPACE::Eulerf::Axis axis)
@@ -302,10 +311,13 @@ static typename Euler<T>::Axis interpretAxis(typename IMATH_NAMESPACE::Eulerf::A
 
 template <class T>
 static Euler<T> *
-eulerConstructor1(const Vec3<T> &v, typename IMATH_NAMESPACE::Eulerf::Order order)
+eulerConstructor1(const Vec3<T> &v,
+                  typename IMATH_NAMESPACE::Eulerf::Order order,
+                  typename IMATH_NAMESPACE::Eulerf::InputLayout layout = IMATH_NAMESPACE::Eulerf::IJKLayout)
 {
     typename Euler<T>::Order o = interpretOrder<T>(order);
-    return new Euler<T>(v, o);
+    typename Euler<T>::InputLayout l = interpretInputLayout<T>(layout);
+    return new Euler<T>(v, o, l);
 }
 
 template <class T>
@@ -323,12 +335,35 @@ eulerConstructor1b(const Vec3<T> &v, int iorder)
     return new Euler<T>(v, o);
 }
 
+//
+
 template <class T>
 static Euler<T> *
-eulerConstructor2(T i, T j, T k, typename IMATH_NAMESPACE::Eulerf::Order order)
+eulerConstructor1d(const Euler<T>& e, int iorder)
+{
+    typename Euler<T>::Order o = typename Euler<T>::Order (iorder);
+    return new Euler<T>(e, o);
+}
+
+template <class T>
+static Euler<T> *
+eulerConstructor1e(const Euler<T>& e, int iorder, int layout)
+{
+    typename Euler<T>::Order o = typename Euler<T>::Order (iorder);
+    typename Euler<T>::InputLayout l = typename Euler<T>::InputLayout (layout);
+    return new Euler<T>(e, o, l);
+}
+
+
+template <class T>
+static Euler<T> *
+eulerConstructor2(T i, T j, T k,
+                  typename IMATH_NAMESPACE::Eulerf::Order order,
+                  typename IMATH_NAMESPACE::Eulerf::InputLayout layout = IMATH_NAMESPACE::Eulerf::IJKLayout)
 {
     typename Euler<T>::Order o = interpretOrder<T>(order);
-    return new Euler<T>(i, j, k, o);
+    typename Euler<T>::InputLayout l = interpretInputLayout<T>(layout);
+    return new Euler<T>(i, j, k, o, l);
 }
 
 template <class T>
@@ -549,6 +584,8 @@ register_Euler()
         .def("__init__", make_constructor(eulerConstructor1<T>))
         .def("__init__", make_constructor(eulerConstructor1a<T>))
         .def("__init__", make_constructor(eulerConstructor1b<T>))
+        .def("__init__", make_constructor(eulerConstructor1d<T>))
+        .def("__init__", make_constructor(eulerConstructor1e<T>))
         .def("__init__", make_constructor(eulerConstructor2<T>))
         .def("__init__", make_constructor(eulerConstructor2a<T>))
         .def("__init__", make_constructor(eulerConstructor2b<T>))

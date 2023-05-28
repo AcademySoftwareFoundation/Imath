@@ -172,6 +172,8 @@ testFrustum ()
 {
     cout << "Testing functions in ImathFrustum.h";
 
+    bool caught;
+
     cout << "\nperspective ";
 
     float n = 1.7f;
@@ -248,13 +250,85 @@ testFrustum ()
         IMATH_INTERNAL_NAMESPACE::abs<float> (m[3][3]) < 1e-6f);
     cout << "3";
 
+    IMATH_INTERNAL_NAMESPACE::Frustum<float> badFrustum;
+
+    badFrustum.set(n, f, l, r, t, t, false);
+    
+    caught = false;
+    try
+    {
+        badFrustum.projectionMatrixExc();
+        assert(!"projectionMatrixExc() didn't throw with bad frustum");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+    cout << "4";
+
+    badFrustum.set(n, n, l, r, b, t, false);
+    
+    caught = false;
+    try
+    {
+        badFrustum.projectionMatrixExc();
+        assert(!"projectionMatrixExc() didn't throw with bad frustum");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+    cout << "5";
+
+    badFrustum.set(n, n, l, r, b, t, false);
+    
+    caught = false;
+    try
+    {
+        badFrustum.projectionMatrixExc();
+        assert(!"projectionMatrixExc() didn't throw with bad frustum");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+    cout << "6";
+
+    badFrustum.set(n, f, l, r, t, t, true);
+    
+    caught = false;
+    try
+    {
+        badFrustum.projectionMatrixExc();
+        assert(!"projectionMatrixExc() didn't throw with bad frustum");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+    cout << "7";
+
+    caught = false;
+    try
+    {
+        badFrustum.aspectExc();
+        assert (!"aspectExc didn't throw when top-bottom==0");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+    cout << "8";
+    
     cout << "\nplanes ";
     testFrustumPlanes (frustum);
 
     cout << "\nexceptions ";
-    IMATH_INTERNAL_NAMESPACE::Frustum<float> badFrustum;
-
-    bool caught;
 
     badFrustum.set (n, n, l, r, t, b, false);
     caught = false;
@@ -373,7 +447,110 @@ testFrustum ()
     assert (f1.screenRadius (v3, one) == f1.screenRadiusExc (v3, one));
     assert (f1.projectPointToScreen (v3) == f1.projectPointToScreenExc (v3));
 
+    f1.set (n, f, zero, one, one);
+    f2.setExc (n, f, zero, one, one);
+
+    assert (f1 == f2);
+
+    assert (
+        f1.ZToDepth (zMin, zMin, zMax) == f1.ZToDepthExc (zMin, zMin, zMax));
+    assert (f1.normalizedZToDepth (float(zMin)) == f1.normalizedZToDepthExc (float(zMin)));
+    assert (f1.DepthToZ (n, zMin, zMax) == f1.DepthToZExc (n, zMin, zMax));
+    assert (f1.worldRadius (v3, one) == f1.worldRadiusExc (v3, one));
+    assert (f1.screenRadius (v3, one) == f1.screenRadiusExc (v3, one));
+    assert (f1.projectPointToScreen (v3) == f1.projectPointToScreenExc (v3));
+
+    f1.setOrthographic (true);
+    assert (
+        f1.ZToDepth (zMin, zMin, zMax) == f1.ZToDepthExc (zMin, zMin, zMax));
+    assert (f1.normalizedZToDepth (float(zMin)) == f1.normalizedZToDepthExc (float(zMin)));
+    assert (f1.DepthToZ (n, zMin, zMax) == f1.DepthToZExc (n, zMin, zMax));
+    assert (f1.worldRadius (v3, one) == f1.worldRadiusExc (v3, one));
+    assert (f1.screenRadius (v3, one) == f1.screenRadiusExc (v3, one));
+    assert (f1.projectPointToScreen (v3) == f1.projectPointToScreenExc (v3));
+    
+    f1.set(n, n, l, l, b, b, true);
+    caught = false;
+    try
+    {
+        f1.projectPointToScreenExc (v3);
+        assert (!"projectPointToScreenExc failed to throw with bad frustum");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+
+    caught = false;
+    try
+    {
+        f1.ZToDepthExc(100, 100, 100);
+        assert (!"ZToDepthExc failed to throw with zmax=zmin");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+
+    caught = false;
+    try
+    {
+        f1.DepthToZExc (100, 100, 100);
+        assert (!"normalizedZToDepth failed to throw with bad frustum");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+
+    f1.setOrthographic(false);
+    
+    caught = false;
+    try
+    {
+        f1.DepthToZExc (100, 100, 100);
+        assert (!"DepthToZExc failed to throw with bad frustum");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+
+    f1.set(n, f, l, r, b, t, true);
+    caught = false;
+    try
+    {
+        v3.z = 1.0 / std::numeric_limits<float>::max();
+        f1.screenRadiusExc (v3, 1.0);
+        assert (!"screenRadiusExc failed to throw with bad p");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
+
     cout << "\npassed noexcept equality verification";
+        
+    float fovx = 1.0;
+    float fovy = 1.0;
+    float aspect = 1.0;
+    
+    caught = false;
+    try
+    {
+        badFrustum.setExc (n, f, fovx, fovy, aspect);
+        assert (!"nfovx and fovy can't both be 0.0");
+    }
+    catch (std::domain_error&)
+    {
+        caught = true;
+    }
+    assert (caught);
 
     cout << "\nok\n\n";
 }
