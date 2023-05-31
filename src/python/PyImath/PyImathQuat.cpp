@@ -81,6 +81,14 @@ invert(Quat<T> &quat)
 
 template <class T>
 static Quat<T> 
+identity(Quat<T> &quat)
+{
+    MATH_EXC_ON;
+    return Quat<T>();
+}
+
+template <class T>
+static Quat<T> 
 inverse(Quat<T> &quat)
 {
     MATH_EXC_ON;
@@ -430,7 +438,7 @@ register_Quat()
         .def("__init__", make_constructor(quatConstructor1<T>))
         .def("__init__", make_constructor(quatConstructor2<T>))
         .def("__init__", make_constructor(quatConstructor3<T>))
-        .def("identity",&Quat<T>::identity)
+        .def("identity",&identity<T>, "q.identity() -- return an identity quaternion\n")
         .def("invert",&invert<T>,return_internal_reference<>(),
         	 "q.invert() -- inverts quaternion q\n"
 			 "(modifying q); returns q")
