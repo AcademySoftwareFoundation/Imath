@@ -1,5 +1,6 @@
 # Imath Release Notes
 
+* [Version 3.1.9](#version-318-May-31-2023) May 31, 2023
 * [Version 3.1.8](#version-318-May-22-2023) May 22, 2023
 * [Version 3.1.7](#version-317-March-1-2023) March 1, 2023
 * [Version 3.1.6](#version-316-november-7-2022) November 7, 2022
@@ -17,7 +18,20 @@
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
 
+## Version 3.1.9 (May 31, 2023)
+
+Patch release that fixes an correct .so version number introduced in
+v3.1.8. All Imath library functionality is compatible with v3.1.8.
+
+This release also reverts
+[#305](https://github.com/AcademySoftwareFoundation/Imath/pull/305)\],
+which inadvertently introduced additional python bindings in v3.1.8
+that altered the ABI of ``libPyImath``. ``libPyImath`` is now
+ABI-compatible with v3.1.7 and previous releases.
+
 ## Version 3.1.8 (May 22, 2023)
+
+**NOTE: this version has an incorrect .so number and should not be used. Use v3.1.9 instead.**
 
 Patch release that addresses miscellaneous minor compiler/build/doc
 issues and extends test coverage.
@@ -41,6 +55,8 @@ issues and extends test coverage.
 
 
 ## Version 3.1.7 (March 1, 2023)
+
+**NOTE: this version has an incorrect .so number and should not be used. Use v3.1.9 instead.**
 
 Patch release with miscellaneous bug/doc/build fixes. In particular:
 
