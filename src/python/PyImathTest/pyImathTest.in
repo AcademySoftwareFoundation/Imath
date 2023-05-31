@@ -6107,19 +6107,6 @@ def testM44x (Mat, Vec):
     m.extractEulerXYZ(v)
     assert v.equalWithAbsError((0, 0, -a), v.baseTypeEpsilon())
 
-    e = Vec(0,0,-a)
-    m.setEulerAngles(e)
-    assert (equal(m[0][0], cos(a), 0.0001))
-    assert (equal(m[0][1], -sin(a), 0.0001))
-    assert (equal(m[1][0], sin(a), 0.0001))
-    assert (equal(m[1][1], cos(a), 0.0001))
-    
-    axis = Vec(0,0,1)
-    m.setAxisAngle(axis,-a)
-    assert (equal(m[0][0], cos(a), 0.0001))
-    assert (equal(m[0][1], -sin(a), 0.0001))
-    assert (equal(m[1][0], sin(a), 0.0001))
-    assert (equal(m[1][1], cos(a), 0.0001))
 
     # Extract scale, shear, rotation, translation.
 
