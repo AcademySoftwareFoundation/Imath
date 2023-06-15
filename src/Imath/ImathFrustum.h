@@ -371,10 +371,7 @@ template <class T>
 inline void
 Frustum<T>::modifyNearAndFar (T n, T f) IMATH_NOEXCEPT
 {
-    if (_orthographic)
-    {
-        _nearPlane = n;
-    }
+    if (_orthographic) { _nearPlane = n; }
     else
     {
         Line3<T> lowerLeft (
@@ -437,7 +434,6 @@ Frustum<T>::setExc (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
 template <class T>
 inline void
 Frustum<T>::set (T nearPlane, T farPlane, T fovx, T fovy, T aspect)
-
     IMATH_NOEXCEPT
 {
     const T two = static_cast<T> (2);
@@ -560,7 +556,6 @@ Frustum<T>::projectionMatrixExc () const
         T C = -farPlusNear / farMinusNear;
 
         T farTimesNear = T (-2) * _farPlane * _nearPlane;
-        
         if (abs (farMinusNear) < T (1) &&
             abs (farTimesNear) >
                 std::numeric_limits<T>::max () * abs (farMinusNear))

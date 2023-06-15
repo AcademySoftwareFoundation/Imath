@@ -1,5 +1,4 @@
 //
-
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright Contributors to the OpenEXR Project.
 //
@@ -76,7 +75,7 @@ static Shear6<T> * shearTupleConstructor(tuple t)
                              extract<T>(t[3]), extract<T>(t[4]), extract<T>(t[5]));        
     }
     else
-        throw std::invalid_argument ("Shear6 expects tuple of length 3 or 6");
+      throw std::invalid_argument ("Shear6 expects tuple of length 3 or 6");
 }
 
 template <class T>

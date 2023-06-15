@@ -45,7 +45,7 @@ testQuatT ()
 
         q = Quat<T> (6, Vec3<T> (7, 8, 9));
         assert (q.r == 6 && q.v == Vec3<T> (7, 8, 9));
-        
+
         Quat<T> q1 = Quat<T> (q);
         assert (q1.r == 6 && q1.v == Vec3<T> (7, 8, 9));
     }

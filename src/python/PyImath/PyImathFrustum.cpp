@@ -109,6 +109,7 @@ projectScreenToRayTuple(Frustum<T> &f, const tuple &t)
     }
     else
         throw std::invalid_argument ( "projectScreenToRay expects tuple of length 2");
+    
 }
 
 // dead code?
@@ -136,6 +137,7 @@ projectPointToScreenTuple(Frustum<T> &f, const tuple &t)
     }
     else
         throw std::invalid_argument ( "projectPointToScreen expects tuple of length 3");
+    
 }
 
 template <class T>
@@ -221,7 +223,7 @@ screenRadiusTuple(Frustum<T> &f, const tuple &t, T radius)
         return f.screenRadius(point, radius);
     }
     else
-        throw std::invalid_argument ("screenRadius expects tuple of length 3");
+      throw std::invalid_argument ("screenRadius expects tuple of length 3");
 }
 
 // dead code?

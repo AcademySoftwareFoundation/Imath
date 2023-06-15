@@ -10617,9 +10617,6 @@ def testQuatArrays():
         assert (q4[i] == tmp[i])
         assert (q5[i] == q4[i].normalize())
 
-        
-
-        
     print ("ok")
 
 testList.append(("testQuatArrays", testQuatArrays))
