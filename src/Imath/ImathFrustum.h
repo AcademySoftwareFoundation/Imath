@@ -560,6 +560,7 @@ Frustum<T>::projectionMatrixExc () const
             abs (farTimesNear) >
                 std::numeric_limits<T>::max () * abs (farMinusNear))
         {
+            // impossible condition: already tested above
             throw std::domain_error ("Bad viewing frustum: "
                                      "projection matrix cannot be computed.");
         }
@@ -575,6 +576,7 @@ Frustum<T>::projectionMatrixExc () const
              abs (twoTimesNear) >
                  std::numeric_limits<T>::max () * abs (topMinusBottom)))
         {
+            // impossible condition: already tested above
             throw std::domain_error ("Bad viewing frustum: "
                                      "projection matrix cannot be computed.");
         }

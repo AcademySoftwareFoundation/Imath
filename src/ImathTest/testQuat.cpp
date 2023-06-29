@@ -50,6 +50,32 @@ testQuatT ()
         assert (q1.r == 6 && q1.v == Vec3<T> (7, 8, 9));
     }
 
+    // m * q
+    {
+        Matrix33<T> m;
+        m.setRotation(T(M_PI_2));
+        Quat<T> q;
+        q.setAxisAngle (Vec3<T> (0, 0, 1), T(M_PI_2));
+        Matrix33<T> mp = m * q;
+        Matrix33<T> r (-9.999999e-01f,  1.589326e-08f, 0.000000e+00f,
+                       -1.589326e-08f, -9.999999e-01f, 0.000000e+00f,
+                       0.000000e+00f,   0.000000e+00f, 1.000000e+00);
+        assert(mp.equalWithAbsError(r, 1e-5));
+    }
+
+    // q * m
+    {
+        Matrix33<T> m;
+        m.setRotation(T(M_PI_2));
+        Quat<T> q;
+        q.setAxisAngle (Vec3<T> (0, 0, 1), T(M_PI_2));
+        Matrix33<T> mp = m * q;
+        Matrix33<T> r (-9.999999e-01f,  1.589326e-08f, 0.000000e+00f,
+                       -1.589326e-08f, -9.999999e-01f, 0.000000e+00f,
+                       0.000000e+00f,   0.000000e+00f, 1.000000e+00);
+        assert(mp.equalWithAbsError(r, 1e-5));
+    }
+    
     //
     // invert(), inverse()
     //
@@ -78,6 +104,11 @@ testQuatT ()
 
         q.normalize ();
         assert (q == Quat<T> (0, 0, 1, 0));
+
+        q = Quat<T> (0, Vec3<T> (0, 0, 0));
+        q.normalize();
+        assert (q.r == 1 && q.v == Vec3<T>(0,0,0));
+        
     }
 
     //

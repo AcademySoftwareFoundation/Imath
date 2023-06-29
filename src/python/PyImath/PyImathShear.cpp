@@ -217,6 +217,7 @@ subtract1(Shear6<T> &v, tuple t)
     return w;
 }
 
+// obsolete? duplicate with subtract1
 template <class T>
 static Shear6<T>
 subtract2(Shear6<T> &v, tuple t)
