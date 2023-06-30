@@ -625,6 +625,8 @@ BOOST_PYTHON_MODULE(imath)
     scope().attr("EULER_X_AXIS") = IMATH_NAMESPACE::Eulerf::X;
     scope().attr("EULER_Y_AXIS") = IMATH_NAMESPACE::Eulerf::Y;
     scope().attr("EULER_Z_AXIS") = IMATH_NAMESPACE::Eulerf::Z;
+    scope().attr("EULER_IJKLayout") = IMATH_NAMESPACE::Eulerf::IJKLayout;
+    scope().attr("EULER_XYZLayout") = IMATH_NAMESPACE::Eulerf::XYZLayout;
     
     scope().attr("INT_MIN")      = std::numeric_limits<int>::min();
     scope().attr("INT_MAX")      = std::numeric_limits<int>::max();
