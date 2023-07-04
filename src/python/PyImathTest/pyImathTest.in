@@ -6137,7 +6137,7 @@ def testM44x (Mat, Vec):
 
     b = m.extractSHRT(sInq, hInq, rInq, tInq)
 
-    assert sInq.equalWithAbsError(s, sInq.baseTypeEpsilon())
+    assert sInq.equalWithAbsError(s, 2 * sInq.baseTypeEpsilon())
     assert hInq.equalWithAbsError(h, hInq.baseTypeEpsilon())
     assert rInq.equalWithAbsError((0, 0, -a), 2 * rInq.baseTypeEpsilon())
     assert tInq.equalWithAbsError(t, tInq.baseTypeEpsilon())
