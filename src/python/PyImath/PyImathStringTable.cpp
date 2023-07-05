@@ -89,8 +89,8 @@ StringTableT<T>::hasStringIndex(const StringTableIndex &s) const
 }
 
 namespace {
-template class PYIMATH_EXPORT StringTableDetailT<std::string>;
-template class PYIMATH_EXPORT StringTableDetailT<std::wstring>;
+template class StringTableDetailT<std::string>;
+template class StringTableDetailT<std::wstring>;
 }
 
 template class PYIMATH_EXPORT StringTableT<std::string>;
