@@ -48,39 +48,96 @@ jobs:
       image: aswf/ci-openexr:${{ matrix.vfx-cy }}
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 9, 10, 11, 12, 13, 14, 15, 20, 21, 22]
+        build: [1, 2, 3, 4, 5, 6, 7, 8, 9]
         include:
           # -------------------------------------------------------------------
-          # GCC, VFX CY2022
+          # GCC, VFX CY2023
           # -------------------------------------------------------------------
-          # C++17, Python 3.9
+          # C++17, Python 3.10.9
           - build: 1
             build-type: Release
             build-shared: 'ON'
             cxx-standard: 17
             cxx-compiler: g++
             cc-compiler: gcc
-            compiler-desc: gcc9.3.1
+            compiler-desc: gcc11.2.1
             python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
+            python-desc: python3.10.9
+            vfx-cy: 2023
 
-          # C++17, Python 3.9.7, Debug
+          # C++17, Python 3.10.9, Debug
           - build: 2
             build-type: Debug
             build-shared: 'ON'
             cxx-standard: 17
             cxx-compiler: g++
             cc-compiler: gcc
-            compiler-desc: gcc9.3.1
+            compiler-desc: gcc11.2.1
             python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
+            python-desc: python3.10.9
+            vfx-cy: 2023
 
-          # C++17, Python 3.9.7, Static
+          # C++17, Python 3.10.9, Static
           - build: 3
             build-type: Release
             build-shared: 'OFF'
+            cxx-standard: 17
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'ON'
+            python-desc: python3.10.9
+            vfx-cy: 2023
+
+          # C++14, Python 3.10.9
+          - build: 4
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 14
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'ON'
+            python-desc: python3.10.9
+            vfx-cy: 2023
+
+          # -------------------------------------------------------------------
+          # Clang 15.0, VFX CY2023 
+          # -------------------------------------------------------------------
+          # C++17, Python 3.10.9
+          - build: 5
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: clang++
+            cc-compiler: clang
+            compiler-desc: clang15.0
+            python: 'ON'
+            python-desc: python3.10.9
+            vfx-cy: 2023
+
+          # -------------------------------------------------------------------
+          # Clang 14.0, VFX CY2023 
+          # -------------------------------------------------------------------
+          # C++17, Python 3.10.9
+          - build: 6
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: clang++
+            cc-compiler: clang
+            compiler-desc: clang14.0
+            python: 'ON'
+            python-desc: python3.10.9
+            vfx-cy: 2023
+
+          # -------------------------------------------------------------------
+          # GCC, VFX CY2022
+          # -------------------------------------------------------------------
+          # C++17, Python 3.9
+          - build: 7
+            build-type: Release
+            build-shared: 'ON'
             cxx-standard: 17
             cxx-compiler: g++
             cc-compiler: gcc
@@ -89,35 +146,11 @@ jobs:
             python-desc: python3.9.7
             vfx-cy: 2022
 
-          # C++14, Python 3.9.7, Static
-          - build: 4
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc9.3.1
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # C++17, no Python
-            # - build: 5
-            # build-type: Release
-            # build-shared: 'ON'
-            # cxx-standard: 17
-            # cxx-compiler: g++
-            # cc-compiler: gcc
-            # compiler-desc: gcc9.3.1
-            # python: 'OFF'
-            # python-desc: no python
-            # vfx-cy: 2022
-
           # -------------------------------------------------------------------
           # GCC, VFX CY2021
           # -------------------------------------------------------------------
           # C++17, Python 3.7.9
-          - build: 9
+          - build: 8
             build-type: Release
             build-shared: 'ON'
             cxx-standard: 17
@@ -132,7 +165,7 @@ jobs:
           # GCC, VFX CY2020
           # -------------------------------------------------------------------
           # C++14, Python 3.7
-          - build: 10
+          - build: 9
             build-type: Release
             build-shared: 'ON'
             cxx-standard: 14
@@ -142,119 +175,6 @@ jobs:
             python: 'ON'
             python-desc: python3.7.3
             vfx-cy: 2020
-
-          # -------------------------------------------------------------------
-          # GCC, VFX CY2019
-          # -------------------------------------------------------------------
-          # C++11, Python 2.7
-          - build: 11
-            build-type: Release
-            build-shared: 'ON'
-            use-python2: 'ON'
-            cxx-standard: 11
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc6.3.1
-            python: 'ON'
-            python-desc: python2.7.15
-            vfx-cy: 2019
-
-          # -------------------------------------------------------------------
-          # Clang, VFX CY2022
-          # -------------------------------------------------------------------
-          # C++17, Python 3.9
-          - build: 12
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # C++17, Python 3.9.7, Debug
-          - build: 13
-            build-type: Debug
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # C++17, Python 3.9.7, Static
-          - build: 14
-            build-type: Release
-            build-shared: 'OFF'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # C++14, Python 3.9.7, Static
-          - build: 15
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # -------------------------------------------------------------------
-          # Clang, VFX CY2021
-          # -------------------------------------------------------------------
-          # C++17, Python 3.7.9
-          - build: 20
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.7.9
-            vfx-cy: 2021
-
-          # -------------------------------------------------------------------
-          # Clang, VFX CY2020
-          # -------------------------------------------------------------------
-          # C++14, Python 3.7
-          - build: 21
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang7.8
-            python: 'ON'
-            python-desc: python3.7.3
-            vfx-cy: 2020
-
-          # -------------------------------------------------------------------
-          # Clang, VFX CY2019
-          # -------------------------------------------------------------------
-          # C++11, Python 2.7
-          - build: 22
-            build-type: Release
-            build-shared: 'ON'
-            use-python2: 'ON'
-            cxx-standard: 11
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang7.8
-            python: 'ON'
-            python-desc: python2.7.15
-            vfx-cy: 2019
 
     env:
       CXX: ${{ matrix.cxx-compiler }}
