@@ -63,7 +63,7 @@ public:
     ///	@name Constructors and Assignment
 
     /// Uninitialized by default
-    IMATH_HOSTDEVICE Vec2 () IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE Vec2 () IMATH_NOEXCEPT = default;
 
     /// Initialize to a scalar `(a,a)`
     IMATH_HOSTDEVICE constexpr explicit Vec2 (T a) IMATH_NOEXCEPT;
@@ -72,15 +72,22 @@ public:
     IMATH_HOSTDEVICE constexpr Vec2 (T a, T b) IMATH_NOEXCEPT;
 
     /// Copy constructor
-    IMATH_HOSTDEVICE constexpr Vec2 (const Vec2& v) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr Vec2 (const Vec2& v) IMATH_NOEXCEPT = default;
+
+    /// Move constructor
+    IMATH_HOSTDEVICE constexpr Vec2 (Vec2&& v) IMATH_NOEXCEPT = default;
 
     /// Construct from Vec2 of another base type
     template <class S>
     IMATH_HOSTDEVICE constexpr Vec2 (const Vec2<S>& v) IMATH_NOEXCEPT;
 
-    /// Assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2&
-    operator= (const Vec2& v) IMATH_NOEXCEPT;
+    /// Copy assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2&
+    operator= (const Vec2& v) IMATH_NOEXCEPT = default;
+
+    /// Move assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2&
+    operator= (Vec2&& v) IMATH_NOEXCEPT = default;
 
     /// Destructor
     ~Vec2 () IMATH_NOEXCEPT = default;
@@ -360,7 +367,7 @@ public:
     ///	@name Constructors and Assignment
 
     /// Uninitialized by default
-    IMATH_HOSTDEVICE Vec3 () IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE Vec3 () IMATH_NOEXCEPT = default;
 
     /// Initialize to a scalar `(a,a,a)`
     IMATH_HOSTDEVICE constexpr explicit Vec3 (T a) IMATH_NOEXCEPT;
@@ -369,7 +376,10 @@ public:
     IMATH_HOSTDEVICE constexpr Vec3 (T a, T b, T c) IMATH_NOEXCEPT;
 
     /// Copy constructor
-    IMATH_HOSTDEVICE constexpr Vec3 (const Vec3& v) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr Vec3 (const Vec3& v) IMATH_NOEXCEPT = default;
+
+    /// Move constructor
+    IMATH_HOSTDEVICE constexpr Vec3 (Vec3&& v) IMATH_NOEXCEPT = default;
 
     /// Construct from Vec3 of another base type
     template <class S>
@@ -387,9 +397,13 @@ public:
     explicit IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Vec3 (const Vec4<S>& v, InfException);
 
-    /// Assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3&
-    operator= (const Vec3& v) IMATH_NOEXCEPT;
+    /// Copy assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3&
+    operator= (const Vec3& v) IMATH_NOEXCEPT = default;
+
+    /// Move assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3&
+    operator= (Vec3&& v) IMATH_NOEXCEPT = default;
 
     /// Destructor
     ~Vec3 () IMATH_NOEXCEPT = default;
@@ -681,7 +695,7 @@ public:
     ///	@name Constructors and Assignment
 
     /// Uninitialized by default
-    IMATH_HOSTDEVICE Vec4 () IMATH_NOEXCEPT; // no initialization
+    IMATH_HOSTDEVICE Vec4 () IMATH_NOEXCEPT = default; // no initialization
 
     /// Initialize to a scalar `(a,a,a,a)`
     IMATH_HOSTDEVICE constexpr explicit Vec4 (T a) IMATH_NOEXCEPT;
@@ -690,7 +704,10 @@ public:
     IMATH_HOSTDEVICE constexpr Vec4 (T a, T b, T c, T d) IMATH_NOEXCEPT;
 
     /// Copy constructor
-    IMATH_HOSTDEVICE constexpr Vec4 (const Vec4& v) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr Vec4 (const Vec4& v) IMATH_NOEXCEPT = default;
+
+    /// Move constructor
+    IMATH_HOSTDEVICE constexpr Vec4 (Vec4&& v) IMATH_NOEXCEPT = default;
 
     /// Construct from Vec4 of another base type
     template <class S>
@@ -700,9 +717,13 @@ public:
     template <class S>
     IMATH_HOSTDEVICE explicit constexpr Vec4 (const Vec3<S>& v) IMATH_NOEXCEPT;
 
-    /// Assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4&
-    operator= (const Vec4& v) IMATH_NOEXCEPT;
+    /// Copy assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4&
+    operator= (const Vec4& v) IMATH_NOEXCEPT = default;
+
+    /// Move assignment
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4&
+    operator= (Vec4&& v) IMATH_NOEXCEPT = default;
 
     /// Destructor
     ~Vec4 () IMATH_NOEXCEPT = default;
@@ -1196,11 +1217,6 @@ Vec2<T>::operator[] (int i) const IMATH_NOEXCEPT
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> IMATH_HOSTDEVICE inline Vec2<T>::Vec2 () IMATH_NOEXCEPT
-{
-    // empty, and not constexpr because data is uninitialized.
-}
-
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (T a) IMATH_NOEXCEPT : x (a),
                                                                        y (a)
@@ -1213,26 +1229,11 @@ IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (T a, T b) IMATH_NOEXCEPT
 {}
 
 template <class T>
-IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2& v) IMATH_NOEXCEPT
-    : x (v.x),
-      y (v.y)
-{}
-
-template <class T>
 template <class S>
 IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2<S>& v)
     IMATH_NOEXCEPT : x (T (v.x)),
                      y (T (v.y))
 {}
-
-template <class T>
-IMATH_CONSTEXPR14 IMATH_HOSTDEVICE inline const Vec2<T>&
-Vec2<T>::operator= (const Vec2& v) IMATH_NOEXCEPT
-{
-    x = v.x;
-    y = v.y;
-    return *this;
-}
 
 template <class T>
 template <class S>
@@ -1600,11 +1601,6 @@ Vec3<T>::operator[] (int i) const IMATH_NOEXCEPT
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> IMATH_HOSTDEVICE inline Vec3<T>::Vec3 () IMATH_NOEXCEPT
-{
-    // empty, and not constexpr because data is uninitialized.
-}
-
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (T a) IMATH_NOEXCEPT : x (a),
                                                                        y (a),
@@ -1619,29 +1615,12 @@ IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (T a, T b, T c) IMATH_NOEXCEPT
 {}
 
 template <class T>
-IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec3& v) IMATH_NOEXCEPT
-    : x (v.x),
-      y (v.y),
-      z (v.z)
-{}
-
-template <class T>
 template <class S>
 IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec3<S>& v)
     IMATH_NOEXCEPT : x (T (v.x)),
                      y (T (v.y)),
                      z (T (v.z))
 {}
-
-template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
-Vec3<T>::operator= (const Vec3& v) IMATH_NOEXCEPT
-{
-    x = v.x;
-    y = v.y;
-    z = v.z;
-    return *this;
-}
 
 template <class T>
 template <class S>
@@ -2073,11 +2052,6 @@ Vec4<T>::operator[] (int i) const IMATH_NOEXCEPT
     return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
 }
 
-template <class T> IMATH_HOSTDEVICE inline Vec4<T>::Vec4 () IMATH_NOEXCEPT
-{
-    // empty, and not constexpr because data is uninitialized.
-}
-
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (T a) IMATH_NOEXCEPT : x (a),
                                                                        y (a),
@@ -2094,14 +2068,6 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (T a, T b, T c, T d)
 {}
 
 template <class T>
-IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4& v) IMATH_NOEXCEPT
-    : x (v.x),
-      y (v.y),
-      z (v.z),
-      w (v.w)
-{}
-
-template <class T>
 template <class S>
 IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4<S>& v)
     IMATH_NOEXCEPT : x (T (v.x)),
@@ -2109,17 +2075,6 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4<S>& v)
                      z (T (v.z)),
                      w (T (v.w))
 {}
-
-template <class T>
-IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
-Vec4<T>::operator= (const Vec4& v) IMATH_NOEXCEPT
-{
-    x = v.x;
-    y = v.y;
-    z = v.z;
-    w = v.w;
-    return *this;
-}
 
 template <class T>
 template <class S>
