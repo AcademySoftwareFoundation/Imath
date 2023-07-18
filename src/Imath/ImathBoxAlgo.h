@@ -49,7 +49,7 @@ clip (const T& p, const Box<T>& box) IMATH_NOEXCEPT
 ///
 
 template <class T>
-IMATH_HOSTDEVICE constexpr inline T
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 closestPointInBox (const T& p, const Box<T>& box) IMATH_NOEXCEPT
 {
     return clip (p, box);
