@@ -15,6 +15,8 @@ set(EXTRA_LIBS Imath::Imath)
 
 find_package(CUDAToolkit 12)
 if(CUDAToolkit_FOUND)
+  set(IMATH_CUDA_FOUND ON)
+
   # TODO investigate minimum CUDA architecture.
   set(CMAKE_CUDA_ARCHITECTURES 75)
 
@@ -36,6 +38,8 @@ if(CUDAToolkit_FOUND)
 
   list(APPEND EXTRA_LIBS ImathTestVecCuda)
 endif()
+
+configure_file(ImathTestConfig.h.in ImathTestConfig.h)
 
 add_executable(ImathTest 
   main.cpp
@@ -110,7 +114,7 @@ function(DEFINE_IMATH_TESTS)
   endforeach()
 endfunction()
 
-set(TestCases
+set(TEST_CASES
   testToFloat
   testSize
   testArithmetic
@@ -150,7 +154,7 @@ set(TestCases
 )
 
 if(CUDAToolkit_FOUND)
-  list(APPEND TestCases testVecCUDA)
+  list(APPEND TEST_CASES testVecCUDA)
 endif()
 
-define_imath_tests(${TestCases})
+define_imath_tests(${TEST_CASES})

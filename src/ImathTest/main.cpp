@@ -7,6 +7,8 @@
 #    undef NDEBUG
 #endif
 
+#include "ImathTestConfig.h"
+
 #include "testArithmetic.h"
 #include "testBitPatterns.h"
 #include "testBox.h"
@@ -40,7 +42,10 @@
 #include "testTinySVD.h"
 #include "testToFloat.h"
 #include "testVec.h"
-#include "testVecCUDA.h"
+
+#ifdef IMATH_CUDA_FOUND
+#   include "testVecCUDA.h"
+#endif
 
 #include <iostream>
 #include <string.h>
@@ -90,9 +95,11 @@ main (int argc, char* argv[])
     TEST (testInterop);
     TEST (testNoInterop);
 
+#ifdef IMATH_CUDA_FOUND
     std::cout << "Testing some basic vector operations in CUDA" << std::endl;
     TEST (testVecCUDA);
     std::cout << "ok\n" << std::endl;
+#endif
 
     // NB: If you add a test here, make sure to enumerate it in the
     // CMakeLists.txt so it runs as part of the test suite

@@ -1,0 +1,1 @@
+#cmakedefine IMATH_CUDA_FOUND
