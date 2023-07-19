@@ -11,23 +11,31 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "")
   find_package(Imath)
 endif()
 
-set(CMAKE_CUDA_ARCHITECTURES 75)
-enable_language(CUDA)
+set(EXTRA_LIBS Imath::Imath)
 
-add_library(ImathTestVecCuda
-  testVecCUDA.h
-  testVecCUDA.cu
-)
+find_package(CUDAToolkit 12)
+if(CUDAToolkit_FOUND)
+  # TODO investigate minimum CUDA architecture.
+  set(CMAKE_CUDA_ARCHITECTURES 75)
 
-find_package(CUDAToolkit 12 REQUIRED)
+  enable_language(CUDA)
 
-target_compile_features(ImathTestVecCuda PRIVATE cuda_std_20)
+  add_library(ImathTestVecCuda
+    testVecCUDA.h
+    testVecCUDA.cu
+  )
 
-target_link_libraries(ImathTestVecCuda PRIVATE CUDA::cudart Imath::Imath)
+  # TODO investigate minimum CUDA C++ std.
+  target_compile_features(ImathTestVecCuda PRIVATE cuda_std_20)
 
-set_target_properties(ImathTestVecCuda PROPERTIES
-  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-)
+  target_link_libraries(ImathTestVecCuda PRIVATE CUDA::cudart Imath::Imath)
+
+  set_target_properties(ImathTestVecCuda PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+  )
+
+  list(APPEND EXTRA_LIBS ImathTestVecCuda)
+endif()
 
 add_executable(ImathTest 
   main.cpp
@@ -66,7 +74,7 @@ add_executable(ImathTest
   testNoInterop.cpp
 )
 
-target_link_libraries(ImathTest Imath::Imath ImathTestVecCuda)
+target_link_libraries(ImathTest ${EXTRA_LIBS})
 set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
@@ -102,7 +110,7 @@ function(DEFINE_IMATH_TESTS)
   endforeach()
 endfunction()
 
-define_imath_tests(
+set(TestCases
   testToFloat
   testSize
   testArithmetic
@@ -141,3 +149,8 @@ define_imath_tests(
   testNoInterop
 )
 
+if(CUDAToolkit_FOUND)
+  list(APPEND TestCases testVecCUDA)
+endif()
+
+define_imath_tests(${TestCases})
