@@ -17,14 +17,20 @@
 #include "ImathMath.h"
 
 #include <iostream>
-#include <limits>
-#include <cstdint>
 #include <stdexcept>
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 // suppress exception specification warnings
 #    pragma warning(push)
 #    pragma warning(disable : 4290)
+#endif
+
+#ifdef __CUDACC__
+#   include <cuda/std/limits>
+#   include <cuda/std/cstdint>
+#else
+#   include <limits>
+#   include <cstdint>
 #endif
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
@@ -299,25 +305,25 @@ public:
     /// Largest possible negative value
     IMATH_HOSTDEVICE constexpr static T baseTypeLowest () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::lowest ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::lowest ();
     }
 
     /// Largest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeMax () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::max ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::max ();
     }
 
     /// Smallest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeSmallest () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::min ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::min ();
     }
 
     /// Smallest possible e for which 1+e != 1
     IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::epsilon ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::epsilon ();
     }
 
     /// @}
@@ -620,25 +626,25 @@ public:
     /// Largest possible negative value
     IMATH_HOSTDEVICE constexpr static T baseTypeLowest () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::lowest ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::lowest ();
     }
 
     /// Largest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeMax () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::max ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::max ();
     }
 
     /// Smallest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeSmallest () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::min ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::min ();
     }
 
     /// Smallest possible e for which 1+e != 1
     IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::epsilon ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::epsilon ();
     }
 
     /// @}
@@ -896,25 +902,25 @@ public:
     /// Largest possible negative value
     IMATH_HOSTDEVICE constexpr static T baseTypeLowest () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::lowest ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::lowest ();
     }
 
     /// Largest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeMax () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::max ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::max ();
     }
 
     /// Smallest possible positive value
     IMATH_HOSTDEVICE constexpr static T baseTypeSmallest () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::min ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::min ();
     }
 
     /// Smallest possible e for which 1+e != 1
     IMATH_HOSTDEVICE constexpr static T baseTypeEpsilon () IMATH_NOEXCEPT
     {
-        return std::numeric_limits<T>::epsilon ();
+        return IMATH_STD_NAMESPACE::numeric_limits<T>::epsilon ();
     }
 
     /// @}
@@ -1466,8 +1472,8 @@ template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
 Vec2<T>::lengthTiny () const IMATH_NOEXCEPT
 {
-    T absX = std::abs (x);
-    T absY = std::abs (y);
+    T absX = IMATH_STD_NAMESPACE::abs (x);
+    T absY = IMATH_STD_NAMESPACE::abs (y);
 
     T max = absX;
 
@@ -1484,7 +1490,7 @@ Vec2<T>::lengthTiny () const IMATH_NOEXCEPT
     absX /= max;
     absY /= max;
 
-    return max * std::sqrt (absX * absX + absY * absY);
+    return max * IMATH_STD_NAMESPACE::sqrt (absX * absX + absY * absY);
 }
 
 template <class T>
@@ -1493,10 +1499,10 @@ Vec2<T>::length () const IMATH_NOEXCEPT
 {
     T length2 = dot (*this);
 
-    if (IMATH_UNLIKELY (length2 < T (2) * std::numeric_limits<T>::min ()))
+    if (IMATH_UNLIKELY (length2 < T (2) * IMATH_STD_NAMESPACE::numeric_limits<T>::min ()))
         return lengthTiny ();
 
-    return std::sqrt (length2);
+    return IMATH_STD_NAMESPACE::sqrt (length2);
 }
 
 template <class T>
@@ -1954,7 +1960,7 @@ Vec3<T>::lengthTiny () const IMATH_NOEXCEPT
     absY /= max;
     absZ /= max;
 
-    return max * std::sqrt (absX * absX + absY * absY + absZ * absZ);
+    return max * IMATH_STD_NAMESPACE::sqrt (absX * absX + absY * absY + absZ * absZ);
 }
 
 template <class T>
@@ -1963,10 +1969,10 @@ Vec3<T>::length () const IMATH_NOEXCEPT
 {
     T length2 = dot (*this);
 
-    if (IMATH_UNLIKELY (length2 < T (2) * std::numeric_limits<T>::min ()))
+    if (IMATH_UNLIKELY (length2 < T (2) * IMATH_STD_NAMESPACE::numeric_limits<T>::min ()))
         return lengthTiny ();
 
-    return std::sqrt (length2);
+    return IMATH_STD_NAMESPACE::sqrt (length2);
 }
 
 template <class T>
@@ -2339,7 +2345,7 @@ Vec4<T>::lengthTiny () const IMATH_NOEXCEPT
     absW /= max;
 
     return max *
-           std::sqrt (absX * absX + absY * absY + absZ * absZ + absW * absW);
+           IMATH_STD_NAMESPACE::sqrt (absX * absX + absY * absY + absZ * absZ + absW * absW);
 }
 
 template <class T>
@@ -2348,10 +2354,10 @@ Vec4<T>::length () const IMATH_NOEXCEPT
 {
     T length2 = dot (*this);
 
-    if (IMATH_UNLIKELY (length2 < T (2) * std::numeric_limits<T>::min ()))
+    if (IMATH_UNLIKELY (length2 < T (2) * IMATH_STD_NAMESPACE::numeric_limits<T>::min ()))
         return lengthTiny ();
 
-    return std::sqrt (length2);
+    return IMATH_STD_NAMESPACE::sqrt (length2);
 }
 
 template <class T>

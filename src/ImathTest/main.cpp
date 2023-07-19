@@ -40,6 +40,7 @@
 #include "testTinySVD.h"
 #include "testToFloat.h"
 #include "testVec.h"
+#include "testVecCUDA.h"
 
 #include <iostream>
 #include <string.h>
@@ -88,6 +89,11 @@ main (int argc, char* argv[])
     TEST (testFrustumTest);
     TEST (testInterop);
     TEST (testNoInterop);
+
+    std::cout << "Testing some basic vector operations in CUDA" << std::endl;
+    TEST (testVecCUDA);
+    std::cout << "ok\n" << std::endl;
+
     // NB: If you add a test here, make sure to enumerate it in the
     // CMakeLists.txt so it runs as part of the test suite
 

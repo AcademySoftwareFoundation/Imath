@@ -10,19 +10,23 @@
 #ifndef INCLUDED_IMATHTYPETRAITS_H
 #define INCLUDED_IMATHTYPETRAITS_H
 
-#include <type_traits>
+#ifdef __CUDACC__
+#   include <cuda/std/type_traits>
+#else
+#   include <type_traits>
+#endif
 
 #include "ImathPlatform.h"
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
-/// Define Imath::enable_if_t to be std for C++14, equivalent for C++11.
+/// Define Imath::enable_if_t to be IMATH_STD_NAMESPACE for C++14, equivalent for C++11.
 #if (IMATH_CPLUSPLUS_VERSION >= 14)
-using std::enable_if_t; // Use C++14 std::enable_if_t
+using IMATH_STD_NAMESPACE::enable_if_t; // Use C++14 IMATH_STD_NAMESPACE::enable_if_t
 #else
 // Define enable_if_t for C++11
 template <bool B, class T = void>
-using enable_if_t = typename std::enable_if<B, T>::type;
+using enable_if_t = typename IMATH_STD_NAMESPACE::enable_if<B, T>::type;
 #endif
 
 /// An enable_if helper to be used in template parameters which results in
@@ -63,14 +67,14 @@ using enable_if_t = typename std::enable_if<B, T>::type;
 /// an Imath::V3f by subscripting:
 ///
 ///     template<>
-///     struct Imath::has_subscript<mytype, float, 3> : public std::true_type { };
+///     struct Imath::has_subscript<mytype, float, 3> : public IMATH_STD_NAMESPACE::true_type { };
 ///
 /// And similarly, user code may correct a potential false positive (that
 /// is, a `mytype` looks like it should be convertible to a V3f, but you
 /// don't want it to ever happen):
 ///
 ///     template<typename B, int N>
-///     struct Imath::has_subscript<mytype, B, N> : public std::false_type { };
+///     struct Imath::has_subscript<mytype, B, N> : public IMATH_STD_NAMESPACE::false_type { };
 ///
 
 /// `has_xy<T,Base>::value` will be true if type `T` has member variables
@@ -85,8 +89,8 @@ private:
     // Valid only if .x, .y exist and are the right type: return a Yes.
     template <
         typename C,
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.x), Base>::value),
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.y), Base>::value)>
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.x), Base>::value),
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.y), Base>::value)>
     static Yes& test (int);
 
     // Fallback, default to returning a No.
@@ -113,9 +117,9 @@ private:
     // Valid only if .x, .y, .z exist and are the right type: return a Yes.
     template <
         typename C,
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.x), Base>::value),
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.y), Base>::value),
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.z), Base>::value)>
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.x), Base>::value),
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.y), Base>::value),
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.z), Base>::value)>
     static Yes& test (int);
 
     // Fallback, default to returning a No.
@@ -142,10 +146,10 @@ private:
     // Valid only if .x, .y, .z, .w exist and are the right type: return a Yes.
     template <
         typename C,
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.x), Base>::value),
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.y), Base>::value),
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.z), Base>::value),
-        IMATH_ENABLE_IF (std::is_same<decltype (C {}.w), Base>::value)>
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.x), Base>::value),
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.y), Base>::value),
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.z), Base>::value),
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<decltype (C {}.w), Base>::value)>
     static Yes& test (int);
 
     // Fallback, default to returning a No.
@@ -172,8 +176,8 @@ private:
     // Valid only if T[] is possible and is the right type: return a Yes.
     template <
         typename C,
-        IMATH_ENABLE_IF (std::is_same<
-                         typename std::decay<decltype (C {}[0])>::type,
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<
+                         typename IMATH_STD_NAMESPACE::decay<decltype (C {}[0])>::type,
                          Base>::value)>
     static Yes& test (int);
 
@@ -191,7 +195,7 @@ public:
 
 /// C arrays of just the right length also are qualified for has_subscript.
 template <typename Base, int Nelem>
-struct has_subscript<Base[Nelem], Base, Nelem> : public std::true_type
+struct has_subscript<Base[Nelem], Base, Nelem> : public IMATH_STD_NAMESPACE::true_type
 {};
 
 /// `has_double_subscript<T,Base,Rows,Cols>::value` will be true if type `T`
@@ -207,8 +211,8 @@ private:
     // Valid only if T[][] is possible and is the right type: return a Yes.
     template <
         typename C,
-        IMATH_ENABLE_IF (std::is_same<
-                         typename std::decay<decltype (C {}[0][0])>::type,
+        IMATH_ENABLE_IF (IMATH_STD_NAMESPACE::is_same<
+                         typename IMATH_STD_NAMESPACE::decay<decltype (C {}[0][0])>::type,
                          Base>::value)>
     static Yes& test (int);
 
@@ -227,7 +231,7 @@ public:
 /// C arrays of just the right length also are qualified for has_double_subscript.
 template <typename Base, int Rows, int Cols>
 struct has_double_subscript<Base[Rows][Cols], Base, Rows, Cols>
-    : public std::true_type
+    : public IMATH_STD_NAMESPACE::true_type
 {};
 
 /// @}
