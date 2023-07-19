@@ -78,6 +78,11 @@ add_executable(ImathTest
   testNoInterop.cpp
 )
 
+target_include_directories(ImathTest
+  PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+)
 target_link_libraries(ImathTest ${EXTRA_LIBS})
 set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
