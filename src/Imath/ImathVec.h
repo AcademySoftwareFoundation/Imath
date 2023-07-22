@@ -20,6 +20,8 @@
 #include <limits>
 #include <cstdint>
 #include <stdexcept>
+#include <initializer_list>
+#include <cassert>
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 // suppress exception specification warnings
@@ -69,7 +71,10 @@ public:
     IMATH_HOSTDEVICE constexpr explicit Vec2 (T a) IMATH_NOEXCEPT;
 
     /// Initialize to given elements `(a,b)`
-    IMATH_HOSTDEVICE constexpr Vec2 (T a, T b) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr explicit Vec2 (T a, T b) IMATH_NOEXCEPT;
+
+    /// Initialize to given initializer list `{a,b}`
+    IMATH_HOSTDEVICE constexpr Vec2 (std::initializer_list<T> l) IMATH_NOEXCEPT;
 
     /// Copy constructor
 #if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
@@ -386,7 +391,10 @@ public:
     IMATH_HOSTDEVICE constexpr explicit Vec3 (T a) IMATH_NOEXCEPT;
 
     /// Initialize to given elements `(a,b,c)`
-    IMATH_HOSTDEVICE constexpr Vec3 (T a, T b, T c) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr explicit Vec3 (T a, T b, T c) IMATH_NOEXCEPT;
+
+    /// Initialize to given initializer list `{a,b,c}`
+    IMATH_HOSTDEVICE constexpr Vec3 (std::initializer_list<T> l) IMATH_NOEXCEPT;
 
     /// Copy constructor
 #if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
@@ -727,7 +735,10 @@ public:
     IMATH_HOSTDEVICE constexpr explicit Vec4 (T a) IMATH_NOEXCEPT;
 
     /// Initialize to given elements `(a,b,c,d)`
-    IMATH_HOSTDEVICE constexpr Vec4 (T a, T b, T c, T d) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE constexpr explicit Vec4 (T a, T b, T c, T d) IMATH_NOEXCEPT;
+
+    /// Initialize to given initializer list `{a,b,c,d}`
+    IMATH_HOSTDEVICE constexpr Vec4 (std::initializer_list<T> l) IMATH_NOEXCEPT;
 
     /// Copy constructor
 #if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
@@ -1272,6 +1283,17 @@ IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (T a, T b) IMATH_NOEXCEPT
       y (b)
 {}
 
+template <class T>
+IMATH_HOSTDEVICE constexpr Vec2<T>::Vec2 (std::initializer_list<T> l) IMATH_NOEXCEPT
+{
+    assert (l.size() == 2);
+
+    auto it = l.begin();
+    x = *it;
+    ++it;
+    y = *it;
+}
+
 #if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2& v) IMATH_NOEXCEPT
@@ -1623,7 +1645,10 @@ Vec2<T>::normalized () const IMATH_NOEXCEPT
 
     if (IMATH_UNLIKELY (l == T (0))) return Vec2 (T (0));
 
-    return Vec2 (x / l, y / l);
+    auto v = Vec2 (x / l, y / l);
+    
+    std::cout << "In normalized: " << v.x << ", " << v.y << std::endl;
+    return v;
 }
 
 template <class T>
@@ -1681,6 +1706,19 @@ IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (T a, T b, T c) IMATH_NOEXCEPT
       y (b),
       z (c)
 {}
+
+template <class T>
+IMATH_HOSTDEVICE constexpr Vec3<T>::Vec3 (std::initializer_list<T> l) IMATH_NOEXCEPT
+{
+    assert(l.size() == 3);
+
+    auto it = l.begin();
+    x = *it;
+    ++it;
+    y = *it;
+    ++it;
+    z = *it;
+}
 
 #if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
 template <class T>
@@ -2160,6 +2198,21 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (T a, T b, T c, T d)
                      z (c),
                      w (d)
 {}
+
+template <class T>
+IMATH_HOSTDEVICE constexpr Vec4<T>::Vec4 (std::initializer_list<T> l) IMATH_NOEXCEPT
+{
+    assert(l.size() == 4);
+
+    auto it = l.begin();
+    x = *it;
+    ++it;
+    y = *it;
+    ++it;
+    z = *it;
+    ++it;
+    w = *it;
+}
 
 #if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
 template <class T>

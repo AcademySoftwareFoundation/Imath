@@ -40,6 +40,9 @@ testLength2T ()
 
     v = Vec2<T> (3, 4);
     assert (v.length () == 5);
+    std::cout << v.x << ", " << v.y << std::endl;
+    auto nv = v.normalized();
+    std::cout << nv.x << ", " << nv.y << std::endl;
     assert (IMATH_INTERNAL_NAMESPACE::equal (v.normalized ().length (), 1, e));
 
     v = Vec2<T> (3000, 4000);
