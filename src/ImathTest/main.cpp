@@ -53,7 +53,6 @@ main (int argc, char* argv[])
 {
     // NB: If you add a test here, make sure to enumerate it in the
     // CMakeLists.txt so it runs as part of the test suite
-    /*
     TEST (testToFloat);
     TEST (testSize);
     TEST (testArithmetic);
@@ -90,7 +89,6 @@ main (int argc, char* argv[])
     TEST (testFrustumTest);
     TEST (testInterop);
     TEST (testNoInterop);
-    */
     TEST (testVecUseDefaultConstructor)
     // NB: If you add a test here, make sure to enumerate it in the
     // CMakeLists.txt so it runs as part of the test suite

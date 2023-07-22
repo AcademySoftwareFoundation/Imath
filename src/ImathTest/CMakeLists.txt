@@ -15,7 +15,7 @@ add_library(ImathTestVecUseDefaultConstructor
   testVecUseDefaultConstructor.h
   testVecUseDefaultConstructor.cpp
 )
-target_link_libraries(ImathTestVecUseDefaultConstructor PRIVATE Imath::Imath)
+target_link_libraries(ImathTestVecUseDefaultConstructor PRIVATE Imath::Imath Imath::Config)
 
 add_executable(ImathTest 
   main.cpp
