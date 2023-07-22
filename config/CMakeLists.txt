@@ -10,10 +10,6 @@ else()
   set(IMATH_ENABLE_API_VISIBILITY ON)
 endif()
 
-if (IMATH_VEC_USE_DEFAULT_CONSTRUCTOR)
-  set(IMATH_VEC_ENABLE_DEFAULT_CONSTRUCTOR ON)
-endif()
-
 configure_file(ImathConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
 
 add_library(ImathConfig INTERFACE)
