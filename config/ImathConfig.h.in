@@ -175,6 +175,8 @@
 #endif
 
 // Whether the copy and move constructors of Vec2, Vec3 and Vec4 are default or not.
-#cmakedefine IMATH_VEC_USE_DEFAULT_CONSTRUCTOR
+#ifndef IMATH_VEC_USE_DEFAULT_CONSTRUCTOR
+#     define IMATH_VEC_USE_DEFAULT_CONSTRUCTOR 0
+#endif
 
 #endif // INCLUDED_IMATH_CONFIG_H
