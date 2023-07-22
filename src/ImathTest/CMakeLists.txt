@@ -11,6 +11,12 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "")
   find_package(Imath)
 endif()
 
+add_library(ImathTestVecUseDefaultConstructor
+  testVecUseDefaultConstructor.h
+  testVecUseDefaultConstructor.cpp
+)
+target_link_libraries(ImathTestVecUseDefaultConstructor PRIVATE Imath::Imath Imath::Config)
+
 add_executable(ImathTest 
   main.cpp
   testBox.cpp
@@ -48,7 +54,7 @@ add_executable(ImathTest
   testNoInterop.cpp
 )
 
-target_link_libraries(ImathTest Imath::Imath)
+target_link_libraries(ImathTest Imath::Imath ImathTestVecUseDefaultConstructor)
 set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
   )
@@ -121,5 +127,6 @@ define_imath_tests(
   testFrustumTest
   testInterop
   testNoInterop
+  testVecUseDefaultConstructor
 )
 
