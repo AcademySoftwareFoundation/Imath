@@ -11,12 +11,6 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "")
   find_package(Imath)
 endif()
 
-add_library(ImathTestVecUseDefaultConstructor
-  testVecUseDefaultConstructor.h
-  testVecUseDefaultConstructor.cpp
-)
-target_link_libraries(ImathTestVecUseDefaultConstructor PRIVATE Imath::Imath)
-
 add_executable(ImathTest 
   main.cpp
   testBox.cpp
@@ -54,7 +48,7 @@ add_executable(ImathTest
   testNoInterop.cpp
 )
 
-target_link_libraries(ImathTest Imath::Imath ImathTestVecUseDefaultConstructor)
+target_link_libraries(ImathTest Imath::Imath)
 set_target_properties(ImathTest PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
   )
@@ -83,6 +77,13 @@ RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 target_link_libraries(ImathHalfPerfTest Imath::Imath)
 add_test(NAME Imath.half_perf_test COMMAND $<TARGET_FILE:ImathHalfPerfTest>)
+
+add_executable(ImathVecTriviallyRelocatableTest vec_trivially_relocatable_main.cpp testVecTriviallyRelocatable.cpp)
+set_target_properties(ImathVecTriviallyRelocatableTest PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+target_link_libraries(ImathVecTriviallyRelocatableTest Imath::Imath)
+add_test(NAME Imath.vec_trivially_relocatable_test COMMAND $<TARGET_FILE:ImathVecTriviallyRelocatableTest>)
 
 function(DEFINE_IMATH_TESTS)
   foreach(curtest IN LISTS ARGN)
@@ -127,6 +128,5 @@ define_imath_tests(
   testFrustumTest
   testInterop
   testNoInterop
-  testVecUseDefaultConstructor
 )
 

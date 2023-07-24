@@ -72,15 +72,10 @@ public:
     IMATH_HOSTDEVICE constexpr Vec2 (T a, T b) IMATH_NOEXCEPT;
 
     /// Copy constructor
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
     IMATH_HOSTDEVICE constexpr Vec2 (const Vec2& v) IMATH_NOEXCEPT = default;
 #else
     IMATH_HOSTDEVICE constexpr Vec2 (const Vec2& v) IMATH_NOEXCEPT;
-#endif
-
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
-    /// Move constructor
-    IMATH_HOSTDEVICE constexpr Vec2 (Vec2&& v) IMATH_NOEXCEPT = default;
 #endif
 
     /// Construct from Vec2 of another base type
@@ -88,18 +83,12 @@ public:
     IMATH_HOSTDEVICE constexpr Vec2 (const Vec2<S>& v) IMATH_NOEXCEPT;
 
     /// Copy assignment
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2&
     operator= (const Vec2& v) IMATH_NOEXCEPT = default;
 #else
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2&
     operator= (const Vec2& v) IMATH_NOEXCEPT;
-#endif
-
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
-    /// Move assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2&
-    operator= (Vec2&& v) IMATH_NOEXCEPT = default;
 #endif
 
     /// Destructor
@@ -389,15 +378,10 @@ public:
     IMATH_HOSTDEVICE constexpr Vec3 (T a, T b, T c) IMATH_NOEXCEPT;
 
     /// Copy constructor
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
     IMATH_HOSTDEVICE constexpr Vec3 (const Vec3& v) IMATH_NOEXCEPT = default;
 #else
     IMATH_HOSTDEVICE constexpr Vec3 (const Vec3& v) IMATH_NOEXCEPT;
-#endif
-
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
-    /// Move constructor
-    IMATH_HOSTDEVICE constexpr Vec3 (Vec3&& v) IMATH_NOEXCEPT = default;
 #endif
 
     /// Construct from Vec3 of another base type
@@ -417,18 +401,12 @@ public:
     Vec3 (const Vec4<S>& v, InfException);
 
     /// Copy assignment
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3&
     operator= (const Vec3& v) IMATH_NOEXCEPT = default;
 #else
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3&
     operator= (const Vec3& v) IMATH_NOEXCEPT;
-#endif
-
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
-    /// Move assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3&
-    operator= (Vec3&& v) IMATH_NOEXCEPT = default;
 #endif
 
     /// Destructor
@@ -730,15 +708,10 @@ public:
     IMATH_HOSTDEVICE constexpr Vec4 (T a, T b, T c, T d) IMATH_NOEXCEPT;
 
     /// Copy constructor
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
     IMATH_HOSTDEVICE constexpr Vec4 (const Vec4& v) IMATH_NOEXCEPT = default;
 #else
     IMATH_HOSTDEVICE constexpr Vec4 (const Vec4& v) IMATH_NOEXCEPT;
-#endif
-
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
-    /// Move constructor
-    IMATH_HOSTDEVICE constexpr Vec4 (Vec4&& v) IMATH_NOEXCEPT = default;
 #endif
 
     /// Construct from Vec4 of another base type
@@ -750,18 +723,12 @@ public:
     IMATH_HOSTDEVICE explicit constexpr Vec4 (const Vec3<S>& v) IMATH_NOEXCEPT;
 
     /// Copy assignment
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4&
     operator= (const Vec4& v) IMATH_NOEXCEPT = default;
 #else
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4&
     operator= (const Vec4& v) IMATH_NOEXCEPT;
-#endif
-
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR != 0
-    /// Move assignment
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4&
-    operator= (Vec4&& v) IMATH_NOEXCEPT = default;
 #endif
 
     /// Destructor
@@ -1272,7 +1239,7 @@ IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (T a, T b) IMATH_NOEXCEPT
       y (b)
 {}
 
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2& v) IMATH_NOEXCEPT
     : x (v.x),
@@ -1287,7 +1254,7 @@ IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2<S>& v)
                      y (T (v.y))
 {}
 
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_CONSTEXPR14 IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::operator= (const Vec2& v) IMATH_NOEXCEPT
@@ -1682,7 +1649,7 @@ IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (T a, T b, T c) IMATH_NOEXCEPT
       z (c)
 {}
 
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec3& v) IMATH_NOEXCEPT
     : x (v.x),
@@ -1699,7 +1666,7 @@ IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec3<S>& v)
                      z (T (v.z))
 {}
 
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator= (const Vec3& v) IMATH_NOEXCEPT
@@ -2161,7 +2128,7 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (T a, T b, T c, T d)
                      w (d)
 {}
 
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4& v) IMATH_NOEXCEPT
     : x (v.x),
@@ -2180,7 +2147,7 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4<S>& v)
                      w (T (v.w))
 {}
 
-#if IMATH_VEC_USE_DEFAULT_CONSTRUCTOR == 0
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator= (const Vec4& v) IMATH_NOEXCEPT

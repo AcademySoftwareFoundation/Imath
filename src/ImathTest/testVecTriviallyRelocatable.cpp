@@ -7,9 +7,9 @@
 #    undef NDEBUG
 #endif
 
-#define IMATH_VEC_USE_DEFAULT_CONSTRUCTOR 1
+#define IMATH_VEC_BE_TRIVIALLY_RELOCATABLE 1
 
-#include "testVecUseDefaultConstructor.h"
+#include "testVecTriviallyRelocatable.h"
 #include <ImathFun.h>
 #include <ImathVec.h>
 #include <cassert>
@@ -253,9 +253,9 @@ testLength4T ()
 } // namespace
 
 void
-testVecUseDefaultConstructor ()
+testVecTriviallyRelocatable ()
 {
-    cout << "Testing some basic vector operations using default constructor" << endl;
+    cout << "Testing some basic vector operations when vectors are trivially relocatable." << endl;
 
     testLength2T<float> ();
     testLength2T<double> ();
