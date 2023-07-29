@@ -141,8 +141,8 @@ See the :doc:`PortingGuide` for details about differences from previous
 releases and how to address them. Also refer to the porting guide for
 details about changes to Imath.
 
-Building the Documentation
---------------------------
+Building the Website
+--------------------
 
 The Imath technical documentation at `https://imath.readthedocs.io
 <https://imath.readthedocs.io>`_ is generated via `Sphinx
@@ -150,17 +150,25 @@ The Imath technical documentation at `https://imath.readthedocs.io
 <https://breathe.readthedocs.io>`_ extension using information
 extracted from header comments by `Doxygen <https://www.doxygen.nl>`_.
 
-To build the documentation locally from the source headers and
-``.rst`` files, set the CMake option ``BUILD_DOCS=ON``. This adds
-``Doxygen`` and ``Sphinx`` CMake targets and enables building the docs
-by default.  generation is off by default.
+To build the website locally from the source headers and
+``.rst`` files, set the CMake option ``BUILD_WEBSITE=ON``. This adds
+``Doxygen`` and ``Sphinx`` CMake targets. Generation is off by default.
 
-Building the documentation requires that ``sphinx``, ``breathe``, and
+Building the website requires that ``sphinx``, ``breathe``, and
 ``doxygen`` are installed. It further requires the `sphinx-press-theme
 <https://pypi.org/project/sphinx-press-theme>`_, as indicated in the
 `requirements.txt
 <https://github.com/AcademySoftwareFoundation/imath/blob/main/docs/requirements.txt>`_
 file.
+
+On Debian/Ubuntu Linux:
+
+.. code-block::
+
+    % apt-get install doxygen python3-sphinx
+    % pip3 install breathe
+    % pip install sphinx_press_theme
+   
 
 CMake Build-time Configuration Options
 --------------------------------------

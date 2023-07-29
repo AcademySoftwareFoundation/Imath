@@ -14,8 +14,8 @@ build:
     python: "3.9"
        
 sphinx:
-  configuration: docs/conf.py
+  configuration: website/conf.py
 
 python:
   install:
-    - requirements: docs/requirements.txt
+    - requirements: website/requirements.txt
