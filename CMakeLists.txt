@@ -73,10 +73,9 @@ if (PYTHON)
   add_subdirectory(src/python)
 endif()
 
-option(BUILD_DOCS "Set ON to build readthedocs documentation")
-if (BUILD_DOCS AND NOT IMATH_IS_SUBPROJECT)
-  option(INSTALL_DOCS "Set ON to install html documentation" ON)
-  add_subdirectory(docs)
+option(BUILD_WEBSITE "Set ON to build the readthedocs website source")
+if (BUILD_WEBSITE AND NOT IMATH_IS_SUBPROJECT)
+  add_subdirectory(website)
 endif()
 
 # If you want to use ctest to configure, build and

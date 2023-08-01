@@ -301,7 +301,7 @@ jobs:
           ./bin/ImathTest
           # Confirm the examples compile and execute
           rm -rf bin CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
-          cmake ../docs/examples \
+          cmake ../website/examples \
                 -DCMAKE_PREFIX_PATH=../../_install \
                 -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
                 -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
@@ -609,14 +609,14 @@ jobs:
         shell: bash
         working-directory: _build
 
-  Docs:
+  Website:
 
     # Build the documentation, using a process that mimics the readthedoc build.
     #
     # Note that this job does not actually build Imath libraries,
     # it just runs doxygen and sphinx.
     
-    name: 'Docs'
+    name: 'Website'
     runs-on: ubuntu-latest
     
     steps:
@@ -628,14 +628,14 @@ jobs:
         # Need help2man for tool manpages
         run: sudo apt-get install -y doxygen help2man
       - name: Install sphinx requirements
-        run: pip3 install -r docs/requirements.txt
+        run: pip3 install -r website/requirements.txt
       - name: Configure
-        run: cmake .. -DBUILD_DOCS='ON'
+        run: cmake .. -DBUILD_WEBSITE='ON'
         working-directory: _build
       - name: Build
         run: |
           cmake --build . \
-                --target docs \
+                --target website \
                 --config Release
         working-directory: _build
     
