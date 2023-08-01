@@ -69,11 +69,12 @@ To build via CMake, you need to first identify three directories:
    libraries and headers, referred to below as ``$installdir``.  
 
 To build:
+
 .. code-block::
 
-    $ cd $builddir
-    $ cmake $srcdir --install-prefix $installdir
-    $ cmake --build $builddir --target install --config Release
+    % cd $builddir
+    % cmake $srcdir --install-prefix $installdir
+    % cmake --build $builddir --target install --config Release
 
 Note that the CMake configuration prefers to apply an out-of-tree
 build process, since there may be multiple build configurations
@@ -102,7 +103,7 @@ can specify a local install directory to cmake via the
 
 .. code-block::
 
-    $ cmake .. -DCMAKE_INSTALL_PREFIX=$Imath_install_directory
+    % cmake .. -DCMAKE_INSTALL_PREFIX=$Imath_install_directory
 
 Library Names
 -------------
@@ -141,26 +142,44 @@ See the :doc:`PortingGuide` for details about differences from previous
 releases and how to address them. Also refer to the porting guide for
 details about changes to Imath.
 
-Building the Documentation
---------------------------
+Building the Website
+--------------------
 
 The Imath technical documentation at `https://imath.readthedocs.io
 <https://imath.readthedocs.io>`_ is generated via `Sphinx
 <https://www.sphinx-doc.org>`_ with the `Breathe
 <https://breathe.readthedocs.io>`_ extension using information
-extracted from header comments by `Doxygen <https://www.doxygen.nl>`_.
+extracted from header comments by `Doxygen <https://www.doxygen.nl>`_,
+using the `sphinx-press-theme
+<https://pypi.org/project/sphinx-press-theme>`_, and is hosted by
+`readthedocs <https://readthedocs.org/projects/openexr>`_. The website
+source is in `restructured text
+<https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
+in the ``website`` directory.
 
-To build the documentation locally from the source headers and
-``.rst`` files, set the CMake option ``BUILD_DOCS=ON``. This adds
-``Doxygen`` and ``Sphinx`` CMake targets and enables building the docs
-by default.  generation is off by default.
+To build the website locally from the source headers and
+``.rst`` files, set the CMake option ``BUILD_WEBSITE=ON``. This adds
+``website`` CMake target. Generation is off by default.
 
-Building the documentation requires that ``sphinx``, ``breathe``, and
+Building the website requires that ``sphinx``, ``breathe``, and
 ``doxygen`` are installed. It further requires the `sphinx-press-theme
-<https://pypi.org/project/sphinx-press-theme>`_, as indicated in the
-`requirements.txt
+<https://pypi.org/project/sphinx-press-theme>`_. Complete dependencies are
+described in the `requirements.txt
 <https://github.com/AcademySoftwareFoundation/imath/blob/main/docs/requirements.txt>`_
 file.
+
+On Debian/Ubuntu Linux:
+
+.. code-block::
+
+    % apt-get install doxygen python3-sphinx
+    % pip3 install breathe
+    % pip3 install sphinx_press_theme
+   
+    % mkdir _build
+    % cd _build
+    % cmake .. -DBUILD_WEBSITE=ON
+    % cmake --build . --target website 
 
 CMake Build-time Configuration Options
 --------------------------------------
@@ -171,7 +190,7 @@ variables, run:
 
 .. code-block::
 
-    $ cmake -LAH $imath_source_directory
+    % cmake -LAH $imath_source_directory
 
 You can customize these options three ways:
 
@@ -306,5 +325,5 @@ initial generation:
 
 .. code-block::
 
-    $ cmake -G “Ninja” ..
+    % cmake -G “Ninja” ..
 
