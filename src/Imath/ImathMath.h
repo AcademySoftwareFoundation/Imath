@@ -13,8 +13,13 @@
 
 #include "ImathNamespace.h"
 #include "ImathPlatform.h"
-#include <cmath>
-#include <limits>
+#ifdef __CUDACC__
+#   include <cuda/std/cmath>
+#   include <cuda/std/limits>
+#else
+#   include <cmath>
+#   include <limits>
+#endif
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
@@ -38,93 +43,93 @@ template <class T> struct Math
 {
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T acos (T x) { return std::acos (x); }
+    static T acos (T x) { return IMATH_STD_NAMESPACE::acos (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T asin (T x) { return std::asin (x); }
+    static T asin (T x) { return IMATH_STD_NAMESPACE::asin (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T atan (T x) { return std::atan (x); }
+    static T atan (T x) { return IMATH_STD_NAMESPACE::atan (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T atan2 (T x, T y) { return std::atan2 (x, y); }
+    static T atan2 (T x, T y) { return IMATH_STD_NAMESPACE::atan2 (x, y); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T cos (T x) { return std::cos (x); }
+    static T cos (T x) { return IMATH_STD_NAMESPACE::cos (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T sin (T x) { return std::sin (x); }
+    static T sin (T x) { return IMATH_STD_NAMESPACE::sin (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T tan (T x) { return std::tan (x); }
+    static T tan (T x) { return IMATH_STD_NAMESPACE::tan (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T cosh (T x) { return std::cosh (x); }
+    static T cosh (T x) { return IMATH_STD_NAMESPACE::cosh (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T sinh (T x) { return std::sinh (x); }
+    static T sinh (T x) { return IMATH_STD_NAMESPACE::sinh (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T tanh (T x) { return std::tanh (x); }
+    static T tanh (T x) { return IMATH_STD_NAMESPACE::tanh (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T exp (T x) { return std::exp (x); }
+    static T exp (T x) { return IMATH_STD_NAMESPACE::exp (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T log (T x) { return std::log (x); }
+    static T log (T x) { return IMATH_STD_NAMESPACE::log (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T log10 (T x) { return std::log10 (x); }
+    static T log10 (T x) { return IMATH_STD_NAMESPACE::log10 (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
     static T modf (T x, T* iptr)
     {
         T ival;
-        T rval (std::modf (T (x), &ival));
+        T rval (IMATH_STD_NAMESPACE::modf (T (x), &ival));
         *iptr = ival;
         return rval;
     }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T pow (T x, T y) { return std::pow (x, y); }
+    static T pow (T x, T y) { return IMATH_STD_NAMESPACE::pow (x, y); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T sqrt (T x) { return std::sqrt (x); }
+    static T sqrt (T x) { return IMATH_STD_NAMESPACE::sqrt (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T ceil (T x) { return std::ceil (x); }
+    static T ceil (T x) { return IMATH_STD_NAMESPACE::ceil (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T fabs (T x) { return std::fabs (x); }
+    static T fabs (T x) { return IMATH_STD_NAMESPACE::fabs (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T floor (T x) { return std::floor (x); }
+    static T floor (T x) { return IMATH_STD_NAMESPACE::floor (x); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T fmod (T x, T y) { return std::fmod (x, y); }
+    static T fmod (T x, T y) { return IMATH_STD_NAMESPACE::fmod (x, y); }
 
     IMATH_DEPRECATED ("use std::math functions")
     IMATH_HOSTDEVICE
-    static T hypot (T x, T y) { return std::hypot (x, y); }
+    static T hypot (T x, T y) { return IMATH_STD_NAMESPACE::hypot (x, y); }
 };
 /// @endcond
 
@@ -134,10 +139,10 @@ template <class T>
 IMATH_HOSTDEVICE inline T
 sinx_over_x (T x)
 {
-    if (x * x < std::numeric_limits<T>::epsilon ())
+    if (x * x < IMATH_STD_NAMESPACE::numeric_limits<T>::epsilon ())
         return T (1);
     else
-        return std::sin (x) / x;
+        return IMATH_STD_NAMESPACE::sin (x) / x;
 }
 
 /// Compare two numbers and test if they are "approximately equal":

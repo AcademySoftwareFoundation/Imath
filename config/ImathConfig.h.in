@@ -108,6 +108,15 @@
 #endif
 
 //
+// The namespace of C++ standard library
+//
+#ifdef __CUDACC__
+#    define IMATH_STD_NAMESPACE cuda::std
+#else
+#    define IMATH_STD_NAMESPACE std
+#endif
+
+//
 // Some compilers define a special intrinsic to use in conditionals that can
 // speed up extremely performance-critical spots if the conditional is
 // usually (or rarely) is true.  You use it by replacing
