@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<!-- Copyright (c) Contributors to the OpenEXR Project -->
+
 # Imath Release Notes
 
 * [Version 3.1.9](#version-319-May-31-2023) May 31, 2023
