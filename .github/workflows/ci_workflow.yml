@@ -494,7 +494,6 @@ jobs:
         # run: |
           # share/ci/scripts/windows/install_python.ps1 ${{ matrix.python-version }} $HOME 
           # share/ci/scripts/windows/install_boost.ps1 ${{ matrix.boost-version }} $HOME 3.8
-          # share/ci/scripts/windows/install_zlib.ps1 ${{ matrix.zlib-version }} $HOME 
         # shell: powershell
       - name: Configure
         run: |
@@ -507,8 +506,6 @@ jobs:
                 -DBUILD_SHARED_LIBS=${{ matrix.build-shared }}
                 # NB: removed trailing slash from these lines
                 # -DBOOST_ROOT:FILEPATH=$BOOST_ROOT
-                # -DZLIB_ROOT:FILEPATH="$ZLIB_ROOT"
-                # -DZLIB_LIBRARY:FILEPATH="$ZLIB_ROOT/lib/${{ matrix.zlib-lib }}"
                 # -DPYTHON='ON'
                 # -DPython_EXECUTABLE:FILEPATH="$PYTHON_ROOT"
                 # -DPython_INCLUDE_DIR:FILEPATH="$PYTHON_ROOT/include"
