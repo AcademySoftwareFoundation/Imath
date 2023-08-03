@@ -86,10 +86,11 @@ private:
     typedef char No[2];
 
     // Valid only if .x, .y exist and are the right type: return a Yes.
-    template<typename C,
-             IMATH_ENABLE_IF(std::is_same<decltype(C().x), Base>::value),
-             IMATH_ENABLE_IF(std::is_same<decltype(C().y), Base>::value)>
-    static Yes& test(int);
+    template <
+        typename C,
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.x), Base>::value),
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.y), Base>::value)>
+    static Yes& test (int);
 
     // Fallback, default to returning a No.
     template<typename C> static No& test(...);
@@ -110,11 +111,12 @@ private:
     typedef char No[2];
 
     // Valid only if .x, .y, .z exist and are the right type: return a Yes.
-    template<typename C,
-             IMATH_ENABLE_IF(std::is_same<decltype(C().x), Base>::value),
-             IMATH_ENABLE_IF(std::is_same<decltype(C().y), Base>::value),
-             IMATH_ENABLE_IF(std::is_same<decltype(C().z), Base>::value)>
-    static Yes& test(int);
+    template <
+        typename C,
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.x), Base>::value),
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.y), Base>::value),
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.z), Base>::value)>
+    static Yes& test (int);
 
     // Fallback, default to returning a No.
     template<typename C> static No& test(...);
@@ -135,12 +137,13 @@ private:
     typedef char No[2];
 
     // Valid only if .x, .y, .z, .w exist and are the right type: return a Yes.
-    template<typename C,
-             IMATH_ENABLE_IF(std::is_same<decltype(C().x), Base>::value),
-             IMATH_ENABLE_IF(std::is_same<decltype(C().y), Base>::value),
-             IMATH_ENABLE_IF(std::is_same<decltype(C().z), Base>::value),
-             IMATH_ENABLE_IF(std::is_same<decltype(C().w), Base>::value)>
-    static Yes& test(int);
+    template <
+        typename C,
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.x), Base>::value),
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.y), Base>::value),
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.z), Base>::value),
+        IMATH_ENABLE_IF (std::is_same<decltype (C {}.w), Base>::value)>
+    static Yes& test (int);
 
     // Fallback, default to returning a No.
     template<typename C> static No& test(...);
@@ -162,9 +165,12 @@ private:
     typedef char No[2];
 
     // Valid only if T[] is possible and is the right type: return a Yes.
-    template<typename C,
-             IMATH_ENABLE_IF(std::is_same<typename std::decay<decltype(C()[0])>::type, Base>::value)>
-    static Yes& test(int);
+    template <
+        typename C,
+        IMATH_ENABLE_IF (std::is_same<
+                         typename std::decay<decltype (C {}[0])>::type,
+                         Base>::value)>
+    static Yes& test (int);
 
     // Fallback, default to returning a No.
     template<typename C> static No& test(...);
@@ -191,9 +197,12 @@ private:
     typedef char No[2];
 
     // Valid only if T[][] is possible and is the right type: return a Yes.
-    template<typename C,
-             IMATH_ENABLE_IF(std::is_same<typename std::decay<decltype(C()[0][0])>::type, Base>::value)>
-    static Yes& test(int);
+    template <
+        typename C,
+        IMATH_ENABLE_IF (std::is_same<
+                         typename std::decay<decltype (C {}[0][0])>::type,
+                         Base>::value)>
+    static Yes& test (int);
 
     // Fallback, default to returning a No.
     template<typename C> static No& test(...);
