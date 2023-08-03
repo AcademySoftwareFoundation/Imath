@@ -1,3 +1,6 @@
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<!-- Copyright (c) Contributors to the OpenEXR Project -->
+
 # Code of Conduct
 
 Imath is a sub-project of the OpenEXR project, which abides by Linux

@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Fix the names of doxygen-generated man page files:
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+
+# Fix the names of doxygen-generated man page Files:
 # * Strip "_ Vec" and "_ T _ _" from "Imath_Box_ Vec2_ T _ _.3"
 # * and rename "Imath_*" to "Imath::*"
 
