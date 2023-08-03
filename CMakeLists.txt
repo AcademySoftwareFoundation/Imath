@@ -21,28 +21,17 @@ set(IMATH_VERSION_RELEASE_TYPE "-dev" CACHE STRING "Extra version tag string for
 set(IMATH_VERSION ${Imath_VERSION})
 set(IMATH_VERSION_API "${Imath_VERSION_MAJOR}_${Imath_VERSION_MINOR}")
 
-# Library/shared-object version using libtool versioning policy.
-# See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+# The SOVERSION (i.e. numerical component of SONAME) tracks the ABI
+# version. Increment this number whenever, and only when, the ABI changes in
+# non-backwards-compatible ways.
 #
-# Library API version (CMake's library VERSION attribute) is of the
-# form CURRENT.REVISION.AGE; the CMake SOVERSION attribute corresonds
-# to just CURRENT. These produce a .so and a symlink symlink, e.g.:
-# libImath-3_1.so.29 -> libImath-3_1.so.29.0.0
-#                 ^                     ^  ^ ^
-#                 |                     |  | |
-#                 CURRENT               |  | AGE
-#                                       |  REVISION 
-#                                       CURRENT
-# When updating:
-#   1. no API change: CURRENT.REVISION+1.AGE
-#   2. API added:     CURRENT+1.0.AGE+1
-#   3. API changed:   CURRENT+1.0.0
-#
-set(IMATH_LIBTOOL_CURRENT 29)
-set(IMATH_LIBTOOL_REVISION 0)
-set(IMATH_LIBTOOL_AGE 0)
-set(IMATH_LIB_VERSION "${IMATH_LIBTOOL_CURRENT}.${IMATH_LIBTOOL_REVISION}.${IMATH_LIBTOOL_AGE}")
-set(IMATH_LIB_SOVERSION ${IMATH_LIBTOOL_CURRENT})
+# The OpenEXR project policy is to append the library version 
+# "major.minor.patch" to the SONAME to form the real shared library name.  
+# For example, in "libImath.so.31.3.2.0", "libImath.so.31" is the SONAME
+# and ".3.2.0" identifies the corresponding library release.
+
+set(IMATH_LIB_SOVERSION 30)
+set(IMATH_LIB_VERSION "${IMATH_LIB_SOVERSION}.${IMATH_VERSION}") # e.g. "30.3.2.0"
 
 # ImathSetup.cmake declares all the configuration variables visible
 # in cmake-gui or similar and the rest of the global

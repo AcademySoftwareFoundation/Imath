@@ -10,8 +10,7 @@ explains our contribution process and procedures:
 * [Legal Requirements](#Legal-Requirements)
 * [Development Workflow](#Development-Workflow)
 * [Coding Style](#Coding-Style)
-* [Versioning Policy](#Versioning-Policy)
-* [Creating a Release](#Creating-a-Release)
+* [Versioning Policy and Release Process](#Versioning-Policy-and-Release-Process)
 
 Imath is a sub-project of
 [OpenEXR](https://github.com/AcademySoftwareFoundation/openexr) and
@@ -316,7 +315,7 @@ library.
 
 The test should should be run, via:
 
-    make test
+    % make test
 
 before submitting a pull request.
 
@@ -422,28 +421,9 @@ For public APIs, use Doxygen-style comments (start with `///`), such as:
         float foo;  ///< Doxygen comments on same line look like this
     }
 
-## Versioning Policy
+## Versioning Policy and Release Process
 
-Imath uses [semantic versioning](https://semver.org), which labels
-each version with three numbers: ``major.minor.patch``, where:
-
-* ``major`` - indicates incompatible API changes
-* ``minor`` - indicates functionality added in a backwards-compatible manner
-* ``patch`` - indicates backwards-compatible bug fixes 
-
-## Creating a Release
-
-To create a new release from the ``main`` branch:
-
-1. Update the release notes in ``CHANGES.md``.
-
-   Write a high-level summary of the features and
-   improvements. Include the summary in ``CHANGES.md`` and also in the
-   Release comments.
-
-   Include the log of all PR's included beyond the previous release. 
-       
-2. Create a new release on the GitHub Releases page.
-
-3. Tag the release with name beginning with ``v``', e.g. ``v2.3.0``.
+Imath follows the same policy and release process at OpenEXR. See the
+OpenEXR
+[CONTRIBUTING.md](https://github.com/AcademySoftwareFoundation/openexr/CONTRIBUTING.md) for the details.
 
