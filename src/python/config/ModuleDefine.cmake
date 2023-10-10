@@ -104,11 +104,6 @@ function(PYIMATH_DEFINE_MODULE modname)
   # libs as private deps at the end regardless of whether it was provided
   list(APPEND libarglist PRIVATE_DEPS ${PYIMATH_CURMOD_PRIVATE_DEPS})
 
-  set(optional_boost "")
-  if (TARGET Boost::${PYIMATH_BOOST_PY_COMPONENT})
-    set(optional_boost Boost::${PYIMATH_BOOST_PY_COMPONENT})
-  endif()
-
   if(USE_PYTHON2)
     if(TARGET Python2::Python)
       set(libname "${PYIMATH_CURMOD_LIBNAME}${PYIMATH_LIB_PYTHONVER_ROOT}${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}")
@@ -119,7 +114,7 @@ function(PYIMATH_DEFINE_MODULE modname)
         ${libarglist}
         ${extraDeps}
         Python2::Python
-        ${optional_boost}
+        $<TARGET_NAME_IF_EXISTS:Boost::${PYIMATH_BOOST_PY_COMPONENT}>
       )
 
       Python2_add_library(${modname}_python2 MODULE ${PYIMATH_CURMOD_MODSOURCE})
@@ -129,7 +124,7 @@ function(PYIMATH_DEFINE_MODULE modname)
           ${extraDeps}
           ${PYIMATH_CURMOD_DEPENDENCIES}
           ${PYIMATH_CURMOD_PRIVATE_DEPS}
-          ${optional_boost}
+          $<TARGET_NAME_IF_EXISTS:Boost::${PYIMATH_BOOST_PY_COMPONENT}>
         )
       set_target_properties(${modname}_python2 PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}/"
@@ -148,7 +143,7 @@ function(PYIMATH_DEFINE_MODULE modname)
         ${libarglist}
         ${extraDeps}
         Python3::Python
-        ${optional_boost}
+        $<TARGET_NAME_IF_EXISTS:Boost::${PYIMATH_BOOST_PY_COMPONENT}>
       )
       Python3_add_library(${modname}_python3 MODULE ${PYIMATH_CURMOD_MODSOURCE})
       target_link_libraries(${modname}_python3
@@ -156,7 +151,7 @@ function(PYIMATH_DEFINE_MODULE modname)
           ${libname} ${extraDeps}
           ${PYIMATH_CURMOD_DEPENDENCIES}
           ${PYIMATH_CURMOD_PRIVATE_DEPS}
-          ${optional_boost}
+          $<TARGET_NAME_IF_EXISTS:Boost::${PYIMATH_BOOST_PY_COMPONENT}>
         )
       set_target_properties(${modname}_python3 PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}/"
