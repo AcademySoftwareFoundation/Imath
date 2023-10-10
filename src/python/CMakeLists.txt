@@ -157,7 +157,9 @@ if(Boost_PYTHON${Python_VERSION_MAJOR}_FOUND OR Boost_${PYIMATH_PY_UPPER}_FOUND)
   endif()
 endif()
 
-find_package( pybind11 )
+if (PYBIND11)
+  find_package(pybind11 REQUIRED)
+endif()
 
 if(Boost_PYTHON_FOUND AND NOT _pyimath_have_perver_boost)
   # old boost case, I guess we just warn and assume it is python2 (likely)
