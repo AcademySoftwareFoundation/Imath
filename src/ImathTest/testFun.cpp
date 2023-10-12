@@ -8,7 +8,7 @@
 #endif
 
 #include <ImathFun.h>
-#if __cplusplus >= 202002L
+#if defined(__cpp_lib_bit_cast) && __cpp_lib_bit_cast >= 201806L
 #    include <bit>
 #endif
 #include <iostream>
@@ -20,20 +20,20 @@
 
 using namespace std;
 
-#if __cplusplus < 202002L
-    template <typename To, typename From>
-    static inline To
-    bit_cast (From from)
+#if !defined(__cpp_lib_bit_cast) || __cpp_lib_bit_cast < 201806L
+template <typename To, typename From>
+static inline To
+bit_cast (From from)
+{
+    static_assert (sizeof (From) == sizeof (To), "Type sizes do not match");
+    union
     {
-        static_assert (sizeof (From) == sizeof (To), "Type sizes do not match");
-        union
-        {
-            From f;
-            To   t;
-        } u;
-        u.f = from;
-        return u.t;
-    }
+        From f;
+        To   t;
+    } u;
+    u.f = from;
+    return u.t;
+}
 #endif
 
 void
