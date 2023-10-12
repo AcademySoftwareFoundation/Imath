@@ -25,8 +25,8 @@ set(IMATH_VERSION_API "${Imath_VERSION_MAJOR}_${Imath_VERSION_MINOR}")
 # version. Increment this number whenever, and only when, the ABI changes in
 # non-backwards-compatible ways.
 #
-# The OpenEXR project policy is to append the library version 
-# "major.minor.patch" to the SONAME to form the real shared library name.  
+# The OpenEXR project policy is to append the library version
+# "major.minor.patch" to the SONAME to form the real shared library name.
 # For example, in "libImath.so.31.3.2.0", "libImath.so.31" is the SONAME
 # and ".3.2.0" identifies the corresponding library release.
 
@@ -57,8 +57,14 @@ set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
 # be empty since we already defined the targets in add_subdirectory().
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
 
-option(PYTHON "Set ON to compile PyImath bindings")
-if (PYTHON)
+option(PYTHON "Set ON to compile boost PyImath bindings")
+option(PYBIND11 "Set ON to compile pybind11 PyImath bindings")
+
+if (PYTHON AND PYBIND11)
+  message(FATAL_ERROR "Compiling both the boost and pybind11 python bindings at the same time is not currently supported")
+endif()
+
+if (PYTHON OR PYBIND11)
   add_subdirectory(src/python)
 endif()
 
@@ -71,7 +77,7 @@ endif()
 # upload the results, cmake has builtin support for
 # submitting to CDash, or any server who speaks the
 # same protocol
-# 
+#
 # These settings will need to be set for your environment,
 # and then a script such as the example in
 #
@@ -82,7 +88,7 @@ endif()
 # cmake -S cmake/SampleCTestScript.cmake
 #
 # [or whatever you name the file you edit]
-# 
+#
 #set(CTEST_PROJECT_NAME "Imath")
 #set(CTEST_NIGHTLY_START_TIME "01:01:01 UTC")
 #set(CTEST_DROP_METHOD "http") # there are others...
