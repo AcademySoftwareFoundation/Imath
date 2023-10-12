@@ -8,7 +8,7 @@
 #endif
 
 #include <ImathFun.h>
-#if __cplusplus >= 202002L
+#if defined(__cpp_lib_bit_cast) && __cpp_lib_bit_cast >= 201806L
 #    include <bit>
 #endif
 #include "testFun.h"
@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#if __cplusplus < 202002L
+#if !defined(__cpp_lib_bit_cast) || __cpp_lib_bit_cast < 201806L
 template <typename To, typename From>
 static inline To
 bit_cast (From from)
