@@ -38,12 +38,11 @@ set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}${IMATH_VERSION_RELEASE_TYPE}" CAC
 
 # Whether to generate and install a pkg-config file Imath.pc on
 if(WIN32)
-  option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" OFF)
   option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" OFF)
 else()
-  option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" ON)
   option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" ON)
 endif()
+option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" ON)
 
 #
 # Build related options
