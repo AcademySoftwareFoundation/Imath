@@ -18,6 +18,7 @@
 namespace PyImath {
 
 PYIMATH_EXPORT void register_imath_vec(pybind11::module& m);
+PYIMATH_EXPORT void register_imath_box(pybind11::module& m);
 
 }
 

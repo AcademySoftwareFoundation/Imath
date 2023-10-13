@@ -12,6 +12,8 @@ PYBIND11_MODULE(imath, m)
     m.attr("__version__") = IMATH_VERSION_STRING;
 
     PyImath::register_imath_vec(m);
+    PyImath::register_imath_box(m);
+
     //
     // Initialize constants
     //
