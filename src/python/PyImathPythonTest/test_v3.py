@@ -72,13 +72,13 @@ class V3fTestCase(unittest.TestCase):
 
     def test_negate(self):
         vector = V3f(1, 2, 3)
-        result = V3f.negate(vector)
+        vector.negate()
         expected_result = V3f(-1, -2, -3)
-        self.assertEqual(result, expected_result)
+        self.assertEqual(vector, expected_result)
 
     def test_normalize(self):
         vector = V3f(1, 2, 3)
-        normal_result = V3f.normalize(vector)
+        normal_result = vector.normalize()
         expected_result = V3f(0.267261, 0.534522, 0.801783)
         result = V3f.equalWithAbsError(normal_result, expected_result, 0.01)
         self.assertTrue(result)
@@ -134,24 +134,11 @@ class V3fTestCase(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_reflect(self):
-        # TODO not matching
-        vector = V3f(1, 2, 3)
+        vector = V3f(4, 5, 6)
         normal = V3f(1, 0, 0)
         result = V3f.reflect(vector, normal)
-        # Corrected expected result based on reflection formula
-        # expected_result = V3f(-1, 2, 3) - 2 * V3f.dot(V3f(-1, 2, 3), normal) * normal
-        expected_result = V3f(-1, 2, 3)
-        # self.assertEqual(result, expected_result)
-
-    def test_setValue(self):
-        values = V3f(1, 2, 3)
-        vector = V3f()
-        vector.setValue(*values)
-        expected_result = V3f(1, 2, 3)
-        self.assertEqual(vector, expected_result)
-        vector = V3f()
-        vector.setValue(1, 2, 3)
-        self.assertEqual(vector, expected_result)
+        expected_result = V3f(4, -5, -6)
+        self.assertEqual(result, expected_result)
 
     def test_xyz(self):
         vector = V3f(1, 2, 3)

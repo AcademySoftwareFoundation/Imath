@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
+# Move this back to test_m44.py once this has been evaluated
+# for pybind11 AND boost python bindings
+
 import unittest
 from imath import V3f, M44f, Eulerf
 
