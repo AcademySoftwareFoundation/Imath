@@ -10,6 +10,7 @@ pyimath_define_module(imath
   MODSOURCE
     imathmodule.cpp
     PyImathVec.cpp
+    PyImathBox.cpp
   HEADERS
     PyImathExport.h
   DEPENDENCIES
