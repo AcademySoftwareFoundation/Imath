@@ -1,0 +1,78 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+#
+# This file establishes email equivalences so we can resolve what look like
+# multiple authors, but actually are the same author who has used multiple
+# emails over the course of their involvement with the project.
+#
+# The format is any of the following:
+#     <CANONICAL-EMAIL> <alternate-email>
+#     CANONICAL-NAME <CANONICAL-EMAIL> <alternate-email>
+#     CANONICAL-NAME <CANONICAL-EMAIL> alternate-name <alternate-email>
+#
+# You can check for duplicates with this command:
+#     git shortlog -sne --all
+# That command (and others) will use this file to collapse the duplicates.
+#
+# If you see any duplicates we don't account for here, or if you look at your
+# own entry here and want a different name or email to be your canonical one
+# (we may not have guessed correctly and matched your preferences), please
+# file a PR with the edits to this file.
+
+Andrew Kunz <akunz@ilm.com>
+Antonio Rojas <arojas@archlinux.org>
+Bernd <waebbl-gentoo@posteo.net>
+Brecht Van Lommel <brecht@blender.org>
+CAHEK7 <ghosts.in.a.box@gmail.com>
+Cary Phillips <cary@ilm.com>
+Christina Tempelaar-Lietz <xlietz@gmail.com>
+Christopher Kulla <fpsunflower@users.noreply.github.com>
+Daniel Kaneider <danielkaneider@users.sf.net>
+Dirk Lemstra <dirk@lemstra.org>
+Ed Hanway <ehanway@ilm.com> Ed Hanway <ehanway-ilm@users.noreply.github.com>
+Eric Wimmer <ewimmer@ilm.com>
+Florian Kainz <kainz@ilm.com>
+Gregorio Litenstein <g.litenstein@gmail.com>
+Harry Mallon <hjmallon@gmail.com>
+Huibean Luo <huibean.luo@gmail.com>
+Jean-Marie Aubry <jmma.aubry@protonmail.com>
+Jens Lindgren <lindgren_jens@hotmail.com>
+Ji Hun Yu <jihun@ilm.com>
+Jonathan Stone <stonej@github.com>
+Jules Maselbas <54854023+jmaselbas@users.noreply.github.com>
+Kazuki Sakamoto <sakamoto@splhack.org>
+Kimball Thurston <kdt3rd@gmail.com>
+Larry Gritz <lg@larrygritz.com>
+Liam Fernandez <liam@utexas.edu>
+Lucas Miller <lmiller@imageworks.com> Lucas Miller <miller.lucas@gmail.com>
+Mark Sisson <5761292+marksisson@users.noreply.github.com>
+Mathieu Malaterre <mathieu.malaterre@gmail.com>
+Mathieu Westphal <mathieu.westphal@gmail.com>
+Matthäus G. Chajdas <Anteru@users.noreply.github.com>
+Matthias C. M. Troffaes <matthias.troffaes@gmail.com>
+Nicholas Yue <yue.nicholas@gmail.com>
+Nick Porcino <meshula@hotmail.com> meshula <nick.porcino@gmail.com>
+Nick Porcino <meshula@hotmail.com> nporcino-pixar <78001580+nporcino-pixar@users.noreply.github.com>
+Nick Rasmussen <nick@ilm.com> Nick Rasmussen <nick@jive.org>
+Nick Rasmussen <nick@ilm.com> Nick Rasmussen <nick.rasmussen@gmail.com>
+Nicolas Chauvet <kwizart@gmail.com>
+Nigel Stewart <nigels@nigels.com>
+OgreTransporter <OgreTransporter@users.noreply.github.com>
+Owen Thompson <oxt3479@rit.edu> owdt <33289901+oxt3479@users.noreply.github.com>
+Owen Thompson <oxt3479@rit.edu>
+Peter Hillman <peterh@wetafx.co.nz>
+Phyrexian <jarko.paska@gmail.com>
+Piotr Barejko <bareya@users.noreply.github.com>
+Piotr Stanczyk <pstanczyk@ilm.com>
+Ralph Potter <r.potter@bath.ac.uk>
+Richard Hobbes <hobbes1069@gmail.com>
+Simon Boorer <sboorer@ilm.com>
+Thanh Ha <thanh.ha@linuxfoundation.org>
+Thorsten Kaufmann <thorsten.kaufmann@mackevision.de>
+Transporter <ogre.transporter@gmail.com>
+Vertexwahn <julian.amann@tum.de>
+Xiao Zhai <7610945+zhai-xiao@users.noreply.github.com>
+Yujie Shu <yshu@ilm.com>
+Yuya Asano <64895419+sukeya@users.noreply.github.com>
+Zachary Klein <ztklein@lavabit.com>
+すけや <64895419+sukeya@users.noreply.github.com>
