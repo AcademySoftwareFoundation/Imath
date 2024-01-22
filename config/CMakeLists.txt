@@ -70,12 +70,12 @@ endif()
 
 include(CMakePackageConfigHelpers)
 
-configure_package_config_file(ImathConfig.cmake.in
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/ImathConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
-write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
   VERSION ${IMATH_VERSION}
   COMPATIBILITY SameMajorVersion
 )
@@ -90,4 +90,9 @@ install(EXPORT ${PROJECT_NAME}
   FILE ${PROJECT_NAME}Targets.cmake
   NAMESPACE ${PROJECT_NAME}::
   EXPORT_LINK_INTERFACE_LIBRARIES
+)
+
+export(EXPORT ${PROJECT_NAME}
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
+  NAMESPACE ${PROJECT_NAME}::
 )
