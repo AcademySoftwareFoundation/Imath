@@ -4782,7 +4782,7 @@ operator*= (Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 
 template <class S, class T>
 IMATH_HOSTDEVICE inline Vec3<S>
-IMATH_HOSTDEVICE operator* (const Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
+operator* (const Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m.x[0][0] + v.y * m.x[1][0] + v.z * m.x[2][0] + m.x[3][0]);
     S y = S (v.x * m.x[0][1] + v.y * m.x[1][1] + v.z * m.x[2][1] + m.x[3][1]);
@@ -4794,7 +4794,7 @@ IMATH_HOSTDEVICE operator* (const Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCE
 
 template <class S, class T>
 IMATH_HOSTDEVICE inline const Vec4<S>&
-IMATH_HOSTDEVICE operator*= (Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
+operator*= (Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m.x[0][0] + v.y * m.x[1][0] + v.z * m.x[2][0] + v.w * m.x[3][0]);
     S y = S (v.x * m.x[0][1] + v.y * m.x[1][1] + v.z * m.x[2][1] + v.w * m.x[3][1]);
@@ -4811,7 +4811,7 @@ IMATH_HOSTDEVICE operator*= (Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 
 template <class S, class T>
 IMATH_HOSTDEVICE inline Vec4<S>
-IMATH_HOSTDEVICE operator* (const Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
+operator* (const Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m.x[0][0] + v.y * m.x[1][0] + v.z * m.x[2][0] + v.w * m.x[3][0]);
     S y = S (v.x * m.x[0][1] + v.y * m.x[1][1] + v.z * m.x[2][1] + v.w * m.x[3][1]);
