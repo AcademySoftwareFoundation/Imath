@@ -3,7 +3,7 @@
 
 # Imath Release Notes
 
-* [Version 3.1.10](#version-3110-January-25-2024) January 25, 2024
+* [Version 3.1.10](#version-3110-January-26-2024) January 26, 2024
 * [Version 3.1.9](#version-319-May-31-2023) May 31, 2023
 * [Version 3.1.8](#version-318-May-22-2023) May 22, 2023
 * [Version 3.1.7](#version-317-March-1-2023) March 1, 2023
@@ -22,7 +22,7 @@
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
 
-## Version 3.1.10 (January 25, 2024)
+## Version 3.1.10 (January 26, 2024)
 
 Patch release with various build/bug fixes.
 
@@ -30,17 +30,11 @@ Build fixes:
 
   - Fix a problem where downstream projects using Imath would build
     python bindings even if they weren't requested.
-  
   - Fix for missing `std::bit_cast`
-
   - Fix missing/necessary use of IMATH_HOSTDEVICE 
-
   - IMATH_INSTALL_PKG_CONFIG is now on by default, even on Windows 
-
   - Fix calling default constructor by uniform init in TypeTraits
-
   - Fix redundant PYIMATH_EXPORTS causing compile issues on Windows Clang 
-
   - Update to SO versioning policy: 
 
     This change adopts a policy of appending the ``MAJOR.MINOR.PATCH``
@@ -55,16 +49,11 @@ Bug fixes:
 
   - Fix half to float giving wrong results on older x86_64 CPUs on Windows 
 
-Tests:
-
-  - Expand epsilon bounds for m44x pyImath test. 
-
-Other:
+Other changes:
 
   - succ()/pred() now use std::nextafter(). 
-
+  - Expand epsilon bounds for m44x pyImath test. 
   - Rename "docs" to "website". 
-
   - Add missing copyright/license identifiers. 
 
 ### Merged Pull Requests
