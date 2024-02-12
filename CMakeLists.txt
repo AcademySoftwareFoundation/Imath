@@ -40,11 +40,24 @@ include(config/ImathSetup.cmake)
 
 message(STATUS "Configure ${IMATH_PACKAGE_NAME}, library API version: ${IMATH_LIB_VERSION}")
 
+option(IMATH_INSTALL "Install Imath library" ON)
+
 # Config headers and package config files
 add_subdirectory(config)
 
 # Utility function for the repeated boilerplate of defining the libraries
 include(config/LibraryDefine.cmake)
+
+# uninstall target
+if(NOT TARGET uninstall)
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
+
+  add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()
 
 # Source code is in src/Imath
 add_subdirectory(src/Imath)
