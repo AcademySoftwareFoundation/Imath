@@ -22,13 +22,13 @@ float predf(float f) IMATH_NOEXCEPT
 
 double succd(double d) IMATH_NOEXCEPT
 {
-    return isfinite(d) ?
+    return std::isfinite(d) ?
             std::nextafter(d, std::numeric_limits<double>::infinity()) : d;
 }
 
 double predd(double d) IMATH_NOEXCEPT
 {
-    return isfinite(d) ?
+    return  std::isfinite(d) ?
             std::nextafter(d, -std::numeric_limits<double>::infinity()) : d;
 }
 
