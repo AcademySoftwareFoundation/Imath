@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright (c) Contributors to the OpenEXR Project.
 
+# See https://docs.sigstore.dev for documentation about sigstore, and
+# https://docs.sigstore.dev/signing/signing_with_blobs for the details
+# of cosign and the signing process.
+
 name: Sign Release
 
 on:
