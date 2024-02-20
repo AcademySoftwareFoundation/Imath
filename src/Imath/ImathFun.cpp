@@ -10,13 +10,13 @@ IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
 
 float succf(float f) IMATH_NOEXCEPT
 {
-    return isfinite(f) ?
+    return std::isfinite(f) ?
             std::nextafter(f, std::numeric_limits<float>::infinity()) : f;
 }
 
 float predf(float f) IMATH_NOEXCEPT
 {
-    return isfinite(f) ?
+    return std::isfinite(f) ?
             std::nextafter(f, -std::numeric_limits<float>::infinity()) : f;
 }
 
