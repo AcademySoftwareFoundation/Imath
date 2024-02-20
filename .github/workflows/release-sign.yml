@@ -1,9 +1,19 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright (c) Contributors to the OpenEXR Project.
 
-# See https://docs.sigstore.dev for documentation about sigstore, and
-# https://docs.sigstore.dev/signing/signing_with_blobs for the details
-# of cosign and the signing process.
+#
+# Releases are signed via https://github.com/sigstore/sigstore-python.
+# See https://docs.sigstore.dev for information about sigstore.
+#
+# This action creates a .tar.gz of the complete Imath source tree at
+# the given release tag, signs it via sigstore, and uploads the
+# .tar.gz and the associated .tar.gz.sigstore credential bundle.
+#
+# To verify a downloaded release at a given tag:
+# 
+#   % pip install sigstore
+#   % sigstore verify github --cert-identity https://github.com/AcademySoftwareFoundation/Imath/.github/workflows/release-sign.yml@refs/tags/<tag> Imath-<tag>.tar.gz
+#
 
 name: Sign Release
 
@@ -17,17 +27,14 @@ permissions:
   repository-projects: write
   
 jobs:
-  sign-release:
+  release:
     name: Sign & upload release artifacts
     runs-on: ubuntu-latest
+
     env:
        tarball: Imath-${{ github.ref_name }}.tar.gz
-
+       
     steps:
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@v3.3.0
-        with:
-          cosign-release: 'v2.2.2'
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -36,10 +43,12 @@ jobs:
         run: git archive --format=tar.gz -o ${{ env.tarball }} ${{ github.ref_name }}
 
       - name: Sign archive with Sigstore
-        run: cosign sign-blob --yes ${{ env.tarball }} --bundle ${{ env.tarball }}-cosign.bundle
+        uses: sigstore/gh-action-sigstore-python@v2.1.1
+        with:
+          inputs: ${{ env.tarball }}
 
       - name: Upload release archive
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload ${{ github.ref_name }} ${{ env.tarball }} ${{ env.tarball }}-cosign.bundle
+        run: gh release upload ${{ github.ref_name }} ${{ env.tarball }} ${{ env.tarball }}.sigstore
 
