@@ -3,7 +3,7 @@
 
 # Imath Release Notes
 
-* [Version 3.1.11](#version-3111-February-16-2024) February 17, 2024
+* [Version 3.1.11](#version-3111-February-28-2024) February 28, 2024
 * [Version 3.1.10](#version-3110-January-26-2024) January 26, 2024
 * [Version 3.1.9](#version-319-May-31-2023) May 31, 2023
 * [Version 3.1.8](#version-318-May-22-2023) May 22, 2023
@@ -23,24 +23,22 @@
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
 
-## Version 3.1.11 (February 17, 2024)
+## Version 3.1.11 (February 28, 2024)
 
-Patch release with two small build fixes/features:
+Patch release with small build fix:
 
 - Add explicit `std::` namespace for `isfinite` in `ImathFun.cpp`
-- Add `uninstall` target
 
 This release also introduces the practice of signing release artifacts
 via [sigstore](https://www.sigstore.dev).
 
 ### Merged Pull Requests
-
+* \[[#371](https://github.com/AcademySoftwareFoundation/Imath/pull/371)\]
+ImathFun.cpp: add std:: to isfinite in remaining cases (#371)
 * \[[#369](https://github.com/AcademySoftwareFoundation/Imath/pull/369)\]
 Add workflow to sign release artifacts with Sigstore 
 * \[[#368](https://github.com/AcademySoftwareFoundation/Imath/pull/368)\]
 Add std:: to isfinite in ImathFun.cpp 
-* \[[#366](https://github.com/AcademySoftwareFoundation/Imath/pull/366)\]
-Add uninstall target
 
 ## Version 3.1.10 (January 26, 2024)
 
