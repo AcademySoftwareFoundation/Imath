@@ -121,20 +121,34 @@ symlinks and files in the install lib folder:
 
 .. code-block::
 
+    libImath.so -> libImath.so.31
+    libImath.so.$SOVERSION -> libImath.so.$SOVERSION.$RELEASE
+    libImath.so.$SOVERSION.$RELEASE (the shared object file)
+
+The ``SOVERSION`` number identifies the ABI version. Each Imath
+release that changes the ABI in backwards-incompatible ways increases
+this number. By policy, this changes only for major and minor
+releases, never for patch releases. ``RELEASE`` is the
+``MAJOR.MINOR.PATCH`` release name. For example, the resulting shared
+library filename is ``libImath.so.31.3.1.10`` for Imath release
+v3.1.10. This naming scheme reinforces the correspondence between the
+real filename of the ``.so`` and the release it corresponds to.
+
+Library Suffix
+~~~~~~~~~~~~~~
+
+The ``IMATH_LIB_SUFFIX`` CMake option designates a suffix for the
+library and appears between the library base name and the
+``.so``. This defaults to encode the major and minor version, as in
+``-3_1``:
+
+.. code-block::
+
     libImath.so -> libImath-3_1.so
     libImath-3_1.so -> libImath-3_1.so.30
-    libImath-3_1.so.30 -> libImath-3_1.so.30.3.0
-    libImath-3_1.so.30.3.0 (the shared object file)
+    libImath-3_1.so.30 -> libImath-3_1.so.30.3.1.10
+    libImath-3_1.so.30.3.1.10 (the shared object file)
     
-The ``-3_1`` suffix encodes the major and minor version, which can be
-configured via the ``IMATH_LIB_SUFFIX`` CMake setting. The ``30``
-corresponds to the so version, or in ``libtool`` terminology the
-``current`` shared object version; the `3` denotes the ``libtool``
-``revision``, and the ``0`` denotes the ``libtool`` ``age``. See the
-`libtool
-<https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html#Updating-version-info>`_
-documentation for more details.
-
 Porting Applications from OpenEXR v2 to v3
 ------------------------------------------
 
