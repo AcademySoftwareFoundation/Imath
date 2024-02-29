@@ -51,7 +51,7 @@ Prerequisites
 
 Make sure these are installed on your system before building Imath:
 
-* Imath requires CMake version 3.12 or newer
+* Imath requires CMake version 3.14 or newer
 * C++ compiler that supports C++11
 
 The instructions that follow describe building Imath with CMake.
