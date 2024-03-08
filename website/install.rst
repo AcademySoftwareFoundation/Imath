@@ -5,30 +5,68 @@
 .. _Install:
 
 Install
-========
+=======
 
 .. toctree::
    :caption: Install
              
 The Imath library is available for download and installation in
-binary form via package managers on many Linux distributions. See
-`https://pkgs.org/download/Imath
-<https://pkgs.org/download/Imath>`_ for a complete list. The common
-ones that generally provide current releases include:
+binary form via package managers on many Linux distributions.
 
-* `Fedora <https://packages.fedoraproject.org/pkgs/`download/Imath/>`_
-* `Gentoo <https://packages.gentoo.org/packages/media-libs/Imath>`_ 
-* `Ubuntu <https://packages.ubuntu.com/source/kinetic/Imath>`_
+Refer to the current version of Imath on various major Linux distros at
+`repology.org <https://repology.org/project/imath/versions>`_:
 
-Beware that some distributions are out of date and only provide
-distributions of outdated releases OpenEXR. We recommend against using
-OpenEXR v2, and we *strongly* recommend against using OpenEXR v1.
+.. image:: https://repology.org/badge/vertical-allrepos/imath.svg?exclude_unsupported=1&columns=4&header=Imath%20Packaging%20Status&minversion=3.0
+   :target: https://repology.org/project/imath/versions
 
-On macOS, we do not recommend installation via HomeBrew because the
-distribution is outdated.
+Older versions of Imath were distributed as a component of OpenEXR
+called ``ilmbase``. We do not recommend using these outdated
+versions.
 
-Please note that ``pip install openexr`` installs the `openexrpython
-<https://github.com/jamesbowman/openexrpython>`_ module, which is not
+To install via ``yum`` on RHEL/CentOS:
+
+.. code-block::
+
+    % sudo yum makecache
+    % sudo yum install imath
+
+To install via ``apt-get`` on Ubuntu:
+
+.. code-block::
+
+    % sudo apt-get update
+    % sudo apt-get install imath
+
+macOS
+-----
+
+On macOS, install via `Homebrew <https://formulae.brew.sh/formula/imath>`_:
+
+.. code-block::
+
+   % brew install imath
+
+Alternatively, you can install on macOS via `MacPorts
+<https://ports.macports.org/port/imath/>`_:
+
+.. code-block::
+
+   % port install imath
+
+Windows
+-------
+
+Install via `vcpkg <https://vcpkg.io/en/packages>`_:
+
+.. code-block::
+
+   % .\vcpkg install imath
+
+Python
+------
+
+Please note that ``pip install imath`` installs the `imath
+<https://pypi.org/project/imath/>`_ module, which is not
 affiliated with the OpenEXR project or the ASWF. Please direct
 questions there.
 
@@ -166,8 +204,8 @@ The Imath technical documentation at `https://imath.readthedocs.io
 extracted from header comments by `Doxygen <https://www.doxygen.nl>`_,
 using the `sphinx-press-theme
 <https://pypi.org/project/sphinx-press-theme>`_, and is hosted by
-`readthedocs <https://readthedocs.org/projects/openexr>`_. The website
-source is in `restructured text
+`Read the Docs <https://readthedocs.org/projects/imath/>`_.
+The website source is in `restructured text
 <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
 in the ``website`` directory.
 
@@ -179,7 +217,7 @@ Building the website requires that ``sphinx``, ``breathe``, and
 ``doxygen`` are installed. It further requires the `sphinx-press-theme
 <https://pypi.org/project/sphinx-press-theme>`_. Complete dependencies are
 described in the `requirements.txt
-<https://github.com/AcademySoftwareFoundation/imath/blob/main/docs/requirements.txt>`_
+<https://github.com/AcademySoftwareFoundation/imath/blob/main/website/requirements.txt>`_
 file.
 
 On Debian/Ubuntu Linux:
@@ -328,7 +366,7 @@ names and paths may need to be changed for your environment.
 More documentation:
 
 * Toolchains: https://cmake.org/cmake/help/v3.12/manual/cmake-toolchains.7.html
-* Cross compiling: https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/
+* Cross compiling: https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/CrossCompiling
 
 Ninja
 -----
