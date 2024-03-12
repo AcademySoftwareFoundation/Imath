@@ -1,19 +1,31 @@
 # SPDX-License-Identifier: BSD-3-Clause
-# Copyright Contributors to the OpenEXR Project.
+# Copyright (c) Contributors to the OpenEXR Project.
 #
 # GitHub Actions workflow file
 # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions
 
 name: CI
 
+# Run on all changes except:
+# - doc file changes
+# - changes to the website, since yhe website has a separate workflow
+# - changes to workflows other than this one
+
 on:
   push:
-    # Jobs are skipped when ONLY Markdown (*.md) files are changed
-    paths-ignore:
-      - '**.md'
+    paths:
+      - '**'
+      - '!**.md'
+      - '!website/**'
+      - '!.github/workflows/**'
+      - '.github/workflows/ci_workflow.yml'
   pull_request:
-    paths-ignore:
-      - '**.md'
+    paths:
+      - '**'
+      - '!**.md'
+      - '!website/**'
+      - '!.github/workflows/**'
+      - '.github/workflows/ci_workflow.yml'
 
 permissions:
   contents: read
