@@ -84,8 +84,8 @@ public:
 
     /// Copy assignment
 #if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec2&
-    operator= (const Vec2& v) IMATH_NOEXCEPT = default;
+    IMATH_HOSTDEVICE Vec2&
+    operator= (const Vec2&) = default;
 #else
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2&
     operator= (const Vec2& v) IMATH_NOEXCEPT;
