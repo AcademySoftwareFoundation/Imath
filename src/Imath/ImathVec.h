@@ -92,7 +92,7 @@ public:
 #endif
 
     /// Destructor
-    ~Vec2 () IMATH_NOEXCEPT = default;
+    ~Vec2 () = default;
 
     /// @}
 
