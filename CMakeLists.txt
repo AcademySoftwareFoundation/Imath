@@ -51,6 +51,7 @@ include(config/ImathSetup.cmake)
 
 message(STATUS "Configure ${IMATH_PACKAGE_NAME}, library API version: ${IMATH_LIB_VERSION}")
 
+option(IMATH_INSTALL "Install Imath library" ON)
 # Config headers and package config files
 add_subdirectory(config)
 
