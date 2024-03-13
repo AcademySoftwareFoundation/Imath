@@ -73,7 +73,7 @@ public:
 
     /// Copy constructor
 #if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
-    IMATH_HOSTDEVICE constexpr Vec2 (const Vec2& v) IMATH_NOEXCEPT = default;
+    IMATH_HOSTDEVICE Vec2 (const Vec2&) = default;
 #else
     IMATH_HOSTDEVICE constexpr Vec2 (const Vec2& v) IMATH_NOEXCEPT;
 #endif
