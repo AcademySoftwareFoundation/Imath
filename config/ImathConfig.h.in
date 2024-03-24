@@ -174,4 +174,9 @@
 #    endif
 #endif
 
+// Whether the copy and move constructors of Vec2, Vec3 and Vec4 are default or not.
+#ifndef IMATH_VEC_BE_TRIVIALLY_RELOCATABLE
+#     define IMATH_VEC_BE_TRIVIALLY_RELOCATABLE 0
+#endif
+
 #endif // INCLUDED_IMATH_CONFIG_H
