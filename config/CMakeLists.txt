@@ -19,14 +19,16 @@ target_include_directories(ImathConfig INTERFACE
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${IMATH_OUTPUT_SUBDIR}>)
 
-install(
-  FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h
-  DESTINATION
-    ${CMAKE_INSTALL_INCLUDEDIR}/${IMATH_OUTPUT_SUBDIR}
-)
+if (IMATH_INSTALL)
+  install(
+    FILES
+      ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h
+    DESTINATION
+      ${CMAKE_INSTALL_INCLUDEDIR}/${IMATH_OUTPUT_SUBDIR}
+  )
 
-install(TARGETS ImathConfig EXPORT ${PROJECT_NAME})
+  install(TARGETS ImathConfig EXPORT ${PROJECT_NAME})
+endif()
 
 add_library(Imath::Config ALIAS ImathConfig)
 
@@ -58,8 +60,9 @@ if(IMATH_INSTALL_PKG_CONFIG)
     )
   endfunction()
   imath_pkg_config_help(Imath.pc.in)
+  message(STATUS "Imath pkg-config generation enabled")
 else()
-  message(STATUS "pkg-config generation disabled")
+  message(STATUS "Imath pkg-config generation disabled")
 endif()
 
 #
@@ -69,24 +72,31 @@ endif()
 
 include(CMakePackageConfigHelpers)
 
-configure_package_config_file(ImathConfig.cmake.in
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/ImathConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
-write_basic_package_version_file("${PROJECT_NAME}ConfigVersion.cmake"
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
   VERSION ${IMATH_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-              ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
+if (IMATH_INSTALL)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+                ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+  )
 
-install(EXPORT ${PROJECT_NAME}
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-  FILE ${PROJECT_NAME}Targets.cmake
-  NAMESPACE ${PROJECT_NAME}::
-  EXPORT_LINK_INTERFACE_LIBRARIES
-)
+  install(EXPORT ${PROJECT_NAME}
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_NAME}::
+    EXPORT_LINK_INTERFACE_LIBRARIES
+ )
+
+  export(EXPORT ${PROJECT_NAME}
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${PROJECT_NAME}::
+  )
+endif()

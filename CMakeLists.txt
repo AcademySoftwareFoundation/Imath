@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.14)
 
 if(POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW)
@@ -21,28 +21,17 @@ set(IMATH_VERSION_RELEASE_TYPE "-dev" CACHE STRING "Extra version tag string for
 set(IMATH_VERSION ${Imath_VERSION})
 set(IMATH_VERSION_API "${Imath_VERSION_MAJOR}_${Imath_VERSION_MINOR}")
 
-# Library/shared-object version using libtool versioning policy.
-# See https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+# The SOVERSION (i.e. numerical component of SONAME) tracks the ABI
+# version. Increment this number whenever, and only when, the ABI changes in
+# non-backwards-compatible ways.
 #
-# Library API version (CMake's library VERSION attribute) is of the
-# form CURRENT.REVISION.AGE; the CMake SOVERSION attribute corresonds
-# to just CURRENT. These produce a .so and a symlink symlink, e.g.:
-# libImath-3_1.so.29 -> libImath-3_1.so.29.0.0
-#                 ^                     ^  ^ ^
-#                 |                     |  | |
-#                 CURRENT               |  | AGE
-#                                       |  REVISION 
-#                                       CURRENT
-# When updating:
-#   1. no API change: CURRENT.REVISION+1.AGE
-#   2. API added:     CURRENT+1.0.AGE+1
-#   3. API changed:   CURRENT+1.0.0
-#
-set(IMATH_LIBTOOL_CURRENT 29)
-set(IMATH_LIBTOOL_REVISION 0)
-set(IMATH_LIBTOOL_AGE 0)
-set(IMATH_LIB_VERSION "${IMATH_LIBTOOL_CURRENT}.${IMATH_LIBTOOL_REVISION}.${IMATH_LIBTOOL_AGE}")
-set(IMATH_LIB_SOVERSION ${IMATH_LIBTOOL_CURRENT})
+# The OpenEXR project policy is to append the library version
+# "major.minor.patch" to the SONAME to form the real shared library name.
+# For example, in "libImath.so.31.3.2.0", "libImath.so.31" is the SONAME
+# and ".3.2.0" identifies the corresponding library release.
+
+set(IMATH_LIB_SOVERSION 30)
+set(IMATH_LIB_VERSION "${IMATH_LIB_SOVERSION}.${IMATH_VERSION}") # e.g. "30.3.2.0"
 
 # ImathSetup.cmake declares all the configuration variables visible
 # in cmake-gui or similar and the rest of the global
@@ -51,11 +40,24 @@ include(config/ImathSetup.cmake)
 
 message(STATUS "Configure ${IMATH_PACKAGE_NAME}, library API version: ${IMATH_LIB_VERSION}")
 
+option(IMATH_INSTALL "Install Imath library" ON)
+
 # Config headers and package config files
 add_subdirectory(config)
 
 # Utility function for the repeated boilerplate of defining the libraries
 include(config/LibraryDefine.cmake)
+
+# uninstall target
+if(NOT TARGET uninstall)
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
+
+  add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()
 
 # Source code is in src/Imath
 add_subdirectory(src/Imath)
@@ -68,22 +70,27 @@ set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
 # be empty since we already defined the targets in add_subdirectory().
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
 
-option(PYTHON "Set ON to compile PyImath bindings")
-if (PYTHON)
+option(PYTHON "Set ON to compile boost PyImath bindings")
+option(PYBIND11 "Set ON to compile pybind11 PyImath bindings")
+
+if (PYTHON AND PYBIND11)
+  message(FATAL_ERROR "Compiling both the boost and pybind11 python bindings at the same time is not currently supported")
+endif()
+
+if (PYTHON OR PYBIND11)
   add_subdirectory(src/python)
 endif()
 
-option(BUILD_DOCS "Set ON to build readthedocs documentation")
-if (BUILD_DOCS AND NOT IMATH_IS_SUBPROJECT)
-  option(INSTALL_DOCS "Set ON to install html documentation" ON)
-  add_subdirectory(docs)
+option(BUILD_WEBSITE "Set ON to build the readthedocs website source")
+if (BUILD_WEBSITE AND NOT IMATH_IS_SUBPROJECT)
+  add_subdirectory(website)
 endif()
 
 # If you want to use ctest to configure, build and
 # upload the results, cmake has builtin support for
 # submitting to CDash, or any server who speaks the
 # same protocol
-# 
+#
 # These settings will need to be set for your environment,
 # and then a script such as the example in
 #
@@ -94,7 +101,7 @@ endif()
 # cmake -S cmake/SampleCTestScript.cmake
 #
 # [or whatever you name the file you edit]
-# 
+#
 #set(CTEST_PROJECT_NAME "Imath")
 #set(CTEST_NIGHTLY_START_TIME "01:01:01 UTC")
 #set(CTEST_DROP_METHOD "http") # there are others...

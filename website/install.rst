@@ -5,30 +5,68 @@
 .. _Install:
 
 Install
-========
+=======
 
 .. toctree::
    :caption: Install
              
 The Imath library is available for download and installation in
-binary form via package managers on many Linux distributions. See
-`https://pkgs.org/download/Imath
-<https://pkgs.org/download/Imath>`_ for a complete list. The common
-ones that generally provide current releases include:
+binary form via package managers on many Linux distributions.
 
-* `Fedora <https://packages.fedoraproject.org/pkgs/`download/Imath/>`_
-* `Gentoo <https://packages.gentoo.org/packages/media-libs/Imath>`_ 
-* `Ubuntu <https://packages.ubuntu.com/source/kinetic/Imath>`_
+Refer to the current version of Imath on various major Linux distros at
+`repology.org <https://repology.org/project/imath/versions>`_:
 
-Beware that some distributions are out of date and only provide
-distributions of outdated releases OpenEXR. We recommend against using
-OpenEXR v2, and we *strongly* recommend against using OpenEXR v1.
+.. image:: https://repology.org/badge/vertical-allrepos/imath.svg?exclude_unsupported=1&columns=4&header=Imath%20Packaging%20Status&minversion=3.0
+   :target: https://repology.org/project/imath/versions
 
-On macOS, we do not recommend installation via HomeBrew because the
-distribution is outdated.
+Older versions of Imath were distributed as a component of OpenEXR
+called ``ilmbase``. We do not recommend using these outdated
+versions.
 
-Please note that ``pip install openexr`` installs the `openexrpython
-<https://github.com/jamesbowman/openexrpython>`_ module, which is not
+To install via ``yum`` on RHEL/CentOS:
+
+.. code-block::
+
+    % sudo yum makecache
+    % sudo yum install imath
+
+To install via ``apt-get`` on Ubuntu:
+
+.. code-block::
+
+    % sudo apt-get update
+    % sudo apt-get install imath
+
+macOS
+-----
+
+On macOS, install via `Homebrew <https://formulae.brew.sh/formula/imath>`_:
+
+.. code-block::
+
+   % brew install imath
+
+Alternatively, you can install on macOS via `MacPorts
+<https://ports.macports.org/port/imath/>`_:
+
+.. code-block::
+
+   % port install imath
+
+Windows
+-------
+
+Install via `vcpkg <https://vcpkg.io/en/packages>`_:
+
+.. code-block::
+
+   % .\vcpkg install imath
+
+Python
+------
+
+Please note that ``pip install imath`` installs the `imath
+<https://pypi.org/project/imath/>`_ module, which is not
 affiliated with the OpenEXR project or the ASWF. Please direct
 questions there.
 
@@ -51,7 +89,7 @@ Prerequisites
 
 Make sure these are installed on your system before building Imath:
 
-* Imath requires CMake version 3.12 or newer
+* Imath requires CMake version 3.14 or newer
 * C++ compiler that supports C++11
 
 The instructions that follow describe building Imath with CMake.
@@ -69,11 +107,12 @@ To build via CMake, you need to first identify three directories:
    libraries and headers, referred to below as ``$installdir``.  
 
 To build:
+
 .. code-block::
 
-    $ cd $builddir
-    $ cmake $srcdir --install-prefix $installdir
-    $ cmake --build $builddir --target install --config Release
+    % cd $builddir
+    % cmake $srcdir --install-prefix $installdir
+    % cmake --build $builddir --target install --config Release
 
 Note that the CMake configuration prefers to apply an out-of-tree
 build process, since there may be multiple build configurations
@@ -102,7 +141,7 @@ can specify a local install directory to cmake via the
 
 .. code-block::
 
-    $ cmake .. -DCMAKE_INSTALL_PREFIX=$Imath_install_directory
+    % cmake .. -DCMAKE_INSTALL_PREFIX=$Imath_install_directory
 
 Library Names
 -------------
@@ -120,20 +159,34 @@ symlinks and files in the install lib folder:
 
 .. code-block::
 
+    libImath.so -> libImath.so.31
+    libImath.so.$SOVERSION -> libImath.so.$SOVERSION.$RELEASE
+    libImath.so.$SOVERSION.$RELEASE (the shared object file)
+
+The ``SOVERSION`` number identifies the ABI version. Each Imath
+release that changes the ABI in backwards-incompatible ways increases
+this number. By policy, this changes only for major and minor
+releases, never for patch releases. ``RELEASE`` is the
+``MAJOR.MINOR.PATCH`` release name. For example, the resulting shared
+library filename is ``libImath.so.31.3.1.10`` for Imath release
+v3.1.10. This naming scheme reinforces the correspondence between the
+real filename of the ``.so`` and the release it corresponds to.
+
+Library Suffix
+~~~~~~~~~~~~~~
+
+The ``IMATH_LIB_SUFFIX`` CMake option designates a suffix for the
+library and appears between the library base name and the
+``.so``. This defaults to encode the major and minor version, as in
+``-3_1``:
+
+.. code-block::
+
     libImath.so -> libImath-3_1.so
     libImath-3_1.so -> libImath-3_1.so.30
-    libImath-3_1.so.30 -> libImath-3_1.so.30.3.0
-    libImath-3_1.so.30.3.0 (the shared object file)
+    libImath-3_1.so.30 -> libImath-3_1.so.30.3.1.10
+    libImath-3_1.so.30.3.1.10 (the shared object file)
     
-The ``-3_1`` suffix encodes the major and minor version, which can be
-configured via the ``IMATH_LIB_SUFFIX`` CMake setting. The ``30``
-corresponds to the so version, or in ``libtool`` terminology the
-``current`` shared object version; the `3` denotes the ``libtool``
-``revision``, and the ``0`` denotes the ``libtool`` ``age``. See the
-`libtool
-<https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html#Updating-version-info>`_
-documentation for more details.
-
 Porting Applications from OpenEXR v2 to v3
 ------------------------------------------
 
@@ -141,26 +194,44 @@ See the :doc:`PortingGuide` for details about differences from previous
 releases and how to address them. Also refer to the porting guide for
 details about changes to Imath.
 
-Building the Documentation
---------------------------
+Building the Website
+--------------------
 
 The Imath technical documentation at `https://imath.readthedocs.io
 <https://imath.readthedocs.io>`_ is generated via `Sphinx
 <https://www.sphinx-doc.org>`_ with the `Breathe
 <https://breathe.readthedocs.io>`_ extension using information
-extracted from header comments by `Doxygen <https://www.doxygen.nl>`_.
+extracted from header comments by `Doxygen <https://www.doxygen.nl>`_,
+using the `sphinx-press-theme
+<https://pypi.org/project/sphinx-press-theme>`_, and is hosted by
+`Read the Docs <https://readthedocs.org/projects/imath/>`_.
+The website source is in `restructured text
+<https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
+in the ``website`` directory.
 
-To build the documentation locally from the source headers and
-``.rst`` files, set the CMake option ``BUILD_DOCS=ON``. This adds
-``Doxygen`` and ``Sphinx`` CMake targets and enables building the docs
-by default.  generation is off by default.
+To build the website locally from the source headers and
+``.rst`` files, set the CMake option ``BUILD_WEBSITE=ON``. This adds
+``website`` CMake target. Generation is off by default.
 
-Building the documentation requires that ``sphinx``, ``breathe``, and
+Building the website requires that ``sphinx``, ``breathe``, and
 ``doxygen`` are installed. It further requires the `sphinx-press-theme
-<https://pypi.org/project/sphinx-press-theme>`_, as indicated in the
-`requirements.txt
-<https://github.com/AcademySoftwareFoundation/imath/blob/main/docs/requirements.txt>`_
+<https://pypi.org/project/sphinx-press-theme>`_. Complete dependencies are
+described in the `requirements.txt
+<https://github.com/AcademySoftwareFoundation/imath/blob/main/website/requirements.txt>`_
 file.
+
+On Debian/Ubuntu Linux:
+
+.. code-block::
+
+    % apt-get install doxygen python3-sphinx
+    % pip3 install breathe
+    % pip3 install sphinx_press_theme
+   
+    % mkdir _build
+    % cd _build
+    % cmake .. -DBUILD_WEBSITE=ON
+    % cmake --build . --target website 
 
 CMake Build-time Configuration Options
 --------------------------------------
@@ -171,7 +242,7 @@ variables, run:
 
 .. code-block::
 
-    $ cmake -LAH $imath_source_directory
+    % cmake -LAH $imath_source_directory
 
 You can customize these options three ways:
 
@@ -295,7 +366,7 @@ names and paths may need to be changed for your environment.
 More documentation:
 
 * Toolchains: https://cmake.org/cmake/help/v3.12/manual/cmake-toolchains.7.html
-* Cross compiling: https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/
+* Cross compiling: https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/CrossCompiling
 
 Ninja
 -----
@@ -306,5 +377,5 @@ initial generation:
 
 .. code-block::
 
-    $ cmake -G “Ninja” ..
+    % cmake -G “Ninja” ..
 

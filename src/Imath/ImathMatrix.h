@@ -5166,7 +5166,7 @@ operator*= (Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-IMATH_HOSTDEVICE inline Vec3<S> IMATH_HOSTDEVICE
+IMATH_HOSTDEVICE inline Vec3<S>
 operator* (const Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (v.x * m.x[0][0] + v.y * m.x[1][0] + v.z * m.x[2][0] + m.x[3][0]);
@@ -5178,7 +5178,7 @@ operator* (const Vec3<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-IMATH_HOSTDEVICE inline const Vec4<S>& IMATH_HOSTDEVICE
+IMATH_HOSTDEVICE inline const Vec4<S>&
 operator*= (Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (
@@ -5199,7 +5199,7 @@ operator*= (Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 }
 
 template <class S, class T>
-IMATH_HOSTDEVICE inline Vec4<S> IMATH_HOSTDEVICE
+IMATH_HOSTDEVICE inline Vec4<S>
 operator* (const Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
 {
     S x = S (
