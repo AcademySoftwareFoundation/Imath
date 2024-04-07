@@ -3,7 +3,9 @@
 
 [![License](https://img.shields.io/github/license/AcademySoftwareFoundation/Imath)](LICENSE.md)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2799/badge)](https://bestpractices.coreinfrastructure.org/projects/2799)
-[![Build Status](https://dev.azure.com/academysoftwarefoundation/Academy%20Software%20Foundation/_apis/build/status/academysoftwarefoundation.Imath)](https://dev.azure.com/academysoftwarefoundation/Academy%20Software%20Foundation/_build?definitionId=4&_a=summary)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/AcademySoftwareFoundation/Imath/badge)](https://securityscorecards.dev/viewer/?uri=github.com/AcademySoftwareFoundation/Imath)
+[![Build Status](https://github.com/AcademySoftwareFoundation/Imath/workflows/CI/badge.svg)](https://github.com/AcademySoftwareFoundation/Imath/actions?query=workflow%3ACI)
+[![Analysis Status](https://github.com/AcademySoftwareFoundation/Imath/workflows/Analysis/badge.svg)](https://github.com/AcademySoftwareFoundation/Imath/actions?query=workflow%3AAnalysis)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AcademySoftwareFoundation_Imath&metric=alert_status)](https://sonarcloud.io/dashboard?id=AcademySoftwareFoundation_Imath)
 
 # Imath
