@@ -22,7 +22,9 @@ if(TARGET Python2::Python AND
     LIBRARY_OUTPUT_NAME "imathnumpy"
     DEBUG_POSTFIX ""
   )
-  install(TARGETS imathnumpy_python2 DESTINATION ${PyImath_Python2_SITEARCH_REL})
+  install(TARGETS imathnumpy_python2
+          DESTINATION "${CMAKE_INSTALL_BINDIR}/python${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR}/site-packages"
+  )
 endif()
 
 if(TARGET Python3::Python AND
@@ -48,5 +50,7 @@ if(TARGET Python3::Python AND
     LIBRARY_OUTPUT_NAME "imathnumpy"
     DEBUG_POSTFIX ""
   )
-  install(TARGETS imathnumpy_python3 DESTINATION ${PyImath_Python3_SITEARCH_REL})
+  install(TARGETS imathnumpy_python3
+          DESTINATION "${CMAKE_INSTALL_BINDIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages"
+  )
 endif()
