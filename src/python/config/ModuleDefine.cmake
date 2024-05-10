@@ -54,11 +54,12 @@ function(PYIMATH_ADD_LIBRARY_PRIV libname)
 
   add_library(${PROJECT_NAME}::${libname} ALIAS ${libname})
 
-  install(TARGETS ${libname}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  )
+#   install(TARGETS ${libname}
+#     EXPORT ${PROJECT_NAME}
+#     RUNTIME DESTINATION ${py_install_lib}
+#     LIBRARY DESTINATION ${py_install_lib}
+#     ARCHIVE DESTINATION ${py_install_lib}
+#   )
 endfunction()
 
 # NB: This function has a number if specific names / variables
@@ -130,7 +131,10 @@ function(PYIMATH_DEFINE_MODULE modname)
         LIBRARY_OUTPUT_NAME "${modname}"
         DEBUG_POSTFIX ""
       )
-      install(TARGETS ${modname}_python2 DESTINATION ${PyImath_Python2_SITEARCH_REL})
+      install(TARGETS ${modname}_python2
+              EXPORT ${PROJECT_NAME}
+              DESTINATION "${CMAKE_INSTALL_BINDIR}/python${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR}/site-packages"
+              )
     endif()
   else()
     if(TARGET Python3::Python)
@@ -157,7 +161,10 @@ function(PYIMATH_DEFINE_MODULE modname)
         LIBRARY_OUTPUT_NAME "${modname}"
         DEBUG_POSTFIX ""
       )
-      install(TARGETS ${modname}_python3 DESTINATION ${PyImath_Python3_SITEARCH_REL})
+      install(TARGETS ${modname}_python3
+              EXPORT ${PROJECT_NAME}
+              DESTINATION "${CMAKE_INSTALL_BINDIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages"
+      )
     endif()
   endif()
 endfunction()
