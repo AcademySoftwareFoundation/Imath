@@ -156,7 +156,7 @@ function(PYIMATH_DEFINE_MODULE modname)
       )
       install(TARGETS ${modname}_python3
               EXPORT ${PROJECT_NAME}
-              DESTINATION "${CMAKE_INSTALL_LIBDIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages"
+              DESTINATION "${CMAKE_INSTALL_LIBDIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/Imath"
       )
     endif()
   endif()

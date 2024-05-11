@@ -23,7 +23,7 @@ if(TARGET Python2::Python AND
     DEBUG_POSTFIX ""
   )
   install(TARGETS imathnumpy_python2
-          DESTINATION "${CMAKE_INSTALL_LIBDIR}/python${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR}/site-packages"
+          DESTINATION "${CMAKE_INSTALL_LIBDIR}/python${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR}/site-packages/Imath"
   )
 endif()
 
@@ -51,6 +51,6 @@ if(TARGET Python3::Python AND
     DEBUG_POSTFIX ""
   )
   install(TARGETS imathnumpy_python3
-          DESTINATION "${CMAKE_INSTALL_LIBDIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages"
+          DESTINATION "${CMAKE_INSTALL_LIBDIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/Imath"
   )
 endif()
