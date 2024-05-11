@@ -126,7 +126,7 @@ function(PYIMATH_DEFINE_MODULE modname)
       )
       install(TARGETS ${modname}_python2
               EXPORT ${PROJECT_NAME}
-              DESTINATION "${CMAKE_INSTALL_BINDIR}/python${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR}/site-packages"
+              DESTINATION "${CMAKE_INSTALL_LIBDIR}/python${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR}/site-packages"
               )
     endif()
   else()
@@ -156,7 +156,7 @@ function(PYIMATH_DEFINE_MODULE modname)
       )
       install(TARGETS ${modname}_python3
               EXPORT ${PROJECT_NAME}
-              DESTINATION "${CMAKE_INSTALL_BINDIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages"
+              DESTINATION "${CMAKE_INSTALL_LIBDIR}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages"
       )
     endif()
   endif()
