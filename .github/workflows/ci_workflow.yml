@@ -221,7 +221,8 @@ jobs:
         run: |
           # Confirm the python module loads. Query the site-packages directory and substitute ../_install
           export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`
-          export PYTHONPATH=$PYTHONPATH:$PWD/../_install/lib/python*/site-packages
+          export PYTHONPATH=$PYTHONPATH:$PWD/../_install/lib*/python*/site-packages
+          echo $PYTHONPATH
           python -c "import imath;print(imath.__version__)"
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
@@ -345,7 +346,8 @@ jobs:
           mkdir _examples
       - name: Install Dependences
         run: |
-            brew --display-times -q install python
+            brew list --version
+            brew install --display-times -q boost-python3
       ##     share/ci/scripts/macos/install_boost.sh 
       ##   shell: bash
       - name: Configure
@@ -370,6 +372,8 @@ jobs:
         run: |
           # Confirm the python module loads. Query the site-packages directory and substitute ../_install
           export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`
+          export PYTHONPATH=$PYTHONPATH:$PWD/../_install/lib/python*/site-packages
+          echo $PYTHONPATH
           python -c "import imath;print(imath.__version__)"
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
@@ -526,7 +530,7 @@ jobs:
         shell: bash
       - name: Install Dependencies
         run: |
-          time vcpkg install boost-thread:x64-windows
+          vcpkg install boost-python:x64-windows
           # share/ci/scripts/windows/install_python.ps1 ${{ matrix.python-version }} $HOME 
           # share/ci/scripts/windows/install_boost.ps1 ${{ matrix.boost-version }} $HOME 3.8
         # shell: powershell
