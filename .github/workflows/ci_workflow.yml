@@ -220,7 +220,7 @@ jobs:
       - name: Examples
         run: |
           # Confirm the python module loads. Query the site-packages directory and substitute ../_install
-          export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`          
+          export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`
           python -c "import imath;print(imath.__version__)"
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
@@ -258,9 +258,10 @@ jobs:
   # macOS
   # ---------------------------------------------------------------------------
   
-  macos_no_python:
+  macos:
     name: 'macOS VFXP-${{matrix.vfx-cy }} macos-${{ matrix.osver }}
       <AppleClang 11.0 
+       ${{ matrix.python-desc }},
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
        cxx=${{ matrix.cxx-standard }}' 
@@ -279,6 +280,7 @@ jobs:
             cxx-standard: 17
             exclude-tests:
             osver: 11.0
+            python: 'ON'
 
           # Debug
           - build: 2
@@ -287,7 +289,7 @@ jobs:
             cxx-standard: 17
             exclude-tests:
             osver: 11.0
-
+            python: 'ON'
 
           # Static
           - build: 3
@@ -296,7 +298,7 @@ jobs:
             cxx-standard: 17
             exclude-tests:
             osver: 11.0
-
+            python: 'ON'
 
           # C++14
           - build: 4
@@ -305,7 +307,7 @@ jobs:
             cxx-standard: 14
             exclude-tests:
             osver: 11.0
-
+            python: 'ON'
 
           # C++11
           - build: 5
@@ -314,7 +316,8 @@ jobs:
             cxx-standard: 11
             exclude-tests:
             osver: 11.0
-              
+            python: 'ON'
+
           # --------------------------------------------------------------------
           # VFX CY2022 - MacOS 12
           # --------------------------------------------------------------------
@@ -325,6 +328,7 @@ jobs:
             cxx-standard: 17
             exclude-tests:
             osver: 12.0
+            python: 'ON'
 
     steps:
       ## - name: Setup Python
@@ -338,8 +342,9 @@ jobs:
           mkdir _install
           mkdir _build
           mkdir _examples
-      ## - name: Install Dependences
-      ##   run: |
+      - name: Install Dependences
+        run: |
+            brew --display-times -q install python
       ##     share/ci/scripts/macos/install_boost.sh 
       ##   shell: bash
       - name: Configure
@@ -350,6 +355,7 @@ jobs:
                 -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
                 -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }} \
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
+                -DPYTHON=${{ matrix.python }} \
                 -DBUILD_SHARED_LIBS=${{ matrix.build-shared }}
         working-directory: _build
       - name: Build
@@ -361,6 +367,9 @@ jobs:
         working-directory: _build
       - name: Examples
         run: |
+          # Confirm the python module loads. Query the site-packages directory and substitute ../_install
+          export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`
+          python -c "import imath;print(imath.__version__)"
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
           # Imath library.
@@ -396,10 +405,10 @@ jobs:
   windows:
     name: 'Windows VFXP-${{ matrix.vfx-cy }}
       <${{ matrix.compiler-desc }},
+       ${{ matrix.python-desc }},
        config=${{ matrix.build-type }}, 
        shared=${{ matrix.build-shared }}, 
-       cxx=${{ matrix.cxx-standard }}, 
-       python=OFF>' 
+       cxx=${{ matrix.cxx-standard }}>'
     runs-on: windows-${{ matrix.osver }}
     strategy:
       matrix:
@@ -417,6 +426,8 @@ jobs:
             vfx-cy: 2023
             exclude-tests:
             osver: 2022
+            python: 'ON'
+            python-desc: ''
 
           # C++17, Debug -
           ## - build: 2
@@ -434,6 +445,8 @@ jobs:
             vfx-cy: 2023
             exclude-tests:
             osver: 2022
+            python: 'ON'
+            python-desc: ''
 
           # -------------------------------------------------------------------
           # VFX CY2022 - C++17 - Windows 2019
@@ -447,6 +460,8 @@ jobs:
             vfx-cy: 2022
             exclude-tests:
             osver: 2019
+            python: 'ON'
+            python-desc: ''
 
           # C++17, Debug -
           ## - build: 5
@@ -464,6 +479,8 @@ jobs:
             vfx-cy: 2022
             exclude-tests:
             osver: 2019
+            python: 'ON'
+            python-desc: ''
 
          # -------------------------------------------------------------------
           # VFX CY2020 - C++14 - Windows 2019
@@ -477,6 +494,8 @@ jobs:
             vfx-cy: 2020
             exclude-tests:
             osver: 2019
+            python: 'ON'
+            python-desc: ''
 
           # -------------------------------------------------------------------
           # VFX CY2019 - C++11 - Windows 2019
@@ -489,6 +508,8 @@ jobs:
             cxx-standard: 11
             exclude-tests:
             osver: 2019
+            python: 'ON'
+            python-desc: ''
 
     steps:
       # - name: Setup Python
@@ -502,8 +523,9 @@ jobs:
           mkdir _install
           mkdir _build
         shell: bash
-      # - name: Install Dependences
-        # run: |
+      - name: Install Dependencies
+        run: |
+          time vcpkg install boost-thread:x64-windows
           # share/ci/scripts/windows/install_python.ps1 ${{ matrix.python-version }} $HOME 
           # share/ci/scripts/windows/install_boost.ps1 ${{ matrix.boost-version }} $HOME 3.8
         # shell: powershell
@@ -515,7 +537,8 @@ jobs:
                 -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
                 -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }} \
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
-                -DBUILD_SHARED_LIBS=${{ matrix.build-shared }}
+                -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
+                -DPYTHON=${{ matrix.python }}
                 # NB: removed trailing slash from these lines
                 # -DBOOST_ROOT:FILEPATH=$BOOST_ROOT
                 # -DPYTHON='ON'
