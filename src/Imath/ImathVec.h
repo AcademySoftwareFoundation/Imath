@@ -72,18 +72,27 @@ public:
     IMATH_HOSTDEVICE constexpr Vec2 (T a, T b) IMATH_NOEXCEPT;
 
     /// Copy constructor
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
+    IMATH_HOSTDEVICE Vec2 (const Vec2&) = default;
+#else
     IMATH_HOSTDEVICE constexpr Vec2 (const Vec2& v) IMATH_NOEXCEPT;
+#endif
 
     /// Construct from Vec2 of another base type
     template <class S>
     IMATH_HOSTDEVICE constexpr Vec2 (const Vec2<S>& v) IMATH_NOEXCEPT;
 
-    /// Assignment
+    /// Copy assignment
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
+    IMATH_HOSTDEVICE Vec2&
+    operator= (const Vec2&) = default;
+#else
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec2&
     operator= (const Vec2& v) IMATH_NOEXCEPT;
+#endif
 
     /// Destructor
-    ~Vec2 () IMATH_NOEXCEPT = default;
+    ~Vec2 () = default;
 
     /// @}
 
@@ -369,7 +378,11 @@ public:
     IMATH_HOSTDEVICE constexpr Vec3 (T a, T b, T c) IMATH_NOEXCEPT;
 
     /// Copy constructor
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
+    IMATH_HOSTDEVICE constexpr Vec3 (const Vec3& v) IMATH_NOEXCEPT = default;
+#else
     IMATH_HOSTDEVICE constexpr Vec3 (const Vec3& v) IMATH_NOEXCEPT;
+#endif
 
     /// Construct from Vec3 of another base type
     template <class S>
@@ -387,9 +400,14 @@ public:
     explicit IMATH_HOSTDEVICE IMATH_CONSTEXPR14
     Vec3 (const Vec4<S>& v, InfException);
 
-    /// Assignment
+    /// Copy assignment
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec3&
+    operator= (const Vec3& v) IMATH_NOEXCEPT = default;
+#else
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec3&
     operator= (const Vec3& v) IMATH_NOEXCEPT;
+#endif
 
     /// Destructor
     ~Vec3 () IMATH_NOEXCEPT = default;
@@ -690,7 +708,11 @@ public:
     IMATH_HOSTDEVICE constexpr Vec4 (T a, T b, T c, T d) IMATH_NOEXCEPT;
 
     /// Copy constructor
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
+    IMATH_HOSTDEVICE constexpr Vec4 (const Vec4& v) IMATH_NOEXCEPT = default;
+#else
     IMATH_HOSTDEVICE constexpr Vec4 (const Vec4& v) IMATH_NOEXCEPT;
+#endif
 
     /// Construct from Vec4 of another base type
     template <class S>
@@ -700,9 +722,14 @@ public:
     template <class S>
     IMATH_HOSTDEVICE explicit constexpr Vec4 (const Vec3<S>& v) IMATH_NOEXCEPT;
 
-    /// Assignment
+    /// Copy assignment
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE != 0
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Vec4&
+    operator= (const Vec4& v) IMATH_NOEXCEPT = default;
+#else
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 const Vec4&
     operator= (const Vec4& v) IMATH_NOEXCEPT;
+#endif
 
     /// Destructor
     ~Vec4 () IMATH_NOEXCEPT = default;
@@ -1212,11 +1239,13 @@ IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (T a, T b) IMATH_NOEXCEPT
       y (b)
 {}
 
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2& v) IMATH_NOEXCEPT
     : x (v.x),
       y (v.y)
 {}
+#endif
 
 template <class T>
 template <class S>
@@ -1225,6 +1254,7 @@ IMATH_HOSTDEVICE constexpr inline Vec2<T>::Vec2 (const Vec2<S>& v)
                      y (T (v.y))
 {}
 
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_CONSTEXPR14 IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::operator= (const Vec2& v) IMATH_NOEXCEPT
@@ -1233,6 +1263,7 @@ Vec2<T>::operator= (const Vec2& v) IMATH_NOEXCEPT
     y = v.y;
     return *this;
 }
+#endif
 
 template <class T>
 template <class S>
@@ -1618,12 +1649,14 @@ IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (T a, T b, T c) IMATH_NOEXCEPT
       z (c)
 {}
 
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec3& v) IMATH_NOEXCEPT
     : x (v.x),
       y (v.y),
       z (v.z)
 {}
+#endif
 
 template <class T>
 template <class S>
@@ -1633,6 +1666,7 @@ IMATH_HOSTDEVICE constexpr inline Vec3<T>::Vec3 (const Vec3<S>& v)
                      z (T (v.z))
 {}
 
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec3<T>&
 Vec3<T>::operator= (const Vec3& v) IMATH_NOEXCEPT
@@ -1642,6 +1676,7 @@ Vec3<T>::operator= (const Vec3& v) IMATH_NOEXCEPT
     z = v.z;
     return *this;
 }
+#endif
 
 template <class T>
 template <class S>
@@ -2093,6 +2128,7 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (T a, T b, T c, T d)
                      w (d)
 {}
 
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4& v) IMATH_NOEXCEPT
     : x (v.x),
@@ -2100,6 +2136,7 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4& v) IMATH_NOEXCEPT
       z (v.z),
       w (v.w)
 {}
+#endif
 
 template <class T>
 template <class S>
@@ -2110,6 +2147,7 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec4<S>& v)
                      w (T (v.w))
 {}
 
+#if IMATH_VEC_BE_TRIVIALLY_RELOCATABLE == 0
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline const Vec4<T>&
 Vec4<T>::operator= (const Vec4& v) IMATH_NOEXCEPT
@@ -2120,6 +2158,7 @@ Vec4<T>::operator= (const Vec4& v) IMATH_NOEXCEPT
     w = v.w;
     return *this;
 }
+#endif
 
 template <class T>
 template <class S>
