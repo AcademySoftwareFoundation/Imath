@@ -4,3 +4,4 @@
 sphinx == 7.2.6
 breathe
 sphinx-press-theme
+requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
