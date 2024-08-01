@@ -27,6 +27,9 @@ on:
       - '!.github/workflows/**'
       - '.github/workflows/ci_workflow.yml'
 
+permissions:
+  contents: read
+
 jobs:
   # Linux jobs run in Docker containers, so the latest OS version is OK. macOS 
   # and Windows jobs need to be locked to specific virtual environment 
@@ -57,39 +60,111 @@ jobs:
       image: aswf/ci-openexr:${{ matrix.vfx-cy }}
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 9, 10, 11, 12, 13, 14, 15, 20, 21, 22]
+        build: [1, 2, 3, 4, 5, 6, 7, 8, 9]
         include:
           # -------------------------------------------------------------------
-          # GCC, VFX CY2022
+          # GCC, VFX CY2024
           # -------------------------------------------------------------------
-          # C++17, Python 3.9
+          # C++17, Python 3.11
           - build: 1
             build-type: Release
             build-shared: 'ON'
             cxx-standard: 17
             cxx-compiler: g++
             cc-compiler: gcc
-            compiler-desc: gcc9.3.1
+            compiler-desc: gcc11.2.1
             python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
+            python-desc: python3.11
+            vfx-cy: 2024
 
-          # C++17, Python 3.9.7, Debug
+          # C++17, Python 3.11, Debug
           - build: 2
             build-type: Debug
             build-shared: 'ON'
             cxx-standard: 17
             cxx-compiler: g++
             cc-compiler: gcc
-            compiler-desc: gcc9.3.1
+            compiler-desc: gcc11.2.1
             python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
+            python-desc: python3.11
+            vfx-cy: 2024
 
-          # C++17, Python 3.9.7, Static
+          # C++17, Python 3.11, Static
           - build: 3
             build-type: Release
             build-shared: 'OFF'
+            cxx-standard: 17
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'ON'
+            python-desc: python3.11
+            vfx-cy: 2024
+
+          # C++14, Python 3.11
+          - build: 4
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 14
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'ON'
+            python-desc: python3.11
+            vfx-cy: 2024
+
+          # -------------------------------------------------------------------
+          # Clang 15.0, VFX CY2024 
+          # -------------------------------------------------------------------
+          # C++17, Python 3.11
+          - build: 5
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: clang++
+            cc-compiler: clang
+            compiler-desc: clang15.0
+            python: 'ON'
+            python-desc: python3.11
+            vfx-cy: 2024
+
+          # -------------------------------------------------------------------
+          # Clang 14.0, VFX CY2024 
+          # -------------------------------------------------------------------
+          # C++17, Python 3.11
+          - build: 6
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: clang++
+            cc-compiler: clang
+            compiler-desc: clang14.0
+            python: 'ON'
+            python-desc: python3.11
+            vfx-cy: 2024
+
+          # -------------------------------------------------------------------
+          # GCC, VFX CY2023
+          # -------------------------------------------------------------------
+          # C++17, Python 3.10.9
+          - build: 7
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'ON'
+            python-desc: python3.10.9
+            vfx-cy: 2023
+
+          # -------------------------------------------------------------------
+          # GCC, VFX CY2022
+          # -------------------------------------------------------------------
+          # C++17, Python 3.9
+          - build: 8
+            build-type: Release
+            build-shared: 'ON'
             cxx-standard: 17
             cxx-compiler: g++
             cc-compiler: gcc
@@ -97,30 +172,6 @@ jobs:
             python: 'ON'
             python-desc: python3.9.7
             vfx-cy: 2022
-
-          # C++14, Python 3.9.7, Static
-          - build: 4
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc9.3.1
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # C++17, no Python
-            # - build: 5
-            # build-type: Release
-            # build-shared: 'ON'
-            # cxx-standard: 17
-            # cxx-compiler: g++
-            # cc-compiler: gcc
-            # compiler-desc: gcc9.3.1
-            # python: 'OFF'
-            # python-desc: no python
-            # vfx-cy: 2022
 
           # -------------------------------------------------------------------
           # GCC, VFX CY2021
@@ -136,134 +187,6 @@ jobs:
             python: 'ON'
             python-desc: python3.7.9
             vfx-cy: 2021
-
-          # -------------------------------------------------------------------
-          # GCC, VFX CY2020
-          # -------------------------------------------------------------------
-          # C++14, Python 3.7
-          - build: 10
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc6.3.1
-            python: 'ON'
-            python-desc: python3.7.3
-            vfx-cy: 2020
-
-          # -------------------------------------------------------------------
-          # GCC, VFX CY2019
-          # -------------------------------------------------------------------
-          # C++11, Python 2.7
-          - build: 11
-            build-type: Release
-            build-shared: 'ON'
-            use-python2: 'ON'
-            cxx-standard: 11
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc6.3.1
-            python: 'ON'
-            python-desc: python2.7.15
-            vfx-cy: 2019
-
-          # -------------------------------------------------------------------
-          # Clang, VFX CY2022
-          # -------------------------------------------------------------------
-          # C++17, Python 3.9
-          - build: 12
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # C++17, Python 3.9.7, Debug
-          - build: 13
-            build-type: Debug
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # C++17, Python 3.9.7, Static
-          - build: 14
-            build-type: Release
-            build-shared: 'OFF'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # C++14, Python 3.9.7, Static
-          - build: 15
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # -------------------------------------------------------------------
-          # Clang, VFX CY2021
-          # -------------------------------------------------------------------
-          # C++17, Python 3.7.9
-          - build: 20
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang10.4
-            python: 'ON'
-            python-desc: python3.7.9
-            vfx-cy: 2021
-
-          # -------------------------------------------------------------------
-          # Clang, VFX CY2020
-          # -------------------------------------------------------------------
-          # C++14, Python 3.7
-          - build: 21
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang7.8
-            python: 'ON'
-            python-desc: python3.7.3
-            vfx-cy: 2020
-
-          # -------------------------------------------------------------------
-          # Clang, VFX CY2019
-          # -------------------------------------------------------------------
-          # C++11, Python 2.7
-          - build: 22
-            build-type: Release
-            build-shared: 'ON'
-            use-python2: 'ON'
-            cxx-standard: 11
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang7.8
-            python: 'ON'
-            python-desc: python2.7.15
-            vfx-cy: 2019
 
     env:
       CXX: ${{ matrix.cxx-compiler }}
@@ -344,18 +267,18 @@ jobs:
     runs-on: macos-${{ matrix.osver }}
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 5, 6]
+        build: [1, 2, 3, 4, 5, 6, 7]
         include:
           # --------------------------------------------------------------------
-          # VFX CY2023 - MacOS 11.0
+          # MacOS 14
           # --------------------------------------------------------------------
-          # C++11
+          # Release
           - build: 1
             build-type: Release
             build-shared: 'ON'
             cxx-standard: 17
             exclude-tests:
-            osver: 11.0
+            osver: 14
 
           # Debug
           - build: 2
@@ -363,8 +286,7 @@ jobs:
             build-shared: 'ON'
             cxx-standard: 17
             exclude-tests:
-            osver: 11.0
-
+            osver: 14
 
           # Static
           - build: 3
@@ -372,8 +294,7 @@ jobs:
             build-shared: 'OFF'
             cxx-standard: 17
             exclude-tests:
-            osver: 11.0
-
+            osver: 14
 
           # C++14
           - build: 4
@@ -381,8 +302,7 @@ jobs:
             build-shared: 'ON'
             cxx-standard: 14
             exclude-tests:
-            osver: 11.0
-
+            osver: 14
 
           # C++11
           - build: 5
@@ -390,18 +310,27 @@ jobs:
             build-shared: 'ON'
             cxx-standard: 11
             exclude-tests:
-            osver: 11.0
+            osver: 14
               
           # --------------------------------------------------------------------
-          # VFX CY2022 - MacOS 12
+          # MacOS 13
           # --------------------------------------------------------------------
-          # C++11
           - build: 6
             build-type: Release
             build-shared: 'ON'
             cxx-standard: 17
             exclude-tests:
-            osver: 12.0
+            osver: 13
+
+          # --------------------------------------------------------------------
+          # MacOS 12
+          # --------------------------------------------------------------------
+          - build: 7
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            exclude-tests:
+            osver: 12
 
     steps:
       ## - name: Setup Python
