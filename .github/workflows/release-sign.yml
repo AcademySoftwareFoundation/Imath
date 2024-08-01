@@ -54,7 +54,7 @@ jobs:
         run: git archive --format=tar.gz -o ${IMATH_TARBALL} --prefix ${IMATH_PREFIX} ${TAG}
 
       - name: Sign archive with Sigstore
-        uses: sigstore/gh-action-sigstore-python@v2.1.1
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
         with:
           inputs: ${{ env.IMATH_TARBALL }}
 
