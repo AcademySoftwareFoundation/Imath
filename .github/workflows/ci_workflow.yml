@@ -191,6 +191,8 @@ jobs:
     env:
       CXX: ${{ matrix.cxx-compiler }}
       CC: ${{ matrix.cc-compiler }}
+      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -219,9 +221,12 @@ jobs:
         working-directory: _build
       - name: Examples
         run: |
-          # Confirm the python module loads. Query the site-packages directory and substitute ../_install
-          export PYTHONPATH=`python -c "import site; print('../_install%s' % site.USER_SITE[len(site.USER_BASE):])"`          
+          # Confirm the python module loads. Set PYTHONPATH to the
+          # _install directory of the module (better to find it
+          # procedurally than hard code a path).
+          export PYTHONPATH=`find ../_install -name imath.so | xargs dirname`
           python -c "import imath;print(imath.__version__)"
+
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
           # Imath library.
@@ -232,8 +237,10 @@ jobs:
                 -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }}
           cmake --build . \
                 --config ${{ matrix.build-type }}
+
           # Confirm the tests run
           ./bin/ImathTest
+
           # Confirm the examples compile and execute
           rm -rf bin CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
           cmake ../website/examples \
