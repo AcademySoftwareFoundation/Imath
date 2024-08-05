@@ -195,7 +195,7 @@ jobs:
       ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Create build directories
         run: |
           mkdir _install
@@ -345,7 +345,7 @@ jobs:
       ##   with:
       ##     python-version: ${{ matrix.python-version }}
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Create build directories
         run: |
           mkdir _install
@@ -509,7 +509,7 @@ jobs:
         # with:
           # python-version: ${{ matrix.python-version }}
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Create build directories
         run: |
           mkdir _install
@@ -566,7 +566,7 @@ jobs:
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create build directory
         run: mkdir _build
       - name: Install doxygen 
