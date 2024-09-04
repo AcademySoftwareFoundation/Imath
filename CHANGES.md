@@ -3,6 +3,7 @@
 
 # Imath Release Notes
 
+* [Version 3.1.12](#version-3112-September-9-2024) September 9, 2024
 * [Version 3.1.11](#version-3111-February-28-2024) February 28, 2024
 * [Version 3.1.10](#version-3110-January-26-2024) January 26, 2024
 * [Version 3.1.9](#version-319-May-31-2023) May 31, 2023
@@ -22,6 +23,74 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.1.12 (September 9, 2024)
+
+Patch release with a small fix:
+
+* Support for compiling half.h with hip-runtime-amd
+
+Also, the v3.1.11 release had improper versioning in its cmake and
+pkgconf configuration files. This is now fixed.
+
+### Merged Pull Requests
+
+* \[[#426](https://github.com/AcademySoftwareFoundation/Imath/pull/426)\]
+Fix redefinition of half when using with hip-runtime-amd
+* \[[#425](https://github.com/AcademySoftwareFoundation/Imath/pull/425)\]
+Bump actions/upload-artifact from 4.3.6 to 4.4.0
+* \[[#422](https://github.com/AcademySoftwareFoundation/Imath/pull/422)\]
+Bump actions/upload-artifact from 4.3.5 to 4.3.6
+* \[[#416](https://github.com/AcademySoftwareFoundation/Imath/pull/416)\]
+Bump ossf/scorecard-action from 2.3.3 to 2.4.0
+* \[[#421](https://github.com/AcademySoftwareFoundation/Imath/pull/421)\]
+Add codeql workflow
+* \[[#419](https://github.com/AcademySoftwareFoundation/Imath/pull/419)\]
+Bump actions/upload-artifact from 4.3.4 to 4.3.5
+* \[[#420](https://github.com/AcademySoftwareFoundation/Imath/pull/420)\]
+Fix GHA CI after they upgraded nodejs
+* \[[#398](https://github.com/AcademySoftwareFoundation/Imath/pull/398)\]
+Updated CI workflow to 2024 images.
+* \[[#413](https://github.com/AcademySoftwareFoundation/Imath/pull/413)\]
+Bump github/codeql-action from 3.25.1 to 3.25.12
+* \[[#414](https://github.com/AcademySoftwareFoundation/Imath/pull/414)\]
+Bump sphinx from 7.2.6 to 7.4.2
+* \[[#411](https://github.com/AcademySoftwareFoundation/Imath/pull/411)\]
+Bump actions/upload-artifact from 4.3.2 to 4.3.4
+* \[[#401](https://github.com/AcademySoftwareFoundation/Imath/pull/401)\]
+Bump ossf/scorecard-action from 2.3.1 to 2.3.3
+* \[[#415](https://github.com/AcademySoftwareFoundation/Imath/pull/415)\]
+Bump sigstore/gh-action-sigstore-python from 2.1.1 to 3.0.0
+* \[[#390](https://github.com/AcademySoftwareFoundation/Imath/pull/390)\]
+Bump actions/upload-artifact from 4.3.1 to 4.3.2
+* \[[#389](https://github.com/AcademySoftwareFoundation/Imath/pull/389)\]
+Bump github/codeql-action from 3.24.10 to 3.25.1
+* \[[#387](https://github.com/AcademySoftwareFoundation/Imath/pull/387)\]
+Bump sphinx from 5.3 to 7.2.6
+* \[[#385](https://github.com/AcademySoftwareFoundation/Imath/pull/385)\]
+Bump github/codeql-action from 2.2.4 to 3.24.10
+* \[[#386](https://github.com/AcademySoftwareFoundation/Imath/pull/386)\]
+Bump actions/upload-artifact from 3.1.0 to 4.3.1
+* \[[#384](https://github.com/AcademySoftwareFoundation/Imath/pull/384)\]
+Improve workflow files
+* \[[#383](https://github.com/AcademySoftwareFoundation/Imath/pull/383)\]
+Add dependabot.yml
+* \[[#382](https://github.com/AcademySoftwareFoundation/Imath/pull/382)\]
+Updated docker images to 2024.
+* \[[#378](https://github.com/AcademySoftwareFoundation/Imath/pull/378)\]
+Add preview link to readthedocs build to PR description
+* \[[#380](https://github.com/AcademySoftwareFoundation/Imath/pull/380)\]
+Add website workflows and improve ci workflow filter
+* \[[#379](https://github.com/AcademySoftwareFoundation/Imath/pull/379)\]
+Add custom website footer with ASWF logo and proper copyright
+* \[[#377](https://github.com/AcademySoftwareFoundation/Imath/pull/377)\]
+Pin sphinx to 5.3
+* \[[#376](https://github.com/AcademySoftwareFoundation/Imath/pull/376)\]
+🔗 Fix install URLs
+* \[[#363](https://github.com/AcademySoftwareFoundation/Imath/pull/363)\]
+Update install instructions to reflect new SO versioning policy
+* \[[#375](https://github.com/AcademySoftwareFoundation/Imath/pull/375)\]
+Remove -Dsonar.login from sonar-scanner command line
 
 ## Version 3.1.11 (February 28, 2024)
 
