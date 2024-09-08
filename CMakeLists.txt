@@ -71,14 +71,13 @@ set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
 
 option(PYTHON "Set ON to compile boost PyImath bindings")
-option(PYBIND11 "Set ON to compile pybind11 PyImath bindings")
-
-if (PYTHON AND PYBIND11)
-  message(FATAL_ERROR "Compiling both the boost and pybind11 python bindings at the same time is not currently supported")
+if (PYTHON)
+  add_subdirectory(src/python)
 endif()
 
-if (PYTHON OR PYBIND11)
-  add_subdirectory(src/python)
+option(PYBIND11 "Set ON to compile pybind11 PyImath bindings")
+if (PYBIND11)
+  add_subdirectory(src/pybind11)
 endif()
 
 option(BUILD_WEBSITE "Set ON to build the readthedocs website source")

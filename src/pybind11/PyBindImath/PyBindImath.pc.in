@@ -1,0 +1,17 @@
+##
+## SPDX-License-Identifier: BSD-3-Clause
+## Copyright Contributors to the OpenEXR Project.
+##
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+pythonver=@pythonver_root@
+
+Name: PyBindImath
+Description: pybind11-based python bindings for the Imath libraries
+Version: @IMATH_VERSION@
+Libs: -L${libdir} -lImath${libsuffix} -lPyBindImath${pythonver$}${libsuffix}
+
+Cflags: -I${includedir} -I${includedir}/Imath

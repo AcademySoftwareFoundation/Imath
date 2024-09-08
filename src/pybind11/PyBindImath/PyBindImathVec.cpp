@@ -3,11 +3,11 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-#include "PyImath.h"
+#include "PyBindImath.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
 
-namespace PyImath {
+namespace PyBindImath {
 
 template <class T>
 void register_vec(pybind11::class_<T>& c)

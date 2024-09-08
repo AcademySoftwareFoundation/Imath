@@ -10,19 +10,19 @@
 
 #if defined(IMATH_DLL)
     #if defined(PLATFORM_VISIBILITY_AVAILABLE)
-        #define PYIMATH_EXPORT __attribute__((visibility("default")))
-        #define PYIMATH_EXPORT __attribute__((visibility("default")))
+        #define PYBINDIMATH_EXPORT __attribute__((visibility("default")))
+        #define PYBINDIMATH_EXPORT __attribute__((visibility("default")))
     #elif defined(_MSC_VER)
-        #if defined(PYIMATH_BUILD)
-            #define PYIMATH_EXPORT __declspec(dllexport)
+        #if defined(PYBINDIMATH_BUILD)
+            #define PYBINDIMATH_EXPORT __declspec(dllexport)
         #else
-            #define PYIMATH_EXPORT __declspec(dllimport)
+            #define PYBINDIMATH_EXPORT __declspec(dllimport)
         #endif
     #else
-        #define PYIMATH_EXPORT
+        #define PYBINDIMATH_EXPORT
     #endif
 #else
-    #define PYIMATH_EXPORT
+    #define PYBINDIMATH_EXPORT
 #endif
 
 #endif // #ifndef PYBINDIMATHEXPORT_H

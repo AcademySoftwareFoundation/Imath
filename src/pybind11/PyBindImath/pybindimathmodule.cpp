@@ -3,16 +3,16 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-#include "PyImath.h"
+#include "PyBindImath.h"
 #include <ImathEuler.h>
 
-PYBIND11_MODULE(imath, m)
+PYBIND11_MODULE(pybindimath, m)
 {
-    m.doc() = "Imath module";
+    m.doc() = "PyBindImath module";
     m.attr("__version__") = IMATH_VERSION_STRING;
 
-    PyImath::register_imath_vec(m);
-    PyImath::register_imath_box(m);
+    PyBindImath::register_imath_vec(m);
+    PyBindImath::register_imath_box(m);
 
     //
     // Initialize constants
