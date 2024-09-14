@@ -57,9 +57,11 @@ jobs:
         uses: sigstore/gh-action-sigstore-python@v3.0.0
         with:
           inputs: ${{ env.IMATH_TARBALL }}
+          upload-signing-artifacts: false
+          release-signing-artifacts: false
 
       - name: Upload release archive
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload ${{ github.ref_name }} ${IMATH_TARBALL} ${IMATH_TARBALL}.sigstore
+        run: gh release upload ${{ github.ref_name }} ${IMATH_TARBALL} ${IMATH_TARBALL}.sigstore.json
 
