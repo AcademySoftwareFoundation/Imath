@@ -49,9 +49,9 @@ install.strip = true
 # Enable experimental features if any are available
 # In this case we need custom local plugin to get
 # the project version from cmake.
-#experimental = true
-#metadata.version.provider = "IMATH_skbuild_plugin"
-#metadata.version.provider-path = "./src/python"
+experimental = true
+metadata.version.provider = "skbuild_plugin"
+metadata.version.provider-path = "./src/python"
 
 
 [tool.scikit-build.cmake.define]
