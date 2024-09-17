@@ -18,6 +18,7 @@ on:
       - RB-*
     paths:
       - 'src/**'
+      - 'pyproject.toml'
       - '.github/workflows/python-wheels.yml'
   pull_request:
     branches-ignore:
