@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+
+name: Python Wheels
+
+on:
+
+  # Run on all changes (PR and push) to the python binding
+  # source/configuration files, except on the release branches, which
+  # have their own workflow, which also publish to pypi/test.pypi.
+  # Note that changes to the core libraries will *not*
+  # trigger building the wheels. However, the main ci workflow does
+  # build and test the bindings (for a single python version on a
+  # single arch)
+
+  push:
+    branches-ignore:
+      - RB-*
+    paths:
+      - 'src/**'
+      - '.github/workflows/python-wheels.yml'
+  pull_request:
+    branches-ignore:
+      - RB-*
+    paths:
+      - 'src/**'
+      - 'pyproject.toml'
+      - '.github/workflows/python-wheels.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build_wheels:
+    name: Python Wheels - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Install Python 
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        with:
+          python-version: '3.x'
+
+      - name: Create sdist
+        # Only create it once.
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: pipx run build --sdist . --outdir wheelhouse
+
+      - name: Build wheel
+        uses: pypa/cibuildwheel@79b0dd328794e1180a7268444d46cdf12e1abd01 # v2.21.0
+        env:
+          CIBW_ARCHS_MACOS: x86_64 arm64 universal2
+          # Build Python 3.7 through 3.11.
+          # Skip python 3.6 since scikit-build-core requires 3.7+
+          # Skip 32-bit wheels builds on Windows
+          # Also skip the PyPy builds, since they fail the unit tests
+          CIBW_BUILD: "cp37-* cp38-* cp39-* cp310-* cp311-*"
+          CIBW_SKIP: "*-win32 *_i686"
+          CIBW_TEST_SKIP: "*-macosx*arm64"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+        with:
+          name: wheels-${{ matrix.os }}
+          path: |
+            ./wheelhouse/*.whl
+            ./wheelhouse/*.tar.gz
