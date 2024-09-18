@@ -49,7 +49,7 @@ install.strip = true
 # Enable experimental features if any are available
 # In this case we need custom local plugin to get
 # the project version from cmake.
-experimental = false
+experimental = true
 metadata.version.provider = "PyImath"
 metadata.version.provider-path = "./src/python"
 
