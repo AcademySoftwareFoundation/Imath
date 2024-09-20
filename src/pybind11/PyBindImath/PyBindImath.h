@@ -10,15 +10,15 @@
 #include <pybind11/stl.h>
 #include <pybind11/stl_bind.h>
 #include <pybind11/operators.h>
-#include "PyImathExport.h"
+#include "PyBindImathExport.h"
 
 #ifndef _PyBindImath_h_
 #define _PyBindImath_h_
 
-namespace PyImath {
+namespace PyBindImath {
 
-PYIMATH_EXPORT void register_imath_vec(pybind11::module& m);
-PYIMATH_EXPORT void register_imath_box(pybind11::module& m);
+PYBINDIMATH_EXPORT void register_imath_vec(pybind11::module& m);
+PYBINDIMATH_EXPORT void register_imath_box(pybind11::module& m);
 
 }
 

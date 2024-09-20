@@ -3,10 +3,10 @@
 // Copyright Contributors to the OpenEXR Project.
 //
 
-#include "PyImath.h"
+#include "PyBindImath.h"
 #include <ImathBox.h>
 
-namespace PyImath {
+namespace PyBindImath {
 
 template <class T, class V>
 void register_box(pybind11::class_<T>& c)

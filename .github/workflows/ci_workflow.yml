@@ -60,7 +60,7 @@ jobs:
       image: aswf/ci-openexr:${{ matrix.vfx-cy }}
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        build: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         include:
           # -------------------------------------------------------------------
           # GCC, VFX CY2024
@@ -188,6 +188,35 @@ jobs:
             python-desc: python3.7.9
             vfx-cy: 2021
 
+          # -------------------------------------------------------------------
+          # pybind11 and python together
+          # -------------------------------------------------------------------
+          - build: 10
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'ON'
+            pybind11: 'ON'
+            python-desc: python3.11
+            vfx-cy: 2024
+
+          # -------------------------------------------------------------------
+          # pybind11 w/o python
+          # -------------------------------------------------------------------
+          - build: 11
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'OFF'
+            pybind11: 'ON'
+            python-desc: python3.11
+            vfx-cy: 2024
     env:
       CXX: ${{ matrix.cxx-compiler }}
       CC: ${{ matrix.cc-compiler }}
@@ -211,6 +240,7 @@ jobs:
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
                 -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
                 -DPYTHON=${{ matrix.python }} \
+                -DPYBIND11=${{ matrix.pybind11 }} \
                 -DUSE_PYTHON2=${{ matrix.use-python2 }}
         working-directory: _build
       - name: Build
@@ -221,12 +251,6 @@ jobs:
         working-directory: _build
       - name: Examples
         run: |
-          # Confirm the python module loads. Set PYTHONPATH to the
-          # _install directory of the module (better to find it
-          # procedurally than hard code a path).
-          export PYTHONPATH=`find ../_install -name imath.so | xargs dirname`
-          python -c "import imath;print(imath.__version__)"
-
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
           # Imath library.
@@ -252,6 +276,21 @@ jobs:
                 --config ${{ matrix.build-type }}
           ctest
         working-directory: _examples 
+      - name: Test Python
+        run: |
+          # Confirm the python module loads. Set PYTHONPATH to the
+          # _install directory of the module (better to find it
+          # procedurally than hard code a path).
+          if [[ "${{ matrix.python }}" == "ON" ]]; then
+              export PYTHONPATH=`find ../_install -name imath.so | xargs dirname`
+              python -c "import imath;print(imath.__version__)"
+          fi
+          if [[ "${{ matrix.pybind11 }}" == "ON" ]]; then
+              export PYTHONPATH=`find ../_install -name 'pybindimath.*.so' | xargs dirname`
+              python -c "import pybindimath;print(pybindimath.__version__)"
+          fi
+        shell: bash
+        working-directory: _build
       - name: Test
         run: |
           ctest -T Test ${{ matrix.exclude-tests }} \
