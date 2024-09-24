@@ -48,18 +48,20 @@ jobs:
         shell: bash
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
 
       - name: Create archive
         run: git archive --format=tar.gz -o ${IMATH_TARBALL} --prefix ${IMATH_PREFIX} ${TAG}
 
       - name: Sign archive with Sigstore
-        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        uses: sigstore/gh-action-sigstore-python@f514d46b907ebcd5bedc05145c03b69c1edd8b46 # v3.0.0
         with:
           inputs: ${{ env.IMATH_TARBALL }}
+          upload-signing-artifacts: false
+          release-signing-artifacts: false
 
       - name: Upload release archive
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload ${{ github.ref_name }} ${IMATH_TARBALL} ${IMATH_TARBALL}.sigstore
+        run: gh release upload ${TAG} ${IMATH_TARBALL} ${IMATH_TARBALL}.sigstore.json
 
