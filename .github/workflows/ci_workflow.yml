@@ -217,6 +217,36 @@ jobs:
             pybind11: 'ON'
             python-desc: python3.11
             vfx-cy: 2024
+
+          # -------------------------------------------------------------------
+          # nanobind and python together
+          # -------------------------------------------------------------------
+          - build: 10
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'ON'
+            nanobind: 'ON'
+            python-desc: python3.11
+            vfx-cy: 2024
+
+          # -------------------------------------------------------------------
+          # nanobind w/o python
+          # -------------------------------------------------------------------
+          - build: 11
+            build-type: Release
+            build-shared: 'ON'
+            cxx-standard: 17
+            cxx-compiler: g++
+            cc-compiler: gcc
+            compiler-desc: gcc11.2.1
+            python: 'OFF'
+            nanobind: 'ON'
+            python-desc: python3.11
+            vfx-cy: 2024
     env:
       CXX: ${{ matrix.cxx-compiler }}
       CC: ${{ matrix.cc-compiler }}
@@ -241,6 +271,7 @@ jobs:
                 -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
                 -DPYTHON=${{ matrix.python }} \
                 -DPYBIND11=${{ matrix.pybind11 }} \
+                -DNANOBIND=${{ matrix.nanobind }} \
                 -DUSE_PYTHON2=${{ matrix.use-python2 }}
         working-directory: _build
       - name: Build
@@ -288,6 +319,10 @@ jobs:
           if [[ "${{ matrix.pybind11 }}" == "ON" ]]; then
               export PYTHONPATH=`find ../_install -name 'pybindimath.*.so' | xargs dirname`
               python -c "import pybindimath;print(pybindimath.__version__)"
+          fi
+          if [[ "${{ matrix.nanobind }}" == "ON" ]]; then
+              export PYTHONPATH=`find ../_install -name 'nanobindimath.*.so' | xargs dirname`
+              python -c "import nanobindimath;print(nanobindimath.__version__)"
           fi
         shell: bash
         working-directory: _build
