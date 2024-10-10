@@ -50,6 +50,8 @@ install.strip = true
 # In this case we need custom local plugin to get
 # the project version from cmake.
 experimental = true
+metadata.version.provider = "PyImath"
+metadata.version.provider-path = "./src/python"
 
 
 [tool.scikit-build.cmake.define]
