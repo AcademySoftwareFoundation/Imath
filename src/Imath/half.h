@@ -378,7 +378,7 @@ imath_float_to_half (float f)
     // msvc does not seem to have cvtsh_ss :(
     return _mm_extract_epi16 (
         _mm_cvtps_ph (
-            _mm_set_ss (f), (_MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC)),
+            _mm_set_ss (f), (_MM_FROUND_TO_NEAREST_INT)),
         0);
 #    else
     // preserve the fixed rounding mode to nearest
