@@ -1518,14 +1518,14 @@ template <class T>
 IMATH_HOSTDEVICE inline T*
 Matrix22<T>::getValue () IMATH_NOEXCEPT
 {
-    return (T*) &x[0][0];
+    return reinterpret_cast<T*> (this);
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline const T*
 Matrix22<T>::getValue () const IMATH_NOEXCEPT
 {
-    return (const T*) &x[0][0];
+    return reinterpret_cast<const T*> (this);
 }
 
 template <class T>
@@ -2161,14 +2161,14 @@ template <class T>
 IMATH_HOSTDEVICE inline T*
 Matrix33<T>::getValue () IMATH_NOEXCEPT
 {
-    return (T*) &x[0][0];
+    return reinterpret_cast<T*> (this);
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline const T*
 Matrix33<T>::getValue () const IMATH_NOEXCEPT
 {
-    return (const T*) &x[0][0];
+    return reinterpret_cast<const T*> (this);
 }
 
 template <class T>
@@ -3553,14 +3553,14 @@ template <class T>
 IMATH_HOSTDEVICE inline T*
 Matrix44<T>::getValue () IMATH_NOEXCEPT
 {
-    return (T*) &x[0][0];
+    return reinterpret_cast<T*> (this);
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline const T*
 Matrix44<T>::getValue () const IMATH_NOEXCEPT
 {
-    return (const T*) &x[0][0];
+    return reinterpret_cast<const T*> (this);
 }
 
 template <class T>
