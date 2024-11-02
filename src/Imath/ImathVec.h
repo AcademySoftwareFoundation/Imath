@@ -54,9 +54,21 @@ public:
     /// @}
 
     /// Element access by index.
+    ///
+    /// NB: This method of access uses dynamic array accesses which
+    /// can prevent compiler optimizations and force temporaries to be
+    /// stored to the stack and other missed vectorization
+    /// opportunities. Use of direct access to x, y when
+    /// possible should be preferred.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int i) IMATH_NOEXCEPT;
 
     /// Element access by index.
+    ///
+    /// NB: This method of access uses dynamic array accesses which
+    /// can prevent compiler optimizations and force temporaries to be
+    /// stored to the stack and other missed vectorization
+    /// opportunities. Use of direct access to x, y when
+    /// possible should be preferred.
     IMATH_HOSTDEVICE constexpr const T& operator[] (int i) const IMATH_NOEXCEPT;
 
     /// @{
@@ -351,9 +363,21 @@ public:
     /// @}
 
     /// Element access by index.
+    ///
+    /// NB: This method of access uses dynamic array accesses which
+    /// can prevent compiler optimizations and force temporaries to be
+    /// stored to the stack and other missed vectorization
+    /// opportunities. Use of direct access to x, y, z when
+    /// possible should be preferred.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int i) IMATH_NOEXCEPT;
 
     /// Element access by index.
+    ///
+    /// NB: This method of access uses dynamic array accesses which
+    /// can prevent compiler optimizations and force temporaries to be
+    /// stored to the stack and other missed vectorization
+    /// opportunities. Use of direct access to x, y, z when
+    /// possible should be preferred.
     IMATH_HOSTDEVICE constexpr const T& operator[] (int i) const IMATH_NOEXCEPT;
 
     /// @{
@@ -672,9 +696,21 @@ public:
     /// @}
 
     /// Element access by index.
+    ///
+    /// NB: This method of access uses dynamic array accesses which
+    /// can prevent compiler optimizations and force temporaries to be
+    /// stored to the stack and other missed vectorization
+    /// opportunities. Use of direct access to x, y, z, w when
+    /// possible should be preferred.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int i) IMATH_NOEXCEPT;
 
     /// Element access by index.
+    ///
+    /// NB: This method of access uses dynamic array accesses which
+    /// can prevent compiler optimizations and force temporaries to be
+    /// stored to the stack and other missed vectorization
+    /// opportunities. Use of direct access to x, y, z, w when
+    /// possible should be preferred.
     IMATH_HOSTDEVICE constexpr const T& operator[] (int i) const IMATH_NOEXCEPT;
 
     /// @{
@@ -1186,14 +1222,14 @@ template <class T>
 IMATH_CONSTEXPR14 IMATH_HOSTDEVICE inline T&
 Vec2<T>::operator[] (int i) IMATH_NOEXCEPT
 {
-    return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
+    return reinterpret_cast<T*> (this)[i];
 }
 
 template <class T>
 constexpr IMATH_HOSTDEVICE inline const T&
 Vec2<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
-    return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
+    return reinterpret_cast<const T*> (this)[i];
 }
 
 template <class T> IMATH_HOSTDEVICE inline Vec2<T>::Vec2 () IMATH_NOEXCEPT
@@ -1274,14 +1310,14 @@ template <class T>
 IMATH_HOSTDEVICE inline T*
 Vec2<T>::getValue () IMATH_NOEXCEPT
 {
-    return (T*) &x;
+    return reinterpret_cast<T*> (this);
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline const T*
 Vec2<T>::getValue () const IMATH_NOEXCEPT
 {
-    return (const T*) &x;
+    return reinterpret_cast<const T*> (this);
 }
 
 template <class T>
@@ -1590,14 +1626,14 @@ template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T&
 Vec3<T>::operator[] (int i) IMATH_NOEXCEPT
 {
-    return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
+    return reinterpret_cast<T*> (this)[i];
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline const T&
 Vec3<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
-    return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
+    return reinterpret_cast<const T*> (this)[i];
 }
 
 template <class T> IMATH_HOSTDEVICE inline Vec3<T>::Vec3 () IMATH_NOEXCEPT
@@ -1720,14 +1756,14 @@ template <class T>
 IMATH_HOSTDEVICE inline T*
 Vec3<T>::getValue () IMATH_NOEXCEPT
 {
-    return (T*) &x;
+    return reinterpret_cast<T*> (this);
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline const T*
 Vec3<T>::getValue () const IMATH_NOEXCEPT
 {
-    return (const T*) &x;
+    return reinterpret_cast<const T*> (this);
 }
 
 template <class T>
@@ -2063,14 +2099,14 @@ template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T&
 Vec4<T>::operator[] (int i) IMATH_NOEXCEPT
 {
-    return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
+    return reinterpret_cast<T*> (this)[i];
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline const T&
 Vec4<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
-    return (&x)[i]; // NOSONAR - suppress SonarCloud bug report.
+    return reinterpret_cast<const T*> (this)[i];
 }
 
 template <class T> IMATH_HOSTDEVICE inline Vec4<T>::Vec4 () IMATH_NOEXCEPT
