@@ -93,7 +93,7 @@ arrayToNumpy_vector(T &va)
 
     int type = NumpyTypeFromType<PodType>::typeEnum;
     npy_intp dims[2]{ va.len(), BaseType::dimensions()};
-    PodType *data = &va[0][0];
+    PodType *data = va[0].getValue ();
     PyObject *a = PyArray_SimpleNewFromData(2, dims, type, data);
 
     if (!a)

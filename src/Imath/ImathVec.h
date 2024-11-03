@@ -10,11 +10,18 @@
 #ifndef INCLUDED_IMATHVEC_H
 #define INCLUDED_IMATHVEC_H
 
+#ifdef __has_include
+#    if __has_include(<version>)
+#        include <version>
+#    endif
+#endif
+
 #include "ImathExport.h"
 #include "ImathNamespace.h"
 #include "ImathTypeTraits.h"
 
 #include "ImathMath.h"
+#include "half.h"
 
 #include <iostream>
 #include <limits>
@@ -55,7 +62,7 @@ public:
 
     /// Element access by index.
     ///
-    /// NB: This method of access uses dynamic array accesses which
+    /// NB: This method of access may use dynamic array accesses which
     /// can prevent compiler optimizations and force temporaries to be
     /// stored to the stack and other missed vectorization
     /// opportunities. Use of direct access to x, y when
@@ -64,7 +71,7 @@ public:
 
     /// Element access by index.
     ///
-    /// NB: This method of access uses dynamic array accesses which
+    /// NB: This method of access may use dynamic array accesses which
     /// can prevent compiler optimizations and force temporaries to be
     /// stored to the stack and other missed vectorization
     /// opportunities. Use of direct access to x, y when
@@ -801,6 +808,32 @@ public:
 #endif
 
     /// @{
+    /// @name Compatibility with Sb
+
+    /// Set the value
+    template <class S> IMATH_HOSTDEVICE void setValue (S a, S b, S c, S d) IMATH_NOEXCEPT;
+
+    /// Set the value
+    template <class S>
+    IMATH_HOSTDEVICE void setValue (const Vec4<S>& v) IMATH_NOEXCEPT;
+
+    /// Return the value in `a` and `b`
+    template <class S>
+    IMATH_HOSTDEVICE void getValue (S& a, S& b, S& c, S& d) const IMATH_NOEXCEPT;
+
+    /// Return the value in `v`
+    template <class S>
+    IMATH_HOSTDEVICE void getValue (Vec4<S>& v) const IMATH_NOEXCEPT;
+
+    /// Return a raw pointer to the array of values
+    IMATH_HOSTDEVICE T* getValue () IMATH_NOEXCEPT;
+
+    /// Return a raw pointer to the array of values
+    IMATH_HOSTDEVICE const T* getValue () const IMATH_NOEXCEPT;
+
+    /// @}
+
+    /// @{
     /// @name Arithmetic and Comparison
 
     /// Equality
@@ -997,6 +1030,9 @@ operator* (T a, const Vec4<T>& v) IMATH_NOEXCEPT;
 // Typedefs for convenience
 //-------------------------
 
+/// Vec2 of half
+typedef Vec2<half> V2h;
+
 /// Vec2 of short
 typedef Vec2<short> V2s;
 
@@ -1012,6 +1048,9 @@ typedef Vec2<float> V2f;
 /// Vec2 of double
 typedef Vec2<double> V2d;
 
+/// Vec3 of half
+typedef Vec3<half> V3h;
+
 /// Vec3 of short
 typedef Vec3<short> V3s;
 
@@ -1026,6 +1065,9 @@ typedef Vec3<float> V3f;
 
 /// Vec3 of double
 typedef Vec3<double> V3d;
+
+/// Vec4 of half
+typedef Vec4<half> V4h;
 
 /// Vec4 of short
 typedef Vec4<short> V4s;
@@ -1229,7 +1271,18 @@ template <class T>
 constexpr IMATH_HOSTDEVICE inline const T&
 Vec2<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
+#ifdef __cpp_if_consteval
+    if consteval
+    {
+        return (i == 0) ? x : y;
+    }
+    else
+    {
+        return reinterpret_cast<const T*> (this)[i];
+    }
+#else
     return reinterpret_cast<const T*> (this)[i];
+#endif
 }
 
 template <class T> IMATH_HOSTDEVICE inline Vec2<T>::Vec2 () IMATH_NOEXCEPT
@@ -1340,8 +1393,9 @@ template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Vec2<T>::equalWithAbsError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT
 {
-    for (int i = 0; i < 2; i++)
-        if (!IMATH_INTERNAL_NAMESPACE::equalWithAbsError ((*this)[i], v[i], e))
+    if (!IMATH_INTERNAL_NAMESPACE::equalWithAbsError (x, v.x, e))
+            return false;
+    if (!IMATH_INTERNAL_NAMESPACE::equalWithAbsError (y, v.y, e))
             return false;
 
     return true;
@@ -1351,9 +1405,10 @@ template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Vec2<T>::equalWithRelError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT
 {
-    for (int i = 0; i < 2; i++)
-        if (!IMATH_INTERNAL_NAMESPACE::equalWithRelError ((*this)[i], v[i], e))
-            return false;
+    if (!IMATH_INTERNAL_NAMESPACE::equalWithRelError (x, v.x, e))
+        return false;
+    if (!IMATH_INTERNAL_NAMESPACE::equalWithRelError (y, v.y, e))
+        return false;
 
     return true;
 }
@@ -1630,10 +1685,21 @@ Vec3<T>::operator[] (int i) IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_HOSTDEVICE constexpr inline const T&
+constexpr IMATH_HOSTDEVICE inline const T&
 Vec3<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
+#ifdef __cpp_if_consteval
+    if consteval
+    {
+        return (i == 0) ? x : ((i == 1) ? y : z);
+    }
+    else
+    {
+        return reinterpret_cast<const T*> (this)[i];
+    }
+#else
     return reinterpret_cast<const T*> (this)[i];
+#endif
 }
 
 template <class T> IMATH_HOSTDEVICE inline Vec3<T>::Vec3 () IMATH_NOEXCEPT
@@ -2106,7 +2172,18 @@ template <class T>
 IMATH_HOSTDEVICE constexpr inline const T&
 Vec4<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
+#ifdef __cpp_if_consteval
+    if consteval
+    {
+        return (i == 0) ? x : ((i == 1) ? y : ((i == 2) ? z : w));
+    }
+    else
+    {
+        return reinterpret_cast<const T*> (this)[i];
+    }
+#else
     return reinterpret_cast<const T*> (this)[i];
+#endif
 }
 
 template <class T> IMATH_HOSTDEVICE inline Vec4<T>::Vec4 () IMATH_NOEXCEPT
@@ -2165,6 +2242,64 @@ IMATH_HOSTDEVICE constexpr inline Vec4<T>::Vec4 (const Vec3<S>& v)
                      z (T (v.z)),
                      w (T (1))
 {}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE inline void
+Vec4<T>::setValue (S a, S b, S c, S d) IMATH_NOEXCEPT
+{
+    x = T (a);
+    y = T (b);
+    z = T (c);
+    w = T (d);
+}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE inline void
+Vec4<T>::setValue (const Vec4<S>& v) IMATH_NOEXCEPT
+{
+    x = T (v.x);
+    y = T (v.y);
+    z = T (v.z);
+    w = T (v.w);
+}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE inline void
+Vec4<T>::getValue (S& a, S& b, S& c, S& d) const IMATH_NOEXCEPT
+{
+    a = S (x);
+    b = S (y);
+    c = S (z);
+    d = S (w);
+}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE inline void
+Vec4<T>::getValue (Vec4<S>& v) const IMATH_NOEXCEPT
+{
+    v.x = S (x);
+    v.y = S (y);
+    v.z = S (z);
+    v.w = S (w);
+}
+
+template <class T>
+IMATH_HOSTDEVICE inline T*
+Vec4<T>::getValue () IMATH_NOEXCEPT
+{
+    return reinterpret_cast<T*> (this);
+}
+
+template <class T>
+IMATH_HOSTDEVICE inline const T*
+Vec4<T>::getValue () const IMATH_NOEXCEPT
+{
+    return reinterpret_cast<const T*> (this);
+}
 
 template <class T>
 template <class S>

@@ -89,10 +89,11 @@ Matrix44<T> constexpr firstFrame (
     n.normalize ();
     if (n.length () == 0.0f)
     {
-        int i = fabs (t[0]) < fabs (t[1]) ? 0 : 1;
-        if (fabs (t[2]) < fabs (t[i])) i = 2;
-
         Vec3<T> v (0.0, 0.0, 0.0);
+
+        int i = fabs (t.x) < fabs (t.y) ? 0 : 1;
+        if (fabs (t.z) < fabs (t[i])) i = 2;
+
         v[i] = 1.0;
         n    = t.cross (v);
         n.normalize ();
@@ -102,18 +103,21 @@ Matrix44<T> constexpr firstFrame (
 
     Matrix44<T> M;
 
-    M[0][0] = t[0];
-    M[0][1] = t[1];
-    M[0][2] = t[2];
-    M[0][3] = 0.0, M[1][0] = n[0];
-    M[1][1] = n[1];
-    M[1][2] = n[2];
-    M[1][3] = 0.0, M[2][0] = b[0];
-    M[2][1] = b[1];
-    M[2][2] = b[2];
-    M[2][3] = 0.0, M[3][0] = pi[0];
-    M[3][1] = pi[1];
-    M[3][2] = pi[2];
+    M[0][0] = t.x;
+    M[0][1] = t.y;
+    M[0][2] = t.z;
+    M[0][3] = 0.0;
+    M[1][0] = n.x;
+    M[1][1] = n.y;
+    M[1][2] = n.z;
+    M[1][3] = 0.0;
+    M[2][0] = b.x;
+    M[2][1] = b.y;
+    M[2][2] = b.z;
+    M[2][3] = 0.0;
+    M[3][0] = pi.x;
+    M[3][1] = pi.y;
+    M[3][2] = pi.z;
     M[3][3] = 1.0;
 
     return M;
