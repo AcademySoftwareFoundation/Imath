@@ -513,14 +513,14 @@ template <class T>
 IMATH_HOSTDEVICE inline T&
 Color4<T>::operator[] (int i) IMATH_NOEXCEPT
 {
-    return (&r)[i];
+    return reinterpret_cast<T *> (this)[i];
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline const T&
 Color4<T>::operator[] (int i) const IMATH_NOEXCEPT
 {
-    return (&r)[i];
+    return reinterpret_cast<const T *> (this)[i];
 }
 
 template <class T> IMATH_HOSTDEVICE inline Color4<T>::Color4 () IMATH_NOEXCEPT
@@ -624,14 +624,14 @@ template <class T>
 IMATH_HOSTDEVICE inline T*
 Color4<T>::getValue () IMATH_NOEXCEPT
 {
-    return (T*) &r;
+    return reinterpret_cast<T*> (this);
 }
 
 template <class T>
 IMATH_HOSTDEVICE inline const T*
 Color4<T>::getValue () const IMATH_NOEXCEPT
 {
-    return (const T*) &r;
+    return reinterpret_cast<const T*> (this);
 }
 
 template <class T>
