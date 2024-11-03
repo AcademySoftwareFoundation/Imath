@@ -15,6 +15,7 @@
 #include <boost/any.hpp>
 #include <iostream>
 #include "PyImathUtil.h"
+#include "ImathVec.h"
 
 //
 // Note: when PyImath from the v2 release of OpenEXR depended on Iex,
@@ -292,7 +293,7 @@ class FixedArray
           _unmaskedLength(other._unmaskedLength)
     {
     }
-        
+
     const FixedArray &
     operator = (const FixedArray &other)
     {
@@ -357,7 +358,7 @@ class FixedArray
             start = i; end = i+1; step = 1; slicelength = 1;
         } else {
             PyErr_SetString(PyExc_TypeError, "Object is not a slice");
-	    boost::python::throw_error_already_set();
+            boost::python::throw_error_already_set();
         }
     }
 
@@ -830,6 +831,27 @@ template <class Container, class Data>
 struct IndexAccessDefault {
     typedef Data & result_type;
     static Data & apply(Container &c, size_t i) { return c[i]; }
+};
+
+template <class Data>
+struct IndexAccessDefault<IMATH_INTERNAL_NAMESPACE::Vec2<Data>, Data> {
+    using Container = IMATH_INTERNAL_NAMESPACE::Vec2<Data>;
+    typedef Data & result_type;
+    static Data & apply(Container &c, size_t i) { return *(c.getValue () + i); }
+};
+
+template <class Data>
+struct IndexAccessDefault<IMATH_INTERNAL_NAMESPACE::Vec3<Data>, Data> {
+    using Container = IMATH_INTERNAL_NAMESPACE::Vec3<Data>;
+    typedef Data & result_type;
+    static Data & apply(Container &c, size_t i) { return *(c.getValue () + i); }
+};
+
+template <class Data>
+struct IndexAccessDefault<IMATH_INTERNAL_NAMESPACE::Vec4<Data>, Data> {
+    using Container = IMATH_INTERNAL_NAMESPACE::Vec4<Data>;
+    typedef Data & result_type;
+    static Data & apply(Container &c, size_t i) { return *(c.getValue () + i); }
 };
 
 template <class Container, class Data, int Length, class IndexAccess = IndexAccessDefault<Container,Data> >
