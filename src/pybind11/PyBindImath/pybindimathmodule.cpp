@@ -13,6 +13,9 @@ PYBIND11_MODULE(pybindimath, m)
 
     PyBindImath::register_imath_vec(m);
     PyBindImath::register_imath_box(m);
+    PyBindImath::register_imath_plane(m);
+    PyBindImath::register_imath_line(m);
+
 
     //
     // Initialize constants

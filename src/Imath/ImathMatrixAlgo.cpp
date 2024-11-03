@@ -834,10 +834,10 @@ twoSidedJacobiSVD (
 
     // The off-diagonal entries are (effectively) 0, so whatever's left on the
     // diagonal are the singular values:
-    S[0] = A[0][0];
-    S[1] = A[1][1];
-    S[2] = A[2][2];
-    S[3] = A[3][3];
+    S.x = A[0][0];
+    S.y = A[1][1];
+    S.z = A[2][2];
+    S.w = A[3][3];
 
     // Nothing thus far has guaranteed that the singular values are positive,
     // so let's go back through and flip them if not (since by contract we are
@@ -901,14 +901,14 @@ twoSidedJacobiSVD (
         {
             for (int i = 0; i < 4; ++i)
                 U[i][3] = -U[i][3];
-            S[3] = -S[3];
+            S.w = -S.w;
         }
 
         if (V.determinant () < 0)
         {
             for (int i = 0; i < 4; ++i)
                 V[i][3] = -V[i][3];
-            S[3] = -S[3];
+            S.w = -S.w;
         }
     }
 }

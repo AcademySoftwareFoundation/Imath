@@ -1093,7 +1093,7 @@ template <class T,int index>
 static FixedArray<T>
 Vec2Array_get(FixedArray<IMATH_NAMESPACE::Vec2<T> > &va)
 {
-    return FixedArray<T>(&(va.unchecked_index(0)[index]),
+    return FixedArray<T>(va.unchecked_index(0).getValue () + index,
                          va.len(), 2*va.stride(), va.handle(), va.writable());
 }
 

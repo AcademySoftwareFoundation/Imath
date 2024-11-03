@@ -1247,8 +1247,8 @@ extractAndRemoveScalingAndShear (
     T maxVal = 0;
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
-            if (IMATH_INTERNAL_NAMESPACE::abs (row[i][j]) > maxVal)
-                maxVal = IMATH_INTERNAL_NAMESPACE::abs (row[i][j]);
+            if (IMATH_INTERNAL_NAMESPACE::abs (mat[i][j]) > maxVal)
+                maxVal = IMATH_INTERNAL_NAMESPACE::abs (mat[i][j]);
 
     //
     // We normalize the 2x2 matrix here.
@@ -1299,11 +1299,11 @@ extractAndRemoveScalingAndShear (
     // Check for a coordinate system flip. If the determinant
     // is -1, then flip the rotation matrix and adjust the scale(Y)
     // and shear(XY) factors to compensate.
-    if (row[0][0] * row[1][1] - row[0][1] * row[1][0] < 0)
+    if (row[0].x * row[1].y - row[0].y * row[1].x < 0)
     {
-        row[1][0] *= -1;
-        row[1][1] *= -1;
-        scl[1] *= -1;
+        row[1].x *= -1;
+        row[1].y *= -1;
+        scl.y *= -1;
         shr *= -1;
     }
 
@@ -1311,8 +1311,8 @@ extractAndRemoveScalingAndShear (
     // The upper 2x2 matrix in mat is now a rotation matrix.
     for (int i = 0; i < 2; i++)
     {
-        mat[i][0] = row[i][0];
-        mat[i][1] = row[i][1];
+        mat[i][0] = row[i].x;
+        mat[i][1] = row[i].y;
     }
 
     scl *= maxVal;

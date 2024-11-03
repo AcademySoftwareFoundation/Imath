@@ -123,9 +123,21 @@ public:
     /// @}
 
     /// Element access
+    ///
+    /// NB: This method of access uses dynamic array accesses which
+    /// can prevent compiler optimizations and force temporaries to be
+    /// stored to the stack and other missed vectorization
+    /// opportunities. Use of direct access to xy, xz, etc when
+    /// possible should be preferred.
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int i);
 
     /// Element access
+    ///
+    /// NB: This method of access uses dynamic array accesses which
+    /// can prevent compiler optimizations and force temporaries to be
+    /// stored to the stack and other missed vectorization
+    /// opportunities. Use of direct access to xy, xz, etc when
+    /// possible should be preferred.
     IMATH_HOSTDEVICE constexpr const T& operator[] (int i) const;
 
     /// @{
@@ -332,14 +344,14 @@ template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T&
 Shear6<T>::operator[] (int i)
 {
-    return (&xy)[i]; // NOSONAR - suppress SonarCloud bug report.
+    return reinterpret_cast<T*> (this)[i];
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline const T&
 Shear6<T>::operator[] (int i) const
 {
-    return (&xy)[i]; // NOSONAR - suppress SonarCloud bug report.
+    return reinterpret_cast<const T*> (this)[i];
 }
 
 template <class T>

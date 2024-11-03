@@ -25,7 +25,9 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 //
 // Helpful macros for checking which C++ standard we are compiling with.
 //
-#    if (__cplusplus >= 202002L)
+#    if (__cplusplus >= 202302L)
+#        define IMATH_CPLUSPLUS_VERSION 23
+#    elif (__cplusplus >= 202002L)
 #        define IMATH_CPLUSPLUS_VERSION 20
 #    elif (__cplusplus >= 201703L)
 #        define IMATH_CPLUSPLUS_VERSION 17

@@ -11,6 +11,8 @@ find_package(pybind11 REQUIRED)
 set(PYBINDIMATH_SOURCES
     PyBindImathBox.cpp
     PyBindImathVec.cpp
+    PyBindImathPlane.cpp
+    PyBindImathLine.cpp
 )
 
 set(PYBINDIMATH_HEADERS
