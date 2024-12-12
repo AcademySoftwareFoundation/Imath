@@ -13,6 +13,7 @@ set(PYBINDIMATH_SOURCES
     PyBindImathVec.cpp
     PyBindImathPlane.cpp
     PyBindImathLine.cpp
+    PyBindImathEuler.cpp
 )
 
 set(PYBINDIMATH_HEADERS
