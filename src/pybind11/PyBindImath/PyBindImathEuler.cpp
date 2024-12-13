@@ -52,7 +52,7 @@ namespace PyBindImath {
         register_euler<float>(m, "Eulerf");
         register_euler<double>(m, "Eulerd");
 
-        // Enums for Euler Orders 
+        // Enums for Euler Orders
         pybind11::enum_<Imath::Euler<float>::Order>(m, "Order")
                 .value("XYZ", Imath::Euler<float>::XYZ)
                 .value("XZY", Imath::Euler<float>::XZY)
