@@ -45,8 +45,8 @@ void register_plane(pybind11::module& m, const char *name)
 
  void register_imath_plane(pybind11::module &m) 
 {
-    register_plane<Imath::Plane3f, Imath::Line3f, Imath::V3f, float>(m, "Plane3f");
-    register_plane<Imath::Plane3d, Imath::Line3d, Imath::V3d, double>(m, "Plane3d");
+    register_plane<IMATH_NAMESPACE::Plane3f, IMATH_NAMESPACE::Line3f, IMATH_NAMESPACE::V3f, float>(m, "Plane3f");
+    register_plane<IMATH_NAMESPACE::Plane3d, IMATH_NAMESPACE::Line3d, IMATH_NAMESPACE::V3d, double>(m, "Plane3d");
 }
 
 }

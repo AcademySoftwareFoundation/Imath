@@ -865,7 +865,7 @@ FixedVArray<T>::register_(const char* doc)
 
 template class PYIMATH_EXPORT FixedVArray<int>;
 template class PYIMATH_EXPORT FixedVArray<float>;
-template class PYIMATH_EXPORT FixedVArray<Imath::Vec2<int> >;
-template class PYIMATH_EXPORT FixedVArray<Imath::Vec2<float> >;
+template class PYIMATH_EXPORT FixedVArray<IMATH_NAMESPACE::Vec2<int> >;
+template class PYIMATH_EXPORT FixedVArray<IMATH_NAMESPACE::Vec2<float> >;
 
 } // namespace PyImath

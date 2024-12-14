@@ -1,625 +1,178 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright (c) Contributors to the OpenEXR Project.
-#
-# GitHub Actions workflow file
-# https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+# The CI workflow uses steps defined in ci_steps.yml, via the "uses:"
+# directive. Linux, macOS, and Windows all share a common set of
+# configure/build/validate steps.
 
 name: CI
-
-# Run on all changes except:
-# - doc file changes
-# - changes to the website, since yhe website has a separate workflow
-# - changes to workflows other than this one
 
 on:
   push:
     paths:
       - '**'
       - '!**.md'
-      - '!website/**'
       - '!.github/workflows/**'
       - '.github/workflows/ci_workflow.yml'
+      - '.github/workflows/ci_steps.yml'
   pull_request:
     paths:
       - '**'
       - '!**.md'
-      - '!website/**'
       - '!.github/workflows/**'
       - '.github/workflows/ci_workflow.yml'
+      - '.github/workflows/ci_steps.yml'
 
 permissions:
   contents: read
 
+# NOTE: All jobs have a "build" number that appears in the "jobs"
+# listing on the GitHub actions page. This build number also
+# identifies the reference install manifest in
+# share/ci/install_manifest. The validate_install.py script compares
+# the job's generated install_manifest.txt to the reference file to
+# validate that the proper files have been installed.
+#
+# If you add jobs, you must add a corresponding
+# share/ci/install_manifest file.
+
 jobs:
-  # Linux jobs run in Docker containers, so the latest OS version is OK. macOS 
-  # and Windows jobs need to be locked to specific virtual environment 
-  # versions to mitigate issues from OS updates, and will require maintenance 
-  # as OS versions are retired.
-  #
-  # GH Actions (Free plan) supports 20 concurrent jobs, with 5 concurrent macOS 
-  # jobs. This workflow tries to utilize (but not exceed) that budget to 
-  # promote timely CI.
-
-  # ---------------------------------------------------------------------------
-  # Linux
-  # ---------------------------------------------------------------------------
-  # TODO: Add ARM build. Add sanitize build.
-
   linux:
-    name: 'Linux CentOS 7 VFX CY${{ matrix.vfx-cy }} 
-      <${{ matrix.compiler-desc }} ,
-       ${{ matrix.python-desc }},
-       config=${{ matrix.build-type }}, 
-       shared=${{ matrix.build-shared }}, 
-       cxx=${{ matrix.cxx-standard }}>'
-    # GH-hosted VM. The build runs in CentOS 7 'container' defined below.
-    runs-on: ubuntu-latest
-    container:
+    name: 'Linux.${{ matrix.build}}: ${{ matrix.label }}'
+    uses: ./.github/workflows/ci_steps.yml
+    with:
+      # Set values for the "inputs:" as defined in ci_steps.yml
+      # Note the defaults provided here for the builds that don't specify
+      # values.
+      os: ubuntu-latest
+      build: ${{ matrix.build }}
       # DockerHub: https://hub.docker.com/u/aswf
       # Source: https://github.com/AcademySoftwareFoundation/aswf-docker
-      image: aswf/ci-openexr:${{ matrix.vfx-cy }}
+      container: aswf/ci-openexr:${{ matrix.vfx-cy || '2024' }}
+      cxx-standard: ${{ matrix.cxx-standard || '17' }}
+      cxx-compiler: ${{ matrix.cxx-compiler || 'g++' }}
+      cc-compiler: ${{ matrix.cc-compiler || 'gcc' }}
+      build-type: ${{ matrix.build-type || 'Release' }}
+      python: ${{ matrix.python || 'ON' }}
+      pybind11: ${{ matrix.pybind11 || 'ON' }}
+      BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
+      IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
+      BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
+      namespace: ${{ matrix.namespace }}
+      validate_install: ${{ matrix.validate_install || 'ON' }}
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         include:
-          # -------------------------------------------------------------------
-          # GCC, VFX CY2024
-          # -------------------------------------------------------------------
-          # C++17, Python 3.11
+
           - build: 1
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc11.2.1
-            python: 'ON'
-            python-desc: python3.11
-            vfx-cy: 2024
+            label: Release
 
-          # C++17, Python 3.11, Debug
           - build: 2
+            label: Debug
             build-type: Debug
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc11.2.1
-            python: 'ON'
-            python-desc: python3.11
-            vfx-cy: 2024
 
-          # C++17, Python 3.11, Static
           - build: 3
-            build-type: Release
-            build-shared: 'OFF'
-            cxx-standard: 17
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc11.2.1
-            python: 'ON'
-            python-desc: python3.11
-            vfx-cy: 2024
+            label: static
+            BUILD_SHARED_LIBS: 'OFF'
 
-          # C++14, Python 3.11
           - build: 4
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc11.2.1
-            python: 'ON'
-            python-desc: python3.11
-            vfx-cy: 2024
+            label: pkgconfig=OFF, testing=OFF, python=OFF
+            IMATH_INSTALL_PKG_CONFIG: 'OFF'
+            BUILD_TESTING: 'OFF'
+            python: 'OFF'
+            pybind11: 'OFF'
 
-          # -------------------------------------------------------------------
-          # Clang 15.0, VFX CY2024 
-          # -------------------------------------------------------------------
-          # C++17, Python 3.11
           - build: 5
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: clang++
-            cc-compiler: clang
-            compiler-desc: clang15.0
-            python: 'ON'
-            python-desc: python3.11
-            vfx-cy: 2024
+            label: custom namespace
+            namespace: 'TEST_NAMESPACE'
 
-          # -------------------------------------------------------------------
-          # Clang 14.0, VFX CY2024 
-          # -------------------------------------------------------------------
-          # C++17, Python 3.11
           - build: 6
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
+            label: clang
             cxx-compiler: clang++
             cc-compiler: clang
-            compiler-desc: clang14.0
-            python: 'ON'
-            python-desc: python3.11
-            vfx-cy: 2024
 
-          # -------------------------------------------------------------------
-          # GCC, VFX CY2023
-          # -------------------------------------------------------------------
-          # C++17, Python 3.10.9
           - build: 7
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc11.2.1
-            python: 'ON'
-            python-desc: python3.10.9
+            label: vfx2023
             vfx-cy: 2023
 
-          # -------------------------------------------------------------------
-          # GCC, VFX CY2022
-          # -------------------------------------------------------------------
-          # C++17, Python 3.9
-          - build: 8
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc9.3.1
-            python: 'ON'
-            python-desc: python3.9.7
-            vfx-cy: 2022
-
-          # -------------------------------------------------------------------
-          # GCC, VFX CY2021
-          # -------------------------------------------------------------------
-          # C++17, Python 3.7.9
-          - build: 9
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc9.3.1
-            python: 'ON'
-            python-desc: python3.7.9
-            vfx-cy: 2021
-
-          # -------------------------------------------------------------------
-          # pybind11 and python together
-          # -------------------------------------------------------------------
-          - build: 10
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc11.2.1
-            python: 'ON'
-            pybind11: 'ON'
-            python-desc: python3.11
-            vfx-cy: 2024
-
-          # -------------------------------------------------------------------
-          # pybind11 w/o python
-          # -------------------------------------------------------------------
-          - build: 11
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            cxx-compiler: g++
-            cc-compiler: gcc
-            compiler-desc: gcc11.2.1
-            python: 'OFF'
-            pybind11: 'ON'
-            python-desc: python3.11
-            vfx-cy: 2024
-    env:
-      CXX: ${{ matrix.cxx-compiler }}
-      CC: ${{ matrix.cc-compiler }}
-      ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION: node16
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Create build directories
-        run: |
-          mkdir _install
-          mkdir _build
-          mkdir _examples
-      - name: Configure
-        run: |
-          cmake .. \
-                -DCMAKE_INSTALL_PREFIX=../_install \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
-                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
-                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }} \
-                -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
-                -DBUILD_SHARED_LIBS=${{ matrix.build-shared }} \
-                -DPYTHON=${{ matrix.python }} \
-                -DPYBIND11=${{ matrix.pybind11 }} \
-                -DUSE_PYTHON2=${{ matrix.use-python2 }}
-        working-directory: _build
-      - name: Build
-        run: |
-          cmake --build . \
-                --target install \
-                --config ${{ matrix.build-type }}
-        working-directory: _build
-      - name: Examples
-        run: |
-          # Make sure we can build the tests when configured as a
-          # standalone application linking against the just-installed
-          # Imath library.
-          cmake ../src/ImathTest \
-                -DCMAKE_PREFIX_PATH=../../_install \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
-                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
-                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }}
-          cmake --build . \
-                --config ${{ matrix.build-type }}
-
-          # Confirm the tests run
-          ./bin/ImathTest
-
-          # Confirm the examples compile and execute
-          rm -rf bin CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
-          cmake ../website/examples \
-                -DCMAKE_PREFIX_PATH=../../_install \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
-                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
-                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }}
-          cmake --build . \
-                --config ${{ matrix.build-type }}
-          ctest
-        working-directory: _examples 
-      - name: Test Python
-        run: |
-          # Confirm the python module loads. Set PYTHONPATH to the
-          # _install directory of the module (better to find it
-          # procedurally than hard code a path).
-          if [[ "${{ matrix.python }}" == "ON" ]]; then
-              export PYTHONPATH=`find ../_install -name imath.so | xargs dirname`
-              python -c "import imath;print(imath.__version__)"
-          fi
-          if [[ "${{ matrix.pybind11 }}" == "ON" ]]; then
-              export PYTHONPATH=`find ../_install -name 'pybindimath.*.so' | xargs dirname`
-              python -c "import pybindimath;print(pybindimath.__version__)"
-          fi
-        shell: bash
-        working-directory: _build
-      - name: Test
-        run: |
-          ctest -T Test ${{ matrix.exclude-tests }} \
-                -C ${{ matrix.build-type }} \
-                --timeout 7200 \
-                --output-on-failure \
-                -VV
-        working-directory: _build
-
-  # ---------------------------------------------------------------------------
-  # macOS
-  # ---------------------------------------------------------------------------
-  
-  macos_no_python:
-    name: 'macOS VFXP-${{matrix.vfx-cy }} macos-${{ matrix.osver }}
-      <AppleClang 11.0 
-       config=${{ matrix.build-type }}, 
-       shared=${{ matrix.build-shared }}, 
-       cxx=${{ matrix.cxx-standard }}' 
-    runs-on: macos-${{ matrix.osver }}
+  macOS:
+    name: 'macOS.${{ matrix.build}}: ${{ matrix.label }}'
+    uses: ./.github/workflows/ci_steps.yml
+    with:
+      # Set values for the "inputs:" as defined in ci_steps.yml
+      # Note the defaults provided here for the builds that don't specify
+      # values.
+      os: ${{ matrix.os || 'macos-14' }}
+      build: ${{ matrix.build }}
+      cxx-standard: ${{ matrix.cxx-standard || '17' }}
+      build-type: ${{ matrix.build-type || 'Release' }}
+      python: ${{ matrix.python || 'OFF' }}
+      pybind11: ${{ matrix.pybind11 || 'OFF' }}
+      BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
+      IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
+      BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
+      validate_install: ${{ matrix.validate_install || 'ON' }}
     strategy:
       matrix:
-        build: [1, 2, 3, 4, 5, 6, 7]
         include:
-          # --------------------------------------------------------------------
-          # MacOS 14
-          # --------------------------------------------------------------------
-          # Release
+
           - build: 1
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            exclude-tests:
-            osver: 14
+            label: Release
 
-          # Debug
           - build: 2
+            label: Debug
             build-type: Debug
-            build-shared: 'ON'
-            cxx-standard: 17
-            exclude-tests:
-            osver: 14
 
-          # Static
           - build: 3
-            build-type: Debug
-            build-shared: 'OFF'
-            cxx-standard: 17
-            exclude-tests:
-            osver: 14
+            label: static
+            BUILD_SHARED_LIBS: 'OFF'
 
-          # C++14
           - build: 4
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 14
-            exclude-tests:
-            osver: 14
+            label: pkgconfig=OFF, testing=OFF
+            IMATH_INSTALL_PKG_CONFIG: 'OFF'
+            BUILD_TESTING: 'OFF'
 
-          # C++11
           - build: 5
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 11
-            exclude-tests:
-            osver: 14
-              
-          # --------------------------------------------------------------------
-          # MacOS 13
-          # --------------------------------------------------------------------
-          - build: 6
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            exclude-tests:
-            osver: 13
-
-          # --------------------------------------------------------------------
-          # MacOS 12
-          # --------------------------------------------------------------------
-          - build: 7
-            build-type: Release
-            build-shared: 'ON'
-            cxx-standard: 17
-            exclude-tests:
-            osver: 12
-
-    steps:
-      ## - name: Setup Python
-      ##   uses: actions/setup-python@v1
-      ##   with:
-      ##     python-version: ${{ matrix.python-version }}
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Create build directories
-        run: |
-          mkdir _install
-          mkdir _build
-          mkdir _examples
-      ## - name: Install Dependences
-      ##   run: |
-      ##     share/ci/scripts/macos/install_boost.sh 
-      ##   shell: bash
-      - name: Configure
-        run: |
-          cmake ../. \
-                -DCMAKE_INSTALL_PREFIX=../_install \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
-                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
-                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }} \
-                -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
-                -DBUILD_SHARED_LIBS=${{ matrix.build-shared }}
-        working-directory: _build
-      - name: Build
-        run: |
-          cmake --build . \
-                --target install \
-                --config ${{ matrix.build-type }} \
-                -- -j2
-        working-directory: _build
-      - name: Examples
-        run: |
-          # Make sure we can build the tests when configured as a
-          # standalone application linking against the just-installed
-          # Imath library.
-          cmake ../src/ImathTest \
-                -DCMAKE_PREFIX_PATH=../../_install \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
-                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
-                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }}
-          cmake --build . \
-                --config ${{ matrix.build-type }}
-          # Confirm the tests run
-          ./bin/ImathTest
-        working-directory: _examples 
-      - name: Test
-        run: |
-          ctest -T Test ${{matrix.exclude-tests }} \
-                -C ${{matrix.build-type}} \
-                --timeout 7200 \
-                --output-on-failure \
-                -VV
-        working-directory: _build
-
-  # ---------------------------------------------------------------------------
-  # Windows
-  # ---------------------------------------------------------------------------
-  # TODO: Figure out how to get CMake to use Python 3.7.7.
-  #       Boost 1.70.0 will only make boost python for 3.7.
-  #       CMake finds Python 3.8 on the VM when configuring, then does not find 
-  #       a corresponding boost python38 module. 
-  # TODO: Determine why tests hang in Debug job.
-  # TODO: Fix boost script to install from sourceforge.
+            label: macos-13
+            os: macos-13
 
   windows:
-    name: 'Windows VFXP-${{ matrix.vfx-cy }}
-      <${{ matrix.compiler-desc }},
-       config=${{ matrix.build-type }}, 
-       shared=${{ matrix.build-shared }}, 
-       cxx=${{ matrix.cxx-standard }}, 
-       python=OFF>' 
-    runs-on: windows-${{ matrix.osver }}
+    name: 'Windows.${{ matrix.build}}: ${{ matrix.label }}'
+    uses: ./.github/workflows/ci_steps.yml
+    with:
+      # Set values for the "inputs:" as defined in ci_steps.yml
+      # Note the defaults provided here for the builds that don't specify
+      # values.
+      os: ${{ matrix.os || 'windows-2022' }}
+      build: ${{ matrix.build }}
+      cxx-standard: ${{ matrix.cxx-standard || '17' }}
+      build-type: ${{ matrix.build-type || 'Release' }}
+      python: ${{ matrix.python || 'OFF' }}
+      pybind11: ${{ matrix.pybind11 || 'OFF' }}
+      BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
+      IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
+      BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
+      validate_install: ${{ matrix.validate_install || 'ON' }}
     strategy:
       matrix:
-        build: [1, 3, 4, 6, 7, 8]
         include:
-          # -------------------------------------------------------------------
-          # VFX CY2023 - C++17 - Windows 2022 runner - MSVC 2022 (17.5)
-          # -------------------------------------------------------------------
-          # C++17, Release Shared
           - build: 1
-            build-type: Release
-            build-shared: 'ON'
-            compiler-desc: msvc17.5
-            cxx-standard: 17
-            vfx-cy: 2023
-            exclude-tests:
-            osver: 2022
+            label: Release
 
-          # C++17, Debug -
-          ## - build: 2
-          ##   build-type: Debug
-          ##   build-shared: 'ON'
-          ##   cxx-standard: 17
-          ##   exclude-tests:
+          - build: 2
+            label: Debug
+            build-type: Debug
 
-          # C++17, Release Static
           - build: 3
-            build-type: Release
-            build-shared: 'OFF'
-            compiler-desc: msvc17.5
-            cxx-standard: 17
-            vfx-cy: 2023
-            exclude-tests:
-            osver: 2022
+            label: static
+            BUILD_SHARED_LIBS: 'OFF'
 
-          # -------------------------------------------------------------------
-          # VFX CY2022 - C++17 - Windows 2019
-          # -------------------------------------------------------------------
-          # C++17, Release Shared
-          - build: 4
-            build-type: Release
-            build-shared: 'ON'
-            compiler-desc: msvc16.11
-            cxx-standard: 17
-            vfx-cy: 2022
-            exclude-tests:
-            osver: 2019
+          - build: 5
+            label: pkgconfig=OFF, testing=OFF
+            IMATH_INSTALL_PKG_CONFIG: 'OFF'
+            BUILD_TESTING: 'OFF'
 
-          # C++17, Debug -
-          ## - build: 5
-          ##   build-type: Debug
-          ##   build-shared: 'ON'
-          ##   cxx-standard: 17
-          ##   exclude-tests:
-
-          # C++17, Release Static
           - build: 6
-            build-type: Release
-            build-shared: 'OFF'
-            compiler-desc: msvc16.11
-            cxx-standard: 17
-            vfx-cy: 2022
-            exclude-tests:
-            osver: 2019
+            label: vfx2022
+            os: windows-2019
 
-         # -------------------------------------------------------------------
-          # VFX CY2020 - C++14 - Windows 2019
-          # -------------------------------------------------------------------
-          # C++14, Release Shared
-          - build: 7
-            build-type: Release
-            build-shared: 'ON'
-            compiler-desc: msvc16.11
-            cxx-standard: 14
-            vfx-cy: 2020
-            exclude-tests:
-            osver: 2019
-
-          # -------------------------------------------------------------------
-          # VFX CY2019 - C++11 - Windows 2019
-          # -------------------------------------------------------------------
-          # C++11, Release Shared
-          - build: 8
-            build-type: Release
-            build-shared: 'ON'
-            compiler-desc: msvc16.11
-            cxx-standard: 11
-            exclude-tests:
-            osver: 2019
-
-    steps:
-      # - name: Setup Python
-        # uses: actions/setup-python@v1
-        # with:
-          # python-version: ${{ matrix.python-version }}
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Create build directories
-        run: |
-          mkdir _install
-          mkdir _build
-        shell: bash
-      # - name: Install Dependences
-        # run: |
-          # share/ci/scripts/windows/install_python.ps1 ${{ matrix.python-version }} $HOME 
-          # share/ci/scripts/windows/install_boost.ps1 ${{ matrix.boost-version }} $HOME 3.8
-        # shell: powershell
-      - name: Configure
-        run: |
-          cmake ../. \
-                -DCMAKE_INSTALL_PREFIX=../_install \
-                -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} \
-                -DCMAKE_CXX_STANDARD=${{ matrix.cxx-standard }} \
-                -DCMAKE_CXX_FLAGS=${{ matrix.cxx-flags }} \
-                -DCMAKE_VERBOSE_MAKEFILE:BOOL='OFF' \
-                -DBUILD_SHARED_LIBS=${{ matrix.build-shared }}
-                # NB: removed trailing slash from these lines
-                # -DBOOST_ROOT:FILEPATH=$BOOST_ROOT
-                # -DPYTHON='ON'
-                # -DPython_EXECUTABLE:FILEPATH="$PYTHON_ROOT"
-                # -DPython_INCLUDE_DIR:FILEPATH="$PYTHON_ROOT/include"
-                # -DPython_LIBRARY:"$PYTHON_ROOT\libs"
-        shell: bash
-        working-directory: _build
-      - name: Build
-        run: |
-          cmake --build . \
-                --target install \
-                --config ${{ matrix.build-type }}
-        shell: bash
-        working-directory: _build
-      - name: Test
-        run: |
-          ctest -T Test ${{ matrix.exclude-tests }} \
-                -C ${{ matrix.build-type }} \
-                --timeout 7200 \
-                --output-on-failure \
-                -VV
-        shell: bash
-        working-directory: _build
-
-  Website:
-
-    # Build the documentation, using a process that mimics the readthedoc build.
-    #
-    # Note that this job does not actually build Imath libraries,
-    # it just runs doxygen and sphinx.
-    
-    name: 'Website'
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Create build directory
-        run: mkdir _build
-      - name: Install doxygen 
-        # Need help2man for tool manpages
-        run: sudo apt-get install -y doxygen help2man
-      - name: Install sphinx requirements
-        run: pip3 install -r website/requirements.txt
-      - name: Configure
-        run: cmake .. -DBUILD_WEBSITE='ON'
-        working-directory: _build
-      - name: Build
-        run: |
-          cmake --build . \
-                --target website \
-                --config Release
-        working-directory: _build
-    

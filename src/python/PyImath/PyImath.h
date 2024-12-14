@@ -41,8 +41,8 @@ typedef FixedArray2D<double> DoubleArray2D;
 
 typedef FixedVArray<int> VIntArray;
 typedef FixedVArray<float> VFloatArray;
-typedef FixedVArray<Imath::Vec2<int> > VV2iArray;
-typedef FixedVArray<Imath::Vec2<float> > VV2fArray;
+typedef FixedVArray<IMATH_NAMESPACE::Vec2<int> > VV2iArray;
+typedef FixedVArray<IMATH_NAMESPACE::Vec2<float> > VV2fArray;
 
 }
 

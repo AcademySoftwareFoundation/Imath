@@ -33,7 +33,7 @@ struct op_quatNormalized {
 template <class T>
 struct op_quatSlerp {
     static inline T apply (const T &self, const T &qB, const typename T::BaseType t)
-        { return Imath::slerpShortestArc (self, qB, t); }
+        { return IMATH_NAMESPACE::slerpShortestArc (self, qB, t); }
 };
 
 

@@ -40,111 +40,111 @@ wrapTester (PyObject * /* self */, PyObject *args)
             std::string typeStr (type);
 
             if (typeStr == "Box2i")
-                return PyImath::Box2i::wrap (Imath::Box2i (Imath::V2i (1, 2), 
-                                                           Imath::V2i (3, 4)));
+                return PyImath::Box2i::wrap (IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (1, 2), 
+                                                           IMATH_NAMESPACE::V2i (3, 4)));
             else if (typeStr == "Box2f")
-                return PyImath::Box2f::wrap (Imath::Box2f (Imath::V2f (1.1f, 2.2f), 
-                                                           Imath::V2f (3.3f, 4.4f)));
+                return PyImath::Box2f::wrap (IMATH_NAMESPACE::Box2f (IMATH_NAMESPACE::V2f (1.1f, 2.2f), 
+                                                           IMATH_NAMESPACE::V2f (3.3f, 4.4f)));
             else if (typeStr == "Box2d")
-                return PyImath::Box2d::wrap (Imath::Box2d (Imath::V2d (1.1, 2.2), 
-                                                           Imath::V2d (3.3, 4.4)));
+                return PyImath::Box2d::wrap (IMATH_NAMESPACE::Box2d (IMATH_NAMESPACE::V2d (1.1, 2.2), 
+                                                           IMATH_NAMESPACE::V2d (3.3, 4.4)));
 
             if (typeStr == "Box3i")
-                return PyImath::Box3i::wrap (Imath::Box3i (Imath::V3i (1, 2, 3), 
-                                                           Imath::V3i (4, 5, 6)));
+                return PyImath::Box3i::wrap (IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (1, 2, 3), 
+                                                           IMATH_NAMESPACE::V3i (4, 5, 6)));
             else if (typeStr == "Box3f")
-                return PyImath::Box3f::wrap (Imath::Box3f (Imath::V3f (1.1f, 2.2f, 3.3f), 
-                                                           Imath::V3f (4.4f, 5.5f, 6.6f)));
+                return PyImath::Box3f::wrap (IMATH_NAMESPACE::Box3f (IMATH_NAMESPACE::V3f (1.1f, 2.2f, 3.3f), 
+                                                           IMATH_NAMESPACE::V3f (4.4f, 5.5f, 6.6f)));
             else if (typeStr == "Box3d")
-                return PyImath::Box3d::wrap (Imath::Box3d (Imath::V3d (1.1, 2.2, 3.3), 
-                                                           Imath::V3d (4.4, 5.5, 6.6)));
+                return PyImath::Box3d::wrap (IMATH_NAMESPACE::Box3d (IMATH_NAMESPACE::V3d (1.1, 2.2, 3.3), 
+                                                           IMATH_NAMESPACE::V3d (4.4, 5.5, 6.6)));
 
             else if (typeStr == "Color3c")
-                return PyImath::Color3c::wrap (Imath::Color3c (1, 2, 3));
+                return PyImath::Color3c::wrap (IMATH_NAMESPACE::Color3c (1, 2, 3));
             else if (typeStr == "Color3f")
-                return PyImath::Color3f::wrap (Imath::Color3f (1.1f, 2.2f, 3.3f));
+                return PyImath::Color3f::wrap (IMATH_NAMESPACE::Color3f (1.1f, 2.2f, 3.3f));
 
             else if (typeStr == "Color4c")
-                return PyImath::Color4c::wrap (Imath::Color4c (1, 2, 3, 4));
+                return PyImath::Color4c::wrap (IMATH_NAMESPACE::Color4c (1, 2, 3, 4));
             else if (typeStr == "Color4f")
-                return PyImath::Color4f::wrap (Imath::Color4f (1.1f, 2.2f, 3.3f, 4.4f));
+                return PyImath::Color4f::wrap (IMATH_NAMESPACE::Color4f (1.1f, 2.2f, 3.3f, 4.4f));
 
             else if (typeStr == "Eulerf")
-                return PyImath::Eulerf::wrap (Imath::Eulerf (Imath::V3f (1.1f, 2.2f, 3.3f), 
-                                                             Imath::Eulerf::XZY));
+                return PyImath::Eulerf::wrap (IMATH_NAMESPACE::Eulerf (IMATH_NAMESPACE::V3f (1.1f, 2.2f, 3.3f), 
+                                                             IMATH_NAMESPACE::Eulerf::XZY));
             else if (typeStr == "Eulerd")
-                return PyImath::Eulerd::wrap (Imath::Eulerd (Imath::V3d (1.1f, 2.2f, 3.3f), 
-                                                             Imath::Eulerd::XZY));
+                return PyImath::Eulerd::wrap (IMATH_NAMESPACE::Eulerd (IMATH_NAMESPACE::V3d (1.1f, 2.2f, 3.3f), 
+                                                             IMATH_NAMESPACE::Eulerd::XZY));
 
             else if (typeStr == "Frustumf")
-                return PyImath::Frustumf::wrap (Imath::Frustumf (1.1f, 2.2f, 3.3f,
+                return PyImath::Frustumf::wrap (IMATH_NAMESPACE::Frustumf (1.1f, 2.2f, 3.3f,
                                                                  4.4f, 5.5f, 6.6f));
             else if (typeStr == "Frustumd")
-                return PyImath::Frustumd::wrap (Imath::Frustumd (1.1, 2.2, 3.3,
+                return PyImath::Frustumd::wrap (IMATH_NAMESPACE::Frustumd (1.1, 2.2, 3.3,
                                                                  4.4, 5.5, 6.6));
 
             else if (typeStr == "Line3f")
-                return PyImath::Line3f::wrap (Imath::Line3f (Imath::V3f (1.1f, 2.2f, 3.3f),
-                                                             Imath::V3f (4.4f, 5.5f, 6.6f)));
+                return PyImath::Line3f::wrap (IMATH_NAMESPACE::Line3f (IMATH_NAMESPACE::V3f (1.1f, 2.2f, 3.3f),
+                                                             IMATH_NAMESPACE::V3f (4.4f, 5.5f, 6.6f)));
             else if (typeStr == "Line3d")
-                return PyImath::Line3d::wrap (Imath::Line3d (Imath::V3d (1.1, 2.2, 3.3),
-                                                             Imath::V3d (4.4, 5.5, 6.6)));
+                return PyImath::Line3d::wrap (IMATH_NAMESPACE::Line3d (IMATH_NAMESPACE::V3d (1.1, 2.2, 3.3),
+                                                             IMATH_NAMESPACE::V3d (4.4, 5.5, 6.6)));
 
             else if (typeStr == "M33f")
-                return PyImath::M33f::wrap (Imath::M33f (1.1f, 2.2f, 3.3f,
+                return PyImath::M33f::wrap (IMATH_NAMESPACE::M33f (1.1f, 2.2f, 3.3f,
                                                          4.4f, 5.5f, 6.6f,
                                                          7.7f, 8.8f, 9.9f));
             else if (typeStr == "M33d")
-                return PyImath::M33d::wrap (Imath::M33d (1.1, 2.2, 3.3,
+                return PyImath::M33d::wrap (IMATH_NAMESPACE::M33d (1.1, 2.2, 3.3,
                                                          4.4, 5.5, 6.6,
                                                          7.7, 8.8, 9.9));
 
             else if (typeStr == "M44f")
-                return PyImath::M44f::wrap (Imath::M44f (1.1f, 2.2f, 3.3f, 4.4f,
+                return PyImath::M44f::wrap (IMATH_NAMESPACE::M44f (1.1f, 2.2f, 3.3f, 4.4f,
                                                          5.5f, 6.6f, 7.7f, 8.8f, 
                                                          9.9f, 10.10f, 11.11f, 12.12f,
                                                          13.13f, 14.14f, 15.15f, 16.16f));
             else if (typeStr == "M44d")
-                return PyImath::M44d::wrap (Imath::M44d (1.1, 2.2, 3.3, 4.4,
+                return PyImath::M44d::wrap (IMATH_NAMESPACE::M44d (1.1, 2.2, 3.3, 4.4,
                                                          5.5, 6.6, 7.7, 8.8, 
                                                          9.9, 10.10, 11.11, 12.12,
                                                          13.13, 14.14, 15.15, 16.16));
 
             else if (typeStr == "Plane3f")
-                return PyImath::Plane3f::wrap (Imath::Plane3f (Imath::V3f (1.1f, 2.2f, 3.3f), 4.4f));
+                return PyImath::Plane3f::wrap (IMATH_NAMESPACE::Plane3f (IMATH_NAMESPACE::V3f (1.1f, 2.2f, 3.3f), 4.4f));
             else if (typeStr == "Plane3d")
-                return PyImath::Plane3d::wrap (Imath::Plane3d (Imath::V3d (1.1, 2.2, 3.3), 4.4));
+                return PyImath::Plane3d::wrap (IMATH_NAMESPACE::Plane3d (IMATH_NAMESPACE::V3d (1.1, 2.2, 3.3), 4.4));
 
             else if (typeStr == "Quatf")
-                return PyImath::Quatf::wrap (Imath::Quatf (1.1f, 2.2f, 3.3f, 4.4f));
+                return PyImath::Quatf::wrap (IMATH_NAMESPACE::Quatf (1.1f, 2.2f, 3.3f, 4.4f));
             else if (typeStr == "Quatd")
-                return PyImath::Quatd::wrap (Imath::Quatd (1.1, 2.2, 3.3, 4.4));
+                return PyImath::Quatd::wrap (IMATH_NAMESPACE::Quatd (1.1, 2.2, 3.3, 4.4));
 
             else if (typeStr == "Rand32")
-                return PyImath::Rand32::wrap (Imath::Rand32 ());
+                return PyImath::Rand32::wrap (IMATH_NAMESPACE::Rand32 ());
             else if (typeStr == "Rand48")
-                return PyImath::Rand48::wrap (Imath::Rand48 ());
+                return PyImath::Rand48::wrap (IMATH_NAMESPACE::Rand48 ());
 
             else if (typeStr == "Shear6f")
-                return PyImath::Shear6f::wrap (Imath::Shear6f (1.1f, 2.2f, 3.3f,
+                return PyImath::Shear6f::wrap (IMATH_NAMESPACE::Shear6f (1.1f, 2.2f, 3.3f,
                                                                4.4f, 5.5f, 6.6f));
             else if (typeStr == "Shear6d")
-                return PyImath::Shear6d::wrap (Imath::Shear6d (1.1, 2.2, 3.3,
+                return PyImath::Shear6d::wrap (IMATH_NAMESPACE::Shear6d (1.1, 2.2, 3.3,
                                                                4.4, 5.5, 6.6));
 
             else if (typeStr == "V2i")
-                return PyImath::V2i::wrap (Imath::V2i (1, 2));
+                return PyImath::V2i::wrap (IMATH_NAMESPACE::V2i (1, 2));
             else if (typeStr == "V2f")
-                return PyImath::V2f::wrap (Imath::V2f (1.1f, 2.2f));
+                return PyImath::V2f::wrap (IMATH_NAMESPACE::V2f (1.1f, 2.2f));
             else if (typeStr == "V2d")
-                return PyImath::V2d::wrap (Imath::V2d (1.1, 2.2));
+                return PyImath::V2d::wrap (IMATH_NAMESPACE::V2d (1.1, 2.2));
 
             else if (typeStr == "V3i")
-                return PyImath::V3i::wrap (Imath::V3i (1, 2, 3));
+                return PyImath::V3i::wrap (IMATH_NAMESPACE::V3i (1, 2, 3));
             else if (typeStr == "V3f")
-                return PyImath::V3f::wrap (Imath::V3f (1.1f, 2.2f, 3.3f));
+                return PyImath::V3f::wrap (IMATH_NAMESPACE::V3f (1.1f, 2.2f, 3.3f));
             else if (typeStr == "V3d")
-                return PyImath::V3d::wrap (Imath::V3d (1.1, 2.2, 3.3));
+                return PyImath::V3d::wrap (IMATH_NAMESPACE::V3d (1.1, 2.2, 3.3));
         }
         PyErr_Clear();
 
@@ -309,62 +309,62 @@ testBox2 ()
 
     std::cerr << "Testing Box2i:\n";
 
-    Imath::Box2i b2iAsB2i;
+    IMATH_NAMESPACE::Box2i b2iAsB2i;
     assert (PyImath::Box2i::convert (b2iObj, &b2iAsB2i) == 1);
-    assert (b2iAsB2i == Imath::Box2i (Imath::V2i (1, 2), 
-                                      Imath::V2i (3, 4)));
+    assert (b2iAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (1, 2), 
+                                      IMATH_NAMESPACE::V2i (3, 4)));
 
-    Imath::Box2i b2fAsB2i;
+    IMATH_NAMESPACE::Box2i b2fAsB2i;
     assert (PyImath::Box2i::convert (b2fObj, &b2fAsB2i) == 1);
-    assert (b2fAsB2i == Imath::Box2i (Imath::V2i (5, 6),
-                                      Imath::V2i (7, 8)));
+    assert (b2fAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (5, 6),
+                                      IMATH_NAMESPACE::V2i (7, 8)));
 
-    Imath::Box2i b2dAsB2i;
+    IMATH_NAMESPACE::Box2i b2dAsB2i;
     assert (PyImath::Box2i::convert (b2dObj, &b2dAsB2i) == 1);
-    assert (b2dAsB2i == Imath::Box2i (Imath::V2i (9, 10),
-                                      Imath::V2i (11, 12)));
+    assert (b2dAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (9, 10),
+                                      IMATH_NAMESPACE::V2i (11, 12)));
 
-    Imath::Box2i t2iAsB2i;
+    IMATH_NAMESPACE::Box2i t2iAsB2i;
     assert (PyImath::Box2i::convert (t2iObj, &t2iAsB2i) == 1);
-    assert (t2iAsB2i == Imath::Box2i (Imath::V2i (1, 2), 
-                                      Imath::V2i (3, 4)));
+    assert (t2iAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (1, 2), 
+                                      IMATH_NAMESPACE::V2i (3, 4)));
 
-    Imath::Box2i t2V2iAsB2i;
+    IMATH_NAMESPACE::Box2i t2V2iAsB2i;
     assert (PyImath::Box2i::convert (t2V2iObj, &t2V2iAsB2i) == 1);
-    assert (t2V2iAsB2i == Imath::Box2i (Imath::V2i (1, 2), 
-                                        Imath::V2i (3, 4)));
+    assert (t2V2iAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (1, 2), 
+                                        IMATH_NAMESPACE::V2i (3, 4)));
 
-    Imath::Box2i t2iMixAsB2i;
+    IMATH_NAMESPACE::Box2i t2iMixAsB2i;
     assert (PyImath::Box2i::convert (t2iMixObj, &t2iMixAsB2i) == 1);
-    assert (t2iMixAsB2i == Imath::Box2i (Imath::V2i (1, 2), 
-                                         Imath::V2i (3, 4)));
+    assert (t2iMixAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (1, 2), 
+                                         IMATH_NAMESPACE::V2i (3, 4)));
 
-    Imath::Box2i t2fAsB2i;
+    IMATH_NAMESPACE::Box2i t2fAsB2i;
     assert (PyImath::Box2i::convert (t2fObj, &t2fAsB2i) == 1);
-    assert (t2fAsB2i == Imath::Box2i (Imath::V2i (5, 6), 
-                                      Imath::V2i (7, 8)));
+    assert (t2fAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (5, 6), 
+                                      IMATH_NAMESPACE::V2i (7, 8)));
 
-    Imath::Box2i t2V2fAsB2i;
+    IMATH_NAMESPACE::Box2i t2V2fAsB2i;
     assert (PyImath::Box2i::convert (t2V2fObj, &t2V2fAsB2i) == 1);
-    assert (t2V2fAsB2i == Imath::Box2i (Imath::V2i (5, 6),
-                                        Imath::V2i (7, 8)));
+    assert (t2V2fAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (5, 6),
+                                        IMATH_NAMESPACE::V2i (7, 8)));
 
-    Imath::Box2i t2fMixAsB2i;
+    IMATH_NAMESPACE::Box2i t2fMixAsB2i;
     assert (PyImath::Box2i::convert (t2fMixObj, &t2fMixAsB2i) == 1);
-    assert (t2fMixAsB2i == Imath::Box2i (Imath::V2i (5, 6), 
-                                         Imath::V2i (7, 8)));
+    assert (t2fMixAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (5, 6), 
+                                         IMATH_NAMESPACE::V2i (7, 8)));
 
-    Imath::Box2i t2V2dAsB2i;
+    IMATH_NAMESPACE::Box2i t2V2dAsB2i;
     assert (PyImath::Box2i::convert (t2V2dObj, &t2V2dAsB2i) == 1);
-    assert (t2V2dAsB2i == Imath::Box2i (Imath::V2i (9, 10),
-                                        Imath::V2i (11, 12)));
+    assert (t2V2dAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (9, 10),
+                                        IMATH_NAMESPACE::V2i (11, 12)));
 
-    Imath::Box2i t2dMixAsB2i;
+    IMATH_NAMESPACE::Box2i t2dMixAsB2i;
     assert (PyImath::Box2i::convert (t2dMixObj, &t2dMixAsB2i) == 1);
-    assert (t2dMixAsB2i == Imath::Box2i (Imath::V2i (9, 10),
-                                         Imath::V2i (11, 12)));
+    assert (t2dMixAsB2i == IMATH_NAMESPACE::Box2i (IMATH_NAMESPACE::V2i (9, 10),
+                                         IMATH_NAMESPACE::V2i (11, 12)));
 
-    Imath::Box2i iAsB2i;
+    IMATH_NAMESPACE::Box2i iAsB2i;
     assert (PyImath::Box2i::convert (iObj, &iAsB2i) == 0);
 
     std::cerr << "ok\n";
@@ -373,62 +373,62 @@ testBox2 ()
 
     std::cerr << "Testing Box2f:\n";
 
-    Imath::Box2f b2iAsB2f;
+    IMATH_NAMESPACE::Box2f b2iAsB2f;
     assert (PyImath::Box2f::convert (b2iObj, &b2iAsB2f) == 1);
-    assert (b2iAsB2f.min.equalWithAbsError (Imath::V2f (1.0f, 2.0f), 1e-7));
-    assert (b2iAsB2f.max.equalWithAbsError (Imath::V2f (3.0f, 4.0f), 1e-7));
+    assert (b2iAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (1.0f, 2.0f), 1e-7));
+    assert (b2iAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (3.0f, 4.0f), 1e-7));
 
-    Imath::Box2f b2fAsB2f;
+    IMATH_NAMESPACE::Box2f b2fAsB2f;
     assert (PyImath::Box2f::convert (b2fObj, &b2fAsB2f) == 1);
-    assert (b2fAsB2f.min.equalWithAbsError (Imath::V2f (5.5f, 6.6f), 1e-7));
-    assert (b2fAsB2f.max.equalWithAbsError (Imath::V2f (7.7f, 8.8f), 1e-7));
+    assert (b2fAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (5.5f, 6.6f), 1e-7));
+    assert (b2fAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (7.7f, 8.8f), 1e-7));
 
-    Imath::Box2f b2dAsB2f;
+    IMATH_NAMESPACE::Box2f b2dAsB2f;
     assert (PyImath::Box2f::convert (b2dObj, &b2dAsB2f) == 1);
-    assert (b2dAsB2f.min.equalWithAbsError (Imath::V2f (9.9f, 10.10f), 1e-7));
-    assert (b2dAsB2f.max.equalWithAbsError (Imath::V2f (11.11f, 12.12f), 1e-7));
+    assert (b2dAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (9.9f, 10.10f), 1e-7));
+    assert (b2dAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (11.11f, 12.12f), 1e-7));
 
-    Imath::Box2f t2iAsB2f;
+    IMATH_NAMESPACE::Box2f t2iAsB2f;
     assert (PyImath::Box2f::convert (t2iObj, &t2iAsB2f) == 1);
-    assert (t2iAsB2f.min.equalWithAbsError (Imath::V2f (1.0f, 2.0f), 1e-7)); 
-    assert (t2iAsB2f.max.equalWithAbsError (Imath::V2f (3.0f, 4.0f), 1e-7)); 
+    assert (t2iAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (1.0f, 2.0f), 1e-7)); 
+    assert (t2iAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (3.0f, 4.0f), 1e-7)); 
 
-    Imath::Box2f t2V2iAsB2f;
+    IMATH_NAMESPACE::Box2f t2V2iAsB2f;
     assert (PyImath::Box2f::convert (t2V2iObj, &t2V2iAsB2f) == 1);
-    assert (t2V2iAsB2f.min.equalWithAbsError (Imath::V2f (1.0f, 2.0f), 1e-7));
-    assert (t2V2iAsB2f.max.equalWithAbsError (Imath::V2f (3.0f, 4.0f), 1e-7));
+    assert (t2V2iAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (1.0f, 2.0f), 1e-7));
+    assert (t2V2iAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (3.0f, 4.0f), 1e-7));
 
-    Imath::Box2f t2iMixAsB2f;
+    IMATH_NAMESPACE::Box2f t2iMixAsB2f;
     assert (PyImath::Box2f::convert (t2iMixObj, &t2iMixAsB2f) == 1);
-    assert (t2iMixAsB2f.min.equalWithAbsError (Imath::V2f (1.0f, 2.0f), 1e-7));
-    assert (t2iMixAsB2f.max.equalWithAbsError (Imath::V2f (3.0, 4.0f), 1e-7));
+    assert (t2iMixAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (1.0f, 2.0f), 1e-7));
+    assert (t2iMixAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (3.0, 4.0f), 1e-7));
 
-    Imath::Box2f t2fAsB2f;
+    IMATH_NAMESPACE::Box2f t2fAsB2f;
     assert (PyImath::Box2f::convert (t2fObj, &t2fAsB2f) == 1);
-    assert (t2fAsB2f.min.equalWithAbsError (Imath::V2f (5.5f, 6.6f), 1e-7));
-    assert (t2fAsB2f.max.equalWithAbsError (Imath::V2f (7.7f, 8.8f), 1e-7));
+    assert (t2fAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (5.5f, 6.6f), 1e-7));
+    assert (t2fAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (7.7f, 8.8f), 1e-7));
 
-    Imath::Box2f t2V2fAsB2f;
+    IMATH_NAMESPACE::Box2f t2V2fAsB2f;
     assert (PyImath::Box2f::convert (t2V2fObj, &t2V2fAsB2f) == 1);
-    assert (t2V2fAsB2f.min.equalWithAbsError (Imath::V2f (5.5f, 6.6f), 1e-7));
-    assert (t2V2fAsB2f.max.equalWithAbsError (Imath::V2f (7.7f, 8.8f), 1e-7));
+    assert (t2V2fAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (5.5f, 6.6f), 1e-7));
+    assert (t2V2fAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (7.7f, 8.8f), 1e-7));
 
-    Imath::Box2f t2fMixAsB2f;
+    IMATH_NAMESPACE::Box2f t2fMixAsB2f;
     assert (PyImath::Box2f::convert (t2fMixObj, &t2fMixAsB2f) == 1);
-    assert (t2fMixAsB2f.min.equalWithAbsError (Imath::V2f (5.5f, 6.6f), 1e-7));
-    assert (t2fMixAsB2f.max.equalWithAbsError (Imath::V2f (7.7f, 8.8f), 1e-7));
+    assert (t2fMixAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (5.5f, 6.6f), 1e-7));
+    assert (t2fMixAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (7.7f, 8.8f), 1e-7));
 
-    Imath::Box2f t2V2dAsB2f;
+    IMATH_NAMESPACE::Box2f t2V2dAsB2f;
     assert (PyImath::Box2f::convert (t2V2dObj, &t2V2dAsB2f) == 1);
-    assert (t2V2dAsB2f.min.equalWithAbsError (Imath::V2f (9.9f, 10.10f), 1e-7));
-    assert (t2V2dAsB2f.max.equalWithAbsError (Imath::V2f (11.11, 12.12f), 1e-7));
+    assert (t2V2dAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (9.9f, 10.10f), 1e-7));
+    assert (t2V2dAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (11.11, 12.12f), 1e-7));
 
-    Imath::Box2f t2dMixAsB2f;
+    IMATH_NAMESPACE::Box2f t2dMixAsB2f;
     assert (PyImath::Box2f::convert (t2dMixObj, &t2dMixAsB2f) == 1);
-    assert (t2dMixAsB2f.min.equalWithAbsError (Imath::V2f (9.9f, 10.10f), 1e-7));
-    assert (t2dMixAsB2f.max.equalWithAbsError (Imath::V2f (11.11f, 12.12f), 1e-7));
+    assert (t2dMixAsB2f.min.equalWithAbsError (IMATH_NAMESPACE::V2f (9.9f, 10.10f), 1e-7));
+    assert (t2dMixAsB2f.max.equalWithAbsError (IMATH_NAMESPACE::V2f (11.11f, 12.12f), 1e-7));
 
-    Imath::Box2f iAsB2f;
+    IMATH_NAMESPACE::Box2f iAsB2f;
     assert (PyImath::Box2f::convert (iObj, &iAsB2f) == 0);
 
     std::cerr << "ok\n";
@@ -437,62 +437,62 @@ testBox2 ()
 
     std::cerr << "Testing Box2d:\n";
 
-    Imath::Box2d b2iAsB2d;
+    IMATH_NAMESPACE::Box2d b2iAsB2d;
     assert (PyImath::Box2d::convert (b2iObj, &b2iAsB2d) == 1);
-    assert (b2iAsB2d.min.equalWithAbsError (Imath::V2d (1.0, 2.0), 1e-7));
-    assert (b2iAsB2d.max.equalWithAbsError (Imath::V2d (3.0, 4.0), 1e-7));
+    assert (b2iAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (1.0, 2.0), 1e-7));
+    assert (b2iAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (3.0, 4.0), 1e-7));
 
-    Imath::Box2d b2fAsB2d;
+    IMATH_NAMESPACE::Box2d b2fAsB2d;
     assert (PyImath::Box2d::convert (b2fObj, &b2fAsB2d) == 1);
-    assert (b2fAsB2d.min.equalWithAbsError (Imath::V2d (5.5, 6.6), 1e-7));
-    assert (b2fAsB2d.max.equalWithAbsError (Imath::V2d (7.7, 8.8), 1e-6));
+    assert (b2fAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (5.5, 6.6), 1e-7));
+    assert (b2fAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (7.7, 8.8), 1e-6));
 
-    Imath::Box2d b2dAsB2d;
+    IMATH_NAMESPACE::Box2d b2dAsB2d;
     assert (PyImath::Box2d::convert (b2dObj, &b2dAsB2d) == 1);
-    assert (b2dAsB2d.min.equalWithAbsError (Imath::V2d (9.9, 10.10), 1e-6));
-    assert (b2dAsB2d.max.equalWithAbsError (Imath::V2d (11.11, 12.12), 1e-6));
+    assert (b2dAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (9.9, 10.10), 1e-6));
+    assert (b2dAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (11.11, 12.12), 1e-6));
 
-    Imath::Box2d t2iAsB2d;
+    IMATH_NAMESPACE::Box2d t2iAsB2d;
     assert (PyImath::Box2d::convert (t2iObj, &t2iAsB2d) == 1);
-    assert (t2iAsB2d.min.equalWithAbsError (Imath::V2d (1.0, 2.0), 1e-7)); 
-    assert (t2iAsB2d.max.equalWithAbsError (Imath::V2d (3.0, 4.0), 1e-7)); 
+    assert (t2iAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (1.0, 2.0), 1e-7)); 
+    assert (t2iAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (3.0, 4.0), 1e-7)); 
 
-    Imath::Box2d t2V2iAsB2d;
+    IMATH_NAMESPACE::Box2d t2V2iAsB2d;
     assert (PyImath::Box2d::convert (t2V2iObj, &t2V2iAsB2d) == 1);
-    assert (t2V2iAsB2d.min.equalWithAbsError (Imath::V2d (1.0, 2.0), 1e-7));
-    assert (t2V2iAsB2d.max.equalWithAbsError (Imath::V2d (3.0, 4.0), 1e-7));
+    assert (t2V2iAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (1.0, 2.0), 1e-7));
+    assert (t2V2iAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (3.0, 4.0), 1e-7));
 
-    Imath::Box2d t2iMixAsB2d;
+    IMATH_NAMESPACE::Box2d t2iMixAsB2d;
     assert (PyImath::Box2d::convert (t2iMixObj, &t2iMixAsB2d) == 1);
-    assert (t2iMixAsB2d.min.equalWithAbsError (Imath::V2d (1.0, 2.0), 1e-7));
-    assert (t2iMixAsB2d.max.equalWithAbsError (Imath::V2d (3.0, 4.0), 1e-7));
+    assert (t2iMixAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (1.0, 2.0), 1e-7));
+    assert (t2iMixAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (3.0, 4.0), 1e-7));
 
-    Imath::Box2d t2fAsB2d;
+    IMATH_NAMESPACE::Box2d t2fAsB2d;
     assert (PyImath::Box2d::convert (t2fObj, &t2fAsB2d) == 1);
-    assert (t2fAsB2d.min.equalWithAbsError (Imath::V2d (5.5, 6.6), 1e-7));
-    assert (t2fAsB2d.max.equalWithAbsError (Imath::V2d (7.7, 8.8), 1e-7));
+    assert (t2fAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (5.5, 6.6), 1e-7));
+    assert (t2fAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (7.7, 8.8), 1e-7));
 
-    Imath::Box2d t2V2fAsB2d;
+    IMATH_NAMESPACE::Box2d t2V2fAsB2d;
     assert (PyImath::Box2d::convert (t2V2fObj, &t2V2fAsB2d) == 1);
-    assert (t2V2fAsB2d.min.equalWithAbsError (Imath::V2d (5.5, 6.6), 1e-7));
-    assert (t2V2fAsB2d.max.equalWithAbsError (Imath::V2d (7.7, 8.8), 1e-6));
+    assert (t2V2fAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (5.5, 6.6), 1e-7));
+    assert (t2V2fAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (7.7, 8.8), 1e-6));
 
-    Imath::Box2d t2fMixAsB2d;
+    IMATH_NAMESPACE::Box2d t2fMixAsB2d;
     assert (PyImath::Box2d::convert (t2fMixObj, &t2fMixAsB2d) == 1);
-    assert (t2fMixAsB2d.min.equalWithAbsError (Imath::V2d (5.5, 6.6), 1e-7));
-    assert (t2fMixAsB2d.max.equalWithAbsError (Imath::V2d (7.7, 8.8), 1e-7));
+    assert (t2fMixAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (5.5, 6.6), 1e-7));
+    assert (t2fMixAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (7.7, 8.8), 1e-7));
 
-    Imath::Box2d t2V2dAsB2d;
+    IMATH_NAMESPACE::Box2d t2V2dAsB2d;
     assert (PyImath::Box2d::convert (t2V2dObj, &t2V2dAsB2d) == 1);
-    assert (t2V2dAsB2d.min.equalWithAbsError (Imath::V2d (9.9, 10.10), 1e-7));
-    assert (t2V2dAsB2d.max.equalWithAbsError (Imath::V2d (11.11, 12.12), 1e-7));
+    assert (t2V2dAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (9.9, 10.10), 1e-7));
+    assert (t2V2dAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (11.11, 12.12), 1e-7));
 
-    Imath::Box2d t2dMixAsB2d;
+    IMATH_NAMESPACE::Box2d t2dMixAsB2d;
     assert (PyImath::Box2d::convert (t2dMixObj, &t2dMixAsB2d) == 1);
-    assert (t2dMixAsB2d.min.equalWithAbsError (Imath::V2d (9.9, 10.10), 1e-7));
-    assert (t2dMixAsB2d.max.equalWithAbsError (Imath::V2d (11.11, 12.12), 1e-7));
+    assert (t2dMixAsB2d.min.equalWithAbsError (IMATH_NAMESPACE::V2d (9.9, 10.10), 1e-7));
+    assert (t2dMixAsB2d.max.equalWithAbsError (IMATH_NAMESPACE::V2d (11.11, 12.12), 1e-7));
 
-    Imath::Box2d iAsB2d;
+    IMATH_NAMESPACE::Box2d iAsB2d;
     assert (PyImath::Box2d::convert (iObj, &iAsB2d) == 0);
 
     std::cerr << "ok\n";
@@ -612,62 +612,62 @@ testBox3 ()
 
     std::cerr << "Testing Box3i:\n";
 
-    Imath::Box3i b3iAsB3i;
+    IMATH_NAMESPACE::Box3i b3iAsB3i;
     assert (PyImath::Box3i::convert (b3iObj, &b3iAsB3i) == 1);
-    assert (b3iAsB3i == Imath::Box3i (Imath::V3i (1, 2, 3), 
-                                      Imath::V3i (4, 5, 6)));
+    assert (b3iAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (1, 2, 3), 
+                                      IMATH_NAMESPACE::V3i (4, 5, 6)));
 
-    Imath::Box3i b3fAsB3i;
+    IMATH_NAMESPACE::Box3i b3fAsB3i;
     assert (PyImath::Box3i::convert (b3fObj, &b3fAsB3i) == 1);
-    assert (b3fAsB3i == Imath::Box3i (Imath::V3i (7, 8, 9),
-                                      Imath::V3i (10, 11, 12)));
+    assert (b3fAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (7, 8, 9),
+                                      IMATH_NAMESPACE::V3i (10, 11, 12)));
 
-    Imath::Box3i b3dAsB3i;
+    IMATH_NAMESPACE::Box3i b3dAsB3i;
     assert (PyImath::Box3i::convert (b3dObj, &b3dAsB3i) == 1);
-    assert (b3dAsB3i == Imath::Box3i (Imath::V3i (13, 14, 15),
-                                      Imath::V3i (16, 17, 18)));
+    assert (b3dAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (13, 14, 15),
+                                      IMATH_NAMESPACE::V3i (16, 17, 18)));
 
-    Imath::Box3i t2iAsB3i;
+    IMATH_NAMESPACE::Box3i t2iAsB3i;
     assert (PyImath::Box3i::convert (t2iObj, &t2iAsB3i) == 1);
-    assert (t2iAsB3i == Imath::Box3i (Imath::V3i (1, 2, 3), 
-                                      Imath::V3i (4, 5, 6)));
+    assert (t2iAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (1, 2, 3), 
+                                      IMATH_NAMESPACE::V3i (4, 5, 6)));
 
-    Imath::Box3i t2V3iAsB3i;
+    IMATH_NAMESPACE::Box3i t2V3iAsB3i;
     assert (PyImath::Box3i::convert (t2V3iObj, &t2V3iAsB3i) == 1);
-    assert (t2V3iAsB3i == Imath::Box3i (Imath::V3i (1, 2, 3), 
-                                        Imath::V3i (4, 5, 6)));
+    assert (t2V3iAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (1, 2, 3), 
+                                        IMATH_NAMESPACE::V3i (4, 5, 6)));
 
-    Imath::Box3i t2iMixAsB3i;
+    IMATH_NAMESPACE::Box3i t2iMixAsB3i;
     assert (PyImath::Box3i::convert (t2iMixObj, &t2iMixAsB3i) == 1);
-    assert (t2iMixAsB3i == Imath::Box3i (Imath::V3i (1, 2, 3), 
-                                         Imath::V3i (4, 5, 6)));
+    assert (t2iMixAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (1, 2, 3), 
+                                         IMATH_NAMESPACE::V3i (4, 5, 6)));
 
-    Imath::Box3i t2fAsB3i;
+    IMATH_NAMESPACE::Box3i t2fAsB3i;
     assert (PyImath::Box3i::convert (t2fObj, &t2fAsB3i) == 1);
-    assert (t2fAsB3i == Imath::Box3i (Imath::V3i (7, 8, 9), 
-                                      Imath::V3i (10, 11, 12)));
+    assert (t2fAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (7, 8, 9), 
+                                      IMATH_NAMESPACE::V3i (10, 11, 12)));
 
-    Imath::Box3i t2V3fAsB3i;
+    IMATH_NAMESPACE::Box3i t2V3fAsB3i;
     assert (PyImath::Box3i::convert (t2V3fObj, &t2V3fAsB3i) == 1);
-    assert (t2V3fAsB3i == Imath::Box3i (Imath::V3i (7, 8, 9),
-                                        Imath::V3i (10, 11, 12)));
+    assert (t2V3fAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (7, 8, 9),
+                                        IMATH_NAMESPACE::V3i (10, 11, 12)));
 
-    Imath::Box3i t2fMixAsB3i;
+    IMATH_NAMESPACE::Box3i t2fMixAsB3i;
     assert (PyImath::Box3i::convert (t2fMixObj, &t2fMixAsB3i) == 1);
-    assert (t2fMixAsB3i == Imath::Box3i (Imath::V3i (7, 8, 9), 
-                                         Imath::V3i (10, 11, 12)));
+    assert (t2fMixAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (7, 8, 9), 
+                                         IMATH_NAMESPACE::V3i (10, 11, 12)));
 
-    Imath::Box3i t2V3dAsB3i;
+    IMATH_NAMESPACE::Box3i t2V3dAsB3i;
     assert (PyImath::Box3i::convert (t2V3dObj, &t2V3dAsB3i) == 1);
-    assert (t2V3dAsB3i == Imath::Box3i (Imath::V3i (13, 14, 15),
-                                        Imath::V3i (16, 17, 18)));
+    assert (t2V3dAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (13, 14, 15),
+                                        IMATH_NAMESPACE::V3i (16, 17, 18)));
 
-    Imath::Box3i t2dMixAsB3i;
+    IMATH_NAMESPACE::Box3i t2dMixAsB3i;
     assert (PyImath::Box3i::convert (t2dMixObj, &t2dMixAsB3i) == 1);
-    assert (t2dMixAsB3i == Imath::Box3i (Imath::V3i (13, 14, 15),
-                                         Imath::V3i (16, 17, 18)));
+    assert (t2dMixAsB3i == IMATH_NAMESPACE::Box3i (IMATH_NAMESPACE::V3i (13, 14, 15),
+                                         IMATH_NAMESPACE::V3i (16, 17, 18)));
 
-    Imath::Box3i iAsB3i;
+    IMATH_NAMESPACE::Box3i iAsB3i;
     assert (PyImath::Box3i::convert (iObj, &iAsB3i) == 0);
 
     std::cerr << "ok\n";
@@ -676,62 +676,62 @@ testBox3 ()
 
     std::cerr << "Testing Box3f:\n";
 
-    Imath::Box3f b3iAsB3f;
+    IMATH_NAMESPACE::Box3f b3iAsB3f;
     assert (PyImath::Box3f::convert (b3iObj, &b3iAsB3f) == 1);
-    assert (b3iAsB3f.min.equalWithAbsError (Imath::V3f (1.0f, 2.0f, 3.0f), 1e-7));
-    assert (b3iAsB3f.max.equalWithAbsError (Imath::V3f (4.0f, 5.0f, 6.0f), 1e-7));
+    assert (b3iAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (1.0f, 2.0f, 3.0f), 1e-7));
+    assert (b3iAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (4.0f, 5.0f, 6.0f), 1e-7));
 
-    Imath::Box3f b3fAsB3f;
+    IMATH_NAMESPACE::Box3f b3fAsB3f;
     assert (PyImath::Box3f::convert (b3fObj, &b3fAsB3f) == 1);
-    assert (b3fAsB3f.min.equalWithAbsError (Imath::V3f (7.7f, 8.8f, 9.9f), 1e-7));
-    assert (b3fAsB3f.max.equalWithAbsError (Imath::V3f (10.10f, 11.11f, 12.12f), 1e-7));
+    assert (b3fAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (7.7f, 8.8f, 9.9f), 1e-7));
+    assert (b3fAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (10.10f, 11.11f, 12.12f), 1e-7));
 
-    Imath::Box3f b3dAsB3f;
+    IMATH_NAMESPACE::Box3f b3dAsB3f;
     assert (PyImath::Box3f::convert (b3dObj, &b3dAsB3f) == 1);
-    assert (b3dAsB3f.min.equalWithAbsError (Imath::V3f (13.13f, 14.14f, 15.15f), 1e-7));
-    assert (b3dAsB3f.max.equalWithAbsError (Imath::V3f (16.16f, 17.17f, 18.18f), 1e-7));
+    assert (b3dAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (13.13f, 14.14f, 15.15f), 1e-7));
+    assert (b3dAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (16.16f, 17.17f, 18.18f), 1e-7));
 
-    Imath::Box3f t2iAsB3f;
+    IMATH_NAMESPACE::Box3f t2iAsB3f;
     assert (PyImath::Box3f::convert (t2iObj, &t2iAsB3f) == 1);
-    assert (t2iAsB3f.min.equalWithAbsError (Imath::V3f (1.0f, 2.0f, 3.0f), 1e-7)); 
-    assert (t2iAsB3f.max.equalWithAbsError (Imath::V3f (4.0f, 5.0f, 6.0f), 1e-7)); 
+    assert (t2iAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (1.0f, 2.0f, 3.0f), 1e-7)); 
+    assert (t2iAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (4.0f, 5.0f, 6.0f), 1e-7)); 
 
-    Imath::Box3f t2V3iAsB3f;
+    IMATH_NAMESPACE::Box3f t2V3iAsB3f;
     assert (PyImath::Box3f::convert (t2V3iObj, &t2V3iAsB3f) == 1);
-    assert (t2V3iAsB3f.min.equalWithAbsError (Imath::V3f (1.0f, 2.0f, 3.0f), 1e-7));
-    assert (t2V3iAsB3f.max.equalWithAbsError (Imath::V3f (4.0f, 5.0f, 6.0f), 1e-7));
+    assert (t2V3iAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (1.0f, 2.0f, 3.0f), 1e-7));
+    assert (t2V3iAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (4.0f, 5.0f, 6.0f), 1e-7));
 
-    Imath::Box3f t2iMixAsB3f;
+    IMATH_NAMESPACE::Box3f t2iMixAsB3f;
     assert (PyImath::Box3f::convert (t2iMixObj, &t2iMixAsB3f) == 1);
-    assert (t2iMixAsB3f.min.equalWithAbsError (Imath::V3f (1.0f, 2.0f, 3.0f), 1e-7));
-    assert (t2iMixAsB3f.max.equalWithAbsError (Imath::V3f (4.0f, 5.0f, 6.0f), 1e-7));
+    assert (t2iMixAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (1.0f, 2.0f, 3.0f), 1e-7));
+    assert (t2iMixAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (4.0f, 5.0f, 6.0f), 1e-7));
 
-    Imath::Box3f t2fAsB3f;
+    IMATH_NAMESPACE::Box3f t2fAsB3f;
     assert (PyImath::Box3f::convert (t2fObj, &t2fAsB3f) == 1);
-    assert (t2fAsB3f.min.equalWithAbsError (Imath::V3f (7.7f, 8.8f, 9.9f), 1e-7));
-    assert (t2fAsB3f.max.equalWithAbsError (Imath::V3f (10.10f, 11.11f, 12.12f), 1e-7));
+    assert (t2fAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (7.7f, 8.8f, 9.9f), 1e-7));
+    assert (t2fAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (10.10f, 11.11f, 12.12f), 1e-7));
 
-    Imath::Box3f t2V3fAsB3f;
+    IMATH_NAMESPACE::Box3f t2V3fAsB3f;
     assert (PyImath::Box3f::convert (t2V3fObj, &t2V3fAsB3f) == 1);
-    assert (t2V3fAsB3f.min.equalWithAbsError (Imath::V3f (7.7f, 8.8f, 9.9f), 1e-7));
-    assert (t2V3fAsB3f.max.equalWithAbsError (Imath::V3f (10.10f, 11.11f, 12.12f), 1e-7));
+    assert (t2V3fAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (7.7f, 8.8f, 9.9f), 1e-7));
+    assert (t2V3fAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (10.10f, 11.11f, 12.12f), 1e-7));
 
-    Imath::Box3f t2fMixAsB3f;
+    IMATH_NAMESPACE::Box3f t2fMixAsB3f;
     assert (PyImath::Box3f::convert (t2fMixObj, &t2fMixAsB3f) == 1);
-    assert (t2fMixAsB3f.min.equalWithAbsError (Imath::V3f (7.7f, 8.8f, 9.9f), 1e-7));
-    assert (t2fMixAsB3f.max.equalWithAbsError (Imath::V3f (10.10f, 11.11f, 12.12f), 1e-7));
+    assert (t2fMixAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (7.7f, 8.8f, 9.9f), 1e-7));
+    assert (t2fMixAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (10.10f, 11.11f, 12.12f), 1e-7));
 
-    Imath::Box3f t2V3dAsB3f;
+    IMATH_NAMESPACE::Box3f t2V3dAsB3f;
     assert (PyImath::Box3f::convert (t2V3dObj, &t2V3dAsB3f) == 1);
-    assert (t2V3dAsB3f.min.equalWithAbsError (Imath::V3f (13.13f, 14.14f, 15.15f), 1e-7));
-    assert (t2V3dAsB3f.max.equalWithAbsError (Imath::V3f (16.16f, 17.17f, 18.18f), 1e-7));
+    assert (t2V3dAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (13.13f, 14.14f, 15.15f), 1e-7));
+    assert (t2V3dAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (16.16f, 17.17f, 18.18f), 1e-7));
 
-    Imath::Box3f t2dMixAsB3f;
+    IMATH_NAMESPACE::Box3f t2dMixAsB3f;
     assert (PyImath::Box3f::convert (t2dMixObj, &t2dMixAsB3f) == 1);
-    assert (t2dMixAsB3f.min.equalWithAbsError (Imath::V3f (13.13f, 14.14f, 15.15f), 1e-7));
-    assert (t2dMixAsB3f.max.equalWithAbsError (Imath::V3f (16.16f, 17.17f, 18.18f), 1e-7));
+    assert (t2dMixAsB3f.min.equalWithAbsError (IMATH_NAMESPACE::V3f (13.13f, 14.14f, 15.15f), 1e-7));
+    assert (t2dMixAsB3f.max.equalWithAbsError (IMATH_NAMESPACE::V3f (16.16f, 17.17f, 18.18f), 1e-7));
 
-    Imath::Box3f iAsB3f;
+    IMATH_NAMESPACE::Box3f iAsB3f;
     assert (PyImath::Box3f::convert (iObj, &iAsB3f) == 0);
 
     std::cerr << "ok\n";
@@ -740,62 +740,62 @@ testBox3 ()
 
     std::cerr << "Testing Box3d:\n";
 
-    Imath::Box3d b3iAsB3d;
+    IMATH_NAMESPACE::Box3d b3iAsB3d;
     assert (PyImath::Box3d::convert (b3iObj, &b3iAsB3d) == 1);
-    assert (b3iAsB3d.min.equalWithAbsError (Imath::V3d (1.0, 2.0, 3.0), 1e-7));
-    assert (b3iAsB3d.max.equalWithAbsError (Imath::V3d (4.0, 5.0, 6.0), 1e-7));
+    assert (b3iAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (1.0, 2.0, 3.0), 1e-7));
+    assert (b3iAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (4.0, 5.0, 6.0), 1e-7));
 
-    Imath::Box3d b3fAsB3d;
+    IMATH_NAMESPACE::Box3d b3fAsB3d;
     assert (PyImath::Box3d::convert (b3fObj, &b3fAsB3d) == 1);
-    assert (b3fAsB3d.min.equalWithAbsError (Imath::V3d (7.7, 8.8, 9.9), 1e-6));
-    assert (b3fAsB3d.max.equalWithAbsError (Imath::V3d (10.10, 11.11, 12.12), 1e-6));
+    assert (b3fAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (7.7, 8.8, 9.9), 1e-6));
+    assert (b3fAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (10.10, 11.11, 12.12), 1e-6));
 
-    Imath::Box3d b3dAsB3d;
+    IMATH_NAMESPACE::Box3d b3dAsB3d;
     assert (PyImath::Box3d::convert (b3dObj, &b3dAsB3d) == 1);
-    assert (b3dAsB3d.min.equalWithAbsError (Imath::V3d (13.13, 14.14, 15.15), 1e-6));
-    assert (b3dAsB3d.max.equalWithAbsError (Imath::V3d (16.16, 17.17, 18.18), 1e-6));
+    assert (b3dAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (13.13, 14.14, 15.15), 1e-6));
+    assert (b3dAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (16.16, 17.17, 18.18), 1e-6));
 
-    Imath::Box3d t2iAsB3d;
+    IMATH_NAMESPACE::Box3d t2iAsB3d;
     assert (PyImath::Box3d::convert (t2iObj, &t2iAsB3d) == 1);
-    assert (t2iAsB3d.min.equalWithAbsError (Imath::V3d (1.0, 2.0, 3.0), 1e-7)); 
-    assert (t2iAsB3d.max.equalWithAbsError (Imath::V3d (4.0, 5.0, 6.0), 1e-7)); 
+    assert (t2iAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (1.0, 2.0, 3.0), 1e-7)); 
+    assert (t2iAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (4.0, 5.0, 6.0), 1e-7)); 
 
-    Imath::Box3d t2V3iAsB3d;
+    IMATH_NAMESPACE::Box3d t2V3iAsB3d;
     assert (PyImath::Box3d::convert (t2V3iObj, &t2V3iAsB3d) == 1);
-    assert (t2V3iAsB3d.min.equalWithAbsError (Imath::V3d (1.0, 2.0, 3.0), 1e-7));
-    assert (t2V3iAsB3d.max.equalWithAbsError (Imath::V3d (4.0, 5.0, 6.0), 1e-7));
+    assert (t2V3iAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (1.0, 2.0, 3.0), 1e-7));
+    assert (t2V3iAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (4.0, 5.0, 6.0), 1e-7));
 
-    Imath::Box3d t2iMixAsB3d;
+    IMATH_NAMESPACE::Box3d t2iMixAsB3d;
     assert (PyImath::Box3d::convert (t2iMixObj, &t2iMixAsB3d) == 1);
-    assert (t2iMixAsB3d.min.equalWithAbsError (Imath::V3d (1.0, 2.0, 3.0), 1e-7));
-    assert (t2iMixAsB3d.max.equalWithAbsError (Imath::V3d (4.0, 5.0, 6.0), 1e-7));
+    assert (t2iMixAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (1.0, 2.0, 3.0), 1e-7));
+    assert (t2iMixAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (4.0, 5.0, 6.0), 1e-7));
 
-    Imath::Box3d t2fAsB3d;
+    IMATH_NAMESPACE::Box3d t2fAsB3d;
     assert (PyImath::Box3d::convert (t2fObj, &t2fAsB3d) == 1);
-    assert (t2fAsB3d.min.equalWithAbsError (Imath::V3d (7.7, 8.8, 9.9), 1e-7));
-    assert (t2fAsB3d.max.equalWithAbsError (Imath::V3d (10.10, 11.11, 12.12), 1e-7));
+    assert (t2fAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (7.7, 8.8, 9.9), 1e-7));
+    assert (t2fAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (10.10, 11.11, 12.12), 1e-7));
 
-    Imath::Box3d t2V3fAsB3d;
+    IMATH_NAMESPACE::Box3d t2V3fAsB3d;
     assert (PyImath::Box3d::convert (t2V3fObj, &t2V3fAsB3d) == 1);
-    assert (t2V3fAsB3d.min.equalWithAbsError (Imath::V3d (7.7, 8.8, 9.9), 1e-6));
-    assert (t2V3fAsB3d.max.equalWithAbsError (Imath::V3d (10.10, 11.11, 12.12), 1e-6));
+    assert (t2V3fAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (7.7, 8.8, 9.9), 1e-6));
+    assert (t2V3fAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (10.10, 11.11, 12.12), 1e-6));
 
-    Imath::Box3d t2fMixAsB3d;
+    IMATH_NAMESPACE::Box3d t2fMixAsB3d;
     assert (PyImath::Box3d::convert (t2fMixObj, &t2fMixAsB3d) == 1);
-    assert (t2fMixAsB3d.min.equalWithAbsError (Imath::V3d (7.7, 8.8, 9.9), 1e-6));
-    assert (t2fMixAsB3d.max.equalWithAbsError (Imath::V3d (10.10, 11.11, 12.12), 1e-6));
+    assert (t2fMixAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (7.7, 8.8, 9.9), 1e-6));
+    assert (t2fMixAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (10.10, 11.11, 12.12), 1e-6));
 
-    Imath::Box3d t2V3dAsB3d;
+    IMATH_NAMESPACE::Box3d t2V3dAsB3d;
     assert (PyImath::Box3d::convert (t2V3dObj, &t2V3dAsB3d) == 1);
-    assert (t2V3dAsB3d.min.equalWithAbsError (Imath::V3d (13.13, 14.14, 15.15), 1e-7));
-    assert (t2V3dAsB3d.max.equalWithAbsError (Imath::V3d (16.16, 17.17, 18.18), 1e-7));
+    assert (t2V3dAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (13.13, 14.14, 15.15), 1e-7));
+    assert (t2V3dAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (16.16, 17.17, 18.18), 1e-7));
 
-    Imath::Box3d t2dMixAsB3d;
+    IMATH_NAMESPACE::Box3d t2dMixAsB3d;
     assert (PyImath::Box3d::convert (t2dMixObj, &t2dMixAsB3d) == 1);
-    assert (t2dMixAsB3d.min.equalWithAbsError (Imath::V3d (13.13, 14.14, 15.15), 1e-7));
-    assert (t2dMixAsB3d.max.equalWithAbsError (Imath::V3d (16.16, 17.17, 18.18), 1e-7));
+    assert (t2dMixAsB3d.min.equalWithAbsError (IMATH_NAMESPACE::V3d (13.13, 14.14, 15.15), 1e-7));
+    assert (t2dMixAsB3d.max.equalWithAbsError (IMATH_NAMESPACE::V3d (16.16, 17.17, 18.18), 1e-7));
 
-    Imath::Box3d iAsB3d;
+    IMATH_NAMESPACE::Box3d iAsB3d;
     assert (PyImath::Box3d::convert (iObj, &iAsB3d) == 0);
 
     std::cerr << "ok\n";
@@ -899,43 +899,43 @@ testC3 ()
 
     std::cerr << "Testing C3c:\n";
 
-    Imath::C3c c3cAsC3c;
+    IMATH_NAMESPACE::C3c c3cAsC3c;
     assert (PyImath::C3c::convert (c3cObj, &c3cAsC3c) == 1);
-    assert (c3cAsC3c == Imath::C3c (1, 2, 3));
+    assert (c3cAsC3c == IMATH_NAMESPACE::C3c (1, 2, 3));
 
-    Imath::C3c c3fAsC3c;
+    IMATH_NAMESPACE::C3c c3fAsC3c;
     assert (PyImath::C3c::convert (c3fObj, &c3fAsC3c) == 1);
-    assert (c3fAsC3c == Imath::C3c (1, 2, 3));
+    assert (c3fAsC3c == IMATH_NAMESPACE::C3c (1, 2, 3));
 
-    Imath::C3c t3cAsC3c;
+    IMATH_NAMESPACE::C3c t3cAsC3c;
     assert (PyImath::C3c::convert (t3cObj, &t3cAsC3c) == 1);
-    assert (t3cAsC3c == Imath::C3c (4, 5, 6));
+    assert (t3cAsC3c == IMATH_NAMESPACE::C3c (4, 5, 6));
 
-    Imath::C3c t3fAsC3c;
+    IMATH_NAMESPACE::C3c t3fAsC3c;
     assert (PyImath::C3c::convert (t3fObj, &t3fAsC3c) == 1);
-    assert (t3fAsC3c == Imath::C3c (4, 5, 6));
+    assert (t3fAsC3c == IMATH_NAMESPACE::C3c (4, 5, 6));
 
-    Imath::C3c v3iAsC3c;
+    IMATH_NAMESPACE::C3c v3iAsC3c;
     assert (PyImath::C3c::convert (v3iObj, &v3iAsC3c) == 1);
-    assert (v3iAsC3c == Imath::C3c (7, 8, 9));
+    assert (v3iAsC3c == IMATH_NAMESPACE::C3c (7, 8, 9));
 
-    Imath::C3c v3fAsC3c;
+    IMATH_NAMESPACE::C3c v3fAsC3c;
     assert (PyImath::C3c::convert (v3fObj, &v3fAsC3c) == 1);
-    assert (v3fAsC3c == Imath::C3c (10, 11, 12));
+    assert (v3fAsC3c == IMATH_NAMESPACE::C3c (10, 11, 12));
 
-    Imath::C3c v3dAsC3c;
+    IMATH_NAMESPACE::C3c v3dAsC3c;
     assert (PyImath::C3c::convert (v3dObj, &v3dAsC3c) == 1);
-    assert (v3dAsC3c == Imath::C3c (13, 14, 15));
+    assert (v3dAsC3c == IMATH_NAMESPACE::C3c (13, 14, 15));
 
-    Imath::C3c l3cAsC3c;
+    IMATH_NAMESPACE::C3c l3cAsC3c;
     assert (PyImath::C3c::convert (l3cObj, &l3cAsC3c) == 1);
-    assert (l3cAsC3c == Imath::C3c (16, 17, 18));
+    assert (l3cAsC3c == IMATH_NAMESPACE::C3c (16, 17, 18));
 
-    Imath::C3c l3fAsC3c;
+    IMATH_NAMESPACE::C3c l3fAsC3c;
     assert (PyImath::C3c::convert (l3fObj, &l3fAsC3c) == 1);
-    assert (l3fAsC3c == Imath::C3c (19, 20, 21));
+    assert (l3fAsC3c == IMATH_NAMESPACE::C3c (19, 20, 21));
 
-    Imath::C3c iAsC3c;
+    IMATH_NAMESPACE::C3c iAsC3c;
     assert (PyImath::C3c::convert (iObj, &iAsC3c) == 0);
 
     std::cerr << "ok\n";
@@ -944,43 +944,43 @@ testC3 ()
 
     std::cerr << "Testing C3f:\n";
 
-    Imath::C3f c3cAsC3f;
+    IMATH_NAMESPACE::C3f c3cAsC3f;
     assert (PyImath::C3f::convert (c3cObj, &c3cAsC3f) == 1);
-    assert (c3cAsC3f.equalWithAbsError (Imath::C3f (1.0f, 2.0f, 3.0f), 1e-7));
+    assert (c3cAsC3f.equalWithAbsError (IMATH_NAMESPACE::C3f (1.0f, 2.0f, 3.0f), 1e-7));
 
-    Imath::C3f c3fAsC3f;
+    IMATH_NAMESPACE::C3f c3fAsC3f;
     assert (PyImath::C3f::convert (c3fObj, &c3fAsC3f) == 1);
-    assert (c3fAsC3f.equalWithAbsError (Imath::C3f (1.1f, 2.2f, 3.3f), 1e-7));
+    assert (c3fAsC3f.equalWithAbsError (IMATH_NAMESPACE::C3f (1.1f, 2.2f, 3.3f), 1e-7));
 
-    Imath::C3f t3cAsC3f;
+    IMATH_NAMESPACE::C3f t3cAsC3f;
     assert (PyImath::C3f::convert (t3cObj, &t3cAsC3f) == 1);
-    assert (t3cAsC3f.equalWithAbsError (Imath::C3f (4.0f, 5.0f, 6.0f), 1e-7));
+    assert (t3cAsC3f.equalWithAbsError (IMATH_NAMESPACE::C3f (4.0f, 5.0f, 6.0f), 1e-7));
 
-    Imath::C3f t3fAsC3f;
+    IMATH_NAMESPACE::C3f t3fAsC3f;
     assert (PyImath::C3f::convert (t3fObj, &t3fAsC3f) == 1);
-    assert (t3fAsC3f.equalWithAbsError (Imath::C3f (4.4f, 5.5f, 6.6f), 1e-7));
+    assert (t3fAsC3f.equalWithAbsError (IMATH_NAMESPACE::C3f (4.4f, 5.5f, 6.6f), 1e-7));
 
-    Imath::C3f v3iAsC3f;
+    IMATH_NAMESPACE::C3f v3iAsC3f;
     assert (PyImath::C3f::convert (v3iObj, &v3iAsC3f) == 1);
-    assert (v3iAsC3f.equalWithAbsError (Imath::C3f (7.0f, 8.0f, 9.0f), 1e-7));
+    assert (v3iAsC3f.equalWithAbsError (IMATH_NAMESPACE::C3f (7.0f, 8.0f, 9.0f), 1e-7));
 
-    Imath::C3f v3fAsC3f;
+    IMATH_NAMESPACE::C3f v3fAsC3f;
     assert (PyImath::C3f::convert (v3fObj, &v3fAsC3f) == 1);
-    assert (v3fAsC3f.equalWithAbsError (Imath::C3f (10.10f, 11.11f, 12.12f), 1e-7));
+    assert (v3fAsC3f.equalWithAbsError (IMATH_NAMESPACE::C3f (10.10f, 11.11f, 12.12f), 1e-7));
 
-    Imath::C3f v3dAsC3f;
+    IMATH_NAMESPACE::C3f v3dAsC3f;
     assert (PyImath::C3f::convert (v3dObj, &v3dAsC3f) == 1);
-    assert (v3dAsC3f.equalWithAbsError (Imath::C3f (13.13f, 14.14f, 15.15f), 1e-7));
+    assert (v3dAsC3f.equalWithAbsError (IMATH_NAMESPACE::C3f (13.13f, 14.14f, 15.15f), 1e-7));
 
-    Imath::C3f l3cAsC3f;
+    IMATH_NAMESPACE::C3f l3cAsC3f;
     assert (PyImath::C3f::convert (l3cObj, &l3cAsC3f) == 1);
-    assert (l3cAsC3f == Imath::C3f (16.0, 17.0, 18.0));
+    assert (l3cAsC3f == IMATH_NAMESPACE::C3f (16.0, 17.0, 18.0));
 
-    Imath::C3f l3fAsC3f;
+    IMATH_NAMESPACE::C3f l3fAsC3f;
     assert (PyImath::C3f::convert (l3fObj, &l3fAsC3f) == 1);
-    assert (l3fAsC3f == Imath::C3f (19.19, 20.20, 21.21));
+    assert (l3fAsC3f == IMATH_NAMESPACE::C3f (19.19, 20.20, 21.21));
 
-    Imath::C3f iAsC3f;
+    IMATH_NAMESPACE::C3f iAsC3f;
     assert (PyImath::C3f::convert (iObj, &iAsC3f) == 0);
 
     std::cerr << "ok\n";
@@ -1064,31 +1064,31 @@ testC4 ()
 
     std::cerr << "Testing C4c:\n";
 
-    Imath::C4c c4cAsC4c;
+    IMATH_NAMESPACE::C4c c4cAsC4c;
     assert (PyImath::C4c::convert (c4cObj, &c4cAsC4c) == 1);
-    assert (c4cAsC4c == Imath::C4c (1, 2, 3, 4));
+    assert (c4cAsC4c == IMATH_NAMESPACE::C4c (1, 2, 3, 4));
 
-    Imath::C4c c4fAsC4c;
+    IMATH_NAMESPACE::C4c c4fAsC4c;
     assert (PyImath::C4c::convert (c4fObj, &c4fAsC4c) == 1);
-    assert (c4fAsC4c == Imath::C4c (1, 2, 3, 4));
+    assert (c4fAsC4c == IMATH_NAMESPACE::C4c (1, 2, 3, 4));
 
-    Imath::C4c t4cAsC4c;
+    IMATH_NAMESPACE::C4c t4cAsC4c;
     assert (PyImath::C4c::convert (t4cObj, &t4cAsC4c) == 1);
-    assert (t4cAsC4c == Imath::C4c (5, 6, 7, 8));
+    assert (t4cAsC4c == IMATH_NAMESPACE::C4c (5, 6, 7, 8));
 
-    Imath::C4c t4fAsC4c;
+    IMATH_NAMESPACE::C4c t4fAsC4c;
     assert (PyImath::C4c::convert (t4fObj, &t4fAsC4c) == 1);
-    assert (t4fAsC4c == Imath::C4c (5, 6, 7, 8));
+    assert (t4fAsC4c == IMATH_NAMESPACE::C4c (5, 6, 7, 8));
 
-    Imath::C4c l4cAsC4c;
+    IMATH_NAMESPACE::C4c l4cAsC4c;
     assert (PyImath::C4c::convert (l4cObj, &l4cAsC4c) == 1);
-    assert (l4cAsC4c == Imath::C4c (9, 10, 11, 12));
+    assert (l4cAsC4c == IMATH_NAMESPACE::C4c (9, 10, 11, 12));
 
-    Imath::C4c l4fAsC4c;
+    IMATH_NAMESPACE::C4c l4fAsC4c;
     assert (PyImath::C4c::convert (l4fObj, &l4fAsC4c) == 1);
-    assert (l4fAsC4c == Imath::C4c (13, 14, 15, 16));
+    assert (l4fAsC4c == IMATH_NAMESPACE::C4c (13, 14, 15, 16));
 
-    Imath::C4c iAsC4c;
+    IMATH_NAMESPACE::C4c iAsC4c;
     assert (PyImath::C4c::convert (iObj, &iAsC4c) == 0);
 
     std::cerr << "ok\n";
@@ -1097,49 +1097,49 @@ testC4 ()
 
     std::cerr << "Testing C4f:\n";
 
-    Imath::C4f c4cAsC4f;
+    IMATH_NAMESPACE::C4f c4cAsC4f;
     assert (PyImath::C4f::convert (c4cObj, &c4cAsC4f) == 1);
-    assert (Imath::equalWithAbsError (c4cAsC4f[0], 1.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (c4cAsC4f[1], 2.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (c4cAsC4f[2], 3.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (c4cAsC4f[3], 4.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (c4cAsC4f[0], 1.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (c4cAsC4f[1], 2.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (c4cAsC4f[2], 3.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (c4cAsC4f[3], 4.0f, 1e-7f));
 
-    Imath::C4f c4fAsC4f;
+    IMATH_NAMESPACE::C4f c4fAsC4f;
     assert (PyImath::C4f::convert (c4fObj, &c4fAsC4f) == 1);
-    assert (Imath::equalWithAbsError (c4fAsC4f[0], 1.1f, 1e-7f));
-    assert (Imath::equalWithAbsError (c4fAsC4f[1], 2.2f, 1e-7f));
-    assert (Imath::equalWithAbsError (c4fAsC4f[2], 3.3f, 1e-7f));
-    assert (Imath::equalWithAbsError (c4fAsC4f[3], 4.4f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (c4fAsC4f[0], 1.1f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (c4fAsC4f[1], 2.2f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (c4fAsC4f[2], 3.3f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (c4fAsC4f[3], 4.4f, 1e-7f));
 
-    Imath::C4f t4cAsC4f;
+    IMATH_NAMESPACE::C4f t4cAsC4f;
     assert (PyImath::C4f::convert (t4cObj, &t4cAsC4f) == 1);
-    assert (Imath::equalWithAbsError (t4cAsC4f[0], 5.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (t4cAsC4f[1], 6.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (t4cAsC4f[2], 7.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (t4cAsC4f[3], 8.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (t4cAsC4f[0], 5.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (t4cAsC4f[1], 6.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (t4cAsC4f[2], 7.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (t4cAsC4f[3], 8.0f, 1e-7f));
 
-    Imath::C4f t4fAsC4f;
+    IMATH_NAMESPACE::C4f t4fAsC4f;
     assert (PyImath::C4f::convert (t4fObj, &t4fAsC4f) == 1);
-    assert (Imath::equalWithAbsError (t4fAsC4f[0], 5.5f, 1e-7f));
-    assert (Imath::equalWithAbsError (t4fAsC4f[1], 6.6f, 1e-7f));
-    assert (Imath::equalWithAbsError (t4fAsC4f[2], 7.7f, 1e-7f));
-    assert (Imath::equalWithAbsError (t4fAsC4f[3], 8.8f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (t4fAsC4f[0], 5.5f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (t4fAsC4f[1], 6.6f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (t4fAsC4f[2], 7.7f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (t4fAsC4f[3], 8.8f, 1e-7f));
 
-    Imath::C4f l4cAsC4f;
+    IMATH_NAMESPACE::C4f l4cAsC4f;
     assert (PyImath::C4f::convert (l4cObj, &l4cAsC4f) == 1);
-    assert (Imath::equalWithAbsError (l4cAsC4f[0], 9.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (l4cAsC4f[1], 10.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (l4cAsC4f[2], 11.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (l4cAsC4f[3], 12.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (l4cAsC4f[0], 9.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (l4cAsC4f[1], 10.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (l4cAsC4f[2], 11.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (l4cAsC4f[3], 12.0f, 1e-7f));
 
-    Imath::C4f l4fAsC4f;
+    IMATH_NAMESPACE::C4f l4fAsC4f;
     assert (PyImath::C4f::convert (l4fObj, &l4fAsC4f) == 1);
-    assert (Imath::equalWithAbsError (l4fAsC4f[0], 13.13f, 1e-7f));
-    assert (Imath::equalWithAbsError (l4fAsC4f[1], 14.14f, 1e-7f));
-    assert (Imath::equalWithAbsError (l4fAsC4f[2], 15.15f, 1e-7f));
-    assert (Imath::equalWithAbsError (l4fAsC4f[3], 16.16f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (l4fAsC4f[0], 13.13f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (l4fAsC4f[1], 14.14f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (l4fAsC4f[2], 15.15f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (l4fAsC4f[3], 16.16f, 1e-7f));
 
-    Imath::C4f iAsC4f;
+    IMATH_NAMESPACE::C4f iAsC4f;
     assert (PyImath::C4f::convert (iObj, &iAsC4f) == 0);
 
     std::cerr << "ok\n";
@@ -1198,19 +1198,19 @@ testEuler ()
     
     std::cerr << "Testing Eulerf:\n";
 
-    Imath::Eulerf efAsEf;
+    IMATH_NAMESPACE::Eulerf efAsEf;
     assert (PyImath::Eulerf::convert (efObj, &efAsEf) == 1);
-    Imath::Eulerf eff (Imath::V3f (1.1f, 2.2f, 3.3f), Imath::Eulerf::XZY);
+    IMATH_NAMESPACE::Eulerf eff (IMATH_NAMESPACE::V3f (1.1f, 2.2f, 3.3f), IMATH_NAMESPACE::Eulerf::XZY);
     assert (efAsEf.order() == eff.order());
     assert (efAsEf.toMatrix44().equalWithAbsError (eff.toMatrix44(), 1e-7));
 
-    Imath::Eulerf edAsEf;
+    IMATH_NAMESPACE::Eulerf edAsEf;
     assert (PyImath::Eulerf::convert (edObj, &edAsEf) == 1);
-    Imath::Eulerf edf (Imath::V3f (4.4f, 5.5f, 6.6f), Imath::Eulerf::ZYX);
+    IMATH_NAMESPACE::Eulerf edf (IMATH_NAMESPACE::V3f (4.4f, 5.5f, 6.6f), IMATH_NAMESPACE::Eulerf::ZYX);
     assert (edAsEf.order() == edf.order());
     assert (edAsEf.toMatrix44().equalWithAbsError (edf.toMatrix44(), 1e-6));
 
-    Imath::Eulerf iAsEf;
+    IMATH_NAMESPACE::Eulerf iAsEf;
     assert (PyImath::Eulerf::convert (iObj, &iAsEf) == 0);
 
     std::cerr << "ok\n";
@@ -1219,19 +1219,19 @@ testEuler ()
 
     std::cerr << "Testing Eulerd:\n";
 
-    Imath::Eulerd efAsEd;
+    IMATH_NAMESPACE::Eulerd efAsEd;
     assert (PyImath::Eulerd::convert (efObj, &efAsEd) == 1);
-    Imath::Eulerd efd (Imath::V3d (1.1, 2.2, 3.3), Imath::Eulerd::XZY);
+    IMATH_NAMESPACE::Eulerd efd (IMATH_NAMESPACE::V3d (1.1, 2.2, 3.3), IMATH_NAMESPACE::Eulerd::XZY);
     assert (efAsEd.order() == efd.order());
     assert (efAsEd.toMatrix44().equalWithAbsError (efd.toMatrix44(), 1e-7));
 
-    Imath::Eulerd edAsEd;
+    IMATH_NAMESPACE::Eulerd edAsEd;
     assert (PyImath::Eulerd::convert (edObj, &edAsEd) == 1);
-    Imath::Eulerd edd (Imath::V3d (4.4, 5.5, 6.6), Imath::Eulerd::ZYX);
+    IMATH_NAMESPACE::Eulerd edd (IMATH_NAMESPACE::V3d (4.4, 5.5, 6.6), IMATH_NAMESPACE::Eulerd::ZYX);
     assert (edAsEd.order() == edd.order());
     assert (edAsEd.toMatrix44().equalWithAbsError (edd.toMatrix44(), 1e-6));
 
-    Imath::Eulerd iAsEd;
+    IMATH_NAMESPACE::Eulerd iAsEd;
     assert (PyImath::Eulerd::convert (iObj, &iAsEd) == 0);
 
     std::cerr << "ok\n";
@@ -1296,27 +1296,27 @@ testFrustum ()
     
     std::cerr << "Testing Frustumf:\n";
 
-    Imath::Frustumf ffAsFf;
+    IMATH_NAMESPACE::Frustumf ffAsFf;
     assert (PyImath::Frustumf::convert (ffObj, &ffAsFf) == 1);
-    assert (Imath::equalWithAbsError (ffAsFf.nearPlane(), -1.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (ffAsFf.farPlane(), -100.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (ffAsFf.left(), -2.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (ffAsFf.right(), 2.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (ffAsFf.top(), 3.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (ffAsFf.bottom(), -3.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFf.nearPlane(), -1.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFf.farPlane(), -100.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFf.left(), -2.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFf.right(), 2.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFf.top(), 3.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFf.bottom(), -3.0f, 1e-7f));
     assert (ffAsFf.orthographic() == false);
 
-    Imath::Frustumf fdAsFf;
+    IMATH_NAMESPACE::Frustumf fdAsFf;
     assert (PyImath::Frustumf::convert (fdObj, &fdAsFf) == 1);
-    assert (Imath::equalWithAbsError (fdAsFf.nearPlane(), -2.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (fdAsFf.farPlane(), -50.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (fdAsFf.left(), -3.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (fdAsFf.right(), 3.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (fdAsFf.top(), 2.0f, 1e-7f));
-    assert (Imath::equalWithAbsError (fdAsFf.bottom(), -2.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFf.nearPlane(), -2.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFf.farPlane(), -50.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFf.left(), -3.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFf.right(), 3.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFf.top(), 2.0f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFf.bottom(), -2.0f, 1e-7f));
     assert (fdAsFf.orthographic() == true);
 
-    Imath::Frustumf iAsFf;
+    IMATH_NAMESPACE::Frustumf iAsFf;
     assert (PyImath::Frustumf::convert (iObj, &iAsFf) == 0);
 
     std::cerr << "ok\n";
@@ -1325,27 +1325,27 @@ testFrustum ()
 
     std::cerr << "Testing Frustumd:\n";
 
-    Imath::Frustumd ffAsFd;
+    IMATH_NAMESPACE::Frustumd ffAsFd;
     assert (PyImath::Frustumd::convert (ffObj, &ffAsFd) == 1);
-    assert (Imath::equalWithAbsError (ffAsFd.nearPlane(), -1.0, 1e-7));
-    assert (Imath::equalWithAbsError (ffAsFd.farPlane(), -100.0, 1e-7));
-    assert (Imath::equalWithAbsError (ffAsFd.left(), -2.0, 1e-7));
-    assert (Imath::equalWithAbsError (ffAsFd.right(), 2.0, 1e-7));
-    assert (Imath::equalWithAbsError (ffAsFd.top(), 3.0, 1e-7));
-    assert (Imath::equalWithAbsError (ffAsFd.bottom(), -3.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFd.nearPlane(), -1.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFd.farPlane(), -100.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFd.left(), -2.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFd.right(), 2.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFd.top(), 3.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (ffAsFd.bottom(), -3.0, 1e-7));
     assert (ffAsFd.orthographic() == false);
 
-    Imath::Frustumd fdAsFd;
+    IMATH_NAMESPACE::Frustumd fdAsFd;
     assert (PyImath::Frustumd::convert (fdObj, &fdAsFd) == 1);
-    assert (Imath::equalWithAbsError (fdAsFd.nearPlane(), -2.0, 1e-7));
-    assert (Imath::equalWithAbsError (fdAsFd.farPlane(), -50.0, 1e-7));
-    assert (Imath::equalWithAbsError (fdAsFd.left(), -3.0, 1e-7));
-    assert (Imath::equalWithAbsError (fdAsFd.right(), 3.0, 1e-7));
-    assert (Imath::equalWithAbsError (fdAsFd.top(), 2.0, 1e-7));
-    assert (Imath::equalWithAbsError (fdAsFd.bottom(), -2.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFd.nearPlane(), -2.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFd.farPlane(), -50.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFd.left(), -3.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFd.right(), 3.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFd.top(), 2.0, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (fdAsFd.bottom(), -2.0, 1e-7));
     assert (fdAsFd.orthographic() == true);
 
-    Imath::Frustumf iAsFd;
+    IMATH_NAMESPACE::Frustumf iAsFd;
     assert (PyImath::Frustumf::convert (iObj, &iAsFd) == 0);
 
     std::cerr << "ok\n";
@@ -1406,25 +1406,25 @@ testLine ()
     
     std::cerr << "Testing Line3f:\n";
 
-    Imath::Line3f l3fAsL3f;
+    IMATH_NAMESPACE::Line3f l3fAsL3f;
     assert (PyImath::Line3f::convert (l3fObj, &l3fAsL3f) == 1);
-    Imath::V3f l3fP1f (1.1f, 2.2f, 3.3f);
-    Imath::V3f l3fP2f (4.4f, 5.5f, 6.6f);
-    Imath::V3f l3fPosf = l3fP1f;
-    Imath::V3f l3fDirf = (l3fP2f - l3fP1f).normalize();
+    IMATH_NAMESPACE::V3f l3fP1f (1.1f, 2.2f, 3.3f);
+    IMATH_NAMESPACE::V3f l3fP2f (4.4f, 5.5f, 6.6f);
+    IMATH_NAMESPACE::V3f l3fPosf = l3fP1f;
+    IMATH_NAMESPACE::V3f l3fDirf = (l3fP2f - l3fP1f).normalize();
     assert (l3fAsL3f.pos.equalWithAbsError (l3fPosf, 1e-7));
     assert (l3fAsL3f.dir.equalWithAbsError (l3fDirf, 1e-7));
 
-    Imath::Line3f l3dAsL3f;
+    IMATH_NAMESPACE::Line3f l3dAsL3f;
     assert (PyImath::Line3f::convert (l3dObj, &l3dAsL3f) == 1);
-    Imath::V3f l3dP1f (7.7f, 8.8f, 9.9f);
-    Imath::V3f l3dP2f (10.10f, 11.11f, 12.12f);
-    Imath::V3f l3dPosf = l3dP1f;
-    Imath::V3f l3dDirf = (l3dP2f - l3dP1f).normalize();
+    IMATH_NAMESPACE::V3f l3dP1f (7.7f, 8.8f, 9.9f);
+    IMATH_NAMESPACE::V3f l3dP2f (10.10f, 11.11f, 12.12f);
+    IMATH_NAMESPACE::V3f l3dPosf = l3dP1f;
+    IMATH_NAMESPACE::V3f l3dDirf = (l3dP2f - l3dP1f).normalize();
     assert (l3dAsL3f.pos.equalWithAbsError (l3dPosf, 1e-7));
     assert (l3dAsL3f.dir.equalWithAbsError (l3dDirf, 1e-6));
 
-    Imath::Line3f iAsL3f;
+    IMATH_NAMESPACE::Line3f iAsL3f;
     assert (PyImath::Line3f::convert (iObj, &iAsL3f) == 0);
 
     std::cerr << "ok\n";
@@ -1433,25 +1433,25 @@ testLine ()
 
     std::cerr << "Testing Line3d:\n";
 
-    Imath::Line3d l3fAsL3d;
+    IMATH_NAMESPACE::Line3d l3fAsL3d;
     assert (PyImath::Line3d::convert (l3fObj, &l3fAsL3d) == 1);
-    Imath::V3d l3fP1d (1.1, 2.2, 3.3);
-    Imath::V3d l3fP2d (4.4, 5.5, 6.6);
-    Imath::V3d l3fPosd = l3fP1d;
-    Imath::V3d l3fDird = (l3fP2d - l3fP1d).normalize();
+    IMATH_NAMESPACE::V3d l3fP1d (1.1, 2.2, 3.3);
+    IMATH_NAMESPACE::V3d l3fP2d (4.4, 5.5, 6.6);
+    IMATH_NAMESPACE::V3d l3fPosd = l3fP1d;
+    IMATH_NAMESPACE::V3d l3fDird = (l3fP2d - l3fP1d).normalize();
     assert (l3fAsL3d.pos.equalWithAbsError (l3fPosd, 1e-7));
     assert (l3fAsL3d.dir.equalWithAbsError (l3fDird, 1e-7));
 
-    Imath::Line3d l3dAsL3d;
+    IMATH_NAMESPACE::Line3d l3dAsL3d;
     assert (PyImath::Line3d::convert (l3dObj, &l3dAsL3d) == 1);
-    Imath::V3d l3dP1d (7.7, 8.8, 9.9);
-    Imath::V3d l3dP2d (10.10, 11.11, 12.12);
-    Imath::V3d l3dPosd = l3dP1d;
-    Imath::V3d l3dDird = (l3dP2d - l3dP1d).normalize();
+    IMATH_NAMESPACE::V3d l3dP1d (7.7, 8.8, 9.9);
+    IMATH_NAMESPACE::V3d l3dP2d (10.10, 11.11, 12.12);
+    IMATH_NAMESPACE::V3d l3dPosd = l3dP1d;
+    IMATH_NAMESPACE::V3d l3dDird = (l3dP2d - l3dP1d).normalize();
     assert (l3dAsL3d.pos.equalWithAbsError (l3dPosd, 1e-7));
     assert (l3dAsL3d.dir.equalWithAbsError (l3dDird, 1e-7));
 
-    Imath::Line3d iAsL3d;
+    IMATH_NAMESPACE::Line3d iAsL3d;
     assert (PyImath::Line3d::convert (iObj, &iAsL3d) == 0);
 
     std::cerr << "ok\n";
@@ -1509,21 +1509,21 @@ testM33 ()
     
     std::cerr << "Testing M33f:\n";
 
-    Imath::M33f m33fAsM33f;
+    IMATH_NAMESPACE::M33f m33fAsM33f;
     assert (PyImath::M33f::convert (m33fObj, &m33fAsM33f) == 1);
-    Imath::M33f m33ff (1.1f, 2.2f, 3.3f, 
+    IMATH_NAMESPACE::M33f m33ff (1.1f, 2.2f, 3.3f, 
                        4.4f, 5.5f, 6.6f, 
                        7.7f, 8.8f, 9.9f);
     assert (m33fAsM33f.equalWithAbsError (m33ff, 1e-7));
 
-    Imath::M33f m33dAsM33f;
+    IMATH_NAMESPACE::M33f m33dAsM33f;
     assert (PyImath::M33f::convert (m33dObj, &m33dAsM33f) == 1);
-    Imath::M33f m33df (10.10f, 11.11f, 12.12f, 
+    IMATH_NAMESPACE::M33f m33df (10.10f, 11.11f, 12.12f, 
                        13.13f, 14.14f, 15.15f, 
                        16.16f, 17.17f, 18.18f);
     assert (m33dAsM33f.equalWithAbsError (m33df, 1e-7));
 
-    Imath::M33f iAsM33f;
+    IMATH_NAMESPACE::M33f iAsM33f;
     assert (PyImath::M33f::convert (iObj, &iAsM33f) == 0);
 
     std::cerr << "ok\n";
@@ -1532,21 +1532,21 @@ testM33 ()
 
     std::cerr << "Testing M33d:\n";
 
-    Imath::M33d m33fAsM33d;
+    IMATH_NAMESPACE::M33d m33fAsM33d;
     assert (PyImath::M33d::convert (m33fObj, &m33fAsM33d) == 1);
-    Imath::M33d m33fd (1.1, 2.2, 3.3, 
+    IMATH_NAMESPACE::M33d m33fd (1.1, 2.2, 3.3, 
                        4.4, 5.5, 6.6, 
                        7.7, 8.8, 9.9);
     assert (m33fAsM33d.equalWithAbsError (m33fd, 1e-6));
 
-    Imath::M33d m33dAsM33d;
+    IMATH_NAMESPACE::M33d m33dAsM33d;
     assert (PyImath::M33d::convert (m33dObj, &m33dAsM33d) == 1);
-    Imath::M33d m33dd (10.10, 11.11, 12.12, 
+    IMATH_NAMESPACE::M33d m33dd (10.10, 11.11, 12.12, 
                        13.13, 14.14, 15.15, 
                        16.16, 17.17, 18.18);
     assert (m33dAsM33d.equalWithAbsError (m33dd, 1e-7));
 
-    Imath::M33d iAsM33d;
+    IMATH_NAMESPACE::M33d iAsM33d;
     assert (PyImath::M33d::convert (iObj, &iAsM33d) == 0);
 
     std::cerr << "ok\n";
@@ -1606,23 +1606,23 @@ testM44 ()
     
     std::cerr << "Testing M44f:\n";
 
-    Imath::M44f m44fAsM44f;
+    IMATH_NAMESPACE::M44f m44fAsM44f;
     assert (PyImath::M44f::convert (m44fObj, &m44fAsM44f) == 1);
-    Imath::M44f m44ff (1.1f, 2.2f, 3.3f, 4.4f,
+    IMATH_NAMESPACE::M44f m44ff (1.1f, 2.2f, 3.3f, 4.4f,
                        5.5f, 6.6f, 7.7f, 8.8f,
                        9.9f, 10.10f, 11.11f, 12.12f,
                        13.13f, 14.14f, 15.15f, 16.16f);
     assert (m44fAsM44f.equalWithAbsError (m44ff, 1e-7f));
 
-    Imath::M44f m44dAsM44f;
+    IMATH_NAMESPACE::M44f m44dAsM44f;
     assert (PyImath::M44f::convert (m44dObj, &m44dAsM44f) == 1);
-    Imath::M44f m44df (17.17f, 18.18f, 19.19f, 20.20f,
+    IMATH_NAMESPACE::M44f m44df (17.17f, 18.18f, 19.19f, 20.20f,
                        21.21f, 22.22f, 23.23f, 24.24f,
                        25.25f, 26.26f, 27.27f, 28.28f,
                        29.29f, 30.30f, 31.31f, 32.32f);
     assert (m44dAsM44f.equalWithAbsError (m44df, 1e-7f));
 
-    Imath::M44f iAsM44f;
+    IMATH_NAMESPACE::M44f iAsM44f;
     assert (PyImath::M44f::convert (iObj, &iAsM44f) == 0);
 
     std::cerr << "ok\n";
@@ -1631,23 +1631,23 @@ testM44 ()
 
     std::cerr << "Testing M44d:\n";
 
-    Imath::M44d m44fAsM44d;
+    IMATH_NAMESPACE::M44d m44fAsM44d;
     assert (PyImath::M44d::convert (m44fObj, &m44fAsM44d) == 1);
-    Imath::M44d m44fd (1.1, 2.2, 3.3, 4.4,
+    IMATH_NAMESPACE::M44d m44fd (1.1, 2.2, 3.3, 4.4,
                        5.5, 6.6, 7.7, 8.8,
                        9.9, 10.10, 11.11, 12.12,
                        13.13, 14.14, 15.15, 16.16);
     assert (m44fAsM44d.equalWithAbsError (m44fd, 1e-6));
 
-    Imath::M44d m44dAsM44d;
+    IMATH_NAMESPACE::M44d m44dAsM44d;
     assert (PyImath::M44d::convert (m44dObj, &m44dAsM44d) == 1);
-    Imath::M44d m44dd (17.17, 18.18, 19.19, 20.20,
+    IMATH_NAMESPACE::M44d m44dd (17.17, 18.18, 19.19, 20.20,
                        21.21, 22.22, 23.23, 24.24,
                        25.25, 26.26, 27.27, 28.28,
                        29.29, 30.30, 31.31, 32.32);
     assert (m44dAsM44d.equalWithAbsError (m44dd, 1e-7));
 
-    Imath::M44d iAsM44d;
+    IMATH_NAMESPACE::M44d iAsM44d;
     assert (PyImath::M44d::convert (iObj, &iAsM44d) == 0);
 
     std::cerr << "ok\n";
@@ -1704,21 +1704,21 @@ testPlane ()
     
     std::cerr << "Testing Plane3f:\n";
 
-    Imath::Plane3f p3fAsP3f;
+    IMATH_NAMESPACE::Plane3f p3fAsP3f;
     assert (PyImath::Plane3f::convert (p3fObj, &p3fAsP3f) == 1);
-    Imath::V3f p3fnf (1.1f, 2.2f, 3.3f);
+    IMATH_NAMESPACE::V3f p3fnf (1.1f, 2.2f, 3.3f);
     p3fnf.normalize();
     assert (p3fAsP3f.normal.equalWithAbsError (p3fnf, 1e-6f));
-    assert (Imath::equalWithAbsError (p3fAsP3f.distance, 4.4f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (p3fAsP3f.distance, 4.4f, 1e-7f));
 
-    Imath::Plane3f p3dAsP3f;
+    IMATH_NAMESPACE::Plane3f p3dAsP3f;
     assert (PyImath::Plane3f::convert (p3dObj, &p3dAsP3f) == 1);
-    Imath::V3f p3dnf (5.5f, 6.6f, 7.7f);
+    IMATH_NAMESPACE::V3f p3dnf (5.5f, 6.6f, 7.7f);
     p3dnf.normalize();
     assert (p3dAsP3f.normal.equalWithAbsError (p3dnf, 1e-7f));
-    assert (Imath::equalWithAbsError (p3dAsP3f.distance, 8.8f, 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (p3dAsP3f.distance, 8.8f, 1e-7f));
 
-    Imath::Plane3f iAsP3f;
+    IMATH_NAMESPACE::Plane3f iAsP3f;
     assert (PyImath::Plane3f::convert (iObj, &iAsP3f) == 0);
 
     std::cerr << "ok\n";
@@ -1727,21 +1727,21 @@ testPlane ()
 
     std::cerr << "Testing Plane3d:\n";
 
-    Imath::Plane3d p3fAsP3d;
+    IMATH_NAMESPACE::Plane3d p3fAsP3d;
     assert (PyImath::Plane3d::convert (p3fObj, &p3fAsP3d) == 1);
-    Imath::V3d p3fnd (1.1, 2.2, 3.3);
+    IMATH_NAMESPACE::V3d p3fnd (1.1, 2.2, 3.3);
     p3fnd.normalize();
     assert (p3fAsP3d.normal.equalWithAbsError (p3fnd, 1e-7));
-    assert (Imath::equalWithAbsError (p3fAsP3d.distance, 4.4, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (p3fAsP3d.distance, 4.4, 1e-7));
 
-    Imath::Plane3d p3dAsP3d;
+    IMATH_NAMESPACE::Plane3d p3dAsP3d;
     assert (PyImath::Plane3d::convert (p3dObj, &p3dAsP3d) == 1);
-    Imath::V3d p3dnd (5.5, 6.6, 7.7);
+    IMATH_NAMESPACE::V3d p3dnd (5.5, 6.6, 7.7);
     p3dnd.normalize();
     assert (p3dAsP3d.normal.equalWithAbsError (p3dnd, 1e-7));
-    assert (Imath::equalWithAbsError (p3dAsP3d.distance, 8.8, 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (p3dAsP3d.distance, 8.8, 1e-7));
 
-    Imath::Plane3d iAsP3d;
+    IMATH_NAMESPACE::Plane3d iAsP3d;
     assert (PyImath::Plane3d::convert (iObj, &iAsP3d) == 0);
 
     std::cerr << "ok\n";
@@ -1803,22 +1803,22 @@ testQuat ()
     
     std::cerr << "Testing Quatf:\n";
 
-    Imath::Quatf qfAsQf;
+    IMATH_NAMESPACE::Quatf qfAsQf;
     assert (PyImath::Quatf::convert (qfObj, &qfAsQf) == 1);
-    assert (Imath::equalWithAbsError (qfAsQf.r, 1.1f, 1e-7f));
-    assert (qfAsQf.v.equalWithAbsError (Imath::V3f (2.2f, 3.3f, 4.4f), 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (qfAsQf.r, 1.1f, 1e-7f));
+    assert (qfAsQf.v.equalWithAbsError (IMATH_NAMESPACE::V3f (2.2f, 3.3f, 4.4f), 1e-7f));
 
-    Imath::Quatf qdAsQf;
+    IMATH_NAMESPACE::Quatf qdAsQf;
     assert (PyImath::Quatf::convert (qdObj, &qdAsQf) == 1);
-    assert (Imath::equalWithAbsError (qdAsQf.r, 5.5f, 1e-7f));
-    assert (qdAsQf.v.equalWithAbsError (Imath::V3f (6.6f, 7.7f, 8.8f), 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (qdAsQf.r, 5.5f, 1e-7f));
+    assert (qdAsQf.v.equalWithAbsError (IMATH_NAMESPACE::V3f (6.6f, 7.7f, 8.8f), 1e-7f));
 
-    Imath::Quatf tAsQf;
+    IMATH_NAMESPACE::Quatf tAsQf;
     assert (PyImath::Quatf::convert (tObj, &tAsQf) == 1);
-    assert (Imath::equalWithAbsError (tAsQf.r, 9.9f, 1e-7f));
-    assert (tAsQf.v.equalWithAbsError (Imath::V3f (10.10f, 11.11f, 12.12f), 1e-7f));
+    assert (IMATH_NAMESPACE::equalWithAbsError (tAsQf.r, 9.9f, 1e-7f));
+    assert (tAsQf.v.equalWithAbsError (IMATH_NAMESPACE::V3f (10.10f, 11.11f, 12.12f), 1e-7f));
 
-    Imath::Quatf iAsQf;
+    IMATH_NAMESPACE::Quatf iAsQf;
     assert (PyImath::Quatf::convert (iObj, &iAsQf) == 0);
 
     std::cerr << "ok\n";
@@ -1827,22 +1827,22 @@ testQuat ()
     
     std::cerr << "Testing Quatd:\n";
 
-    Imath::Quatd qfAsQd;
+    IMATH_NAMESPACE::Quatd qfAsQd;
     assert (PyImath::Quatd::convert (qfObj, &qfAsQd) == 1);
-    assert (Imath::equalWithAbsError (qfAsQd.r, 1.1, 1e-7));
-    assert (qfAsQd.v.equalWithAbsError (Imath::V3d (2.2, 3.3, 4.4), 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (qfAsQd.r, 1.1, 1e-7));
+    assert (qfAsQd.v.equalWithAbsError (IMATH_NAMESPACE::V3d (2.2, 3.3, 4.4), 1e-7));
 
-    Imath::Quatd qdAsQd;
+    IMATH_NAMESPACE::Quatd qdAsQd;
     assert (PyImath::Quatd::convert (qdObj, &qdAsQd) == 1);
-    assert (Imath::equalWithAbsError (qdAsQd.r, 5.5, 1e-7));
-    assert (qdAsQd.v.equalWithAbsError (Imath::V3d (6.6, 7.7, 8.8), 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (qdAsQd.r, 5.5, 1e-7));
+    assert (qdAsQd.v.equalWithAbsError (IMATH_NAMESPACE::V3d (6.6, 7.7, 8.8), 1e-7));
 
-    Imath::Quatd tAsQd;
+    IMATH_NAMESPACE::Quatd tAsQd;
     assert (PyImath::Quatd::convert (tObj, &tAsQd) == 1);
-    assert (Imath::equalWithAbsError (tAsQd.r, 9.9, 1e-7));
-    assert (tAsQd.v.equalWithAbsError (Imath::V3d (10.10, 11.11, 12.12), 1e-7));
+    assert (IMATH_NAMESPACE::equalWithAbsError (tAsQd.r, 9.9, 1e-7));
+    assert (tAsQd.v.equalWithAbsError (IMATH_NAMESPACE::V3d (10.10, 11.11, 12.12), 1e-7));
 
-    Imath::Quatd iAsQd;
+    IMATH_NAMESPACE::Quatd iAsQd;
     assert (PyImath::Quatd::convert (iObj, &iAsQd) == 0);
 
     std::cerr << "ok\n";
@@ -1967,42 +1967,42 @@ testShear ()
     
     std::cerr << "Testing Shear6f:\n";
 
-    Imath::Shear6f s6fAsS6f;
+    IMATH_NAMESPACE::Shear6f s6fAsS6f;
     assert (PyImath::Shear6f::convert (s6fObj, &s6fAsS6f) == 1);
-    Imath::Shear6f s6ff (1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f);
+    IMATH_NAMESPACE::Shear6f s6ff (1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f);
     assert (s6fAsS6f.equalWithAbsError (s6ff, 1e-7f));
 
-    Imath::Shear6f s6dAsS6f;
+    IMATH_NAMESPACE::Shear6f s6dAsS6f;
     assert (PyImath::Shear6f::convert (s6dObj, &s6dAsS6f) == 1);
-    Imath::Shear6f s6df (7.7f, 8.8f, 9.9f, 10.10f, 11.11f, 12.12f);
+    IMATH_NAMESPACE::Shear6f s6df (7.7f, 8.8f, 9.9f, 10.10f, 11.11f, 12.12f);
     assert (s6dAsS6f.equalWithAbsError (s6df, 1e-7f));
 
-    Imath::Shear6f t3AsS6f;
+    IMATH_NAMESPACE::Shear6f t3AsS6f;
     assert (PyImath::Shear6f::convert (t3Obj, &t3AsS6f) == 1);
-    Imath::Shear6f t3f (13.13f, 14.14f, 15.15f, 0, 0, 0);
+    IMATH_NAMESPACE::Shear6f t3f (13.13f, 14.14f, 15.15f, 0, 0, 0);
     assert (t3AsS6f.equalWithAbsError (t3f, 1e-7f));
 
-    Imath::Shear6f t6AsS6f;
+    IMATH_NAMESPACE::Shear6f t6AsS6f;
     assert (PyImath::Shear6f::convert (t6Obj, &t6AsS6f) == 1);
-    Imath::Shear6f t6f (16.16f, 17.17f, 18.18f, 19.19f, 20.20f, 21.21f);
+    IMATH_NAMESPACE::Shear6f t6f (16.16f, 17.17f, 18.18f, 19.19f, 20.20f, 21.21f);
     assert (t6AsS6f.equalWithAbsError (t6f, 1e-7f));
 
-    Imath::Shear6f v3iAsS6f;
+    IMATH_NAMESPACE::Shear6f v3iAsS6f;
     assert (PyImath::Shear6f::convert (v3iObj, &v3iAsS6f) == 1);
-    Imath::Shear6f v3if (22.0f, 23.0f, 24.0f, 0, 0, 0);
+    IMATH_NAMESPACE::Shear6f v3if (22.0f, 23.0f, 24.0f, 0, 0, 0);
     assert (v3iAsS6f.equalWithAbsError (v3if, 1e-7f));
 
-    Imath::Shear6f v3fAsS6f;
+    IMATH_NAMESPACE::Shear6f v3fAsS6f;
     assert (PyImath::Shear6f::convert (v3fObj, &v3fAsS6f) == 1);
-    Imath::Shear6f v3ff (25.25f, 26.26f, 27.27f, 0, 0, 0);
+    IMATH_NAMESPACE::Shear6f v3ff (25.25f, 26.26f, 27.27f, 0, 0, 0);
     assert (v3fAsS6f.equalWithAbsError (v3ff, 1e-7f));
 
-    Imath::Shear6f v3dAsS6f;
+    IMATH_NAMESPACE::Shear6f v3dAsS6f;
     assert (PyImath::Shear6f::convert (v3dObj, &v3dAsS6f) == 1);
-    Imath::Shear6f v3df (28.28f, 29.29f, 30.30f, 0, 0, 0);
+    IMATH_NAMESPACE::Shear6f v3df (28.28f, 29.29f, 30.30f, 0, 0, 0);
     assert (v3dAsS6f.equalWithAbsError (v3df, 1e-7f));
 
-    Imath::Shear6f iAsS6f;
+    IMATH_NAMESPACE::Shear6f iAsS6f;
     assert (PyImath::Shear6f::convert (iObj, &iAsS6f) == 0);
 
     std::cerr << "ok\n";
@@ -2011,42 +2011,42 @@ testShear ()
 
     std::cerr << "Testing Shear6d:\n";
 
-    Imath::Shear6d s6fAsS6d;
+    IMATH_NAMESPACE::Shear6d s6fAsS6d;
     assert (PyImath::Shear6d::convert (s6fObj, &s6fAsS6d) == 1);
-    Imath::Shear6d s6fd (1.1, 2.2, 3.3, 4.4, 5.5, 6.6);
+    IMATH_NAMESPACE::Shear6d s6fd (1.1, 2.2, 3.3, 4.4, 5.5, 6.6);
     assert (s6fAsS6d.equalWithAbsError (s6fd, 1e-7));
 
-    Imath::Shear6d s6dAsS6d;
+    IMATH_NAMESPACE::Shear6d s6dAsS6d;
     assert (PyImath::Shear6d::convert (s6dObj, &s6dAsS6d) == 1);
-    Imath::Shear6d s6dd (7.7, 8.8, 9.9, 10.10, 11.11, 12.12);
+    IMATH_NAMESPACE::Shear6d s6dd (7.7, 8.8, 9.9, 10.10, 11.11, 12.12);
     assert (s6dAsS6d.equalWithAbsError (s6dd, 1e-7));
 
-    Imath::Shear6d t3AsS6d;
+    IMATH_NAMESPACE::Shear6d t3AsS6d;
     assert (PyImath::Shear6d::convert (t3Obj, &t3AsS6d) == 1);
-    Imath::Shear6d t3d (13.13, 14.14, 15.15, 0, 0, 0);
+    IMATH_NAMESPACE::Shear6d t3d (13.13, 14.14, 15.15, 0, 0, 0);
     assert (t3AsS6d.equalWithAbsError (t3d, 1e-7));
 
-    Imath::Shear6d t6AsS6d;
+    IMATH_NAMESPACE::Shear6d t6AsS6d;
     assert (PyImath::Shear6d::convert (t6Obj, &t6AsS6d) == 1);
-    Imath::Shear6d t6d (16.16, 17.17, 18.18, 19.19, 20.20, 21.21);
+    IMATH_NAMESPACE::Shear6d t6d (16.16, 17.17, 18.18, 19.19, 20.20, 21.21);
     assert (t6AsS6d.equalWithAbsError (t6d, 1e-7));
 
-    Imath::Shear6d v3iAsS6d;
+    IMATH_NAMESPACE::Shear6d v3iAsS6d;
     assert (PyImath::Shear6d::convert (v3iObj, &v3iAsS6d) == 1);
-    Imath::Shear6d v3id (22.0, 23.0, 24.0, 0, 0, 0);
+    IMATH_NAMESPACE::Shear6d v3id (22.0, 23.0, 24.0, 0, 0, 0);
     assert (v3iAsS6d.equalWithAbsError (v3id, 1e-7));
 
-    Imath::Shear6d v3fAsS6d;
+    IMATH_NAMESPACE::Shear6d v3fAsS6d;
     assert (PyImath::Shear6d::convert (v3fObj, &v3fAsS6d) == 1);
-    Imath::Shear6d v3fd (25.25, 26.26, 27.27, 0, 0, 0);
+    IMATH_NAMESPACE::Shear6d v3fd (25.25, 26.26, 27.27, 0, 0, 0);
     assert (v3fAsS6d.equalWithAbsError (v3fd, 1e-6));
 
-    Imath::Shear6d v3dAsS6d;
+    IMATH_NAMESPACE::Shear6d v3dAsS6d;
     assert (PyImath::Shear6d::convert (v3dObj, &v3dAsS6d) == 1);
-    Imath::Shear6d v3dd (28.28, 29.29, 30.30, 0, 0, 0);
+    IMATH_NAMESPACE::Shear6d v3dd (28.28, 29.29, 30.30, 0, 0, 0);
     assert (v3dAsS6d.equalWithAbsError (v3dd, 1e-7));
 
-    Imath::Shear6d iAsS6d;
+    IMATH_NAMESPACE::Shear6d iAsS6d;
     assert (PyImath::Shear6d::convert (iObj, &iAsS6d) == 0);
 
     std::cerr << "ok\n";
@@ -2115,23 +2115,23 @@ testV2 ()
 
     std::cerr << "Testing V2i:\n";
 
-    Imath::V2i v2iAsV2i;
+    IMATH_NAMESPACE::V2i v2iAsV2i;
     assert (PyImath::V2i::convert (v2iObj, &v2iAsV2i) == 1);
-    assert (v2iAsV2i == Imath::V2i (1, 2));
+    assert (v2iAsV2i == IMATH_NAMESPACE::V2i (1, 2));
 
-    Imath::V2i v2fAsV2i;
+    IMATH_NAMESPACE::V2i v2fAsV2i;
     assert (PyImath::V2i::convert (v2fObj, &v2fAsV2i) == 1);
-    assert (v2fAsV2i == Imath::V2i (3, 4));
+    assert (v2fAsV2i == IMATH_NAMESPACE::V2i (3, 4));
 
-    Imath::V2i v2dAsV2i;
+    IMATH_NAMESPACE::V2i v2dAsV2i;
     assert (PyImath::V2i::convert (v2dObj, &v2dAsV2i) == 1);
-    assert (v2dAsV2i == Imath::V2i (5, 6));
+    assert (v2dAsV2i == IMATH_NAMESPACE::V2i (5, 6));
 
-    Imath::V2i tAsV2i;
+    IMATH_NAMESPACE::V2i tAsV2i;
     assert (PyImath::V2i::convert (tObj, &tAsV2i) == 1);
-    assert (tAsV2i == Imath::V2i (7, 8));
+    assert (tAsV2i == IMATH_NAMESPACE::V2i (7, 8));
 
-    Imath::V2i iAsV2i;
+    IMATH_NAMESPACE::V2i iAsV2i;
     assert (PyImath::V2i::convert (iObj, &iAsV2i) == 0);
 
     std::cerr << "ok\n";
@@ -2140,23 +2140,23 @@ testV2 ()
 
     std::cerr << "Testing V2f:\n";
 
-    Imath::V2f v2iAsV2f;
+    IMATH_NAMESPACE::V2f v2iAsV2f;
     assert (PyImath::V2f::convert (v2iObj, &v2iAsV2f) == 1);
-    assert (v2iAsV2f.equalWithAbsError (Imath::V2f (1.0f, 2.0f), 1e-7));
+    assert (v2iAsV2f.equalWithAbsError (IMATH_NAMESPACE::V2f (1.0f, 2.0f), 1e-7));
 
-    Imath::V2f v2fAsV2f;
+    IMATH_NAMESPACE::V2f v2fAsV2f;
     assert (PyImath::V2f::convert (v2fObj, &v2fAsV2f) == 1);
-    assert (v2fAsV2f.equalWithAbsError (Imath::V2f (3.3f, 4.4f), 1e-7));
+    assert (v2fAsV2f.equalWithAbsError (IMATH_NAMESPACE::V2f (3.3f, 4.4f), 1e-7));
 
-    Imath::V2f v2dAsV2f;
+    IMATH_NAMESPACE::V2f v2dAsV2f;
     assert (PyImath::V2f::convert (v2dObj, &v2dAsV2f) == 1);
-    assert (v2dAsV2f.equalWithAbsError (Imath::V2f (5.5f, 6.6f), 1e-7));
+    assert (v2dAsV2f.equalWithAbsError (IMATH_NAMESPACE::V2f (5.5f, 6.6f), 1e-7));
 
-    Imath::V2f tAsV2f;
+    IMATH_NAMESPACE::V2f tAsV2f;
     assert (PyImath::V2f::convert (tObj, &tAsV2f) == 1);
-    assert (tAsV2f.equalWithAbsError (Imath::V2f (7.0f, 8.0f), 1e-7));
+    assert (tAsV2f.equalWithAbsError (IMATH_NAMESPACE::V2f (7.0f, 8.0f), 1e-7));
 
-    Imath::V2f iAsV2f;
+    IMATH_NAMESPACE::V2f iAsV2f;
     assert (PyImath::V2f::convert (iObj, &iAsV2f) == 0);
 
     std::cerr << "ok\n";
@@ -2165,23 +2165,23 @@ testV2 ()
 
     std::cerr << "Testing V2d:\n";
 
-    Imath::V2d v2iAsV2d;
+    IMATH_NAMESPACE::V2d v2iAsV2d;
     assert (PyImath::V2d::convert (v2iObj, &v2iAsV2d) == 1);
-    assert (v2iAsV2d.equalWithAbsError (Imath::V2d (1.0, 2.0), 1e-7));
+    assert (v2iAsV2d.equalWithAbsError (IMATH_NAMESPACE::V2d (1.0, 2.0), 1e-7));
 
-    Imath::V2d v2fAsV2d;
+    IMATH_NAMESPACE::V2d v2fAsV2d;
     assert (PyImath::V2d::convert (v2fObj, &v2fAsV2d) == 1);
-    assert (v2fAsV2d.equalWithAbsError (Imath::V2f (3.3, 4.4), 1e-7));
+    assert (v2fAsV2d.equalWithAbsError (IMATH_NAMESPACE::V2f (3.3, 4.4), 1e-7));
 
-    Imath::V2d v2dAsV2d;
+    IMATH_NAMESPACE::V2d v2dAsV2d;
     assert (PyImath::V2d::convert (v2dObj, &v2dAsV2d) == 1);
-    assert (v2dAsV2d.equalWithAbsError (Imath::V2f (5.5, 6.6), 1e-7));
+    assert (v2dAsV2d.equalWithAbsError (IMATH_NAMESPACE::V2f (5.5, 6.6), 1e-7));
 
-    Imath::V2d tAsV2d;
+    IMATH_NAMESPACE::V2d tAsV2d;
     assert (PyImath::V2d::convert (tObj, &tAsV2d) == 1);
-    assert (tAsV2d.equalWithAbsError (Imath::V2d (7.0, 8.0), 1e-7));
+    assert (tAsV2d.equalWithAbsError (IMATH_NAMESPACE::V2d (7.0, 8.0), 1e-7));
 
-    Imath::V2d iAsV2d;
+    IMATH_NAMESPACE::V2d iAsV2d;
     assert (PyImath::V2d::convert (iObj, &iAsV2d) == 0);
 
     std::cerr << "ok\n";
@@ -2250,23 +2250,23 @@ testV3 ()
     
     std::cerr << "Testing V3i:\n";
 
-    Imath::V3i v3iAsV3i;
+    IMATH_NAMESPACE::V3i v3iAsV3i;
     assert (PyImath::V3i::convert (v3iObj, &v3iAsV3i) == 1);
-    assert (v3iAsV3i == Imath::V3i (1, 2, 3));
+    assert (v3iAsV3i == IMATH_NAMESPACE::V3i (1, 2, 3));
 
-    Imath::V3i v3fAsV3i;
+    IMATH_NAMESPACE::V3i v3fAsV3i;
     assert (PyImath::V3i::convert (v3fObj, &v3fAsV3i) == 1);
-    assert (v3fAsV3i == Imath::V3i (4, 5, 6));
+    assert (v3fAsV3i == IMATH_NAMESPACE::V3i (4, 5, 6));
 
-    Imath::V3d v3iAsV3d;
+    IMATH_NAMESPACE::V3d v3iAsV3d;
     assert (PyImath::V3d::convert (v3iObj, &v3iAsV3d) == 1);
-    assert (v3iAsV3d.equalWithAbsError (Imath::V3d (1.0, 2.0, 3.0), 1e-7));
+    assert (v3iAsV3d.equalWithAbsError (IMATH_NAMESPACE::V3d (1.0, 2.0, 3.0), 1e-7));
 
-    Imath::V3i tAsV3i;
+    IMATH_NAMESPACE::V3i tAsV3i;
     assert (PyImath::V3i::convert (tObj, &tAsV3i) == 1);
-    assert (tAsV3i == Imath::V3i (10, 11, 12));
+    assert (tAsV3i == IMATH_NAMESPACE::V3i (10, 11, 12));
 
-    Imath::V3i iAsV3i;
+    IMATH_NAMESPACE::V3i iAsV3i;
     assert (PyImath::V3i::convert (iObj, &iAsV3i) == 0);
 
     std::cerr << "ok\n";
@@ -2275,23 +2275,23 @@ testV3 ()
 
     std::cerr << "Testing V3f:\n";
 
-    Imath::V3f v3iAsV3f;
+    IMATH_NAMESPACE::V3f v3iAsV3f;
     assert (PyImath::V3f::convert (v3iObj, &v3iAsV3f) == 1);
-    assert (v3iAsV3f.equalWithAbsError (Imath::V3f (1.0f, 2.0f, 3.0f), 1e-7));
+    assert (v3iAsV3f.equalWithAbsError (IMATH_NAMESPACE::V3f (1.0f, 2.0f, 3.0f), 1e-7));
 
-    Imath::V3f v3fAsV3f;
+    IMATH_NAMESPACE::V3f v3fAsV3f;
     assert (PyImath::V3f::convert (v3fObj, &v3fAsV3f) == 1);
-    assert (v3fAsV3f.equalWithAbsError (Imath::V3f (4.4f, 5.5f, 6.6f), 1e-7));
+    assert (v3fAsV3f.equalWithAbsError (IMATH_NAMESPACE::V3f (4.4f, 5.5f, 6.6f), 1e-7));
 
-    Imath::V3f v3dAsV3f;
+    IMATH_NAMESPACE::V3f v3dAsV3f;
     assert (PyImath::V3f::convert (v3dObj, &v3dAsV3f) == 1);
-    assert (v3dAsV3f.equalWithAbsError (Imath::V3f (7.7f, 8.8f, 9.9f), 1e-7));
+    assert (v3dAsV3f.equalWithAbsError (IMATH_NAMESPACE::V3f (7.7f, 8.8f, 9.9f), 1e-7));
 
-    Imath::V3f tAsV3f;
+    IMATH_NAMESPACE::V3f tAsV3f;
     assert (PyImath::V3f::convert (tObj, &tAsV3f) == 1);
-    assert (tAsV3f.equalWithAbsError (Imath::V3f (10.0f, 11.0f, 12.0f), 1e-7));
+    assert (tAsV3f.equalWithAbsError (IMATH_NAMESPACE::V3f (10.0f, 11.0f, 12.0f), 1e-7));
 
-    Imath::V3f iAsV3f;
+    IMATH_NAMESPACE::V3f iAsV3f;
     assert (PyImath::V3f::convert (iObj, &iAsV3f) == 0);
 
     std::cerr << "ok\n";
@@ -2300,23 +2300,23 @@ testV3 ()
 
     std::cerr << "Testing V3d:\n";
 
-    Imath::V3i v3dAsV3i;
+    IMATH_NAMESPACE::V3i v3dAsV3i;
     assert (PyImath::V3i::convert (v3dObj, &v3dAsV3i) == 1);
-    assert (v3dAsV3i == Imath::V3i (7, 8, 9));
+    assert (v3dAsV3i == IMATH_NAMESPACE::V3i (7, 8, 9));
 
-    Imath::V3d v3fAsV3d;
+    IMATH_NAMESPACE::V3d v3fAsV3d;
     assert (PyImath::V3d::convert (v3fObj, &v3fAsV3d) == 1);
-    assert (v3fAsV3d.equalWithAbsError (Imath::V3f (4.4, 5.5, 6.6), 1e-7));
+    assert (v3fAsV3d.equalWithAbsError (IMATH_NAMESPACE::V3f (4.4, 5.5, 6.6), 1e-7));
 
-    Imath::V3d v3dAsV3d;
+    IMATH_NAMESPACE::V3d v3dAsV3d;
     assert (PyImath::V3d::convert (v3dObj, &v3dAsV3d) == 1);
-    assert (v3dAsV3d.equalWithAbsError (Imath::V3f (7.7, 8.8, 9.9), 1e-6));
+    assert (v3dAsV3d.equalWithAbsError (IMATH_NAMESPACE::V3f (7.7, 8.8, 9.9), 1e-6));
 
-    Imath::V3d tAsV3d;
+    IMATH_NAMESPACE::V3d tAsV3d;
     assert (PyImath::V3d::convert (tObj, &tAsV3d) == 1);
-    assert (tAsV3d.equalWithAbsError (Imath::V3d (10.0, 11.0, 12.0), 1e-7));
+    assert (tAsV3d.equalWithAbsError (IMATH_NAMESPACE::V3d (10.0, 11.0, 12.0), 1e-7));
 
-    Imath::V3d iAsV3d;
+    IMATH_NAMESPACE::V3d iAsV3d;
     assert (PyImath::V3d::convert (iObj, &iAsV3d) == 0);
 
     std::cerr << "ok\n";
