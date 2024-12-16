@@ -16,6 +16,7 @@ PYBIND11_MODULE(pybindimath, m)
     PyBindImath::register_imath_plane(m);
     PyBindImath::register_imath_line(m);
     PyBindImath::register_imath_euler(m);
+    PyBindImath::register_imath_frustum(m);
 
 
     //
