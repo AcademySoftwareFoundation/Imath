@@ -80,6 +80,11 @@ if (PYBIND11)
   add_subdirectory(src/pybind11)
 endif()
 
+option(NANOBIND "Set ON to compile nanobind PyImath bindings")
+if (NANOBIND)
+  add_subdirectory(src/nanobind)
+endif()
+
 option(BUILD_WEBSITE "Set ON to build the readthedocs website source")
 if (BUILD_WEBSITE AND NOT IMATH_IS_SUBPROJECT)
   add_subdirectory(website)
@@ -119,4 +124,3 @@ endif()
 if(NOT IMATH_IS_SUBPROJECT)
   include(cmake/clang-format.cmake)
 endif()
-
