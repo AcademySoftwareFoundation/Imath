@@ -16,7 +16,7 @@ void register_frustum(pybind11::module& m, const char *name)
     pybind11::class_<T> c(m, name);
     c.def(pybind11::init<>(), "Uninitialized by default")
     .def(pybind11::init<T>(), pybind11::arg("frustum"), "Copy constructor")
-    .def(pybind11::init<S>(), pybind11::arg("nearPlane"), pybind11::arg("farPlane"), pybind11::arg("fovx"), pybind11::arg("aspect"), "Initialize with basic frustum properties")
+    .def(pybind11::init<S, S, S, S>(), pybind11::arg("nearPlane"), pybind11::arg("farPlane"), pybind11::arg("fovx"), pybind11::arg("aspect"), "Initialize with basic frustum properties")
     
     .def_readwrite("nearPlane", &T::nearPlane, "The near clipping plane")
     .def_readwrite("farPlane", &T::farPlane, "The far clipping plane")
