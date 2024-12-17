@@ -10,20 +10,20 @@
 
 namespace PyBindImath {
 
-template <class T, class V, class S>
+template <class T, class V>
 void register_frustum(pybind11::module& m, const char *name)
 {
     pybind11::class_<T> c(m, name);
     c.def(pybind11::init<>(), "Uninitialized by default")
     .def(pybind11::init<T>(), pybind11::arg("frustum"), "Copy constructor")
-    .def(pybind11::init<S>(), pybind11::arg("nearPlane"), pybind11::arg("farPlane"), pybind11::arg("fovx"), pybind11::arg("aspect"), "Initialize with basic frustum properties")
+    .def(pybind11::init<T>(), pybind11::arg("nearPlane"), pybind11::arg("farPlane"), pybind11::arg("fovx"), pybind11::arg("aspect"), "Initialize with basic frustum properties")
     
     .def_readwrite("nearPlane", &T::nearPlane, "The near clipping plane")
     .def_readwrite("farPlane", &T::farPlane, "The far clipping plane")
     .def_readwrite("fovx", &T::fovx, "The field of view in x direction")
     .def_readwrite("aspect", &T::aspect, "The aspect ratio")
 
-    .def("set", pybind11::overload_cast<S>(&T::set), pybind11::arg("nearPlane"), pybind11::arg("farPlane"), pybind11::arg("fovx"), pybind11::arg("aspect"), "Set frustum properties")
+    .def("set", pybind11::overload_cast<T>(&T::set), pybind11::arg("nearPlane"), pybind11::arg("farPlane"), pybind11::arg("fovx"), pybind11::arg("aspect"), "Set frustum properties")
     .def("projectionMatrix", &T::projectionMatrix, "Returns the projection matrix of the frustum")
     .def("transform", &T::transform, pybind11::arg("matrix"), "Applies a transformation matrix to the frustum")
     .def("intersects", [](T& self, const V& point) {
