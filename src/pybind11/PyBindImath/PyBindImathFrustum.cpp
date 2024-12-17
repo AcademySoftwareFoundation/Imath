@@ -10,7 +10,7 @@
 
 namespace PyBindImath {
 
-template <class T, class V, class M, class S>
+template <class T, class V, class S>
 void register_frustum(pybind11::module& m, const char *name)
 {
     pybind11::class_<T> c(m, name);
