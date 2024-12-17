@@ -1,0 +1,203 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+
+# These are the steps for all CI jobs. Linux, macOS, and Windows all
+# share a common set of configure/build/validate steps.  The input
+# variables control all variations of the jobs.
+#
+# Each job validates that the proper files are installed by comparing
+# the install_manifest.txt to a reference for that job. This requires
+# that each job have a corresponding reference, and that thes
+# references are updated when any change is made to the installation
+# headers/libraries/cmake/etc.
+
+name: CI Steps
+
+on:
+  workflow_call:
+    # This inputs receive values via the "with:" section in ci_workflow.yml
+    inputs:
+      build:
+        type: string
+      os:
+        type: string
+      container:
+        type: string
+      cxx-standard:
+        type: string
+      cxx-compiler:
+        type: string
+      cc-compiler:
+        type: string
+      build-type:
+        type: string
+      python:
+        type: string
+      pybind11:
+        type: string
+      IMATH_INSTALL_PKG_CONFIG:
+        type: string
+      BUILD_SHARED_LIBS:
+        type: string
+      BUILD_TESTING:
+        type: string
+      namespace:
+        type: string
+      validate_install:
+        type: string
+
+jobs:
+  steps:
+    runs-on: ${{ inputs.os }}
+
+    container:
+      image: ${{ inputs.container }}
+
+    env:
+      CXX: ${{ inputs.cxx-compiler }}
+      CC: ${{ inputs.cc-compiler }}
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+
+      - name: Create build directories
+        run: mkdir _install _build _examples
+        shell: bash
+
+      - name: Construct CMake command
+        run: |
+          # Construct the cmake command as a variable, so the
+          # Configure step below can execute it, but also so we can store
+          # in in the install_manifest as a debugging reference
+          CMAKE_COMMAND="cmake -B . -S .. \
+                -DCMAKE_INSTALL_PREFIX=../_install \
+                -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} \
+                -DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }} \
+                -DBUILD_SHARED_LIBS=${{ inputs.BUILD_SHARED_LIBS }} \
+                -DIMATH_INSTALL_PKG_CONFIG=${{ inputs.IMATH_INSTALL_PKG_CONFIG }} \
+                -DBUILD_TESTING=${{ inputs.BUILD_TESTING }} \
+                -DPYTHON=${{ inputs.python }} \
+                -DPYBIND11=${{ inputs.pybind11 }} \
+                -DCMAKE_VERBOSE_MAKEFILE=ON"
+          if [ -n "${{ inputs.namespace }}" ]; then
+              CMAKE_COMMAND="$CMAKE_COMMAND -DIMATH_NAMESPACE=${{ inputs.namespace }}"
+          fi
+          echo "CMAKE_COMMAND=$CMAKE_COMMAND" >> $GITHUB_ENV
+
+          # Remove the os version from the manifest name, so it only
+          # contains "ubuntu", "macos", or "windows", so the name is,
+          # e.g. install_manifest.macos.1.txt
+          echo "INSTALL_MANIFEST=$(echo 'install_manifest.${{ inputs.os }}' | cut -d'-' -f1).${{ inputs.build }}.txt" >> $GITHUB_ENV
+        working-directory: _build
+        shell: bash
+
+      - name: Configure
+        run: |
+          $CMAKE_COMMAND
+        working-directory: _build
+        shell: bash
+
+      - name: Build
+        run: |
+          cmake --build . --target install --config ${{ inputs.build-type }}
+        working-directory: _build
+        shell: bash
+
+      - name: Find python version
+        run: |
+          echo Finding python version in _build directory:
+          grep -r PYTHON
+        working-directory: _build
+        shell: bash
+
+      - name: Prepare install_manifest
+        # Store the cmake command as the first line of the manifest,
+        # and remove the path prefix, so the manifest contains only
+        # the local filenames.
+        run: |
+          echo "# $CMAKE_COMMAND" > "_build/$INSTALL_MANIFEST"
+          sort _build/install_manifest.txt | sed -e "s:^.*/_install/::" >> "_build/$INSTALL_MANIFEST"
+        shell: bash
+
+      - name: Upload install_manifest.txt
+        # Upload the manifest to make it possible to download for inspection and debugging
+        uses: actions/upload-artifact@v3
+        with:
+          name: install_manifest
+          path: _build/${{ env.INSTALL_MANIFEST }}
+
+      - name: Validate install
+        if: ${{ inputs.validate_install == 'ON' }}
+        # Validate that the build has installed the proper files by comparing against the appropriate reference manifest
+        run: |
+          share/ci/scripts/validate_install.py "_build/$INSTALL_MANIFEST" "share/ci/install_manifest/$INSTALL_MANIFEST" _build/CMakeCache.txt
+        shell: bash
+
+      - name: Test standalone
+        continue-on-error: true
+        run: |
+          # Make sure we can build the tests when configured as a
+          # standalone application linking against the just-installed
+          # Imath library.
+          cmake ../src/ImathTest \
+                -DCMAKE_PREFIX_PATH=../../_install \
+                -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} \
+                -DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }} \
+                -DCMAKE_CXX_FLAGS=${{ inputs.cxx-flags }}
+          cmake --build . \
+                --config ${{ inputs.build-type }}
+
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            ./bin/"${{ inputs.build-type }}"/ImathTest.exe || true
+          else
+            ./bin/ImathTest
+          fi
+        shell: bash
+        working-directory: _examples 
+
+      - name: Examples
+        # The example code use the Imath:: namespace explicitly, they won't work with a custom namespace, so skip the test in that case.
+        if: ${{ inputs.namespace == '' }}
+        run: |
+          # Confirm the examples compile and execute
+          rm -rf bin CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
+          cmake ../website/examples \
+                -DCMAKE_PREFIX_PATH=../../_install \
+                -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} \
+                -DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }}
+          cmake --build . --config ${{ inputs.build-type }}
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            ./bin/"${{ inputs.build-type }}"/imath-intro.exe || true
+            ./bin/"${{ inputs.build-type }}"/imath-examples.exe || true
+          else
+            ./bin/imath-intro
+            ./bin/imath-examples
+          fi
+
+        shell: bash
+        working-directory: _examples 
+
+      - name: Test Python
+        if: ${{ inputs.python == 'ON' }}
+        run: |
+          # Confirm the python module loads. Set PYTHONPATH to the
+          # _install directory of the module (better to find it
+          # procedurally than hard code a path).
+          if [[ "${{ inputs.python }}" == "ON" ]]; then
+              export PYTHONPATH=`find ../_install -name imath.so | xargs dirname`
+              python -c "import imath;print(imath.__version__)"
+          fi
+          if [[ "${{ inputs.pybind11 }}" == "ON" ]]; then
+              export PYTHONPATH=`find ../_install -name 'pybindimath.*.so' | xargs dirname`
+              python -c "import pybindimath;print(pybindimath.__version__)"
+          fi
+        shell: bash
+        working-directory: _build
+
+      - name: Test
+        run: |
+          ctest -T Test -C ${{ inputs.build-type }} --timeout 7200 --output-on-failure -VV
+        working-directory: _build
+        shell: bash

@@ -49,11 +49,11 @@ void register_box3(pybind11::module& m, const char * name)
 
 void register_imath_box(pybind11::module& m)
 {
-    register_box2<Imath::Box2d, Imath::V2d>(m, "Box2d");
-    register_box2<Imath::Box2f, Imath::V2f>(m, "Box2f");
+    register_box2<IMATH_NAMESPACE::Box2d, IMATH_NAMESPACE::V2d>(m, "Box2d");
+    register_box2<IMATH_NAMESPACE::Box2f, IMATH_NAMESPACE::V2f>(m, "Box2f");
 
-    register_box3<Imath::Box3d, Imath::V3d>(m, "Box3d");
-    register_box3<Imath::Box3f, Imath::V3f>(m, "Box3f");
+    register_box3<IMATH_NAMESPACE::Box3d, IMATH_NAMESPACE::V3d>(m, "Box3d");
+    register_box3<IMATH_NAMESPACE::Box3f, IMATH_NAMESPACE::V3f>(m, "Box3f");
 
 }
 

@@ -143,10 +143,10 @@ procrustesRotationAndTranslation(const FixedArray<IMATH_NAMESPACE::Vec3<T> >& fr
         return IMATH_NAMESPACE::M44d();
 
     std::unique_ptr<IMATH_NAMESPACE::Vec3<T>[]> fromHandle;
-    const Imath::Vec3<T>* fromPtr = flatten(from, fromHandle);
+    const IMATH_NAMESPACE::Vec3<T>* fromPtr = flatten(from, fromHandle);
 
     std::unique_ptr<IMATH_NAMESPACE::Vec3<T>[]> toHandle;
-    const Imath::Vec3<T>* toPtr = flatten(to, toHandle);
+    const IMATH_NAMESPACE::Vec3<T>* toPtr = flatten(to, toHandle);
 
     std::unique_ptr<T[]> weightsHandle;
     const T* weightsPtr = nullptr;
@@ -292,17 +292,17 @@ BOOST_PYTHON_MODULE(imath)
     add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V2f> > (v2f_class);
     add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V2d> > (v2d_class);
 
-    def("V2iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec2<int> > >,
+    def("V2iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec2<int> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V2iArray from a buffer object");
 
-    def("V2fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec2<float> > >,
+    def("V2fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec2<float> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V2fArray from a buffer object");
 
-    def("V2dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec2<double> > >,
+    def("V2dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec2<double> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V2dArray from a buffer object");
@@ -353,17 +353,17 @@ BOOST_PYTHON_MODULE(imath)
     add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V3f> > (v3f_class);
     add_buffer_protocol<FixedArray<IMATH_NAMESPACE::V3d> > (v3d_class);
 
-    def("V3iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec3<int> > >,
+    def("V3iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec3<int> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V3iArray from a buffer object");
 
-    def("V3fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec3<float> > >,
+    def("V3fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec3<float> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V3fArray from a buffer object");
 
-    def("V3dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec3<double> > >,
+    def("V3dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec3<double> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V3dArray from a buffer object");
@@ -408,17 +408,17 @@ BOOST_PYTHON_MODULE(imath)
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4i64_class);
     add_explicit_construction_from_type<IMATH_NAMESPACE::V4d>(v4f_class);
 
-    def("V4iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec4<int> > >,
+    def("V4iArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec4<int> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V4iArray from a buffer object");
 
-    def("V4fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec4<float> > >,
+    def("V4fArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec4<float> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V4fArray from a buffer object");
 
-    def("V4dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<Imath::Vec4<double> > >,
+    def("V4dArrayFromBuffer", &fixedArrayFromBuffer<FixedArray<IMATH_NAMESPACE::Vec4<double> > >,
         return_value_policy<manage_new_object>(),
         args("bufferObject"),
         "Construct a V4dArray from a buffer object");

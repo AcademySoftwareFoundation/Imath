@@ -23,8 +23,8 @@ void register_line(pybind11::module& m, const char *name)
 
 void register_imath_line(pybind11::module &m) 
 {
-    register_line<Imath::Line3f, Imath::V3f, float>(m, "Line3f");
-    register_line<Imath::Line3d, Imath::V3d, double>(m, "Line3d");
+    register_line<IMATH_NAMESPACE::Line3f, IMATH_NAMESPACE::V3f, float>(m, "Line3f");
+    register_line<IMATH_NAMESPACE::Line3d, IMATH_NAMESPACE::V3d, double>(m, "Line3d");
 }
 
 }

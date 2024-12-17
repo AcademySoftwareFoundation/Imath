@@ -114,14 +114,14 @@ void register_vec4(pybind11::module& m, const char * name)
 
 void register_imath_vec(pybind11::module& m)
 {
-    register_vec2<Imath::V2d, double>(m, "V2d");
-    register_vec2<Imath::V2f, float>(m, "V2f");
+    register_vec2<IMATH_NAMESPACE::V2d, double>(m, "V2d");
+    register_vec2<IMATH_NAMESPACE::V2f, float>(m, "V2f");
 
-    register_vec3<Imath::V3d, double>(m, "V3d");
-    register_vec3<Imath::V3f, float>(m, "V3f");
+    register_vec3<IMATH_NAMESPACE::V3d, double>(m, "V3d");
+    register_vec3<IMATH_NAMESPACE::V3f, float>(m, "V3f");
 
-    register_vec4<Imath::V4d, double>(m, "V4d");
-    register_vec4<Imath::V4f, float>(m, "V4f");
+    register_vec4<IMATH_NAMESPACE::V4d, double>(m, "V4d");
+    register_vec4<IMATH_NAMESPACE::V4f, float>(m, "V4f");
 }
 
 }
