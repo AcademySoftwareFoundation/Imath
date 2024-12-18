@@ -14,7 +14,8 @@ set(PYBINDIMATH_SOURCES
     PyBindImathPlane.cpp
     PyBindImathLine.cpp
     PyBindImathEuler.cpp
-    PyBindImathFrustum.cpp
+    
+    # PyBindImathFrustum build failing
 )
 
 set(PYBINDIMATH_HEADERS
