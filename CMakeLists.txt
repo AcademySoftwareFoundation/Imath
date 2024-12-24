@@ -85,6 +85,10 @@ if (BUILD_WEBSITE AND NOT IMATH_IS_SUBPROJECT)
   add_subdirectory(website)
 endif()
 
+if (APPLE)
+  option(IMATH_BUILD_APPLE_FRAMEWORKS "Build as Apple Frameworks" OFF)
+endif()
+
 # If you want to use ctest to configure, build and
 # upload the results, cmake has builtin support for
 # submitting to CDash, or any server who speaks the
