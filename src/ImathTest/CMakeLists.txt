@@ -84,6 +84,10 @@ function(DEFINE_IMATH_TESTS)
   endforeach()
 endfunction()
 
+if (TBB_BUILD_APPLE_FRAMEWORKS)
+  add_compile_definitions(TBB_USE_APPLE_FRAMEWORKS)
+endif()
+
 define_imath_tests(
   testToFloat
   testSize
