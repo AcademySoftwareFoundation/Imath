@@ -22,7 +22,8 @@
 
 /// @cond Doxygen_Suppress
 
-#ifdef __CUDACC__
+// ROCm platform also provides thrust library for AMD GPUs https://rocm.docs.amd.com/projects/rocThrust/en/latest
+#if defined(__CUDACC__) || defined(__HIP__)
 #    include <thrust/complex.h>
 #    define COMPLEX_NAMESPACE thrust
 #else
