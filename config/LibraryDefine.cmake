@@ -84,6 +84,16 @@ function(IMATH_DEFINE_LIBRARY libname)
   )
   add_library(${PROJECT_NAME}::${libname} ALIAS ${libname})
 
+  if (IMATH_BUILD_APPLE_FRAMEWORKS)
+    set_target_properties(${libname} PROPERTIES 
+      FRAMEWORK TRUE
+      FRAMEWORK_VERSION IMATH_LIB_VERSION
+      XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER com.AcademySoftwareFoundation.${libname}
+      MACOSX_FRAMEWORK_IDENTIFIER com.AcademySoftwareFoundation.${libname}
+      MACOSX_FRAMEWORK_BUNDLE_VERSION IMATH_LIB_VERSION
+      MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${Imath_VERSION})
+  endif()
+  
   if (IMATH_INSTALL)
     install(TARGETS ${libname}
       EXPORT ${PROJECT_NAME}
