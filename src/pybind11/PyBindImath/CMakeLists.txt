@@ -115,8 +115,9 @@ if(IMATH_BUILD_APPLE_FRAMEWORKS)
     set_target_properties(${PYBINDIMATH_LIBRARY} PROPERTIES
         FRAMEWORK TRUE
         FRAMEWORK_VERSION PYBINDIMATH_LIB_SUFFIX
-        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER com.AcademySoftwareFoundation.Imath.PyBind
-        MACOSX_FRAMEWORK_IDENTIFIER com.AcademySoftwareFoundation.Imath.PyBind
+        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER github.com/AcademySoftwareFoundation/Imath.PyBind
+        # OUTPUT_NAME "pybind"
+        MACOSX_FRAMEWORK_IDENTIFIER github.com/AcademySoftwareFoundation/Imath.PyBind
         MACOSX_FRAMEWORK_BUNDLE_VERSION PYBINDIMATH_LIB_SUFFIX
         MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${Imath_VERSION})
 endif()
