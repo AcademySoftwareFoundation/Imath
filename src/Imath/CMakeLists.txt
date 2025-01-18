@@ -47,3 +47,14 @@ imath_define_library(Imath
     ImathVec.h
     ImathVecAlgo.h
   )
+
+if(IMATH_BUILD_APPLE_FRAMEWORKS)
+  set_target_properties(Imath PROPERTIES
+      FRAMEWORK TRUE
+      FRAMEWORK_VERSION IMATH_LIB_VERSION
+      XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER github.com/AcademySoftwareFoundation/Imath
+      OUTPUT_NAME "imath"
+      MACOSX_FRAMEWORK_IDENTIFIER github.com/AcademySoftwareFoundation/Imath
+      MACOSX_FRAMEWORK_BUNDLE_VERSION IMATH_LIB_VERSION
+      MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${Imath_VERSION})
+endif()
