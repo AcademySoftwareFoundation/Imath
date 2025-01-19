@@ -110,6 +110,7 @@ jobs:
       pybind11: ${{ matrix.pybind11 || 'OFF' }}
       BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
       IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
+      IMATH_BUILD_APPLE_FRAMEWORKS: ${{ matrix.IMATH_BUILD_APPLE_FRAMEWORKS || 'OFF' }}
       BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
       validate_install: ${{ matrix.validate_install || 'ON' }}
     strategy:
@@ -135,6 +136,10 @@ jobs:
           - build: 5
             label: macos-13
             os: macos-13
+
+          - build: 6
+            label: apple frameworks
+            IMATH_BUILD_APPLE_FRAMEWORKS: 'ON'
 
   windows:
     name: 'Windows.${{ matrix.build}}: ${{ matrix.label }}'
