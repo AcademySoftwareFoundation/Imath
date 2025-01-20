@@ -13,12 +13,12 @@ template<typename T>
 struct GetClassName {};
 
 template <>
-struct GetClassName<Imath::Frustumf> {
+struct GetClassName<IMATH_NAMESPACE::Frustumf> {
     static constexpr const char* value = "Frustumf";
 };
 
 template <>
-struct GetClassName<Imath::Frustumd> {
+struct GetClassName<IMATH_NAMESPACE::Frustumd> {
     static constexpr const char* value = "Frustumd";
 };
 
@@ -88,23 +88,23 @@ void register_Frustum(py::module& m, const char *name)
         "F.orthographic() -- returns whether frustum "
         "F is orthographic or not")
 
-    .def("planes", [](F const& self, Imath::Plane3<T>* planes) -> void
+    .def("planes", [](F const& self, IMATH_NAMESPACE::Plane3<T>* planes) -> void
     {
         self.planes(planes);
     })
-    .def("planes", [](F const& self, Imath::Plane3<T> *p, Imath::Matrix44<T> const& m) -> void
+    .def("planes", [](F const& self, IMATH_NAMESPACE::Plane3<T> *p, IMATH_NAMESPACE::Matrix44<T> const& m) -> void
     {
         self.planes(p, m);
     })
-    .def("planes", [](F const& self, Imath::Matrix44<T> const& m)
+    .def("planes", [](F const& self, IMATH_NAMESPACE::Matrix44<T> const& m)
     {
-        Imath::Plane3<T> p[6];
+        IMATH_NAMESPACE::Plane3<T> p[6];
         self.planes(p, m);
         return py::make_tuple(p[0], p[1], p[2], p[3], p[4], p[5]);    
     })
     .def("planes", [](F const& self)
     {
-        Imath::Plane3<T> p[6];
+        IMATH_NAMESPACE::Plane3<T> p[6];
         self.planes(p);
     
         return py::make_tuple(p[0],p[1],p[2],p[3],p[4],p[5]);    
@@ -137,12 +137,12 @@ void register_Frustum(py::module& m, const char *name)
         "F.projectScreenToRay(V) -- returns a Line3 "
         "through V, a V2 point in screen space")
             
-    .def("projectScreenToRay", [](F const& self, py::sequence const& seq) -> Imath::Line3<T> {
+    .def("projectScreenToRay", [](F const& self, py::sequence const& seq) -> IMATH_NAMESPACE::Line3<T> {
         if(seq.size() != 2) {
             throw std::invalid_argument ( "projectScreenToRay expects a sequence of length 2");
         }
 
-        Imath::Vec2<T> const point{py::cast<T>(seq[0]), py::cast<T>(seq[1])};
+        IMATH_NAMESPACE::Vec2<T> const point{py::cast<T>(seq[0]), py::cast<T>(seq[1])};
         return self.projectScreenToRay(point);
     })
             
@@ -150,12 +150,12 @@ void register_Frustum(py::module& m, const char *name)
         "F.projectPointToScreen(V) -- returns the "
         "projection of V3 V into screen space")
             
-    .def("projectPointToScreen", [](F const& self, py::sequence const& seq) -> Imath::Vec2<T> {
+    .def("projectPointToScreen", [](F const& self, py::sequence const& seq) -> IMATH_NAMESPACE::Vec2<T> {
         if(seq.size() != 3) {
             throw std::invalid_argument ( "projectPointToScreen expects a sequence of length 3");
         }
 
-        Imath::Vec3<T> const point{py::cast<T>(seq[0]), py::cast<T>(seq[1]), py::cast<T>(seq[2])};
+        IMATH_NAMESPACE::Vec3<T> const point{py::cast<T>(seq[0]), py::cast<T>(seq[1]), py::cast<T>(seq[2])};
         return self.projectPointToScreen(point);
     })
     
@@ -192,7 +192,7 @@ void register_Frustum(py::module& m, const char *name)
             throw std::invalid_argument ( "worldRadius expects a sequence of length 3");
         }
 
-        Imath::Vec3<T> const point{py::cast<T>(seq[0]), py::cast<T>(seq[1]), py::cast<T>(seq[2])};
+        IMATH_NAMESPACE::Vec3<T> const point{py::cast<T>(seq[0]), py::cast<T>(seq[1]), py::cast<T>(seq[2])};
         return self.worldRadius(point, radius);
     })
             
@@ -207,7 +207,7 @@ void register_Frustum(py::module& m, const char *name)
             throw std::invalid_argument ("screenRadius expects a sequence of length 3");
         }
 
-        Imath::Vec3<T> const point{py::cast<T>(seq[0]), py::cast<T>(seq[1]), py::cast<T>(seq[2])};
+        IMATH_NAMESPACE::Vec3<T> const point{py::cast<T>(seq[0]), py::cast<T>(seq[1]), py::cast<T>(seq[2])};
         return self.screenRadius(point, radius);
     })
     ;
@@ -217,8 +217,8 @@ void register_Frustum(py::module& m, const char *name)
 
 void register_imath_frustum(py::module &m)
 {
-    register_Frustum<Imath::Frustumf>(m, "Frustumf");
-    register_Frustum<Imath::Frustumd>(m, "Frustumd");
+    register_Frustum<IMATH_NAMESPACE::Frustumf>(m, "Frustumf");
+    register_Frustum<IMATH_NAMESPACE::Frustumd>(m, "Frustumd");
 }
 
 } // PyBindImath

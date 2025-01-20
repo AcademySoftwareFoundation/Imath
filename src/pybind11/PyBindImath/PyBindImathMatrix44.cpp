@@ -17,12 +17,12 @@ template<typename T>
 struct GetClassName {};
 
 template <>
-struct GetClassName<Imath::M44f> {
+struct GetClassName<IMATH_NAMESPACE::M44f> {
     static constexpr const char* value = "Matrix44f";
 };
 
 template <>
-struct GetClassName<Imath::M44d> {
+struct GetClassName<IMATH_NAMESPACE::M44d> {
     static constexpr const char* value = "Matrix44d";
 };
 
@@ -97,8 +97,8 @@ void register_imath_matrix(py::module& m)
 {
     // TODO: M22 and M33
 
-    register_Matrix44<Imath::M44f, 4>(m);
-    register_Matrix44<Imath::M44d, 4>(m);
+    register_Matrix44<IMATH_NAMESPACE::M44f, 4>(m);
+    register_Matrix44<IMATH_NAMESPACE::M44d, 4>(m);
 }
 
 } // PyBindImath
