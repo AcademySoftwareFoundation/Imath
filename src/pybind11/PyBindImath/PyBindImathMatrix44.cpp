@@ -18,12 +18,12 @@ struct GetClassName {};
 
 template <>
 struct GetClassName<IMATH_NAMESPACE::M44f> {
-    static constexpr const char* value = "Matrix44f";
+    static constexpr char const* value = "Matrix44f";
 };
 
 template <>
 struct GetClassName<IMATH_NAMESPACE::M44d> {
-    static constexpr const char* value = "Matrix44d";
+    static constexpr char const* value = "Matrix44d";
 };
 
 template <class T, std::size_t SIZE>

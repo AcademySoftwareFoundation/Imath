@@ -14,16 +14,16 @@ struct GetClassName {};
 
 template <>
 struct GetClassName<IMATH_NAMESPACE::Frustumf> {
-    static constexpr const char* value = "Frustumf";
+    static constexpr char const* value = "Frustumf";
 };
 
 template <>
 struct GetClassName<IMATH_NAMESPACE::Frustumd> {
-    static constexpr const char* value = "Frustumd";
+    static constexpr char const* value = "Frustumd";
 };
 
 template <typename F, typename T = typename F::value_type>
-void register_Frustum(py::module& m, const char *name)
+void register_Frustum(py::module& m, char const* name)
 {
     py::class_<F>(m, name)
     .def(py::init<>(), "Frustum() default construction")
