@@ -39,12 +39,18 @@ struct MatrixRow {
             .def("__len__", []{return SIZE;})
             .def("__getitem__", [](MatrixRow const& self, std::size_t index) -> T 
             {
-                // TODO: Check data boundaries 
+                if(index >= SIZE)
+                {
+                    throw std::out_of_range("Index out of range");
+                }
                 return self._data[index];
             })
             .def("__setitem__", [](MatrixRow& self, std::size_t index, T const& value)
             {
-                // TODO: Check data boundaries 
+                if(index >= SIZE)
+                {
+                    throw std::out_of_range("Index out of range");
+                }
                 self._data[index] = value; 
             })
             ;
@@ -82,6 +88,10 @@ void register_Matrix44(py::module& m)
     py::class_<M>(m, matrixName.c_str())
     .def(py::init<>())
     .def("__getitem__", [](M& self, std::size_t index) -> R {
+            if(index >= SIZE)
+            {
+                throw std::out_of_range("Index out of range");
+            }
             T* data = self[index];
             return R{data};
         }, py::arg("i"),
