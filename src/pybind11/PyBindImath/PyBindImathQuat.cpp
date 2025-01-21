@@ -49,7 +49,7 @@ std::string Quat_str(Q const& v)
     return stream.str();
 }
 
-template <typename T, typename Q = Quat<T>>
+template <typename Q, typename T = typename Q::value_type>
 std::string Quat_repr(Q const& v)
 {
     static_assert(std::is_floating_point<T>::value, "Quat_repr requires a floating-point type");
@@ -68,16 +68,17 @@ std::string Quat_repr(Q const& v)
 
 } // namespace
 
-template <class T, typename Q = Quat<T>, typename E = Euler<T>>
+template <class Q, typename T = typename Q::value_type, typename E = Euler<T>>
 void register_Quat(py::module& m)
 {
     auto className = GetClassName<Q>::value;
 
     py::class_<Q>(m, className)
     .def(py::init<>(), "imath Quat initialization")
-    .def(py::init<Q>(), "imath Quat copy initialization")
+    .def(py::init<Quat<float>>(), "imath Quat copy initialization")
+    .def(py::init<Quat<double>>(), "imath Quat copy initialization")
     .def(py::init<T, T, T, T>(), "make Quat from components")
-    .def(py::init<T, Q>(), "make Quat from components")
+    .def(py::init<T, Vec3<T>>(), "make Quat from components")
     .def("__init__", [](Q& self, E const& euler){new (&self) Q(euler.toQuat());})
     .def("__init__", [](Q& self, Matrix33<T> const& mat){new (&self) Q(E(mat).toQuat());})
     .def("__init__", [](Q& self, Matrix44<T> const& mat){new (&self) Q(E(mat).toQuat());})
@@ -168,8 +169,8 @@ void register_Quat(py::module& m)
         "quaternions q and either p or -p, whichever is\n"
         "closer. q and p must be normalized\n")
             
-    .def("__str__",Quat_str)
-    .def("__repr__",Quat_repr<T>)
+    .def("__str__", Quat_str<Q>)
+    .def("__repr__", Quat_repr<Q>)
     .def(py::self * T())
     .def(py::self / T())
 
@@ -188,7 +189,6 @@ void register_Quat(py::module& m)
 
     .def(py::self * Matrix33<T>())
     .def(Matrix33<T>() * py::self)
-    .def(py::self *= Matrix33<T>())
 
     .def(-py::self)
     .def("__invert__", [](Q const& self){return ~self;})
@@ -198,7 +198,8 @@ void register_Quat(py::module& m)
 
 void register_imath_quat(py::module& m)
 {
-
+    register_Quat<Quatf>(m);
+    register_Quat<Quatd>(m);
 }
 		 
 } // PyBindImath
