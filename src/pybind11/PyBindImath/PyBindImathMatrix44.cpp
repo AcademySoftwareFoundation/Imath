@@ -11,18 +11,21 @@
 namespace PyBindImath {
 namespace py = pybind11;
 
+using IMATH_NAMESPACE::M44f;
+using IMATH_NAMESPACE::M44d;
+
 namespace {
 
 template<typename T>
 struct GetClassName {};
 
 template <>
-struct GetClassName<IMATH_NAMESPACE::M44f> {
+struct GetClassName<M44f> {
     static constexpr char const* value = "Matrix44f";
 };
 
 template <>
-struct GetClassName<IMATH_NAMESPACE::M44d> {
+struct GetClassName<M44d> {
     static constexpr char const* value = "Matrix44d";
 };
 
@@ -107,8 +110,8 @@ void register_imath_matrix(py::module& m)
 {
     // TODO: M22 and M33
 
-    register_Matrix44<IMATH_NAMESPACE::M44f, 4>(m);
-    register_Matrix44<IMATH_NAMESPACE::M44d, 4>(m);
+    register_Matrix44<M44f, 4>(m);
+    register_Matrix44<M44d, 4>(m);
 }
 
 } // PyBindImath
