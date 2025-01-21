@@ -14,6 +14,7 @@ set(PYBINDIMATH_SOURCES
     PyBindImathPlane.cpp
     PyBindImathLine.cpp
     PyBindImathMatrix44.cpp
+    PyBindImathQuat.cpp
 
     # PyBindImathEuler build Error pybind test
     PyBindImathFrustum.cpp
