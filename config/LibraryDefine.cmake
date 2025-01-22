@@ -78,21 +78,24 @@ function(IMATH_DEFINE_LIBRARY libname)
     target_link_libraries(${libname} PUBLIC ${IMATH_EXTRA_LIBS})
   endif()
 
-  set_target_properties(${libname} PROPERTIES
-      OUTPUT_NAME "${libname}${IMATH_LIB_SUFFIX}"
-      RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-  )
+  # No vesion-suffixes for Apple Frameworks
+  if (NOT IMATH_BUILD_APPLE_FRAMEWORKS)
+    set_target_properties(${libname} PROPERTIES
+        OUTPUT_NAME "${libname}${IMATH_LIB_SUFFIX}"
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    )
+  endif() 
   add_library(${PROJECT_NAME}::${libname} ALIAS ${libname})
 
   if (IMATH_BUILD_APPLE_FRAMEWORKS)
     set_target_properties(${libname} PROPERTIES 
       FRAMEWORK TRUE
-      OUTPUT_NAME "${libname}"
       FRAMEWORK_VERSION "${IMATH_LIB_VERSION}"
       XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "github.com/AcademySoftwareFoundation/Imath/${libname}"
       MACOSX_FRAMEWORK_IDENTIFIER "github.com/AcademySoftwareFoundation/Imath/${libname}"
       MACOSX_FRAMEWORK_BUNDLE_VERSION "${IMATH_LIB_VERSION}"
-      MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${Imath_VERSION}")
+      MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${Imath_VERSION}"
+      MACOSX_RPATH TRUE)
   endif()
   
   if (IMATH_INSTALL)
@@ -114,7 +117,7 @@ function(IMATH_DEFINE_LIBRARY libname)
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${IMATH_OUTPUT_SUBDIR}
     )
 
-    if(BUILD_SHARED_LIBS AND (NOT "${IMATH_LIB_SUFFIX}" STREQUAL "") AND IMATH_INSTALL_SYM_LINK)
+    if(BUILD_SHARED_LIBS AND (NOT "${IMATH_LIB_SUFFIX}" STREQUAL "") AND IMATH_INSTALL_SYM_LINK AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
       string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
       set(verlibname ${CMAKE_SHARED_LIBRARY_PREFIX}${libname}${IMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX}${CMAKE_SHARED_LIBRARY_SUFFIX})
       set(baselibname ${CMAKE_SHARED_LIBRARY_PREFIX}${libname}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX}${CMAKE_SHARED_LIBRARY_SUFFIX})
