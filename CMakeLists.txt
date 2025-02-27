@@ -89,6 +89,11 @@ if (APPLE)
   option(IMATH_BUILD_APPLE_FRAMEWORKS "Build as Apple Frameworks" OFF)
 endif()
 
+# pkg-config is not required for Apple Frameworks
+if (IMATH_BUILD_APPLE_FRAMEWORKS)
+  set(IMATH_INSTALL_SYM_LINK OFF)
+endif()
+
 # If you want to use ctest to configure, build and
 # upload the results, cmake has builtin support for
 # submitting to CDash, or any server who speaks the
