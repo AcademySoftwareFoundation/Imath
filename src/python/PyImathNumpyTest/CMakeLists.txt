@@ -1,20 +1,17 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-if(TARGET Python2::Interpreter)
-  add_test(PyImath.PyImathNumpyTest_Python2
-    ${Python2_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pyImathNumpyTest.in
-  )
-  set_tests_properties(PyImath.PyImathNumpyTest_Python2 PROPERTIES
-    ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/python${Python2_VERSION_MAJOR}_${Python2_VERSION_MINOR}"
-  )
-endif()
+message (STATUS "Configuring PyImathNumpyTest")
 
-if(TARGET Python3::Interpreter)
-  add_test(PyImath.PyImathNumpyTest_Python3
-    ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pyImathNumpyTest.in
-  )
-  set_tests_properties(PyImath.PyImathNumpyTest_Python3 PROPERTIES
-    ENVIRONMENT "PYTHONPATH=${CMAKE_BINARY_DIR}/python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}"
-  )
-endif()
+set(PYIMATHNUMPY_MODULE imathnumpy)
+set(PYIMATH_LIBRARY PyImath)
+
+# Execute the test by invoking python with the script as an
+# argument, with PATH and PYTHONPATH set properly
+
+add_test(NAME PyImath.PyImathNumpyTest
+  COMMAND ${CMAKE_COMMAND} -E env
+          "PYTHONPATH=$<TARGET_FILE_DIR:${PYIMATHNUMPY_MODULE}>"
+          "PATH=$<TARGET_FILE_DIR:${PYIMATH_LIBRARY}>:$ENV{PATH}"
+          ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/pyImathNumpyTest.py
+)

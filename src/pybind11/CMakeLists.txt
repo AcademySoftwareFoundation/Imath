@@ -1,21 +1,48 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
-set(PYBINDIMATH_OVERRIDE_PYTHON_INSTALL_DIR "" CACHE STRING "Override the install location for imath.so and imathnumpy.so modules")
+include(GNUInstallDirs)
 
-########################
-## Build related options
-
-# Suffix to append to root name, this helps with version management
-# but can be turned off if you don't care, or otherwise customized
 #
-set(PYBINDIMATH_LIB_SUFFIX "-${IMATH_VERSION_API}" CACHE STRING "String added to the end of all the libraries")
-# This provides a root for the unique name of the library based on
-# the version of python being compiled for
-set(PYBINDIMATH_LIB_PYTHONVER_ROOT "_Python" CACHE STRING "String added as a root to the identifier of the python version in the libraries")
+# Python and Boost
+#
+
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+
+if(NOT Python3_FOUND)
+    message(FATAL_ERROR "Could not find Python")
+endif()
+
+#
+# Python library suffix string, by default including python version and
+# Imath release number, e.g. "_Python3_12-3_4"
+#
+
+set(PYBINDIMATH_LIB_SUFFIX
+    "_Python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}-${IMATH_VERSION_API}"
+    CACHE STRING
+    "Suffix string for python version and Imath release in library names"
+)
+
+
+#
+# PyBindImath
+#
 
 add_subdirectory(PyBindImath)
-if(BUILD_TESTING)
+
+#
+# Tests
+#
+
+include(CTest)
+
+# This option allows the tests to be built but not run, helpful to
+# catch build failures even if the test itself fails
+
+option(IMATH_TEST_PYBIND11 "Include the pybind11 tests when BUILD_TESTING is on" ON)
+
+if(BUILD_TESTING AND IMATH_TEST_PYBIND11)
   enable_testing()
   add_subdirectory( PyBindImathTest )
 endif()

@@ -12,5 +12,5 @@ libsuffix=@LIB_SUFFIX_DASH@
 Name: PyImath
 Description: Python bindings for the Imath libraries
 Version: @IMATH_VERSION@
-Libs: -L${libdir} -lImath${libsuffix} -lPyImath@PYIMATH_LIB_PYTHONVER_ROOT@@Python_VERSION_MAJOR@_@Python_VERSION_MINOR@${libsuffix}
+Libs: -L${libdir} -lImath${libsuffix} -lPyImath@PYIMATH_LIB_PYTHONVER_ROOT@@Python3_VERSION_MAJOR@_@Python3_VERSION_MINOR@${libsuffix}
 Cflags: -I${includedir} -I${includedir}/Imath

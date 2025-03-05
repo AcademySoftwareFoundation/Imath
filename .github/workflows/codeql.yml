@@ -13,11 +13,19 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ "main", "**/**" ]
+    paths:
+      - CMakeLists.txt
+      - 'src/**'
+      - 'config/**'
+      - '!.github/workflows/**'
+      - '.github/workflows/codeql.yml'
   pull_request:
-    branches: [ "main", "**/**" ]
-  schedule:
-    - cron: '37 10 * * 0'
+    paths:
+      - CMakeLists.txt
+      - 'src/**'
+      - 'config/**'
+      - '!.github/workflows/**'
+      - '.github/workflows/codeql.yml'
 
 jobs:
   analyze:

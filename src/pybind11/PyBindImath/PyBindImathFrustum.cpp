@@ -215,6 +215,8 @@ void register_Frustum(py::module& m, char const* name)
 
 } // namespace
 
+namespace PyBindImath {
+        
 void register_imath_frustum(py::module &m)
 {
     register_Frustum<IMATH_NAMESPACE::Frustumf>(m, "Frustumf");

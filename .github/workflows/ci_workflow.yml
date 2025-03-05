@@ -58,6 +58,8 @@ jobs:
       BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
       IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
       BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
+      IMATH_TEST_PYTHON: ${{ matrix.IMATH_TEST_PYTHON || 'ON' }}
+      IMATH_TEST_PYBIND11: ${{ matrix.IMATH_TEST_PYBIND11 || 'ON' }}
       namespace: ${{ matrix.namespace }}
       validate_install: ${{ matrix.validate_install || 'ON' }}
     strategy:
@@ -106,11 +108,13 @@ jobs:
       build: ${{ matrix.build }}
       cxx-standard: ${{ matrix.cxx-standard || '17' }}
       build-type: ${{ matrix.build-type || 'Release' }}
-      python: ${{ matrix.python || 'OFF' }}
-      pybind11: ${{ matrix.pybind11 || 'OFF' }}
+      python: ${{ matrix.python || 'ON' }}
+      pybind11: ${{ matrix.pybind11 || 'ON' }}
       BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
       IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
       BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
+      IMATH_TEST_PYTHON: ${{ matrix.IMATH_TEST_PYTHON || 'ON' }}
+      IMATH_TEST_PYBIND11: ${{ matrix.IMATH_TEST_PYBIND11 || 'ON' }}
       validate_install: ${{ matrix.validate_install || 'ON' }}
     strategy:
       matrix:
@@ -131,6 +135,8 @@ jobs:
             label: pkgconfig=OFF, testing=OFF
             IMATH_INSTALL_PKG_CONFIG: 'OFF'
             BUILD_TESTING: 'OFF'
+            python: 'OFF'
+            pybind11: 'OFF'
 
           - build: 5
             label: macos-13
@@ -147,11 +153,13 @@ jobs:
       build: ${{ matrix.build }}
       cxx-standard: ${{ matrix.cxx-standard || '17' }}
       build-type: ${{ matrix.build-type || 'Release' }}
-      python: ${{ matrix.python || 'OFF' }}
-      pybind11: ${{ matrix.pybind11 || 'OFF' }}
+      python: ${{ matrix.python || 'ON' }}
+      pybind11: ${{ matrix.pybind11 || 'ON' }}
       BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
       IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
       BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
+      IMATH_TEST_PYTHON: ${{ matrix.IMATH_TEST_PYTHON || 'ON' }}
+      IMATH_TEST_PYBIND11: ${{ matrix.IMATH_TEST_PYBIND11 || 'ON' }}
       msystem: ${{ matrix.msystem }}
       validate_install: ${{ matrix.validate_install || 'ON' }}
     strategy:
@@ -159,40 +167,59 @@ jobs:
         include:
           - build: 1
             label: Release
+            IMATH_TEST_PYTHON: 'OFF' # TODO: "import imath" fails on Windows, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
 
           - build: 2
             label: Debug
             build-type: Debug
+            python: 'OFF' # TODO: conan won't build debug boost.python on Windows, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
 
           - build: 3
             label: static
             BUILD_SHARED_LIBS: 'OFF'
+            IMATH_TEST_PYTHON: 'OFF' # TODO: "import imath" fails on Windows, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
 
-          - build: 5
+          - build: 4
+            # test with everything turned off
             label: pkgconfig=OFF, testing=OFF
             IMATH_INSTALL_PKG_CONFIG: 'OFF'
             BUILD_TESTING: 'OFF'
+            python: 'OFF'
+            pybind11: 'OFF' 
 
-          - build: 6
+          - build: 5
             label: vfx2022
             os: windows-2019
+            IMATH_TEST_PYTHON: 'OFF' # TODO: "import imath" fails on Windows, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
 
-          - build: 7
+          - build: 6
             label: msys2-mingw32
             msystem: MINGW32
-            BUILD_TESTING: 'OFF'
+            BUILD_TESTING: 'OFF' # TODO: Imath.testMatrix fails, please help find why!
+            python: 'OFF' # TODO: conan won't build boost.python w/msys2, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
             
-          - build: 8
+          - build: 7
             label: msys2-mingw32, static
             msystem: MINGW32
             BUILD_SHARED_LIBS: 'OFF'
-            BUILD_TESTING: 'OFF'
+            BUILD_TESTING: 'OFF' # TODO: Imath.testMatrix fails, please help find why!
+            python: 'OFF' # TODO: conan won't build boost.python w/msys2, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
 
-          - build: 9
+          - build: 8
             label: msys2-ucrt64
             msystem: UCRT64
+            python: 'OFF' # TODO: conan won't build boost.python w/msys2, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
 
-          - build: 10
+          - build: 9
             label: msys2-ucrt64, static
             msystem: UCRT64
             BUILD_SHARED_LIBS: 'OFF'
+            python: 'OFF' # TODO: conan won't build boost.python w/msys2, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!

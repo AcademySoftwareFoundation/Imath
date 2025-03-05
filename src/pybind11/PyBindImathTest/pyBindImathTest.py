@@ -5,8 +5,11 @@
 # Copyright Contributors to the OpenEXR Project.
 #
 
+import os
+import sys
+from pathlib import Path
+
 from pybindimath import *
-#from imath import *
 from math import sqrt, pi, sin, cos
 import math
 import string, traceback, sys

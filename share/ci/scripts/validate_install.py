@@ -81,19 +81,22 @@ def imath_version(CMakeCache):
 def process_line(line, major, minor, patch, so):
     return line.strip().split("/_install/", 1)[-1].replace("$MAJOR", major).replace("$MINOR", minor).replace("$PATCH", patch).replace("$SOVERSION", so).replace("$PYTHONMAJOR", str(sys.version_info.major)).replace("$PYTHONMINOR", str(sys.version_info.minor))
 
-def load_manifest(path, CMakeCache):
+def load_manifest(path, major, minor, patch, so):
     """Load and return the list of files from the install manifest."""
-    major, minor, patch = imath_version(CMakeCache)
-    so = imath_soversion()
     with open(path, 'r') as file:
         return sorted(process_line(line, major, minor, patch, so) for line in file if line[0]!='#')
 
 def validate_install(candidate_manifest_path, reference_manifest_path, CMakeCache):
     """Main function to verify the installed files."""
 
-    candidate_manifest = load_manifest(candidate_manifest_path, CMakeCache)
-    reference_manifest = load_manifest(reference_manifest_path, CMakeCache)
+    major, minor, patch = imath_version(CMakeCache)
+    so = imath_soversion()
 
+    candidate_manifest = load_manifest(candidate_manifest_path, major, minor, patch, so)
+    reference_manifest = load_manifest(reference_manifest_path, major, minor, patch, so)
+
+    print(f"imath version: {major}.{minor}.{patch} soversion={so}")
+    print(f"python version: {sys.version_info.major}.{sys.version_info.minor}")
     print("reference_manifest:")
     for l in reference_manifest:
         print(f"  {l}")

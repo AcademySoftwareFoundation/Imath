@@ -1,4 +1,6 @@
-# cmake -B . -S ..       -DCMAKE_INSTALL_PREFIX=../_install       -DCMAKE_BUILD_TYPE=Release       -DCMAKE_CXX_STANDARD=17       -DBUILD_SHARED_LIBS=ON       -DIMATH_INSTALL_PKG_CONFIG=OFF       -DBUILD_TESTING=OFF       -DPYTHON=OFF       -DPYBIND11=OFF       -DCMAKE_VERBOSE_MAKEFILE=ON
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+# cmake -B . -S .. -DCMAKE_INSTALL_PREFIX=../_install -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=ON -DIMATH_INSTALL_PKG_CONFIG=OFF -DBUILD_TESTING=OFF -DPYTHON=OFF -DPYBIND11=OFF -DCMAKE_VERBOSE_MAKEFILE=ON 
 include/Imath/ImathBox.h
 include/Imath/ImathBoxAlgo.h
 include/Imath/ImathColor.h

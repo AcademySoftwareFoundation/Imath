@@ -156,12 +156,12 @@ register_vec(py::class_<Vec>& c)
         .def("__getitem__", [](const Vec &v, size_t i) {
             if (i < 0 || i >= v.dimensions())
                 throw std::domain_error ("invalid index");
-            return v[i];
+            return v[static_cast<int>(i)];
         })
         .def("__setitem__", [](Vec &v, size_t i, T value) {
             if (i < 0 || i >= v.dimensions())
                 throw std::domain_error ("invalid index");
-            v[i] = value;
+            v[static_cast<int>(i)] = value;
         })
         .def(py::self != py::self)
         .def(py::self ^ py::self)

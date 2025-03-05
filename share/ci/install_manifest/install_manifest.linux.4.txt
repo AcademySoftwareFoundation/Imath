@@ -1,4 +1,6 @@
-# cmake -B . -S ..       -DCMAKE_INSTALL_PREFIX=../_install       -DCMAKE_BUILD_TYPE=Release       -DCMAKE_CXX_STANDARD=17       -DBUILD_SHARED_LIBS=ON       -DIMATH_INSTALL_PKG_CONFIG=OFF       -DBUILD_TESTING=OFF       -DPYTHON=OFF       -DPYBIND11=OFF       -DCMAKE_VERBOSE_MAKEFILE=ON
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+# cmake -B . -S .. -DCMAKE_INSTALL_PREFIX=../_install -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=ON -DIMATH_INSTALL_PKG_CONFIG=OFF -DBUILD_TESTING=OFF -DPYTHON=OFF -DPYBIND11=OFF -DCMAKE_VERBOSE_MAKEFILE=ON 
 include/Imath/ImathBox.h
 include/Imath/ImathBoxAlgo.h
 include/Imath/ImathColor.h
@@ -34,11 +36,11 @@ include/Imath/ImathVecAlgo.h
 include/Imath/half.h
 include/Imath/halfFunction.h
 include/Imath/halfLimits.h
-lib64/cmake/Imath/ImathConfig.cmake
-lib64/cmake/Imath/ImathConfigVersion.cmake
-lib64/cmake/Imath/ImathTargets-release.cmake
-lib64/cmake/Imath/ImathTargets.cmake
-lib64/libImath-$MAJOR_$MINOR.so
-lib64/libImath-$MAJOR_$MINOR.so.$SOVERSION
-lib64/libImath-$MAJOR_$MINOR.so.$SOVERSION.$MAJOR.$MINOR.$PATCH
-lib64/libImath.so
+lib/cmake/Imath/ImathConfig.cmake
+lib/cmake/Imath/ImathConfigVersion.cmake
+lib/cmake/Imath/ImathTargets-release.cmake
+lib/cmake/Imath/ImathTargets.cmake
+lib/libImath-$MAJOR_$MINOR.so
+lib/libImath-$MAJOR_$MINOR.so.$SOVERSION
+lib/libImath-$MAJOR_$MINOR.so.$SOVERSION.$MAJOR.$MINOR.$PATCH
+lib/libImath.so

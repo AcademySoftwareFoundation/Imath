@@ -13,6 +13,7 @@ endif()
 configure_file(ImathConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
 
 add_library(ImathConfig INTERFACE)
+add_library(Imath::Config ALIAS ImathConfig)
 
 target_include_directories(ImathConfig INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
@@ -27,10 +28,8 @@ if (IMATH_INSTALL)
       ${CMAKE_INSTALL_INCLUDEDIR}/${IMATH_OUTPUT_SUBDIR}
   )
 
-  install(TARGETS ImathConfig EXPORT ${PROJECT_NAME})
+  install(TARGETS ImathConfig EXPORT Imath)
 endif()
-
-add_library(Imath::Config ALIAS ImathConfig)
 
 if(IMATH_INSTALL_PKG_CONFIG)
 
@@ -73,30 +72,30 @@ endif()
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/ImathConfig.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+  ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Imath
 )
 
-write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/ImathConfigVersion.cmake"
   VERSION ${IMATH_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 
 if (IMATH_INSTALL)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-                ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.cmake
+                ${CMAKE_CURRENT_BINARY_DIR}/ImathConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Imath
   )
 
-  install(EXPORT ${PROJECT_NAME}
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-    FILE ${PROJECT_NAME}Targets.cmake
-    NAMESPACE ${PROJECT_NAME}::
+  install(EXPORT Imath
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Imath
+    FILE ImathTargets.cmake
+    NAMESPACE Imath::
     EXPORT_LINK_INTERFACE_LIBRARIES
  )
 
-  export(EXPORT ${PROJECT_NAME}
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
-    NAMESPACE ${PROJECT_NAME}::
+  export(EXPORT Imath
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/ImathTargets.cmake"
+    NAMESPACE Imath::
   )
 endif()

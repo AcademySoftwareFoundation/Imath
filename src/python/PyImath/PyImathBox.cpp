@@ -68,8 +68,8 @@ static Box<T> * box2TupleConstructor1(const tuple &t)
         else
         {
             T point;
-            point.x = extract<double>(t[0]);
-            point.y = extract<double>(t[1]);
+            point.x = extract<typename T::BaseType>(t[0]);
+            point.y = extract<typename T::BaseType>(t[1]);
             return new Box<T>(point);
         }
     }
@@ -83,8 +83,8 @@ static Box<T> * box2TupleConstructor2(const tuple &t0, const tuple &t1)
     if(t0.attr("__len__")() == 2 && t1.attr("__len__")() == 2)
     {
         T point0, point1;
-        point0.x = extract<double>(t0[0]); point0.y = extract<double>(t0[1]);
-        point1.x = extract<double>(t1[0]); point1.y = extract<double>(t1[1]);
+        point0.x = extract<typename T::BaseType>(t0[0]); point0.y = extract<typename T::BaseType>(t0[1]);
+        point1.x = extract<typename T::BaseType>(t1[0]); point1.y = extract<typename T::BaseType>(t1[1]);
         
         return new Box<T>(point0, point1);
     }
@@ -111,9 +111,9 @@ static Box<T> * box3TupleConstructor1(const tuple &t)
         // Box3f ((1,2,3))
 
         T point;
-        point.x = extract<double>(t[0]);
-        point.y = extract<double>(t[1]);
-        point.z = extract<double>(t[2]);
+        point.x = extract<typename T::BaseType>(t[0]);
+        point.y = extract<typename T::BaseType>(t[1]);
+        point.z = extract<typename T::BaseType>(t[2]);
         return new Box<T>(point);
     }
 
@@ -145,13 +145,13 @@ static Box<T> * box3TupleConstructor2(const tuple &t0, const tuple &t1)
     if(t0.attr("__len__")() == 3 && t1.attr("__len__")() == 3)
     {
         T point0, point1;
-        point0.x = extract<double>(t0[0]); 
-        point0.y = extract<double>(t0[1]);
-        point0.z = extract<double>(t0[2]);
+        point0.x = extract<typename T::BaseType>(t0[0]); 
+        point0.y = extract<typename T::BaseType>(t0[1]);
+        point0.z = extract<typename T::BaseType>(t0[2]);
         
-        point1.x = extract<double>(t1[0]); 
-        point1.y = extract<double>(t1[1]);
-        point1.z = extract<double>(t1[2]);
+        point1.x = extract<typename T::BaseType>(t1[0]); 
+        point1.y = extract<typename T::BaseType>(t1[1]);
+        point1.z = extract<typename T::BaseType>(t1[2]);
         
         return new Box<T>(point0, point1);
     }

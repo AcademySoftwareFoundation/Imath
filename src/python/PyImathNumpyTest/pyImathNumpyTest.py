@@ -5,6 +5,10 @@
 # Copyright Contributors to the OpenEXR Project.
 #
 
+import os
+import sys
+from pathlib import Path
+
 from imath import *
 
 import imathnumpy

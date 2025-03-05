@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright (c) Contributors to the OpenEXR Project.
-# cmake -B /Users/runner/work/Imath/Imath/_build -S /Users/runner/work/Imath/Imath -DCMAKE_INSTALL_PREFIX=/Users/runner/work/Imath/Imath/_install -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=OFF -DIMATH_INSTALL_PKG_CONFIG=ON -DIMATH_BUILD_APPLE_FRAMEWORKS= -DBUILD_TESTING=ON -DPYTHON=ON -DPYBIND11=ON -DCMAKE_VERBOSE_MAKEFILE=ON -DPython3_EXECUTABLE=/Library/Frameworks/Python.framework/Versions/Current/bin/python -DPYTHON_INSTALL_DIR=/Users/runner/work/Imath/Imath/_install/python -DNumpy_INCLUDE_DIR=/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/numpy/core/include -DIMATH_TEST_PYTHON= -DIMATH_TEST_PYBIND11= -Dpybind11_DIR=/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/pybind11/share/cmake/pybind11 -DBoost_ROOT=/Users/runner/work/Imath/Imath/_conan -DCMAKE_TOOLCHAIN_FILE=/Users/runner/work/Imath/Imath/_conan/conan_toolchain.cmake 
+# cmake -B /home/runner/work/Imath/Imath/_build -S /home/runner/work/Imath/Imath -DCMAKE_INSTALL_PREFIX=/home/runner/work/Imath/Imath/_install -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=OFF -DIMATH_INSTALL_PKG_CONFIG=ON -DIMATH_BUILD_APPLE_FRAMEWORKS= -DBUILD_TESTING=ON -DPYTHON=ON -DPYBIND11=ON -DCMAKE_VERBOSE_MAKEFILE=ON -DPython3_EXECUTABLE=/usr/bin/python -DPYTHON_INSTALL_DIR=/home/runner/work/Imath/Imath/_install/python -DNumpy_INCLUDE_DIR=/home/runner/.local/lib/python3.12/site-packages/numpy/core/include -DIMATH_TEST_PYTHON= -DIMATH_TEST_PYBIND11= -Dpybind11_DIR=/home/runner/.local/lib/python3.12/site-packages/pybind11/share/cmake/pybind11 -DBoost_ROOT=/home/runner/work/Imath/Imath/_conan -DCMAKE_TOOLCHAIN_FILE=/home/runner/work/Imath/Imath/_conan/conan_toolchain.cmake 
 include/Imath/ImathBox.h
 include/Imath/ImathBoxAlgo.h
 include/Imath/ImathColor.h
@@ -96,4 +96,4 @@ lib/pkgconfig/PyBindImath.pc
 lib/pkgconfig/PyImath.pc
 python/imath.so
 python/imathnumpy.so
-python/pybindimath.cpython-$PYTHONMAJOR$PYTHONMINOR-darwin.so
+python/pybindimath.cpython-$PYTHONMAJOR$PYTHONMINOR-x86_64-linux-gnu.so

@@ -1,5 +1,8 @@
-# cmake -B . -S ..       -DCMAKE_INSTALL_PREFIX=../_install       -DCMAKE_BUILD_TYPE=Debug       -DCMAKE_CXX_STANDARD=17       -DBUILD_SHARED_LIBS=ON       -DIMATH_INSTALL_PKG_CONFIG=ON       -DBUILD_TESTING=ON       -DPYTHON=OFF       -DPYBIND11=OFF       -DCMAKE_VERBOSE_MAKEFILE=ON
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+# cmake -B /d/a/Imath/Imath/_build -S /d/a/Imath/Imath -DCMAKE_INSTALL_PREFIX=/d/a/Imath/Imath/_install -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=ON -DIMATH_INSTALL_PKG_CONFIG=ON -DIMATH_BUILD_APPLE_FRAMEWORKS= -DBUILD_TESTING=ON -DPYTHON=OFF -DPYBIND11=ON -DCMAKE_VERBOSE_MAKEFILE=ON -DPython3_EXECUTABLE=/c/hostedtoolcache/windows/Python/3.9.13/x64/python -DPYTHON_INSTALL_DIR=/d/a/Imath/Imath/_install/python -DNumpy_INCLUDE_DIR=C:\hostedtoolcache\windows\Python\3.9.13\x64\lib\site-packages\numpy\core\include -DIMATH_TEST_PYTHON= -DIMATH_TEST_PYBIND11= -Dpybind11_DIR=/c/hostedtoolcache/windows/Python/3.9.13/x64/lib/site-packages/pybind11/share/cmake/pybind11 -DCMAKE_POLICY_DEFAULT_CMP0091=NEW 
 bin/Imath-$MAJOR_$MINOR_d.dll
+bin/PyBindImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR_d.dll
 include/Imath/ImathBox.h
 include/Imath/ImathBoxAlgo.h
 include/Imath/ImathColor.h
@@ -35,9 +38,16 @@ include/Imath/ImathVecAlgo.h
 include/Imath/half.h
 include/Imath/halfFunction.h
 include/Imath/halfLimits.h
+include/PyBindImath/PyBindImath.h
+include/PyBindImath/PyBindImathExport.h
 lib/Imath-$MAJOR_$MINOR_d.lib
+lib/PyBindImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR_d.lib
 lib/cmake/Imath/ImathConfig.cmake
 lib/cmake/Imath/ImathConfigVersion.cmake
 lib/cmake/Imath/ImathTargets-debug.cmake
 lib/cmake/Imath/ImathTargets.cmake
+lib/cmake/Imath/PyBindImathTargets-debug.cmake
+lib/cmake/Imath/PyBindImathTargets.cmake
 lib/pkgconfig/Imath.pc
+lib/pkgconfig/PyBindImath.pc
+python/pybindimath.cp$PYTHONMAJOR$PYTHONMINOR-win_amd64.pyd
