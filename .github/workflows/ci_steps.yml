@@ -123,7 +123,7 @@ jobs:
 
       - name: Upload install_manifest.txt
         # Upload the manifest to make it possible to download for inspection and debugging
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: ${{ env.INSTALL_MANIFEST }}
           path: _build/${{ env.INSTALL_MANIFEST }}
