@@ -9,6 +9,7 @@ find_package(pybind11 REQUIRED)
 #
 
 set(PYBINDIMATH_SOURCES
+    PyBindImathFun.cpp
     PyBindImathBox.cpp
     PyBindImathVec.cpp
     PyBindImathPlane.cpp
@@ -121,3 +122,4 @@ if(IMATH_BUILD_APPLE_FRAMEWORKS)
         MACOSX_FRAMEWORK_BUNDLE_VERSION PYBINDIMATH_LIB_SUFFIX
         MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${Imath_VERSION})
 endif()
+
