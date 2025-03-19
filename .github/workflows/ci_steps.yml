@@ -60,7 +60,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@cbb722410c2e876e24abbe8de2cc27693e501dcb # v3.6.0
 
       - name: Create build directories
         run: mkdir _install _build _examples
