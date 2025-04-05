@@ -99,9 +99,9 @@
 
 //
 // Decorator that makes a function available for both CPU and GPU, when
-// compiling for Cuda.
+// compiling for Cuda or HIP.
 //
-#ifdef __CUDACC__
+#if defined(__CUDACC__) || defined(__HIP__)
 #    define IMATH_HOSTDEVICE __host__ __device__
 #else
 #    define IMATH_HOSTDEVICE
