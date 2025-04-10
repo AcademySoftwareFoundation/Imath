@@ -19,6 +19,7 @@ imath_define_library(Imath
     ImathBoxAlgo.h
     ImathColor.h
     ImathColorAlgo.h
+    ImathConfig.h
     ImathEuler.h
     ImathExport.h
     ImathForward.h
@@ -46,7 +47,12 @@ imath_define_library(Imath
     ImathTypeTraits.h
     ImathVec.h
     ImathVecAlgo.h
-  )
+)
+
+set_source_files_properties(${CMAKE_SOURCE_DIR}/src/Imath/ImathConfig.h PROPERTIES GENERATED TRUE)
+
+# Add dependency on ImathConfig
+target_link_libraries(Imath PUBLIC Imath::Config)
 
 if(IMATH_BUILD_APPLE_FRAMEWORKS)
   set_target_properties(Imath PROPERTIES
