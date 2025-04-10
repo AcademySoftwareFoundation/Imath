@@ -152,6 +152,7 @@ jobs:
       BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
       IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
       BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
+      msystem: ${{ matrix.msystem }}
       validate_install: ${{ matrix.validate_install || 'ON' }}
     strategy:
       matrix:
@@ -176,3 +177,22 @@ jobs:
             label: vfx2022
             os: windows-2019
 
+          - build: 7
+            label: msys2-mingw32
+            msystem: MINGW32
+            BUILD_TESTING: 'OFF'
+            
+          - build: 8
+            label: msys2-mingw32, static
+            msystem: MINGW32
+            BUILD_SHARED_LIBS: 'OFF'
+            BUILD_TESTING: 'OFF'
+
+          - build: 9
+            label: msys2-ucrt64
+            msystem: UCRT64
+
+          - build: 10
+            label: msys2-ucrt64, static
+            msystem: UCRT64
+            BUILD_SHARED_LIBS: 'OFF'
