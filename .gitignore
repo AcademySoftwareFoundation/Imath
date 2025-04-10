@@ -4,7 +4,7 @@
 ImathConfig.h
 
 build*/
-_build/
-_install/
+_build*/
+_install*/
 
 .DS_Store
