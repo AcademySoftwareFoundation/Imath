@@ -50,7 +50,6 @@ imath_define_library(Imath
 )
 
 set_source_files_properties(${CMAKE_SOURCE_DIR}/src/Imath/ImathConfig.h PROPERTIES GENERATED TRUE)
-
 # Add dependency on ImathConfig
 target_link_libraries(Imath PUBLIC Imath::Config)
 
