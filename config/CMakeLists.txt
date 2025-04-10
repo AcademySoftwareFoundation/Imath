@@ -10,16 +10,22 @@ else()
   set(IMATH_ENABLE_API_VISIBILITY ON)
 endif()
 
+# Generate ImathConfig.h into src/Imath for use as a source header
+configure_file(ImathConfig.h.in ${CMAKE_SOURCE_DIR}/src/Imath/ImathConfig.h)
+
+# Also generate a copy into the config build directory for installation
 configure_file(ImathConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
 
+# Define the ImathConfig interface library
 add_library(ImathConfig INTERFACE)
 
 target_include_directories(ImathConfig INTERFACE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/Imath>  # Point to src/Imath for build
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${IMATH_OUTPUT_SUBDIR}>)
 
 if (IMATH_INSTALL)
+  # Install ImathConfig.h from the config build directory (original behavior)
   install(
     FILES
       ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h
@@ -32,6 +38,7 @@ endif()
 
 add_library(Imath::Config ALIAS ImathConfig)
 
+# Rest of the file (pkg-config, etc.) remains unchanged
 if(IMATH_INSTALL_PKG_CONFIG)
 
   # Prepend prefix for includedir only if CMAKE_INSTALL_INCLUDEDIR is relative
@@ -93,7 +100,7 @@ if (IMATH_INSTALL)
     FILE ${PROJECT_NAME}Targets.cmake
     NAMESPACE ${PROJECT_NAME}::
     EXPORT_LINK_INTERFACE_LIBRARIES
- )
+  )
 
   export(EXPORT ${PROJECT_NAME}
     FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
