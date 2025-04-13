@@ -16,7 +16,7 @@ function(IMATH_DEFINE_LIBRARY libname)
   cmake_parse_arguments(IMATH_CURLIB "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
   if (MSVC)
-    set(_imath_extra_flags "/EHsc")
+    set(_imath_extra_flags "$<$<COMPILE_LANGUAGE:CXX>:/EHsc>")
   endif()
   set(objlib ${libname})
   add_library(${objlib}
@@ -64,7 +64,7 @@ function(IMATH_DEFINE_LIBRARY libname)
       target_compile_definitions(${objlib} PUBLIC IMATH_USE_DEFAULT_VISIBILITY)
   endif()
   if (_imath_extra_flags)
-    target_compile_options(${objlib} PUBLIC ${_imath_extra_flags})
+    target_compile_options(${objlib} PRIVATE ${_imath_extra_flags})
   endif()
   set_property(TARGET ${objlib} PROPERTY PUBLIC_HEADER ${IMATH_CURLIB_HEADERS})
 
