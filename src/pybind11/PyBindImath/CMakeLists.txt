@@ -9,6 +9,7 @@ find_package(pybind11 REQUIRED)
 #
 
 set(PYBINDIMATH_SOURCES
+    PyBindImathFun.cpp
     PyBindImathBox.cpp
     PyBindImathVec.cpp
     PyBindImathPlane.cpp

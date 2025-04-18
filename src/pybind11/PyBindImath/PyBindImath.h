@@ -17,6 +17,8 @@
 
 namespace PyBindImath {
 
+PYBINDIMATH_EXPORT void register_imath_fun(pybind11::module& m);
+
 PYBINDIMATH_EXPORT void register_imath_vec(pybind11::module& m);
 PYBINDIMATH_EXPORT void register_imath_box(pybind11::module& m);
 PYBINDIMATH_EXPORT void register_imath_plane(pybind11::module& m);
