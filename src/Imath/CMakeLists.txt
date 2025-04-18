@@ -19,6 +19,7 @@ imath_define_library(Imath
     ImathBoxAlgo.h
     ImathColor.h
     ImathColorAlgo.h
+    ImathConfig.h
     ImathEuler.h
     ImathExport.h
     ImathForward.h
@@ -46,15 +47,19 @@ imath_define_library(Imath
     ImathTypeTraits.h
     ImathVec.h
     ImathVecAlgo.h
-  )
+)
+
+set_source_files_properties(${CMAKE_SOURCE_DIR}/src/Imath/ImathConfig.h PROPERTIES GENERATED TRUE)
+# Add dependency on ImathConfig
+target_link_libraries(Imath PUBLIC Imath::Config)
 
 if(IMATH_BUILD_APPLE_FRAMEWORKS)
   set_target_properties(Imath PROPERTIES
       FRAMEWORK TRUE
-      FRAMEWORK_VERSION IMATH_LIB_VERSION
-      XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER github.com/AcademySoftwareFoundation/Imath
-      OUTPUT_NAME "imath"
-      MACOSX_FRAMEWORK_IDENTIFIER github.com/AcademySoftwareFoundation/Imath
-      MACOSX_FRAMEWORK_BUNDLE_VERSION IMATH_LIB_VERSION
-      MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${Imath_VERSION})
+      FRAMEWORK_VERSION "${IMATH_LIB_VERSION}"
+      XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "github.com/AcademySoftwareFoundation/Imath"
+      MACOSX_FRAMEWORK_IDENTIFIER "github.com/AcademySoftwareFoundation/Imath"
+      MACOSX_FRAMEWORK_BUNDLE_VERSION "${IMATH_LIB_VERSION}"
+      MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${Imath_VERSION}"
+      MACOSX_RPATH TRUE)
 endif()
