@@ -42,6 +42,16 @@ message(STATUS "Configure ${IMATH_PACKAGE_NAME}, library API version: ${IMATH_LI
 
 option(IMATH_INSTALL "Install Imath library" ON)
 
+# Define resource files for Apple Framework
+set(IMATH_RESOURCE_FILES
+    "${CMAKE_SOURCE_DIR}/README.md"
+    "${CMAKE_SOURCE_DIR}/LICENSE.md"
+    "${CMAKE_SOURCE_DIR}/SECURITY.md"
+    "${CMAKE_CURRENT_BINARY_DIR}/config/ImathConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/config/ImathConfig.cmake"
+)
+message(STATUS "Resource files: ${IMATH_RESOURCE_FILES}")
+
 # Config headers and package config files
 add_subdirectory(config)
 
@@ -128,4 +138,3 @@ endif()
 if(NOT IMATH_IS_SUBPROJECT)
   include(cmake/clang-format.cmake)
 endif()
-
