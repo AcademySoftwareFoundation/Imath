@@ -196,3 +196,8 @@ jobs:
             label: msys2-ucrt64, static
             msystem: UCRT64
             BUILD_SHARED_LIBS: 'OFF'
+
+          - build: 11
+            label: clang
+            cxx-compiler: clang++
+            cc-compiler: clang
