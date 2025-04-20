@@ -52,18 +52,3 @@ imath_define_library(Imath
 set_source_files_properties(${CMAKE_SOURCE_DIR}/src/Imath/ImathConfig.h PROPERTIES GENERATED TRUE)
 # Add dependency on ImathConfig
 target_link_libraries(Imath PUBLIC Imath::Config)
-
-# if(IMATH_BUILD_APPLE_FRAMEWORKS)
-#   # Add resource files to the target
-#   target_sources(Imath PRIVATE ${IMATH_RESOURCE_FILES})
-#   set_target_properties(Imath PROPERTIES
-#       FRAMEWORK TRUE
-#       FRAMEWORK_VERSION "${IMATH_LIB_VERSION}"
-#       XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "github.com/AcademySoftwareFoundation/Imath"
-#       MACOSX_FRAMEWORK_IDENTIFIER "github.com/AcademySoftwareFoundation/Imath"
-#       MACOSX_FRAMEWORK_BUNDLE_VERSION "${IMATH_LIB_VERSION}"
-#       MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${Imath_VERSION}"
-#       MACOSX_RPATH TRUE
-#       RESOURCE "${IMATH_RESOURCE_FILES}"
-#   )
-# endif()

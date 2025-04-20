@@ -7,8 +7,6 @@ if (HAVE_LIB_M)
   set(IMATH_EXTRA_LIBS m)
 endif()
 
-# NB: This function has a number if Imath specific names / variables
-# in it, so be careful copying...
 function(IMATH_DEFINE_LIBRARY libname)
   set(options)
   set(oneValueArgs PRIV_EXPORT CURDIR CURBINDIR)
@@ -23,15 +21,9 @@ function(IMATH_DEFINE_LIBRARY libname)
     ${IMATH_CURLIB_HEADERS}
     ${IMATH_CURLIB_SOURCES})
 
-  # Use ${IMATH_CXX_STANDARD} to determine the standard we use to compile
-  # Imath itself. But the headers only require C++11 features, so that's
-  # all we need to pass on as interface reqirements to downstream projects.
-  # For example, it's fine for an Imath built with C++14 to be called from
-  # an app that is compiled with C++11; Imath needn't force the app to
-  # also use C++14.
   target_compile_features(${objlib}
                           PRIVATE cxx_std_${IMATH_CXX_STANDARD}
-                          INTERFACE cxx_std_11 )
+                          INTERFACE cxx_std_11)
 
   if(IMATH_CURLIB_PRIV_EXPORT AND BUILD_SHARED_LIBS)
     target_compile_definitions(${objlib} PRIVATE ${IMATH_CURLIB_PRIV_EXPORT})
@@ -53,15 +45,15 @@ function(IMATH_DEFINE_LIBRARY libname)
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
     POSITION_INDEPENDENT_CODE ON
-    )
+  )
   if (NOT IMATH_USE_DEFAULT_VISIBILITY)
     set_target_properties(${objlib} PROPERTIES
       C_VISIBILITY_PRESET hidden
       CXX_VISIBILITY_PRESET hidden
       VISIBILITY_INLINES_HIDDEN ON
-      )
+    )
   else()
-      target_compile_definitions(${objlib} PUBLIC IMATH_USE_DEFAULT_VISIBILITY)
+    target_compile_definitions(${objlib} PUBLIC IMATH_USE_DEFAULT_VISIBILITY)
   endif()
   if (_imath_extra_flags)
     target_compile_options(${objlib} PRIVATE ${_imath_extra_flags})
@@ -78,7 +70,6 @@ function(IMATH_DEFINE_LIBRARY libname)
     target_link_libraries(${libname} PUBLIC ${IMATH_EXTRA_LIBS})
   endif()
 
-  # No vesion-suffixes for Apple Frameworks
   if (NOT IMATH_BUILD_APPLE_FRAMEWORKS)
     set_target_properties(${libname} PROPERTIES
         OUTPUT_NAME "${libname}${IMATH_LIB_SUFFIX}"
@@ -88,6 +79,10 @@ function(IMATH_DEFINE_LIBRARY libname)
   add_library(${PROJECT_NAME}::${libname} ALIAS ${libname})
 
   if (IMATH_BUILD_APPLE_FRAMEWORKS)
+    # Mark files as resources
+    set_source_files_properties(${IMATH_RESOURCE_FILES} PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources
+    )
     set_target_properties(${libname} PROPERTIES 
       FRAMEWORK TRUE
       FRAMEWORK_VERSION "${IMATH_LIB_VERSION}"
@@ -96,6 +91,14 @@ function(IMATH_DEFINE_LIBRARY libname)
       MACOSX_FRAMEWORK_BUNDLE_VERSION "${IMATH_LIB_VERSION}"
       MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${Imath_VERSION}"
       MACOSX_RPATH TRUE)
+
+    # Manually copy resource files to the Resources directory
+    set(RES_DEST_DIR "$<TARGET_FILE_DIR:${libname}>/Resources")
+    add_custom_command(TARGET ${libname} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${RES_DEST_DIR}"
+      COMMAND ${CMAKE_COMMAND} -E copy ${IMATH_RESOURCE_FILES} "${RES_DEST_DIR}/"
+      COMMENT "Copying resource files to ${libname}.framework/Resources"
+    )
   endif()
   
   if (IMATH_INSTALL)

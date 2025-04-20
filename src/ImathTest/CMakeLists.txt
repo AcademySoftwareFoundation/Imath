@@ -126,4 +126,3 @@ define_imath_tests(
   testInterop
   testNoInterop
 )
-
