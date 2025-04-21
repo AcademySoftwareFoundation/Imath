@@ -92,12 +92,15 @@ function(IMATH_DEFINE_LIBRARY libname)
       MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${Imath_VERSION}"
       MACOSX_RPATH TRUE)
 
-    # Manually copy resource files to the Resources directory
+    # Copy resource files to the build directory's framework Resources/
     set(RES_DEST_DIR "$<TARGET_FILE_DIR:${libname}>/Resources")
     add_custom_command(TARGET ${libname} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E make_directory "${RES_DEST_DIR}"
-      COMMAND ${CMAKE_COMMAND} -E copy ${IMATH_RESOURCE_FILES} "${RES_DEST_DIR}/"
-      COMMENT "Copying resource files to ${libname}.framework/Resources"
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+              ${IMATH_RESOURCE_FILES}
+              "${CMAKE_BINARY_DIR}/config/${PROJECT_NAME}Targets.cmake"
+              "${RES_DEST_DIR}/"
+      COMMENT "Copying resource files to ${libname}.framework/Resources in build directory"
     )
   endif()
   
@@ -119,6 +122,14 @@ function(IMATH_DEFINE_LIBRARY libname)
       PUBLIC_HEADER
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${IMATH_OUTPUT_SUBDIR}
     )
+
+    if (IMATH_BUILD_APPLE_FRAMEWORKS)
+      # Install resource files to Resources/ directory in the framework
+      install(FILES ${IMATH_RESOURCE_FILES}
+              "${CMAKE_BINARY_DIR}/config/${PROJECT_NAME}Targets.cmake"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/${libname}.framework/Resources"
+      )
+    endif()
 
     if(BUILD_SHARED_LIBS AND (NOT "${IMATH_LIB_SUFFIX}" STREQUAL "") AND IMATH_INSTALL_SYM_LINK AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
       string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)

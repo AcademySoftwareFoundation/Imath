@@ -78,7 +78,7 @@ set(Imath_DIR "${CMAKE_CURRENT_BINARY_DIR}/config" CACHE PATH "" FORCE)
 
 # Add an empty ImathTargets.cmake file for the config to use. It can
 # be empty since we already defined the targets in add_subdirectory().
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file")
+# file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config/ImathTargets.cmake" "# Dummy file") # Removed to avoid confusion
 
 option(PYTHON "Set ON to compile boost PyImath bindings")
 if (PYTHON)
