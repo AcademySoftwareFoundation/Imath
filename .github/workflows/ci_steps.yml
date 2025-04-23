@@ -195,7 +195,7 @@ jobs:
       - name: Examples
         # The example code use the Imath:: namespace explicitly, so
         # they won't work with a custom namespace, so skip the test in
-        # that case. Also don't bother for Apply Frameworks. And msys2
+        # that case. Also don't bother with Apple Frameworks. And msys2
         # has its own step below.
         if: inputs.namespace == '' && inputs.msystem == '' && inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON'
         run: |
