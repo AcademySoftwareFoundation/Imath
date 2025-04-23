@@ -43,6 +43,8 @@ on:
         type: string
       BUILD_TESTING:
         type: string
+      IMATH_BUILD_APPLE_FRAMEWORKS:
+        type: string
       namespace:
         type: string
       validate_install:
@@ -63,6 +65,10 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+
+      - name: Select Xcode Version
+        if: runner.os == 'macOS'
+        run: sudo xcode-select --switch /Applications/Xcode_15.2.app
 
       - name: Install MSYS2 ${{ inputs.msystem }}
         if: inputs.msystem != ''
@@ -88,6 +94,7 @@ jobs:
           cmake_args+=("-DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }}")
           cmake_args+=("-DBUILD_SHARED_LIBS=${{ inputs.BUILD_SHARED_LIBS }}")
           cmake_args+=("-DIMATH_INSTALL_PKG_CONFIG=${{ inputs.IMATH_INSTALL_PKG_CONFIG }}")
+          cmake_args+=("-DIMATH_BUILD_APPLE_FRAMEWORKS=${{ inputs.IMATH_BUILD_APPLE_FRAMEWORKS }}")
           cmake_args+=("-DBUILD_TESTING=${{ inputs.BUILD_TESTING }}")
           cmake_args+=("-DPYTHON=${{ inputs.python }}")
           cmake_args+=("-DPYBIND11=${{ inputs.pybind11 }}")
@@ -95,7 +102,9 @@ jobs:
           if [ -n "${{ inputs.namespace }}" ]; then
               cmake_args+=("-DIMATH_NAMESPACE=${{ inputs.namespace }}")
           fi
-
+          if [ "${{ inputs.IMATH_BUILD_APPLE_FRAMEWORKS }}" == "ON" ]; then
+              cmake_args+=("-DCMAKE_SYSTEM_NAME=iOS")
+          fi
           quoted_args=$(printf '%q ' "${cmake_args[@]}")
           echo "CMAKE_ARGS=$quoted_args" >> "$GITHUB_ENV"
 
@@ -112,7 +121,7 @@ jobs:
           cmake --version
           cmake ${{ env.CMAKE_ARGS }}
           cmake --build . --target install --config ${{ inputs.build-type }}
-          if [ "${{ inputs.BUILD_TESTING }}" == "ON" ]; then
+          if [ "${{ inputs.BUILD_TESTING }}" == "ON" && "${{ inputs.BUILD_IMATH_APPLE_FRAMEWORKS }}" != "ON"]; then
             ctest -T Test -C ${{ inputs.build-type }} --timeout 7200 --output-on-failure -VV
           fi
         working-directory: _build
@@ -162,7 +171,7 @@ jobs:
         shell: bash
 
       - name: Test standalone
-        if: inputs.msystem == ''
+        if: inputs.msystem == '' && inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON'
         run: |
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
@@ -184,8 +193,11 @@ jobs:
         working-directory: _examples
 
       - name: Examples
-        # The example code use the Imath:: namespace explicitly, they won't work with a custom namespace, so skip the test in that case.
-        if: inputs.namespace == '' && inputs.msystem == ''
+        # The example code use the Imath:: namespace explicitly, so
+        # they won't work with a custom namespace, so skip the test in
+        # that case. Also don't bother for Apply Frameworks. And msys2
+        # has its own step below.
+        if: inputs.namespace == '' && inputs.msystem == '' && inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON'
         run: |
           # Confirm the examples compile and execute
           rm -rf bin CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
@@ -194,6 +206,7 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} \
                 -DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }}
           cmake --build . --config ${{ inputs.build-type }}
+
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             ./bin/"${{ inputs.build-type }}"/imath-intro.exe || true
             ./bin/"${{ inputs.build-type }}"/imath-examples.exe || true
@@ -205,7 +218,9 @@ jobs:
         working-directory: _examples
 
       - name: Examples (msys2)
-        # The example code use the Imath:: namespace explicitly, they won't work with a custom namespace, so skip the test in that case.
+        # The example code use the Imath:: namespace explicitly, they
+        # won't work with a custom namespace, so skip the test in that
+        # case.
         if: inputs.namespace == '' && inputs.msystem != ''
         run: |
           # Confirm the examples compile and execute
@@ -237,4 +252,11 @@ jobs:
           fi
         shell: bash
         working-directory: _build
+
+      - name: Test
+        if: ${{ inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON' }}
+        run: |
+          ctest -T Test -C ${{ inputs.build-type }} --timeout 7200 --output-on-failure -VV
+        working-directory: _build
+        shell: bash
 
