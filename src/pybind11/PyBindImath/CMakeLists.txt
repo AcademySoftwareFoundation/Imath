@@ -14,9 +14,11 @@ set(PYBINDIMATH_SOURCES
     PyBindImathVec.cpp
     PyBindImathPlane.cpp
     PyBindImathLine.cpp
-    
+    PyBindImathMatrix44.cpp
+    PyBindImathQuat.cpp
+
     # PyBindImathEuler build Error pybind test
-    # PyBindImathFrustum build failing
+    PyBindImathFrustum.cpp
 )
 
 set(PYBINDIMATH_HEADERS
@@ -70,12 +72,12 @@ endif()
 if (IMATH_INSTALL)
 
   # module
-  
+
   install(TARGETS ${PYBINDIMATH_MODULE} DESTINATION ${PYTHON_INSTALL_DIR} COMPONENT python)
 
   # shared library
 
-  install(TARGETS ${PYBINDIMATH_LIBRARY} 
+  install(TARGETS ${PYBINDIMATH_LIBRARY}
       RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
       LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
       ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
