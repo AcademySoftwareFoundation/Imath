@@ -74,8 +74,6 @@ jobs:
           # Linux. Convert backslashed Windows paths to Linux style via cygpath,
           # i.e. convert D:\a\Imath\Imath to /d/a/Imath/Imath.
 
-          mkdir _install _build _examples _python
-
           # WORKSPACE is the root of the project directory
           if [[ "$RUNNER_OS" == "Windows" ]]; then
               WORKSPACE=$(cygpath -u "$GITHUB_WORKSPACE")
@@ -121,13 +119,12 @@ jobs:
         if: inputs.pybind11 == 'ON' && inputs.msystem == 'MINGW32'
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
           architecture: 'x86'
       
       - name: Install python for UCRT64
         # Note this requires the msys2 shell
         if: inputs.pybind11 == 'ON' && inputs.msystem == 'UCRT64'
-        run: pacboy -S python:p pybind11:p --noconfirm
+        run: pacboy -S python:p --noconfirm
         shell: msys2 {0}
 
       - name: Set Up Python Variables
@@ -154,7 +151,7 @@ jobs:
           # Install into a special directory, to confirm that the
           # manually-specified install location works properly
 
-          PYTHON_INSTALL_DIR=$INSTALL_DIR/python
+          PYTHON_INSTALL_DIR=$INSTALL_DIR/_python
           echo "PYTHON_INSTALL_DIR=$PYTHON_INSTALL_DIR" >> $GITHUB_ENV
 
         shell: bash
@@ -207,7 +204,6 @@ jobs:
 
           python -m pip install --upgrade pip "numpy<2" conan
           conan profile detect
-          echo conan "${conan_args[@]}"
           conan "${conan_args[@]}"
 
           echo "CMAKE_TOOLCHAIN_FILE=${CONAN_DIR}/conan_toolchain.cmake" >> $GITHUB_ENV
@@ -314,10 +310,13 @@ jobs:
         if: inputs.pybind11 == 'ON' && inputs.IMATH_TEST_PYBIND11 == 'ON' && inputs.msystem == ''
         run: |
           set -x
+
+          # debugging step to help confirm the dlls are in the path
           #IMATH_PYD=$(cygpath -u "$PYTHON_INSTALL_DIR/pybindimath.cp39-win_amd64.pyd")
           #if [[ -f "$IMATH_PYD" ]]; then
           #    objdump -p "$IMATH_PYD" | grep 'DLL Name'
           #fi      
+
           export PATH="$IMATH_PATH:$PATH"
           export PYTHONPATH=$PYTHON_INSTALL_DIR
           $PYTHON $WORKSPACE/src/pybind11/PyBindImathTest/test_import_pybindimath.py
@@ -337,10 +336,13 @@ jobs:
         if: inputs.python == 'ON' && inputs.IMATH_TEST_PYTHON == 'ON' 
         run: |
           set -x
+
+          # debugging step to help confirm the dlls are in the path
           #IMATH_PYD=$(cygpath -u "$PYTHON_INSTALL_DIR/imath.pyd")
           #if [[ -f "$IMATH_PYD" ]]; then
           #    objdump -p "$IMATH_PYD" | grep 'DLL Name'
           #fi      
+
           export PATH="$IMATH_PATH:$PATH"
           export PYTHONPATH="$PYTHON_INSTALL_DIR"
           $PYTHON "$WORKSPACE/src/python/PyImathTest/test_import_imath.py"
@@ -386,7 +388,6 @@ jobs:
         # Upload the manifest to make it possible to download for inspection and debugging
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-
           name: ${{ env.INSTALL_MANIFEST }}
           path: ${{ env.INSTALL_MANIFEST_PATH }}
 
@@ -405,7 +406,7 @@ jobs:
           # Use the ImathTest program as an example of an application
           # using the Imath library,  to validate that we can build
           # against the just-installed Imath library
-          IMATHTEST_BUILD_DIR=$WORKSPACE/_build_imathTest
+          IMATHTEST_BUILD_DIR=$WORKSPACE/_build.imathTest
           cmake_args=("-B" "$IMATHTEST_BUILD_DIR" "-S" "$WORKSPACE/src/ImathTest")
           cmake_args+=("-DCMAKE_PREFIX_PATH=$INSTALL_DIR")
           cmake_args+=("-DCMAKE_BUILD_TYPE=${{ inputs.build-type }}")
@@ -444,7 +445,7 @@ jobs:
           # that uses the PyImath library, to validate that we can build
           # against the just-installed Imath library (with python
           # bindings).
-          PYIMATHTEST_BUILD_DIR=$WORKSPACE/_build_pyImathTest
+          PYIMATHTEST_BUILD_DIR=$WORKSPACE/_build.pyImathTest
           cmake_args=("-B" "$PYIMATHTEST_BUILD_DIR" "-S" "$WORKSPACE/src/python/PyImathTest")
           cmake_args+=("-DCMAKE_PREFIX_PATH=$INSTALL_DIR")
           cmake_args+=("-DCMAKE_BUILD_TYPE=${{ inputs.build-type }}")
@@ -481,7 +482,7 @@ jobs:
           # they won't work with a custom namespace, so skip the test in
           # that case. Also don't bother with Apple Frameworks. And msys2
           # has its own step below.
-          EXAMPLES_BUILD_DIR=$WORKSPACE/_build_examples
+          EXAMPLES_BUILD_DIR=$WORKSPACE/_build.examples
           cmake_args=("-B" "$EXAMPLES_BUILD_DIR" "-S" "$WORKSPACE/website/examples")
           cmake_args+=("-DCMAKE_PREFIX_PATH=$INSTALL_DIR")
           cmake_args+=("-DCMAKE_BUILD_TYPE=${{ inputs.build-type }}")
