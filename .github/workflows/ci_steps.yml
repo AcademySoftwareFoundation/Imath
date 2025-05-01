@@ -119,12 +119,13 @@ jobs:
         if: inputs.pybind11 == 'ON' && inputs.msystem == 'MINGW32'
         uses: actions/setup-python@v4
         with:
+          python-version: '3.9'
           architecture: 'x86'
       
       - name: Install python for UCRT64
         # Note this requires the msys2 shell
         if: inputs.pybind11 == 'ON' && inputs.msystem == 'UCRT64'
-        run: pacboy -S python:p --noconfirm
+        run: pacboy -S python:p pybind11:p --noconfirm
         shell: msys2 {0}
 
       - name: Set Up Python Variables
@@ -151,7 +152,7 @@ jobs:
           # Install into a special directory, to confirm that the
           # manually-specified install location works properly
 
-          PYTHON_INSTALL_DIR=$INSTALL_DIR/_python
+          PYTHON_INSTALL_DIR=$INSTALL_DIR/python
           echo "PYTHON_INSTALL_DIR=$PYTHON_INSTALL_DIR" >> $GITHUB_ENV
 
         shell: bash

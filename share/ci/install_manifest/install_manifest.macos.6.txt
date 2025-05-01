@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+# cmake -B /Users/runner/work/Imath/Imath/_build -S /Users/runner/work/Imath/Imath -DCMAKE_INSTALL_PREFIX=/Users/runner/work/Imath/Imath/_install -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=ON -DIMATH_INSTALL_PKG_CONFIG=ON -DIMATH_BUILD_APPLE_FRAMEWORKS=ON -DBUILD_TESTING=OFF -DPYTHON=OFF -DPYBIND11=OFF -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_SYSTEM_NAME=iOS 
+include/Imath/ImathConfig.h
+lib/cmake/Imath/ImathConfig.cmake
+lib/cmake/Imath/ImathConfigVersion.cmake
+lib/cmake/Imath/ImathTargets-release.cmake
+lib/cmake/Imath/ImathTargets.cmake
+lib/imath.framework/Headers/ImathBox.h
+lib/imath.framework/Headers/ImathBoxAlgo.h
+lib/imath.framework/Headers/ImathColor.h
+lib/imath.framework/Headers/ImathColorAlgo.h
+lib/imath.framework/Headers/ImathEuler.h
+lib/imath.framework/Headers/ImathExport.h
+lib/imath.framework/Headers/ImathForward.h
+lib/imath.framework/Headers/ImathFrame.h
+lib/imath.framework/Headers/ImathFrustum.h
+lib/imath.framework/Headers/ImathFrustumTest.h
+lib/imath.framework/Headers/ImathFun.h
+lib/imath.framework/Headers/ImathGL.h
+lib/imath.framework/Headers/ImathGLU.h
+lib/imath.framework/Headers/ImathInt64.h
+lib/imath.framework/Headers/ImathInterval.h
+lib/imath.framework/Headers/ImathLine.h
+lib/imath.framework/Headers/ImathLineAlgo.h
+lib/imath.framework/Headers/ImathMath.h
+lib/imath.framework/Headers/ImathMatrix.h
+lib/imath.framework/Headers/ImathMatrixAlgo.h
+lib/imath.framework/Headers/ImathNamespace.h
+lib/imath.framework/Headers/ImathPlane.h
+lib/imath.framework/Headers/ImathPlatform.h
+lib/imath.framework/Headers/ImathQuat.h
+lib/imath.framework/Headers/ImathRandom.h
+lib/imath.framework/Headers/ImathRoots.h
+lib/imath.framework/Headers/ImathShear.h
+lib/imath.framework/Headers/ImathSphere.h
+lib/imath.framework/Headers/ImathTypeTraits.h
+lib/imath.framework/Headers/ImathVec.h
+lib/imath.framework/Headers/ImathVecAlgo.h
+lib/imath.framework/Headers/half.h
+lib/imath.framework/Headers/halfFunction.h
+lib/imath.framework/Headers/halfLimits.h
+lib/imath.framework/Info.plist
+lib/imath.framework/imath
+lib/libImath.dylib
+lib/pkgconfig/Imath.pc
