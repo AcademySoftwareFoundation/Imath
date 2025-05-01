@@ -99,6 +99,7 @@ lib/libPyBindImathPYBIND_TEST_NAMESPACE.so.$SOVERSION.$MAJOR.$MINOR.$PATCH
 lib/libPyImathPY_TEST_NAMESPACE.so
 lib/libPyImathPY_TEST_NAMESPACE.so.$SOVERSION
 lib/libPyImathPY_TEST_NAMESPACE.so.$SOVERSION.$MAJOR.$MINOR.$PATCH
+lib/libPyImath.so
 lib/pkgconfig/Imath.pc
 lib/pkgconfig/PyBindImath.pc
 lib/pkgconfig/PyImath.pc

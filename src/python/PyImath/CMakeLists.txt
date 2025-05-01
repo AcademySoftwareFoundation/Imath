@@ -97,7 +97,7 @@ set(PYIMATH_HEADERS
 )
 
 if(BUILD_SHARED_LIBS)
-    add_library(${PYIMATH_LIBRARY} SHARED ${PYIMATH_SOURCES})
+    add_library(${PYIMATH_LIBRARY} SHARED ${PYIMATH_HEADERS} ${PYIMATH_SOURCES})
     if(WIN32)
         # IMATH_DLL controls the export declarations for Windows
         target_compile_definitions(${PYIMATH_LIBRARY} PUBLIC IMATH_DLL)
@@ -107,17 +107,28 @@ if(BUILD_SHARED_LIBS)
         target_compile_definitions(${PYIMATH_LIBRARY} PRIVATE PYIMATH_BUILD)
     endif()
 else()
-   add_library(${PYIMATH_LIBRARY} STATIC ${PYIMATH_SOURCES})
+   add_library(${PYIMATH_LIBRARY} STATIC ${PYIMATH_HEADERS} ${PYIMATH_SOURCES})
 endif()
 
 add_library(Imath::PyImath ALIAS ${PYIMATH_LIBRARY})
 
-set_target_properties(${PYIMATH_LIBRARY} PROPERTIES
+if (IMATH_BUILD_APPLE_FRAMEWORKS)
+  set_target_properties(PyBindImath PROPERTIES 
+    FRAMEWORK TRUE
+    FRAMEWORK_VERSION "${IMATH_LIB_VERSION}"
+    XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "org.aswf.PyImath"
+    MACOSX_FRAMEWORK_IDENTIFIER "org.aswf.PyImath"
+    MACOSX_FRAMEWORK_BUNDLE_VERSION "${IMATH_LIB_VERSION}"
+    MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${Imath_VERSION}"
+    MACOSX_RPATH TRUE)
+else()
+  set_target_properties(${PYIMATH_LIBRARY} PROPERTIES
     OUTPUT_NAME "${PYIMATH_LIBRARY}${PYIMATH_LIB_SUFFIX}"
     SOVERSION ${IMATH_LIB_SOVERSION}
     VERSION ${IMATH_LIB_VERSION}
     POSITION_INDEPENDENT_CODE ON
-)
+  )
+endif()
 
 target_include_directories(${PYIMATH_LIBRARY}
      PUBLIC
@@ -131,6 +142,8 @@ target_compile_definitions(${PYIMATH_LIBRARY} PRIVATE IMATH_EXPORTS)
 
 target_link_libraries(${PYIMATH_LIBRARY} PUBLIC Imath)
 target_link_libraries(${PYIMATH_LIBRARY} PRIVATE Boost::boost Boost::python Python3::Module)
+
+set_property(TARGET ${PYIMATH_LIBRARY} PROPERTY PUBLIC_HEADER ${PYIMATH_HEADERS})
 
 #
 # Python module, identified by PYIMATH_MODULE (e.g. "imath).
@@ -193,13 +206,13 @@ add_library(PyImath::Config ALIAS PyImathConfig)
 
 if (IMATH_INSTALL)
 
-  #
-  # Set the PYTHON_INSTALL_DIR but only if it's not already set,
-  # which allows an externally-set value to take effect.
-  #
-  
   if (NOT DEFINED PYTHON_INSTALL_DIR)
 
+    #
+    # Set the PYTHON_INSTALL_DIR but only if it's not already set,
+    # which allows an externally-set value to take effect.
+    #
+  
     set(PYTHON_INSTALL_DIR "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
     message(STATUS "installing ${PYIMATH_MODULE} module to ${PYTHON_INSTALL_DIR}")
 
@@ -221,62 +234,70 @@ if (IMATH_INSTALL)
   
   install(TARGETS ${PYIMATH_LIBRARY}
     EXPORT "${PYIMATH_LIBRARY}Targets"
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      COMPONENT runtime
+      OPTIONAL
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PYIMATH_OUTPUT_SUBDIR}
   )
-
-  # Install headers
-
-  install(FILES ${PYIMATH_HEADERS}
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PYIMATH_LIBRARY})
 
   # Install export set for downstream CMake
 
-  install(EXPORT ${PYIMATH_LIBRARY}Targets
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-    FILE ${PYIMATH_LIBRARY}Targets.cmake
-    NAMESPACE ${PROJECT_NAME}::
+  if (NOT IMATH_BUILD_APPLE_FRAMEWORKS)
+    install(EXPORT ${PYIMATH_LIBRARY}Targets
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Imath
+      FILE ${PYIMATH_LIBRARY}Targets.cmake
+      NAMESPACE ${PROJECT_NAME}::
+    )
+  endif()
+  
+  export(EXPORT Imath
+    FILE "${CMAKE_BINARY_DIR}/config/PyImathTargets.cmake"
+    NAMESPACE Imath::
   )
 
-  # Pkgconfig
+  if(BUILD_SHARED_LIBS
+     AND (NOT "${PYIMATH_LIB_SUFFIX}" STREQUAL "")
+     AND IMATH_INSTALL_SYM_LINK
+     AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
 
-  if(IMATH_INSTALL_PKG_CONFIG)
-    # use a helper function to avoid variable pollution, but pretty simple
-    function(pyimath_pkg_config_help pcinfile)
-      set(prefix ${CMAKE_INSTALL_PREFIX})
-      set(exec_prefix "\${prefix}")
-      set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
-      set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
-      string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
-      set(LIB_SUFFIX_DASH ${IMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX})
-      string(REPLACE ".in" "" pcout ${pcinfile})
-      configure_file(${pcinfile} ${CMAKE_CURRENT_BINARY_DIR}/${pcout} @ONLY)
-      install(
-          FILES ${CMAKE_CURRENT_BINARY_DIR}/${pcout}
-          DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-      )
-      message(STATUS "generating ${pcout}") 
-    endfunction()
-    pyimath_pkg_config_help(PyImath.pc.in)
+    # create symlink from libPyImath_Python3_11-3_2.so to libPyImath.so
+    string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+    set(postfix ${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX})
+    set(VERSIONED_LIB_FILENAME ${CMAKE_SHARED_LIBRARY_PREFIX}${PYIMATH_LIBRARY}${PYIMATH_LIB_SUFFIX}${postfix}${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(BASE_LIB_FILENAME ${CMAKE_SHARED_LIBRARY_PREFIX}${PYIMATH_LIBRARY}${postfix}${CMAKE_SHARED_LIBRARY_SUFFIX})
+
+    file(CREATE_LINK ${VERSIONED_LIB_FILENAME} ${CMAKE_CURRENT_BINARY_DIR}/${BASE_LIB_FILENAME} SYMBOLIC)
+    if(WIN32)
+      set(INSTALL_DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})
+    else()
+      set(INSTALL_DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
+    endif()
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASE_LIB_FILENAME} DESTINATION ${INSTALL_DESTINATION})
+    install(CODE "message(STATUS \"Creating symlink ${INSTALL_DESTINATION}/${BASE_LIB_FILENAME} -> ${VERSIONED_LIB_FILENAME}\")")
+
+  endif()
+
+  # pkgconfig
+
+  if(IMATH_INSTALL_PKG_CONFIG AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
+    set(pcinfile PyImath.pc.in)
+    set(prefix ${CMAKE_INSTALL_PREFIX})
+    set(exec_prefix "\${prefix}")
+    set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+    set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+    string(REPLACE ".in" "" pcout ${pcinfile})
+    configure_file(${pcinfile} ${CMAKE_CURRENT_BINARY_DIR}/${pcout} @ONLY)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${pcout} DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+    message(STATUS "generating ${pcout}") 
   else()
     message(STATUS "pkg-config generation disabled for PyImath")
   endif()
 
 endif()
-
-if(IMATH_BUILD_APPLE_FRAMEWORKS)
-    set_target_properties(${PYIMATH_LIBRARY} PROPERTIES
-        FRAMEWORK TRUE
-        FRAMEWORK_VERSION PYBINDIMATH_LIB_SUFFIX
-        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER github.com/AcademySoftwareFoundation/Imath.PyImath
-        # OUTPUT_NAME "pyimath"
-        MACOSX_FRAMEWORK_IDENTIFIER github.com/AcademySoftwareFoundation/Imath.PyImath
-        MACOSX_FRAMEWORK_BUNDLE_VERSION PYBINDIMATH_LIB_SUFFIX
-        MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${Imath_VERSION})
-endif()
-
 
 #
 # disable the self-assign warnings:

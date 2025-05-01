@@ -43,4 +43,3 @@ lib/cmake/Imath/ImathTargets.cmake
 lib/libImath-$MAJOR_$MINOR.so
 lib/libImath-$MAJOR_$MINOR.so.$SOVERSION
 lib/libImath-$MAJOR_$MINOR.so.$SOVERSION.$MAJOR.$MINOR.$PATCH
-lib/libImath.so

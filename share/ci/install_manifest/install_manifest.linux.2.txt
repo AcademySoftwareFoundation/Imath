@@ -6,6 +6,7 @@ include/Imath/ImathBoxAlgo.h
 include/Imath/ImathColor.h
 include/Imath/ImathColorAlgo.h
 include/Imath/ImathConfig.h
+include/Imath/ImathConfig.h
 include/Imath/ImathEuler.h
 include/Imath/ImathExport.h
 include/Imath/ImathForward.h
@@ -99,6 +100,7 @@ lib/libPyBindImath_d.so
 lib/libPyImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR_d.so
 lib/libPyImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR_d.so.$SOVERSION
 lib/libPyImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR_d.so.$SOVERSION.$MAJOR.$MINOR.$PATCH
+lib/libPyImath_d.so
 lib/pkgconfig/Imath.pc
 lib/pkgconfig/PyBindImath.pc
 lib/pkgconfig/PyImath.pc

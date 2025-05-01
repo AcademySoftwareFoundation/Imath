@@ -30,6 +30,8 @@ set(PYIMATH_LIB_SUFFIX
     "Suffix string for python version and Imath release in library names"
 )
 
+set(PYIMATH_OUTPUT_SUBDIR PyImath CACHE STRING "Destination sub-folder of the path for install of PyImath headers")
+
 #
 # PyImath and PyImathNumpy
 #

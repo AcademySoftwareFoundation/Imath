@@ -46,10 +46,8 @@ jobs:
       # values.
       os: ubuntu-latest
       build: ${{ matrix.build }}
-      # DockerHub: https://hub.docker.com/u/aswf
-      # Source: https://github.com/AcademySoftwareFoundation/aswf-docker
-      container: aswf/ci-openexr:${{ matrix.vfx-cy || '2024' }}
-      cxx-standard: ${{ matrix.cxx-standard || '17' }}
+      cmake: ${{ matrix.cmake || '3.15.7' }}
+      cxx-standard: ${{ matrix.cxx-standard || '14' }}
       cxx-compiler: ${{ matrix.cxx-compiler || 'g++' }}
       cc-compiler: ${{ matrix.cc-compiler || 'gcc' }}
       build-type: ${{ matrix.build-type || 'Release' }}
@@ -57,6 +55,7 @@ jobs:
       pybind11: ${{ matrix.pybind11 || 'ON' }}
       BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
       IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
+      IMATH_INSTALL_SYM_LINK: ${{ matrix.IMATH_INSTALL_SYM_LINK || 'ON' }}
       BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
       IMATH_TEST_PYTHON: ${{ matrix.IMATH_TEST_PYTHON || 'ON' }}
       IMATH_TEST_PYBIND11: ${{ matrix.IMATH_TEST_PYBIND11 || 'ON' }}
@@ -80,9 +79,12 @@ jobs:
           - build: 4
             label: pkgconfig=OFF, testing=OFF, python=OFF
             IMATH_INSTALL_PKG_CONFIG: 'OFF'
+            IMATH_INSTALL_SYM_LINK: 'OFF'
             BUILD_TESTING: 'OFF'
             python: 'OFF'
             pybind11: 'OFF'
+            cmake: 3.14.7
+            cxx-standard: 14
 
           - build: 5
             label: custom namespace
@@ -93,10 +95,6 @@ jobs:
             cxx-compiler: clang++
             cc-compiler: clang
 
-          - build: 7
-            label: vfx2023
-            vfx-cy: 2023
-
   macOS:
     name: 'macOS.${{ matrix.build}}: ${{ matrix.label }}'
     uses: ./.github/workflows/ci_steps.yml
@@ -106,12 +104,13 @@ jobs:
       # values.
       os: ${{ matrix.os || 'macos-14' }}
       build: ${{ matrix.build }}
-      cxx-standard: ${{ matrix.cxx-standard || '17' }}
+      cxx-standard: ${{ matrix.cxx-standard || '14' }}
       build-type: ${{ matrix.build-type || 'Release' }}
       python: ${{ matrix.python || 'ON' }}
       pybind11: ${{ matrix.pybind11 || 'ON' }}
       BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
       IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
+      IMATH_INSTALL_SYM_LINK: ${{ matrix.IMATH_INSTALL_SYM_LINK || 'ON' }}
       IMATH_BUILD_APPLE_FRAMEWORKS: ${{ matrix.IMATH_BUILD_APPLE_FRAMEWORKS || 'OFF' }}
       BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
       IMATH_TEST_PYTHON: ${{ matrix.IMATH_TEST_PYTHON || 'ON' }}
@@ -135,9 +134,11 @@ jobs:
           - build: 4
             label: pkgconfig=OFF, testing=OFF
             IMATH_INSTALL_PKG_CONFIG: 'OFF'
+            IMATH_INSTALL_SYM_LINK: 'OFF'
             BUILD_TESTING: 'OFF'
             python: 'OFF'
             pybind11: 'OFF'
+            cxx-standard: 14
 
           - build: 5
             label: macos-13
@@ -159,12 +160,13 @@ jobs:
       # values.
       os: ${{ matrix.os || 'windows-2022' }}
       build: ${{ matrix.build }}
-      cxx-standard: ${{ matrix.cxx-standard || '17' }}
+      cxx-standard: ${{ matrix.cxx-standard || '14' }}
       build-type: ${{ matrix.build-type || 'Release' }}
       python: ${{ matrix.python || 'ON' }}
       pybind11: ${{ matrix.pybind11 || 'ON' }}
       BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || 'ON' }}
       IMATH_INSTALL_PKG_CONFIG: ${{ matrix.IMATH_INSTALL_PKG_CONFIG || 'ON' }}
+      IMATH_INSTALL_SYM_LINK: ${{ matrix.IMATH_INSTALL_SYM_LINK || 'ON' }}
       BUILD_TESTING: ${{ matrix.BUILD_TESTING || 'ON' }}
       IMATH_TEST_PYTHON: ${{ matrix.IMATH_TEST_PYTHON || 'ON' }}
       IMATH_TEST_PYBIND11: ${{ matrix.IMATH_TEST_PYBIND11 || 'ON' }}
@@ -194,9 +196,11 @@ jobs:
             # test with everything turned off
             label: pkgconfig=OFF, testing=OFF
             IMATH_INSTALL_PKG_CONFIG: 'OFF'
+            IMATH_INSTALL_SYM_LINK: 'OFF'
             BUILD_TESTING: 'OFF'
             python: 'OFF'
-            pybind11: 'OFF' 
+            pybind11: 'OFF'
+            cxx-standard: 14
 
           - build: 5
             label: vfx2022
@@ -210,7 +214,7 @@ jobs:
             BUILD_TESTING: 'OFF' # TODO: Imath.testMatrix fails, please help find why!
             python: 'OFF' # TODO: conan won't build boost.python w/msys2, please help find why!
             IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
-            
+
           - build: 7
             label: msys2-mingw32, static
             msystem: MINGW32

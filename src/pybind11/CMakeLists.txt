@@ -4,7 +4,7 @@
 include(GNUInstallDirs)
 
 #
-# Python and Boost
+# Python
 #
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
@@ -24,6 +24,7 @@ set(PYBINDIMATH_LIB_SUFFIX
     "Suffix string for python version and Imath release in library names"
 )
 
+set(PYBINDIMATH_OUTPUT_SUBDIR PyBindImath CACHE STRING "Destination sub-folder of the path for install of PyBindImath headers")
 
 #
 # PyBindImath

@@ -79,20 +79,28 @@ def imath_version(CMakeCache):
     sys.exit(1)
 
 def process_line(line, major, minor, patch, so):
-    return line.strip().split("/_install/", 1)[-1].replace("$MAJOR", major).replace("$MINOR", minor).replace("$PATCH", patch).replace("$SOVERSION", so).replace("$PYTHONMAJOR", str(sys.version_info.major)).replace("$PYTHONMINOR", str(sys.version_info.minor))
+    path = line.strip().split("/_install/", 1)[-1]
+    path = path.replace("lib64", "lib")  # ignore differences between "lib64" and "lib"
+    path = path.replace("$MAJOR", major)
+    path = path.replace("$MINOR", minor)
+    path = path.replace("$PATCH", patch)
+    path = path.replace("$SOVERSION", so)
+    path = path.replace("$PYTHONMAJOR", str(sys.version_info.major))
+    path = path.replace("$PYTHONMINOR", str(sys.version_info.minor))
+    return path
 
 def load_manifest(path, major, minor, patch, so):
     """Load and return the list of files from the install manifest."""
     with open(path, 'r') as file:
-        return sorted(process_line(line, major, minor, patch, so) for line in file if line[0]!='#')
+        return sorted(process_line(line, major, minor, patch, so) for line in file if line.strip() and not line.lstrip().startswith('#'))
 
-def validate_install(candidate_manifest_path, reference_manifest_path, CMakeCache):
+def validate_install(build_manifest_path, reference_manifest_path, CMakeCache):
     """Main function to verify the installed files."""
 
     major, minor, patch = imath_version(CMakeCache)
     so = imath_soversion()
 
-    candidate_manifest = load_manifest(candidate_manifest_path, major, minor, patch, so)
+    build_manifest = load_manifest(build_manifest_path, major, minor, patch, so)
     reference_manifest = load_manifest(reference_manifest_path, major, minor, patch, so)
 
     print(f"imath version: {major}.{minor}.{patch} soversion={so}")
@@ -100,13 +108,13 @@ def validate_install(candidate_manifest_path, reference_manifest_path, CMakeCach
     print("reference_manifest:")
     for l in reference_manifest:
         print(f"  {l}")
-    print("candidate_manifest:")
-    for l in candidate_manifest:
+    print("build_manifest:")
+    for l in build_manifest:
         print(f"  {l}")
 
     # Compare manifests
-    missing_files = sorted(set(reference_manifest) - set(candidate_manifest))
-    extra_files = sorted(set(candidate_manifest) - set(reference_manifest))
+    missing_files = sorted(set(reference_manifest) - set(build_manifest))
+    extra_files = sorted(set(build_manifest) - set(reference_manifest))
 
     # Output results
     if missing_files:
@@ -126,23 +134,23 @@ if __name__ == "__main__":
     print(f"validate_install: {sys.argv}")
 
     parser = argparse.ArgumentParser(description="Validate installed files against reference install manifest.")
-    parser.add_argument("candidate_manifest", help="Path to the candidate install_manifest.txt")
+    parser.add_argument("build_manifest", help="Path to the build install_manifest.txt")
     parser.add_argument("reference_manifest", help="Path to the reference install_manifest.txt")
     parser.add_argument("CMakeCache", help="CakeCache.txt file path")
     args = parser.parse_args()
 
-    if not os.path.exists(args.candidate_manifest):
-        print(f"candidate manifest does not exist: {args.candidate_manifest}")
+    if not os.path.exists(args.build_manifest):
+        print(f"build manifest does not exist: {args.build_manifest}")
         sys.exit(1)
 
     if not os.path.exists(args.reference_manifest):
         print(f"reference manifest does not exist: {args.reference_manifest}")
         sys.exit(1)
 
-    print(f"candidate_manifest={args.candidate_manifest}")
+    print(f"build_manifest={args.build_manifest}")
     print(f"reference_manifest={args.reference_manifest}")
 
-    status = validate_install(args.candidate_manifest, args.reference_manifest, args.CMakeCache)
+    status = validate_install(args.build_manifest, args.reference_manifest, args.CMakeCache)
 
     sys.exit(status)
 

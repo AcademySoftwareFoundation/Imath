@@ -17,6 +17,7 @@ on:
       - CMakeLists.txt
       - 'src/**'
       - 'config/**'
+      - '!share/ci/install_manifest/**'
       - '!.github/workflows/**'
       - '.github/workflows/codeql.yml'
   pull_request:
@@ -24,6 +25,7 @@ on:
       - CMakeLists.txt
       - 'src/**'
       - 'config/**'
+      - '!share/ci/install_manifest/**'
       - '!.github/workflows/**'
       - '.github/workflows/codeql.yml'
 

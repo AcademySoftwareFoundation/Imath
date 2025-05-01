@@ -2,14 +2,21 @@
 # Copyright Contributors to the OpenEXR Project.
 
 if("${CMAKE_PROJECT_NAME}" STREQUAL "")
+
   # If the project name is set, this is being configured as a part of
   # Imath.  If there is no project name, it's being configured as a
   # standalone program linking against an already-installed Imath
   # library.
-  cmake_minimum_required(VERSION 3.12)
+
+  cmake_minimum_required(VERSION 3.14)
   project(ImathTest)
   find_package(Imath)
+
 endif()
+
+#
+# ImathTest
+#
 
 add_executable(ImathTest 
   main.cpp
@@ -56,74 +63,74 @@ set_target_properties(ImathTest PROPERTIES
 
 if(NOT "${CMAKE_PROJECT_NAME}" STREQUAL "ImathTest")
 
+  #
+  # ImathHalfCTest
+  #
+
   add_executable(ImathHalfCTest half_c_main.c)
-  target_link_libraries(ImathHalfCTest Imath::Config)
-  target_include_directories(ImathHalfCTest PRIVATE "../Imath")
-  #target_compile_options(ImathHalfCTest PRIVATE -mavx2 -mf16c)
-  if (IMATH_USE_HALF_LOOKUP_TABLE)
-    target_link_libraries(ImathHalfCTest Imath::Imath)
-  endif()
+  target_link_libraries(ImathHalfCTest Imath::Imath Imath::Config)
 
   set_target_properties(ImathHalfCTest PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-    )
-  add_test(NAME Imath.half_c_only COMMAND $<TARGET_FILE:ImathHalfCTest>)
+  )
 
-endif()
+  add_test(NAME ImathHalfCTest COMMAND $<TARGET_FILE:ImathHalfCTest>)
 
-add_executable(ImathHalfPerfTest half_perf_test.cpp)
-set_target_properties(ImathHalfPerfTest PROPERTIES
-RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-)
-target_link_libraries(ImathHalfPerfTest Imath::Imath)
-add_test(NAME Imath.half_perf_test COMMAND $<TARGET_FILE:ImathHalfPerfTest>)
+  #
+  # ImathHalfPerfTest
+  # 
 
-function(DEFINE_IMATH_TESTS)
-  foreach(curtest IN LISTS ARGN)
-    add_test(NAME Imath.${curtest} COMMAND $<TARGET_FILE:ImathTest> ${curtest})
+  add_executable(ImathHalfPerfTest half_perf_test.cpp)
+  target_link_libraries(ImathHalfPerfTest Imath::Imath)
+
+  set_target_properties(ImathHalfPerfTest PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+  )
+
+  add_test(NAME ImathHalfPerfTest COMMAND $<TARGET_FILE:ImathHalfPerfTest>)
+
+  set(TESTS
+    testToFloat
+    testSize
+    testArithmetic
+    testNormalizedConversionError
+    testDenormalizedConversionError
+    testRoundingError
+    testBitPatterns
+    testClassification
+    testLimits
+    testHalfLimits
+    testFunction
+    testVec
+    testColor
+    testShear
+    testMatrix
+    testMiscMatrixAlgo
+    testRoots
+    testFun
+    testInvert
+    testInterval
+    testFrustum
+    testRandom
+    testExtractEuler
+    testExtractSHRT
+    testQuat
+    testQuatSetRotation
+    testQuatSlerp
+    testLineAlgo
+    testBoxAlgo
+    testBox
+    testProcrustes
+    testTinySVD
+    testJacobiEigenSolver
+    testFrustumTest
+    testInterop
+    testNoInterop
+  )
+  
+  foreach(curtest IN LISTS TESTS)
+    add_test(NAME ImathTest.${curtest} COMMAND $<TARGET_FILE:ImathTest> ${curtest})
   endforeach()
-endfunction()
-
-if (IMATH_BUILD_APPLE_FRAMEWORKS)
-  add_compile_definitions(IMATH_BUILD_APPLE_FRAMEWORKS)
+  
 endif()
-
-define_imath_tests(
-  testToFloat
-  testSize
-  testArithmetic
-  testNormalizedConversionError
-  testDenormalizedConversionError
-  testRoundingError
-  testBitPatterns
-  testClassification
-  testLimits
-  testHalfLimits
-  testFunction
-  testVec
-  testColor
-  testShear
-  testMatrix
-  testMiscMatrixAlgo
-  testRoots
-  testFun
-  testInvert
-  testInterval
-  testFrustum
-  testRandom
-  testExtractEuler
-  testExtractSHRT
-  testQuat
-  testQuatSetRotation
-  testQuatSlerp
-  testLineAlgo
-  testBoxAlgo
-  testBox
-  testProcrustes
-  testTinySVD
-  testJacobiEigenSolver
-  testFrustumTest
-  testInterop
-  testNoInterop
-)
 

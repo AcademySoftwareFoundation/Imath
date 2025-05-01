@@ -99,6 +99,7 @@ lib/libPyBindImath_d.dylib
 lib/libPyImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR_d.$SOVERSION.$MAJOR.$MINOR.$PATCH.dylib
 lib/libPyImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR_d.$SOVERSION.dylib
 lib/libPyImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR_d.dylib
+lib/libPyImath_d.dylib
 lib/pkgconfig/Imath.pc
 lib/pkgconfig/PyBindImath.pc
 lib/pkgconfig/PyImath.pc

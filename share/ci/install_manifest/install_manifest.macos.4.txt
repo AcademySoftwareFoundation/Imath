@@ -43,4 +43,3 @@ lib/cmake/Imath/ImathTargets.cmake
 lib/libImath-$MAJOR_$MINOR.$SOVERSION.$MAJOR.$MINOR.$PATCH.dylib
 lib/libImath-$MAJOR_$MINOR.$SOVERSION.dylib
 lib/libImath-$MAJOR_$MINOR.dylib
-lib/libImath.dylib

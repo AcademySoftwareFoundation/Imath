@@ -9,8 +9,6 @@
 #      the wrappings
 #
 
-set(PYIMATH_TEST_SOURCES main.cpp testStringTable.cpp)
-
 if("${CMAKE_PROJECT_NAME}" STREQUAL "")
 
   #
@@ -39,6 +37,12 @@ endif()
 
 message (STATUS "Configuring PyImathTest")
 
+set(PYIMATH_MODULE_NAME imath) 
+set(PYIMATH_MODULE ${PYIMATH_MODULE_NAME}_module)
+set(PYIMATH_LIBRARY PyImath)
+
+set(PYIMATH_TEST_SOURCES main.cpp testStringTable.cpp)
+
 add_executable(PyImathTestC ${PYIMATH_TEST_SOURCES})
 
 target_link_libraries(PyImathTestC 
@@ -63,10 +67,6 @@ set_target_properties(PyImathTestC PROPERTIES
 # Test of the python API.  Execute the test by invoking python
 # with the script as an argument, with PATH and PYTHONPATH set properly.
   
-set(PYIMATH_MODULE_NAME imath) 
-set(PYIMATH_MODULE ${PYIMATH_MODULE_NAME}_module)
-set(PYIMATH_LIBRARY PyImath)
-
 add_test(NAME PyImath.PyImathTest
   COMMAND ${CMAKE_COMMAND} -E env
           "PYTHONPATH=$<TARGET_FILE_DIR:${PYIMATH_MODULE}>"
