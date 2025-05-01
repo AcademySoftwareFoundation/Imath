@@ -20,8 +20,8 @@ if(NOT Boost_FOUND)
 endif()
 
 #
-# Python library suffix string, by default including python version and
-# Imath release number, e.g. "_Python3_12-3_4"
+# Python library suffix string. By default, it includes the python
+# version and Imath release number, e.g. "_Python3_12-3_4"
 #
 
 set(PYIMATH_LIB_SUFFIX

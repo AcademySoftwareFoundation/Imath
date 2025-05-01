@@ -79,12 +79,12 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
   set_source_files_properties(
-    imathnumpymodule.cpp
+    PYIMATHNUMPY_MODULE_SOURCES 
     PROPERTIES COMPILE_FLAGS "-Wno-self-assign-overloaded"
   )
 elseif(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   set_source_files_properties(
-    imathnumpymodule.cpp
+    PYIMATHNUMPY_MODULE_SOURCES 
     PROPERTIES COMPILE_FLAGS "-Wdeprecated-declarations"
   )
 endif()

@@ -1,9 +1,15 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 
+#
+# The PyImath directory declares both the imath module and the PyImath
+# library, which is used by downstream projects (e.g. Alembic) that
+# provide python wrappings based on Imath.
+#
 
 #
-# Declare the libPyImath library, identified by PYIMATH_LIBRARY
+# Declare the libPyImath library, identified by PYIMATH_LIBRARY.
+# Note that PYIMATH_LIB_SUFFIX adds the "_Python3_9-3_4" to the library filename.
 #
 
 set(PYIMATH_LIBRARY PyImath)
@@ -127,7 +133,10 @@ target_link_libraries(${PYIMATH_LIBRARY} PUBLIC Imath)
 target_link_libraries(${PYIMATH_LIBRARY} PRIVATE Boost::boost Boost::python Python3::Module)
 
 #
-# Python module, identified by PYIMATH_MODULE
+# Python module, identified by PYIMATH_MODULE (e.g. "imath).
+# Note that CMake on Windows apparently does not respect case in
+# target names, and since the target for the main Imath library is
+# "Imath", the target here is "imath_module". The 
 #
 
 set(PYIMATH_MODULE_NAME imath) 
@@ -140,13 +149,13 @@ set(PYIMATH_MODULE_SOURCES
 )
 
 # Build "imath", not "imath_d" in Debug.
-# Note this must appear before add_library
+# Note this must appear before add_library()
 #set(CMAKE_DEBUG_POSTFIX "")
 
 add_library(${PYIMATH_MODULE} MODULE ${PYIMATH_MODULE_SOURCES})
 
-# Ensure correct module extension on Windows
 if(WIN32)
+    # Ensure correct module extension on Windows
     set_target_properties(${PYIMATH_MODULE} PROPERTIES SUFFIX ".pyd")
 endif()
 

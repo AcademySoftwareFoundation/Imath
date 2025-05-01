@@ -45,9 +45,6 @@ option(IMATH_INSTALL "Install Imath library" ON)
 # Config headers and package config files
 add_subdirectory(config)
 
-# Utility function for the repeated boilerplate of defining the libraries
-include(config/LibraryDefine.cmake)
-
 # uninstall target
 if(NOT TARGET uninstall)
   configure_file(
