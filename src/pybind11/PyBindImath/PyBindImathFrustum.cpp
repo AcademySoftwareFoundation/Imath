@@ -8,7 +8,7 @@
 #include <ImathVec.h>
 #include <ImathMatrix.h>
 
-namespace PyBindImath {
+namespace {
 
 template <class T, class V, class S>
 void register_frustum(pybind11::module& m, const char *name)
@@ -47,13 +47,20 @@ void register_frustum(pybind11::module& m, const char *name)
             std::stringstream ss;
             ss << obj;
             return ss.str();
-        });
+        })
+        ;
 }
 
-void register_imath_frustum(pybind11::module &m) 
+} // namespace
+ 
+namespace PyBindImath {
+
+void
+register_imath_frustum(pybind11::module &m) 
 {
-    register_frustum<IMATH_NAMESPACE::Frustumf, IMATH_NAMESPACE::V3f, IMATH_NAMESPACE::M44f, float>(m, "Frustumf");
-    register_frustum<IMATH_NAMESPACE::Frustumd, IMATH_NAMESPACE::V3d, IMATH_NAMESPACE::M44d, double>(m, "Frustumd");
+    register_frustum<IMATH_NAMESPACE::Frustumf, IMATH_NAMESPACE::V3f, IMATH_NAMESPACE::M44f>(m, "Frustumf");
+    register_frustum<IMATH_NAMESPACE::Frustumd, IMATH_NAMESPACE::V3d, IMATH_NAMESPACE::M44d>(m, "Frustumd");
 }
 
-}
+} // namespace PyBindImath
+

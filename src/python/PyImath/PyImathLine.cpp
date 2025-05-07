@@ -397,9 +397,6 @@ static std::string Line3_repr(const Line3<T> &v)
 {
     typename return_by_value::apply <Vec3<T> >::type converter;
 
-    Vec3<T> v1 = v.pos;
-    Vec3<T> v2 = v.pos + v.dir;
-
     handle<> v1h (converter (v.pos));
     handle<> v1Repr (PYUTIL_OBJECT_REPR (v1h.get()));
     std::string v1ReprStr = extract<std::string> (v1Repr.get());

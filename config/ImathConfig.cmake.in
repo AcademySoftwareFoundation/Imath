@@ -3,5 +3,25 @@
 
 @PACKAGE_INIT@
 
+# Set PACKAGE_PREFIX_DIR to the framework root (Resources/..) for framework builds
+get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+
 include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@Targets.cmake")
-check_required_components("@PROJECT_NAME@")
+
+if (NOT TARGET Imath::Config)
+  add_library(Imath::Config INTERFACE IMPORTED)
+  set_target_properties(Imath::Config PROPERTIES
+    INTERFACE_LINK_LIBRARIES ImathConfig
+  )
+endif()
+
+if(Imath_FIND_COMPONENTS)
+  foreach(component IN LISTS Imath_FIND_COMPONENTS)
+    if(component STREQUAL "PyImath")
+      include("${CMAKE_CURRENT_LIST_DIR}/PyImathTargets.cmake")
+    endif()
+    if(component STREQUAL "PyBindImath")
+      include("${CMAKE_CURRENT_LIST_DIR}/PyBindImathTargets.cmake")
+    endif()
+  endforeach()
+endif()

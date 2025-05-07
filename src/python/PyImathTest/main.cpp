@@ -11,6 +11,7 @@
 #include <boost/python/handle.hpp>
 #include <boost/python/object.hpp>
 #include <ImathMath.h>
+#include <PyImath.h>
 #include <PyImathBox.h>
 #include <PyImathColor.h>
 #include <PyImathEuler.h>
@@ -23,7 +24,8 @@
 #include <PyImathVec.h>
 #include <PyImathShear.h>
 
-#include <testStringTable.h>
+
+#include "testStringTable.h"
 
 using namespace boost::python;
 

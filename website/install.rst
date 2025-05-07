@@ -9,7 +9,10 @@ Install
 
 .. toctree::
    :caption: Install
-             
+
+Linux
+-----
+
 The Imath library is available for download and installation in
 binary form via package managers on many Linux distributions.
 
@@ -90,7 +93,7 @@ Prerequisites
 Make sure these are installed on your system before building Imath:
 
 * Imath requires CMake version 3.14 or newer
-* C++ compiler that supports C++11
+* C++ compiler that supports C++14
 
 The instructions that follow describe building Imath with CMake.
 
@@ -104,7 +107,7 @@ To build via CMake, you need to first identify three directories:
 2. A temporary directory to hold the build artifacts, referred to below as
    ``$builddir``
 3. A destination directory into which to install the
-   libraries and headers, referred to below as ``$installdir``.  
+   libraries and headers, referred to below as ``$installdir``.
 
 To build:
 
@@ -143,50 +146,153 @@ can specify a local install directory to cmake via the
 
     % cmake .. -DCMAKE_INSTALL_PREFIX=$Imath_install_directory
 
-Library Names
--------------
+Example Application
+-------------------
 
-By default the installed libraries follow a pattern for how they are
-named. This is done to enable multiple versions of the library to be
-installed and targeted by different builds depending on the needs of
-the project. A simple example of this would be to have different
-versions of the library installed to allow for applications targeting
-different VFX Platform years to co-exist.
+A basic program that uses the Imath library:
 
-If you are building dynamic libraries, once you have configured, built,
-and installed the libraries, you should see the following pattern of
-symlinks and files in the install lib folder:
+.. literalinclude:: examples/intro.cpp
 
-.. code-block::
+And a ``CMakeLists.txt`` configuration file:
 
-    libImath.so -> libImath.so.31
-    libImath.so.$SOVERSION -> libImath.so.$SOVERSION.$RELEASE
-    libImath.so.$SOVERSION.$RELEASE (the shared object file)
+.. literalinclude:: examples/quickstart/CMakeLists.txt
 
-The ``SOVERSION`` number identifies the ABI version. Each Imath
-release that changes the ABI in backwards-incompatible ways increases
-this number. By policy, this changes only for major and minor
-releases, never for patch releases. ``RELEASE`` is the
-``MAJOR.MINOR.PATCH`` release name. For example, the resulting shared
-library filename is ``libImath.so.31.3.1.10`` for Imath release
-v3.1.10. This naming scheme reinforces the correspondence between the
-real filename of the ``.so`` and the release it corresponds to.
+Python Bindings
+~~~~~~~~~~~~~~~
 
-Library Suffix
-~~~~~~~~~~~~~~
+To build a C++ program that uses the the ``PyImath`` python bindings,
+add ``PyImath`` as a ``COMPONENT`` to ``find_package(Imath)``:
 
-The ``IMATH_LIB_SUFFIX`` CMake option designates a suffix for the
-library and appears between the library base name and the
-``.so``. This defaults to encode the major and minor version, as in
-``-3_1``:
+.. literalinclude:: examples/quickstart.pyimath/CMakeLists.txt
+
+
+Library Names and Namespaces
+----------------------------
+
+When building shared a library, the library is identified with a
+series of symbolic links with embedded release numbers in the
+filenames:
 
 .. code-block::
 
-    libImath.so -> libImath-3_1.so
-    libImath-3_1.so -> libImath-3_1.so.30
-    libImath-3_1.so.30 -> libImath-3_1.so.30.3.1.10
-    libImath-3_1.so.30.3.1.10 (the shared object file)
-    
+    libImath.so -> libImath-3_2.so.31
+    libImath-3_2.so.31 -> libImath-3_2.so.31.3.2.0
+    libImath-3_2.so.31.3.2.0 (the actual shared object file)
+
+The ``31`` identifies the soversion of the ABI, and the ``3.2.0``
+identifies the release major, minor, and patch numbers. Furthermore,
+by default, the library name is suffixed with the major and minor
+release numbers, which serves as an aid in building an application
+that requires simultaneous support for multiple versions of the
+library, i.e linking against both release v3.2 and v3.1 in teh same
+application, in the rare event this is ever necessary. Note that this
+feature is accompanied by the C++ namespace, which by default embeds
+all symbols in a namespace that encodes the major and minor release,
+i.e. ``Imath_3_2``, ``Imath_3_1``, etc.
+
+This namespacing and library suffixing can be controlled throught the
+build-time cmake option ``IMATH_NAMESPACE`` and ``IMATH_LIB_SUFFIX``,
+respectively. If ``IMATH_LIB_SUFFIX`` is provided when configuring
+cmake, that string will appear after ``libImath`` in the library
+filename, in place of the default ``-3_2``.  Note that if
+``IMATH_LIB_SUFFIX=""``, the suffix will be empty.
+
+In addition to the versioned and suffixed shared object names, the
+build also installs a symbolic link with the unversioned and
+unsuffixed name ``libImath.so``. This can be disabled with the
+``IMATH_INSTALL_SYM_LINK`` cmake option.
+
+CMake Build-time Configuration Options
+--------------------------------------
+
+* ``BUILD_SHARED_LIBS``
+
+  This is the primary control whether to build static libraries or
+  shared libraries / dlls (side note: technically a convention, hence
+  not an official ``CMAKE_`` variable, it is defined within cmake and
+  used everywhere to control this static / shared behavior)
+
+* ``BUILD_TESTING``
+
+  Build the test suite. Default is ``ON``.  To run the test suite, use
+  ``make test`` or use ``ctest``.
+
+* ``IMATH_INSTALL_PKG_CONFIG``
+
+  If true, install the ``Imath.pc`` package config file. On by default.
+
+* ``IMATH_INSTALL_SYM_LINK``
+
+  If true, create a symbolic link to the shared object with a name
+  with no suffix, i.e. ``libImath.so``. On by default.
+
+* ``IMATH_BUILD_APPLE_FRAMEWORKS``
+
+  If true, the build configures the library into an Apple framework,
+  i.e. ``Imath.framework``, rather than the traditional ``lib`` and
+  ``includes`` subdirectories.  Use in conjunction with
+  ``CMAKE_SYSTEM_NAME=iOS``.
+
+Building the Python Bindings
+----------------------------
+
+The bindings as historically maintained and distributed are
+implemented via Boost.Python. To build the bindings, set the cmake
+configuration ``PYTHON`` to ``ON``.
+
+The bindings consist of two parts: the ``imath`` module, and the
+``libPyImath.so`` shared object, which provides a C++ API for the
+wrappings for use in other C++ applications.
+
+The ``PYTHON_INSTALL_DIR`` cmake variable designates the installation
+directory for the ``imath`` module.
+
+The ``IMATH_TEST_PYTHON`` cmake variable controls whether the python
+test suite will be invoked during test execution. It is sometimes
+convenient to be able to build the bindings but exclude them from the
+tests.
+
+Similar to ``IMATH_LIB_SUFFIX``, the ``PYIMATH_LIB_SUFFIX`` provides a
+suffix for the ``libPyImath.so`` shared library. By default, the
+suffix includes the imath release, similar to ``libImath.so`` python
+version as well as the python version, e.g. ``libPyImath_Python3_9-3_2.so``.
+
+The ``IMATH_INSTALL_PKG_CONFIG`` variable also controls whether to
+install a ``PyImath.pc`` package config file.
+
+Building the PyBind11 Python Bindings
+-------------------------------------
+
+A new and not-yet-complete implementation of the python bindings
+exists alongside the Boost.Python bindings that have been historically
+distributed. The intention is that these will soon entirely replace
+the Boost.Python implementation, but they are not yet complete. This
+is provided for development purposes only.
+
+To build the pybind11 bindings, set the cmake configuration
+``PYBIND11`` to ``ON``.
+
+The bindings consist of two parts: the ``pybindimath`` module, and the
+``libPyBindImath.so`` shared object, which provides a C++ API for the
+wrappings for use in other C++ applications.
+
+The ``PYTHON_INSTALL_DIR`` cmake variable designates the installation
+directory for the ``pybindimath`` module.
+
+The ``IMATH_TEST_PYBIND11`` cmake variable controls whether the python
+test suite will be invoked during test execution. It is sometimes
+convenient to be able to build the bindings but exclude them from the
+tests.
+
+Similar to ``IMATH_LIB_SUFFIX``, the ``PYBINDIMATH_LIB_SUFFIX``
+provides a suffix for the ``libPyBindImath.so`` shared library. By
+default, the suffix includes the imath release, similar to
+``libImath.so`` python version as well as the python version,
+e.g. ``libPyBindImath_Python3_9-3_2.so``.
+
+The ``IMATH_INSTALL_PKG_CONFIG`` variable also controls whether to
+install a ``PyBindImath.pc`` package config file.
+
 Porting Applications from OpenEXR v2 to v3
 ------------------------------------------
 
@@ -227,155 +333,9 @@ On Debian/Ubuntu Linux:
     % apt-get install doxygen python3-sphinx
     % pip3 install breathe
     % pip3 install sphinx_press_theme
-   
+
     % mkdir _build
     % cd _build
     % cmake .. -DBUILD_WEBSITE=ON
-    % cmake --build . --target website 
-
-CMake Build-time Configuration Options
---------------------------------------
-
-The default CMake configuration options are stored in
-``cmake/ImathSetup.cmake``. To see a complete set of option
-variables, run:
-
-.. code-block::
-
-    % cmake -LAH $imath_source_directory
-
-You can customize these options three ways:
-
-1. Modify the ``.cmake`` files in place.
-2. Use the UI ``cmake-gui`` or ``ccmake``.
-3. Specify them as command-line arguments when you invoke cmake.
-
-Library Naming Options
-~~~~~~~~~~~~~~~~~~~~~~
-
-* ``IMATH_LIB_SUFFIX``
-
-  Append the given string to the end of all the Imath
-  libraries. Default is ``-<major>_<minor>`` version string. Please
-  see the section on library names
-
-Imath Dependency
-~~~~~~~~~~~~~~~~
-
-* ``CMAKE_PREFIX_PATH``
-
-  The standard CMake path in which to
-  search for dependencies, Imath in particular.  A comma-separated
-  path. Add the root directory where Imath is installed.
-
-Namespace Options
-~~~~~~~~~~~~~~~~~
-
-* ``IMATH_NAMESPACE``
-
-  Public namespace alias for Imath. Default is ``Imath``.
-
-* ``IMATH_INTERNAL_NAMESPACE``
-
-  Real namespace for Imath that will end up in compiled
-  symbols. Default is ``Imath_<major>_<minor>``.
-
-* ``IMATH_NAMESPACE_CUSTOM``
-
-  Whether the namespace has been customized (so external users know)
-
-Component Options
-~~~~~~~~~~~~~~~~~
-
-* ``BUILD_TESTING``
-
-  Build the testing tree. Default is ``ON``.  Note that
-  this causes the test suite to be compiled, but it is not
-  executed. To execute the suite, run "make test".
-
-Additional CMake Options
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-See the CMake documentation for more information (https://cmake.org/cmake/help/v3.12/).
-
-* ``CMAKE_BUILD_TYPE``
-
-  For builds when not using a multi-configuration generator. Available
-  values: ``Debug``, ``Release``, ``RelWithDebInfo``, ``MinSizeRel``
-
-* ``BUILD_SHARED_LIBS``
-
-  This is the primary control whether to build static libraries or
-  shared libraries / dlls (side note: technically a convention, hence
-  not an official ``CMAKE_`` variable, it is defined within cmake and
-  used everywhere to control this static / shared behavior)
-
-* ``IMATH_CXX_STANDARD``
-
-  C++ standard to compile against. This obeys the global
-  ``CMAKE_CXX_STANDARD`` but doesn’t force the global setting to
-  enable sub-project inclusion. Default is ``14``.
-
-* ``CMAKE_CXX_COMPILER``
-
-  The C++ compiler.        
-
-* ``CMAKE_C_COMPILER``
-
-  The C compiler.
-  
-* ``CMAKE_INSTALL_RPATH``
-
-  For non-standard install locations where you don’t want to have to
-  set ``LD_LIBRARY_PATH`` to use them
-
-* ``CMAKE_EXPORT_COMPILE_COMMANDS``
-
-  Enable/Disable output of compile commands during generation. Default
-  is ``OFF``.
-
-* ``CMAKE_VERBOSE_MAKEFILE``
-
-  Echo all compile commands during make. Default is ``OFF``.
-
-Cross Compiling / Specifying Specific Compilers
------------------------------------------------
-
-When trying to either cross-compile for a different platform, or for
-tasks such as specifying a compiler set to match the `VFX reference
-platform <https://vfxplatform.com>`_, cmake provides the idea of a
-toolchain which may be useful instead of having to remember a chain of
-configuration options. It also means that platform-specific compiler
-names and options are out of the main cmake file, providing better
-isolation.
-
-A toolchain file is simply just a cmake script that sets all the
-compiler and related flags and is run very early in the configuration
-step to be able to set all the compiler options and such for the
-discovery that cmake performs automatically. These options can be set
-on the command line still if that is clearer, but a theoretical
-toolchain file for compiling for VFX Platform 2015 is provided in the
-source tree at ``cmake/Toolchain-Linux-VFX_Platform15.cmake`` which
-will hopefully provide a guide how this might work.
-
-For cross-compiling for additional platforms, there is also an
-included sample script in ``cmake/Toolchain-mingw.cmake`` which shows
-how cross compiling from Linux for Windows may work. The compiler
-names and paths may need to be changed for your environment.
-
-More documentation:
-
-* Toolchains: https://cmake.org/cmake/help/v3.12/manual/cmake-toolchains.7.html
-* Cross compiling: https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/CrossCompiling
-
-Ninja
------
-
-If you have `Ninja <https://ninja-build.org>`_ installed, it is faster
-than make. You can generate ninja files using cmake when doing the
-initial generation:
-
-.. code-block::
-
-    % cmake -G “Ninja” ..
+    % cmake --build . --target website
 

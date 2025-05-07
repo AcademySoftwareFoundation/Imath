@@ -8,7 +8,7 @@
 
 namespace py = pybind11;
 
-namespace PyBindImath {
+namespace {
 
 template <class T>
 void
@@ -21,6 +21,10 @@ register_imath_funT(py::module& m)
 
 }
 
+} // namespace 
+
+namespace PyBindImath {
+
 void
 register_imath_fun(py::module& m)
 {
@@ -29,5 +33,5 @@ register_imath_fun(py::module& m)
     register_imath_funT<double>(m);
 }
 
-
 } // namespace PyBindImath
+
