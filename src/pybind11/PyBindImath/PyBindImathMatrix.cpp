@@ -86,6 +86,8 @@ register_matrix(py::class_<M<T>>& m, const char* name)
         .def(py::init<T>())
         .def(py::init<const Matrix&>())
         .def("__getitem__", [](Matrix& self, size_t i) {
+            if (i < 0 || i >= Matrix::dimensions())
+                throw py::index_error();
             return RowProxy<Matrix>(self[i]);
         })
         .def("__len__", [](const Matrix& self) {
@@ -307,18 +309,103 @@ register_matrix33(py::module& module, const char * name)
                 extractScalingAndShear(self, dstScl, dstShrTmp, exc);
                 dstShr.setValue(dstShrTmp, T (0));
             }, py::arg("dstScl"), py::arg("dstShr"), py::arg("exc") = 1)
-        .def("singularValueDecomposition", [](const Matrix33<T>& m, bool forcePositiveDeterminant = false)
+        .def("singularValueDecomposition", [](const Matrix& self, bool forcePositiveDeterminant = false)
             {
                 Matrix U, V;
                 Vec3<T> S;
-                jacobiSVD (m, U, S, V, std::numeric_limits<T>::epsilon(), forcePositiveDeterminant);
+                jacobiSVD (self, U, S, V, std::numeric_limits<T>::epsilon(), forcePositiveDeterminant);
                 return py::make_tuple (U, S, V);
             })
         .def("symmetricEigensolve", &jacobiEigensolve<Matrix>) 
         ;
     
     register_matrix<Matrix33, T>(m, name);
-    return py::cast<py::class_<Matrix33<T>>>(m);
+    return py::cast<py::class_<Matrix>>(m);
+}
+
+template <class T>
+py::class_<Matrix44<T>>
+register_matrix44(py::module& module, const char * name)
+{
+    using Matrix = Matrix44<T>;
+    auto ri = py::return_value_policy::reference_internal;
+
+    py::class_<Matrix> m(module, name);
+    m.def(py::init<T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T>())
+        .def(py::init([](std::tuple<T, T, T, T> row0,
+                         std::tuple<T, T, T, T> row1,
+                         std::tuple<T, T, T, T> row2,
+                         std::tuple<T, T, T, T> row3) {
+            return Matrix(std::get<0>(row0), std::get<1>(row0), std::get<2>(row0), std::get<3>(row0),
+                          std::get<0>(row1), std::get<1>(row1), std::get<2>(row1), std::get<3>(row1),
+                          std::get<0>(row2), std::get<1>(row2), std::get<2>(row2), std::get<3>(row2),
+                          std::get<0>(row3), std::get<1>(row3), std::get<2>(row3), std::get<3>(row3));
+        }))
+        .def("multDirMatrix", [](const Matrix& self, const py::object& src, Vec3<T>& dst) {
+            self.multDirMatrix(vecFromObject<Vec3<T>>(src), dst); }, "mult matrix")
+        .def("multDirMatrix", [](const Matrix& self, const py::object& src) {
+            Vec3<T> dst; self.multDirMatrix(vecFromObject<Vec3<T>>(src), dst); return dst; }, "mult matrix")
+        .def("multVecMatrix", [](const Matrix& self, const py::object& src, Vec3<T>& dst) {
+            self.multVecMatrix(vecFromObject<Vec3<T>>(src), dst); }, "mult matrix")
+        .def("multVecMatrix", [](const Matrix& self, const py::object& src) {
+            Vec3<T> dst; self.multVecMatrix(vecFromObject<Vec3<T>>(src), dst); return dst; }, "mult matrix")
+
+        .def("rotate", [](Matrix& self, const Vec3<T>& r) { return self.rotate(r); }, ri, "rotate matrix")
+
+        .def("setTranslation", [](Matrix& self, const py::object& t) { return self.setTranslation(vecFromObject<Vec3<T>>(t)); }, ri, "setTranslation(s)")
+        .def("translate", [](Matrix& self, const py::object& t) { return self.translate(vecFromObject<Vec3<T>>(t)); }, ri, "translate matrix")
+        .def("translation", &Matrix::translation, "translation()")
+
+        .def("scale", [](Matrix& self, const py::object& s) { return self.scale(vecFromObject<Vec3<T>>(s)); }, ri, "rotate matrix")
+        .def("setScale", [](Matrix& self, T s) { return self.setScale(s); }, ri, "setScale(s)")
+        .def("setScale", [](Matrix& self, const py::object& s) { return self.setScale(vecFromObject<Vec3<T>>(s)); }, ri, "setScale(s)")
+
+        .def("shear", [](Matrix& self, const Vec3<T>& s) { return self.shear(s); }, ri, "setShear")
+        .def("shear", [](Matrix& self, const py::list& s) { return self.shear(vecFromObject<Vec3<T>>(s)); }, ri, "setShear")
+        .def("shear", [](Matrix& self, const py::tuple& s) { return self.shear(vecFromObject<Vec3<T>>(s)); }, ri, "setShear")
+
+        .def("setShear", [](Matrix& self, const Vec3<T>& s) { return self.setShear(s); }, ri, "setShear")
+        .def("setShear", [](Matrix& self, const py::list& s) { return self.setShear(vecFromObject<Vec3<T>>(s)); }, ri, "setShear")
+        .def("setShear", [](Matrix& self, const py::tuple& s) { return self.setShear(vecFromObject<Vec3<T>>(s)); }, ri, "setShear")
+
+        .def("gjInvert", [](Matrix& self) { return self.gjInvert(); }, ri) 
+        .def("gjInverse", [](Matrix& self) { return self.gjInverse(); }, ri) 
+        .def("minorOf", &Matrix::minorOf,"minorOf() return the matrix minor of the (row,col) element of this matrix")
+        .def("fastMinor", &Matrix::fastMinor,"fastMinor() return the matrix minor using the specified rows and columns of this matrix")
+
+        .def("removeScaling", [](Matrix& self, int exc) { return removeScaling(self, exc); }, py::arg("exc")=1, ri)
+        .def("removeScalingAndShear", [](Matrix& self, int exc) { return removeScalingAndShear(self, exc); }, py::arg("exc")=1, ri)
+
+        .def("sansScaling", [](const Matrix& self, int exc) { return sansScaling(self, exc); }, py::arg("exc")=1, ri)
+        .def("sansScalingAndShear", [](const Matrix& self, int exc) { return sansScalingAndShear(self, exc); }, py::arg("exc")=1, ri)
+
+        .def("extractAndRemoveScalingAndShear", [](Matrix& self, Vec3<T>& dstScl, Vec3<T>& dstShr, int exc) 
+             {
+                 extractAndRemoveScalingAndShear(self, dstScl, dstShr, exc);
+             }, py::arg("dstScl"), py::arg("dstShr"), py::arg("exc") = 1)
+        .def("extractSHRT", [](const Matrix& self, Vec3<T> &s, Vec3<T> &h, Vec3<T> &r, Vec3<T> &t, int exc)
+            {
+                return extractSHRT(self, s, h, r, t, exc);
+            }, py::arg("s"), py::arg("h"), py::arg("r"), py::arg("t"), py::arg("exc") = 1)
+        .def("extractScaling", [](const Matrix& self, Vec3<T> &dst, int exc) { extractScaling(self, dst, exc); }, py::arg("dst"), py::arg("exc") = 1)
+
+        .def("outerProduct", [](Matrix& self, Vec4<T>& a, Vec4<T>& b) { self = outerProduct(a, b); })
+        .def("extractScalingAndShear", [](Matrix& self, Vec3<T> &dstScl, Vec3<T> &dstShr, int exc)
+            {
+                extractScalingAndShear(self, dstScl, dstShr, exc);
+            }, py::arg("dstScl"), py::arg("dstShr"), py::arg("exc") = 1)
+        .def("singularValueDecomposition", [](const Matrix& self, bool forcePositiveDeterminant = false)
+            {
+                Matrix U, V;
+                Vec4<T> S;
+                jacobiSVD (self, U, S, V, std::numeric_limits<T>::epsilon(), forcePositiveDeterminant);
+                return py::make_tuple (U, S, V);
+            })
+        .def("symmetricEigensolve", &jacobiEigensolve<Matrix>) 
+        ;
+    
+    register_matrix<Matrix44, T>(m, name);
+    return py::cast<py::class_<Matrix>>(m);
 }
 
 template <class M>
@@ -328,10 +415,16 @@ register_rowproxy(py::module& module, const char* name)
     using T = typename M::BaseType;
 
     py::class_<RowProxy<M>>(module, name, py::module_local())
-        .def("__getitem__", [](RowProxy<M>& r, size_t i) -> T& {
+        .def("__getitem__", [](RowProxy<M>& r, size_t i) -> T&
+        {
+            if (i < 0 || i >= M::dimensions())
+                throw py::index_error();
             return r[i];
         })
-        .def("__setitem__", [](RowProxy<M>& r, size_t i, T val) {
+        .def("__setitem__", [](RowProxy<M>& r, size_t i, T val)
+        {
+            if (i < 0 || i >= M::dimensions())
+                throw py::index_error();
             r[i] = val;
         });
 }
@@ -345,14 +438,18 @@ register_imath_matrix(py::module& module)
 {
     register_rowproxy<M22f>(module, "RowProxy22f");
     register_rowproxy<M22d>(module, "RowProxy22d");
-    register_rowproxy<M33f>(module, "RowProxy33f");
-    register_rowproxy<M33d>(module, "RowProxy33d");
-        
     auto m22f = register_matrix22<float>(module, "M22f");
     auto m22d = register_matrix22<double>(module, "M22d");
 
+    register_rowproxy<M33f>(module, "RowProxy33f");
+    register_rowproxy<M33d>(module, "RowProxy33d");
     auto m33f = register_matrix33<float>(module, "M33f");
     auto m33d = register_matrix33<double>(module, "M33d");
+
+    register_rowproxy<M44f>(module, "RowProxy44f");
+    register_rowproxy<M44d>(module, "RowProxy44d");
+    auto m44f = register_matrix44<float>(module, "M44f");
+    auto m44d = register_matrix44<double>(module, "M44d");
 }
 
 } // namespace PyBindImath
