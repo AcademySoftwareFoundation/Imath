@@ -31,6 +31,8 @@ on:
         type: string
       build-type:
         type: string
+      msystem:
+        type: string
       python:
         type: string
       pybind11:
@@ -40,6 +42,8 @@ on:
       BUILD_SHARED_LIBS:
         type: string
       BUILD_TESTING:
+        type: string
+      IMATH_BUILD_APPLE_FRAMEWORKS:
         type: string
       namespace:
         type: string
@@ -62,6 +66,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
+      - name: Select Xcode Version
+        if: runner.os == 'macOS'
+        run: sudo xcode-select --switch /Applications/Xcode_15.2.app
+
+      - name: Install MSYS2 ${{ inputs.msystem }}
+        if: inputs.msystem != ''
+        uses: msys2/setup-msys2@61f9e5e925871ba6c9e3e8da24ede83ea27fa91f # v2.27.0
+        with:
+          msystem: ${{ inputs.msystem }}
+          update: true
+          install: git
+          pacboy: cc:p cmake:p
+
       - name: Create build directories
         run: mkdir _install _build _examples
         shell: bash
@@ -71,20 +88,25 @@ jobs:
           # Construct the cmake command as a variable, so the
           # Configure step below can execute it, but also so we can store
           # in in the install_manifest as a debugging reference
-          CMAKE_COMMAND="cmake -B . -S .. \
-                -DCMAKE_INSTALL_PREFIX=../_install \
-                -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} \
-                -DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }} \
-                -DBUILD_SHARED_LIBS=${{ inputs.BUILD_SHARED_LIBS }} \
-                -DIMATH_INSTALL_PKG_CONFIG=${{ inputs.IMATH_INSTALL_PKG_CONFIG }} \
-                -DBUILD_TESTING=${{ inputs.BUILD_TESTING }} \
-                -DPYTHON=${{ inputs.python }} \
-                -DPYBIND11=${{ inputs.pybind11 }} \
-                -DCMAKE_VERBOSE_MAKEFILE=ON"
+          cmake_args=("-B" "." "-S" "..")
+          cmake_args+=("-DCMAKE_INSTALL_PREFIX=../_install")
+          cmake_args+=("-DCMAKE_BUILD_TYPE=${{ inputs.build-type }}")
+          cmake_args+=("-DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }}")
+          cmake_args+=("-DBUILD_SHARED_LIBS=${{ inputs.BUILD_SHARED_LIBS }}")
+          cmake_args+=("-DIMATH_INSTALL_PKG_CONFIG=${{ inputs.IMATH_INSTALL_PKG_CONFIG }}")
+          cmake_args+=("-DIMATH_BUILD_APPLE_FRAMEWORKS=${{ inputs.IMATH_BUILD_APPLE_FRAMEWORKS }}")
+          cmake_args+=("-DBUILD_TESTING=${{ inputs.BUILD_TESTING }}")
+          cmake_args+=("-DPYTHON=${{ inputs.python }}")
+          cmake_args+=("-DPYBIND11=${{ inputs.pybind11 }}")
+          cmake_args+=("-DCMAKE_VERBOSE_MAKEFILE=ON")
           if [ -n "${{ inputs.namespace }}" ]; then
-              CMAKE_COMMAND="$CMAKE_COMMAND -DIMATH_NAMESPACE=${{ inputs.namespace }}"
+              cmake_args+=("-DIMATH_NAMESPACE=${{ inputs.namespace }}")
           fi
-          echo "CMAKE_COMMAND=$CMAKE_COMMAND" >> $GITHUB_ENV
+          if [ "${{ inputs.IMATH_BUILD_APPLE_FRAMEWORKS }}" == "ON" ]; then
+              cmake_args+=("-DCMAKE_SYSTEM_NAME=iOS")
+          fi
+          quoted_args=$(printf '%q ' "${cmake_args[@]}")
+          echo "CMAKE_ARGS=$quoted_args" >> "$GITHUB_ENV"
 
           # Remove the os version from the manifest name, so it only
           # contains "ubuntu", "macos", or "windows", so the name is,
@@ -93,17 +115,29 @@ jobs:
         working-directory: _build
         shell: bash
 
-      - name: Configure
+      - name: Configure, Build, Test
+        if: inputs.msystem == ''
         run: |
-          $CMAKE_COMMAND
+          cmake --version
+          cmake ${{ env.CMAKE_ARGS }}
+          cmake --build . --target install --config ${{ inputs.build-type }}
+          if [ "${{ inputs.BUILD_TESTING }}" == "ON" && "${{ inputs.BUILD_IMATH_APPLE_FRAMEWORKS }}" != "ON"]; then
+            ctest -T Test -C ${{ inputs.build-type }} --timeout 7200 --output-on-failure -VV
+          fi
         working-directory: _build
         shell: bash
 
-      - name: Build
+      - name: Configure, Build, Test (msys2) # requires msys2 shell
+        if: inputs.msystem != ''
         run: |
+          cmake --version
+          cmake ${{ env.CMAKE_ARGS }}
           cmake --build . --target install --config ${{ inputs.build-type }}
+          if [ "${{ inputs.BUILD_TESTING }}" == "ON" ]; then
+            ctest -T Test -C ${{ inputs.build-type }} --timeout 7200 --output-on-failure -VV
+          fi
         working-directory: _build
-        shell: bash
+        shell: msys2 {0}
 
       - name: Find python version
         run: |
@@ -117,15 +151,16 @@ jobs:
         # and remove the path prefix, so the manifest contains only
         # the local filenames.
         run: |
-          echo "# $CMAKE_COMMAND" > "_build/$INSTALL_MANIFEST"
+          echo "# cmake ${{ env.CMAKE_ARGS }}" > "_build/$INSTALL_MANIFEST"
           sort _build/install_manifest.txt | sed -e "s:^.*/_install/::" >> "_build/$INSTALL_MANIFEST"
         shell: bash
 
       - name: Upload install_manifest.txt
         # Upload the manifest to make it possible to download for inspection and debugging
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: install_manifest
+
+          name: ${{ env.INSTALL_MANIFEST }}
           path: _build/${{ env.INSTALL_MANIFEST }}
 
       - name: Validate install
@@ -136,7 +171,7 @@ jobs:
         shell: bash
 
       - name: Test standalone
-        continue-on-error: true
+        if: inputs.msystem == '' && inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON'
         run: |
           # Make sure we can build the tests when configured as a
           # standalone application linking against the just-installed
@@ -155,11 +190,14 @@ jobs:
             ./bin/ImathTest
           fi
         shell: bash
-        working-directory: _examples 
+        working-directory: _examples
 
       - name: Examples
-        # The example code use the Imath:: namespace explicitly, they won't work with a custom namespace, so skip the test in that case.
-        if: ${{ inputs.namespace == '' }}
+        # The example code use the Imath:: namespace explicitly, so
+        # they won't work with a custom namespace, so skip the test in
+        # that case. Also don't bother with Apple Frameworks. And msys2
+        # has its own step below.
+        if: inputs.namespace == '' && inputs.msystem == '' && inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON'
         run: |
           # Confirm the examples compile and execute
           rm -rf bin CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
@@ -168,6 +206,7 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} \
                 -DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }}
           cmake --build . --config ${{ inputs.build-type }}
+
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             ./bin/"${{ inputs.build-type }}"/imath-intro.exe || true
             ./bin/"${{ inputs.build-type }}"/imath-examples.exe || true
@@ -175,9 +214,27 @@ jobs:
             ./bin/imath-intro
             ./bin/imath-examples
           fi
-
         shell: bash
-        working-directory: _examples 
+        working-directory: _examples
+
+      - name: Examples (msys2)
+        # The example code use the Imath:: namespace explicitly, they
+        # won't work with a custom namespace, so skip the test in that
+        # case.
+        if: inputs.namespace == '' && inputs.msystem != ''
+        run: |
+          # Confirm the examples compile and execute
+          rm -rf bin CMakeCache.txt CMakeFiles cmake_install.cmake Makefile
+          cmake ../website/examples \
+                -DCMAKE_PREFIX_PATH=../../_install \
+                -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} \
+                -DCMAKE_CXX_STANDARD=${{ inputs.cxx-standard }}
+          cmake --build . --config ${{ inputs.build-type }}
+          export PATH="${{ github.workspace }}/_install/bin:$PATH"
+          ./bin/imath-intro.exe
+          ./bin/imath-examples.exe
+        shell: msys2 {0}
+        working-directory: _examples
 
       - name: Test Python
         if: ${{ inputs.python == 'ON' }}
@@ -197,7 +254,9 @@ jobs:
         working-directory: _build
 
       - name: Test
+        if: ${{ inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON' }}
         run: |
           ctest -T Test -C ${{ inputs.build-type }} --timeout 7200 --output-on-failure -VV
         working-directory: _build
         shell: bash
+
