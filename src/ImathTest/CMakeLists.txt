@@ -78,6 +78,13 @@ RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 target_link_libraries(ImathHalfPerfTest Imath::Imath)
 add_test(NAME Imath.half_perf_test COMMAND $<TARGET_FILE:ImathHalfPerfTest>)
 
+add_executable(ImathVecTriviallyRelocatableTest vec_trivially_relocatable_main.cpp testVecTriviallyRelocatable.cpp)
+set_target_properties(ImathVecTriviallyRelocatableTest PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+target_link_libraries(ImathVecTriviallyRelocatableTest Imath::Imath)
+add_test(NAME Imath.vec_trivially_relocatable_test COMMAND $<TARGET_FILE:ImathVecTriviallyRelocatableTest>)
+
 function(DEFINE_IMATH_TESTS)
   foreach(curtest IN LISTS ARGN)
     add_test(NAME Imath.${curtest} COMMAND $<TARGET_FILE:ImathTest> ${curtest})
