@@ -6,7 +6,7 @@
 #include "PyBindImath.h"
 #include <ImathBox.h>
 
-namespace PyBindImath {
+namespace {
 
 template <class T, class V>
 void register_box(pybind11::class_<T>& c)
@@ -29,7 +29,8 @@ void register_box(pybind11::class_<T>& c)
     .def("majorAxis",&T::majorAxis, "majorAxis() major axis of the box")
     .def("isEmpty",&T::isEmpty, "isEmpty() returns true if the box is empty")
     .def("isInfinite",&T::isInfinite, "isInfinite() returns true if the box covers all space")
-    .def("hasVolume",&T::hasVolume, "hasVolume() returns true if the box has volume");
+    .def("hasVolume",&T::hasVolume, "hasVolume() returns true if the box has volume")
+        ;
 
 }
 
@@ -47,6 +48,10 @@ void register_box3(pybind11::module& m, const char * name)
     register_box<T, V>(c);
 }
 
+} // namespace
+
+namespace PyBindImath {
+ 
 void register_imath_box(pybind11::module& m)
 {
     register_box2<IMATH_NAMESPACE::Box2d, IMATH_NAMESPACE::V2d>(m, "Box2d");
@@ -54,7 +59,7 @@ void register_imath_box(pybind11::module& m)
 
     register_box3<IMATH_NAMESPACE::Box3d, IMATH_NAMESPACE::V3d>(m, "Box3d");
     register_box3<IMATH_NAMESPACE::Box3f, IMATH_NAMESPACE::V3f>(m, "Box3f");
-
 }
 
-}
+} // namespace PyBindImath
+

@@ -6,8 +6,8 @@
 #include "PyBindImath.h"
 #include <ImathLine.h>
 
+namespace {
 
-namespace PyBindImath {
 template <class T, class Q, class S>
 void register_line(pybind11::module& m, const char *name)
 {
@@ -21,10 +21,16 @@ void register_line(pybind11::module& m, const char *name)
         });
 }
 
-void register_imath_line(pybind11::module &m) 
+} // namespace
+ 
+namespace PyBindImath {
+ 
+void
+register_imath_line(pybind11::module &m) 
 {
     register_line<IMATH_NAMESPACE::Line3f, IMATH_NAMESPACE::V3f, float>(m, "Line3f");
     register_line<IMATH_NAMESPACE::Line3d, IMATH_NAMESPACE::V3d, double>(m, "Line3d");
 }
 
-}
+} // namespace PyBindImath
+

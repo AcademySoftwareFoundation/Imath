@@ -8,7 +8,7 @@
 #include <ImathVec.h>
 #include <ImathLine.h>
 
-namespace PyBindImath {
+namespace {
 
 template <class T, class L, class Q, class S>
 void register_plane(pybind11::module& m, const char *name)
@@ -40,14 +40,20 @@ void register_plane(pybind11::module& m, const char *name)
             std::stringstream ss;
             ss << obj;
             return ss.str();
-        });
+        })
+        ;
 }
 
- void register_imath_plane(pybind11::module &m) 
+} // namespace
+ 
+namespace PyBindImath {
+    
+void
+register_imath_plane(pybind11::module &m) 
 {
     register_plane<IMATH_NAMESPACE::Plane3f, IMATH_NAMESPACE::Line3f, IMATH_NAMESPACE::V3f, float>(m, "Plane3f");
     register_plane<IMATH_NAMESPACE::Plane3d, IMATH_NAMESPACE::Line3d, IMATH_NAMESPACE::V3d, double>(m, "Plane3d");
 }
 
-}
+} // namespace PyBindImath  
 

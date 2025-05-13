@@ -23,7 +23,6 @@ PYBINDIMATH_EXPORT void register_imath_vec(pybind11::module& m);
 PYBINDIMATH_EXPORT void register_imath_box(pybind11::module& m);
 PYBINDIMATH_EXPORT void register_imath_plane(pybind11::module& m);
 PYBINDIMATH_EXPORT void register_imath_line(pybind11::module& m);
-PYBINDIMATH_EXPORT void register_imath_matrix(pybind11::module& m);
 PYBINDIMATH_EXPORT void register_imath_quat(pybind11::module& m);
 
 // PYBINDIMATH_EXPORT void register_imath_euler(pybind11::module& m)

@@ -1,14 +1,37 @@
-#!@PYTHON@
+#/usr/bin/env python3
 
 #
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 #
 
+import os
+import sys
+from pathlib import Path
+
+print(f"{__file__}: PYTHONPATH={os.environ['PYTHONPATH']}")
+pythonpath = os.environ.get('PYTHONPATH')
+if pythonpath:
+    # Use os.pathsep which is ':' on Unix/macOS and ';' on Windows
+    paths = pythonpath.split(os.pathsep)
+    for path in paths:
+        if not path:
+            continue
+        resolved_path = Path(path).expanduser().resolve()
+        print(f"Contents of: {resolved_path}")
+        if resolved_path.is_dir():
+            for root, dirs, files in os.walk(resolved_path):
+                for f in files:
+                    file_path = Path(root) / f
+                    print(f"  {file_path}")
+        else:
+            print(f"  [Not a directory or does not exist]")
+        print()
+
 from imath import *
 from math import sqrt, pi, sin, cos
 import math
-import string, traceback, sys
+import string, traceback
 import random
 
 testList = []

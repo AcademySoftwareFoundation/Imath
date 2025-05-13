@@ -106,18 +106,28 @@ vecFromList(const py::list& l)
     return v;
 }
 
-template <typename Vec>
-bool
-lessThan(const Vec& a, const Vec& b)
+template <typename T>
+bool lessThan(const Vec2<T>& a, const Vec2<T>& b)
 {
-    if constexpr (std::is_same_v<Vec, Vec2<typename Vec::BaseType>>) {
-        return (a.x < b.x) || (a.x == b.x && a.y < b.y);
-    } else if constexpr (std::is_same_v<Vec, Vec3<typename Vec::BaseType>>) {
-        return (a.x < b.x) || (a.x == b.x && ((a.y < b.y) || (a.y == b.y && a.z < b.z)));
-    } else if constexpr (std::is_same_v<Vec, Vec4<typename Vec::BaseType>>) {
-        return (a.x < b.x) || (a.x == b.x && ((a.y < b.y) || (a.y == b.y && ((a.z < b.z) || (a.z == b.z && a.w < b.w)))));
-    }
-    return false;
+    return (a.x < b.x) || (a.x == b.x && a.y < b.y);
+}
+
+template <typename T>
+bool lessThan(const Vec3<T>& a, const Vec3<T>& b)
+{
+    return (a.x < b.x) ||
+        (a.x == b.x && ((a.y < b.y) ||
+                        (a.y == b.y && a.z < b.z)));
+         
+}
+
+template <typename T>
+bool lessThan(const Vec4<T>& a, const Vec4<T>& b)
+{
+    return (a.x < b.x) ||
+        (a.x == b.x && ((a.y < b.y) ||
+                        (a.y == b.y && ((a.z < b.z) ||
+                                        (a.z == b.z && a.w < b.w)))));
 }
 
 template <class Vec>
@@ -128,9 +138,9 @@ repr(const char* name, const Vec& v)
 
     std::stringstream s;
 
-    if constexpr (std::is_same_v<T, float>) {
+    if (std::is_same<T, float>::value) {
         s.precision(9);
-    } else if constexpr (std::is_same_v<T, double>) {
+    } else if (std::is_same<T, double>::value) {
         s.precision(17);
     }
     s << std::fixed;
@@ -156,12 +166,12 @@ register_vec(py::class_<Vec>& c)
         .def("__getitem__", [](const Vec &v, size_t i) {
             if (i < 0 || i >= v.dimensions())
                 throw std::domain_error ("invalid index");
-            return v[i];
+            return v[static_cast<int>(i)];
         })
         .def("__setitem__", [](Vec &v, size_t i, T value) {
             if (i < 0 || i >= v.dimensions())
                 throw std::domain_error ("invalid index");
-            v[i] = value;
+            v[static_cast<int>(i)] = value;
         })
         .def(py::self != py::self)
         .def(py::self ^ py::self)
@@ -213,7 +223,7 @@ register_vec(py::class_<Vec>& c)
         .def("__itruediv__", [](Vec& self, const py::list& t) { return self /= vecFromList<Vec>(t); })
         .def("__itruediv__", [](Vec& self, T t) { return self /= Vec(t); })
 
-        .def("__lt__", &lessThan<Vec>)
+        .def("__lt__", [](const Vec& a, const Vec& b) { return lessThan(a, b); })
         .def("__le__", [](const Vec& a, const Vec& b) { return !lessThan(b, a); })
         .def("__gt__", [](const Vec& a, const Vec& b) { return lessThan(b, a); })
         .def("__ge__", [](const Vec& a, const Vec& b) { return !lessThan(a, b); })

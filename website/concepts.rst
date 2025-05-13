@@ -30,6 +30,11 @@ A basic program:
 
 .. literalinclude:: examples/intro.cpp
 
+And a ``CMakeLists.txt`` configuration file:
+
+.. literalinclude:: examples/quickstart/CMakeLists.txt
+
+
 Matrices Are Row-Major
 ======================
 
