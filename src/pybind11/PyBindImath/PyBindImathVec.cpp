@@ -4,9 +4,10 @@
 //
 
 #include "PyBindImath.h"
+#include "PyBindImathVec.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
-
+#include <ImathMatrix.h>
 //
 // Wrappings for:
 //
@@ -32,79 +33,6 @@ using namespace IMATH_NAMESPACE;
 
 namespace {
 
-//
-// Convert the given tuple to a Vec, to support:
-//
-//   v = V2i(1,2) + (3,4)
-//
-
-template <class Vec>
-Vec
-vecFromTuple(const py::tuple& t)
-{
-    typedef typename Vec::BaseType T;
-
-    if (t.size() != Vec::dimensions())
-    {
-        std::stringstream s;
-        s << "tuple must have exactly " << Vec::dimensions() << " elements";
-        throw py::value_error(s.str());
-    }
-
-    Vec v;
-    switch (Vec::dimensions())
-    {
-    case 4:
-        v[3] = t[3].cast<T>();
-        // fall through for 2,1,0...
-    case 3:
-        v[2] = t[2].cast<T>();
-        // fall through for 1,0...
-    case 2:
-    default:
-        v[1] = t[1].cast<T>();
-        v[0] = t[0].cast<T>();
-        break;
-    }
-    return v;
-}
-
-//
-// Convert the given list to a Vec, to support:
-//
-//   v = V2i(1,2) + [3,4]
-//
-
-template <class Vec>
-Vec
-vecFromList(const py::list& l)
-{
-    typedef typename Vec::BaseType T;
-
-    if (l.size() != Vec::dimensions())
-    {
-        std::stringstream s;
-        s << "list must have exactly " << Vec::dimensions() << " elements";
-        throw py::value_error(s.str());
-    }
-
-    Vec v;
-    switch (Vec::dimensions())
-    {
-    case 4:
-        v[3] = l[3].cast<T>();
-        // fall through for 2,1,0...
-    case 3:
-        v[2] = l[2].cast<T>();
-    case 2:
-    default:
-        // fall through for 1,0...
-        v[1] = l[1].cast<T>();
-        v[0] = l[0].cast<T>();
-        break;
-    }
-    return v;
-}
 
 template <typename T>
 bool lessThan(const Vec2<T>& a, const Vec2<T>& b)
@@ -180,7 +108,7 @@ register_vec(py::class_<Vec>& c)
         .def("__add__", [](const Vec& self, const py::list& t) { return self + vecFromList<Vec>(t); })
         .def("__add__", [](const Vec& self, T t) { return self + Vec(t); })
         .def("__radd__", [](const Vec& self, const py::tuple& t) { return self + vecFromTuple<Vec>(t); })
-        .def("__radd__", [](const Vec& self, const py::list& t) { return self + vecFromList<Vec>(t); })
+        .def("__radd__", [](const Vec& self, const py::list& t) { return vecFromList<Vec>(t) + self; })
         .def("__radd__", [](const Vec& self, T t) { return self + Vec(t); })
         .def("__iadd__", [](Vec& self, const py::tuple& t) { return self += vecFromTuple<Vec>(t); })
         .def("__iadd__", [](Vec& self, const py::list& t) { return self += vecFromList<Vec>(t); })
@@ -222,7 +150,6 @@ register_vec(py::class_<Vec>& c)
         .def("__itruediv__", [](Vec& self, const py::tuple& t) { return self /= vecFromTuple<Vec>(t); })
         .def("__itruediv__", [](Vec& self, const py::list& t) { return self /= vecFromList<Vec>(t); })
         .def("__itruediv__", [](Vec& self, T t) { return self /= Vec(t); })
-
         .def("__lt__", [](const Vec& a, const Vec& b) { return lessThan(a, b); })
         .def("__le__", [](const Vec& a, const Vec& b) { return !lessThan(b, a); })
         .def("__gt__", [](const Vec& a, const Vec& b) { return lessThan(b, a); })
@@ -234,19 +161,19 @@ register_vec(py::class_<Vec>& c)
         .def_static("baseTypeSmallest", &Vec::baseTypeSmallest, "smallest value of the base type of the vector")
 
         // allow int or float as the 3rd arg (epsilon)
-        .def("equalWithAbsError", [](Vec& self, const Vec& other, int e) {
-            return self.equalWithAbsError(other, T(e));
+        .def("equalWithAbsError", [](Vec& self, const py::object& o, int e) {
+            return self.equalWithAbsError(vecFromObject<Vec>(o), T(e));
         })
-        .def("equalWithAbsError", [](Vec& self, const Vec& other, float e) {
-            return self.equalWithAbsError(other, T(e));
+        .def("equalWithAbsError", [](Vec& self, const py::object& o, float e) {
+            return self.equalWithAbsError(vecFromObject<Vec>(o), T(e));
         })
-        .def("equalWithRelError", [](Vec& self, const Vec& other, int e) {
-            return self.equalWithRelError(other, T(e));
+        .def("equalWithRelError", [](Vec& self, const py::object& o, int e) {
+            return self.equalWithRelError(vecFromObject<Vec>(o), T(e));
         })
-        .def("equalWithRelError", [](Vec& self, const Vec& other, float e) {
-            return self.equalWithRelError(other, T(e));
+        .def("equalWithRelError", [](Vec& self, const py::object& o, float e) {
+            return self.equalWithRelError(vecFromObject<Vec>(o), T(e));
         })
-
+        
         .def("dimensions", &Vec::dimensions, "return the number of dimensions in the vector")
         .def("dot", &Vec::dot, "return inner product of the two vectors")
         .def("negate", &Vec::negate, "negate the vector in place")
@@ -315,6 +242,48 @@ register_vec_fp(py::class_<Vec> c)
         ;
 }
 
+template <class Vec, class Mat>
+py::class_<Vec>
+register_vec_mat(py::class_<Vec> c)
+{
+    c.def("__mul__", [](const Vec& self, const Mat& m) { return self * m; })
+        .def("__imul__", [](Vec& self, const Mat& m) { return self *= m; })
+        ;
+    
+    return register_vec_fp(c);
+}
+
+template <class Vec>
+py::class_<Vec>
+register_vec_fp2(py::class_<Vec> c)
+{
+    register_vec_mat<Vec,M22f>(c);
+    register_vec_mat<Vec,M22d>(c);
+    register_vec_mat<Vec,M33f>(c);
+    register_vec_mat<Vec,M33d>(c);
+    return register_vec_fp(c);
+}
+
+template <class Vec>
+py::class_<Vec>
+register_vec_fp3(py::class_<Vec> c)
+{
+    register_vec_mat<Vec,M33f>(c);
+    register_vec_mat<Vec,M33d>(c);
+    register_vec_mat<Vec,M44f>(c);
+    register_vec_mat<Vec,M44d>(c);
+    return register_vec_fp(c);
+}
+
+template <class Vec>
+py::class_<Vec>
+register_vec_fp4(py::class_<Vec> c)
+{
+    register_vec_mat<Vec,M44f>(c);
+    register_vec_mat<Vec,M44d>(c);
+    return register_vec_fp(c);
+}
+
 //
 // Vec2<T>
 //
@@ -343,6 +312,7 @@ register_vec2(py::module& m, const char * name)
         .def_readwrite("y", &Vec::y)
         .def("setValue", [](Vec& self, T x, T y) { self.setValue(x, y); }, "set to the given x,y values")
         .def("cross", &Vec::cross, "return the right-handed cross product with the given vector")
+
         ;
 
     register_vec<Vec>(c);
@@ -433,8 +403,8 @@ register_imath_vec(py::module& m)
 
     auto v2s = register_vec2<V2s>(m, "V2s");
     auto v2i = register_vec2<V2i>(m, "V2i");
-    auto v2f = register_vec_fp(register_vec2<V2f>(m, "V2f"));
-    auto v2d = register_vec_fp(register_vec2<V2d>(m, "V2d"));
+    auto v2f = register_vec_fp2(register_vec2<V2f>(m, "V2f"));
+    auto v2d = register_vec_fp2(register_vec2<V2d>(m, "V2d"));
 
     register_vec_arithmetic<V2s,V2s>(v2s);
     register_vec_arithmetic<V2s,V2i>(v2s);
@@ -458,8 +428,8 @@ register_imath_vec(py::module& m)
 
     auto v3s = register_vec3<V3s>(m, "V3s");
     auto v3i = register_vec3<V3i>(m, "V3i");
-    auto v3f = register_vec_fp(register_vec3<V3f>(m, "V3f"));
-    auto v3d = register_vec_fp(register_vec3<V3d>(m, "V3d"));
+    auto v3f = register_vec_fp3(register_vec3<V3f>(m, "V3f"));
+    auto v3d = register_vec_fp3(register_vec3<V3d>(m, "V3d"));
 
     register_vec_arithmetic<V3s,V3s>(v3s);
     register_vec_arithmetic<V3s,V3i>(v3s);
@@ -483,8 +453,8 @@ register_imath_vec(py::module& m)
 
     auto v4s = register_vec4<V4s>(m, "V4s");
     auto v4i = register_vec4<V4i>(m, "V4i");
-    auto v4f = register_vec_fp(register_vec4<V4f>(m, "V4f"));
-    auto v4d = register_vec_fp(register_vec4<V4d>(m, "V4d"));
+    auto v4f = register_vec_fp4(register_vec4<V4f>(m, "V4f"));
+    auto v4d = register_vec_fp4(register_vec4<V4d>(m, "V4d"));
 
     register_vec_arithmetic<V4s,V4s>(v4s);
     register_vec_arithmetic<V4s,V4i>(v4s);
