@@ -21,9 +21,9 @@ repr(const char* name, const Matrix& m)
 
     std::stringstream s;
 
-    if constexpr (std::is_same_v<T, float>) {
+    if (std::is_same_v<T, float>) {
         s.precision(9);
-    } else if constexpr (std::is_same_v<T, double>) {
+    } else if (std::is_same_v<T, double>) {
         s.precision(17);
     }
     s << std::fixed;
