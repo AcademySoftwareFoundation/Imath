@@ -5,7 +5,7 @@
 
 #include "PyBindImath.h"
 #include <ImathFrustum.h>
-namespace PyBindImath {
+
 namespace py = pybind11;
 namespace {
 

@@ -263,8 +263,8 @@ jobs:
           fi
           if [[ "${{ inputs.python }}" == "ON" || "${{ inputs.pybind11 }}" == "ON" ]]; then
               cmake_args+=("-DPYTHON_INSTALL_DIR=${{ env.PYTHON_INSTALL_DIR }}")
-              cmake_args+=("-DIMATH_TEST_PYTHON=$IMATH_TEST_PYTHON")
-              cmake_args+=("-DIMATH_TEST_PYBIND11=$IMATH_TEST_PYBIND11")
+              cmake_args+=("-DIMATH_TEST_PYTHON=${{ inputs.IMATH_TEST_PYTHON }}")
+              cmake_args+=("-DIMATH_TEST_PYBIND11=${{ inputs.IMATH_TEST_PYBIND11 }}")
           fi
           if [ -n "${{ env.pybind11_DIR }}" ]; then
               cmake_args+=("-Dpybind11_DIR=${{ env.pybind11_DIR }}")

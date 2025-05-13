@@ -116,16 +116,18 @@ template <typename T>
 bool lessThan(const Vec3<T>& a, const Vec3<T>& b)
 {
     return (a.x < b.x) ||
-           (a.x == b.x && ((a.y < b.y) || (a.y == b.y && a.z < b.z)));
+        (a.x == b.x && ((a.y < b.y) ||
+                        (a.y == b.y && a.z < b.z)));
+         
 }
 
 template <typename T>
 bool lessThan(const Vec4<T>& a, const Vec4<T>& b)
 {
     return (a.x < b.x) ||
-           (a.x == b.x && ((a.y < b.y) ||
-           (a.y == b.y && ((a.z < b.z) ||
-           (a.z == b.z && a.w < b.w)))));
+        (a.x == b.x && ((a.y < b.y) ||
+                        (a.y == b.y && ((a.z < b.z) ||
+                                        (a.z == b.z && a.w < b.w)))));
 }
 
 template <class Vec>
@@ -221,7 +223,7 @@ register_vec(py::class_<Vec>& c)
         .def("__itruediv__", [](Vec& self, const py::list& t) { return self /= vecFromList<Vec>(t); })
         .def("__itruediv__", [](Vec& self, T t) { return self /= Vec(t); })
 
-        .def("__lt__", [](const Vec& a, const Vec& b) { return lessThan(b, a); })
+        .def("__lt__", [](const Vec& a, const Vec& b) { return lessThan(a, b); })
         .def("__le__", [](const Vec& a, const Vec& b) { return !lessThan(b, a); })
         .def("__gt__", [](const Vec& a, const Vec& b) { return lessThan(b, a); })
         .def("__ge__", [](const Vec& a, const Vec& b) { return !lessThan(a, b); })
