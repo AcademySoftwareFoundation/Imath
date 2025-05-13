@@ -6776,7 +6776,7 @@ def testBox2():
     testBox2x (Box2d, V2d)
 
 
-#testList.append (('testBox2',testBox2))
+testList.append (('testBox2',testBox2))
 
 
 # -------------------------------------------------------------------------
@@ -6891,7 +6891,7 @@ def testBox3():
     testBox3x (Box3d, V3d)
 
 
-#testList.append (('testBox3',testBox3))
+testList.append (('testBox3',testBox3))
 
 
 # -------------------------------------------------------------------------
@@ -9051,7 +9051,6 @@ def testSVD():
     scaleMatrix = M33d (-3, 0, 0, 0, 2, 0, 0, 0, 3)
     m = m * e.toMatrix33()
     checkSVD33(m)
-
 #testList.append (('testSVD',testSVD))
 
 def testSymmetricEigensolve():
@@ -10801,3 +10800,4 @@ print ("")
 # Local Variables:
 # mode:python
 # End:
+
