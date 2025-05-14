@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+#
+
+name: CI-fetchcontent
+
+#
+# Test that Imath is configured properly for FetchContent.
+#
+# This builds a test program in share/ci/src/fetch where the CMake
+# configures Imath via Fetch_Content, pulling from the job's GitHub
+# repo and branch.
+#
+
+on:
+  push:
+    paths:
+      - '**'
+      - '!**.md'
+      - '!share/ci/**'
+      - '!.github/workflows/**'
+      - '.github/workflows/ci_fetchcontent.yml'
+  pull_request:
+    paths:
+      - '**'
+      - '!**.md'
+      - '!share/ci/**'
+      - '!.github/workflows/**'
+      - '.github/workflows/ci_fetchcontent.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: FetchContent on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Configure & Build
+        run: |
+          set -x
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+              WORKSPACE=$(cygpath -u "$GITHUB_WORKSPACE")
+          else
+              WORKSPACE=$GITHUB_WORKSPACE
+          fi
+          BUILD_DIR=$WORKSPACE/_build
+          IMATH_TAG="$(git rev-parse --abbrev-ref HEAD)"
+          IMATH_REPO=https://github.com/$GITHUB_REPOSITORY
+
+          cmake -S share/ci/src/fetch -B $BUILD_DIR \
+            -DIMATH_REPO=$IMATH_REPO -DIMATH_TAG=$IMATH_TAG
+          cmake --build $BUILD_DIR --config Release
+
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+              IMATH_DLL=$(find $BUILD_DIR -name "Imath*.dll")
+              IMATH_LIB_DIR=$(dirname $IMATH_DLL)
+              PATH=$IMATH_LIB_DIR:$PATH
+              $BUILD_DIR/Release/ImathFetchTest.exe
+          else
+              $BUILD_DIR/ImathFetchTest
+          fi
+        shell: bash
+ 
