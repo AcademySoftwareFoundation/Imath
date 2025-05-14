@@ -11,6 +11,7 @@ else()
 endif()
 
 configure_file(ImathConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/ImathConfig.h)
+set(IMATH_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE INTERNAL "")
 
 add_library(ImathConfig INTERFACE)
 add_library(Imath::Config ALIAS ImathConfig)
