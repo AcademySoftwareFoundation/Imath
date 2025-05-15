@@ -1791,15 +1791,14 @@ def testFun ():
     assert sign(-5)   == -1
     assert sign(-5.0) == -1
 
-    # TODO: Should this be here, as it refers to functions found under `ImathMath`?
-    # assert log(math.e) ==  1
-    # assert log(1)      ==  0
-    # assert log10(10)   ==  1
-    # assert log10(1)    ==  0
+    assert log(math.e) ==  1
+    assert log(1)      ==  0
+    assert log10(10)   ==  1
+    assert log10(1)    ==  0
 
-    assert lerp(1, 2, 0.5)     == 1
-    assert lerp(2, 1, 0.5)     == 1
+    assert lerp(1, 2, 0.5)     == 1.5
     assert lerp(1.0, 2.0, 0.5) == 1.5
+    assert lerp(2, 1, 0.5)     == 1.5
     assert lerp(2.0, 1.0, 0.5) == 1.5
 
     assert lerpfactor(1.5, 1, 2)     == 0.5
