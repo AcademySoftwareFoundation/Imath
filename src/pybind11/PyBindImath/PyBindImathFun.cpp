@@ -70,6 +70,15 @@ register_fun(pybind11::module& m)
     m.def("abs", IMATH_NAMESPACE::abs<int>);
     m.def("sign", IMATH_NAMESPACE::sign<int>);
     m.def("clamp", IMATH_NAMESPACE::clamp<int>);
+    // `log`/`log10`/`atan2`/`pow` have their types explicitly specified here to satisfy GCC and MSVC.
+    m.def("log", std::log<float>);
+    m.def("log", std::log<double>);
+    m.def("log10", ::log10<float>);
+    m.def("log10", ::log10<double>);
+    m.def("atan2", std::atan2<float>);
+    m.def("atan2", std::atan2<double>);
+    m.def("pow", std::pow<float>);
+    m.def("pow", std::pow<double>);
     m.def("divs", IMATH_NAMESPACE::divs);
     m.def("mods", IMATH_NAMESPACE::mods);
     m.def("divp", IMATH_NAMESPACE::divp);
@@ -91,9 +100,8 @@ register_fun_fp_T(pybind11::module& m)
 {
     m.def("abs", IMATH_NAMESPACE::abs<T>);
     m.def("sign", IMATH_NAMESPACE::sign<T>);
-    m.def("log", ::log<T>);
-    m.def("log10", ::log10<T>);
     m.def("lerp", IMATH_NAMESPACE::lerp<T, T>);
+    m.def("ulerp", IMATH_NAMESPACE::ulerp<T, T>);
     m.def("lerpfactor", IMATH_NAMESPACE::lerpfactor<T>);
     m.def("clamp", IMATH_NAMESPACE::clamp<T>);
     m.def("floor", IMATH_NAMESPACE::floor<T>);
@@ -107,9 +115,7 @@ register_fun_fp_T(pybind11::module& m)
     m.def("asin", std::asin<T>);
     m.def("acos", std::acos<T>);
     m.def("atan", std::atan<T>);
-    m.def("atan2", std::atan2<T>);
     m.def("sqrt", std::sqrt<T>);
-    m.def("pow", std::pow<T>);
     m.def("exp", std::exp<T>);
     m.def("sinh", std::sinh<T>);
     m.def("cosh", std::cosh<T>);
