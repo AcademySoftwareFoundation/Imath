@@ -52,7 +52,7 @@ jobs:
               WORKSPACE=$GITHUB_WORKSPACE
           fi
           BUILD_DIR=$WORKSPACE/_build
-          IMATH_TAG="$(git rev-parse --abbrev-ref HEAD)"
+          IMATH_TAG=$GITHUB_SHA
           IMATH_REPO=https://github.com/$GITHUB_REPOSITORY
 
           cmake -S share/ci/src/fetch -B $BUILD_DIR \
