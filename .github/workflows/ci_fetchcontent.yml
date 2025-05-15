@@ -29,7 +29,7 @@ on:
       - '.github/workflows/ci_fetchcontent.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -43,6 +43,15 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
+      - name: Push temp ref for FetchContent
+        run: |
+          set -x
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git remote add origin-write https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push origin-write HEAD:refs/heads/temp-ci-${{ github.run_id }}
+        shell: bash
+
       - name: Configure & Build
         run: |
           set -x
@@ -52,7 +61,7 @@ jobs:
               WORKSPACE=$GITHUB_WORKSPACE
           fi
           BUILD_DIR=$WORKSPACE/_build
-          IMATH_TAG=$(git rev-parse HEAD) 
+          IMATH_TAG=temp-ci-${{ github.run_id }}
           IMATH_REPO=https://github.com/$GITHUB_REPOSITORY
 
           cmake -S share/ci/src/fetch -B $BUILD_DIR \
@@ -68,4 +77,12 @@ jobs:
               $BUILD_DIR/ImathFetchTest
           fi
         shell: bash
- 
+
+      - name: Cleanup temp branch
+        if: always()
+        run: |
+          set -x
+          git remote add origin-write https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push origin-write --delete temp-ci-${{ github.run_id }}
+        shell: bash
+          
