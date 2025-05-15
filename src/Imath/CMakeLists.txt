@@ -51,7 +51,7 @@ set(IMATH_HEADERS
     ImathTypeTraits.h
     ImathVec.h
     ImathVecAlgo.h
-    ${CMAKE_BINARY_DIR}/config/ImathConfig.h
+    ${IMATH_CONFIG_DIR}/ImathConfig.h
 )
 
 if(BUILD_SHARED_LIBS)
