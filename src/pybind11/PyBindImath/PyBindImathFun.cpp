@@ -92,6 +92,16 @@ register_fun(py::module& m)
         py::arg("value"),
         "Return \"1\" or \"-1\" based on the sign of the argument.");
     m.def(
+        "log",
+        std::log<double>,
+        py::arg("value"),
+        "Return the natural logarithm of the argument.");
+    m.def(
+        "log10",
+        std::log10<double>,
+        py::arg("value"),
+        "Return the base 10 logarithm of the argument.");
+    m.def(
         "clamp",
         IMATH_NAMESPACE::clamp<int>,
         py::arg("value"),
@@ -188,16 +198,6 @@ register_fun_fp_T(py::module& m)
         IMATH_NAMESPACE::sign<T>,
         py::arg("value"),
         "Return \"1\" or \"-1\" based on the sign of the argument.");
-    m.def(
-        "log",
-        std::log<T>,
-        py::arg("value"),
-        "Return the natural logarithm of the argument.");
-    m.def(
-        "log10",
-        std::log10<T>,
-        py::arg("value"),
-        "Return the base 10 logarithm of the argument.");
     m.def(
         "lerp",
         IMATH_NAMESPACE::lerp<T, T>,
