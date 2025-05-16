@@ -15,7 +15,7 @@ namespace {
 
 template <class Matrix>
 std::string
-repr(const char* name, const Matrix& m)
+reprMatrix(const char* name, const Matrix& m)
 {
     typedef typename Matrix::BaseType T;
 
@@ -43,7 +43,7 @@ repr(const char* name, const Matrix& m)
 
 template <class Matrix>
 static bool
-lessThan(const Matrix& mat1, const Matrix& mat2)
+lessThanMatrix(const Matrix& mat1, const Matrix& mat2)
 {
     const int n = static_cast<int>(mat1.dimensions());
     for (int x=0; x<n; x++)
@@ -81,7 +81,7 @@ register_matrix(py::class_<M<T>>& m, const char* name)
 
     auto ri = py::return_value_policy::reference_internal;
 
-    return m.def("__repr__", [name](const Matrix& self) { return repr(name, self); })
+    return m.def("__repr__", [name](const Matrix& self) { return reprMatrix(name, self); })
         .def(py::init([](){return Matrix();}))
         .def(py::init<T>())
         .def(py::init<const Matrix&>())
@@ -96,10 +96,10 @@ register_matrix(py::class_<M<T>>& m, const char* name)
 
         .def(py::self == py::self)
         .def(py::self != py::self)
-        .def("__lt__", &lessThan<Matrix>)
-        .def("__le__", [](const Matrix& a, const Matrix& b) { return !lessThan(b, a); })
-        .def("__gt__", [](const Matrix& a, const Matrix& b) { return lessThan(b, a); })
-        .def("__ge__", [](const Matrix& a, const Matrix& b) { return !lessThan(a, b); })
+        .def("__lt__", &lessThanMatrix<Matrix>)
+        .def("__le__", [](const Matrix& a, const Matrix& b) { return !lessThanMatrix(b, a); })
+        .def("__gt__", [](const Matrix& a, const Matrix& b) { return lessThanMatrix(b, a); })
+        .def("__ge__", [](const Matrix& a, const Matrix& b) { return !lessThanMatrix(a, b); })
         .def("equalWithAbsError", [](Matrix& self, const Matrix& other, double e) {
             return self.equalWithAbsError(other, typename Matrix::BaseType(e));
         })
