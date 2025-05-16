@@ -6758,6 +6758,7 @@ def testBox2x (Box, Vec):
     # repr
 
     b = Box (Vec (1/9., 2/9.), Vec (4/9., 5/9.))
+    print(f"repr: {repr(b)}")
     assert b == eval (repr (b))
 
     print ("ok")
@@ -6852,7 +6853,7 @@ def testBox3x (Box, Vec):
     b = Box (Vec (1, 1, 1), Vec (2, 2, 2))
 
     mf = M44f ()
-    mf.setTranslation (Vec (10, 11, 12))
+    mf.setTranslation (V3f (10, 11, 12))
 
     b2 = b * mf
     assert b2.min() == Vec (11, 12, 13)
@@ -6865,7 +6866,7 @@ def testBox3x (Box, Vec):
     b = Box (Vec (1, 1, 1), Vec (2, 2, 2))
 
     md = M44d ()
-    md.setTranslation (Vec (10, 11, 12))
+    md.setTranslation (V3d (10, 11, 12))
 
     b2 = b * md
     assert b2.min() == Vec (11, 12, 13)
