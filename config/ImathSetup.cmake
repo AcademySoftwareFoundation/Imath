@@ -36,12 +36,13 @@ set(IMATH_INTERNAL_NAMESPACE "Imath_${IMATH_VERSION_API}" CACHE STRING "Real nam
 set(IMATH_NAMESPACE "Imath" CACHE STRING "Public namespace alias for Imath")
 set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}${IMATH_VERSION_RELEASE_TYPE}" CACHE STRING "Public string / label for displaying package")
 
-# Whether to generate and install a pkg-config file Imath.pc on
 if(WIN32)
   option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" OFF)
 else()
   option(IMATH_INSTALL_SYM_LINK "Create symbolic links for shared objects" ON)
 endif()
+
+# Whether to generate and install a pkg-config file Imath.pc on
 option(IMATH_INSTALL_PKG_CONFIG "Install Imath.pc file" ON)
 
 #
