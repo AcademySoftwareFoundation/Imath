@@ -5,6 +5,7 @@
 
 #include "PyBindImath.h"
 
+#include <pybind11/stl.h>
 #include <cmath>
 
 #include <ImathColorAlgo.h>
@@ -92,16 +93,6 @@ register_fun(py::module& m)
         py::arg("value"),
         "Return \"1\" or \"-1\" based on the sign of the argument.");
     m.def(
-        "log",
-        std::log<double>,
-        py::arg("value"),
-        "Return the natural logarithm of the argument.");
-    m.def(
-        "log10",
-        std::log10<double>,
-        py::arg("value"),
-        "Return the base 10 logarithm of the argument.");
-    m.def(
         "clamp",
         IMATH_NAMESPACE::clamp<int>,
         py::arg("value"),
@@ -182,6 +173,68 @@ register_fun(py::module& m)
         py::arg("upDir"),
         "Return the XYZ rotation vector that rotates the first vector argument "
         "to the second vector argument, using the third argument as the up-vector.");
+
+    m.def(
+        "log",
+        [](double value) { return log(value); },
+        py::arg("value"),
+        "Return the natural logarithm of the argument.");
+    m.def(
+        "log10",
+        [](double value) { return log10(value); },
+        py::arg("value"),
+        "Return the base 10 logarithm of the argument.");
+    m.def(
+        "sin",
+        [](double theta) { return sin(theta); },
+        py::arg("theta"),
+        "Return the sine of the argument.");
+    m.def(
+        "cos",
+        [](double theta) { return cos(theta); },
+        py::arg("theta"),
+        "Return the cosine of the argument.");
+    m.def(
+        "tan",
+        [](double theta) { return std::tan(theta); },
+        py::arg("theta"),
+        "Return the tangent of the argument.");
+    m.def(
+        "asin",
+        [](double x) { return std::asin(x); },
+        py::arg("x"),
+        "Return the arcsine of the argument.");
+    m.def(
+        "acos",
+        [](double x) { return std::acos(x); },
+        py::arg("x"),
+        "Return the arcosine of the argument.");
+    m.def(
+        "atan",
+        [](double x) { return std::atan(x); },
+        py::arg("x"),
+        "Return the arctangent of the argument.");
+    m.def(
+        "sqrt",
+        [](double x) { return std::sqrt(x); },
+        py::arg("x"),
+        "Return the square root of the argument.");
+    m.def(
+        "exp",
+        [](double x) { return std::exp(x); },
+        py::arg("x"),
+        "Return the exponential of the argument.");
+    m.def(
+        "sinh",
+        [](double x) { return std::sinh(x); },
+        py::arg("x"),
+        "Return the hyperbolic sine of the argument.");
+    m.def(
+        "cosh",
+        [](double x) { return std::cosh(x); },
+        py::arg("x"),
+        "Return the hyperbolic cosine of the argument.");
+
 }
 
 template <class T>
@@ -258,68 +311,6 @@ register_fun_fp_T(py::module& m)
         py::arg("hsv"),
         "Return a RGB representation of the HSV argument.");
     m.def(
-        "sin",
-        std::sin<T>,
-        py::arg("theta"),
-        "Return the sine of the argument.");
-    m.def(
-        "cos",
-        std::cos<T>,
-        py::arg("theta"),
-        "Return the cosine of the argument.");
-    m.def(
-        "tan",
-        std::tan<T>,
-        py::arg("theta"),
-        "Return the tangent of the argument.");
-    m.def(
-        "asin",
-        std::asin<T>,
-        py::arg("x"),
-        "Return the arcsine of the argument.");
-    m.def(
-        "acos",
-        std::acos<T>,
-        py::arg("x"),
-        "Return the arcosine of the argument.");
-    m.def(
-        "atan",
-        std::atan<T>,
-        py::arg("x"),
-        "Return the arctangent of the argument.");
-    m.def(
-        "atan2",
-        fun_atan2<T>,
-        py::arg("y"),
-        py::arg("x"),
-        "Return the arctangent of the first argument over the second argument.");
-    m.def(
-        "sqrt",
-        std::sqrt<T>,
-        py::arg("x"),
-        "Return the square root of the argument.");
-    m.def(
-        "pow",
-        fun_pow<T>,
-        py::arg("x"),
-        py::arg("y"),
-        "Return the first argument raised to the power of the second argument.");
-    m.def(
-        "exp",
-        std::exp<T>,
-        py::arg("x"),
-        "Return the exponential of the argument.");
-    m.def(
-        "sinh",
-        std::sinh<T>,
-        py::arg("x"),
-        "Return the hyperbolic sine of the argument.");
-    m.def(
-        "cosh",
-        std::cosh<T>,
-        py::arg("x"),
-        "Return the hyperbolic cosine of the argument.");
-    m.def(
         "cmp",
         IMATH_NAMESPACE::cmp<T>,
         py::arg("a"),
@@ -341,6 +332,18 @@ register_fun_fp_T(py::module& m)
         py::arg("a"),
         py::arg("b"),
         py::arg("t"));
+    m.def(
+        "atan2",
+        fun_atan2<T>,
+        py::arg("y"),
+        py::arg("x"),
+        "Return the arctangent of the first argument over the second argument.");
+    m.def(
+        "pow",
+        fun_pow<T>,
+        py::arg("x"),
+        py::arg("y"),
+        "Return the first argument raised to the power of the second argument.");
 }
 
 } // namespace
@@ -357,6 +360,7 @@ register_imath_fun(py::module& m)
     // to double to prevent loss of precision in inadvertent casting
     // to float.
     // 
+    register_fun_fp_T<float>(m);
     register_fun_fp_T<double>(m);
 }
 
