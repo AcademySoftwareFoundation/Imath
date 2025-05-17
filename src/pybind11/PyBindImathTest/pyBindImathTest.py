@@ -1786,16 +1786,15 @@ def testMaskedVecTypeArray(VecTypeArray):
 
 def testFun ():
 
-    assert sign(5)    ==  1    
-    assert sign(5.0)  ==  1    
-    assert sign(-5)   == -1    
-    assert sign(-5.0) == -1    
+    assert sign(5)    ==  1
+    assert sign(5.0)  ==  1
+    assert sign(-5)   == -1
+    assert sign(-5.0) == -1
 
-    assert log(math.e) ==  1    
-    assert log(1)      ==  0    
-
-    assert log10(10)   ==  1    
-    assert log10(1)    ==  0    
+    assert log(math.e) ==  1
+    assert log(1)      ==  0
+    assert log10(10)   ==  1
+    assert log10(1)    ==  0
 
     assert lerp(1, 2, 0.5)     == 1.5
     assert lerp(1.0, 2.0, 0.5) == 1.5
@@ -1856,11 +1855,13 @@ def testFun ():
     assert modp( 3, -2) ==  1
     assert modp(-3, -2) ==  1
 
+    # TODO: Other tests to cover the whole module?
+
     print ("ok")
 
     return
 
-#testList.append (('testFun',testFun))
+testList.append (('testFun',testFun))
 
 
 # -------------------------------------------------------------------------
