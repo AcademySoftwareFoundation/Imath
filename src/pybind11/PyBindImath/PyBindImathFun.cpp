@@ -353,9 +353,10 @@ register_imath_fun(py::module& m)
     // Bindings for functions using explicit argument(s) and return types.
     register_fun(m);
 
-    // Bindings for functions using floating point types, i.e. `float` and `double`, for its argument(s)
-    // and return types.
-    register_fun_fp_T<float>(m);
+    // Bindings for functions using floating point types. Only bind
+    // to double to prevent loss of precision in inadvertent casting
+    // to float.
+    // 
     register_fun_fp_T<double>(m);
 }
 
