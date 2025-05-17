@@ -12,7 +12,9 @@ PYBIND11_MODULE(pybindimath, m)
     m.attr("__version__") = IMATH_VERSION_STRING;
 
     PyBindImath::register_imath_fun(m);
-    PyBindImath::register_imath_vec(m);
+    PyBindImath::register_imath_vec2(m);
+    PyBindImath::register_imath_vec3(m);
+    PyBindImath::register_imath_vec4(m);
     PyBindImath::register_imath_matrix(m);
     PyBindImath::register_imath_box(m);
     PyBindImath::register_imath_plane(m);

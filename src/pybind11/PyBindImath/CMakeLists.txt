@@ -18,7 +18,9 @@ message(STATUS "Configuring pybindimath module and ${PYBINDIMATH_LIBRARY} librar
 set(PYBINDIMATH_SOURCES
     PyBindImathFun.cpp
     PyBindImathBox.cpp
-    PyBindImathVec.cpp
+    PyBindImathVec2.cpp
+    PyBindImathVec3.cpp
+    PyBindImathVec4.cpp
     PyBindImathMatrix.cpp
     PyBindImathPlane.cpp
     PyBindImathLine.cpp
