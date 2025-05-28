@@ -21,7 +21,6 @@ register_box(const char* name, py::class_<Box>& c)
         .def(py::init<>())
         .def(py::init<const Vec &>())
         .def(py::init<const Vec &, const Vec &>())
-        .def(py::init<const Box &>())  // Copy constructor
         .def(py::init([](py::tuple t)
             {
                 if (t.size() != 2)
@@ -72,6 +71,21 @@ py::class_<Box>
 register_box2(py::module& m, const char * name)
 {
     py::class_<Box> c(m, name);
+    c.attr("__module__") = "";
+    c.def(py::init([](const IMATH_NAMESPACE::Box<Vec2<float>>& other) {
+        return Box(Vec(other.min), Vec(other.max));
+    }))
+        .def(py::init([](const IMATH_NAMESPACE::Box<Vec2<double>>& other) {
+            return Box(Vec(other.min), Vec(other.max));
+        }))
+        .def(py::init([](const IMATH_NAMESPACE::Box<Vec2<int>>& other) {
+            return Box(Vec(other.min), Vec(other.max));
+        }))
+        .def(py::init([](const IMATH_NAMESPACE::Box<Vec2<int64_t>>& other) {
+            return Box(Vec(other.min), Vec(other.max));
+        }))
+        ;
+    
     return register_box<Box, Vec>(name, c);
 }
 
@@ -80,6 +94,19 @@ py::class_<Box>
 register_box3(py::module& m, const char * name)
 {
     py::class_<Box> c(m, name);
+    c.def(py::init([](const IMATH_NAMESPACE::Box<Vec3<float>>& other) {
+        return Box(Vec(other.min), Vec(other.max));
+    }))
+        .def(py::init([](const IMATH_NAMESPACE::Box<Vec3<double>>& other) {
+            return Box(Vec(other.min), Vec(other.max));
+        }))
+        .def(py::init([](const IMATH_NAMESPACE::Box<Vec3<int>>& other) {
+            return Box(Vec(other.min), Vec(other.max));
+        }))
+        .def(py::init([](const IMATH_NAMESPACE::Box<Vec3<int64_t>>& other) {
+            return Box(Vec(other.min), Vec(other.max));
+        }))
+        ;
     return register_box<Box, Vec>(name, c);
 }
 
