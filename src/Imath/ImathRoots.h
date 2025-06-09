@@ -22,7 +22,9 @@
 
 /// @cond Doxygen_Suppress
 
-#ifdef __CUDACC__
+// If CUDA or HIP (AMD's Heterogeneous-computing Interface for
+// Portability), use the thrust complex library 
+#if defined(__CUDACC__) || defined(__HIP__)
 #    include <thrust/complex.h>
 #    define COMPLEX_NAMESPACE thrust
 #else
