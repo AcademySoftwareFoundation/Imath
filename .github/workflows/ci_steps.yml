@@ -485,23 +485,26 @@ jobs:
           cmake_args+=("-DCMAKE_VERBOSE_MAKEFILE=ON")
           if [[ "$RUNNER_OS" == "Windows" ]]; then
               cmake_args+=("-DCMAKE_POLICY_DEFAULT_CMP0091=NEW")
+              LINK_LOG="$IMATHTEST_BUILD_DIR/ImathTest.dir/Release/ImathTest.tlog/link.command.1.tlog"
+          else
+              LINK_LOG="$IMATHTEST_BUILD_DIR/CMakeFiles/ImathTest.dir/link.txt"          
           fi
           if [ -n "${{ env.CMAKE_TOOLCHAIN_FILE }}" ]; then
               cmake_args+=("-DCMAKE_TOOLCHAIN_FILE=${{ env.CMAKE_TOOLCHAIN_FILE }}")
           fi
           quoted_args=$(printf '%q ' "${cmake_args[@]}")
           $CMAKE $quoted_args
-          $CMAKE --build $IMATHTEST_BUILD_DIR \
-                --config ${{ inputs.build-type }}
+          $CMAKE --build $IMATHTEST_BUILD_DIR --config ${{ inputs.build-type }}
 
-          # Validate that there is no dependency on PyImath
-          if grep -r 'PyImath' "$IMATHTEST_BUILD_DIR/CMakeFiles/ImathTest.dir/link.txt"; then
+          # Validate that there is no dependency on PyImath in the link log
+          if grep -r 'PyImath' "$LINK_LOG"; then
               echo "error configuring ImathTest standalone: PyImath referenced in build artifacts"
               echo "ImathTest should not depend on PyImath"
               exit 1
           fi
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-              $IMATHTEST_BUILD_DIR/bin/"${{ inputs.build-type }}"/ImathTest.exe || true
+              export PATH="$IMATH_PATH:$PATH"
+              $IMATHTEST_BUILD_DIR/bin/"${{ inputs.build-type }}"/ImathTest.exe
           else
               $IMATHTEST_BUILD_DIR/bin/ImathTest
           fi
@@ -558,12 +561,12 @@ jobs:
           fi
           quoted_args=$(printf '%q ' "${cmake_args[@]}")
           $CMAKE $quoted_args
-          $CMAKE --build $PYIMATHTEST_BUILD_DIR \
-                --config ${{ inputs.build-type }}
+          $CMAKE --build $PYIMATHTEST_BUILD_DIR --config ${{ inputs.build-type }}
 
           export PYTHONPATH=$PYTHON_INSTALL_DIR
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-            $PYIMATHTEST_BUILD_DIR/bin/"${{ inputs.build-type }}"/PyImathTestC.exe || true
+            export PATH="$IMATH_PATH:$PATH"
+            $PYIMATHTEST_BUILD_DIR/bin/"${{ inputs.build-type }}"/PyImathTestC.exe
           else
             $PYIMATHTEST_BUILD_DIR/bin/PyImathTestC
           fi
@@ -594,8 +597,9 @@ jobs:
           $CMAKE --build $EXAMPLES_BUILD_DIR --config ${{ inputs.build-type }}
 
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-            $EXAMPLES_BUILD_DIR/bin/"${{ inputs.build-type }}"/imath-intro.exe || true
-            $EXAMPLES_BUILD_DIR/bin/"${{ inputs.build-type }}"/imath-examples.exe || true
+            export PATH="$IMATH_PATH:$PATH"
+            $EXAMPLES_BUILD_DIR/bin/"${{ inputs.build-type }}"/imath-intro.exe
+            $EXAMPLES_BUILD_DIR/bin/"${{ inputs.build-type }}"/imath-examples.exe
           else
             $EXAMPLES_BUILD_DIR/bin/imath-intro
             $EXAMPLES_BUILD_DIR/bin/imath-examples
