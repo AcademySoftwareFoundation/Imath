@@ -98,10 +98,11 @@
 #endif
 
 //
-// Decorator that makes a function available for both CPU and GPU, when
-// compiling for Cuda.
+// Decorator that makes a function available for both CPU and GPU,
+// when compiling for Cuda or HIP (AMD's Heterogeneous-computing
+// Interface for Portability).
 //
-#ifdef __CUDACC__
+#if defined(__CUDACC__) || defined(__HIP__)
 #    define IMATH_HOSTDEVICE __host__ __device__
 #else
 #    define IMATH_HOSTDEVICE
