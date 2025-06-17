@@ -203,8 +203,8 @@ jobs:
             cxx-standard: 14
 
           - build: 5
-            label: vfx2022
-            os: windows-2019
+            label: vfx2023
+            os: windows-2022
             IMATH_TEST_PYTHON: 'OFF' # TODO: "import imath" fails on Windows, please help find why!
             IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
 
