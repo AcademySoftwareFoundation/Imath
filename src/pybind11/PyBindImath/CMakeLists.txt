@@ -16,16 +16,19 @@ set(PYBINDIMATH_LIBRARY PyBindImath)
 message(STATUS "Configuring pybindimath module and ${PYBINDIMATH_LIBRARY} library")
 
 set(PYBINDIMATH_SOURCES
-    PyBindImathFun.cpp
     PyBindImathBox.cpp
+    PyBindImathEuler.cpp
+    PyBindImathFrustum.cpp
+    PyBindImathFun.cpp
+    PyBindImathLine.cpp
+    PyBindImathMatrix.cpp
+    PyBindImathPlane.cpp
+    PyBindImathQuat.cpp
+    PyBindImathRandom.cpp
+    PyBindImathShear.cpp
     PyBindImathVec2.cpp
     PyBindImathVec3.cpp
     PyBindImathVec4.cpp
-    PyBindImathMatrix.cpp
-    PyBindImathPlane.cpp
-    PyBindImathLine.cpp
-    PyBindImathQuat.cpp
-    PyBindImathFrustum.cpp
 )
 
 set(PYBINDIMATH_HEADERS

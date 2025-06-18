@@ -5,6 +5,9 @@
 
 #include "PyBindImath.h"
 #include "PyBindImathVec.h"
+#include <ImathVecAlgo.h>
+#include <ImathColor.h>
+#include <ImathColorAlgo.h>
 
 //
 // Wrappings for V4s, V4i, V4f, V4d
@@ -47,6 +50,7 @@ register_vec4(py::module& m, const char * name)
     typedef typename Vec::BaseType T;
 
     py::class_<Vec> c(m, name);
+    c.attr("__module__") = "";
     c.def("__repr__", [name](const Vec& v) { return repr(name, v); })
         .def(py::init([](){return Vec(0);}))
         .def(py::init<short>())
@@ -66,14 +70,60 @@ register_vec4(py::module& m, const char * name)
         .def("setValue", [](Vec& self, T x, T y, T z, T w) { self.setValue(x, y, z, w); }, "set to the given x,y,z,w values")
         ;
 
-    register_vec<Vec>(c);
+    register_vec_geom<Vec>(c);
 
     return py::cast<py::class_<Vec>>(c);
 }
 
+template <class Color>
+py::class_<Color>
+register_color4(py::module& m, const char * name)
+{
+    typedef typename Color::BaseType T;
+
+    py::class_<Color> c(m, name);
+    c.def("__repr__", [name](const Color& v) { return repr(name, v); })
+        .def(py::init([](){return Color(0);}))
+        .def(py::init<short>())
+        .def(py::init<short,short,short,short>())
+        .def(py::init<int>())
+        .def(py::init<int,int,int,int>())
+        .def(py::init<float>())
+        .def(py::init<float,float,float,float>())
+        .def(py::init<double>())
+        .def(py::init<double,double,double,double>())
+        .def(py::init([](const py::tuple& o) { Color v; return vecFromTuple<Color>(o); }))
+        .def(py::init([](const py::list& o) { Color v; return vecFromList<Color>(o); }))
+        .def("setValue", [](Color& self, T x, T y, T z, T w) { self.setValue(x, y, z, w); }, "set to the given x,y,z,w values")
+        .def("hsv2rgb", [](const Color& v) { return static_cast<Color>(hsv2rgb(v)); })
+        .def("rgb2hsv", [](const Color& v) { return static_cast<Color>(rgb2hsv(v)); })
+        .def_readwrite("r", &Color::r)
+        .def_readwrite("g", &Color::g)
+        .def_readwrite("b", &Color::b)
+        .def_readwrite("a", &Color::a)
+        ;
+
+    return register_vec<Color>(c);
+}
+
+
 } // namespace
 
 namespace PyBindImath {
+
+void
+register_imath_color4(py::module& m)
+{
+    auto c4c = register_color4<C4c>(m, "Color4c");
+    auto c4f = register_color4<C4f>(m, "Color4f");
+
+    register_vec_arithmetic<C4c,C4c>(c4c);
+    register_vec_arithmetic<C4c,C4f>(c4c);
+
+    register_vec_arithmetic<C4f,C4c>(c4f);
+    register_vec_arithmetic<C4f,C4f>(c4f);
+}
+
 
 void
 register_imath_vec4(py::module& m)

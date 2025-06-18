@@ -339,6 +339,21 @@ public:
     /// @}
 
     /// @{
+    /// @name Comparison
+
+    /// Equality
+    template <class S>
+    IMATH_HOSTDEVICE constexpr bool
+    operator== (const Euler<S>& other) const IMATH_NOEXCEPT;
+
+    /// Inequality
+    template <class S>
+    IMATH_HOSTDEVICE constexpr bool
+    operator!= (const Euler<S>& other) const IMATH_NOEXCEPT;
+
+    /// @}
+
+    /// @{
     /// @name Utility Methods
     ///
     ///  Utility methods for getting continuous rotations. None of these
@@ -961,6 +976,22 @@ Euler<T>::operator= (const Vec3<T>& v) IMATH_NOEXCEPT
     y = v.y;
     z = v.z;
     return *this;
+}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE constexpr inline bool
+Euler<T>::operator== (const Euler<S>& other) const IMATH_NOEXCEPT
+{
+    return Vec3<T>::operator==(other) && order() == other.order();
+}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE constexpr inline bool
+Euler<T>::operator!= (const Euler<S>& other) const IMATH_NOEXCEPT
+{
+    return Vec3<T>::operator!=(other) || order() != other.order();
 }
 
 template <class T>

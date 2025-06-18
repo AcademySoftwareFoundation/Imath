@@ -52,6 +52,7 @@ register_vec2(py::module& m, const char * name)
     typedef typename Vec::BaseType T;
 
     py::class_<Vec> c(m, name);
+    c.attr("__module__") = "";
     c.def("__repr__", [name](const Vec& v) { return repr(name, v); })
         .def(py::init([](){return Vec(0);}))
         .def(py::init<short>())
@@ -72,7 +73,7 @@ register_vec2(py::module& m, const char * name)
 
         ;
 
-    register_vec<Vec>(c);
+    register_vec_geom<Vec>(c);
 
     return py::cast<py::class_<Vec>>(c);
 }

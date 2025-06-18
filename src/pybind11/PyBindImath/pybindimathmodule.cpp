@@ -6,64 +6,29 @@
 #include "PyBindImath.h"
 #include <ImathEuler.h>
 
+namespace py = pybind11;
+using namespace IMATH_NAMESPACE;
+
 PYBIND11_MODULE(pybindimath, m)
 {
     m.doc() = "PyBindImath module";
     m.attr("__version__") = IMATH_VERSION_STRING;
 
-    PyBindImath::register_imath_fun(m);
     PyBindImath::register_imath_vec2(m);
     PyBindImath::register_imath_vec3(m);
     PyBindImath::register_imath_vec4(m);
     PyBindImath::register_imath_matrix(m);
     PyBindImath::register_imath_box(m);
-    PyBindImath::register_imath_plane(m);
-    PyBindImath::register_imath_line(m);
-    // PyBindImath::register_imath_euler(m)
+    PyBindImath::register_imath_color3(m);
+    PyBindImath::register_imath_color4(m);
+    PyBindImath::register_imath_euler(m);
     PyBindImath::register_imath_frustum(m);
-
-
-    //
-    // Initialize constants
-    //
-    pybind11::enum_<IMATH_NAMESPACE::Eulerf::Order>(m, "Order")
-        .value("EULER_XYZ", IMATH_NAMESPACE::Eulerf::XYZ)
-        .value("EULER_XZY", IMATH_NAMESPACE::Eulerf::XZY)
-        .value("EULER_YZX", IMATH_NAMESPACE::Eulerf::YZX)
-        .value("EULER_YXZ", IMATH_NAMESPACE::Eulerf::YXZ)
-        .value("EULER_ZXY", IMATH_NAMESPACE::Eulerf::ZXY)
-        .value("EULER_ZYX", IMATH_NAMESPACE::Eulerf::ZYX)
-        .value("EULER_XZX", IMATH_NAMESPACE::Eulerf::XZX)
-        .value("EULER_XYX", IMATH_NAMESPACE::Eulerf::XYX)
-        .value("EULER_YXY", IMATH_NAMESPACE::Eulerf::YXY)
-        .value("EULER_YZY", IMATH_NAMESPACE::Eulerf::YZY)
-        .value("EULER_ZYZ", IMATH_NAMESPACE::Eulerf::ZYZ)
-        .value("EULER_ZXZ", IMATH_NAMESPACE::Eulerf::ZXZ)
-        .value("EULER_XYZr", IMATH_NAMESPACE::Eulerf::XYZr)
-        .value("EULER_XZYr", IMATH_NAMESPACE::Eulerf::XZYr)
-        .value("EULER_YZXr", IMATH_NAMESPACE::Eulerf::YZXr)
-        .value("EULER_YXZr", IMATH_NAMESPACE::Eulerf::YXZr)
-        .value("EULER_ZXYr", IMATH_NAMESPACE::Eulerf::ZXYr)
-        .value("EULER_ZYXr", IMATH_NAMESPACE::Eulerf::ZYXr)
-        .value("EULER_XZXr", IMATH_NAMESPACE::Eulerf::XZXr)
-        .value("EULER_XYXr", IMATH_NAMESPACE::Eulerf::XYXr)
-        .value("EULER_YXYr", IMATH_NAMESPACE::Eulerf::YXYr)
-        .value("EULER_YZYr", IMATH_NAMESPACE::Eulerf::YZYr)
-        .value("EULER_ZYZr", IMATH_NAMESPACE::Eulerf::ZYZr)
-        .value("EULER_ZXZr", IMATH_NAMESPACE::Eulerf::ZXZr)
-        .export_values();
-
-    pybind11::enum_<IMATH_NAMESPACE::Eulerf::Axis>(m, "Axis")
-        .value("EULER_X_AXIS", IMATH_NAMESPACE::Eulerf::X)
-        .value("EULER_Y_AXIS", IMATH_NAMESPACE::Eulerf::Y)
-        .value("EULER_Z_AXIS", IMATH_NAMESPACE::Eulerf::Z)
-        .export_values();
-
-    pybind11::enum_<IMATH_NAMESPACE::Eulerf::InputLayout>(m, "InputLayout")
-        .value("EULER_IJKLayout", IMATH_NAMESPACE::Eulerf::IJKLayout)
-        .value("EULER_XYZLayout", IMATH_NAMESPACE::Eulerf::XYZLayout)
-        .export_values();
-
+    PyBindImath::register_imath_fun(m);
+    PyBindImath::register_imath_line(m);
+    PyBindImath::register_imath_plane(m);
+    PyBindImath::register_imath_quat(m);
+    PyBindImath::register_imath_random(m);
+    PyBindImath::register_imath_shear(m);
 
     m.attr("INT_MIN")      = std::numeric_limits<int>::min();
     m.attr("INT_MAX")      = std::numeric_limits<int>::max();

@@ -153,6 +153,9 @@ public:
 
     /// @}
 
+    typedef T BaseType;
+    typedef T value_type;
+
 protected:
     // To understand why the planes are stored this way, see
     // the SPECIAL NOTE above.
@@ -173,7 +176,6 @@ protected:
     // These are kept primarily for debugging tools.
     Frustum<T>  currFrustum;
     Matrix44<T> cameraMatrix;
-
     /// @endcond
 };
 
