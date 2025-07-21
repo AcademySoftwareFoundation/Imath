@@ -84,7 +84,6 @@ register_matrix(py::class_<M<T>>& m, const char* name)
     return m.def("__repr__", [name](const Matrix& self) { return reprMatrix(name, self); })
         .def(py::init([](){return Matrix();}))
         .def(py::init<T>())
-        .def(py::init<const Matrix&>())
         .def("__getitem__", [](Matrix& self, size_t i) {
             if (i < 0 || i >= Matrix::dimensions())
                 throw py::index_error();
@@ -165,10 +164,17 @@ register_matrix22(py::module& module, const char * name)
     auto ri = py::return_value_policy::reference_internal;
 
     py::class_<Matrix> m(module, name);
+    m.attr("__module__") = "";
     m.def(py::init<T,T,T,T>())
         .def(py::init([](std::tuple<T, T> row0, std::tuple<T, T> row1) {
             return Matrix(std::get<0>(row0), std::get<1>(row0),
                           std::get<0>(row1), std::get<1>(row1));
+        }))
+        .def(py::init([](const Matrix22<float>& other) {
+            return Matrix(other);
+        }))
+        .def(py::init([](const Matrix22<double>& other) {
+            return Matrix(other);
         }))
         .def("multDirMatrix", [](const Matrix& self, const py::object& src, Vec2<T>& dst) {
             self.multDirMatrix(vecFromObject<Vec2<T>>(src), dst); }, "mult matrix")
@@ -224,6 +230,48 @@ jacobiEigensolve(const Matrix& m)
     return py::make_tuple (Q, S);
 }
 
+M44d
+procrustes(const std::vector<V3d>& from_input,
+           const std::vector<V3d>& to_input,
+           const py::object& weights_input = py::none(),
+           bool doScale = false)
+{
+    // Verify the lengths
+    const size_t n = from_input.size();
+    if (n != to_input.size())
+    {
+        throw py::value_error("'from' and 'to' should have the same length");
+    }
+    
+    bool useWeights = !weights_input.is_none();
+    std::vector<double> weights;
+    
+    if (useWeights)
+    {
+        // Convert py::object to vector<double>
+        try {
+            weights = weights_input.cast<std::vector<double>>();
+        } catch (const py::cast_error&) {
+            throw py::type_error("weights must be a sequence of numbers or None");
+        }
+        
+        if (n != weights.size())
+        {
+            throw py::value_error("'fromPts', 'toPts', and 'weights' should all have the same length");
+        }
+    }
+    
+    if (n == 0)
+    {
+        throw py::value_error("Input sequences cannot be empty");
+    }
+    
+    // Convert to raw pointers for the C++ function
+    if (useWeights)
+        return procrustesRotationAndTranslation(from_input.data(), to_input.data(), weights.data(), n, doScale);
+    else
+        return procrustesRotationAndTranslation(from_input.data(), to_input.data(), n, doScale);
+}
 
 template <class T>
 py::class_<Matrix33<T>>
@@ -233,11 +281,18 @@ register_matrix33(py::module& module, const char * name)
     auto ri = py::return_value_policy::reference_internal;
 
     py::class_<Matrix> m(module, name);
+    m.attr("__module__") = "";
     m.def(py::init<T,T,T,T,T,T,T,T,T>())
         .def(py::init([](std::tuple<T, T, T> row0, std::tuple<T, T, T> row1, std::tuple<T, T, T> row2) {
             return Matrix(std::get<0>(row0), std::get<1>(row0), std::get<2>(row0),
                                std::get<0>(row1), std::get<1>(row1), std::get<2>(row1),
                                std::get<0>(row2), std::get<1>(row2), std::get<2>(row2));
+        }))
+        .def(py::init([](const Matrix33<float>& other) {
+            return Matrix(other);
+        }))
+        .def(py::init([](const Matrix33<double>& other) {
+            return Matrix(other);
         }))
         .def("multDirMatrix", [](const Matrix& self, const py::object& src, Vec2<T>& dst) {
             self.multDirMatrix(vecFromObject<Vec2<T>>(src), dst); }, "mult matrix")
@@ -262,13 +317,19 @@ register_matrix33(py::module& module, const char * name)
         .def("shear", [](Matrix& self, T s) { return self.shear(s); }, ri, "setShear")
         .def("shear", [](Matrix& self, const Vec2<T>& s) { return self.shear(s); }, ri, "setShear")
         .def("shear", [](Matrix& self, const py::list& s) { return self.shear(vecFromObject<Vec2<T>>(s)); }, ri, "setShear")
-        .def("shear", [](Matrix& self, const py::tuple& s) { return self.shear(vecFromObject<Vec2<T>>(s)); }, ri, "setShear")
-
+        .def("shear", [](Matrix& self, const py::tuple& s) {
+            if (s.size() == 2)
+                return self.shear(Vec2<T>(T(s[0].cast<T>()),T(s[1].cast<T>())));
+            throw std::domain_error ("m.shear needs tuple of length 2");
+        }, ri, "shear")
         .def("setShear", [](Matrix& self, T s) { return self.setShear(s); }, ri, "setShear")
         .def("setShear", [](Matrix& self, const Vec2<T>& s) { return self.setShear(s); }, ri, "setShear")
         .def("setShear", [](Matrix& self, const py::list& s) { return self.setShear(vecFromObject<Vec2<T>>(s)); }, ri, "setShear")
-        .def("setShear", [](Matrix& self, const py::tuple& s) { return self.setShear(vecFromObject<Vec2<T>>(s)); }, ri, "setShear")
-
+        .def("setShear", [](Matrix& self, const py::tuple& s) {
+            if (s.size() == 2)
+                return self.setShear(Vec2<T>(T(s[0].cast<T>()),T(s[1].cast<T>())));
+            throw std::domain_error ("m.setShear needs tuple of length 2");
+        }, ri, "setShear")
         .def("gjInvert", [](Matrix& self) { return self.gjInvert(); }, ri) 
         .def("gjInverse", [](Matrix& self) { return self.gjInverse(); }, ri) 
         .def("minorOf", &Matrix::minorOf,"minorOf() return the matrix minor of the (row,col) element of this matrix")
@@ -281,17 +342,17 @@ register_matrix33(py::module& module, const char * name)
         .def("sansScalingAndShear", [](const Matrix& self, int exc) { return sansScalingAndShear(self, exc); }, py::arg("exc")=1, ri)
 
         .def("extractAndRemoveScalingAndShear", [](Matrix& self, Vec2<T>& dstScl, Vec2<T>& dstShr, int exc) 
-             {
-                 T dstShrTmp;
-                 extractAndRemoveScalingAndShear(self, dstScl, dstShrTmp, exc);
-                 dstShr.setValue(dstShrTmp, T(0));
-             }, py::arg("dstScl"), py::arg("dstShr"), py::arg("exc") = 1)
+        {
+            T dstShrTmp;
+            extractAndRemoveScalingAndShear(self, dstScl, dstShrTmp, exc);
+            dstShr.setValue(dstShrTmp, T(0));
+        }, py::arg("dstScl"), py::arg("dstShr"), py::arg("exc") = 1)
         .def("extractEuler", [](const Matrix& self, Vec2<T>& dstObj)
-            {
-                T dst;
-                extractEuler(self, dst);
-                dstObj.setValue(dst, T (0));
-            })
+        {
+            T dst;
+            extractEuler(self, dst);
+            dstObj.setValue(dst, T (0));
+        })
         .def("extractSHRT", [](const Matrix& self, Vec2<T> &s, Vec2<T> &h, Vec2<T> &r, Vec2<T> &t, int exc)
             {
                 T hTmp, rTmp;
@@ -328,9 +389,12 @@ py::class_<Matrix44<T>>
 register_matrix44(py::module& module, const char * name)
 {
     using Matrix = Matrix44<T>;
+    using Vec = Vec3<T>;
+    
     auto ri = py::return_value_policy::reference_internal;
 
     py::class_<Matrix> m(module, name);
+    m.attr("__module__") = "";
     m.def(py::init<T,T,T,T, T,T,T,T, T,T,T,T, T,T,T,T>())
         .def(py::init([](std::tuple<T, T, T, T> row0,
                          std::tuple<T, T, T, T> row1,
@@ -341,33 +405,61 @@ register_matrix44(py::module& module, const char * name)
                           std::get<0>(row2), std::get<1>(row2), std::get<2>(row2), std::get<3>(row2),
                           std::get<0>(row3), std::get<1>(row3), std::get<2>(row3), std::get<3>(row3));
         }))
-        .def("multDirMatrix", [](const Matrix& self, const py::object& src, Vec3<T>& dst) {
-            self.multDirMatrix(vecFromObject<Vec3<T>>(src), dst); }, "mult matrix")
+        .def(py::init([](const Matrix44<float>& other) {
+            return Matrix(other);
+        }))
+        .def(py::init([](const Matrix44<double>& other) {
+            return Matrix(other);
+        }))
+        .def("multDirMatrix", [](const Matrix& self, const py::object& src, Vec& dst) {
+            self.multDirMatrix(vecFromObject<Vec>(src), dst); }, "mult matrix")
         .def("multDirMatrix", [](const Matrix& self, const py::object& src) {
-            Vec3<T> dst; self.multDirMatrix(vecFromObject<Vec3<T>>(src), dst); return dst; }, "mult matrix")
-        .def("multVecMatrix", [](const Matrix& self, const py::object& src, Vec3<T>& dst) {
-            self.multVecMatrix(vecFromObject<Vec3<T>>(src), dst); }, "mult matrix")
+            Vec dst; self.multDirMatrix(vecFromObject<Vec>(src), dst); return dst; }, "mult matrix")
+        .def("multVecMatrix", [](const Matrix& self, const py::object& src, Vec& dst) {
+            self.multVecMatrix(vecFromObject<Vec>(src), dst); }, "mult matrix")
         .def("multVecMatrix", [](const Matrix& self, const py::object& src) {
-            Vec3<T> dst; self.multVecMatrix(vecFromObject<Vec3<T>>(src), dst); return dst; }, "mult matrix")
+            Vec dst; self.multVecMatrix(vecFromObject<Vec>(src), dst); return dst; }, "mult matrix")
 
-        .def("rotate", [](Matrix& self, const Vec3<T>& r) { return self.rotate(r); }, ri, "rotate matrix")
+        .def("rotate", [](Matrix& self, const Vec& r) { return self.rotate(r); }, ri, "rotate matrix")
+        .def("rotationMatrix", [](Matrix& self, py::object from, py::object to) {
+            Matrix rot = rotationMatrix(vecFromObject<Vec>(from), vecFromObject<Vec>(to));
+            return self.setValue(rot);
+        })
+        .def("rotationMatrixWithUpDir", [](Matrix& self, py::object from, py::object to, py::object up) {
+            Matrix rot = rotationMatrixWithUpDir(vecFromObject<Vec>(from), vecFromObject<Vec>(to), vecFromObject<Vec>(up));
+            return self.setValue(rot);
+        })
+        .def("setEulerAngles", [](Matrix& self, const py::object& v) { self.setEulerAngles(vecFromObject<Vec>(v)); })
+        .def("setAxisAngle", [](Matrix& self, const py::object& v, T angle) { self.setAxisAngle(vecFromObject<Vec>(v), angle); })
 
-        .def("setTranslation", [](Matrix& self, const py::object& t) { return self.setTranslation(vecFromObject<Vec3<T>>(t)); }, ri, "setTranslation(s)")
-        .def("translate", [](Matrix& self, const py::object& t) { return self.translate(vecFromObject<Vec3<T>>(t)); }, ri, "translate matrix")
+        .def("setTranslation", [](Matrix& self, const py::object& t) { return self.setTranslation(vecFromObject<Vec>(t)); }, ri, "setTranslation(s)")
+        .def("translate", [](Matrix& self, const py::object& t) { return self.translate(vecFromObject<Vec>(t)); }, ri, "translate matrix")
         .def("translation", &Matrix::translation, "translation()")
 
-        .def("scale", [](Matrix& self, const py::object& s) { return self.scale(vecFromObject<Vec3<T>>(s)); }, ri, "rotate matrix")
+        .def("scale", [](Matrix& self, const py::object& s) { return self.scale(vecFromObject<Vec>(s)); }, ri, "rotate matrix")
         .def("setScale", [](Matrix& self, T s) { return self.setScale(s); }, ri, "setScale(s)")
-        .def("setScale", [](Matrix& self, const py::object& s) { return self.setScale(vecFromObject<Vec3<T>>(s)); }, ri, "setScale(s)")
+        .def("setScale", [](Matrix& self, const py::object& s) { return self.setScale(vecFromObject<Vec>(s)); }, ri, "setScale(s)")
 
-        .def("shear", [](Matrix& self, const Vec3<T>& s) { return self.shear(s); }, ri, "setShear")
-        .def("shear", [](Matrix& self, const py::list& s) { return self.shear(vecFromObject<Vec3<T>>(s)); }, ri, "setShear")
-        .def("shear", [](Matrix& self, const py::tuple& s) { return self.shear(vecFromObject<Vec3<T>>(s)); }, ri, "setShear")
-
-        .def("setShear", [](Matrix& self, const Vec3<T>& s) { return self.setShear(s); }, ri, "setShear")
-        .def("setShear", [](Matrix& self, const py::list& s) { return self.setShear(vecFromObject<Vec3<T>>(s)); }, ri, "setShear")
-        .def("setShear", [](Matrix& self, const py::tuple& s) { return self.setShear(vecFromObject<Vec3<T>>(s)); }, ri, "setShear")
-
+        .def("shear", [](Matrix& self, const Vec& s) { return self.shear(s); }, ri, "setShear")
+        .def("shear", [](Matrix& self, const py::list& s) { return self.shear(vecFromObject<Vec>(s)); }, ri, "setShear")
+        .def("shear", [](Matrix& self, const py::tuple& s) {
+            if (s.size() == 3)
+                return self.shear(Vec(T(s[0].cast<T>()),T(s[1].cast<T>()),T(s[2].cast<T>())));
+            if (s.size() == 6)
+                return self.shear(Shear6<T>(T(s[0].cast<T>()),T(s[1].cast<T>()),T(s[2].cast<T>()),
+                                               T(s[3].cast<T>()),T(s[4].cast<T>()),T(s[5].cast<T>())));
+            throw std::domain_error ("m.shear needs tuple of length 3 or 6");
+        })
+        .def("setShear", [](Matrix& self, const Vec& s) { return self.setShear(s); }, ri, "setShear")
+        .def("setShear", [](Matrix& self, const py::list& s) { return self.setShear(vecFromObject<Vec>(s)); }, ri, "setShear")
+        .def("setShear", [](Matrix& self, const py::tuple& s) {
+            if (s.size() == 3)
+                return self.setShear(Vec(T(s[0].cast<T>()),T(s[1].cast<T>()),T(s[2].cast<T>())));
+            if (s.size() == 6)
+                return self.setShear(Shear6<T>(T(s[0].cast<T>()),T(s[1].cast<T>()),T(s[2].cast<T>()),
+                                               T(s[3].cast<T>()),T(s[4].cast<T>()),T(s[5].cast<T>())));
+            throw std::domain_error ("m.setShear needs tuple of length 3 or 6");
+        })
         .def("gjInvert", [](Matrix& self) { return self.gjInvert(); }, ri) 
         .def("gjInverse", [](Matrix& self) { return self.gjInverse(); }, ri) 
         .def("minorOf", &Matrix::minorOf,"minorOf() return the matrix minor of the (row,col) element of this matrix")
@@ -379,18 +471,27 @@ register_matrix44(py::module& module, const char * name)
         .def("sansScaling", [](const Matrix& self, int exc) { return sansScaling(self, exc); }, py::arg("exc")=1, ri)
         .def("sansScalingAndShear", [](const Matrix& self, int exc) { return sansScalingAndShear(self, exc); }, py::arg("exc")=1, ri)
 
-        .def("extractAndRemoveScalingAndShear", [](Matrix& self, Vec3<T>& dstScl, Vec3<T>& dstShr, int exc) 
+        .def("extractEulerXYZ", [](const Matrix& self, Vec3<T>& dst)
+        {
+            extractEulerXYZ(self, dst);
+        })
+        .def("extractEulerZYX", [](const Matrix& self, Vec3<T>& dst)
+        {
+            extractEulerZYX(self, dst);
+        })
+
+        .def("extractAndRemoveScalingAndShear", [](Matrix& self, Vec& dstScl, Vec& dstShr, int exc) 
              {
                  extractAndRemoveScalingAndShear(self, dstScl, dstShr, exc);
              }, py::arg("dstScl"), py::arg("dstShr"), py::arg("exc") = 1)
-        .def("extractSHRT", [](const Matrix& self, Vec3<T> &s, Vec3<T> &h, Vec3<T> &r, Vec3<T> &t, int exc)
+        .def("extractSHRT", [](const Matrix& self, Vec &s, Vec &h, Vec &r, Vec &t, int exc)
             {
                 return extractSHRT(self, s, h, r, t, exc);
             }, py::arg("s"), py::arg("h"), py::arg("r"), py::arg("t"), py::arg("exc") = 1)
-        .def("extractScaling", [](const Matrix& self, Vec3<T> &dst, int exc) { extractScaling(self, dst, exc); }, py::arg("dst"), py::arg("exc") = 1)
+        .def("extractScaling", [](const Matrix& self, Vec &dst, int exc) { extractScaling(self, dst, exc); }, py::arg("dst"), py::arg("exc") = 1)
 
         .def("outerProduct", [](Matrix& self, Vec4<T>& a, Vec4<T>& b) { self = outerProduct(a, b); })
-        .def("extractScalingAndShear", [](Matrix& self, Vec3<T> &dstScl, Vec3<T> &dstShr, int exc)
+        .def("extractScalingAndShear", [](Matrix& self, Vec &dstScl, Vec &dstShr, int exc)
             {
                 extractScalingAndShear(self, dstScl, dstShr, exc);
             }, py::arg("dstScl"), py::arg("dstShr"), py::arg("exc") = 1)
@@ -404,6 +505,19 @@ register_matrix44(py::module& module, const char * name)
         .def("symmetricEigensolve", &jacobiEigensolve<Matrix>) 
         ;
     
+    module.def("procrustesRotationAndTranslation", 
+               &procrustes,
+               py::arg("fromPts"), 
+               py::arg("toPts"), 
+               py::arg("weights") = py::none(),
+               py::arg("doScale") = false,
+               "Computes the orthogonal transform (consisting only of rotation and translation) mapping the "
+               "'fromPts' points as close as possible to the 'toPts' points in the least squares norm. The 'fromPts' and "
+               "'toPts' lists must be the same length or the function will error out. If weights "
+               "are provided, then the points are weighted (that is, some points are considered more important "
+               "than others while computing the transform). If the 'doScale' parameter is True, then "
+               "the resulting matrix is also allowed to have a uniform scale.");
+    
     register_matrix<Matrix44, T>(m, name);
     return py::cast<py::class_<Matrix>>(m);
 }
@@ -414,8 +528,9 @@ register_rowproxy(py::module& module, const char* name)
 {
     using T = typename M::BaseType;
 
-    py::class_<RowProxy<M>>(module, name, py::module_local())
-        .def("__getitem__", [](RowProxy<M>& r, size_t i) -> T&
+    py::class_<RowProxy<M>> r(module, name, py::module_local());
+    r.attr("__module__") = "";
+    r.def("__getitem__", [](RowProxy<M>& r, size_t i) -> T&
         {
             if (i < 0 || i >= M::dimensions())
                 throw py::index_error();
@@ -426,7 +541,8 @@ register_rowproxy(py::module& module, const char* name)
             if (i < 0 || i >= M::dimensions())
                 throw py::index_error();
             r[i] = val;
-        });
+        })
+        ;
 }
     
 } // namespace

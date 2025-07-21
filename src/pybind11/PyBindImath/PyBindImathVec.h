@@ -1,3 +1,4 @@
+
 //
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright Contributors to the OpenEXR Project.
@@ -7,6 +8,7 @@
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
 #include <ImathMatrix.h>
+#include <ImathColor.h>
 
 namespace py = pybind11;
 
@@ -90,7 +92,7 @@ vecFromList(const py::list& l)
 
 template <class Vec>
 Vec
-vecFromObject(const py::object& o)
+vecFromObjectT(const py::object& o)
 {
     typedef typename Vec::BaseType T;
     
@@ -116,6 +118,53 @@ vecFromObject(const py::object& o)
 }
 
 template <class Vec>
+inline Vec
+vecFromObject(const py::object& o)
+{
+    return vecFromObjectT<Vec>(o);
+}
+
+template <>
+inline V3i
+vecFromObject<V3i>(const py::object& o)
+{
+    if (py::isinstance(o, py::type::of<V3i>()))
+        return V3i(o.cast<V3i>());
+    if (py::isinstance(o, py::type::of<V3f>()))
+        return V3i(o.cast<V3f>());
+    if (py::isinstance(o, py::type::of<V3d>()))
+        return V3i(o.cast<V3d>());
+    return vecFromObjectT<V3i>(o);
+}
+
+template <>
+inline V3f
+vecFromObject<V3f>(const py::object& o)
+{
+    if (py::isinstance(o, py::type::of<V3i>()))
+        return V3f(o.cast<V3i>());
+    if (py::isinstance(o, py::type::of<V3f>()))
+        return V3f(o.cast<V3f>());
+    if (py::isinstance(o, py::type::of<V3d>()))
+        return V3f(o.cast<V3d>());
+    return vecFromObjectT<V3f>(o);
+}
+
+template <>
+inline V3d
+vecFromObject<V3d>(const py::object& o)
+{
+    if (py::isinstance(o, py::type::of<V3i>()))
+        return V3d(o.cast<V3i>());
+    if (py::isinstance(o, py::type::of<V3f>()))
+        return V3d(o.cast<V3f>());
+    if (py::isinstance(o, py::type::of<V3d>()))
+        return V3d(o.cast<V3d>());
+    return vecFromObjectT<V3d>(o);
+}
+
+
+template <class Vec>
 std::string
 repr(const char* name, const Vec& v)
 {
@@ -123,17 +172,29 @@ repr(const char* name, const Vec& v)
 
     std::stringstream s;
 
-    if (std::is_same<T, float>::value) {
-        s.precision(9);
-    } else if (std::is_same<T, double>::value) {
-        s.precision(17);
+    s << name << "(";
+    if (std::is_same<T, unsigned char>::value)
+    {
+        s << static_cast<int>(v[0]) << ", " << static_cast<int>(v[1]);
+        if (Vec::dimensions() > 2)
+            s << ", " << static_cast<int>(v[2]);
+        if (Vec::dimensions() > 3)
+            s << ", " << static_cast<int>(v[3]);
     }
-    s << std::fixed;
-    s << name << "(" << v[0] << ", " << v[1];
-    if (Vec::dimensions() > 2)
-        s << ", " << v[2];
-    if (Vec::dimensions() > 3)
-        s << ", " << v[3];
+    else
+    {
+        if (std::is_same<T, float>::value) {
+            s.precision(9);
+        } else if (std::is_same<T, double>::value) {
+            s.precision(17);
+        }
+        s << std::fixed;
+        s << v[0] << ", " << v[1];
+        if (Vec::dimensions() > 2)
+            s << ", " << v[2];
+        if (Vec::dimensions() > 3)
+            s << ", " << v[3];
+    }
     s << ")";
     return s.str();
 }
@@ -162,6 +223,14 @@ bool lessThanVec(const Vec4<T>& a, const Vec4<T>& b)
                                         (a.z == b.z && a.w < b.w)))));
 }
 
+template <typename T>
+bool lessThanVec(const Color4<T>& a, const Color4<T>& b)
+{
+    return (a.r < b.r) ||
+        (a.r == b.r && ((a.g < b.g) ||
+                        (a.g == b.g && ((a.b < b.b) ||
+                                        (a.b == b.b && a.a < b.a)))));
+}
 
 template <class Vec>
 py::class_<Vec>
@@ -170,6 +239,12 @@ register_vec(py::class_<Vec>& c)
     typedef typename Vec::BaseType T;
 
     return c.def(py::self == py::self)
+        .def("__eq__", [](const Vec& self, const py::tuple& other) {
+            return self == vecFromTuple<Vec>(other);
+        })
+        .def("__ne__", [](const Vec& self, const py::tuple& other) {
+            return self != vecFromTuple<Vec>(other);
+        })
         .def("__len__", [](const Vec& self) {
             return self.dimensions();
         })
@@ -184,7 +259,6 @@ register_vec(py::class_<Vec>& c)
             v[static_cast<int>(i)] = value;
         })
         .def(py::self != py::self)
-        .def(py::self ^ py::self)
 
         .def("__add__", [](const Vec& self, const py::tuple& t) { return self + vecFromTuple<Vec>(t); })
         .def("__add__", [](const Vec& self, const py::list& t) { return self + vecFromList<Vec>(t); })
@@ -237,15 +311,27 @@ register_vec(py::class_<Vec>& c)
         .def("__gt__", [](const Vec& a, const Vec& b) { return lessThanVec(b, a); })
         .def("__ge__", [](const Vec& a, const Vec& b) { return !lessThanVec(a, b); })
 
+        .def("negate", &Vec::negate, "negate the vector in place")
+
         .def_static("baseTypeEpsilon", &Vec::baseTypeEpsilon, "epsilon value of the base type of the vector")
         .def_static("baseTypeMax", &Vec::baseTypeMax, "max value of the base type of the vector")
         .def_static("baseTypeLowest", &Vec::baseTypeLowest, "largest negative value of the base type of the vector")
         .def_static("baseTypeSmallest", &Vec::baseTypeSmallest, "smallest value of the base type of the vector")
+        ;
+
+    return c;
+}
+
+template <class Vec>
+py::class_<Vec>
+register_vec_geom(py::class_<Vec>& c)
+{
+    typedef typename Vec::BaseType T;
 
         // allow int or float as the 3rd arg (epsilon)
-        .def("equalWithAbsError", [](Vec& self, const py::object& o, int e) {
-            return self.equalWithAbsError(vecFromObject<Vec>(o), T(e));
-        })
+    c.def("equalWithAbsError", [](Vec& self, const py::object& o, int e) {
+        return self.equalWithAbsError(vecFromObject<Vec>(o), T(e));
+    })
         .def("equalWithAbsError", [](Vec& self, const py::object& o, float e) {
             return self.equalWithAbsError(vecFromObject<Vec>(o), T(e));
         })
@@ -258,7 +344,6 @@ register_vec(py::class_<Vec>& c)
         
         .def("dimensions", &Vec::dimensions, "return the number of dimensions in the vector")
         .def("dot", &Vec::dot, "return inner product of the two vectors")
-        .def("negate", &Vec::negate, "negate the vector in place")
         .def("length2", &Vec::length2,"return the squared magnitude of the vector")
         .def("closestVertex", [](Vec& self, const Vec& v0, const Vec& v1, const Vec& v2) {
             // In C++/Imath it's a global function; in python it's a member:
@@ -267,7 +352,10 @@ register_vec(py::class_<Vec>& c)
             //   closestVertex(v0,v1,v2,self)
             return IMATH_NAMESPACE::closestVertex(v0, v1, v2, self);
         }, "return the vertex of the triangle closes to the given vector")
+        .def(py::self ^ py::self)
         ;
+
+    return register_vec<Vec>(c);
 }
 
 //
