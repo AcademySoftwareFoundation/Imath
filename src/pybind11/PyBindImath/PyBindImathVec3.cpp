@@ -7,6 +7,8 @@
 #include "PyBindImathVec.h"
 #include <ImathVec.h>
 #include <ImathVecAlgo.h>
+#include <ImathColor.h>
+#include <ImathColorAlgo.h>
 #include <ImathMatrix.h>
 
 //
@@ -52,6 +54,7 @@ register_vec3(py::module& m, const char * name)
     typedef typename Vec::BaseType T;
 
     py::class_<Vec> c(m, name);
+    c.attr("__module__") = "";
     c.def("__repr__", [name](const Vec& v) { return repr(name, v); })
         .def(py::init([](){return Vec(0);}))
         .def(py::init<short>())
@@ -73,9 +76,23 @@ register_vec3(py::module& m, const char * name)
         .def("cross", &Vec::cross, "return the right-handed cross product with the given vector")
         ;
 
-    register_vec<Vec>(c);
+    register_vec_geom<Vec>(c);
 
     return py::cast<py::class_<Vec>>(c);
+}
+
+template <class Color>
+py::class_<Color>
+register_color3(py::module& m, const char * name)
+{
+    auto c = register_vec3<Color>(m, name);
+    c.def("hsv2rgb", [](const Color& v) { return static_cast<Color>(hsv2rgb(v)); })
+        .def("rgb2hsv", [](const Color& v) { return static_cast<Color>(rgb2hsv(v)); })
+        .def_readwrite("r", &Color::x)
+        .def_readwrite("g", &Color::y)
+        .def_readwrite("b", &Color::z)
+        ;
+    return c;
 }
 
 } // namespace
@@ -83,8 +100,29 @@ register_vec3(py::module& m, const char * name)
 namespace PyBindImath {
 
 void
+register_imath_color3(py::module& m)
+{
+    auto c3c = register_color3<C3c>(m, "Color3c");
+    auto c3f = register_color3<C3f>(m, "Color3f");
+
+    register_vec_arithmetic<C3c,C3c>(c3c);
+    register_vec_arithmetic<C3c,C3f>(c3c);
+    register_vec_arithmetic<C3c,V3i>(c3c);
+    register_vec_arithmetic<C3c,V3f>(c3c);
+    register_vec_arithmetic<C3c,V3d>(c3c);
+
+    register_vec_arithmetic<C3f,C3f>(c3f);
+    register_vec_arithmetic<C3f,C3c>(c3f);
+    register_vec_arithmetic<C3f,V3i>(c3f);
+    register_vec_arithmetic<C3f,V3f>(c3f);
+    register_vec_arithmetic<C3f,V3d>(c3f);
+}
+
+void
 register_imath_vec3(py::module& m)
 {
+    // register all combinations of types, to support interoperability
+
     auto v3s = register_vec3<V3s>(m, "V3s");
     auto v3i = register_vec3<V3i>(m, "V3i");
     auto v3i64 = register_vec3<V3i64>(m, "V3i64");

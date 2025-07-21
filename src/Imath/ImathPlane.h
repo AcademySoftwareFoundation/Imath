@@ -112,6 +112,8 @@ public:
     reflectVector (const Vec3<T>& vec) const IMATH_NOEXCEPT;
 
     /// @}
+    typedef T BaseType;
+    typedef T value_type;
 };
 
 /// Plane of type float
