@@ -82,6 +82,9 @@ public:
     closestPointTo (const Line3<T>& line) const IMATH_NOEXCEPT;
 
     /// @}
+
+    typedef T BaseType;
+    typedef T value_type;
 };
 
 /// Line of type float
