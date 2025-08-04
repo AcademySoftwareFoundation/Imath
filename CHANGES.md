@@ -3,6 +3,10 @@
 
 # Imath Release Notes
 
+* [Version 3.2.0](#version-320-august-8-2025) August 8, 2025
+* [Version 3.1.12](#version-3112-September-9-2024) September 9, 2024
+* [Version 3.1.11](#version-3111-February-28-2024) February 28, 2024
+* [Version 3.1.10](#version-3110-January-26-2024) January 26, 2024
 * [Version 3.1.9](#version-319-May-31-2023) May 31, 2023
 * [Version 3.1.8](#version-318-May-22-2023) May 22, 2023
 * [Version 3.1.7](#version-317-March-1-2023) March 1, 2023
@@ -20,6 +24,329 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.2.0 (August 8, 2025)
+
+Minor release with several bug and build fixes:
+
+* Fix undefined behavior in the `Vec*` class `operator[]`
+([#449](https://github.com/AcademySoftwareFoundation/Imath/pulls/449)).
+* Fix call to `_mm_cvtps_ph` in `half.h`, Windows build failure
+
+Build changes/improvements:
+* Updated and simplified SO versioning policy: this release adopts a
+  policy of appending the `MAJOR.MINOR.PATCH` software release name to
+  the `SONAME` to form the real name of the shared library.
+* Add `uninstall` target
+* Add `iOS` cross-compilation support
+* Add support for HIP (AMD's Heterogeneous-compute Interface for
+  Portability)
+* Fix handling of `/EHsc` flag
+* Required cmake version is now 3.14
+
+Also:
+* Source files have been reformatted via `clang-format`.
+
+This release also marks the introduction of an alternate boost-free
+implementation of the Imath python module using pybind11. The
+`pybindimath` module is an incomplete work-in-progress and is not
+included in the installation. Activate the build via
+`-DPYBIND11=ON`.
+
+### Merged pull requests
+
+* [502](https://github.com/AcademySoftwareFoundation/Imath/pulls/502)
+Bump msys2/setup-msys2 from 2.27.0 to 2.28.0
+* [501](https://github.com/AcademySoftwareFoundation/Imath/pulls/501)
+Bump sigstore/gh-action-sigstore-python from 3.0.0 to 3.0.1
+* [500](https://github.com/AcademySoftwareFoundation/Imath/pulls/500)
+pybind11 wrappings for Color, Euler, Frustum, Line, Plane, Quat, Shear, Random
+* [499](https://github.com/AcademySoftwareFoundation/Imath/pulls/499)
+Update legacy Windows CI job from vfx2022 to vfx2023
+* [498](https://github.com/AcademySoftwareFoundation/Imath/pulls/498)
+Support HIP
+* [497](https://github.com/AcademySoftwareFoundation/Imath/pulls/497)
+Properly set PATH for CI tests
+* [496](https://github.com/AcademySoftwareFoundation/Imath/pulls/496)
+Bump ossf/scorecard-action from 2.4.1 to 2.4.2
+* [495](https://github.com/AcademySoftwareFoundation/Imath/pulls/495)
+Added python bindings for Box2 and Box3 classes
+* [494](https://github.com/AcademySoftwareFoundation/Imath/pulls/494)
+Add pybind11 V2i64/V3i64/V4i64, and split into separate files
+* [491](https://github.com/AcademySoftwareFoundation/Imath/pulls/491)
+Use IMATH_CONFIG_DIR to identify the directory for ImathConfig.h
+* [490](https://github.com/AcademySoftwareFoundation/Imath/pulls/490)
+Bump actions/setup-python from 4 to 5
+* [489](https://github.com/AcademySoftwareFoundation/Imath/pulls/489)
+Extended the "pybind11" Python bindings for "ImathFun", and re-enabled the testing of its functions
+* [484](https://github.com/AcademySoftwareFoundation/Imath/pulls/484)
+Add python bindings for M22f, M22d, M33f, M33d and associated tests
+* [483](https://github.com/AcademySoftwareFoundation/Imath/pulls/483)
+Rewrite python binding CMake configuration and CI checks
+* [477](https://github.com/AcademySoftwareFoundation/Imath/pulls/477)
+Fix handling of /EHsc flag
+* [475](https://github.com/AcademySoftwareFoundation/Imath/pulls/475)
+Fix quoting an cmake args in ci_steps.yml
+* [474](https://github.com/AcademySoftwareFoundation/Imath/pulls/474)
+Add MSYS2 jobs to CI
+* [473](https://github.com/AcademySoftwareFoundation/Imath/pulls/473)
+Bump actions/upload-artifact from 4.4.3 to 4.6.2
+* [472](https://github.com/AcademySoftwareFoundation/Imath/pulls/472)
+Complete pybind11 wrappings for V2, V3, V4, and add pyBindImathTest
+* [469](https://github.com/AcademySoftwareFoundation/Imath/pulls/469)
+Bump ossf/scorecard-action from 2.4.0 to 2.4.1
+* [467](https://github.com/AcademySoftwareFoundation/Imath/pulls/467)
+Update actions/upload-artifact to @v4
+* [465](https://github.com/AcademySoftwareFoundation/Imath/pulls/465)
+Add CI job to test iOS cross-compilation
+* [464](https://github.com/AcademySoftwareFoundation/Imath/pulls/464)
+Quat, Frustum Python bindings
+* [461](https://github.com/AcademySoftwareFoundation/Imath/pulls/461)
+Add iOS Cross-Compilation Support
+* [459](https://github.com/AcademySoftwareFoundation/Imath/pulls/459)
+Fix Pybind11 Imath Frustum
+* [456](https://github.com/AcademySoftwareFoundation/Imath/pulls/456)
+Add pybind11 wrappings for Imath::Frustum
+* [455](https://github.com/AcademySoftwareFoundation/Imath/pulls/455)
+Restructure CI to use reusable workflow
+* [454](https://github.com/AcademySoftwareFoundation/Imath/pulls/454)
+Add pybind11 wrappings for Imath::Euler
+* [451](https://github.com/AcademySoftwareFoundation/Imath/pulls/451)
+Add subscript operator optimizations, remove usage
+* [450](https://github.com/AcademySoftwareFoundation/Imath/pulls/450)
+Similar to previous Vec fixes, fix Color4 UB
+* [449](https://github.com/AcademySoftwareFoundation/Imath/pulls/449)
+Fix undefined behavior in operator[]
+* [448](https://github.com/AcademySoftwareFoundation/Imath/pulls/448)
+Fix call to _mm_cvtps_ph in half.h
+* [445](https://github.com/AcademySoftwareFoundation/Imath/pulls/445)
+Bump actions/upload-artifact from 4.4.0 to 4.4.3
+* [440](https://github.com/AcademySoftwareFoundation/Imath/pulls/440)
+Implemented pybind11 wrapper for plane
+* [435](https://github.com/AcademySoftwareFoundation/Imath/pulls/435)
+Update sigstore release signing action
+* [434](https://github.com/AcademySoftwareFoundation/Imath/pulls/434)
+Reoganize pybind11 cmake configuration
+* [373](https://github.com/AcademySoftwareFoundation/Imath/pulls/373)
+Bump required cmake to 3.14
+* [366](https://github.com/AcademySoftwareFoundation/Imath/pulls/366)
+Add uninstall target
+* [359](https://github.com/AcademySoftwareFoundation/Imath/pulls/359)
+Account for duplicate emails with .mailmap
+* [354](https://github.com/AcademySoftwareFoundation/Imath/pulls/354)
+Pybind11 and python unit tests
+* [352](https://github.com/AcademySoftwareFoundation/Imath/pulls/352)
+Pybind11 starting point
+* [339](https://github.com/AcademySoftwareFoundation/Imath/pulls/339)
+Update and simply SO versioning policy
+* [332](https://github.com/AcademySoftwareFoundation/Imath/pulls/332)
+Updated CI with vfx2023 Linux jobs.
+* [329](https://github.com/AcademySoftwareFoundation/Imath/pulls/329)
+Release notes for v3.1.9
+* [328](https://github.com/AcademySoftwareFoundation/Imath/pulls/328)
+Improve test coverage for Frustum, Quat, Euler, Shear
+* [321](https://github.com/AcademySoftwareFoundation/Imath/pulls/321)
+Add minimal permissions.
+* [320](https://github.com/AcademySoftwareFoundation/Imath/pulls/320)
+Add missing IMATH_HOSTDEVICE to Matrix33<T>::invert(bool)
+* [304](https://github.com/AcademySoftwareFoundation/Imath/pulls/304)
+Fix README badges
+* [299](https://github.com/AcademySoftwareFoundation/Imath/pulls/299)
+Release notes for v3.1.7
+* [235](https://github.com/AcademySoftwareFoundation/Imath/pulls/235)
+Release notes for 3.1.4
+* [206](https://github.com/AcademySoftwareFoundation/Imath/pulls/206)
+Release notes for v3.1.3
+* [192](https://github.com/AcademySoftwareFoundation/Imath/pulls/192)
+Release notes for v3.1.2
+
+
+## Version 3.1.12 (September 9, 2024)
+
+Patch release with a small fix:
+
+* Support for compiling half.h with hip-runtime-amd
+
+Also, the v3.1.11 release had improper versioning in its cmake and
+pkgconf configuration files. This is now fixed.
+
+### Merged Pull Requests
+
+* \[[#426](https://github.com/AcademySoftwareFoundation/Imath/pull/426)\]
+Fix redefinition of half when using with hip-runtime-amd
+* \[[#425](https://github.com/AcademySoftwareFoundation/Imath/pull/425)\]
+Bump actions/upload-artifact from 4.3.6 to 4.4.0
+* \[[#422](https://github.com/AcademySoftwareFoundation/Imath/pull/422)\]
+Bump actions/upload-artifact from 4.3.5 to 4.3.6
+* \[[#416](https://github.com/AcademySoftwareFoundation/Imath/pull/416)\]
+Bump ossf/scorecard-action from 2.3.3 to 2.4.0
+* \[[#421](https://github.com/AcademySoftwareFoundation/Imath/pull/421)\]
+Add codeql workflow
+* \[[#419](https://github.com/AcademySoftwareFoundation/Imath/pull/419)\]
+Bump actions/upload-artifact from 4.3.4 to 4.3.5
+* \[[#420](https://github.com/AcademySoftwareFoundation/Imath/pull/420)\]
+Fix GHA CI after they upgraded nodejs
+* \[[#398](https://github.com/AcademySoftwareFoundation/Imath/pull/398)\]
+Updated CI workflow to 2024 images.
+* \[[#413](https://github.com/AcademySoftwareFoundation/Imath/pull/413)\]
+Bump github/codeql-action from 3.25.1 to 3.25.12
+* \[[#414](https://github.com/AcademySoftwareFoundation/Imath/pull/414)\]
+Bump sphinx from 7.2.6 to 7.4.2
+* \[[#411](https://github.com/AcademySoftwareFoundation/Imath/pull/411)\]
+Bump actions/upload-artifact from 4.3.2 to 4.3.4
+* \[[#401](https://github.com/AcademySoftwareFoundation/Imath/pull/401)\]
+Bump ossf/scorecard-action from 2.3.1 to 2.3.3
+* \[[#415](https://github.com/AcademySoftwareFoundation/Imath/pull/415)\]
+Bump sigstore/gh-action-sigstore-python from 2.1.1 to 3.0.0
+* \[[#390](https://github.com/AcademySoftwareFoundation/Imath/pull/390)\]
+Bump actions/upload-artifact from 4.3.1 to 4.3.2
+* \[[#389](https://github.com/AcademySoftwareFoundation/Imath/pull/389)\]
+Bump github/codeql-action from 3.24.10 to 3.25.1
+* \[[#387](https://github.com/AcademySoftwareFoundation/Imath/pull/387)\]
+Bump sphinx from 5.3 to 7.2.6
+* \[[#385](https://github.com/AcademySoftwareFoundation/Imath/pull/385)\]
+Bump github/codeql-action from 2.2.4 to 3.24.10
+* \[[#386](https://github.com/AcademySoftwareFoundation/Imath/pull/386)\]
+Bump actions/upload-artifact from 3.1.0 to 4.3.1
+* \[[#384](https://github.com/AcademySoftwareFoundation/Imath/pull/384)\]
+Improve workflow files
+* \[[#383](https://github.com/AcademySoftwareFoundation/Imath/pull/383)\]
+Add dependabot.yml
+* \[[#382](https://github.com/AcademySoftwareFoundation/Imath/pull/382)\]
+Updated docker images to 2024.
+* \[[#378](https://github.com/AcademySoftwareFoundation/Imath/pull/378)\]
+Add preview link to readthedocs build to PR description
+* \[[#380](https://github.com/AcademySoftwareFoundation/Imath/pull/380)\]
+Add website workflows and improve ci workflow filter
+* \[[#379](https://github.com/AcademySoftwareFoundation/Imath/pull/379)\]
+Add custom website footer with ASWF logo and proper copyright
+* \[[#377](https://github.com/AcademySoftwareFoundation/Imath/pull/377)\]
+Pin sphinx to 5.3
+* \[[#376](https://github.com/AcademySoftwareFoundation/Imath/pull/376)\]
+🔗 Fix install URLs
+* \[[#363](https://github.com/AcademySoftwareFoundation/Imath/pull/363)\]
+Update install instructions to reflect new SO versioning policy
+* \[[#375](https://github.com/AcademySoftwareFoundation/Imath/pull/375)\]
+Remove -Dsonar.login from sonar-scanner command line
+
+## Version 3.1.11 (February 28, 2024)
+
+Patch release with small build fix:
+
+- Add explicit `std::` namespace for `isfinite` in `ImathFun.cpp`
+
+This release also introduces the practice of signing release artifacts
+via [sigstore](https://www.sigstore.dev).
+
+### Merged Pull Requests
+* \[[#371](https://github.com/AcademySoftwareFoundation/Imath/pull/371)\]
+ImathFun.cpp: add std:: to isfinite in remaining cases (#371)
+* \[[#369](https://github.com/AcademySoftwareFoundation/Imath/pull/369)\]
+Add workflow to sign release artifacts with Sigstore
+* \[[#368](https://github.com/AcademySoftwareFoundation/Imath/pull/368)\]
+Add std:: to isfinite in ImathFun.cpp
+
+## Version 3.1.10 (January 26, 2024)
+
+Patch release with various build/bug fixes.
+
+Build fixes:
+
+  - Fix a problem where downstream projects using Imath would build
+    python bindings even if they weren't requested.
+
+  - Fix for missing `std::bit_cast`
+
+  - Fix missing/necessary use of IMATH_HOSTDEVICE
+
+  - IMATH_INSTALL_PKG_CONFIG is now on by default, even on Windows
+
+  - Fix calling default constructor by uniform init in TypeTraits
+
+  - Fix redundant PYIMATH_EXPORTS causing compile issues on Windows Clang
+
+  - Update to SO versioning policy:
+
+    This change adopts a policy of appending the ``MAJOR.MINOR.PATCH``
+    software release name to the ``SONAME`` to form the real name of the
+    shared library.
+
+    See [website/install.rst](website/install.rst) and [PR
+    #339](https://github.com/AcademySoftwareFoundation/openexr/pull/339)
+    for more details.
+
+Bug fixes:
+
+  - Fix half to float giving wrong results on older x86_64 CPUs on Windows
+
+Tests:
+
+  - Expand epsilon bounds for m44x pyImath test.
+
+Other:
+
+  - succ()/pred() now use std::nextafter().
+
+  - Rename "docs" to "website".
+
+  - Add missing copyright/license identifiers.
+
+### Merged Pull Requests
+
+* \[[#363](https://github.com/AcademySoftwareFoundation/Imath/pull/363)\]
+Update install instructions to reflect new SO versioning policy
+
+* \[[#362](https://github.com/AcademySoftwareFoundation/Imath/pull/362)\]
+Require sphinx 5.0
+
+* \[[#361](https://github.com/AcademySoftwareFoundation/Imath/pull/361)\]
+src/python/config/ModuleDefine.cmake: do not install a cmake file exporting targets for dependent projects
+
+* \[[#358](https://github.com/AcademySoftwareFoundation/Imath/pull/358)\]
+Fix half to float giving wrong results on older x86_64 CPUs on Windows
+
+* \[[#353](https://github.com/AcademySoftwareFoundation/Imath/pull/353)\]
+Changed implementation of succ and pred to use std::nextafter.
+
+* \[[#350](https://github.com/AcademySoftwareFoundation/Imath/pull/350)\]
+Fix check for the availability of std::bit_cast
+
+* \[[#349](https://github.com/AcademySoftwareFoundation/Imath/pull/349)\]
+IMATH_INSTALL_PKG_CONFIG is on by default, even on Windows
+
+* \[[#347](https://github.com/AcademySoftwareFoundation/Imath/pull/347)\]
+Export Imath from the build tree and so on.
+
+* \[[#344](https://github.com/AcademySoftwareFoundation/Imath/pull/344)\]
+rm unnecessary IMATH_HOSTDEVICE attributes.
+
+* \[[#342](https://github.com/AcademySoftwareFoundation/Imath/pull/342)\]
+Add missing copyright/license identifiers
+
+* \[[#341](https://github.com/AcademySoftwareFoundation/Imath/pull/341)\]
+Remove unnecessary files
+
+* \[[#340](https://github.com/AcademySoftwareFoundation/Imath/pull/340)\]
+Fix calling default constructor by uniform init.
+
+* \[[#339](https://github.com/AcademySoftwareFoundation/Imath/pull/339)\]
+Update and simply SO versioning policy
+
+* \[[#338](https://github.com/AcademySoftwareFoundation/Imath/pull/338)\]
+Rename "docs" to "website"
+
+* \[[#333](https://github.com/AcademySoftwareFoundation/Imath/pull/333)\]
+Expand epsilon bounds for m44x pyImath test
+
+* \[[#331](https://github.com/AcademySoftwareFoundation/Imath/pull/331)\]
+Fixed redundant PYIMATH_EXPORTS causing compile issues on Windows Clang
+
+* \[[#326](https://github.com/AcademySoftwareFoundation/Imath/pull/326)\]
+Use security@openexr.com for consistency
+
+* \[[#320](https://github.com/AcademySoftwareFoundation/Imath/pull/320)\]
+Add missing IMATH_HOSTDEVICE to Matrix33<T>::invert(bool)
+
 
 ## Version 3.1.9 (May 31, 2023)
 
@@ -41,20 +368,20 @@ issues and extends test coverage.
 
 ### Merged Pull Requests
 
-* \[[#318](https://github.com/AcademySoftwareFoundation/Imath/pull/318)\] Separate CI job for docs 
+* \[[#318](https://github.com/AcademySoftwareFoundation/Imath/pull/318)\] Separate CI job for docs
 * \[[#317](https://github.com/AcademySoftwareFoundation/Imath/pull/317)\] fix the macro switching half-precision floating-point format implementation.
-* \[[#315](https://github.com/AcademySoftwareFoundation/Imath/pull/315)\] Updated Mac and Windows jobs for VFX platform 2023. 
-* \[[#314](https://github.com/AcademySoftwareFoundation/Imath/pull/314)\] Remove duplicate IMATH_HOSTDEVICE 
-* \[[#313](https://github.com/AcademySoftwareFoundation/Imath/pull/313)\] IMATH_EXPORT for Rand32::nextf() 
-* \[[#310](https://github.com/AcademySoftwareFoundation/Imath/pull/310)\] Extend test coverage 
-* \[[#309](https://github.com/AcademySoftwareFoundation/Imath/pull/309)\] Undo #307, restore array-based Matrix constructors 
-* \[[#308](https://github.com/AcademySoftwareFoundation/Imath/pull/308)\] Fix run_gcov.sh to use proper _build/_coverage dirs 
-* \[[#307](https://github.com/AcademySoftwareFoundation/Imath/pull/307)\] Conditionally include Matrix constructors duplicated by interop declarations 
-* \[[#306](https://github.com/AcademySoftwareFoundation/Imath/pull/306)\] Fix coverage analysis for .c files 
-* \[[#305](https://github.com/AcademySoftwareFoundation/Imath/pull/305)\] Extend test code coverage and add missing python bindings 
-* \[[#303](https://github.com/AcademySoftwareFoundation/Imath/pull/303)\] Remove unused variables 
-* \[[#302](https://github.com/AcademySoftwareFoundation/Imath/pull/302)\] In testMatrix(), call fabs() instead of fabsf() for double values 
-* \[[#300](https://github.com/AcademySoftwareFoundation/Imath/pull/300)\] Check return status of extractSHRT in computeRSMatrix 
+* \[[#315](https://github.com/AcademySoftwareFoundation/Imath/pull/315)\] Updated Mac and Windows jobs for VFX platform 2023.
+* \[[#314](https://github.com/AcademySoftwareFoundation/Imath/pull/314)\] Remove duplicate IMATH_HOSTDEVICE
+* \[[#313](https://github.com/AcademySoftwareFoundation/Imath/pull/313)\] IMATH_EXPORT for Rand32::nextf()
+* \[[#310](https://github.com/AcademySoftwareFoundation/Imath/pull/310)\] Extend test coverage
+* \[[#309](https://github.com/AcademySoftwareFoundation/Imath/pull/309)\] Undo #307, restore array-based Matrix constructors
+* \[[#308](https://github.com/AcademySoftwareFoundation/Imath/pull/308)\] Fix run_gcov.sh to use proper _build/_coverage dirs
+* \[[#307](https://github.com/AcademySoftwareFoundation/Imath/pull/307)\] Conditionally include Matrix constructors duplicated by interop declarations
+* \[[#306](https://github.com/AcademySoftwareFoundation/Imath/pull/306)\] Fix coverage analysis for .c files
+* \[[#305](https://github.com/AcademySoftwareFoundation/Imath/pull/305)\] Extend test code coverage and add missing python bindings
+* \[[#303](https://github.com/AcademySoftwareFoundation/Imath/pull/303)\] Remove unused variables
+* \[[#302](https://github.com/AcademySoftwareFoundation/Imath/pull/302)\] In testMatrix(), call fabs() instead of fabsf() for double values
+* \[[#300](https://github.com/AcademySoftwareFoundation/Imath/pull/300)\] Check return status of extractSHRT in computeRSMatrix
 
 
 ## Version 3.1.7 (March 1, 2023)
@@ -79,7 +406,7 @@ Patch release with miscellaneous bug/doc/build fixes. In particular:
 * \[[#280](https://github.com/AcademySoftwareFoundation/Imath/pull/280)\] Add trace function for matrix types
 * \[[#279](https://github.com/AcademySoftwareFoundation/Imath/pull/279)\] Define BOOST_BIND_GLOBAL_PLACEHOLDERS to suppress pragma message
 * \[[#278](https://github.com/AcademySoftwareFoundation/Imath/pull/278)\] Use Py_ssize_t in place of size_t where appropriate to avoid warnings
-* \[[#277](https://github.com/AcademySoftwareFoundation/Imath/pull/277)\] Update CONTRIBUTING.md to be consistent with OpenEXR 
+* \[[#277](https://github.com/AcademySoftwareFoundation/Imath/pull/277)\] Update CONTRIBUTING.md to be consistent with OpenEXR
 * \[[#275](https://github.com/AcademySoftwareFoundation/Imath/pull/275)\] Remove export attribute from inline half functions
 
 ## Version 3.1.6 (November 7, 2022)
@@ -91,7 +418,7 @@ Patch release with miscellaneous bug/doc/build fixes.
 * \[[#263](https://github.com/AcademySoftwareFoundation/Imath/pull/263)\] Initialize x in testRoots.cpp:solve() to suppress compiler warning
 * \[[#262](https://github.com/AcademySoftwareFoundation/Imath/pull/262)\] Fix gcc compiler warning in testFun.cpp
 * \[[#261](https://github.com/AcademySoftwareFoundation/Imath/pull/261)\] Test return value of extractSHRT to avoid uninitialized reference
-* \[[#260](https://github.com/AcademySoftwareFoundation/Imath/pull/260)\] Fix example code so it compiles as is 
+* \[[#260](https://github.com/AcademySoftwareFoundation/Imath/pull/260)\] Fix example code so it compiles as is
 * \[[#259](https://github.com/AcademySoftwareFoundation/Imath/pull/259)\] Cuda safety in several headers
 * \[[#256](https://github.com/AcademySoftwareFoundation/Imath/pull/256)\] Fix markdown and typos in README.md
 * \[[#255](https://github.com/AcademySoftwareFoundation/Imath/pull/255)\] Do not warn if half.h has already being included
@@ -107,78 +434,78 @@ In particular, this fixes an issue that could lead to incorrect values
 for `numeric_limits<half>`. This also updates the CI workflow matrix
 to VFX-CY2022.
 
-* \[[#246](https://github.com/AcademySoftwareFoundation/Imath/pull/246)\] 
+* \[[#246](https://github.com/AcademySoftwareFoundation/Imath/pull/246)\]
 Update CI workflow matrix for VFX-CY2022
-* \[[#245](https://github.com/AcademySoftwareFoundation/Imath/pull/245)\] 
+* \[[#245](https://github.com/AcademySoftwareFoundation/Imath/pull/245)\]
 Use `_WIN32` instead of `_MSC_VER` to fix mingw build
-* \[[#244](https://github.com/AcademySoftwareFoundation/Imath/pull/244)\] 
+* \[[#244](https://github.com/AcademySoftwareFoundation/Imath/pull/244)\]
 Fix 32-bit x86 build failure with 16c instructions
-* \[[#241](https://github.com/AcademySoftwareFoundation/Imath/pull/241)\] 
+* \[[#241](https://github.com/AcademySoftwareFoundation/Imath/pull/241)\]
 Move `numeric_limits<half>` specializations into half.h
-* \[[#236](https://github.com/AcademySoftwareFoundation/Imath/pull/236)\] 
+* \[[#236](https://github.com/AcademySoftwareFoundation/Imath/pull/236)\]
 Change references to "master" branch to "main"
 
 ## Version 3.1.4 (January 21, 2022)
 
 Patch release with miscellaneous bug/doc/build fixes.
 
-* \[[#229](https://github.com/AcademySoftwareFoundation/Imath/pull/229)\] 
+* \[[#229](https://github.com/AcademySoftwareFoundation/Imath/pull/229)\]
 Remove some simple typos in the code
-* \[[#228](https://github.com/AcademySoftwareFoundation/Imath/pull/228)\] 
+* \[[#228](https://github.com/AcademySoftwareFoundation/Imath/pull/228)\]
 Added missing check _M_IX86 or _M_X64 when using __lzcnt.
-* \[[#224](https://github.com/AcademySoftwareFoundation/Imath/pull/224)\] 
+* \[[#224](https://github.com/AcademySoftwareFoundation/Imath/pull/224)\]
 SolveNormalizedCubic fix to return proper real root
-* \[[#223](https://github.com/AcademySoftwareFoundation/Imath/pull/223)\] 
+* \[[#223](https://github.com/AcademySoftwareFoundation/Imath/pull/223)\]
 Add docs target only if not a subproject
-* \[[#222](https://github.com/AcademySoftwareFoundation/Imath/pull/222)\] 
+* \[[#222](https://github.com/AcademySoftwareFoundation/Imath/pull/222)\]
 Fix docs race condition and make installation optional
-* \[[#220](https://github.com/AcademySoftwareFoundation/Imath/pull/220)\] 
+* \[[#220](https://github.com/AcademySoftwareFoundation/Imath/pull/220)\]
 Remove dead PyImath code and references to ilmbase
-* \[[#219](https://github.com/AcademySoftwareFoundation/Imath/pull/219)\] 
+* \[[#219](https://github.com/AcademySoftwareFoundation/Imath/pull/219)\]
 Use equalWithAbsError instead of equal operator for float
-* \[[#218](https://github.com/AcademySoftwareFoundation/Imath/pull/218)\] 
+* \[[#218](https://github.com/AcademySoftwareFoundation/Imath/pull/218)\]
 Fix sphinx warnings and man page filenames
-* \[[#215](https://github.com/AcademySoftwareFoundation/Imath/pull/215)\] 
+* \[[#215](https://github.com/AcademySoftwareFoundation/Imath/pull/215)\]
 Adding missing stdexcept header
-* \[[#214](https://github.com/AcademySoftwareFoundation/Imath/pull/214)\] 
+* \[[#214](https://github.com/AcademySoftwareFoundation/Imath/pull/214)\]
 Use .x instead of operator[] for better SIMD auto-vectorization
-* \[[#213](https://github.com/AcademySoftwareFoundation/Imath/pull/213)\] 
+* \[[#213](https://github.com/AcademySoftwareFoundation/Imath/pull/213)\]
 Remove extra project layer for the pyimath code
-* \[[#209](https://github.com/AcademySoftwareFoundation/Imath/pull/209)\] 
+* \[[#209](https://github.com/AcademySoftwareFoundation/Imath/pull/209)\]
 Successor/predecessor functions use isnan() and isinf()
-* \[[#207](https://github.com/AcademySoftwareFoundation/Imath/pull/207)\] 
+* \[[#207](https://github.com/AcademySoftwareFoundation/Imath/pull/207)\]
 Fix python imath export
-* \[[#202](https://github.com/AcademySoftwareFoundation/Imath/pull/202)\] 
+* \[[#202](https://github.com/AcademySoftwareFoundation/Imath/pull/202)\]
 Cuda safety fixes
-* \[[#185](https://github.com/AcademySoftwareFoundation/Imath/pull/185)\] 
+* \[[#185](https://github.com/AcademySoftwareFoundation/Imath/pull/185)\]
 Sort Imath source files
-* \[[#182](https://github.com/AcademySoftwareFoundation/Imath/pull/182)\] 
+* \[[#182](https://github.com/AcademySoftwareFoundation/Imath/pull/182)\]
 Fix formatting in release notes
 
 ## Version 3.1.3 (September 2, 2021)
 
 Patch release with miscellaneous fixes
 
-* \[[#204](https://github.com/AcademySoftwareFoundation/Imath/pull/204)\] 
+* \[[#204](https://github.com/AcademySoftwareFoundation/Imath/pull/204)\]
 Fix undefined access of a vector when empty
-* \[[#203](https://github.com/AcademySoftwareFoundation/Imath/pull/203)\] 
+* \[[#203](https://github.com/AcademySoftwareFoundation/Imath/pull/203)\]
 Require sphinx 4.0.3
-* \[[#201](https://github.com/AcademySoftwareFoundation/Imath/pull/201)\] 
+* \[[#201](https://github.com/AcademySoftwareFoundation/Imath/pull/201)\]
 Build sphinx/doxygen docs with CMake
-* \[[#200](https://github.com/AcademySoftwareFoundation/Imath/pull/200)\] 
+* \[[#200](https://github.com/AcademySoftwareFoundation/Imath/pull/200)\]
 Use PYIMATH_OVERRIDE_PYTHON_INSTALL_DIR to specify destination python modules
-* \[[#199](https://github.com/AcademySoftwareFoundation/Imath/pull/199)\] 
+* \[[#199](https://github.com/AcademySoftwareFoundation/Imath/pull/199)\]
 Guard `__has_attribute` for compilers that don't support it
-* \[[#198](https://github.com/AcademySoftwareFoundation/Imath/pull/198)\] 
+* \[[#198](https://github.com/AcademySoftwareFoundation/Imath/pull/198)\]
 Cuda safety fixes
-* \[[#194](https://github.com/AcademySoftwareFoundation/Imath/pull/194)\] 
+* \[[#194](https://github.com/AcademySoftwareFoundation/Imath/pull/194)\]
 Replace stray Imath:: with IMATH_INTERNAL_NAMESPACE::
 
 ## Version 3.1.2 (July 31, 2021)
 
 Patch release that fixes a Windows header issue.
 
-* \[[#190](https://github.com/AcademySoftwareFoundation/Imath/pull/190)\] 
+* \[[#190](https://github.com/AcademySoftwareFoundation/Imath/pull/190)\]
   Improve handling of ``#include <*intrin.h>``
 
 ## Version 3.1.1 (July 20, 2021)
@@ -201,11 +528,11 @@ Minor release with new features:
   Half-to-float and float-to-half conversion is also available as
   C-language functions ``imath_half_to_float()`` and
   ``imath_float_to_half()``.
-  
+
   All new conversions produced identical results, and new options are
   off by default to ensure backwards compatibility. See
   https://imath.readthedocs.io for more info.
-  
+
 * ``noexcept`` specifier can be eliminated at compile-time via the
   ``IMATH_USE_NOEXCEPT`` CMake option.
 
@@ -221,24 +548,24 @@ Minor release with new features:
 * \[[#179](https://github.com/AcademySoftwareFoundation/Imath/pull/179)\] Remove dead code from half
 * \[[#178](https://github.com/AcademySoftwareFoundation/Imath/pull/178)\] Update Imath docs for 3.1
 * \[[#177](https://github.com/AcademySoftwareFoundation/Imath/pull/177)\] v3.1.0 release notes
-* \[[#175](https://github.com/AcademySoftwareFoundation/Imath/pull/175)\] Clean up library VERSION and SOVERSION 
-* \[[#173](https://github.com/AcademySoftwareFoundation/Imath/pull/173)\] Update README.md and INSTALL.md for 3.1 
-* \[[#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)\] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig 
-* \[[#169](https://github.com/AcademySoftwareFoundation/Imath/pull/169)\] Add testInterop to test list in define_imath_test() 
-* \[[#168](https://github.com/AcademySoftwareFoundation/Imath/pull/168)\] Push/pop Windows warning pragma 
-* \[[#167](https://github.com/AcademySoftwareFoundation/Imath/pull/167)\] Clean up cmake lib symlink message 
-* \[[#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)\] Fix non-versioned library symlinks in debug build. 
-* \[[#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)\] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix. 
-* \[[#162](https://github.com/AcademySoftwareFoundation/Imath/pull/162)\] silence a few warnings noticed with -Weverything 
-* \[[#160](https://github.com/AcademySoftwareFoundation/Imath/pull/160)\] Clean up analysis_workflow.yml 
-* \[[#159](https://github.com/AcademySoftwareFoundation/Imath/pull/159)\] Add new macros to Doxyfile PREDEFINED 
-* \[[#158](https://github.com/AcademySoftwareFoundation/Imath/pull/158)\] Improve 4x4 matrix multiplication 
-* \[[#157](https://github.com/AcademySoftwareFoundation/Imath/pull/157)\] IMATH_NOEXCEPT macro to make noexcept a compile-time option 
-* \[[#156](https://github.com/AcademySoftwareFoundation/Imath/pull/156)\] PyImath read-only FixedArray state & python buffer protocol support 
-* \[[#155](https://github.com/AcademySoftwareFoundation/Imath/pull/155)\] Release notes for v3.0.4 
-* \[[#153](https://github.com/AcademySoftwareFoundation/Imath/pull/153)\] Configure ImathTest as optional standalone program 
-* \[[#150](https://github.com/AcademySoftwareFoundation/Imath/pull/150)\] Add __version__ attr to imath and imathnumpy python modules 
-* \[[#141](https://github.com/AcademySoftwareFoundation/Imath/pull/141)\] Enable C and lighter weight half <-> float conversion 
+* \[[#175](https://github.com/AcademySoftwareFoundation/Imath/pull/175)\] Clean up library VERSION and SOVERSION
+* \[[#173](https://github.com/AcademySoftwareFoundation/Imath/pull/173)\] Update README.md and INSTALL.md for 3.1
+* \[[#172](https://github.com/AcademySoftwareFoundation/Imath/pull/172)\] Use CMAKE_INSTALL_FULL_LIBDIR/INCLUDEDIR for pkgconfig
+* \[[#169](https://github.com/AcademySoftwareFoundation/Imath/pull/169)\] Add testInterop to test list in define_imath_test()
+* \[[#168](https://github.com/AcademySoftwareFoundation/Imath/pull/168)\] Push/pop Windows warning pragma
+* \[[#167](https://github.com/AcademySoftwareFoundation/Imath/pull/167)\] Clean up cmake lib symlink message
+* \[[#166](https://github.com/AcademySoftwareFoundation/Imath/pull/166)\] Fix non-versioned library symlinks in debug build.
+* \[[#165](https://github.com/AcademySoftwareFoundation/Imath/pull/165)\] Use CMAKE_<CONFIG>_POSTFIX for .pc file lib suffix.
+* \[[#162](https://github.com/AcademySoftwareFoundation/Imath/pull/162)\] silence a few warnings noticed with -Weverything
+* \[[#160](https://github.com/AcademySoftwareFoundation/Imath/pull/160)\] Clean up analysis_workflow.yml
+* \[[#159](https://github.com/AcademySoftwareFoundation/Imath/pull/159)\] Add new macros to Doxyfile PREDEFINED
+* \[[#158](https://github.com/AcademySoftwareFoundation/Imath/pull/158)\] Improve 4x4 matrix multiplication
+* \[[#157](https://github.com/AcademySoftwareFoundation/Imath/pull/157)\] IMATH_NOEXCEPT macro to make noexcept a compile-time option
+* \[[#156](https://github.com/AcademySoftwareFoundation/Imath/pull/156)\] PyImath read-only FixedArray state & python buffer protocol support
+* \[[#155](https://github.com/AcademySoftwareFoundation/Imath/pull/155)\] Release notes for v3.0.4
+* \[[#153](https://github.com/AcademySoftwareFoundation/Imath/pull/153)\] Configure ImathTest as optional standalone program
+* \[[#150](https://github.com/AcademySoftwareFoundation/Imath/pull/150)\] Add __version__ attr to imath and imathnumpy python modules
+* \[[#141](https://github.com/AcademySoftwareFoundation/Imath/pull/141)\] Enable C and lighter weight half <-> float conversion
 
 ## Version 3.0.5 (June 29, 2021)
 
@@ -262,11 +589,11 @@ of v3.0.2:
 Patch release with miscellaneous bug/build fixes:
 
 * \[[#142](https://github.com/AcademySoftwareFoundation/Imath/pull/142)\] Fix order of ${IMATH_SOVERSION}.${IMATH_SOREVISION}.${IMATH_SOAGE}
-* \[[#140](https://github.com/AcademySoftwareFoundation/Imath/pull/140)\] Fix regression in succf()/predf()          
-* \[[#139](https://github.com/AcademySoftwareFoundation/Imath/pull/139)\] Clean up setting of Imath version          
-* \[[#137](https://github.com/AcademySoftwareFoundation/Imath/pull/137)\] Don't impose C++14 on downstream projects  
-* \[[#135](https://github.com/AcademySoftwareFoundation/Imath/pull/135)\] Add section on python bindings             
-* \[[#133](https://github.com/AcademySoftwareFoundation/Imath/pull/133)\] Lib version                                
+* \[[#140](https://github.com/AcademySoftwareFoundation/Imath/pull/140)\] Fix regression in succf()/predf()
+* \[[#139](https://github.com/AcademySoftwareFoundation/Imath/pull/139)\] Clean up setting of Imath version
+* \[[#137](https://github.com/AcademySoftwareFoundation/Imath/pull/137)\] Don't impose C++14 on downstream projects
+* \[[#135](https://github.com/AcademySoftwareFoundation/Imath/pull/135)\] Add section on python bindings
+* \[[#133](https://github.com/AcademySoftwareFoundation/Imath/pull/133)\] Lib version
 
 ## Version 3.0.1 (April 1, 2021)
 
@@ -380,7 +707,7 @@ Summary and Key Changes:
 * \[[#50](https://github.com/AcademySoftwareFoundation/Imath/pull/50)\] Removed all references to PYIMATH_VERSION, as it is redundant.
 * \[[#48](https://github.com/AcademySoftwareFoundation/Imath/pull/48)\] Set version to 3.0.0 and SOCURRENT to 26
 * \[[#47](https://github.com/AcademySoftwareFoundation/Imath/pull/47)\] Added Exc variants of all methods in frustum that required them.
-* \[[#46](https://github.com/AcademySoftwareFoundation/Imath/pull/46)\] Movement of all source directories into one top level src/ 
+* \[[#46](https://github.com/AcademySoftwareFoundation/Imath/pull/46)\] Movement of all source directories into one top level src/
 * \[[#44](https://github.com/AcademySoftwareFoundation/Imath/pull/44)\] Fix copy/paste typos in Doxyfile and conf.py
 * \[[#43](https://github.com/AcademySoftwareFoundation/Imath/pull/43)\] Initial Doxygen/sphinx/breathe/readthedocs configuration
 * \[[#42](https://github.com/AcademySoftwareFoundation/Imath/pull/42)\] Made various Imath/ header methods inline
