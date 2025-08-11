@@ -58,7 +58,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@9f265659d3bb64ab1440b03b12f4d47a24320917 # v3.6.0
 
       - name: Configure
         run: |
@@ -127,7 +127,7 @@ jobs:
           curl --silent https://unofficial-builds.nodejs.org/download/release/v20.18.1/node-v20.18.1-linux-x64-glibc-217.tar.xz | tar -xJ --strip-components 1 -C /node20217 -f -
 
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@9f265659d3bb64ab1440b03b12f4d47a24320917 # v3.6.0
 
       - name: Configure
         run: |
