@@ -7,10 +7,19 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-libsuffix=@LIB_SUFFIX_DASH@
+libsuffix=@lib_suffix@
+pylibsuffix=@pylib_suffix@
+
+boost_includedir=@Boost_INCLUDE_DIRS@
+boost_libdir=@boost_libdir@
+boost_libname=@boost_libname@
+
+python_includedir=@Python3_INCLUDE_DIRS@
+python_libdir=@python_libdir@
+python_libname=@python_libname@
 
 Name: PyImath
-Description: Python bindings for the Imath libraries
+Description: Python wrappings of Imath classes/functions
 Version: @IMATH_VERSION@
-Libs: -L${libdir} -lImath${libsuffix} -lPyImath@PYIMATH_LIB_PYTHONVER_ROOT@@Python3_VERSION_MAJOR@_@Python3_VERSION_MINOR@${libsuffix}
-Cflags: -I${includedir} -I${includedir}/Imath
+Libs: -L${libdir} -lImath${libsuffix} -lPyImath${pylibsuffix} -L${boost_libdir} -l${boost_libname} -L${python_libdir} -l${python_libname}
+Cflags: -I${includedir} -I${includedir}/@IMATH_OUTPUT_SUBDIR@ -I${includedir}/@PYIMATH_OUTPUT_SUBDIR@ -I${boost_includedir} -I${python_includedir} 

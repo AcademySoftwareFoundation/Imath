@@ -289,10 +289,26 @@ if (IMATH_INSTALL)
     set(exec_prefix "\${prefix}")
     set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
     set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+    string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+    set(lib_suffix "${IMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX}")
+    set(pylib_suffix "${PYIMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX}")
+
+    # boost lib/dir
+    set(BOOST_PYTHON_LOCATION ${Boost_PYTHON_LIBRARY_RELEASE})
+    get_filename_component(boost_libdir "${BOOST_PYTHON_LOCATION}" DIRECTORY)
+    get_filename_component(boost_libname "${BOOST_PYTHON_LOCATION}" NAME_WE)
+    string(REGEX REPLACE "^lib" "" boost_libname "${boost_libname}")
+
+    # python lib/dir
+    get_filename_component(python_libdir "${Python3_LIBRARIES}" DIRECTORY)
+    set(python_libname "python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}")
+
     string(REPLACE ".in" "" pcout ${pcinfile})
     configure_file(${pcinfile} ${CMAKE_CURRENT_BINARY_DIR}/${pcout} @ONLY)
+
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${pcout} DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
-    message(STATUS "generating ${pcout}") 
+
+    message(STATUS "generating ${pcout}")
   else()
     message(STATUS "pkg-config generation disabled for PyImath")
   endif()

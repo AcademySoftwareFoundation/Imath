@@ -633,4 +633,18 @@ jobs:
           $EXAMPLES_BUILD_DIR/bin/imath-examples.exe
         shell: msys2 {0}
 
+      - name: Test Imath.pc
+        # Validate that Imath.pc works by compiling/linking the test program
+        if: runner.os != 'Windows' && inputs.IMATH_INSTALL_PKG_CONFIG == 'ON' && inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON'
+        run: |
+          set -x
+          share/ci/scripts/validate_pkgconfig.sh $INSTALL_DIR Imath share/ci/src/Imath.pc/Imath.pc.cpp
 
+
+      - name: Test PyImath.pc
+        # Validate that PyImath.pc works by compiling/linking the test program
+        if: runner.os != 'Windows' && inputs.IMATH_INSTALL_PKG_CONFIG == 'ON' && inputs.PYTHON == 'ON' && inputs.IMATH_TEST_PYTHON == 'ON' && inputs.IMATH_BUILD_APPLE_FRAMEWORKS != 'ON'
+        run: |
+          set -x
+          share/ci/scripts/validate_pkgconfig.sh $INSTALL_DIR PyImath share/ci/src/PyImath.pc/PyImath.pc.cpp
+        shell: bash
