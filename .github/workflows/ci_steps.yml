@@ -303,6 +303,8 @@ jobs:
               cmake_args+=("-DIMATH_LIB_SUFFIX=${{ inputs.namespace }}")
               cmake_args+=("-DPYIMATH_LIB_SUFFIX=PY_${{ inputs.namespace }}")
               cmake_args+=("-DPYBINDIMATH_LIB_SUFFIX=PYBIND_${{ inputs.namespace }}")
+              cmake_args+=("-DPYIMATH_OUTPUT_SUBDIR=PyImath")
+              cmake_args+=("-DPYBINDIMATH_OUTPUT_SUBDIR=PyBindImath")
           fi
           if [ "${{ inputs.IMATH_BUILD_APPLE_FRAMEWORKS }}" == "ON" ]; then
               cmake_args+=("-DCMAKE_SYSTEM_NAME=iOS")
