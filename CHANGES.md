@@ -3,6 +3,7 @@
 
 # Imath Release Notes
 
+* [Version 3.2.1](#version-321-august-15-2025) August 15, 2025
 * [Version 3.2.0](#version-320-august-8-2025) August 8, 2025
 * [Version 3.1.12](#version-3112-September-9-2024) September 9, 2024
 * [Version 3.1.11](#version-3111-February-28-2024) February 28, 2024
@@ -24,6 +25,31 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.2.1 (August 15, 2025)
+
+Patch release that addresses several build-related problems 
+introduced in v3.2.0, primarily to PyImath.
+
+* `IMATH_VERSION_RELEASE_TYPE` was inadvertently set to `-dev`; it's
+  been reset to the empty string. This string appears as a preprocessor 
+  symbol for informational purposes.
+* Default installation folder for PyImath is `include/Imath`, not
+  `include/PyImath`. This inadvertently changed in v3.2.0. Note the
+  folder can be configured via the `PYIMATH_OUTPUT_SUBDIR` CMake option.
+* Fix broken pkg-config `PyImath.pc`
+* Update `find_package(Boost)` to work with CMake 4.x
+
+### Merged pull requests
+
+* [510](https://github.com/AcademySoftwareFoundation/Imath/pulls/510)
+Fix broken `PyImath.pc`, and add pkg-config CI tests
+* [#509](https://github.com/AcademySoftwareFoundation/Imath/pulls/509)
+Bump actions/checkout from 2.7.0 to 5.0.0
+* [#508](https://github.com/AcademySoftwareFoundation/Imath/pulls/508)
+Reset default install folder for PyImath to `include/Imath`
+* [#507](https://github.com/AcademySoftwareFoundation/Imath/pulls/507)
+Fix `find_package(Boost)` for CMake 4.x
 
 ## Version 3.2.0 (August 8, 2025)
 
