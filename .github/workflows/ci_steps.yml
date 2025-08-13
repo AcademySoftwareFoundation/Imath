@@ -227,16 +227,31 @@ jobs:
         shell: bash
 
       - name: Install CMake
-        if: runner.os == 'Linux' && inputs.cmake != ''
         # CMakeLists.txt specifies a minimum CMake version of 3.14 for
-        # the Imath project, so use that for the CI. Except that the
-        # conan toolchain requires a minimum of 3.15, so use that for
-        # the runs that require conan.
+        # the Imath project, so use that for the CI, unless a specific
+        # version is specified. The conan toolchain requires a minimum
+        # of 3.15, so use that for the runs that require conan.
         run: |
-          CMAKE_VERSION=${{ inputs.cmake }}
-          wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.tar.gz
-          tar -xzf cmake-$CMAKE_VERSION-Linux-x86_64.tar.gz
-          echo "CMAKE=$PWD/cmake-$CMAKE_VERSION-Linux-x86_64/bin/cmake" >> $GITHUB_ENV
+          set -ex
+          CMAKE=cmake
+          CTEST=ctest
+          if [ "${{ inputs.cmake }}" != "" ]; then
+            if [ "$RUNNER_OS" == "Linux" ]; then
+              CMAKE_VERSION=${{ inputs.cmake }}
+              CURRENT_CMAKE_VERSION=$(cmake --version | head -n 1 | cut -f3 -d' ')
+              if [ "$CMAKE_VERSION" != "$CURRENT_CMAKE_VERSION" ]; then
+                wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.tar.gz
+                tar -xzf cmake-$CMAKE_VERSION-Linux-x86_64.tar.gz 
+                CMAKE=$(find "$PWD" -type f -path "*/bin/cmake" | head -n 1)
+                CTEST=$(find "$PWD" -type f -path "*/bin/ctest" | head -n 1)
+              fi
+            else
+              echo "Explicit cmake version only supported on Linux."
+              exit 1
+            fi
+          fi
+          echo CMAKE="$CMAKE" >> $GITHUB_ENV
+          echo CTEST="$CTEST" >> $GITHUB_ENV
         shell: bash
 
       - name: Construct CMake command
@@ -424,7 +439,7 @@ jobs:
           set -x
           export PATH="$IMATH_PATH:$PATH"
           export PYTHONPATH=$PYTHON_INSTALL_DIR
-          ctest -T Test -C ${{ inputs.build-type }} --test-dir $BUILD_DIR --timeout 7200 --output-on-failure -VV
+          $CTEST -T Test -C ${{ inputs.build-type }} --test-dir $BUILD_DIR --timeout 7200 --output-on-failure -VV
         shell: bash
 
       - name: Test (msys2)
@@ -434,7 +449,7 @@ jobs:
           set -x
           export PATH="$IMATH_PATH:$PATH"
           export PYTHONPATH=$PYTHON_INSTALL_DIR
-          ctest -T Test -C ${{ inputs.build-type }} --test-dir $BUILD_DIR --timeout 7200 --output-on-failure -VV
+          $CTEST -T Test -C ${{ inputs.build-type }} --test-dir $BUILD_DIR --timeout 7200 --output-on-failure -VV
         shell: msys2 {0}
 
       - name: Prepare install_manifest

@@ -214,11 +214,11 @@ if (IMATH_INSTALL)
     #
   
     set(PYTHON_INSTALL_DIR "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
-    message(STATUS "installing ${PYIMATH_MODULE} module to ${PYTHON_INSTALL_DIR}")
+    message(STATUS "installing ${PYIMATH_MODULE_NAME} module to ${PYTHON_INSTALL_DIR}")
 
   else()
 
-    message(STATUS "installing ${PYIMATH_MODULE} module to ${PYTHON_INSTALL_DIR} (set externally)")
+    message(STATUS "installing ${PYIMATH_MODULE_NAME} module to ${PYTHON_INSTALL_DIR} (set externally)")
   
   endif()
   

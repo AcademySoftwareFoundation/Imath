@@ -13,7 +13,7 @@ if(NOT Python3_FOUND)
     message(FATAL_ERROR "Could not find Python")
 endif()
 
-find_package(Boost REQUIRED COMPONENTS python)
+find_package(Boost CONFIG REQUIRED COMPONENTS python)
 
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Could not find Boost")

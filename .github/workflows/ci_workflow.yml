@@ -95,6 +95,10 @@ jobs:
             cxx-compiler: clang++
             cc-compiler: clang
 
+          - build: 7
+            label: cmake 4
+            cmake: 4.0.3
+
   macOS:
     name: 'macOS.${{ matrix.build}}: ${{ matrix.label }}'
     uses: ./.github/workflows/ci_steps.yml
