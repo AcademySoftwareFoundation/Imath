@@ -133,7 +133,7 @@ endif()
 target_include_directories(${PYIMATH_LIBRARY}
      PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:include/${PYIMATH_LIBRARY}>
+        $<INSTALL_INTERFACE:include/${PYIMATH_OUTPUT_SUBDIR}>
         ${Python3_INCLUDE_DIRS}
         ${Boost_INCLUDE_DIRS}
 )
