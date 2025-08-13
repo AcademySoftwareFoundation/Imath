@@ -40,8 +40,8 @@ include/Imath/ImathVecAlgo.h
 include/Imath/half.h
 include/Imath/halfFunction.h
 include/Imath/halfLimits.h
-include/PyBindImath/PyBindImath.h
-include/PyBindImath/PyBindImathExport.h
+include/Imath/PyBindImath.h
+include/Imath/PyBindImathExport.h
 lib/cmake/Imath/ImathConfig.cmake
 lib/cmake/Imath/ImathConfigVersion.cmake
 lib/cmake/Imath/ImathTargets-release.cmake

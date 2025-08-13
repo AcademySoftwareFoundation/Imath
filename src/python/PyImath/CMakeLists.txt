@@ -133,7 +133,7 @@ endif()
 target_include_directories(${PYIMATH_LIBRARY}
      PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:include/${PYIMATH_LIBRARY}>
+        $<INSTALL_INTERFACE:include/${PYIMATH_OUTPUT_SUBDIR}>
         ${Python3_INCLUDE_DIRS}
         ${Boost_INCLUDE_DIRS}
 )
@@ -214,11 +214,11 @@ if (IMATH_INSTALL)
     #
   
     set(PYTHON_INSTALL_DIR "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
-    message(STATUS "installing ${PYIMATH_MODULE} module to ${PYTHON_INSTALL_DIR}")
+    message(STATUS "installing ${PYIMATH_MODULE_NAME} module to ${PYTHON_INSTALL_DIR}")
 
   else()
 
-    message(STATUS "installing ${PYIMATH_MODULE} module to ${PYTHON_INSTALL_DIR} (set externally)")
+    message(STATUS "installing ${PYIMATH_MODULE_NAME} module to ${PYTHON_INSTALL_DIR} (set externally)")
   
   endif()
   
