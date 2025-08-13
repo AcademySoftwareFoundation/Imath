@@ -129,11 +129,11 @@ if (IMATH_INSTALL)
     #
   
     set(PYTHON_INSTALL_DIR "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
-    message(STATUS "installing ${PYBINDIMATH_MODULE} to ${PYTHON_INSTALL_DIR}")
+    message(STATUS "installing ${PYBINDIMATH_MODULE_NAME} to ${PYTHON_INSTALL_DIR}")
 
   else()
 
-    message(STATUS "installing ${PYBINDIMATH_MODULE} to ${PYTHON_INSTALL_DIR} (set externally)")
+    message(STATUS "installing ${PYBINDIMATH_MODULE_NAME} to ${PYTHON_INSTALL_DIR} (set externally)")
   
   endif()
   
