@@ -4,9 +4,8 @@
 //
 
 //
-// A simple program for use in validating that Imath's configuration properly
-// exports the information require by downstream projects using Imath via
-// CMake's FetchContent
+// A simple program for use in validating that Imath.pc is configured
+// properly.
 //
 
 #include <ImathConfig.h>
@@ -20,7 +19,7 @@ main (int argc, char* argv[])
 
     V2f v(0);
 
-    std::cout << "ImathFetchTest: v=" << v << std::endl;
+    std::cout << argv[0] << ": ok" << std::endl;
     
     return 0;
 }
