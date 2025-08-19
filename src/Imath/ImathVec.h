@@ -192,19 +192,19 @@ public:
     IMATH_HOSTDEVICE constexpr bool
     operator!= (const Vec2<S>& v) const IMATH_NOEXCEPT;
 
-    /// Compare two matrices and test if they are "approximately equal":
-    /// @return True if the coefficients of this and `m` are the same
-    /// with an absolute error of no more than e, i.e., for all i, j:
+    /// Compare two vectors and test if they are "approximately equal":
+    /// @return True if the components of this and `v` are the same
+    /// with an absolute error of no more than e, i.e., for all i:
     ///
-    ///     abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i] - v[i]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
     equalWithAbsError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT;
 
-    /// Compare two matrices and test if they are "approximately equal":
-    /// @return True if the coefficients of this and m are the same with
-    /// a relative error of no more than e, i.e., for all i, j:
+    /// Compare two vectors and test if they are "approximately equal":
+    /// @return True if the components of this and `v` are the same with
+    /// a relative error of no more than e, i.e., for all i:
     ///
-    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i]) <= e * abs (this[i])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
     equalWithRelError (const Vec2<T>& v, T e) const IMATH_NOEXCEPT;
 
@@ -521,19 +521,19 @@ public:
     IMATH_HOSTDEVICE constexpr bool
     operator!= (const Vec3<S>& v) const IMATH_NOEXCEPT;
 
-    /// Compare two matrices and test if they are "approximately equal":
-    /// @return True if the coefficients of this and `m` are the same
-    /// with an absolute error of no more than e, i.e., for all i, j:
+    /// Compare two vectors and test if they are "approximately equal":
+    /// @return True if the components of this and `v` are the same
+    /// with an absolute error of no more than e, i.e., for all i:
     ///
-    ///     abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i] - v[i]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
     equalWithAbsError (const Vec3<T>& v, T e) const IMATH_NOEXCEPT;
 
-    /// Compare two matrices and test if they are "approximately equal":
-    /// @return True if the coefficients of this and m are the same with
-    /// a relative error of no more than e, i.e., for all i, j:
+    /// Compare two vectors and test if they are "approximately equal":
+    /// @return True if the components of this and `v` are the same with
+    /// a relative error of no more than e, i.e., for all i:
     ///
-    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i]) <= e * abs (this[i])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
     equalWithRelError (const Vec3<T>& v, T e) const IMATH_NOEXCEPT;
 
@@ -846,19 +846,19 @@ public:
     IMATH_HOSTDEVICE constexpr bool
     operator!= (const Vec4<S>& v) const IMATH_NOEXCEPT;
 
-    /// Compare two matrices and test if they are "approximately equal":
-    /// @return True if the coefficients of this and `m` are the same
-    /// with an absolute error of no more than e, i.e., for all i, j:
+    /// Compare two vectors and test if they are "approximately equal":
+    /// @return True if the components of this and `v` are the same
+    /// with an absolute error of no more than e, i.e., for all i:
     ///
-    ///     abs (this[i][j] - m[i][j]) <= e
+    ///     abs (this[i] - v[i]) <= e
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
     equalWithAbsError (const Vec4<T>& v, T e) const IMATH_NOEXCEPT;
 
-    /// Compare two matrices and test if they are "approximately equal":
-    /// @return True if the coefficients of this and m are the same with
-    /// a relative error of no more than e, i.e., for all i, j:
+    /// Compare two vectors and test if they are "approximately equal":
+    /// @return True if the components of this and `v` are the same with
+    /// a relative error of no more than e, i.e., for all i:
     ///
-    ///     abs (this[i] - v[i][j]) <= e * abs (this[i][j])
+    ///     abs (this[i] - v[i]) <= e * abs (this[i])
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 bool
     equalWithRelError (const Vec4<T>& v, T e) const IMATH_NOEXCEPT;
 
