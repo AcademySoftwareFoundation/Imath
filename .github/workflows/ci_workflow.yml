@@ -106,7 +106,7 @@ jobs:
       # Set values for the "inputs:" as defined in ci_steps.yml
       # Note the defaults provided here for the builds that don't specify
       # values.
-      os: ${{ matrix.os || 'macos-14' }}
+      os: ${{ matrix.os || 'macos-15' }}
       build: ${{ matrix.build }}
       cxx-standard: ${{ matrix.cxx-standard || '14' }}
       build-type: ${{ matrix.build-type || 'Release' }}
@@ -145,10 +145,14 @@ jobs:
             cxx-standard: 14
 
           - build: 5
-            label: macos-13
-            os: macos-13
+            label: macos-15-intel
+            os: macos-15-intel
 
           - build: 6
+            label: macos-14
+            os: macos-14
+
+          - build: 7
             label: Apple Frameworks
             IMATH_BUILD_APPLE_FRAMEWORKS: 'ON'
             BUILD_TESTING: 'OFF'
