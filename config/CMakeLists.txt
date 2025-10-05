@@ -31,8 +31,6 @@ if (IMATH_INSTALL)
   install(TARGETS ImathConfig EXPORT Imath)
 endif()
 
-add_library(Imath::Config ALIAS ImathConfig)
-
 if(IMATH_INSTALL_PKG_CONFIG AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
 
   # Prepend prefix for includedir only if CMAKE_INSTALL_INCLUDEDIR is relative
