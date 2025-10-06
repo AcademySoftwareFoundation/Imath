@@ -3,6 +3,7 @@
 
 # Imath Release Notes
 
+* [Version 3.2.2](#version-322-october-8-2025) October 8, 2025
 * [Version 3.2.1](#version-321-august-15-2025) August 15, 2025
 * [Version 3.2.0](#version-320-august-8-2025) August 8, 2025
 * [Version 3.1.12](#version-3112-September-9-2024) September 9, 2024
@@ -25,6 +26,26 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.2.2 (October 8, 2025)
+
+Patch release that fixes a build problem with newer versions of cmake,
+duplicate declarations of ImathConfig.  No functionality changes.
+
+Also fixes errors in comments in ImathVec.h
+
+### Merged pull requests
+
+* [516](https://github.com/AcademySoftwareFoundation/Imath/pulls/516)
+Bump ossf/scorecard-action from 2.4.2 to 2.4.3
+* [513](https://github.com/AcademySoftwareFoundation/Imath/pulls/513)
+Bump msys2/setup-msys2 from 2.28.0 to 2.29.0
+* [518](https://github.com/AcademySoftwareFoundation/Imath/pulls/518)
+Bump macos runner to 14 and 15, drop 13
+* [517](https://github.com/AcademySoftwareFoundation/Imath/pulls/517)
+Remove duplicate ImathConfig ALIAS in cmake config
+* [512](https://github.com/AcademySoftwareFoundation/Imath/pulls/512)
+Fixed typos in ImathVec documentation of equalWithAbs/RelError functions
 
 ## Version 3.2.1 (August 15, 2025)
 
