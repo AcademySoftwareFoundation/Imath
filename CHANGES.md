@@ -36,6 +36,8 @@ Also fixes errors in comments in ImathVec.h
 
 ### Merged pull requests
 
+* [519](https://github.com/AcademySoftwareFoundation/Imath/pulls/519)
+Fix typo
 * [516](https://github.com/AcademySoftwareFoundation/Imath/pulls/516)
 Bump ossf/scorecard-action from 2.4.2 to 2.4.3
 * [513](https://github.com/AcademySoftwareFoundation/Imath/pulls/513)
