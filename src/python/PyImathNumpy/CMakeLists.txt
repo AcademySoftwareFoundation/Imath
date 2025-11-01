@@ -57,7 +57,7 @@ if (IMATH_INSTALL)
   
   if (NOT DEFINED PYTHON_INSTALL_DIR)
 
-    set(PYTHON_INSTALL_DIR "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
+    set(PYTHON_INSTALL_DIR ${Python3_SITEARCH})
     message(STATUS "installing ${PYIMATHNUMPY_MODULE} module to ${PYTHON_INSTALL_DIR}")
 
   else()

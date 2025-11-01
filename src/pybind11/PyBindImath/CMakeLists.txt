@@ -128,7 +128,7 @@ if (IMATH_INSTALL)
     # which allows an externally-set value to take effect.
     #
   
-    set(PYTHON_INSTALL_DIR "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
+    set(PYTHON_INSTALL_DIR ${Python3_SITEARCH})
     message(STATUS "installing ${PYBINDIMATH_MODULE_NAME} to ${PYTHON_INSTALL_DIR}")
 
   else()
