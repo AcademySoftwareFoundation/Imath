@@ -19,6 +19,29 @@ if(NOT Boost_FOUND)
     message(FATAL_ERROR "Could not find Boost")
 endif()
 
+if (NOT DEFINED PYTHON_INSTALL_DIR)
+
+  #
+  # Set the PYTHON_INSTALL_DIR but only if it's not already set,
+  # which allows an externally-set value to take effect.
+  #
+  # PYTHON_INSTALL_DIR should be a relative path underneath the 
+  # INSTALL_DIR. Set it to Python3_SITEARCH, relative to the python
+  # system installation.
+  #
+    
+  if (NOT Python3_PREFIX)
+    # if Python3_PREFIX is not set, use the location of the python executable
+    get_filename_component(Python3_PREFIX "${Python3_EXECUTABLE}" DIRECTORY)
+    get_filename_component(Python3_PREFIX "${Python3_PREFIX}" DIRECTORY)
+  endif()
+
+  file(RELATIVE_PATH PYTHON_INSTALL_DIR
+    "${Python3_PREFIX}"
+    "${Python3_SITEARCH}")
+
+endif()
+
 #
 # Python library suffix string. By default, it includes the python
 # version and Imath release number, e.g. "_Python3_12-3_4"
