@@ -16,7 +16,7 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ "main" 
+    branches: [ "main" ]
     paths:
       - CMakeLists.txt
       - 'src/**'
@@ -25,7 +25,7 @@ on:
       - '!.github/workflows/**'
       - '.github/workflows/codeql.yml'
   pull_request:
-    branches: [ "main" 
+    branches: [ "main" ]
     paths:
       - CMakeLists.txt
       - 'src/**'
