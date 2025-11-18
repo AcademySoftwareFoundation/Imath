@@ -25,7 +25,7 @@ if(WIN32)
   set(extension_suffix ".pyd")
 else()
   set(extension_suffix "${CMAKE_SHARED_MODULE_SUFFIX}")
-  endif()
+endif()
 # Add ABI tag to extension names, e.g. '.cp311-win_amd64'
 set_target_properties(${PYIMATHNUMPY_MODULE} PROPERTIES SUFFIX ".${Python3_SOABI}${extension_suffix}")
 
