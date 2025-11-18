@@ -11,6 +11,8 @@ set(PYIMATHNUMPY_MODULE imathnumpy)
 
 set(PYIMATHNUMPY_MODULE_SOURCES imathnumpymodule.cpp)
 
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+
 # Build "imathnumpy", not "imathnumpy_d" in Debug.
 # Note this must appear before add_library
 
@@ -20,8 +22,12 @@ add_library(${PYIMATHNUMPY_MODULE} MODULE ${PYIMATHNUMPY_MODULE_SOURCES})
 
 # Ensure correct module extension on Windows
 if(WIN32)
-    set_target_properties(${PYIMATHNUMPY_MODULE} PROPERTIES SUFFIX ".pyd")
-endif()
+  set(extension_suffix ".pyd")
+else()
+  set(extension_suffix "${CMAKE_SHARED_MODULE_SUFFIX}")
+  endif()
+# Add ABI tag to extension names, e.g. '.cp311-win_amd64'
+set_target_properties(${PYIMATHNUMPY_MODULE} PROPERTIES SUFFIX ".${Python3_SOABI}${extension_suffix}")
 
 set_target_properties(${PYIMATHNUMPY_MODULE} PROPERTIES
     PREFIX ""
