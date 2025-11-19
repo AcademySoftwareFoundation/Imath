@@ -167,11 +167,7 @@ set(PYIMATH_MODULE_SOURCES
 
 add_library(${PYIMATH_MODULE} MODULE ${PYIMATH_MODULE_SOURCES})
 
-if(WIN32)
-    # Ensure correct module extension on Windows
-    set_target_properties(${PYIMATH_MODULE} PROPERTIES SUFFIX ".pyd")
-endif()
-
+set_target_properties(${PYIMATH_MODULE} PROPERTIES SUFFIX "${PYIMATH_EXTENSION_SUFFIX}")
 set_target_properties(${PYIMATH_MODULE} PROPERTIES
     OUTPUT_NAME ${PYIMATH_MODULE_NAME} # override the _d suffix for Debug builds
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}/"

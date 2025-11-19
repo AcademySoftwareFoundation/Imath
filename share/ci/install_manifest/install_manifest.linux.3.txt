@@ -94,6 +94,6 @@ lib/libPyImath_Python$PYTHONMAJOR_$PYTHONMINOR-$MAJOR_$MINOR.a
 lib/pkgconfig/Imath.pc
 lib/pkgconfig/PyBindImath.pc
 lib/pkgconfig/PyImath.pc
-python/imath.so
-python/imathnumpy.so
+python/imath.cpython-$PYTHONMAJOR$PYTHONMINOR-x86_64-linux-gnu.so
+python/imathnumpy.cpython-$PYTHONMAJOR$PYTHONMINOR-x86_64-linux-gnu.so
 python/pybindimath.cpython-$PYTHONMAJOR$PYTHONMINOR-x86_64-linux-gnu.so
