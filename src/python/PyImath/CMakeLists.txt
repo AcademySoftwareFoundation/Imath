@@ -16,8 +16,6 @@ set(PYIMATH_LIBRARY PyImath)
 
 message(STATUS "Configuring imath module and ${PYIMATH_LIBRARY} library")
 
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-
 set(PYIMATH_SOURCES
     PyImath.cpp
     PyImathAutovectorize.cpp
@@ -169,15 +167,7 @@ set(PYIMATH_MODULE_SOURCES
 
 add_library(${PYIMATH_MODULE} MODULE ${PYIMATH_MODULE_SOURCES})
 
-# Ensure correct module extension on Windows
-if(WIN32)
-  set(extension_suffix ".pyd")
-else()
-  set(extension_suffix "${CMAKE_SHARED_MODULE_SUFFIX}")
-endif()
-# Add ABI tag to extension names, e.g. '.cp311-win_amd64'
-set_target_properties(${PYIMATH_MODULE} PROPERTIES SUFFIX ".${Python3_SOABI}${extension_suffix}")
-
+set_target_properties(${PYIMATH_MODULE} PROPERTIES SUFFIX "${PYIMATH_EXTENSION_SUFFIX}")
 set_target_properties(${PYIMATH_MODULE} PROPERTIES
     OUTPUT_NAME ${PYIMATH_MODULE_NAME} # override the _d suffix for Debug builds
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python${Python3_VERSION_MAJOR}_${Python3_VERSION_MINOR}/"
