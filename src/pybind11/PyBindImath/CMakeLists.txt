@@ -127,8 +127,24 @@ if (IMATH_INSTALL)
     # Set the PYTHON_INSTALL_DIR but only if it's not already set,
     # which allows an externally-set value to take effect.
     #
-  
-    set(PYTHON_INSTALL_DIR "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
+    # PYTHON_INSTALL_DIR should be a relative path underneath the 
+    # INSTALL_DIR. Set it to Python3_SITEARCH, relative to the python
+    # system installation.
+    #
+    
+    if (NOT Python3_PREFIX)
+      # if Python3_PREFIX is not set, use the location of the python executable
+      get_filename_component(Python3_PREFIX "${Python3_EXECUTABLE}" DIRECTORY)
+      get_filename_component(Python3_PREFIX "${Python3_PREFIX}" DIRECTORY)
+    endif()
+
+    # Ensure Python3_SITEARCH is absolute before computing relative path
+    file(REAL_PATH "${Python3_SITEARCH}" Python3_SITEARCH_ABS)
+
+    file(RELATIVE_PATH PYTHON_INSTALL_DIR
+      "${Python3_PREFIX}"
+      "${Python3_SITEARCH_ABS}")
+
     message(STATUS "installing ${PYBINDIMATH_MODULE_NAME} to ${PYTHON_INSTALL_DIR}")
 
   else()

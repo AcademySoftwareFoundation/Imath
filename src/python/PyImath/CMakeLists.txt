@@ -202,22 +202,8 @@ add_library(PyImath::Config ALIAS PyImathConfig)
 
 if (IMATH_INSTALL)
 
-  if (NOT DEFINED PYTHON_INSTALL_DIR)
+  message(STATUS "installing ${PYIMATH_MODULE_NAME} module to ${PYTHON_INSTALL_DIR}")
 
-    #
-    # Set the PYTHON_INSTALL_DIR but only if it's not already set,
-    # which allows an externally-set value to take effect.
-    #
-  
-    set(PYTHON_INSTALL_DIR "lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages")
-    message(STATUS "installing ${PYIMATH_MODULE_NAME} module to ${PYTHON_INSTALL_DIR}")
-
-  else()
-
-    message(STATUS "installing ${PYIMATH_MODULE_NAME} module to ${PYTHON_INSTALL_DIR} (set externally)")
-  
-  endif()
-  
   #
   # Install the python module 
   #
