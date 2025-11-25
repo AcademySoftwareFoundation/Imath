@@ -100,6 +100,6 @@ lib/cmake/Imath/PyImathTargets.cmake
 lib/pkgconfig/Imath.pc
 lib/pkgconfig/PyBindImath.pc
 lib/pkgconfig/PyImath.pc
-python/imath.pyd
-python/imathnumpy.pyd
+python/imath.cp$PYTHONMAJOR$PYTHONMINOR-win_amd64.pyd
+python/imathnumpy.cp$PYTHONMAJOR$PYTHONMINOR-win_amd64.pyd
 python/pybindimath.cp$PYTHONMAJOR$PYTHONMINOR-win_amd64.pyd

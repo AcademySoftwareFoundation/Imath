@@ -17,11 +17,7 @@ set(PYIMATHNUMPY_MODULE_SOURCES imathnumpymodule.cpp)
 set(CMAKE_DEBUG_POSTFIX "") 
 
 add_library(${PYIMATHNUMPY_MODULE} MODULE ${PYIMATHNUMPY_MODULE_SOURCES})
-
-# Ensure correct module extension on Windows
-if(WIN32)
-    set_target_properties(${PYIMATHNUMPY_MODULE} PROPERTIES SUFFIX ".pyd")
-endif()
+set_target_properties(${PYIMATHNUMPY_MODULE} PROPERTIES SUFFIX "${PYIMATH_EXTENSION_SUFFIX}")
 
 set_target_properties(${PYIMATHNUMPY_MODULE} PROPERTIES
     PREFIX ""
