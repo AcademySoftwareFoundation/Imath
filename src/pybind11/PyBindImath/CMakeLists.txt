@@ -138,9 +138,12 @@ if (IMATH_INSTALL)
       get_filename_component(Python3_PREFIX "${Python3_PREFIX}" DIRECTORY)
     endif()
 
+    # Ensure Python3_SITEARCH is absolute before computing relative path
+    file(REAL_PATH "${Python3_SITEARCH}" Python3_SITEARCH_ABS)
+
     file(RELATIVE_PATH PYTHON_INSTALL_DIR
       "${Python3_PREFIX}"
-      "${Python3_SITEARCH}")
+      "${Python3_SITEARCH_ABS}")
 
     message(STATUS "installing ${PYBINDIMATH_MODULE_NAME} to ${PYTHON_INSTALL_DIR}")
 
