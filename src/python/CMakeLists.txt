@@ -36,9 +36,12 @@ if (NOT DEFINED PYTHON_INSTALL_DIR)
     get_filename_component(Python3_PREFIX "${Python3_PREFIX}" DIRECTORY)
   endif()
 
+  # Ensure Python3_SITEARCH is an absolute path
+  get_filename_component(Python3_SITEARCH_ABS "${Python3_SITEARCH}" REALPATH)
+
   file(RELATIVE_PATH PYTHON_INSTALL_DIR
     "${Python3_PREFIX}"
-    "${Python3_SITEARCH}")
+    "${Python3_SITEARCH_ABS}")
 
 endif()
 
