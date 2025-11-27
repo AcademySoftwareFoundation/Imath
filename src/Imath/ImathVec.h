@@ -26,7 +26,9 @@
 #include <iostream>
 #include <limits>
 #include <cstdint>
+#include <cstring>
 #include <stdexcept>
+#include <type_traits>
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 // suppress exception specification warnings
@@ -45,6 +47,234 @@ enum IMATH_EXPORT_ENUM InfException
 {
     INF_EXCEPTION
 };
+
+namespace detail {
+
+// we take by value such that things are pre evaluated prior to
+// ternery op which should give the optimizer a chance to
+// emit a masked move or similar on appropriate architectures
+template <typename T>
+constexpr T get_nth (const int i, const T x, const T y) IMATH_NOEXCEPT
+{
+    return i == 0 ? x : y;
+}
+
+template <typename T>
+constexpr T get_nth (const int i, const T x, const T y, const T z) IMATH_NOEXCEPT
+{
+    return i == 0 ? x : ((i == 1) ? y : z);
+}
+
+template <typename T>
+constexpr T get_nth (const int i, const T x, const T y, const T z, const T w) IMATH_NOEXCEPT
+{
+    return i == 0 ? x : ((i == 1) ? y : ((i == 2) ? z : w));
+}
+
+template <typename T>
+constexpr
+std::enable_if_t<std::is_integral_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y) IMATH_NOEXCEPT
+{
+    // this pattern seems to optimize to branchless far more
+    // consistently across compilers than other strategies
+    // including x * (i == 0) + y * (i != 0) especially
+    // for other vector sizes
+    return x * (i == 0) + y * ((i - 1) == 0);
+}
+
+template <typename T>
+constexpr
+std::enable_if_t<std::is_integral_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y, T z) IMATH_NOEXCEPT
+{
+    return x * (i == 0) + y * ((i - 1) == 0) + z * ((i - 2) == 0);
+}
+
+template <typename T>
+constexpr
+std::enable_if_t<std::is_integral_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y, T z, T w) IMATH_NOEXCEPT
+{
+    return x * (i == 0) + y * ((i - 1) == 0) + z * ((i - 2) == 0) + w * ((i - 3) == 0);
+}
+
+template <typename T>
+using FloatMaskType = std::conditional_t<
+    sizeof(std::decay_t<T>) == 2, uint16_t,
+    std::conditional_t<
+        sizeof(std::decay_t<T>) == 4, uint32_t,
+        std::conditional_t<sizeof(std::decay_t<T>) == 8, uint64_t, void>
+        >
+    >;
+
+template <typename T>
+struct FloatBitMonger
+{
+    using vtype = std::decay_t<T>;
+    using mtype = FloatMaskType<T>;
+
+    static constexpr mtype to_bits(vtype v)
+    {
+        mtype vi;
+        std::memcpy(&vi, &v, sizeof(mtype));
+        return vi;
+    }
+
+    template <int N>
+    static constexpr mtype to_bits_and_mask(const int idx, vtype v)
+    {
+        mtype vi;
+        std::memcpy(&vi, &v, sizeof(mtype));
+        return vi * ((idx - N) == 0);
+    }
+
+    static constexpr vtype from_bits_to_fp(mtype b)
+    {
+        vtype r;
+        std::memcpy(&r, &b, sizeof(vtype));
+        return r;
+    }
+};
+
+template <typename T>
+constexpr
+std::enable_if_t<std::is_floating_point_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y) IMATH_NOEXCEPT
+{
+    using BitAccess = FloatBitMonger<T>;
+    return BitAccess::from_bits_to_fp(
+        BitAccess::template to_bits_and_mask<0>(i, x) +
+        BitAccess::template to_bits_and_mask<1>(i, y) );
+}
+
+template <typename T>
+constexpr
+std::enable_if_t<std::is_floating_point_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y, T z) IMATH_NOEXCEPT
+{
+    using BitAccess = FloatBitMonger<T>;
+    return BitAccess::from_bits_to_fp(
+        BitAccess::template to_bits_and_mask<0>(i, x) +
+        BitAccess::template to_bits_and_mask<1>(i, y) +
+        BitAccess::template to_bits_and_mask<2>(i, z) );
+}
+
+template <typename T>
+constexpr
+std::enable_if_t<std::is_floating_point_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y, T z, T w) IMATH_NOEXCEPT
+{
+    using BitAccess = FloatBitMonger<T>;
+    return BitAccess::from_bits_to_fp(
+        BitAccess::template to_bits_and_mask<0>(i, x) +
+        BitAccess::template to_bits_and_mask<1>(i, y) +
+        BitAccess::template to_bits_and_mask<2>(i, z) +
+        BitAccess::template to_bits_and_mask<3>(i, w) );
+}
+
+// fall back for other types where we can't really do branchless
+// as we make no assumptions about T other than copy constructible
+template <typename T>
+constexpr
+std::enable_if_t<!std::is_integral_v<std::decay_t<T>> &&
+                 !std::is_floating_point_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y) IMATH_NOEXCEPT
+{
+    return (i == 0) ? x : y;
+}
+
+template <typename T>
+constexpr
+std::enable_if_t<!std::is_integral_v<std::decay_t<T>> &&
+                 !std::is_floating_point_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y, T z) IMATH_NOEXCEPT
+{
+    return (i == 0) ? x : branchless_get_nth (i - 1, y, z);
+}
+
+template <typename T>
+constexpr
+std::enable_if_t<!std::is_integral_v<std::decay_t<T>> &&
+                 !std::is_floating_point_v<std::decay_t<T>>, std::decay_t<T>>
+branchless_get_nth (const int i, T x, T y, T z, T w) IMATH_NOEXCEPT
+{
+    return (i == 0) ? x : branchless_get_nth (i - 1, y, z, w);
+}
+
+// take advantage of native masking with avx 512f
+#ifndef IMATH_IS_CONSTANT_ARG
+#    ifdef __AVX512F__
+#        define IMATH_IS_CONSTANT_ARG(idxvar) (true)
+#    endif
+#endif
+
+#ifndef IMATH_IS_CONSTANT_ARG
+#    if defined(__has_builtin)
+#        if __has_builtin(__builtin_constant_p)
+#            define IMATH_IS_CONSTANT_ARG(idxvar) (__builtin_constant_p(idxvar))
+#        endif
+#    endif
+#endif
+
+#ifndef IMATH_IS_CONSTANT_ARG
+#    if defined(__cpp_if_consteval) && (__cpp_if_consteval >= 202106L)
+#        define IMATH_IS_CONSTANT_ARG(idxvar) consteval
+#    elif defined(__cpp_lib_is_constant_evaluated)
+#        define IMATH_IS_CONSTANT_ARG(idxvar) (std::is_constant_evaluated ())
+#    elif defined(__has_builtin)
+#        if __has_builtin(__builtin_is_constant_evaluated)
+#            define IMATH_IS_CONSTANT_ARG(idxvar) (__builtin_is_constant_evaluated())
+#        endif
+#    endif
+#    ifndef IMATH_IS_CONSTANT_ARG
+#        define IMATH_IS_CONSTANT_ARG(idxvar) (false)
+#    endif
+#endif
+
+template <typename T, int N>
+constexpr
+std::enable_if_t<std::is_integral_v<std::decay_t<T>>, std::decay_t<T>>
+select_when (const int i, T a, T b) IMATH_NOEXCEPT
+{
+    if IMATH_IS_CONSTANT_ARG(i)
+    {
+        return (i == N) ? a : b;
+    }
+    else
+    {
+        return a * (i == N) + b * (i != N);
+    }
+}
+
+template <typename T, int N>
+constexpr
+std::enable_if_t<std::is_floating_point_v<std::decay_t<T>>, std::decay_t<T>>
+select_when (const int i, T a, T b) IMATH_NOEXCEPT
+{
+    if IMATH_IS_CONSTANT_ARG(i)
+    {
+        return (i == N) ? a : b;
+    }
+    else
+    {
+        using BitAccess = FloatBitMonger<T>;
+        return BitAccess::from_bits_to_fp(
+            BitAccess::to_bits(a) * (i == N) +
+            BitAccess::to_bits(b) * (i != N));
+    }
+}
+
+template <typename T, int N>
+constexpr
+std::enable_if_t<!std::is_integral_v<std::decay_t<T>> &&
+                 !std::is_floating_point_v<std::decay_t<T>>, std::decay_t<T>>
+select_when (const int i, T a, T b) IMATH_NOEXCEPT
+{
+    return (i == N) ? a : b;
+}
+
+} // namespace detail
 
 ///
 /// 2-element vector
@@ -67,16 +297,22 @@ public:
     /// stored to the stack and other missed vectorization
     /// opportunities. Use of direct access to x, y when
     /// possible should be preferred.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int i) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (const int i) IMATH_NOEXCEPT;
 
     /// Element access by index.
     ///
-    /// NB: This method of access may use dynamic array accesses which
-    /// can prevent compiler optimizations and force temporaries to be
-    /// stored to the stack and other missed vectorization
-    /// opportunities. Use of direct access to x, y when
-    /// possible should be preferred.
-    IMATH_HOSTDEVICE constexpr const T& operator[] (int i) const IMATH_NOEXCEPT;
+    /// This attempts to use a branchless scheme to return values
+    /// which can often optimize better in the presence of loop
+    /// unrolling. However, it is recommended to use direct access to
+    /// x, y when possible. This is only active for scalar types.
+    ///
+    /// Legacy dynamic array behavior can be enabled by adding a
+    /// preprocess define IMATH_USE_LEGACY_DYNAMIC_INDEX prior to
+    /// including this header file.
+    ///
+    /// Note: this is following recommended practice for const
+    /// operator[] and return by value, not by reference.
+    IMATH_HOSTDEVICE constexpr T operator[] (const int i) const IMATH_NOEXCEPT;
 
     /// @{
     ///	@name Constructors and Assignment
@@ -176,6 +412,22 @@ public:
 
     /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE const T* getValue () const IMATH_NOEXCEPT;
+
+    /// @}
+
+    /// @{
+    /// @name Auto-vectorization accessors
+
+    /// Enables branchless query of value which may be able to vectorize better
+    ///
+    /// Prefer to use the direct .x, .y access if possible
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T getValueBranchless (const int idx) const IMATH_NOEXCEPT;
+
+    /// Enables branchless store of a particular index which may be able to vectorize better
+    ///
+    /// Prefer to use the direct .x, .y access if possible
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 void setValueBranchless (const int idx, S&& v) IMATH_NOEXCEPT;
 
     /// @}
 
@@ -376,16 +628,22 @@ public:
     /// stored to the stack and other missed vectorization
     /// opportunities. Use of direct access to x, y, z when
     /// possible should be preferred.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int i) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (const int i) IMATH_NOEXCEPT;
 
     /// Element access by index.
     ///
-    /// NB: This method of access uses dynamic array accesses which
-    /// can prevent compiler optimizations and force temporaries to be
-    /// stored to the stack and other missed vectorization
-    /// opportunities. Use of direct access to x, y, z when
-    /// possible should be preferred.
-    IMATH_HOSTDEVICE constexpr const T& operator[] (int i) const IMATH_NOEXCEPT;
+    /// This attempts to use a branchless scheme to return values
+    /// which can often optimize better in the presence of loop
+    /// unrolling. However, it is recommended to use direct access to
+    /// x, y, z when possible. This is only active for scalar types.
+    ///
+    /// Legacy dynamic array behavior can be enabled by adding a
+    /// preprocess define IMATH_USE_LEGACY_DYNAMIC_INDEX prior to
+    /// including this header file.
+    ///
+    /// Note: this is following recommended practice for const
+    /// operator[] and return by value, not by reference.
+    IMATH_HOSTDEVICE constexpr T operator[] (const int i) const IMATH_NOEXCEPT;
 
     /// @{
     ///	@name Constructors and Assignment
@@ -505,6 +763,22 @@ public:
 
     /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE const T* getValue () const IMATH_NOEXCEPT;
+
+    /// @}
+
+    /// @{
+    /// @name Auto-vectorization accessors
+
+    /// Enables branchless query of value which may be able to vectorize better
+    ///
+    /// Prefer to use the direct .x, .y access if possible
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T getValueBranchless (const int idx) const IMATH_NOEXCEPT;
+
+    /// Enables branchless store of a particular index which may be able to vectorize better
+    ///
+    /// Prefer to use the direct .x, .y access if possible
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 void setValueBranchless (const int idx, S&& v) IMATH_NOEXCEPT;
 
     /// @}
 
@@ -709,16 +983,22 @@ public:
     /// stored to the stack and other missed vectorization
     /// opportunities. Use of direct access to x, y, z, w when
     /// possible should be preferred.
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (int i) IMATH_NOEXCEPT;
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T& operator[] (const int i) IMATH_NOEXCEPT;
 
     /// Element access by index.
     ///
-    /// NB: This method of access uses dynamic array accesses which
-    /// can prevent compiler optimizations and force temporaries to be
-    /// stored to the stack and other missed vectorization
-    /// opportunities. Use of direct access to x, y, z, w when
-    /// possible should be preferred.
-    IMATH_HOSTDEVICE constexpr const T& operator[] (int i) const IMATH_NOEXCEPT;
+    /// This attempts to use a branchless scheme to return values
+    /// which can often optimize better in the presence of loop
+    /// unrolling. However, it is recommended to use direct access to
+    /// x, y, z when possible. This is only active for scalar types.
+    ///
+    /// Legacy dynamic array behavior can be enabled by adding a
+    /// preprocess define IMATH_USE_LEGACY_DYNAMIC_INDEX prior to
+    /// including this header file.
+    ///
+    /// Note: this is following recommended practice for const
+    /// operator[] and return by value, not by reference.
+    IMATH_HOSTDEVICE constexpr T operator[] (const int i) const IMATH_NOEXCEPT;
 
     /// @{
     ///	@name Constructors and Assignment
@@ -830,6 +1110,22 @@ public:
 
     /// Return a raw pointer to the array of values
     IMATH_HOSTDEVICE const T* getValue () const IMATH_NOEXCEPT;
+
+    /// @}
+
+    /// @{
+    /// @name Auto-vectorization accessors
+
+    /// Enables branchless query of value which may be able to vectorize better
+    ///
+    /// Prefer to use the direct .x, .y access if possible
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 T getValueBranchless (const int idx) const IMATH_NOEXCEPT;
+
+    /// Enables branchless store of a particular index which may be able to vectorize better
+    ///
+    /// Prefer to use the direct .x, .y access if possible
+    template <class S>
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 void setValueBranchless (const int idx, S&& v) IMATH_NOEXCEPT;
 
     /// @}
 
@@ -1261,27 +1557,21 @@ Vec4<int64_t>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
 //------------------------
 
 template <class T>
-IMATH_CONSTEXPR14 IMATH_HOSTDEVICE inline T&
-Vec2<T>::operator[] (int i) IMATH_NOEXCEPT
+IMATH_CONSTEXPR14 IMATH_HOSTDEVICE inline
+T&
+Vec2<T>::operator[] (const int i) IMATH_NOEXCEPT
 {
-    return reinterpret_cast<T*> (this)[i];
+    return getValue ()[i];
 }
 
 template <class T>
-constexpr IMATH_HOSTDEVICE inline const T&
-Vec2<T>::operator[] (int i) const IMATH_NOEXCEPT
+constexpr IMATH_HOSTDEVICE inline T
+Vec2<T>::operator[] (const int i) const IMATH_NOEXCEPT
 {
-#ifdef __cpp_if_consteval
-    if consteval
-    {
-        return (i == 0) ? x : y;
-    }
-    else
-    {
-        return reinterpret_cast<const T*> (this)[i];
-    }
+#ifdef IMATH_USE_LEGACY_DYNAMIC_INDEX
+    return getValue ()[i];
 #else
-    return reinterpret_cast<const T*> (this)[i];
+    return getValueBranchless (i);
 #endif
 }
 
@@ -1371,6 +1661,30 @@ IMATH_HOSTDEVICE inline const T*
 Vec2<T>::getValue () const IMATH_NOEXCEPT
 {
     return reinterpret_cast<const T*> (this);
+}
+
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
+Vec2<T>::getValueBranchless (const int idx) const IMATH_NOEXCEPT
+{
+    if IMATH_IS_CONSTANT_ARG(idx)
+    {
+        return detail::get_nth (idx, x, y);
+    }
+    else
+    {
+        return detail::branchless_get_nth (idx, x, y);
+    }
+}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline void
+Vec2<T>::setValueBranchless (const int idx, S&& v) IMATH_NOEXCEPT
+{
+    T tv = std::forward<S> (v);
+    x = detail::select_when<T, 0> (idx, tv, x);
+    y = detail::select_when<T, 1> (idx, tv, y);
 }
 
 template <class T>
@@ -1679,26 +1993,19 @@ Vec2<T>::normalizedNonNull () const IMATH_NOEXCEPT
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T&
-Vec3<T>::operator[] (int i) IMATH_NOEXCEPT
+Vec3<T>::operator[] (const int i) IMATH_NOEXCEPT
 {
-    return reinterpret_cast<T*> (this)[i];
+    return getValue ()[i];
 }
 
 template <class T>
-constexpr IMATH_HOSTDEVICE inline const T&
-Vec3<T>::operator[] (int i) const IMATH_NOEXCEPT
+constexpr IMATH_HOSTDEVICE inline T
+Vec3<T>::operator[] (const int i) const IMATH_NOEXCEPT
 {
-#ifdef __cpp_if_consteval
-    if consteval
-    {
-        return (i == 0) ? x : ((i == 1) ? y : z);
-    }
-    else
-    {
-        return reinterpret_cast<const T*> (this)[i];
-    }
+#ifdef IMATH_USE_LEGACY_DYNAMIC_INDEX
+    return getValue ()[i];
 #else
-    return reinterpret_cast<const T*> (this)[i];
+    return getValueBranchless (i);
 #endif
 }
 
@@ -1830,6 +2137,31 @@ IMATH_HOSTDEVICE inline const T*
 Vec3<T>::getValue () const IMATH_NOEXCEPT
 {
     return reinterpret_cast<const T*> (this);
+}
+
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
+Vec3<T>::getValueBranchless (const int idx) const IMATH_NOEXCEPT
+{
+    if IMATH_IS_CONSTANT_ARG(idx)
+    {
+        return detail::get_nth (idx, x, y, z);
+    }
+    else
+    {
+        return detail::branchless_get_nth (idx, x, y, z);
+    }
+}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline void
+Vec3<T>::setValueBranchless (const int idx, S&& v) IMATH_NOEXCEPT
+{
+    T tv = std::forward<S> (v);
+    x = detail::select_when<T, 0> (idx, tv, x);
+    y = detail::select_when<T, 1> (idx, tv, y);
+    z = detail::select_when<T, 2> (idx, tv, z);
 }
 
 template <class T>
@@ -2163,26 +2495,19 @@ Vec3<T>::normalizedNonNull () const IMATH_NOEXCEPT
 
 template <class T>
 IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T&
-Vec4<T>::operator[] (int i) IMATH_NOEXCEPT
+Vec4<T>::operator[] (const int i) IMATH_NOEXCEPT
 {
-    return reinterpret_cast<T*> (this)[i];
+    return getValue ()[i];
 }
 
 template <class T>
-IMATH_HOSTDEVICE constexpr inline const T&
-Vec4<T>::operator[] (int i) const IMATH_NOEXCEPT
+IMATH_HOSTDEVICE constexpr inline T
+Vec4<T>::operator[] (const int i) const IMATH_NOEXCEPT
 {
-#ifdef __cpp_if_consteval
-    if consteval
-    {
-        return (i == 0) ? x : ((i == 1) ? y : ((i == 2) ? z : w));
-    }
-    else
-    {
-        return reinterpret_cast<const T*> (this)[i];
-    }
+#ifdef IMATH_USE_LEGACY_DYNAMIC_INDEX
+    return getValue ()[i];
 #else
-    return reinterpret_cast<const T*> (this)[i];
+    return getValueBranchless (i);
 #endif
 }
 
@@ -2299,6 +2624,32 @@ IMATH_HOSTDEVICE inline const T*
 Vec4<T>::getValue () const IMATH_NOEXCEPT
 {
     return reinterpret_cast<const T*> (this);
+}
+
+template <class T>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline T
+Vec4<T>::getValueBranchless (const int idx) const IMATH_NOEXCEPT
+{
+    if IMATH_IS_CONSTANT_ARG(idx)
+    {
+        return detail::get_nth (idx, x, y, z, w);
+    }
+    else
+    {
+        return detail::branchless_get_nth (idx, x, y, z, w);
+    }
+}
+
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline void
+Vec4<T>::setValueBranchless (const int idx, S&& v) IMATH_NOEXCEPT
+{
+    T tv = std::forward<S> (v);
+    x = detail::select_when<T, 0> (idx, tv, x);
+    y = detail::select_when<T, 1> (idx, tv, y);
+    z = detail::select_when<T, 2> (idx, tv, z);
+    w = detail::select_when<T, 3> (idx, tv, w);
 }
 
 template <class T>
