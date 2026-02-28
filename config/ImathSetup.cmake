@@ -28,6 +28,7 @@ if(CMAKE_CXX_STANDARD)
 endif()
 set(IMATH_CXX_STANDARD "${tmp}" CACHE STRING "C++ standard to compile against")
 set(tmp)
+message(STATUS "Building against C++ Standard: ${IMATH_CXX_STANDARD}")
 
 # Namespace-related settings: allows one to customize the namespace
 # generated, and to version the namespaces.

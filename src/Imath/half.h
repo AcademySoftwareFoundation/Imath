@@ -945,7 +945,24 @@ public:
     static constexpr bool               has_infinity      = true;
     static constexpr bool               has_quiet_NaN     = true;
     static constexpr bool               has_signaling_NaN = true;
-    static constexpr float_denorm_style has_denorm        = denorm_present;
+
+    // C++23 (P2614) deprecates std::float_denorm_style and
+    // std::denorm_present without a replacement; std::numeric_limits still
+    // requires has_denorm. Scoped pragmas silence deprecation for this line
+    // on C++23+ toolchains; they are a no-op for C++17 / C++20.
+#    if defined(__clang__) || defined(__GNUC__)
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#    elif defined(_MSC_VER)
+#        pragma warning(push)
+#        pragma warning(disable : 4996)
+#    endif
+    static constexpr float_denorm_style has_denorm = denorm_present;
+#    if defined(__clang__) || defined(__GNUC__)
+#        pragma GCC diagnostic pop
+#    elif defined(_MSC_VER)
+#        pragma warning(pop)
+#    endif
     static constexpr bool               has_denorm_loss   = false;
     static constexpr IMATH_INTERNAL_NAMESPACE::half               infinity () IMATH_NOEXCEPT
     {
