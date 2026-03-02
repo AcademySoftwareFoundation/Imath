@@ -145,7 +145,7 @@ pygments_style = 'sphinx'
 html_theme = "press"
 html_theme_options = {
   "external_links": [
-      ("Github", "https://github.com/AcademySoftwareFoundation/Imath"),
+      ("GitHub", "https://github.com/AcademySoftwareFoundation/Imath"),
   ]
 }
 
