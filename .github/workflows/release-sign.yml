@@ -48,13 +48,13 @@ jobs:
         shell: bash
 
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Create archive
         run: git archive --format=tar.gz -o ${IMATH_TARBALL} --prefix ${IMATH_PREFIX} ${TAG}
 
       - name: Sign archive with Sigstore
-        uses: sigstore/gh-action-sigstore-python@f832326173235dcb00dd5d92cd3f353de3188e6c # v3.1.0
+        uses: sigstore/gh-action-sigstore-python@04cffa1d795717b140764e8b640de88853c92acc # v3.3.0
         with:
           inputs: ${{ env.IMATH_TARBALL }}
           upload-signing-artifacts: false
