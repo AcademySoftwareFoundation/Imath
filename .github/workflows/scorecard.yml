@@ -51,6 +51,6 @@ jobs:
 
       # Upload the results to GitHub's code scanning dashboard.
       - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@d2e135a73a39154e3a231aeb49163c4661c5b8b1 # v3.30.7
+        uses: github/codeql-action/upload-sarif@a723e99345b89ee0bbcbd68ee4e63f9a56b42a25 # v3.30.7
         with:
           sarif_file: results.sarif
