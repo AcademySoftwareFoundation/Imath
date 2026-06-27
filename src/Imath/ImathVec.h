@@ -36,6 +36,9 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+/// Specialization so that Vec<half> supports length/normalize.
+template <> struct is_float_like<half> : public std::true_type {};
+
 template <class T> class Vec2;
 template <class T> class Vec3;
 template <class T> class Vec4;
@@ -280,7 +283,7 @@ public:
     /// @name Query and Manipulation
 
     /// Return the Euclidean norm
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE T length () const IMATH_NOEXCEPT;
 
     /// Return the square of the Euclidean norm, i.e. the dot product
@@ -288,33 +291,33 @@ public:
     IMATH_HOSTDEVICE constexpr T length2 () const IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, return a null vector.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec2& normalize () IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, throw an exception.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     const Vec2& normalizeExc ();
 
     /// Normalize without any checks for length()==0. Slightly faster
     /// than the other normalization routines, but if v.length() is
     /// 0.0, the result is undefined.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec2& normalizeNonNull () IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec2<T> normalized () const IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this. Throw an
     /// exception if length()==0.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     Vec2<T> normalizedExc () const;
 
     /// Return a normalized vector. Does not modify *this, and does
     /// not check for length()==0. Slightly faster than the other
     /// normalization routines, but if v.length() is 0.0, the result
     /// is undefined.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec2<T> normalizedNonNull () const IMATH_NOEXCEPT;
 
     /// @}
@@ -619,7 +622,7 @@ public:
     /// @name Query and Manipulation
 
     /// Return the Euclidean norm
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE T length () const IMATH_NOEXCEPT;
 
     /// Return the square of the Euclidean norm, i.e. the dot product
@@ -627,33 +630,33 @@ public:
     IMATH_HOSTDEVICE constexpr T length2 () const IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, return a null vector.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec3& normalize () IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, throw an exception.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     const Vec3& normalizeExc ();
 
     /// Normalize without any checks for length()==0. Slightly faster
     /// than the other normalization routines, but if v.length() is
     /// 0.0, the result is undefined.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec3& normalizeNonNull () IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec3<T> normalized () const IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this. Throw an
     /// exception if length()==0.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     Vec3<T> normalizedExc () const;
 
     /// Return a normalized vector. Does not modify *this, and does
     /// not check for length()==0. Slightly faster than the other
     /// normalization routines, but if v.length() is 0.0, the result
     /// is undefined.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec3<T> normalizedNonNull () const IMATH_NOEXCEPT;
 
     /// @}
@@ -939,7 +942,7 @@ public:
     /// @name Query and Manipulation
 
     /// Return the Euclidean norm
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE T length () const IMATH_NOEXCEPT;
 
     /// Return the square of the Euclidean norm, i.e. the dot product
@@ -947,33 +950,33 @@ public:
     IMATH_HOSTDEVICE constexpr T length2 () const IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, return a null vector.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec4& normalize () IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, throw an exception.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     const Vec4& normalizeExc ();
 
     /// Normalize without any checks for length()==0. Slightly faster
     /// than the other normalization routines, but if v.length() is
     /// 0.0, the result is undefined.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec4& normalizeNonNull () IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec4<T> normalized () const IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this. Throw an
     /// exception if length()==0.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     Vec4<T> normalizedExc () const;
 
     /// Return a normalized vector. Does not modify *this, and does
     /// not check for length()==0. Slightly faster than the other
     /// normalization routines, but if v.length() is 0.0, the result
     /// is undefined.
-    template <typename S = T, IMATH_ENABLE_IF (std::is_floating_point<S>::value)>
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec4<T> normalizedNonNull () const IMATH_NOEXCEPT;
 
     /// @}
@@ -1426,7 +1429,7 @@ Vec2<T>::lengthTiny () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline T
 Vec2<T>::length () const IMATH_NOEXCEPT
 {
@@ -1446,7 +1449,7 @@ Vec2<T>::length2 () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::normalize () IMATH_NOEXCEPT
 {
@@ -1468,7 +1471,7 @@ Vec2<T>::normalize () IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 inline const Vec2<T>&
 Vec2<T>::normalizeExc ()
 {
@@ -1483,7 +1486,7 @@ Vec2<T>::normalizeExc ()
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::normalizeNonNull () IMATH_NOEXCEPT
 {
@@ -1494,7 +1497,7 @@ Vec2<T>::normalizeNonNull () IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline Vec2<T>
 Vec2<T>::normalized () const IMATH_NOEXCEPT
 {
@@ -1506,7 +1509,7 @@ Vec2<T>::normalized () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 inline Vec2<T>
 Vec2<T>::normalizedExc () const
 {
@@ -1519,7 +1522,7 @@ Vec2<T>::normalizedExc () const
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline Vec2<T>
 Vec2<T>::normalizedNonNull () const IMATH_NOEXCEPT
 {
@@ -1914,7 +1917,7 @@ Vec3<T>::lengthTiny () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline T
 Vec3<T>::length () const IMATH_NOEXCEPT
 {
@@ -1934,7 +1937,7 @@ Vec3<T>::length2 () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline const Vec3<T>&
 Vec3<T>::normalize () IMATH_NOEXCEPT
 {
@@ -1957,7 +1960,7 @@ Vec3<T>::normalize () IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 inline const Vec3<T>&
 Vec3<T>::normalizeExc ()
 {
@@ -1973,7 +1976,7 @@ Vec3<T>::normalizeExc ()
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline const Vec3<T>&
 Vec3<T>::normalizeNonNull () IMATH_NOEXCEPT
 {
@@ -1985,7 +1988,7 @@ Vec3<T>::normalizeNonNull () IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline Vec3<T>
 Vec3<T>::normalized () const IMATH_NOEXCEPT
 {
@@ -1997,7 +2000,7 @@ Vec3<T>::normalized () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 inline Vec3<T>
 Vec3<T>::normalizedExc () const
 {
@@ -2010,7 +2013,7 @@ Vec3<T>::normalizedExc () const
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline Vec3<T>
 Vec3<T>::normalizedNonNull () const IMATH_NOEXCEPT
 {
@@ -2375,7 +2378,7 @@ Vec4<T>::lengthTiny () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline T
 Vec4<T>::length () const IMATH_NOEXCEPT
 {
@@ -2395,7 +2398,7 @@ Vec4<T>::length2 () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline const Vec4<T>&
 Vec4<T>::normalize () IMATH_NOEXCEPT
 {
@@ -2419,7 +2422,7 @@ Vec4<T>::normalize () IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 inline const Vec4<T>&
 Vec4<T>::normalizeExc ()
 {
@@ -2436,7 +2439,7 @@ Vec4<T>::normalizeExc ()
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline const Vec4<T>&
 Vec4<T>::normalizeNonNull () IMATH_NOEXCEPT
 {
@@ -2449,7 +2452,7 @@ Vec4<T>::normalizeNonNull () IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline Vec4<T>
 Vec4<T>::normalized () const IMATH_NOEXCEPT
 {
@@ -2461,7 +2464,7 @@ Vec4<T>::normalized () const IMATH_NOEXCEPT
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 inline Vec4<T>
 Vec4<T>::normalizedExc () const
 {
@@ -2474,7 +2477,7 @@ Vec4<T>::normalizedExc () const
 }
 
 template <class T>
-template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<std::is_floating_point<S>::value, int>>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<is_float_like<S>::value, int>>
 IMATH_HOSTDEVICE inline Vec4<T>
 Vec4<T>::normalizedNonNull () const IMATH_NOEXCEPT
 {
