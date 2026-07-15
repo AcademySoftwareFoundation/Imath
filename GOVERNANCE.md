@@ -76,7 +76,7 @@ info@openexr.com.
 
 The Technical Steering Committee (TSC) oversees the overall technical
 direction of OpenEXR, as defined in the project
-[charter](ASWF/charter/OpenEXR-Technical-Charter.md).  This
+[charter](https://github.com/AcademySoftwareFoundation/openexr/blob/main/ASWF/charter/OpenEXR-Technical-Charter.md).  This
 charter defines the TSC member terms and succession policies.
 
 The responsibilities of the TSC include:
@@ -115,7 +115,7 @@ represents the project at ASWF TAC meetings.
 * Kimball Thurston - Weta Digital, Ltd.
 * Nick Porcino - Pixar Animation Studios
 * Christina Tempelaar-Lietz - Industrial Light & Magic
-* Joseph Goldstone - ARRI
+* Joseph Goldstone - Lilliputian Pictures LLC
 * John Mertic - The Linux Foundation
 
 ### TSC Meetings

@@ -19,7 +19,7 @@ follows OpenEXR's governance and contribution policies.
 For a description of the roles and responsibilities of the various
 members of the OpenEXR community, see [GOVERNANCE](GOVERNANCE.md), and
 for further details, see the OpenEXR project's [Technical
-Charter](ASWF/charter/OpenEXR-Technical-Charter.md). Briefly,
+Charter](https://github.com/AcademySoftwareFoundation/openexr/blob/main/ASWF/charter/OpenEXR-Technical-Charter.md). Briefly,
 a "contributor" is anyone who submits content to the project, a
 "committer" reviews and approves such submissions, and the "Technical
 Steering Committee" provides general project oversight and governance.
@@ -40,7 +40,7 @@ There are two primary ways to connect with the Imath project:
 If you have trouble installing, building, or using the library, but
 there's not yet reason to suspect you've encountered a genuine bug,
 start by posting a question to the
-[openexr-dev](http://lists.aswf.io/openexr-dev) mailing list. This is
+[openexr-dev](https://lists.aswf.io/g/openexr-dev) mailing list. This is
 the place for question such has "How do I...".
 
 ### How to Report a Bug
@@ -236,7 +236,7 @@ who may discuss, offer constructive feedback, request changes, or approve
 the work.
 
 6. Upon receiving the required number of committer approvals (as
-outlined in [Required Approvals](#required-approvals)), a committer
+outlined in [Required Approvals](#code-review-and-required-approvals)), a committer
 other than the PR contributor may merge changes into the ``main``
 branch.
 
