@@ -101,6 +101,94 @@ interpretOrder(typename Eulerf::Order order)
     return o;
 }
 
+// module-level EULER_XYZ, EULER_ZYX, etc constants are all instances of
+// Eulerf, so convert Eulerd/Eulerf to Eulerf::order.
+template <class T>
+static Eulerf::Order
+toEulerfOrder(typename Euler<T>::Order order)
+{
+    Eulerf::Order o = Eulerf::XYZ;
+    switch (order)
+    {
+      case Euler<T>::XYZ:
+          o = Eulerf::XYZ;
+          break;
+      case Euler<T>::XZY:
+          o = Eulerf::XZY;
+          break;
+      case Euler<T>::YZX:
+          o = Eulerf::YZX;
+          break;
+      case Euler<T>::YXZ:
+          o = Eulerf::YXZ;
+          break;
+      case Euler<T>::ZXY:
+          o = Eulerf::ZXY;
+          break;
+      case Euler<T>::ZYX:
+          o = Eulerf::ZYX;
+          break;
+      case Euler<T>::XZX:
+          o = Eulerf::XZX;
+          break;
+      case Euler<T>::XYX:
+          o = Eulerf::XYX;
+          break;
+      case Euler<T>::YXY:
+          o = Eulerf::YXY;
+          break;
+      case Euler<T>::YZY:
+          o = Eulerf::YZY;
+          break;
+      case Euler<T>::ZYZ:
+          o = Eulerf::ZYZ;
+          break;
+      case Euler<T>::ZXZ:
+          o = Eulerf::ZXZ;
+          break;
+      case Euler<T>::XYZr:
+          o = Eulerf::XYZr;
+          break;
+      case Euler<T>::XZYr:
+          o = Eulerf::XZYr;
+          break;
+      case Euler<T>::YZXr:
+          o = Eulerf::YZXr;
+          break;
+      case Euler<T>::YXZr:
+          o = Eulerf::YXZr;
+          break;
+      case Euler<T>::ZXYr:
+          o = Eulerf::ZXYr;
+          break;
+      case Euler<T>::ZYXr:
+          o = Eulerf::ZYXr;
+          break;
+      case Euler<T>::XZXr:
+          o = Eulerf::XZXr;
+          break;
+      case Euler<T>::XYXr:
+          o = Eulerf::XYXr;
+          break;
+      case Euler<T>::YXYr:
+          o = Eulerf::YXYr;
+          break;
+      case Euler<T>::YZYr:
+          o = Eulerf::YZYr;
+          break;
+      case Euler<T>::ZYZr:
+          o = Eulerf::ZYZr;
+          break;
+      case Euler<T>::ZXZr:
+          o = Eulerf::ZXZr;
+          break;
+      default:
+          break;
+    }
+
+    return o;
+}
+
 // needed to convert Eulerf::InputLayout to Euler<T>::InputLayout
 template <class T>
 static typename Euler<T>::InputLayout
@@ -111,7 +199,19 @@ interpretInputLayout(typename Eulerf::InputLayout layout)
     return Euler<T>::IJKLayout;
 }
 
-// needed to convert Eulerf::Axis to Euler<T>::Axis
+// needed to convert Euler<T>::InputLayout back to Eulerf::InputLayout (same
+// rationale as toEulerfOrder()/toEulerfAxis(): InputLayout is registered once,
+// at module scope, as the canonical Eulerf::InputLayout type).
+template <class T>
+static Eulerf::InputLayout
+toEulerfInputLayout(typename Euler<T>::InputLayout layout)
+{
+    if (layout == Euler<T>::XYZLayout)
+        return Eulerf::XYZLayout;
+    return Eulerf::IJKLayout;
+}
+
+
 template <class T>
 static typename Euler<T>::Axis
 interpretAxis(typename Eulerf::Axis axis)
@@ -122,6 +222,21 @@ interpretAxis(typename Eulerf::Axis axis)
         return Euler<T>::Y;
     else
         return Euler<T>::Z;
+}
+
+// needed to convert Euler<T>::Axis back to Eulerf::Axis (same rationale as
+// toEulerfOrder() above: Axis is registered once, at module scope, as the
+// canonical Eulerf::Axis type).
+template <class T>
+static Eulerf::Axis
+toEulerfAxis(typename Euler<T>::Axis axis)
+{
+    if (axis == Euler<T>::X)
+        return Eulerf::X;
+    else if (axis == Euler<T>::Y)
+        return Eulerf::Y;
+    else
+        return Eulerf::Z;
 }
 
 #if XXX
@@ -255,7 +370,7 @@ register_euler(py::module& m, const char* name)
         .def("toMatrix33", &Euler::toMatrix33)
         .def("toMatrix44", &Euler::toMatrix44)
         .def("toQuat", &Euler::toQuat)
-        .def("order", &Euler::order)
+        .def("order", [](const Euler& self) { return toEulerfOrder<T>(self.order()); })
         .def("angleOrder", [](const Euler& self) {
             int i, j, k;
             self.angleOrder(i, j, k);
@@ -267,7 +382,7 @@ register_euler(py::module& m, const char* name)
              "or false if the angles of e are measured relative to\n"
              "each other\n")
             
-        .def("initialAxis", &Euler::initialAxis, 
+        .def("initialAxis", [](const Euler& self) { return toEulerfAxis<T>(self.initialAxis()); },
              "e.initialAxis() -- returns the initial rotation\n"
              "axis of e (EULER_X_AXIS, EULER_Y_AXIS, EULER_Z_AXIS)")
         
@@ -329,48 +444,10 @@ register_euler(py::module& m, const char* name)
         })
         ;
 
-    py::enum_<Order>(euler, "Order")
-        .value("XYZ", Euler::XYZ)
-        .value("XZY", Euler::XZY)
-        .value("YZX", Euler::YZX)
-        .value("YXZ", Euler::YXZ)
-        .value("ZXY", Euler::ZXY)
-        .value("ZYX", Euler::ZYX)
-        .value("XZX", Euler::XZX)
-        .value("XYX", Euler::XYX)
-        .value("YXY", Euler::YXY)
-        .value("YZY", Euler::YZY)
-        .value("ZYZ", Euler::ZYZ)
-        .value("ZXZ", Euler::ZXZ)
-
-        .value("XYZr", Euler::XYZr)
-        .value("XZYr", Euler::XZYr)
-        .value("YZXr", Euler::YZXr)
-        .value("YXZr", Euler::YXZr)
-        .value("ZXYr", Euler::ZXYr)
-        .value("ZYXr", Euler::ZYXr)
-        .value("XZXr", Euler::XZXr)
-        .value("XYXr", Euler::XYXr)
-        .value("YXYr", Euler::YXYr)
-        .value("YZYr", Euler::YZYr)
-        .value("ZYZr", Euler::ZYZr)
-        .value("ZXZr", Euler::ZXZr)
-        .export_values();
-
-    euler.attr("Default") = Euler::XYZ;
-    
-    // Enums for Axis
-    py::enum_<Axis>(euler, "Axis")
-        .value("X", Euler::X)
-        .value("Y", Euler::Y)
-        .value("Z", Euler::Z)
-        .export_values();
-
-    // Enums for InputLayout
-    py::enum_<InputLayout>(euler, "InputLayout")
-        .value("XYZLayout", Euler::XYZLayout)
-        .value("IJKLayout", Euler::IJKLayout)
-        .export_values();
+    // Note: Axis and InputLayout, like Order, aren't really parameterized on
+    // T, so they are registered exactly once at module scope (see
+    // register_imath_euler() below) instead of being duplicated per-T here.
+    euler.attr("Default") = toEulerfOrder<T>(Euler::XYZ);
 }
 
 } // namespace
@@ -381,6 +458,51 @@ namespace PyBindImath {
 void
 register_imath_euler(py::module& m)
 {
+    // Order isn't really parameterized on T (Eulerf::Order and Eulerd::Order
+    // have identical values), so register it exactly once, at module scope,
+    // under an unambiguous name. This also makes str()/repr() of an Order
+    // value print "EulerOrder.XYZ".
+    py::enum_<Eulerf::Order>(m, "EulerOrder")
+        .value("XYZ", Eulerf::XYZ)
+        .value("XZY", Eulerf::XZY)
+        .value("YZX", Eulerf::YZX)
+        .value("YXZ", Eulerf::YXZ)
+        .value("ZXY", Eulerf::ZXY)
+        .value("ZYX", Eulerf::ZYX)
+        .value("XZX", Eulerf::XZX)
+        .value("XYX", Eulerf::XYX)
+        .value("YXY", Eulerf::YXY)
+        .value("YZY", Eulerf::YZY)
+        .value("ZYZ", Eulerf::ZYZ)
+        .value("ZXZ", Eulerf::ZXZ)
+        .value("XYZr", Eulerf::XYZr)
+        .value("XZYr", Eulerf::XZYr)
+        .value("YZXr", Eulerf::YZXr)
+        .value("YXZr", Eulerf::YXZr)
+        .value("ZXYr", Eulerf::ZXYr)
+        .value("ZYXr", Eulerf::ZYXr)
+        .value("XZXr", Eulerf::XZXr)
+        .value("XYXr", Eulerf::XYXr)
+        .value("YXYr", Eulerf::YXYr)
+        .value("YZYr", Eulerf::YZYr)
+        .value("ZYZr", Eulerf::ZYZr)
+        .value("ZXZr", Eulerf::ZXZr);
+        // Note: no .export_values() here -- these are already exposed at
+        // module scope via the EULER_XYZ, EULER_ZYX, etc. constants below,
+        // so exporting bare "XYZ", "ZYX", etc. names would just pollute the
+        // module namespace and risk colliding with other identifiers.
+
+    // Same rationale for Axis and InputLayout: register once, at module
+    // scope, as the canonical Eulerf::Axis / Eulerf::InputLayout types.
+    py::enum_<Eulerf::Axis>(m, "EulerAxis")
+        .value("X", Eulerf::X)
+        .value("Y", Eulerf::Y)
+        .value("Z", Eulerf::Z);
+
+    py::enum_<Eulerf::InputLayout>(m, "EulerInputLayout")
+        .value("XYZLayout", Eulerf::XYZLayout)
+        .value("IJKLayout", Eulerf::IJKLayout);
+
     register_euler<Eulerf>(m, "Eulerf");
     register_euler<Eulerd>(m, "Eulerd");
 
