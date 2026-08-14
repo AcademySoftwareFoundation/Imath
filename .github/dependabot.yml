@@ -10,7 +10,11 @@ updates:
       interval: "daily"
     exclude-paths:
       - ".github/workflows/ci_workflow_vfx.yml"
-      
+    groups:
+      codeql:
+        patterns:
+          - "github/codeql-action/*"
+
   - package-ecosystem: "pip"
     directory: "/"
     schedule:

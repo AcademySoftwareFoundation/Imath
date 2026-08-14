@@ -74,8 +74,11 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v4.35.5
+      uses: github/codeql-action/init@5595ccaf912efad79be6eef63a5619ff05969be3 # v4.37.6
       with:
+        # cary: the "linked" setting is necessary to force the run to pick up
+        # the version specified in the action.
+        tools: linked 
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
         # If you wish to specify custom queries, you can do so here or in a config file.
@@ -101,6 +104,11 @@ jobs:
         exit 1
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v4.35.5
+      uses: github/codeql-action/analyze@5595ccaf912efad79be6eef63a5619ff05969be3 # v4.37.6
       with:
         category: "/language:${{matrix.language}}"
+        # For pull_request, upload against refs/pull/<n>/head + head SHA so the Code
+        # Scanning API does not require refs/heads/<branch> (e.g. Dependabot branches
+        # can trigger "ref ... not found"). Ignored for fork PRs by the action.
+        ref: ${{ github.event_name == 'pull_request' && format('refs/pull/{0}/head', github.event.pull_request.number) || github.ref }}
+        sha: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
