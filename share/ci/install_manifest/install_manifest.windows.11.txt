@@ -10,7 +10,6 @@ include/Imath/ImathBoxAlgo.h
 include/Imath/ImathColor.h
 include/Imath/ImathColorAlgo.h
 include/Imath/ImathConfig.h
-include/Imath/ImathConfig.h
 include/Imath/ImathEuler.h
 include/Imath/ImathExport.h
 include/Imath/ImathForward.h
