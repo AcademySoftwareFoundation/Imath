@@ -169,6 +169,8 @@ jobs:
       os: ${{ matrix.os || 'windows-2022' }}
       build: ${{ matrix.build }}
       cxx-standard: ${{ matrix.cxx-standard || '14' }}
+      cxx-compiler: ${{ matrix.cxx-compiler }}
+      cc-compiler: ${{ matrix.cc-compiler }}
       build-type: ${{ matrix.build-type || 'Release' }}
       python: ${{ matrix.python || 'ON' }}
       pybind11: ${{ matrix.pybind11 || 'ON' }}
@@ -242,4 +244,11 @@ jobs:
             msystem: UCRT64
             BUILD_SHARED_LIBS: 'OFF'
             python: 'OFF' # TODO: conan won't build boost.python w/msys2, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
+            
+          - build: 11
+            label: clang
+            cxx-compiler: clang++
+            cc-compiler: clang
+            python: 'OFF'
             IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
