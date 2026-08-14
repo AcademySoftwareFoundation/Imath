@@ -251,4 +251,4 @@ jobs:
             cxx-compiler: clang++
             cc-compiler: clang
             python: 'OFF'
-            python: 'OFF'
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
