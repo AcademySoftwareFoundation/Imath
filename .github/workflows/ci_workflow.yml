@@ -250,3 +250,4 @@ jobs:
             label: clang
             cxx-compiler: clang++
             cc-compiler: clang
+            python: 'OFF'
