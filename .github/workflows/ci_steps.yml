@@ -116,7 +116,7 @@ jobs:
       - name: Install python for MINGW32
         if: inputs.pybind11 == 'ON' && inputs.msystem == 'MINGW32'
         # Note that MINGW32 requires the x86 architecture
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.9'
           architecture: 'x86'
