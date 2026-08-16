@@ -36,6 +36,9 @@
 
 IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
+/// Specialization so that Vec<half> supports length/normalize.
+template <> struct is_float_like<half> : public std::true_type {};
+
 template <class T> class Vec2;
 template <class T> class Vec3;
 template <class T> class Vec4;
@@ -280,6 +283,7 @@ public:
     /// @name Query and Manipulation
 
     /// Return the Euclidean norm
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE T length () const IMATH_NOEXCEPT;
 
     /// Return the square of the Euclidean norm, i.e. the dot product
@@ -287,27 +291,33 @@ public:
     IMATH_HOSTDEVICE constexpr T length2 () const IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, return a null vector.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec2& normalize () IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, throw an exception.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     const Vec2& normalizeExc ();
 
     /// Normalize without any checks for length()==0. Slightly faster
     /// than the other normalization routines, but if v.length() is
     /// 0.0, the result is undefined.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec2& normalizeNonNull () IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec2<T> normalized () const IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this. Throw an
     /// exception if length()==0.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     Vec2<T> normalizedExc () const;
 
     /// Return a normalized vector. Does not modify *this, and does
     /// not check for length()==0. Slightly faster than the other
     /// normalization routines, but if v.length() is 0.0, the result
     /// is undefined.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec2<T> normalizedNonNull () const IMATH_NOEXCEPT;
 
     /// @}
@@ -612,6 +622,7 @@ public:
     /// @name Query and Manipulation
 
     /// Return the Euclidean norm
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE T length () const IMATH_NOEXCEPT;
 
     /// Return the square of the Euclidean norm, i.e. the dot product
@@ -619,28 +630,33 @@ public:
     IMATH_HOSTDEVICE constexpr T length2 () const IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, return a null vector.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec3& normalize () IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, throw an exception.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     const Vec3& normalizeExc ();
 
     /// Normalize without any checks for length()==0. Slightly faster
     /// than the other normalization routines, but if v.length() is
     /// 0.0, the result is undefined.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec3& normalizeNonNull () IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this.
-    IMATH_HOSTDEVICE Vec3<T>
-    normalized () const IMATH_NOEXCEPT; // does not modify *this
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
+    IMATH_HOSTDEVICE Vec3<T> normalized () const IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this. Throw an
     /// exception if length()==0.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     Vec3<T> normalizedExc () const;
 
     /// Return a normalized vector. Does not modify *this, and does
     /// not check for length()==0. Slightly faster than the other
     /// normalization routines, but if v.length() is 0.0, the result
     /// is undefined.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec3<T> normalizedNonNull () const IMATH_NOEXCEPT;
 
     /// @}
@@ -926,6 +942,7 @@ public:
     /// @name Query and Manipulation
 
     /// Return the Euclidean norm
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE T length () const IMATH_NOEXCEPT;
 
     /// Return the square of the Euclidean norm, i.e. the dot product
@@ -933,28 +950,33 @@ public:
     IMATH_HOSTDEVICE constexpr T length2 () const IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, return a null vector.
-    IMATH_HOSTDEVICE const Vec4& normalize () IMATH_NOEXCEPT; // modifies *this
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
+    IMATH_HOSTDEVICE const Vec4& normalize () IMATH_NOEXCEPT;
 
     /// Normalize in place. If length()==0, throw an exception.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     const Vec4& normalizeExc ();
 
     /// Normalize without any checks for length()==0. Slightly faster
     /// than the other normalization routines, but if v.length() is
     /// 0.0, the result is undefined.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE const Vec4& normalizeNonNull () IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this.
-    IMATH_HOSTDEVICE Vec4<T>
-    normalized () const IMATH_NOEXCEPT; // does not modify *this
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
+    IMATH_HOSTDEVICE Vec4<T> normalized () const IMATH_NOEXCEPT;
 
     /// Return a normalized vector. Does not modify *this. Throw an
     /// exception if length()==0.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     Vec4<T> normalizedExc () const;
 
     /// Return a normalized vector. Does not modify *this, and does
     /// not check for length()==0. Slightly faster than the other
     /// normalization routines, but if v.length() is 0.0, the result
     /// is undefined.
+    template <typename S = T, IMATH_ENABLE_IF (is_float_like<S>::value)>
     IMATH_HOSTDEVICE Vec4<T> normalizedNonNull () const IMATH_NOEXCEPT;
 
     /// @}
@@ -1083,178 +1105,6 @@ typedef Vec4<float> V4f;
 
 /// Vec4 of double
 typedef Vec4<double> V4d;
-
-//----------------------------------------------------------------------------
-// Specializations for VecN<short>, VecN<int>
-//
-// Normalize and length don't make sense for integer vectors, so disable them.
-//----------------------------------------------------------------------------
-
-/// @cond Doxygen_Suppress
-
-// Vec2<short>
-template <>
-IMATH_HOSTDEVICE short Vec2<short>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const Vec2<short>&
-                       Vec2<short>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec2<short>& Vec2<short>::normalizeExc ()     = delete;
-template <>
-IMATH_HOSTDEVICE const Vec2<short>&
-                       Vec2<short>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE Vec2<short>
-                 Vec2<short>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec2<short> Vec2<short>::normalizedExc () const      = delete;
-template <>
-IMATH_HOSTDEVICE Vec2<short>
-Vec2<short>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-// Vec2<int>
-template <>
-IMATH_HOSTDEVICE int Vec2<int>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const       Vec2<int>&
-                             Vec2<int>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec2<int>& Vec2<int>::normalizeExc ()             = delete;
-template <>
-IMATH_HOSTDEVICE const Vec2<int>&
-                       Vec2<int>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE      Vec2<int>
-                      Vec2<int>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec2<int> Vec2<int>::normalizedExc () const             = delete;
-template <>
-IMATH_HOSTDEVICE Vec2<int>
-                 Vec2<int>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-// Vec2<int64_t>
-template <>
-IMATH_HOSTDEVICE int64_t Vec2<int64_t>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const Vec2<int64_t>&
-                       Vec2<int64_t>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec2<int64_t>& Vec2<int64_t>::normalizeExc ()   = delete;
-template <>
-IMATH_HOSTDEVICE const Vec2<int64_t>&
-Vec2<int64_t>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE Vec2<int64_t>
-                 Vec2<int64_t>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec2<int64_t> Vec2<int64_t>::normalizedExc () const    = delete;
-template <>
-IMATH_HOSTDEVICE Vec2<int64_t>
-Vec2<int64_t>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-// Vec3<short>
-template <>
-IMATH_HOSTDEVICE short Vec3<short>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const Vec3<short>&
-                       Vec3<short>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec3<short>& Vec3<short>::normalizeExc ()     = delete;
-template <>
-IMATH_HOSTDEVICE const Vec3<short>&
-                       Vec3<short>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE Vec3<short>
-                 Vec3<short>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec3<short> Vec3<short>::normalizedExc () const      = delete;
-template <>
-IMATH_HOSTDEVICE Vec3<short>
-Vec3<short>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-// Vec3<int>
-template <>
-IMATH_HOSTDEVICE int Vec3<int>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const       Vec3<int>&
-                             Vec3<int>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec3<int>& Vec3<int>::normalizeExc ()             = delete;
-template <>
-IMATH_HOSTDEVICE const Vec3<int>&
-                       Vec3<int>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE      Vec3<int>
-                      Vec3<int>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec3<int> Vec3<int>::normalizedExc () const             = delete;
-template <>
-IMATH_HOSTDEVICE Vec3<int>
-                 Vec3<int>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-// Vec3<int64_t>
-template <>
-IMATH_HOSTDEVICE int64_t Vec3<int64_t>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const Vec3<int64_t>&
-                       Vec3<int64_t>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec3<int64_t>& Vec3<int64_t>::normalizeExc ()   = delete;
-template <>
-IMATH_HOSTDEVICE const Vec3<int64_t>&
-Vec3<int64_t>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE Vec3<int64_t>
-                 Vec3<int64_t>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec3<int64_t> Vec3<int64_t>::normalizedExc () const    = delete;
-template <>
-IMATH_HOSTDEVICE Vec3<int64_t>
-Vec3<int64_t>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-// Vec4<short>
-template <>
-IMATH_HOSTDEVICE short Vec4<short>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const Vec4<short>&
-                       Vec4<short>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec4<short>& Vec4<short>::normalizeExc ()     = delete;
-template <>
-IMATH_HOSTDEVICE const Vec4<short>&
-                       Vec4<short>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE Vec4<short>
-                 Vec4<short>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec4<short> Vec4<short>::normalizedExc () const      = delete;
-template <>
-IMATH_HOSTDEVICE Vec4<short>
-Vec4<short>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-// Vec4<int>
-template <>
-IMATH_HOSTDEVICE int Vec4<int>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const       Vec4<int>&
-                             Vec4<int>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec4<int>& Vec4<int>::normalizeExc ()             = delete;
-template <>
-IMATH_HOSTDEVICE const Vec4<int>&
-                       Vec4<int>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE      Vec4<int>
-                      Vec4<int>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec4<int> Vec4<int>::normalizedExc () const             = delete;
-template <>
-IMATH_HOSTDEVICE Vec4<int>
-                 Vec4<int>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-// Vec4<int64_t>
-template <>
-IMATH_HOSTDEVICE int64_t Vec4<int64_t>::length () const IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE const Vec4<int64_t>&
-                       Vec4<int64_t>::normalize () IMATH_NOEXCEPT = delete;
-template <> const Vec4<int64_t>& Vec4<int64_t>::normalizeExc ()   = delete;
-template <>
-IMATH_HOSTDEVICE const Vec4<int64_t>&
-Vec4<int64_t>::normalizeNonNull () IMATH_NOEXCEPT = delete;
-template <>
-IMATH_HOSTDEVICE Vec4<int64_t>
-                 Vec4<int64_t>::normalized () const IMATH_NOEXCEPT = delete;
-template <> Vec4<int64_t> Vec4<int64_t>::normalizedExc () const    = delete;
-template <>
-IMATH_HOSTDEVICE Vec4<int64_t>
-Vec4<int64_t>::normalizedNonNull () const IMATH_NOEXCEPT = delete;
-
-/// @endcond Doxygen_Suppress
 
 //------------------------
 // Implementation of Vec2:
@@ -1579,6 +1429,7 @@ Vec2<T>::lengthTiny () const IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline T
 Vec2<T>::length () const IMATH_NOEXCEPT
 {
@@ -1598,6 +1449,7 @@ Vec2<T>::length2 () const IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::normalize () IMATH_NOEXCEPT
 {
@@ -1619,6 +1471,7 @@ Vec2<T>::normalize () IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 inline const Vec2<T>&
 Vec2<T>::normalizeExc ()
 {
@@ -1633,6 +1486,7 @@ Vec2<T>::normalizeExc ()
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline const Vec2<T>&
 Vec2<T>::normalizeNonNull () IMATH_NOEXCEPT
 {
@@ -1643,6 +1497,7 @@ Vec2<T>::normalizeNonNull () IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline Vec2<T>
 Vec2<T>::normalized () const IMATH_NOEXCEPT
 {
@@ -1654,6 +1509,7 @@ Vec2<T>::normalized () const IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 inline Vec2<T>
 Vec2<T>::normalizedExc () const
 {
@@ -1666,6 +1522,7 @@ Vec2<T>::normalizedExc () const
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline Vec2<T>
 Vec2<T>::normalizedNonNull () const IMATH_NOEXCEPT
 {
@@ -2060,6 +1917,7 @@ Vec3<T>::lengthTiny () const IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline T
 Vec3<T>::length () const IMATH_NOEXCEPT
 {
@@ -2079,6 +1937,7 @@ Vec3<T>::length2 () const IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline const Vec3<T>&
 Vec3<T>::normalize () IMATH_NOEXCEPT
 {
@@ -2101,6 +1960,7 @@ Vec3<T>::normalize () IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 inline const Vec3<T>&
 Vec3<T>::normalizeExc ()
 {
@@ -2116,6 +1976,7 @@ Vec3<T>::normalizeExc ()
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline const Vec3<T>&
 Vec3<T>::normalizeNonNull () IMATH_NOEXCEPT
 {
@@ -2127,6 +1988,7 @@ Vec3<T>::normalizeNonNull () IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline Vec3<T>
 Vec3<T>::normalized () const IMATH_NOEXCEPT
 {
@@ -2138,6 +2000,7 @@ Vec3<T>::normalized () const IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 inline Vec3<T>
 Vec3<T>::normalizedExc () const
 {
@@ -2150,6 +2013,7 @@ Vec3<T>::normalizedExc () const
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline Vec3<T>
 Vec3<T>::normalizedNonNull () const IMATH_NOEXCEPT
 {
@@ -2514,6 +2378,7 @@ Vec4<T>::lengthTiny () const IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline T
 Vec4<T>::length () const IMATH_NOEXCEPT
 {
@@ -2533,7 +2398,8 @@ Vec4<T>::length2 () const IMATH_NOEXCEPT
 }
 
 template <class T>
-IMATH_HOSTDEVICE const inline Vec4<T>&
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
+IMATH_HOSTDEVICE inline const Vec4<T>&
 Vec4<T>::normalize () IMATH_NOEXCEPT
 {
     T l = length ();
@@ -2556,7 +2422,8 @@ Vec4<T>::normalize () IMATH_NOEXCEPT
 }
 
 template <class T>
-const inline Vec4<T>&
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
+inline const Vec4<T>&
 Vec4<T>::normalizeExc ()
 {
     T l = length ();
@@ -2572,6 +2439,7 @@ Vec4<T>::normalizeExc ()
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline const Vec4<T>&
 Vec4<T>::normalizeNonNull () IMATH_NOEXCEPT
 {
@@ -2584,6 +2452,7 @@ Vec4<T>::normalizeNonNull () IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline Vec4<T>
 Vec4<T>::normalized () const IMATH_NOEXCEPT
 {
@@ -2595,6 +2464,7 @@ Vec4<T>::normalized () const IMATH_NOEXCEPT
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 inline Vec4<T>
 Vec4<T>::normalizedExc () const
 {
@@ -2607,6 +2477,7 @@ Vec4<T>::normalizedExc () const
 }
 
 template <class T>
+template <typename S, IMATH_INTERNAL_NAMESPACE::enable_if_t<(is_float_like<S>::value), int>>
 IMATH_HOSTDEVICE inline Vec4<T>
 Vec4<T>::normalizedNonNull () const IMATH_NOEXCEPT
 {
