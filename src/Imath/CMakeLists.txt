@@ -51,8 +51,17 @@ set(IMATH_HEADERS
     ImathTypeTraits.h
     ImathVec.h
     ImathVecAlgo.h
-    ${IMATH_CONFIG_DIR}/ImathConfig.h
 )
+
+if (IMATH_BUILD_APPLE_FRAMEWORKS)
+    # config/CMakeLists.txt skips the explicit install() of
+    # ImathConfig.h for Apple framework builds, so it must be
+    # included here as a PUBLIC_HEADER so it ends up in
+    # Imath.framework/Headers. For non-framework builds,
+    # config/CMakeLists.txt installs it explicitly, so it must NOT
+    # be listed here too, or it gets installed twice.
+    list(APPEND IMATH_HEADERS ${IMATH_CONFIG_DIR}/ImathConfig.h)
+endif()
 
 if(BUILD_SHARED_LIBS)
 
