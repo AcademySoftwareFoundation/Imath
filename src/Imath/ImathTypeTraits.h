@@ -30,6 +30,12 @@ using enable_if_t = typename std::enable_if<B, T>::type;
 #define IMATH_ENABLE_IF(...)                                                   \
     IMATH_INTERNAL_NAMESPACE::enable_if_t<(__VA_ARGS__), int> = 0
 
+/// A type trait that identifies types for which Vec length/normalize operations
+/// are meaningful. Defaults to std::is_floating_point, with a specialization
+/// for half.
+template <class T>
+struct is_float_like : public std::is_floating_point<T> {};
+
 #if IMATH_FOREIGN_VECTOR_INTEROP
 
 /// @{
