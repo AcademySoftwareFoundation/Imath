@@ -3,6 +3,7 @@
 
 # Imath Release Notes
 
+* [Version 3.2.3](#version-323-august-18-2026) August 18, 2026
 * [Version 3.2.2](#version-322-october-8-2025) October 8, 2025
 * [Version 3.2.1](#version-321-august-15-2025) August 15, 2025
 * [Version 3.2.0](#version-320-august-8-2025) August 8, 2025
@@ -26,6 +27,137 @@
 * [Version 3.0.1-beta](#version-301-beta-march-28-2021) March 28, 2021
 * [Version 3.0.0-beta](#version-300-beta-march-15-2021) March 15, 2021
 * [Inherited History from OpenEXR](#inherited-history-from-openexr)
+
+## Version 3.2.3 (August 18, 2026)
+
+Patch release with various build and installation fixes. No functional
+differences.
+
+- Vec integer method resolution improved — Replaced  =delete with
+  SFINAE ("Substitution Failure Is Not An Error"), via a new
+  `is_float_like` trait, for `length()`, `normalize()`,
+  `normalizedExc()`, etc on integer-typed Vec2/3/4. This gives clearer
+  compiler diagnostics and allows custom numeric types (with an
+  `is_float_like` specialization) to opt into these methods. `half` is
+  explicitly supported. (#[575](https://github.com/AcademySoftwareFoundation/Imath/pull/575))
+
+- Fixed duplicate installation of `ImathConfig.h`
+  (#[591](https://github.com/AcademySoftwareFoundation/Imath/pull/591))
+
+- Fixed shared library installation path
+  (#[556](https://github.com/AcademySoftwareFoundation/Imath/pull/556))
+
+- Fixed Python module install directory, now derived correctly from
+  `Python3_SITEARCH` instead of a hardcoded/absolute path
+  (#[528](https://github.com/AcademySoftwareFoundation/Imath/pull/528))
+
+- Suppressed a C++23 deprecation warning for
+  `std::float_denorm_style/denorm_present` usage in
+  `numeric_limits<half>`
+  (#[546](https://github.com/AcademySoftwareFoundation/Imath/pull/546))
+  only)
+
+- Simplified CMake minimum-version policy handling by removing
+  explicit CMP0074/CMP0077 settings now implied by the 3.14
+  minimum (#[526](https://github.com/AcademySoftwareFoundation/Imath/pull/526))
+
+- Documentation fixes: corrected install instructions in README.md,
+  fixed broken links,  minor spelling corrections
+
+### Merged Pull Requests
+
+* [591](https://github.com/AcademySoftwareFoundation/Imath/pull/591)
+  Avoid installing ImathConfig.h twice
+* [584](https://github.com/AcademySoftwareFoundation/Imath/pull/584)
+  Fix spurious PyBindImath testEuler failure
+* [579](https://github.com/AcademySoftwareFoundation/Imath/pull/579)
+  Fix broken links and roster identified in ASWF Health Check 2026
+* [575](https://github.com/AcademySoftwareFoundation/Imath/pull/575)
+  Replace `=delete` with SFINAE for invalid Vec integer methods
+* [556](https://github.com/AcademySoftwareFoundation/Imath/pull/556)
+  Fix shared lib symlink installation path
+* [547](https://github.com/AcademySoftwareFoundation/Imath/pull/547)
+  Move `imath_float_half_exp_table` inside #ifdef IMATH_USE_HALF_LOOKUP_TABLE
+* [546](https://github.com/AcademySoftwareFoundation/Imath/pull/546)
+  Suppress C++23 `float_denorm_style` deprecation warning in
+  `numeric_limits<half>`
+* [544](https://github.com/AcademySoftwareFoundation/Imath/pull/544)
+  Be pedantic about GitHub spelling
+* [528](https://github.com/AcademySoftwareFoundation/Imath/pull/528)
+  Set `PYTHON_INSTALL_DIR` based on Python3_SITEARCH
+* [526](https://github.com/AcademySoftwareFoundation/Imath/pull/526)
+  cmake - clean up policies covered by min required version
+* [525](https://github.com/AcademySoftwareFoundation/Imath/pull/525)
+  README.md - install url to point to install instructions
+
+### Merged Workflow Pull Requests
+
+* [590](https://github.com/AcademySoftwareFoundation/Imath/pull/590)
+  Bump actions/setup-python from 6 to 7
+* [589](https://github.com/AcademySoftwareFoundation/Imath/pull/589)
+  Bump sigstore/gh-action-sigstore-python from 3.4.0 to 3.5.0
+* [586](https://github.com/AcademySoftwareFoundation/Imath/pull/586)
+  Bump actions/checkout from 7.0.0 to 7.0.1
+* [583](https://github.com/AcademySoftwareFoundation/Imath/pull/583)
+  set ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION for old vfx CI jobs
+* [582](https://github.com/AcademySoftwareFoundation/Imath/pull/582)
+  Update codeql.yml/dependabot.yml to match OpenEXR
+* [581](https://github.com/AcademySoftwareFoundation/Imath/pull/581)
+  Update analysis_workflow.yml to match OpenEXR
+* [580](https://github.com/AcademySoftwareFoundation/Imath/pull/580)
+  Update scorecard.yml to match OpenEXR
+* [578](https://github.com/AcademySoftwareFoundation/Imath/pull/578)
+  CI: add Clang build on Windows
+* [576](https://github.com/AcademySoftwareFoundation/Imath/pull/576)
+  Bump actions/checkout from 6.0.2 to 7.0.0
+* [574](https://github.com/AcademySoftwareFoundation/Imath/pull/574)
+  Bump msys2/setup-msys2 from 2.31.1 to 2.32.0
+* [573](https://github.com/AcademySoftwareFoundation/Imath/pull/573)
+  Bump sigstore/gh-action-sigstore-python from 3.3.0 to 3.4.0
+* [568](https://github.com/AcademySoftwareFoundation/Imath/pull/568)
+  Bump github/codeql-action from 4.35.2 to 4.35.5
+* [565](https://github.com/AcademySoftwareFoundation/Imath/pull/565)
+  Bump msys2/setup-msys2 from 2.31.0 to 2.31.1
+* [563](https://github.com/AcademySoftwareFoundation/Imath/pull/563)
+  Bump github/codeql-action from 4.32.5 to 4.35.2
+* [562](https://github.com/AcademySoftwareFoundation/Imath/pull/562)
+  Bump actions/upload-artifact from 7.0.0 to 7.0.1
+* [557](https://github.com/AcademySoftwareFoundation/Imath/pull/557)
+  Bump sigstore/gh-action-sigstore-python from 3.2.0 to 3.3.0
+* [554](https://github.com/AcademySoftwareFoundation/Imath/pull/554)
+  Bump msys2/setup-msys2 from 2.30.0 to 2.31.0
+* [551](https://github.com/AcademySoftwareFoundation/Imath/pull/551)
+  Bump github/codeql-action from 4.31.8 to 4.32.5
+* [550](https://github.com/AcademySoftwareFoundation/Imath/pull/550)
+  Bump actions/upload-artifact from 6.0.0 to 7.0.0
+* [549](https://github.com/AcademySoftwareFoundation/Imath/pull/549)
+  Bump actions/checkout from 6.0.1 to 6.0.2
+* [548](https://github.com/AcademySoftwareFoundation/Imath/pull/548)
+  Remove website_preview_link workflow
+* [543](https://github.com/AcademySoftwareFoundation/Imath/pull/543)
+  Bump actions/upload-artifact from 5.0.0 to 6.0.0
+* [542](https://github.com/AcademySoftwareFoundation/Imath/pull/542)
+  Bump msys2/setup-msys2 from 2.29.0 to 2.30.0
+* [541](https://github.com/AcademySoftwareFoundation/Imath/pull/541)
+  Bump github/codeql-action from 4.31.5 to 4.31.8
+* [538](https://github.com/AcademySoftwareFoundation/Imath/pull/538)
+  Bump actions/checkout from 6.0.0 to 6.0.1
+* [537](https://github.com/AcademySoftwareFoundation/Imath/pull/537)
+  Bump sigstore/gh-action-sigstore-python from 3.1.0 to 3.2.0
+* [534](https://github.com/AcademySoftwareFoundation/Imath/pull/534)
+  Bump github/codeql-action from 3.30.7 to 4.31.5
+* [533](https://github.com/AcademySoftwareFoundation/Imath/pull/533)
+  Bump actions/checkout from 3.6.0 to 6.0.0
+* [527](https://github.com/AcademySoftwareFoundation/Imath/pull/527)
+  Fix typo in codeql.yml
+* [522](https://github.com/AcademySoftwareFoundation/Imath/pull/522)
+  Bump actions/upload-artifact from 4.6.2 to 5.0.0
+* [521](https://github.com/AcademySoftwareFoundation/Imath/pull/521)
+  Bump sigstore/gh-action-sigstore-python from 3.0.1 to 3.1.0
+* [520](https://github.com/AcademySoftwareFoundation/Imath/pull/520)
+  Bump github/codeql-action from 3 to 4
+* [514](https://github.com/AcademySoftwareFoundation/Imath/pull/514)
+  Bump actions/setup-python from 5 to 6
 
 ## Version 3.2.2 (October 8, 2025)
 
