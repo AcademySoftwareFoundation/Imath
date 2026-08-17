@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.14)
 
 # Imath version
 
-project(Imath VERSION 3.2.2 LANGUAGES C CXX)
+project(Imath VERSION 3.2.3 LANGUAGES C CXX)
 
 set(IMATH_VERSION_RELEASE_TYPE "" CACHE STRING "Extra version tag string for Imath build, such as -dev, -beta1, etc.")
 
