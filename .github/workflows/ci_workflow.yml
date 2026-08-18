@@ -246,6 +246,12 @@ jobs:
             python: 'OFF' # TODO: conan won't build boost.python w/msys2, please help find why!
             IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
             
+          - build: 10
+            label: msys2-clang64
+            msystem: CLANG64
+            python: 'OFF' # TODO: conan won't build boost.python w/msys2, please help find why!
+            IMATH_TEST_PYBIND11: 'OFF' # TODO: "import pybindimath" fails on Windows, please help find why!
+
           - build: 11
             label: clang
             cxx-compiler: clang++

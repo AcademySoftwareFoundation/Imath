@@ -8,7 +8,7 @@
 #ifndef PYBINDIMATHEXPORT_H
 #define PYBINDIMATHEXPORT_H
 
-#if defined(_MSC_VER)
+#if defined(_WIN32)
     #if defined(IMATH_DLL)
         #if defined(PYBINDIMATH_BUILD)
             #define PYBINDIMATH_EXPORT __declspec(dllexport)
