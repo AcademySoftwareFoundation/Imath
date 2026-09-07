@@ -16,11 +16,11 @@
 
 template <typename T>
 void
-verifyOrthonormal (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
+verifyOrthonormal (const IMATH_NAMESPACE::Matrix33<T>& A)
 {
     const T valueEps = T (100) * std::numeric_limits<T>::epsilon ();
 
-    const IMATH_INTERNAL_NAMESPACE::Matrix33<T> prod = A * A.transposed ();
+    const IMATH_NAMESPACE::Matrix33<T> prod = A * A.transposed ();
     for (int i = 0; i < 3; ++i)
     {
         for (int j = 0; j < 3; ++j)
@@ -35,11 +35,11 @@ verifyOrthonormal (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
 
 template <typename T>
 void
-verifyOrthonormal (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
+verifyOrthonormal (const IMATH_NAMESPACE::Matrix44<T>& A)
 {
     const T valueEps = T (100) * std::numeric_limits<T>::epsilon ();
 
-    const IMATH_INTERNAL_NAMESPACE::Matrix44<T> prod = A * A.transposed ();
+    const IMATH_NAMESPACE::Matrix44<T> prod = A * A.transposed ();
     for (int i = 0; i < 4; ++i)
     {
         for (int j = 0; j < 4; ++j)
@@ -54,7 +54,7 @@ verifyOrthonormal (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
 
 template <typename T>
 void
-verifyTinySVD_3x3 (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
+verifyTinySVD_3x3 (const IMATH_NAMESPACE::Matrix33<T>& A)
 {
     T maxEntry = 0;
     for (int i = 0; i < 3; ++i)
@@ -68,18 +68,18 @@ verifyTinySVD_3x3 (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
     {
         const bool posDet = (i == 0);
 
-        IMATH_INTERNAL_NAMESPACE::Matrix33<T> U, V;
-        IMATH_INTERNAL_NAMESPACE::Vec3<T>     S;
-        IMATH_INTERNAL_NAMESPACE::jacobiSVD (A, U, S, V, eps, posDet);
+        IMATH_NAMESPACE::Matrix33<T> U, V;
+        IMATH_NAMESPACE::Vec3<T>     S;
+        IMATH_NAMESPACE::jacobiSVD (A, U, S, V, eps, posDet);
 
-        IMATH_INTERNAL_NAMESPACE::Matrix33<T> S_times_Vt;
+        IMATH_NAMESPACE::Matrix33<T> S_times_Vt;
         for (int i = 0; i < 3; ++i)
             for (int j = 0; j < 3; ++j)
                 S_times_Vt[i][j] = S[j] * V[i][j];
         S_times_Vt.transpose ();
 
         // Verify that the product of the matrices is A:
-        const IMATH_INTERNAL_NAMESPACE::Matrix33<T> product = U * S_times_Vt;
+        const IMATH_NAMESPACE::Matrix33<T> product = U * S_times_Vt;
         for (int i = 0; i < 3; ++i)
             for (int j = 0; j < 3; ++j)
                 assert (std::abs (product[i][j] - A[i][j]) <= valueEps);
@@ -108,7 +108,7 @@ verifyTinySVD_3x3 (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
 
 template <typename T>
 void
-verifyTinySVD_4x4 (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
+verifyTinySVD_4x4 (const IMATH_NAMESPACE::Matrix44<T>& A)
 {
     T maxEntry = 0;
     for (int i = 0; i < 4; ++i)
@@ -122,18 +122,18 @@ verifyTinySVD_4x4 (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
     {
         const bool posDet = (i == 0);
 
-        IMATH_INTERNAL_NAMESPACE::Matrix44<T> U, V;
-        IMATH_INTERNAL_NAMESPACE::Vec4<T>     S;
-        IMATH_INTERNAL_NAMESPACE::jacobiSVD (A, U, S, V, eps, posDet);
+        IMATH_NAMESPACE::Matrix44<T> U, V;
+        IMATH_NAMESPACE::Vec4<T>     S;
+        IMATH_NAMESPACE::jacobiSVD (A, U, S, V, eps, posDet);
 
-        IMATH_INTERNAL_NAMESPACE::Matrix44<T> S_times_Vt;
+        IMATH_NAMESPACE::Matrix44<T> S_times_Vt;
         for (int i = 0; i < 4; ++i)
             for (int j = 0; j < 4; ++j)
                 S_times_Vt[i][j] = S[j] * V[i][j];
         S_times_Vt.transpose ();
 
         // Verify that the product of the matrices is A:
-        const IMATH_INTERNAL_NAMESPACE::Matrix44<T> product = U * S_times_Vt;
+        const IMATH_NAMESPACE::Matrix44<T> product = U * S_times_Vt;
         for (int i = 0; i < 4; ++i)
             for (int j = 0; j < 4; ++j)
                 assert (std::abs (product[i][j] - A[i][j]) <= valueEps);
@@ -162,7 +162,7 @@ verifyTinySVD_4x4 (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
 
 template <typename T>
 void
-testTinySVD_3x3 (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
+testTinySVD_3x3 (const IMATH_NAMESPACE::Matrix33<T>& A)
 {
     std::cout << "Verifying SVD for [[" << A[0][0] << ", " << A[0][1] << ", "
               << A[0][2] << "], "
@@ -176,7 +176,7 @@ testTinySVD_3x3 (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
     int cols[3] = {0, 1, 2};
     do
     {
-        IMATH_INTERNAL_NAMESPACE::Matrix33<T> B;
+        IMATH_NAMESPACE::Matrix33<T> B;
         for (int i = 0; i < 3; ++i)
             for (int j = 0; j < 3; ++j)
                 B[i][j] = A[i][cols[j]];
@@ -198,13 +198,13 @@ testTinySVD_3x3 (
     const T h,
     const T i)
 {
-    const IMATH_INTERNAL_NAMESPACE::Matrix33<T> A (a, b, c, d, e, f, g, h, i);
+    const IMATH_NAMESPACE::Matrix33<T> A (a, b, c, d, e, f, g, h, i);
     testTinySVD_3x3 (A);
 }
 
 template <typename T>
 void
-testTinySVD_4x4 (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
+testTinySVD_4x4 (const IMATH_NAMESPACE::Matrix44<T>& A)
 {
     std::cout << "Verifying SVD for [[" << A[0][0] << ", " << A[0][1] << ", "
               << A[0][2] << ", " << A[0][3] << "], "
@@ -222,7 +222,7 @@ testTinySVD_4x4 (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
     int cols[4] = {0, 1, 2, 3};
     do
     {
-        IMATH_INTERNAL_NAMESPACE::Matrix44<T> B;
+        IMATH_NAMESPACE::Matrix44<T> B;
         for (int i = 0; i < 4; ++i)
             for (int j = 0; j < 4; ++j)
                 B[i][j] = A[i][cols[j]];
@@ -251,7 +251,7 @@ testTinySVD_4x4 (
     const T o,
     const T p)
 {
-    const IMATH_INTERNAL_NAMESPACE::Matrix44<T> A (
+    const IMATH_NAMESPACE::Matrix44<T> A (
         a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p);
     testTinySVD_4x4 (A);
 }
@@ -272,18 +272,18 @@ testTinySVDImp ()
     testTinySVD_3x3<T> (1, 2, 3, 4, 5, 6, 7, 8, 9);
     testTinySVD_3x3<T> (1, 2, 3, 4, 5, 6, 7, 8, 9);
     testTinySVD_3x3<T> (outerProduct (
-        IMATH_INTERNAL_NAMESPACE::Vec3<T> (100, T(1e-5), 0),
-        IMATH_INTERNAL_NAMESPACE::Vec3<T> (100, T(1e-5), 0)));
+        IMATH_NAMESPACE::Vec3<T> (100, T(1e-5), 0),
+        IMATH_NAMESPACE::Vec3<T> (100, T(1e-5), 0)));
     testTinySVD_3x3<T> (outerProduct (
-        IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1),
-        IMATH_INTERNAL_NAMESPACE::Vec3<T> (256, 300, 20)));
+        IMATH_NAMESPACE::Vec3<T> (245, 20, 1),
+        IMATH_NAMESPACE::Vec3<T> (256, 300, 20)));
     testTinySVD_3x3<T> (
         outerProduct (
-            IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1),
-            IMATH_INTERNAL_NAMESPACE::Vec3<T> (245, 20, 1)) +
+            IMATH_NAMESPACE::Vec3<T> (245, 20, 1),
+            IMATH_NAMESPACE::Vec3<T> (245, 20, 1)) +
         outerProduct (
-            IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 2, 3),
-            IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 2, 3)));
+            IMATH_NAMESPACE::Vec3<T> (1, 2, 3),
+            IMATH_NAMESPACE::Vec3<T> (1, 2, 3)));
 
     // Some problematic matrices from SVDTest:
     testTinySVD_3x3<T> (
@@ -373,18 +373,18 @@ testTinySVDImp ()
         0,
         1);
     testTinySVD_4x4<T> (outerProduct (
-        IMATH_INTERNAL_NAMESPACE::Vec4<T> (100, T(1e-5), 0, 0),
-        IMATH_INTERNAL_NAMESPACE::Vec4<T> (100, T(1e-5), 0, 0)));
+        IMATH_NAMESPACE::Vec4<T> (100, T(1e-5), 0, 0),
+        IMATH_NAMESPACE::Vec4<T> (100, T(1e-5), 0, 0)));
     testTinySVD_4x4<T> (outerProduct (
-        IMATH_INTERNAL_NAMESPACE::Vec4<T> (245, 20, 1, T(0.5)),
-        IMATH_INTERNAL_NAMESPACE::Vec4<T> (256, 300, 20, 10)));
+        IMATH_NAMESPACE::Vec4<T> (245, 20, 1, T(0.5)),
+        IMATH_NAMESPACE::Vec4<T> (256, 300, 20, 10)));
     testTinySVD_4x4<T> (
         outerProduct (
-            IMATH_INTERNAL_NAMESPACE::Vec4<T> (245, 20, 1, T(0.5)),
-            IMATH_INTERNAL_NAMESPACE::Vec4<T> (256, 300, 20, 10)) +
+            IMATH_NAMESPACE::Vec4<T> (245, 20, 1, T(0.5)),
+            IMATH_NAMESPACE::Vec4<T> (256, 300, 20, 10)) +
         outerProduct (
-            IMATH_INTERNAL_NAMESPACE::Vec4<T> (30, 10, 10, 10),
-            IMATH_INTERNAL_NAMESPACE::Vec4<T> (1, 2, 3, 3)));
+            IMATH_NAMESPACE::Vec4<T> (30, 10, 10, 10),
+            IMATH_NAMESPACE::Vec4<T> (1, 2, 3, 3)));
 }
 
 void

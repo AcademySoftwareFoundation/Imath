@@ -834,22 +834,22 @@ struct IndexAccessDefault {
 };
 
 template <class Data>
-struct IndexAccessDefault<IMATH_INTERNAL_NAMESPACE::Vec2<Data>, Data> {
-    using Container = IMATH_INTERNAL_NAMESPACE::Vec2<Data>;
+struct IndexAccessDefault<IMATH_NAMESPACE::Vec2<Data>, Data> {
+    using Container = IMATH_NAMESPACE::Vec2<Data>;
     typedef Data & result_type;
     static Data & apply(Container &c, size_t i) { return *(c.getValue () + i); }
 };
 
 template <class Data>
-struct IndexAccessDefault<IMATH_INTERNAL_NAMESPACE::Vec3<Data>, Data> {
-    using Container = IMATH_INTERNAL_NAMESPACE::Vec3<Data>;
+struct IndexAccessDefault<IMATH_NAMESPACE::Vec3<Data>, Data> {
+    using Container = IMATH_NAMESPACE::Vec3<Data>;
     typedef Data & result_type;
     static Data & apply(Container &c, size_t i) { return *(c.getValue () + i); }
 };
 
 template <class Data>
-struct IndexAccessDefault<IMATH_INTERNAL_NAMESPACE::Vec4<Data>, Data> {
-    using Container = IMATH_INTERNAL_NAMESPACE::Vec4<Data>;
+struct IndexAccessDefault<IMATH_NAMESPACE::Vec4<Data>, Data> {
+    using Container = IMATH_NAMESPACE::Vec4<Data>;
     typedef Data & result_type;
     static Data & apply(Container &c, size_t i) { return *(c.getValue () + i); }
 };

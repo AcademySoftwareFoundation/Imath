@@ -19,7 +19,7 @@
 #include "ImathPlane.h"
 #include "ImathVec.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// Template class `Frustum<T>`
@@ -1047,7 +1047,7 @@ typedef Frustum<float> Frustumf;
 /// Frustum of type double
 typedef Frustum<double> Frustumd;
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #if defined _WIN32 || defined _WIN64
 #    ifdef _redef_near

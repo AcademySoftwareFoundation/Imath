@@ -18,7 +18,7 @@
 #include <math.h>
 
 using namespace std;
-using namespace IMATH_INTERNAL_NAMESPACE;
+using namespace IMATH_NAMESPACE;
 
 // clang-format off
 
@@ -263,7 +263,7 @@ testJacobiEigenSolver ()
 {
     cout << endl;
     cout
-        << "************ Testing IMATH_INTERNAL_NAMESPACE::ImathJacobiEigenSolver ************"
+        << "************ Testing IMATH_NAMESPACE::ImathJacobiEigenSolver ************"
         << endl;
 
     cout << "Jacobi EigenSolver in single precision...";

@@ -20,7 +20,7 @@
 #include <ImathForward.h>
 
 using namespace std;
-using namespace IMATH_INTERNAL_NAMESPACE;
+using namespace IMATH_NAMESPACE;
 
 namespace
 {
@@ -130,7 +130,7 @@ testQuatT ()
         Vec3<T> v = q.axis ();
         T       a = q.angle ();
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
-        assert (IMATH_INTERNAL_NAMESPACE::equal (a, T (M_PI_2), e));
+        assert (IMATH_NAMESPACE::equal (a, T (M_PI_2), e));
     }
 
     //
@@ -146,14 +146,14 @@ testQuatT ()
         Vec3<T> v = q.axis ();
         T       a = q.angle ();
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
-        assert (IMATH_INTERNAL_NAMESPACE::equal (a, t, t * e));
+        assert (IMATH_NAMESPACE::equal (a, t, t * e));
 
         q.r *= T(1.1);
         q.v *= T(1.1);
         v = q.axis ();
         a = q.angle ();
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
-        assert (IMATH_INTERNAL_NAMESPACE::equal (a, t, t * e));
+        assert (IMATH_NAMESPACE::equal (a, t, t * e));
     }
 
     {
@@ -164,14 +164,14 @@ testQuatT ()
         Vec3<T> v = q.axis ();
         T       a = q.angle ();
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
-        assert (IMATH_INTERNAL_NAMESPACE::equal (a, t, t * e));
+        assert (IMATH_NAMESPACE::equal (a, t, t * e));
 
         q.r *= T(1.1);
         q.v *= T(1.1);
         v = q.axis ();
         a = q.angle ();
         assert (v.equalWithAbsError (Vec3<T> (0, 0, 1), e));
-        assert (IMATH_INTERNAL_NAMESPACE::equal (a, t, t * e));
+        assert (IMATH_NAMESPACE::equal (a, t, t * e));
     }
 
     //

@@ -15,7 +15,7 @@
 #include <iostream>
 
 using namespace std;
-using namespace IMATH_INTERNAL_NAMESPACE;
+using namespace IMATH_NAMESPACE;
 
 namespace
 {

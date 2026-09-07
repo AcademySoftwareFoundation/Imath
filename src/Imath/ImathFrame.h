@@ -12,7 +12,7 @@
 
 #include "ImathNamespace.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 /// @cond Doxygen_Suppress
 template <class T> class Vec3;
@@ -30,12 +30,12 @@ template <class T> class Matrix44;
 ///
 /// A typical usage would be :
 ///
-///      m[0] = IMATH_INTERNAL_NAMESPACE::firstFrame( p[0], p[1], p[2] );
+///      m[0] = IMATH_NAMESPACE::firstFrame( p[0], p[1], p[2] );
 ///      for( int i = 1; i < n - 1; i++ )
 ///      {
-///          m[i] = IMATH_INTERNAL_NAMESPACE::nextFrame( m[i-1], p[i-1], p[i], t[i-1], t[i] );
+///          m[i] = IMATH_NAMESPACE::nextFrame( m[i-1], p[i-1], p[i], t[i-1], t[i] );
 ///      }
-///      m[n-1] = IMATH_INTERNAL_NAMESPACE::lastFrame( m[n-2], p[n-2], p[n-1] );
+///      m[n-1] = IMATH_NAMESPACE::lastFrame( m[n-2], p[n-2], p[n-1] );
 ///
 ///  See Graphics Gems I for the underlying algorithm.
 
@@ -219,6 +219,6 @@ Matrix44<T> constexpr lastFrame (
 
 /// @}
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHFRAME_H

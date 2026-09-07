@@ -22,7 +22,7 @@
 #    define EXPORT_CONST const
 #endif
 
-IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
+IMATH_STABLE_3_2_ENTER
 
 EXPORT_CONST M22f identity22f ( 1, 0,
 				0, 1);
@@ -283,7 +283,7 @@ namespace
 template <typename T, int j, int k>
 void
 jacobiRotateRight (
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A, const T c, const T s)
+    IMATH_NAMESPACE::Matrix33<T>& A, const T c, const T s)
 {
     for (int i = 0; i < 3; ++i)
     {
@@ -297,7 +297,7 @@ jacobiRotateRight (
 template <typename T>
 void
 jacobiRotateRight (
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A,
+    IMATH_NAMESPACE::Matrix44<T>& A,
     const int                              j,
     const int                              k,
     const T                                c,
@@ -330,9 +330,9 @@ jacobiRotateRight (
 template <typename T, int j, int k, int l>
 bool
 twoSidedJacobiRotation (
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>& U,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>& V,
+    IMATH_NAMESPACE::Matrix33<T>& A,
+    IMATH_NAMESPACE::Matrix33<T>& U,
+    IMATH_NAMESPACE::Matrix33<T>& V,
     const T                                tol)
 {
     // Load everything into local variables to make things easier on the
@@ -471,11 +471,11 @@ twoSidedJacobiRotation (
 template <typename T>
 bool
 twoSidedJacobiRotation (
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A,
+    IMATH_NAMESPACE::Matrix44<T>& A,
     int                                    j,
     int                                    k,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>& U,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>& V,
+    IMATH_NAMESPACE::Matrix44<T>& U,
+    IMATH_NAMESPACE::Matrix44<T>& V,
     const T                                tol)
 {
     // Load everything into local variables to make things easier on the
@@ -632,7 +632,7 @@ twoSidedJacobiRotation (
 
 template <typename T>
 void
-swapColumns (IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A, int j, int k)
+swapColumns (IMATH_NAMESPACE::Matrix33<T>& A, int j, int k)
 {
     for (int i = 0; i < 3; ++i)
         std::swap (A[i][j], A[i][k]);
@@ -640,7 +640,7 @@ swapColumns (IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A, int j, int k)
 
 template <typename T>
 IMATH_CONSTEXPR14 T
-maxOffDiag (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
+maxOffDiag (const IMATH_NAMESPACE::Matrix33<T>& A)
 {
     T result = 0;
     result   = std::max (result, std::abs (A[0][1]));
@@ -654,7 +654,7 @@ maxOffDiag (const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A)
 
 template <typename T>
 IMATH_CONSTEXPR14 T
-maxOffDiag (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
+maxOffDiag (const IMATH_NAMESPACE::Matrix44<T>& A)
 {
     T result = 0;
     for (int i = 0; i < 4; ++i)
@@ -671,10 +671,10 @@ maxOffDiag (const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A)
 template <typename T>
 void
 twoSidedJacobiSVD (
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>  A,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>& U,
-    IMATH_INTERNAL_NAMESPACE::Vec3<T>&     S,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>& V,
+    IMATH_NAMESPACE::Matrix33<T>  A,
+    IMATH_NAMESPACE::Matrix33<T>& U,
+    IMATH_NAMESPACE::Vec3<T>&     S,
+    IMATH_NAMESPACE::Matrix33<T>& V,
     const T                                tol,
     const bool                             forcePositiveDeterminant)
 {
@@ -801,10 +801,10 @@ twoSidedJacobiSVD (
 template <typename T>
 void
 twoSidedJacobiSVD (
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>  A,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>& U,
-    IMATH_INTERNAL_NAMESPACE::Vec4<T>&     S,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>& V,
+    IMATH_NAMESPACE::Matrix44<T>  A,
+    IMATH_NAMESPACE::Matrix44<T>& U,
+    IMATH_NAMESPACE::Vec4<T>&     S,
+    IMATH_NAMESPACE::Matrix44<T>& V,
     const T                                tol,
     const bool                             forcePositiveDeterminant)
 {
@@ -857,9 +857,9 @@ twoSidedJacobiSVD (
     // Order the singular values from largest to smallest using insertion sort:
     for (int i = 1; i < 4; ++i)
     {
-        const IMATH_INTERNAL_NAMESPACE::Vec4<T> uCol (
+        const IMATH_NAMESPACE::Vec4<T> uCol (
             U[0][i], U[1][i], U[2][i], U[3][i]);
-        const IMATH_INTERNAL_NAMESPACE::Vec4<T> vCol (
+        const IMATH_NAMESPACE::Vec4<T> vCol (
             V[0][i], V[1][i], V[2][i], V[3][i]);
         const T sVal = S[i];
 
@@ -919,10 +919,10 @@ twoSidedJacobiSVD (
 template <typename T>
 void
 jacobiSVD (
-    const IMATH_INTERNAL_NAMESPACE::Matrix33<T>& A,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>&       U,
-    IMATH_INTERNAL_NAMESPACE::Vec3<T>&           S,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<T>&       V,
+    const IMATH_NAMESPACE::Matrix33<T>& A,
+    IMATH_NAMESPACE::Matrix33<T>&       U,
+    IMATH_NAMESPACE::Vec3<T>&           S,
+    IMATH_NAMESPACE::Matrix33<T>&       V,
     const T                                      tol,
     const bool                                   forcePositiveDeterminant)
 {
@@ -933,10 +933,10 @@ jacobiSVD (
 template <typename T>
 void
 jacobiSVD (
-    const IMATH_INTERNAL_NAMESPACE::Matrix44<T>& A,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>&       U,
-    IMATH_INTERNAL_NAMESPACE::Vec4<T>&           S,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T>&       V,
+    const IMATH_NAMESPACE::Matrix44<T>& A,
+    IMATH_NAMESPACE::Matrix44<T>&       U,
+    IMATH_NAMESPACE::Vec4<T>&           S,
+    IMATH_NAMESPACE::Matrix44<T>&       V,
     const T                                      tol,
     const bool                                   forcePositiveDeterminant)
 {
@@ -945,34 +945,34 @@ jacobiSVD (
 
 /// TODO
 template IMATH_EXPORT void jacobiSVD (
-    const IMATH_INTERNAL_NAMESPACE::Matrix33<float>& A,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<float>&       U,
-    IMATH_INTERNAL_NAMESPACE::Vec3<float>&           S,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<float>&       V,
+    const IMATH_NAMESPACE::Matrix33<float>& A,
+    IMATH_NAMESPACE::Matrix33<float>&       U,
+    IMATH_NAMESPACE::Vec3<float>&           S,
+    IMATH_NAMESPACE::Matrix33<float>&       V,
     const float                                      tol,
     const bool                                       forcePositiveDeterminant);
 /// TODO
 template IMATH_EXPORT void jacobiSVD (
-    const IMATH_INTERNAL_NAMESPACE::Matrix33<double>& A,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<double>&       U,
-    IMATH_INTERNAL_NAMESPACE::Vec3<double>&           S,
-    IMATH_INTERNAL_NAMESPACE::Matrix33<double>&       V,
+    const IMATH_NAMESPACE::Matrix33<double>& A,
+    IMATH_NAMESPACE::Matrix33<double>&       U,
+    IMATH_NAMESPACE::Vec3<double>&           S,
+    IMATH_NAMESPACE::Matrix33<double>&       V,
     const double                                      tol,
     const bool                                        forcePositiveDeterminant);
 /// TODO
 template IMATH_EXPORT void jacobiSVD (
-    const IMATH_INTERNAL_NAMESPACE::Matrix44<float>& A,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<float>&       U,
-    IMATH_INTERNAL_NAMESPACE::Vec4<float>&           S,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<float>&       V,
+    const IMATH_NAMESPACE::Matrix44<float>& A,
+    IMATH_NAMESPACE::Matrix44<float>&       U,
+    IMATH_NAMESPACE::Vec4<float>&           S,
+    IMATH_NAMESPACE::Matrix44<float>&       V,
     const float                                      tol,
     const bool                                       forcePositiveDeterminant);
 /// TODO
 template IMATH_EXPORT void jacobiSVD (
-    const IMATH_INTERNAL_NAMESPACE::Matrix44<double>& A,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<double>&       U,
-    IMATH_INTERNAL_NAMESPACE::Vec4<double>&           S,
-    IMATH_INTERNAL_NAMESPACE::Matrix44<double>&       V,
+    const IMATH_NAMESPACE::Matrix44<double>& A,
+    IMATH_NAMESPACE::Matrix44<double>&       U,
+    IMATH_NAMESPACE::Vec4<double>&           S,
+    IMATH_NAMESPACE::Matrix44<double>&       V,
     const double                                      tol,
     const bool                                        forcePositiveDeterminant);
 
@@ -1267,6 +1267,6 @@ minEigenVector (Matrix33<double>& A, Vec3<double>& S);
 template IMATH_EXPORT void
 minEigenVector (Matrix44<double>& A, Vec4<double>& S);
 
-IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT
+IMATH_STABLE_3_2_EXIT
 
 /// @endcond

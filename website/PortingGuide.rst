@@ -385,7 +385,7 @@ File/Class-specific Changes
 .. code-block::
 
       #ifndef __CUDACC__
-      using half = IMATH_INTERNAL_NAMESPACE::half;
+      using half = IMATH_NAMESPACE::half;
       #else
       #include <cuda_fp16.h>
       #endif

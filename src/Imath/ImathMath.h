@@ -16,7 +16,7 @@
 #include <cmath>
 #include <limits>
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 //----------------------------------------------------------------------------
 //
@@ -166,6 +166,6 @@ equalWithRelError (T x1, T x2, T e) IMATH_NOEXCEPT
     return ((x1 > x2) ? x1 - x2 : x2 - x1) <= e * ((x1 > 0) ? x1 : -x1);
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHMATH_H

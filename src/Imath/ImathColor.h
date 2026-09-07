@@ -16,7 +16,7 @@
 #include "ImathVec.h"
 #include "half.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// 3-channel color class that inherits from Vec3.
@@ -794,6 +794,6 @@ operator* (S x, const Color4<T>& v) IMATH_NOEXCEPT
     return Color4<T> (x * v.r, x * v.g, x * v.b, x * v.a);
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHCOLOR_H

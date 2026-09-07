@@ -11,7 +11,7 @@
 
 #include "ImathColorAlgo.h"
 
-IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
+IMATH_STABLE_3_2_ENTER
 
 Vec3<double>
 hsv2rgb_d (const Vec3<double>& hsv) IMATH_NOEXCEPT
@@ -195,4 +195,4 @@ rgb2hsv_d (const Color4<double>& c) IMATH_NOEXCEPT
     return Color4<double> (hue, sat, val, c.a);
 }
 
-IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT
+IMATH_STABLE_3_2_EXIT
