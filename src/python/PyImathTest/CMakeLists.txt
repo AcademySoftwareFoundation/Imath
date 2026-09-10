@@ -30,6 +30,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "")
   project(PyImathTest)
 
   find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+  set(PYIMATH_PYTHON_EMBED_FOUND ${Python3_Development_FOUND})
   find_package(Boost REQUIRED COMPONENTS python)
 
   find_package(Imath COMPONENTS PyImath)
@@ -47,7 +48,7 @@ set(PYIMATH_TEST_SOURCES main.cpp testStringTable.cpp)
 # (Python3::Python), which is not available everywhere, e.g. in the
 # manylinux images used to build wheels.
 
-if(Python3_Development.Embed_FOUND)
+if(PYIMATH_PYTHON_EMBED_FOUND)
 
 add_executable(PyImathTestC ${PYIMATH_TEST_SOURCES})
 

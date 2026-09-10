@@ -9,8 +9,15 @@ include(GNUInstallDirs)
 
 # Development.Module is all the extension modules need. Development.Embed
 # (libpython) is only needed by the PyImathTestC test program and is not
-# available in the manylinux images used to build wheels.
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module OPTIONAL_COMPONENTS Development.Embed)
+# available in the manylinux images used to build wheels. The split
+# components exist in CMake 3.18+; older CMake only knows Development.
+if(CMAKE_VERSION VERSION_LESS 3.18)
+  find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+  set(PYIMATH_PYTHON_EMBED_FOUND ${Python3_Development_FOUND})
+else()
+  find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module OPTIONAL_COMPONENTS Development.Embed)
+  set(PYIMATH_PYTHON_EMBED_FOUND ${Python3_Development.Embed_FOUND})
+endif()
 
 if(NOT Python3_FOUND)
     message(FATAL_ERROR "Could not find Python")
@@ -48,6 +55,10 @@ else()
     message(STATUS "Boost with python component was not found, fetching from ${IMATH_BOOST_URL}")
   endif()
   set(IMATH_USE_INTERNAL_BOOST ON)
+
+  if(CMAKE_VERSION VERSION_LESS 3.18)
+    message(FATAL_ERROR "Building the internal Boost.Python requires CMake 3.18 or newer (have ${CMAKE_VERSION})")
+  endif()
 
   # Boost's own CMake uses find_package(Python), while Imath uses
   # find_package(Python3). Seed the former with the interpreter found

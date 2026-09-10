@@ -6,6 +6,7 @@
 #
 
 import os
+import platform
 import sys
 from pathlib import Path
 
@@ -74,6 +75,10 @@ def numNonZeroMaskEntries(mask):
         if mask[i]:
             count += 1
     return count
+
+# Architectures on which testQuatArrays needs a tolerance, see
+# https://github.com/AcademySoftwareFoundation/Imath/issues/515
+quatSlerpTolerantArchs = ('aarch64', 'arm64', 'loongarch64', 'ppc64le', 'riscv64', 's390x')
 
 def equalWithAbsErrorScalar(x1, x2, e):
     return abs(x1 - x2) < e
@@ -10625,8 +10630,20 @@ def testQuatArrays():
 
     q4 = q1.slerp (q3, 0.5)
     for i in range(5):
-        assert (q4[i] == q1[i].slerpShortestArc (q3[i], 0.5))
-        assert (q4[i] == q3[i].slerpShortestArc (q1[i], 0.5))
+        expected1 = q1[i].slerpShortestArc (q3[i], 0.5)
+        expected2 = q3[i].slerpShortestArc (q1[i], 0.5)
+        if platform.machine() in quatSlerpTolerantArchs:
+            # On these architectures the array slerp and the scalar
+            # slerpShortestArc differ in the last few bits, so compare
+            # with a tolerance there. This is a known Imath issue:
+            # https://github.com/AcademySoftwareFoundation/Imath/issues/515
+            assert equalWithAbsErrorScalar(q4[i].r(), expected1.r(), 1e-5)
+            assert q4[i].v().equalWithAbsError(expected1.v(), 1e-5)
+            assert equalWithAbsErrorScalar(q4[i].r(), expected2.r(), 1e-5)
+            assert q4[i].v().equalWithAbsError(expected2.v(), 1e-5)
+        else:
+            assert (q4[i] == expected1)
+            assert (q4[i] == expected2)
         
     tmp[:] = q4
     q4 *= q3.inverse()

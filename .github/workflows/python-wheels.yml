@@ -40,6 +40,9 @@ jobs:
     name: Python Wheels - ${{ matrix.os }}-${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
     strategy:
+      # Let every OS/arch job run to completion so one run reports all
+      # failures, instead of cancelling the rest at the first one.
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
