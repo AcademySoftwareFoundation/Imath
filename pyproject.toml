@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) Contributors to the OpenEXR Project.
+
+[build-system]
+requires = ["scikit-build-core==0.12.2"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "Imath"
+dynamic = ["version"]
+
+description="Python bindings for the Imath vector, matrix, and math library"
+readme = "README.md"
+authors = [
+  { name="Contributors to the OpenEXR project", email="info@openexr.com" },
+]
+requires-python = ">=3.9"
+
+
+[project.urls]
+"Homepage" = "https://imath.readthedocs.io"
+"Source" = "https://github.com/AcademySoftwareFoundation/Imath"
+"Bug Tracker" = "https://github.com/AcademySoftwareFoundation/Imath/issues"
+
+[tool.scikit-build]
+wheel.expand-macos-universal-tags = true
+sdist.exclude = [".github", "share", "website"]
+
+# Only build the imath module (cmake --build --target imath_module).
+cmake.targets = ["imath_module"]
+# Only install the "python" component (cmake --install --component python).
+# This makes sure that only files marked as "python" component are installed.
+install.components = ["python"]
+# strip debug symbols
+install.strip = true
+
+# Enable experimental features if any are available
+# In this case we need custom local plugin to get
+# the project version from cmake.
+experimental = true
+metadata.version.provider = "imath_skbuild_plugin"
+metadata.version.provider-path = "./src/python"
+
+[tool.scikit-build.cmake.define]
+PYTHON = 'ON'
+PYIMATHNUMPY = 'OFF'
+PYBIND11 = 'OFF'
+BUILD_TESTING = 'OFF'
+IMATH_INSTALL = 'ON'
+IMATH_INSTALL_PKG_CONFIG = 'OFF'
+IMATH_FORCE_INTERNAL_BOOST = 'ON'
+PYTHON_INSTALL_DIR = '.'
+BUILD_SHARED_LIBS = 'OFF'
+CMAKE_OSX_DEPLOYMENT_TARGET = '10.15'
+CMAKE_POSITION_INDEPENDENT_CODE = 'ON'
+CMAKE_VERBOSE_MAKEFILE = 'ON'
+
+[tool.cibuildwheel]
+test-command = [
+  "python {package}/src/python/PyImathTest/pyImathTest.py",
+  "python {package}/src/python/PyImathPythonTest/RunTests.py {package}/src/python/PyImathPythonTest",
+]
+# pyImathTest.py reads PYTHONPATH unconditionally; the modules themselves
+# come from the installed wheel, so any harmless value will do.
+test-environment = { PYTHONPATH = "." }
+test-skip = ["*universal2:arm64"]
+build-verbosity = 1
+
+manylinux-x86_64-image = "manylinux_2_28"
+manylinux-i686-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
+
+# Needed for full C++17 support
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "10.15"
+# pass compilers directly to avoid Homebrew LLVM libunwind
+CMAKE_ARGS = "-DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++"

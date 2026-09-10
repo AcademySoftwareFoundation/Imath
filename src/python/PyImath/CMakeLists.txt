@@ -208,14 +208,22 @@ if (IMATH_INSTALL)
   # Install the python module 
   #
 
-  install(TARGETS ${PYIMATH_MODULE} LIBRARY DESTINATION ${PYTHON_INSTALL_DIR})
+  install(TARGETS ${PYIMATH_MODULE} LIBRARY DESTINATION ${PYTHON_INSTALL_DIR} COMPONENT python)
 
   #
   # Install the library
   #
   
+  # The internal Boost targets are neither installed nor exported, so
+  # a CMake export set for PyImath cannot be generated in that case.
+  if (IMATH_USE_INTERNAL_BOOST)
+    set(PYIMATH_EXPORT)
+  else()
+    set(PYIMATH_EXPORT EXPORT "${PYIMATH_LIBRARY}Targets")
+  endif()
+
   install(TARGETS ${PYIMATH_LIBRARY}
-    EXPORT "${PYIMATH_LIBRARY}Targets"
+    ${PYIMATH_EXPORT}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -228,7 +236,7 @@ if (IMATH_INSTALL)
 
   # Install export set for downstream CMake
 
-  if (NOT IMATH_BUILD_APPLE_FRAMEWORKS)
+  if (NOT IMATH_BUILD_APPLE_FRAMEWORKS AND NOT IMATH_USE_INTERNAL_BOOST)
     install(EXPORT ${PYIMATH_LIBRARY}Targets
       DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Imath
       FILE ${PYIMATH_LIBRARY}Targets.cmake
@@ -265,7 +273,9 @@ if (IMATH_INSTALL)
 
   # pkgconfig
 
-  if(IMATH_INSTALL_PKG_CONFIG AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
+  # The pkg-config file refers to an installed Boost.Python library,
+  # which does not exist when Boost.Python is built internally.
+  if(IMATH_INSTALL_PKG_CONFIG AND NOT IMATH_BUILD_APPLE_FRAMEWORKS AND NOT IMATH_USE_INTERNAL_BOOST)
     set(pcinfile PyImath.pc.in)
     set(prefix ${CMAKE_INSTALL_PREFIX})
     set(exec_prefix "\${prefix}")

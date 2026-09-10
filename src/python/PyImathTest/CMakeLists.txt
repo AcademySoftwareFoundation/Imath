@@ -43,6 +43,12 @@ set(PYIMATH_LIBRARY PyImath)
 
 set(PYIMATH_TEST_SOURCES main.cpp testStringTable.cpp)
 
+# PyImathTestC embeds the interpreter, so it needs libpython
+# (Python3::Python), which is not available everywhere, e.g. in the
+# manylinux images used to build wheels.
+
+if(Python3_Development.Embed_FOUND)
+
 add_executable(PyImathTestC ${PYIMATH_TEST_SOURCES})
 
 target_link_libraries(PyImathTestC 
@@ -63,6 +69,12 @@ target_include_directories(PyImathTestC PUBLIC ${Python3_INCLUDE_DIRS} ${Boost_I
 set_target_properties(PyImathTestC PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
+
+else()
+
+  message(STATUS "Python3 Development.Embed (libpython) not found, skipping PyImathTestC")
+
+endif()
 
 # Test of the python API.  Execute the test by invoking python
 # with the script as an argument, with PATH and PYTHONPATH set properly.
