@@ -76,12 +76,21 @@ def numNonZeroMaskEntries(mask):
             count += 1
     return count
 
-# Architectures on which testQuatArrays needs a tolerance, see
-# https://github.com/AcademySoftwareFoundation/Imath/issues/515
-quatSlerpTolerantArchs = ('aarch64', 'arm64', 'loongarch64', 'ppc64le', 'riscv64', 's390x')
-
 def equalWithAbsErrorScalar(x1, x2, e):
     return abs(x1 - x2) < e
+
+# Architectures on which array quaternion operations and the equivalent
+# scalar operations differ in the last few bits. This is a known Imath
+# issue: https://github.com/AcademySoftwareFoundation/Imath/issues/515
+quatTolerantArchs = ('aarch64', 'arm64', 'loongarch64', 'ppc64le', 'riscv64', 's390x')
+
+def quatEqual(q1, q2):
+    # Exact comparison, except on the architectures listed above, where
+    # an array result is compared to a scalar result with a tolerance.
+    if platform.machine() in quatTolerantArchs:
+        return (equalWithAbsErrorScalar(q1.r(), q2.r(), 1e-5) and
+                q1.v().equalWithAbsError(q2.v(), 1e-5))
+    return q1 == q2
 
 def make_range(start, end):
     num = end-start
@@ -10628,34 +10637,25 @@ def testQuatArrays():
         assert (q3[i] != tmp[i])
         assert (q3[i] == tmp[i].normalized())
 
+    # Array results are compared to scalar results with quatEqual, which
+    # is exact except on the architectures where the two differ in the
+    # last few bits (see quatTolerantArchs above).
     q4 = q1.slerp (q3, 0.5)
     for i in range(5):
-        expected1 = q1[i].slerpShortestArc (q3[i], 0.5)
-        expected2 = q3[i].slerpShortestArc (q1[i], 0.5)
-        if platform.machine() in quatSlerpTolerantArchs:
-            # On these architectures the array slerp and the scalar
-            # slerpShortestArc differ in the last few bits, so compare
-            # with a tolerance there. This is a known Imath issue:
-            # https://github.com/AcademySoftwareFoundation/Imath/issues/515
-            assert equalWithAbsErrorScalar(q4[i].r(), expected1.r(), 1e-5)
-            assert q4[i].v().equalWithAbsError(expected1.v(), 1e-5)
-            assert equalWithAbsErrorScalar(q4[i].r(), expected2.r(), 1e-5)
-            assert q4[i].v().equalWithAbsError(expected2.v(), 1e-5)
-        else:
-            assert (q4[i] == expected1)
-            assert (q4[i] == expected2)
+        assert quatEqual(q4[i], q1[i].slerpShortestArc (q3[i], 0.5))
+        assert quatEqual(q4[i], q3[i].slerpShortestArc (q1[i], 0.5))
         
     tmp[:] = q4
     q4 *= q3.inverse()
     for i in range(5):
-        assert (q4[i] == tmp[i] * q3[i].inverse())
+        assert quatEqual(q4[i], tmp[i] * q3[i].inverse())
 
     q5 = QuatfArray (5)
     tmp[:] = q4
     q5[:] = q4.normalized()
     for i in range(5):
         assert (q4[i] == tmp[i])
-        assert (q5[i] == q4[i].normalize())
+        assert quatEqual(q5[i], q4[i].normalize())
 
     print ("ok")
 

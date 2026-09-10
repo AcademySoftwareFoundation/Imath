@@ -328,6 +328,9 @@ endif()
 
 if (MSVC)
     target_compile_options(${PYIMATH_LIBRARY} PRIVATE /bigobj)
+    # PyImathBasicTypes.cpp also exceeds the default section limit in the
+    # module (error C1128), in particular with a static Boost.Python.
+    target_compile_options(${PYIMATH_MODULE} PRIVATE /bigobj)
 endif()
 
 #
