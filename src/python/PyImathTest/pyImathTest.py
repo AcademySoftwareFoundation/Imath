@@ -78,6 +78,14 @@ def numNonZeroMaskEntries(mask):
 def equalWithAbsErrorScalar(x1, x2, e):
     return abs(x1 - x2) < e
 
+def quatEqual(q1, q2):
+    # Array quaternion operations and the equivalent scalar operations
+    # can differ in the last few bits (vectorized vs. non-vectorized
+    # computation), so compare with a tolerance. See
+    # https://github.com/AcademySoftwareFoundation/Imath/issues/515
+    return (equalWithAbsErrorScalar(q1.r(), q2.r(), 1e-5) and
+            q1.v().equalWithAbsError(q2.v(), 1e-5))
+
 def make_range(start, end):
     num = end-start
     increment = 1
@@ -10623,22 +10631,24 @@ def testQuatArrays():
         assert (q3[i] != tmp[i])
         assert (q3[i] == tmp[i].normalized())
 
+    # Array results are compared to scalar results with quatEqual, which
+    # allows for the two differing in the last few bits.
     q4 = q1.slerp (q3, 0.5)
     for i in range(5):
-        assert (q4[i] == q1[i].slerpShortestArc (q3[i], 0.5))
-        assert (q4[i] == q3[i].slerpShortestArc (q1[i], 0.5))
+        assert quatEqual(q4[i], q1[i].slerpShortestArc (q3[i], 0.5))
+        assert quatEqual(q4[i], q3[i].slerpShortestArc (q1[i], 0.5))
         
     tmp[:] = q4
     q4 *= q3.inverse()
     for i in range(5):
-        assert (q4[i] == tmp[i] * q3[i].inverse())
+        assert quatEqual(q4[i], tmp[i] * q3[i].inverse())
 
     q5 = QuatfArray (5)
     tmp[:] = q4
     q5[:] = q4.normalized()
     for i in range(5):
         assert (q4[i] == tmp[i])
-        assert (q5[i] == q4[i].normalize())
+        assert quatEqual(q5[i], q4[i].normalize())
 
     print ("ok")
 
