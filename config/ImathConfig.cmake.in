@@ -18,10 +18,29 @@ endif()
 if(Imath_FIND_COMPONENTS)
   foreach(component IN LISTS Imath_FIND_COMPONENTS)
     if(component STREQUAL "PyImath")
-      include("${CMAKE_CURRENT_LIST_DIR}/PyImathTargets.cmake")
+      # PyImathTargets.cmake is not installed if this Imath was built
+      # with an internal, private Boost.Python (IMATH_USE_INTERNAL_BOOST):
+      # that configuration only supports the standalone "imath" python
+      # module, not the PyImath library used by downstream C++ projects
+      # (e.g. Alembic), which requires its own installed Boost.
+      if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/PyImathTargets.cmake")
+        include("${CMAKE_CURRENT_LIST_DIR}/PyImathTargets.cmake")
+        set(Imath_PyImath_FOUND TRUE)
+      else()
+        set(Imath_PyImath_FOUND FALSE)
+        set(Imath_NOT_FOUND_MESSAGE "The PyImath component is not available: this Imath was built with an internal Boost.Python (IMATH_USE_INTERNAL_BOOST), which supports only the imath python module, not the PyImath library.")
+      endif()
     endif()
     if(component STREQUAL "PyBindImath")
-      include("${CMAKE_CURRENT_LIST_DIR}/PyBindImathTargets.cmake")
+      if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/PyBindImathTargets.cmake")
+        include("${CMAKE_CURRENT_LIST_DIR}/PyBindImathTargets.cmake")
+        set(Imath_PyBindImath_FOUND TRUE)
+      else()
+        set(Imath_PyBindImath_FOUND FALSE)
+        set(Imath_NOT_FOUND_MESSAGE "The PyBindImath component is not available.")
+      endif()
     endif()
   endforeach()
 endif()
+
+check_required_components(Imath)
