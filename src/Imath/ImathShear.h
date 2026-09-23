@@ -34,7 +34,7 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 ///
 ///     X' =      X + YX * Y + ZX * Z
 ///     Y' = YX * X +      Y + ZY * Z
-///     Z` = XZ * X + YZ * Y +      Z
+///     Z' = XZ * X + YZ * Y +      Z
 ///
 /// See
 /// https://www.cs.drexel.edu/~david/Classes/CS430/Lectures/L-04_3DTransformations.6.pdf

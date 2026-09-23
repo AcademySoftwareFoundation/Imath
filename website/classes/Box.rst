@@ -50,10 +50,29 @@ Example:
    :undoc-members:
    :members:
 
+.. Sphinx's C++ domain treats these two partial template specializations as
+.. duplicates of the base Box template above, because Breathe does not
+.. include the specialization arguments in the rendered class signature.
+.. Wrapping each one in a distinct namespace avoids the collision, which
+.. otherwise corrupts the symbol table and crashes the build during
+.. cross-reference resolution. ":no-link:" additionally suppresses the
+.. (otherwise misleading, namespace-prefixed) index/cross-reference entries
+.. these directives would generate.
+
+.. cpp:namespace-push:: _doc_box_vec2
+
 .. doxygenclass:: Imath::Box< Vec2< T > >
    :undoc-members:
    :members:
-      
+   :no-link:
+
+.. cpp:namespace-pop::
+
+.. cpp:namespace-push:: _doc_box_vec3
+
 .. doxygenclass:: Imath::Box< Vec3< T > >
    :undoc-members:
    :members:
+   :no-link:
+
+.. cpp:namespace-pop::
