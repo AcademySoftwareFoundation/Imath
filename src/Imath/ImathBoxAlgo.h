@@ -627,7 +627,7 @@ findEntryAndExitPoints (
 }
 
 ///
-/// Intersect a ray, `r`, with a 3D box, `b, and compute the intersection
+/// Intersect a ray, `r`, with a 3D box, `b`, and compute the intersection
 /// point, returned in `ip`.
 ///
 /// The intersection point is

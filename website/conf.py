@@ -59,6 +59,21 @@ extensions = [
     'breathe',
 ]
 
+# Work around a Breathe bug: its QUALIFIERS_TO_REMOVE regex requires a
+# trailing space after the qualifier, so it fails to strip "constexpr"
+# from Doxygen's <type> field when that field is *only* "constexpr", as
+# happens for constexpr constructors (which have no return type). This
+# causes "constexpr" to be duplicated in the rendered declaration. See
+# https://github.com/breathe-doc/breathe/blob/v5.0.0/breathe/renderer/sphinxrenderer.py#L98
+import re
+try:
+    from breathe.renderer import sphinxrenderer
+    sphinxrenderer.QUALIFIERS_TO_REMOVE = re.compile(
+        r"\b(static|friend|constexpr|consteval|constinit)\b\s*"
+    )
+except ImportError:
+    pass
+
 # Breathe extension variables
 breathe_projects = { "Imath": "doxygen/xml" }
 breathe_default_project = "Imath"
@@ -142,11 +157,22 @@ pygments_style = 'sphinx'
 #html_theme = 'bizstyle' # OK
 #html_theme = 'sphinxdoc'
 
-html_theme = "press"
+html_theme = "pydata_sphinx_theme"
 html_theme_options = {
-  "external_links": [
-      ("GitHub", "https://github.com/AcademySoftwareFoundation/Imath"),
-  ]
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/AcademySoftwareFoundation/Imath",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+    ],
+    "logo": {
+        "image_light": "images/imath-logo-black.png",
+        "image_dark": "images/imath-logo-white.png",
+        "text": "",
+    },
+    "navbar_end": ["navbar-icon-links"],
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -165,8 +191,9 @@ html_title = "Imath Documentation"
 html_short_title = "Imath"
 
 # The name of an image file (relative to this directory) to place at the top
-# of the sidebar.
-html_logo = "images/imath-logo-blue.png"
+# of the sidebar. Superseded by the "logo" entry in html_theme_options for
+# the pydata_sphinx_theme, which supports separate light/dark images.
+#html_logo = "images/imath-logo-blue.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32

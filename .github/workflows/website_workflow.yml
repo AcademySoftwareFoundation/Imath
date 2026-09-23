@@ -45,9 +45,11 @@ jobs:
       - name: Install doxygen 
         run: sudo apt-get install -y doxygen
       - name: Install sphinx requirements
-        run: pip3 install -r website/requirements.txt
-      - name: Configure
-        run: cmake .. -DBUILD_WEBSITE='ON'
+        run: |
+          python3 -m venv _venv
+          source _venv/*/activate
+          pip3 install --require-hashes -r ../website/requirements-lock.txt
+          cmake .. -DBUILD_WEBSITE='ON'
         working-directory: _build
       - name: Build
         run: |
