@@ -96,7 +96,11 @@ set(PYIMATH_HEADERS
     PyImathVecOperators.h
 )
 
-if(BUILD_SHARED_LIBS)
+# With an internal Boost.Python (IMATH_USE_INTERNAL_BOOST) the PyImath
+# library is only an implementation detail of the imath module: it is
+# always built static and linked into the module, so the installed module
+# is self-contained, and the library itself is not installed (see below).
+if(BUILD_SHARED_LIBS AND NOT IMATH_USE_INTERNAL_BOOST)
     add_library(${PYIMATH_LIBRARY} SHARED ${PYIMATH_HEADERS} ${PYIMATH_SOURCES})
     if(WIN32)
         # IMATH_DLL controls the export declarations for Windows
@@ -213,96 +217,106 @@ if (IMATH_INSTALL)
   #
   # Install the library
   #
-  
-  # The internal Boost targets are neither installed nor exported, so
-  # a CMake export set for PyImath cannot be generated in that case.
+
+  # The PyImath library is not installed/exported when Boost.Python is
+  # built internally: IMATH_USE_INTERNAL_BOOST is a convenience for
+  # building the self-contained "imath" module only (e.g. for wheels).
+  # The resulting Boost.Python static library is private to this build
+  # (not installed, not exported), so an installed PyImath library would
+  # be unusable by downstream C++ consumers (e.g. Alembic) in any case:
+  # they link PyImath against their own Boost and need the Boost.Python
+  # headers, neither of which this build provides. Skip installing the
+  # library and its CMake package config entirely in that configuration,
+  # rather than exposing a library that appears usable via find_package()
+  # but isn't.
+
   if (IMATH_USE_INTERNAL_BOOST)
-    set(PYIMATH_EXPORT)
+
+    message(STATUS "PyImath library requires an installed Boost.Python; not installing it or its CMake package config (Boost.Python was built internally)")
+
   else()
-    set(PYIMATH_EXPORT EXPORT "${PYIMATH_LIBRARY}Targets")
-  endif()
 
-  install(TARGETS ${PYIMATH_LIBRARY}
-    ${PYIMATH_EXPORT}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
-      COMPONENT runtime
-      OPTIONAL
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PYIMATH_OUTPUT_SUBDIR}
-  )
-
-  # Install export set for downstream CMake
-
-  if (NOT IMATH_BUILD_APPLE_FRAMEWORKS AND NOT IMATH_USE_INTERNAL_BOOST)
-    install(EXPORT ${PYIMATH_LIBRARY}Targets
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Imath
-      FILE ${PYIMATH_LIBRARY}Targets.cmake
-      NAMESPACE ${PROJECT_NAME}::
+    install(TARGETS ${PYIMATH_LIBRARY}
+      EXPORT "${PYIMATH_LIBRARY}Targets"
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      FRAMEWORK DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        COMPONENT runtime
+        OPTIONAL
+      INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+      PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PYIMATH_OUTPUT_SUBDIR}
     )
-  endif()
-  
-  export(EXPORT Imath
-    FILE "${CMAKE_BINARY_DIR}/config/PyImathTargets.cmake"
-    NAMESPACE Imath::
-  )
 
-  if(BUILD_SHARED_LIBS
-     AND (NOT "${PYIMATH_LIB_SUFFIX}" STREQUAL "")
-     AND IMATH_INSTALL_SYM_LINK
-     AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
+    # Install export set for downstream CMake
 
-    # create symlink from libPyImath_Python3_11-3_2.so to libPyImath.so
-    string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
-    set(postfix ${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX})
-    set(VERSIONED_LIB_FILENAME ${CMAKE_SHARED_LIBRARY_PREFIX}${PYIMATH_LIBRARY}${PYIMATH_LIB_SUFFIX}${postfix}${CMAKE_SHARED_LIBRARY_SUFFIX})
-    set(BASE_LIB_FILENAME ${CMAKE_SHARED_LIBRARY_PREFIX}${PYIMATH_LIBRARY}${postfix}${CMAKE_SHARED_LIBRARY_SUFFIX})
-
-    file(CREATE_LINK ${VERSIONED_LIB_FILENAME} ${CMAKE_CURRENT_BINARY_DIR}/${BASE_LIB_FILENAME} SYMBOLIC)
-    if(WIN32)
-      set(INSTALL_DESTINATION ${CMAKE_INSTALL_BINDIR})
-    else()
-      set(INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    if (NOT IMATH_BUILD_APPLE_FRAMEWORKS)
+      install(EXPORT ${PYIMATH_LIBRARY}Targets
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Imath
+        FILE ${PYIMATH_LIBRARY}Targets.cmake
+        NAMESPACE ${PROJECT_NAME}::
+      )
     endif()
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASE_LIB_FILENAME} DESTINATION ${INSTALL_DESTINATION})
-    install(CODE "message(STATUS \"Creating symlink ${INSTALL_DESTINATION}/${BASE_LIB_FILENAME} -> ${VERSIONED_LIB_FILENAME}\")")
 
-  endif()
+    export(EXPORT Imath
+      FILE "${CMAKE_BINARY_DIR}/config/PyImathTargets.cmake"
+      NAMESPACE Imath::
+    )
 
-  # pkgconfig
+    if(BUILD_SHARED_LIBS
+       AND (NOT "${PYIMATH_LIB_SUFFIX}" STREQUAL "")
+       AND IMATH_INSTALL_SYM_LINK
+       AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
 
-  # The pkg-config file refers to an installed Boost.Python library,
-  # which does not exist when Boost.Python is built internally.
-  if(IMATH_INSTALL_PKG_CONFIG AND NOT IMATH_BUILD_APPLE_FRAMEWORKS AND NOT IMATH_USE_INTERNAL_BOOST)
-    set(pcinfile PyImath.pc.in)
-    set(prefix ${CMAKE_INSTALL_PREFIX})
-    set(exec_prefix "\${prefix}")
-    set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
-    set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
-    string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
-    set(lib_suffix "${IMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX}")
-    set(pylib_suffix "${PYIMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX}")
+      # create symlink from libPyImath_Python3_11-3_2.so to libPyImath.so
+      string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+      set(postfix ${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX})
+      set(VERSIONED_LIB_FILENAME ${CMAKE_SHARED_LIBRARY_PREFIX}${PYIMATH_LIBRARY}${PYIMATH_LIB_SUFFIX}${postfix}${CMAKE_SHARED_LIBRARY_SUFFIX})
+      set(BASE_LIB_FILENAME ${CMAKE_SHARED_LIBRARY_PREFIX}${PYIMATH_LIBRARY}${postfix}${CMAKE_SHARED_LIBRARY_SUFFIX})
 
-    # boost lib/dir
-    set(BOOST_PYTHON_LOCATION ${Boost_PYTHON_LIBRARY_RELEASE})
-    get_filename_component(boost_libdir "${BOOST_PYTHON_LOCATION}" DIRECTORY)
-    get_filename_component(boost_libname "${BOOST_PYTHON_LOCATION}" NAME_WE)
-    string(REGEX REPLACE "^lib" "" boost_libname "${boost_libname}")
+      file(CREATE_LINK ${VERSIONED_LIB_FILENAME} ${CMAKE_CURRENT_BINARY_DIR}/${BASE_LIB_FILENAME} SYMBOLIC)
+      if(WIN32)
+        set(INSTALL_DESTINATION ${CMAKE_INSTALL_BINDIR})
+      else()
+        set(INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR})
+      endif()
+      install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${BASE_LIB_FILENAME} DESTINATION ${INSTALL_DESTINATION})
+      install(CODE "message(STATUS \"Creating symlink ${INSTALL_DESTINATION}/${BASE_LIB_FILENAME} -> ${VERSIONED_LIB_FILENAME}\")")
 
-    # python lib/dir
-    get_filename_component(python_libdir "${Python3_LIBRARIES}" DIRECTORY)
-    set(python_libname "python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}")
+    endif()
 
-    string(REPLACE ".in" "" pcout ${pcinfile})
-    configure_file(${pcinfile} ${CMAKE_CURRENT_BINARY_DIR}/${pcout} @ONLY)
+    # pkgconfig
 
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${pcout} DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+    if(IMATH_INSTALL_PKG_CONFIG AND NOT IMATH_BUILD_APPLE_FRAMEWORKS)
+      set(pcinfile PyImath.pc.in)
+      set(prefix ${CMAKE_INSTALL_PREFIX})
+      set(exec_prefix "\${prefix}")
+      set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+      set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+      string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+      set(lib_suffix "${IMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX}")
+      set(pylib_suffix "${PYIMATH_LIB_SUFFIX}${CMAKE_${uppercase_CMAKE_BUILD_TYPE}_POSTFIX}")
 
-    message(STATUS "generating ${pcout}")
-  else()
-    message(STATUS "pkg-config generation disabled for PyImath")
+      # boost lib/dir
+      set(BOOST_PYTHON_LOCATION ${Boost_PYTHON_LIBRARY_RELEASE})
+      get_filename_component(boost_libdir "${BOOST_PYTHON_LOCATION}" DIRECTORY)
+      get_filename_component(boost_libname "${BOOST_PYTHON_LOCATION}" NAME_WE)
+      string(REGEX REPLACE "^lib" "" boost_libname "${boost_libname}")
+
+      # python lib/dir
+      get_filename_component(python_libdir "${Python3_LIBRARIES}" DIRECTORY)
+      set(python_libname "python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}")
+
+      string(REPLACE ".in" "" pcout ${pcinfile})
+      configure_file(${pcinfile} ${CMAKE_CURRENT_BINARY_DIR}/${pcout} @ONLY)
+
+      install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${pcout} DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
+      message(STATUS "generating ${pcout}")
+    else()
+      message(STATUS "pkg-config generation disabled for PyImath")
+    endif()
+
   endif()
 
 endif()

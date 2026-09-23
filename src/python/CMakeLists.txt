@@ -33,6 +33,13 @@ endif()
 # this build, against the same interpreter found by find_package(Python3)
 # above. This mirrors OPENEXR_FORCE_INTERNAL_IMATH in OpenEXR.
 #
+# The internal Boost.Python supports only the self-contained imath
+# module (e.g. for python wheels). The PyImath library, which downstream
+# C++ projects link together with their own Boost, is then built static
+# as part of the module only, is not installed or exported, and neither
+# the PyImathTestC program nor the imathnumpy module are built. Use an
+# installed Boost for those.
+#
 
 option(IMATH_FORCE_INTERNAL_BOOST "Force building an internal, static Boost.Python instead of using an installed Boost" OFF)
 set(IMATH_BOOST_URL "https://github.com/boostorg/boost/releases/download/boost-1.92.0/boost-1.92.0-cmake.tar.xz" CACHE STRING "URL of the Boost CMake release tarball for auto-build of Boost.Python")
@@ -174,7 +181,13 @@ execute_process(
 add_subdirectory( PyImath )
 
 option(PYIMATHNUMPY "Set ON to compile the imathnumpy module" ON)
-if (PYIMATHNUMPY)
+if (PYIMATHNUMPY AND IMATH_USE_INTERNAL_BOOST)
+  # imathnumpy shares PyImath's Boost.Python type registry with the imath
+  # module through the PyImath shared library; with an internal (static)
+  # Boost.Python each module would get its own copy, so only the imath
+  # module is supported in that configuration.
+  message(STATUS "Boost.Python is internal, skipping imathnumpy module (only the imath module is supported in this configuration)")
+elseif (PYIMATHNUMPY)
   add_subdirectory( PyImathNumpy )
 endif()
 
@@ -193,7 +206,7 @@ if(BUILD_TESTING AND IMATH_TEST_PYTHON)
   enable_testing()
   add_subdirectory( PyImathTest )
   add_subdirectory( PyImathPythonTest )
-  if (PYIMATHNUMPY)
+  if (PYIMATHNUMPY AND NOT IMATH_USE_INTERNAL_BOOST)
     add_subdirectory( PyImathNumpyTest )
   endif()
 endif()
