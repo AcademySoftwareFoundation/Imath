@@ -308,8 +308,8 @@ The Imath technical documentation at `https://imath.readthedocs.io
 <https://www.sphinx-doc.org>`_ with the `Breathe
 <https://breathe.readthedocs.io>`_ extension using information
 extracted from header comments by `Doxygen <https://www.doxygen.nl>`_,
-using the `sphinx-press-theme
-<https://pypi.org/project/sphinx-press-theme>`_, and is hosted by
+using the `PyData Sphinx Theme
+<https://pypi.org/project/pydata-sphinx-theme>`_, and is hosted by
 `Read the Docs <https://readthedocs.org/projects/imath/>`_.
 The website source is in `restructured text
 <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_
@@ -320,8 +320,8 @@ To build the website locally from the source headers and
 ``website`` CMake target. Generation is off by default.
 
 Building the website requires that ``sphinx``, ``breathe``, and
-``doxygen`` are installed. It further requires the `sphinx-press-theme
-<https://pypi.org/project/sphinx-press-theme>`_. Complete dependencies are
+``doxygen`` are installed. It further requires the `PyData Sphinx Theme
+<https://pypi.org/project/pydata-sphinx-theme>`_. Complete dependencies are
 described in the `requirements.txt
 <https://github.com/AcademySoftwareFoundation/imath/blob/main/website/requirements.txt>`_
 file.
@@ -332,7 +332,7 @@ On Debian/Ubuntu Linux:
 
     % apt-get install doxygen python3-sphinx
     % pip3 install breathe
-    % pip3 install sphinx_press_theme
+    % pip3 install pydata-sphinx-theme
 
     % mkdir _build
     % cd _build
