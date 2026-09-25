@@ -24,7 +24,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 /// Fast random-number generator that generates
 /// a uniformly distributed sequence with a period
@@ -257,6 +257,6 @@ gaussSphereRand (Rand& rand)
     return hollowSphereRand<Vec> (rand) * gaussRand (rand);
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHRANDOM_H

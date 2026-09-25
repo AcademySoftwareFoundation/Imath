@@ -9,7 +9,7 @@
 #include "ImathExport.h"
 #include "ImathNamespace.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 /// @cond Doxygen_Suppress
 
@@ -75,6 +75,6 @@ class IMATH_EXPORT_TYPE Rand48;
 
 /// @endcond
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHFORWARD_H

@@ -20,12 +20,12 @@
 // change that:
 template <typename T>
 void
-testTranslationRotationMatrix (const IMATH_INTERNAL_NAMESPACE::M44d& mat)
+testTranslationRotationMatrix (const IMATH_NAMESPACE::M44d& mat)
 {
     std::cout << "Testing known translate/rotate matrix:\n " << mat;
-    typedef IMATH_INTERNAL_NAMESPACE::Vec3<T> Vec;
+    typedef IMATH_NAMESPACE::Vec3<T> Vec;
 
-    static IMATH_INTERNAL_NAMESPACE::Rand48 rand (2047);
+    static IMATH_NAMESPACE::Rand48 rand (2047);
 
     size_t           numPoints = 7;
     std::vector<Vec> from;
@@ -34,27 +34,27 @@ testTranslationRotationMatrix (const IMATH_INTERNAL_NAMESPACE::M44d& mat)
     to.reserve (numPoints);
     for (size_t i = 0; i < numPoints; ++i)
     {
-        IMATH_INTERNAL_NAMESPACE::V3d a (
+        IMATH_NAMESPACE::V3d a (
             rand.nextf (), rand.nextf (), rand.nextf ());
-        IMATH_INTERNAL_NAMESPACE::V3d b = a * mat;
+        IMATH_NAMESPACE::V3d b = a * mat;
 
         from.push_back (Vec (a));
         to.push_back (Vec (b));
     }
 
     std::vector<T>                       weights (numPoints, T (1));
-    const IMATH_INTERNAL_NAMESPACE::M44d m1 = procrustesRotationAndTranslation (
+    const IMATH_NAMESPACE::M44d m1 = procrustesRotationAndTranslation (
         &from[0], &to[0], &weights[0], numPoints);
-    const IMATH_INTERNAL_NAMESPACE::M44d m2 =
+    const IMATH_NAMESPACE::M44d m2 =
         procrustesRotationAndTranslation (&from[0], &to[0], numPoints);
 
     const T eps = sizeof (T) == 8 ? T(1e-8) : T(1e-4);
     for (size_t i = 0; i < numPoints; ++i)
     {
-        const IMATH_INTERNAL_NAMESPACE::V3d a  = from[i];
-        const IMATH_INTERNAL_NAMESPACE::V3d b  = to[i];
-        const IMATH_INTERNAL_NAMESPACE::V3d b1 = a * m1;
-        const IMATH_INTERNAL_NAMESPACE::V3d b2 = a * m2;
+        const IMATH_NAMESPACE::V3d a  = from[i];
+        const IMATH_NAMESPACE::V3d b  = to[i];
+        const IMATH_NAMESPACE::V3d b1 = a * m1;
+        const IMATH_NAMESPACE::V3d b2 = a * m2;
 
         assert ((b - b1).length () < eps);
         assert ((b - b2).length () < eps);
@@ -66,12 +66,12 @@ testTranslationRotationMatrix (const IMATH_INTERNAL_NAMESPACE::M44d& mat)
 // rotates, and uniform scale that we get an exact match.
 template <typename T>
 void
-testWithTranslateRotateAndScale (const IMATH_INTERNAL_NAMESPACE::M44d& m)
+testWithTranslateRotateAndScale (const IMATH_NAMESPACE::M44d& m)
 {
     std::cout << "Testing with known translate/rotate/scale matrix\n" << m;
-    IMATH_INTERNAL_NAMESPACE::Rand48 rand (5376);
+    IMATH_NAMESPACE::Rand48 rand (5376);
 
-    typedef IMATH_INTERNAL_NAMESPACE::Vec3<T> V3;
+    typedef IMATH_NAMESPACE::Vec3<T> V3;
     std::vector<V3>                           from;
     std::vector<T>                            weights;
 
@@ -91,14 +91,14 @@ testWithTranslateRotateAndScale (const IMATH_INTERNAL_NAMESPACE::M44d& m)
             to.push_back (from[i] * m);
 
         // weighted:
-        IMATH_INTERNAL_NAMESPACE::M44d res =
-            IMATH_INTERNAL_NAMESPACE::procrustesRotationAndTranslation (
+        IMATH_NAMESPACE::M44d res =
+            IMATH_NAMESPACE::procrustesRotationAndTranslation (
                 &from[0], &to[0], &weights[0], from.size (), true);
         for (size_t i = 0; i < from.size (); ++i)
             assert ((from[i] * res - to[i]).length () < eps);
 
         // unweighted:
-        res = IMATH_INTERNAL_NAMESPACE::procrustesRotationAndTranslation (
+        res = IMATH_NAMESPACE::procrustesRotationAndTranslation (
             &from[0], &to[0], from.size (), true);
         for (size_t i = 0; i < from.size (); ++i)
             assert ((from[i] * res - to[i]).length () < eps);
@@ -109,20 +109,20 @@ testWithTranslateRotateAndScale (const IMATH_INTERNAL_NAMESPACE::M44d& m)
 template <typename T>
 double
 procrustesError (
-    const IMATH_INTERNAL_NAMESPACE::Vec3<T>* from,
-    const IMATH_INTERNAL_NAMESPACE::Vec3<T>* to,
+    const IMATH_NAMESPACE::Vec3<T>* from,
+    const IMATH_NAMESPACE::Vec3<T>* to,
     const T*                                 weights,
     const size_t                             n,
-    const IMATH_INTERNAL_NAMESPACE::M44d&    xform)
+    const IMATH_NAMESPACE::M44d&    xform)
 {
     double result   = 0.0;
     double residual = 0.0;
     for (size_t i = 0; i < n; ++i)
     {
-        IMATH_INTERNAL_NAMESPACE::V3d xformed =
-            IMATH_INTERNAL_NAMESPACE::V3d (from[i]) * xform;
-        IMATH_INTERNAL_NAMESPACE::V3d diff =
-            xformed - IMATH_INTERNAL_NAMESPACE::V3d (to[i]);
+        IMATH_NAMESPACE::V3d xformed =
+            IMATH_NAMESPACE::V3d (from[i]) * xform;
+        IMATH_NAMESPACE::V3d diff =
+            xformed - IMATH_NAMESPACE::V3d (to[i]);
         const double w   = weights[i];
         const double mag = w * diff.length2 ();
 
@@ -138,8 +138,8 @@ procrustesError (
 template <typename T>
 void
 verifyProcrustes (
-    const std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>>& from,
-    const std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>>& to)
+    const std::vector<IMATH_NAMESPACE::Vec3<T>>& from,
+    const std::vector<IMATH_NAMESPACE::Vec3<T>>& to)
 {
     const T eps = std::sqrt (std::numeric_limits<T>::epsilon ());
 
@@ -150,9 +150,9 @@ verifyProcrustes (
     std::vector<T> weights (from.size ());
     for (size_t i = 0; i < weights.size (); ++i)
         weights[i] = 1;
-    IMATH_INTERNAL_NAMESPACE::M44d m1 =
+    IMATH_NAMESPACE::M44d m1 =
         procrustesRotationAndTranslation (&from[0], &to[0], n);
-    IMATH_INTERNAL_NAMESPACE::M44d m2 =
+    IMATH_NAMESPACE::M44d m2 =
         procrustesRotationAndTranslation (&from[0], &to[0], &weights[0], n);
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
@@ -162,11 +162,11 @@ verifyProcrustes (
     for (size_t i = 0; i < weights.size (); ++i)
         weights[i] = static_cast<T>(i + 1);
 
-    IMATH_INTERNAL_NAMESPACE::M44d m =
+    IMATH_NAMESPACE::M44d m =
         procrustesRotationAndTranslation (&from[0], &to[0], &weights[0], n);
 
     // with scale:
-    IMATH_INTERNAL_NAMESPACE::M44d ms = procrustesRotationAndTranslation (
+    IMATH_NAMESPACE::M44d ms = procrustesRotationAndTranslation (
         &from[0], &to[0], &weights[0], n, true);
 
     // Verify that it's orthonormal w/ positive determinant.
@@ -174,11 +174,11 @@ verifyProcrustes (
     assert (std::abs (det - T (1)) < eps);
 
     // Verify orthonormal:
-    IMATH_INTERNAL_NAMESPACE::M33d upperLeft;
+    IMATH_NAMESPACE::M33d upperLeft;
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
             upperLeft[i][j] = m[i][j];
-    IMATH_INTERNAL_NAMESPACE::M33d product =
+    IMATH_NAMESPACE::M33d product =
         upperLeft * upperLeft.transposed ();
     for (int i = 0; i < 3; ++i)
     {
@@ -191,12 +191,12 @@ verifyProcrustes (
 
     // Verify that nearby transforms are worse:
     const size_t                     numTries = 10;
-    IMATH_INTERNAL_NAMESPACE::Rand48 rand (1056);
+    IMATH_NAMESPACE::Rand48 rand (1056);
     const double                     delta = 1e-3;
     for (size_t i = 0; i < numTries; ++i)
     {
         // Construct an orthogonal rotation matrix using Euler angles:
-        IMATH_INTERNAL_NAMESPACE::Eulerd diffRot (
+        IMATH_NAMESPACE::Eulerd diffRot (
             delta * rand.nextf (),
             delta * rand.nextf (),
             delta * rand.nextf ());
@@ -207,11 +207,11 @@ verifyProcrustes (
             procrustesError (&from[0], &to[0], &weights[0], n, m));
 
         // Try a small translation:
-        IMATH_INTERNAL_NAMESPACE::V3d diffTrans (
+        IMATH_NAMESPACE::V3d diffTrans (
             delta * rand.nextf (),
             delta * rand.nextf (),
             delta * rand.nextf ());
-        IMATH_INTERNAL_NAMESPACE::M44d translateMatrix;
+        IMATH_NAMESPACE::M44d translateMatrix;
         translateMatrix.translate (diffTrans);
         assert (
             procrustesError (
@@ -220,7 +220,7 @@ verifyProcrustes (
     }
 
     // Try a small scale:
-    IMATH_INTERNAL_NAMESPACE::M44d newMat    = ms;
+    IMATH_NAMESPACE::M44d newMat    = ms;
     const double                   scaleDiff = delta;
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
@@ -243,11 +243,11 @@ verifyProcrustes (
     // there is zero net force and zero net torque.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::V3d netForce (0);
-        IMATH_INTERNAL_NAMESPACE::V3d netTorque (0);
+        IMATH_NAMESPACE::V3d netForce (0);
+        IMATH_NAMESPACE::V3d netTorque (0);
         for (size_t iPoint = 0; iPoint < n; ++iPoint)
         {
-            const IMATH_INTERNAL_NAMESPACE::V3d force =
+            const IMATH_NAMESPACE::V3d force =
                 weights[iPoint] * (from[iPoint] * m - to[iPoint]);
             netForce += force;
             netTorque += to[iPoint].cross (force);
@@ -260,13 +260,13 @@ verifyProcrustes (
 
 template <typename T>
 void
-testProcrustesWithMatrix (const IMATH_INTERNAL_NAMESPACE::M44d& m)
+testProcrustesWithMatrix (const IMATH_NAMESPACE::M44d& m)
 {
     std::cout << "Testing Procrustes algorithm with arbitrary matrix: \n" << m;
-    std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>> fromPoints;
-    std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>> toPoints;
+    std::vector<IMATH_NAMESPACE::Vec3<T>> fromPoints;
+    std::vector<IMATH_NAMESPACE::Vec3<T>> toPoints;
 
-    IMATH_INTERNAL_NAMESPACE::Rand48 random (1209);
+    IMATH_NAMESPACE::Rand48 random (1209);
     std::cout << "   numPoints: ";
     for (size_t numPoints = 1; numPoints < 10; ++numPoints)
     {
@@ -275,11 +275,11 @@ testProcrustesWithMatrix (const IMATH_INTERNAL_NAMESPACE::M44d& m)
         toPoints.clear ();
         for (size_t i = 0; i < numPoints; ++i)
         {
-            const IMATH_INTERNAL_NAMESPACE::V3d fromPt (
+            const IMATH_NAMESPACE::V3d fromPt (
                 random.nextf (), random.nextf (), random.nextf ());
-            const IMATH_INTERNAL_NAMESPACE::V3d toPt = fromPt * m;
-            fromPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (fromPt));
-            toPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (toPt));
+            const IMATH_NAMESPACE::V3d toPt = fromPt * m;
+            fromPoints.push_back (IMATH_NAMESPACE::Vec3<T> (fromPt));
+            toPoints.push_back (IMATH_NAMESPACE::Vec3<T> (toPt));
         }
         verifyProcrustes (fromPoints, toPoints);
     }
@@ -291,62 +291,62 @@ void
 testProcrustesImp ()
 {
     // Test the empty case:
-    IMATH_INTERNAL_NAMESPACE::M44d id = procrustesRotationAndTranslation (
-        (IMATH_INTERNAL_NAMESPACE::Vec3<T>*) 0,
-        (IMATH_INTERNAL_NAMESPACE::Vec3<T>*) 0,
+    IMATH_NAMESPACE::M44d id = procrustesRotationAndTranslation (
+        (IMATH_NAMESPACE::Vec3<T>*) 0,
+        (IMATH_NAMESPACE::Vec3<T>*) 0,
         (T*) 0,
         0);
-    assert (id == IMATH_INTERNAL_NAMESPACE::M44d ());
+    assert (id == IMATH_NAMESPACE::M44d ());
 
     id = procrustesRotationAndTranslation (
-        (IMATH_INTERNAL_NAMESPACE::Vec3<T>*) 0,
-        (IMATH_INTERNAL_NAMESPACE::Vec3<T>*) 0,
+        (IMATH_NAMESPACE::Vec3<T>*) 0,
+        (IMATH_NAMESPACE::Vec3<T>*) 0,
         0);
-    assert (id == IMATH_INTERNAL_NAMESPACE::M44d ());
+    assert (id == IMATH_NAMESPACE::M44d ());
 
     // First we'll test with a bunch of known translation/rotation matrices
     // to make sure we get back exactly the same points:
-    IMATH_INTERNAL_NAMESPACE::M44d m;
+    IMATH_NAMESPACE::M44d m;
     m.makeIdentity ();
     testTranslationRotationMatrix<T> (m);
 
-    m.translate (IMATH_INTERNAL_NAMESPACE::V3d (3.0, 5.0, -0.2));
+    m.translate (IMATH_NAMESPACE::V3d (3.0, 5.0, -0.2));
     testTranslationRotationMatrix<T> (m);
 
-    m.rotate (IMATH_INTERNAL_NAMESPACE::V3d (M_PI, 0, 0));
+    m.rotate (IMATH_NAMESPACE::V3d (M_PI, 0, 0));
     testTranslationRotationMatrix<T> (m);
 
-    m.rotate (IMATH_INTERNAL_NAMESPACE::V3d (0, M_PI / 4.0, 0));
+    m.rotate (IMATH_NAMESPACE::V3d (0, M_PI / 4.0, 0));
     testTranslationRotationMatrix<T> (m);
 
-    m.rotate (IMATH_INTERNAL_NAMESPACE::V3d (0, 0, -3.0 / 4.0 * M_PI));
+    m.rotate (IMATH_NAMESPACE::V3d (0, 0, -3.0 / 4.0 * M_PI));
     testTranslationRotationMatrix<T> (m);
 
     m.makeIdentity ();
     testWithTranslateRotateAndScale<T> (m);
 
-    m.translate (IMATH_INTERNAL_NAMESPACE::V3d (0.4, 6.0, 10.0));
+    m.translate (IMATH_NAMESPACE::V3d (0.4, 6.0, 10.0));
     testWithTranslateRotateAndScale<T> (m);
 
-    m.rotate (IMATH_INTERNAL_NAMESPACE::V3d (M_PI, 0, 0));
+    m.rotate (IMATH_NAMESPACE::V3d (M_PI, 0, 0));
     testWithTranslateRotateAndScale<T> (m);
 
-    m.rotate (IMATH_INTERNAL_NAMESPACE::V3d (0, M_PI / 4.0, 0));
+    m.rotate (IMATH_NAMESPACE::V3d (0, M_PI / 4.0, 0));
     testWithTranslateRotateAndScale<T> (m);
 
-    m.rotate (IMATH_INTERNAL_NAMESPACE::V3d (0, 0, -3.0 / 4.0 * M_PI));
+    m.rotate (IMATH_NAMESPACE::V3d (0, 0, -3.0 / 4.0 * M_PI));
     testWithTranslateRotateAndScale<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::V3d (2.0, 2.0, 2.0));
+    m.scale (IMATH_NAMESPACE::V3d (2.0, 2.0, 2.0));
     testWithTranslateRotateAndScale<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::V3d (0.01, 0.01, 0.01));
+    m.scale (IMATH_NAMESPACE::V3d (0.01, 0.01, 0.01));
     testWithTranslateRotateAndScale<T> (m);
 
     // Now we'll test with some random point sets and verify
     // the various Procrustes properties:
-    std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>> fromPoints;
-    std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T>> toPoints;
+    std::vector<IMATH_NAMESPACE::Vec3<T>> fromPoints;
+    std::vector<IMATH_NAMESPACE::Vec3<T>> toPoints;
     fromPoints.clear ();
     toPoints.clear ();
 
@@ -355,24 +355,24 @@ testProcrustesImp ()
         const T theta = T (2 * i) / T (M_PI);
         const T offset = T(M_PI / 3.0);
         fromPoints.push_back (
-            IMATH_INTERNAL_NAMESPACE::Vec3<T> (cos (theta), sin (theta), 0));
-        toPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (
+            IMATH_NAMESPACE::Vec3<T> (cos (theta), sin (theta), 0));
+        toPoints.push_back (IMATH_NAMESPACE::Vec3<T> (
             cos (theta + offset), sin (theta + offset), 0));
     }
     verifyProcrustes (fromPoints, toPoints);
 
-    IMATH_INTERNAL_NAMESPACE::Rand48 random (1209);
+    IMATH_NAMESPACE::Rand48 random (1209);
     for (size_t numPoints = 1; numPoints < 10; ++numPoints)
     {
         fromPoints.clear ();
         toPoints.clear ();
         for (size_t i = 0; i < numPoints; ++i)
         {
-            fromPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (
+            fromPoints.push_back (IMATH_NAMESPACE::Vec3<T> (
                 static_cast<T>(random.nextf ()),
                 static_cast<T>(random.nextf ()),
                 static_cast<T>(random.nextf ())));
-            toPoints.push_back (IMATH_INTERNAL_NAMESPACE::Vec3<T> (
+            toPoints.push_back (IMATH_NAMESPACE::Vec3<T> (
                 static_cast<T>(random.nextf ()),
                 static_cast<T>(random.nextf ()),
                 static_cast<T>(random.nextf ())));
@@ -383,29 +383,29 @@ testProcrustesImp ()
     // Test with some known matrices of varying degrees of quality:
     testProcrustesWithMatrix<T> (m);
 
-    m.translate (IMATH_INTERNAL_NAMESPACE::Vec3<T> (3, 4, 1));
+    m.translate (IMATH_NAMESPACE::Vec3<T> (3, 4, 1));
     testProcrustesWithMatrix<T> (m);
 
-    m.translate (IMATH_INTERNAL_NAMESPACE::Vec3<T> (-10, 2, 1));
+    m.translate (IMATH_NAMESPACE::Vec3<T> (-10, 2, 1));
     testProcrustesWithMatrix<T> (m);
 
-    IMATH_INTERNAL_NAMESPACE::Eulerd rot (M_PI / 3.0, 3.0 * M_PI / 4.0, 0);
+    IMATH_NAMESPACE::Eulerd rot (M_PI / 3.0, 3.0 * M_PI / 4.0, 0);
     m = m * rot.toMatrix44 ();
     testProcrustesWithMatrix<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (T(1.5), T(6.4), T(2.0)));
+    m.scale (IMATH_NAMESPACE::Vec3<T> (T(1.5), T(6.4), T(2.0)));
     testProcrustesWithMatrix<T> (m);
 
-    IMATH_INTERNAL_NAMESPACE::Eulerd rot2 (1.0, M_PI, M_PI / 3.0);
+    IMATH_NAMESPACE::Eulerd rot2 (1.0, M_PI, M_PI / 3.0);
     m = m * rot.toMatrix44 ();
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (-1, 1, 1));
+    m.scale (IMATH_NAMESPACE::Vec3<T> (-1, 1, 1));
     testProcrustesWithMatrix<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, T(0.001), 1));
+    m.scale (IMATH_NAMESPACE::Vec3<T> (1, T(0.001), 1));
     testProcrustesWithMatrix<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T> (1, 1, 0));
+    m.scale (IMATH_NAMESPACE::Vec3<T> (1, 1, 0));
     testProcrustesWithMatrix<T> (m);
 }
 

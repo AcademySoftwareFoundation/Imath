@@ -6,7 +6,7 @@
 #include "ImathFun.h"
 #include <cmath>
 
-IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
+IMATH_STABLE_3_2_ENTER
 
 float succf(float f) IMATH_NOEXCEPT
 {
@@ -32,4 +32,4 @@ double predd(double d) IMATH_NOEXCEPT
             std::nextafter(d, -std::numeric_limits<double>::infinity()) : d;
 }
 
-IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT
+IMATH_STABLE_3_2_EXIT

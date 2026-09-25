@@ -17,7 +17,7 @@
 #include "ImathMatrix.h"
 #include "ImathPlane.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// Clip the coordinates of a point, `p`, against a `Box<T>`, `box`.
@@ -896,6 +896,6 @@ intersects (const Box<Vec3<T>>& box, const Line3<T>& ray) IMATH_NOEXCEPT
     return intersects (box, ray, ignored);
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHBOXALGO_H

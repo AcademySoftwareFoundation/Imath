@@ -19,7 +19,7 @@
 #include "ImathNamespace.h"
 #include "ImathPlatform.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline T
@@ -83,28 +83,28 @@ template <class T>
 IMATH_HOSTDEVICE constexpr inline int
 cmp (T a, T b) IMATH_NOEXCEPT
 {
-    return IMATH_INTERNAL_NAMESPACE::sign (a - b);
+    return IMATH_NAMESPACE::sign (a - b);
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline int
 cmpt (T a, T b, T t) IMATH_NOEXCEPT
 {
-    return (IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t) ? 0 : cmp (a, b);
+    return (IMATH_NAMESPACE::abs (a - b) <= t) ? 0 : cmp (a, b);
 }
 
 template <class T>
 IMATH_HOSTDEVICE constexpr inline bool
 iszero (T a, T t) IMATH_NOEXCEPT
 {
-    return (IMATH_INTERNAL_NAMESPACE::abs (a) <= t) ? 1 : 0;
+    return (IMATH_NAMESPACE::abs (a) <= t) ? 1 : 0;
 }
 
 template <class T1, class T2, class T3>
 IMATH_HOSTDEVICE constexpr inline bool
 equal (T1 a, T2 b, T3 t) IMATH_NOEXCEPT
 {
-    return IMATH_INTERNAL_NAMESPACE::abs (a - b) <= t;
+    return IMATH_NAMESPACE::abs (a - b) <= t;
 }
 
 template <class T>
@@ -228,6 +228,6 @@ finited (double d) IMATH_NOEXCEPT
     return (u.i & 0x7ff0000000000000LL) != 0x7ff0000000000000LL;
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHFUN_H

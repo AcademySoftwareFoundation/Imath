@@ -33,7 +33,7 @@
 
 /// @endcond
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// Solve for x in the linear equation:
@@ -209,6 +209,6 @@ solveCubic (T a, T b, T c, T d, T x[3])
     }
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHROOTS_H

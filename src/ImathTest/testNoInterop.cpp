@@ -30,7 +30,7 @@ testNoInterop ()
             { 1.0f, 0.0f },
             { 0.0f, 1.0f }
         };
-        IMATH_INTERNAL_NAMESPACE::M22f m(a);
+        IMATH_NAMESPACE::M22f m(a);
         assert (m[0][0] == a[0][0]);
         assert (m[0][1] == a[0][1]);
         assert (m[1][0] == a[1][0]);
@@ -43,7 +43,7 @@ testNoInterop ()
             { 0.0f, 1.0f, 0.0f },
             { 0.0f, 0.0f, 1.0f } 
         };
-        IMATH_INTERNAL_NAMESPACE::M33f m(a);
+        IMATH_NAMESPACE::M33f m(a);
         assert (m[0][0] == a[0][0]);
         assert (m[0][1] == a[0][1]);
         assert (m[0][2] == a[0][2]);
@@ -62,7 +62,7 @@ testNoInterop ()
             { 0.0f, 0.0f, 1.0f, 0.0f },
             { 0.0f, 0.0f, 0.0f, 1.0f } 
         };
-        IMATH_INTERNAL_NAMESPACE::M44f m(a);
+        IMATH_NAMESPACE::M44f m(a);
         assert (m[0][0] == a[0][0]);
         assert (m[0][1] == a[0][1]);
         assert (m[0][2] == a[0][2]);

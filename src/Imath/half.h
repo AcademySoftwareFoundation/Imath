@@ -448,7 +448,7 @@ imath_float_to_half (float f)
 
 #    include <iostream>
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 ///
@@ -888,37 +888,37 @@ half::setBits (uint16_t bits) IMATH_NOEXCEPT
     _h = bits;
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 /// Output h to os, formatted as a float
 IMATH_EXPORT std::ostream&
-             operator<< (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
+             operator<< (std::ostream& os, IMATH_NAMESPACE::half h);
 
 /// Input h from is
 IMATH_EXPORT std::istream&
-             operator>> (std::istream& is, IMATH_INTERNAL_NAMESPACE::half& h);
+             operator>> (std::istream& is, IMATH_NAMESPACE::half& h);
 
 #include <limits>
 
 namespace std
 {
 
-template <> class numeric_limits<IMATH_INTERNAL_NAMESPACE::half>
+template <> class numeric_limits<IMATH_NAMESPACE::half>
 {
 public:
     static const bool is_specialized = true;
 
-    static constexpr IMATH_INTERNAL_NAMESPACE::half min () IMATH_NOEXCEPT
+    static constexpr IMATH_NAMESPACE::half min () IMATH_NOEXCEPT
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0x0400); /*HALF_MIN*/
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0x0400); /*HALF_MIN*/
     }
-    static constexpr IMATH_INTERNAL_NAMESPACE::half max () IMATH_NOEXCEPT
+    static constexpr IMATH_NAMESPACE::half max () IMATH_NOEXCEPT
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0x7bff); /*HALF_MAX*/
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0x7bff); /*HALF_MAX*/
     }
-    static constexpr IMATH_INTERNAL_NAMESPACE::half lowest ()
+    static constexpr IMATH_NAMESPACE::half lowest ()
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0xfbff); /* -HALF_MAX */
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0xfbff); /* -HALF_MAX */
     }
 
     static constexpr int  digits       = HALF_MANT_DIG;
@@ -928,13 +928,13 @@ public:
     static constexpr bool is_integer   = false;
     static constexpr bool is_exact     = false;
     static constexpr int  radix        = HALF_RADIX;
-    static constexpr IMATH_INTERNAL_NAMESPACE::half epsilon () IMATH_NOEXCEPT
+    static constexpr IMATH_NAMESPACE::half epsilon () IMATH_NOEXCEPT
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0x1400); /*HALF_EPSILON*/
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0x1400); /*HALF_EPSILON*/
     }
-    static constexpr IMATH_INTERNAL_NAMESPACE::half round_error () IMATH_NOEXCEPT
+    static constexpr IMATH_NAMESPACE::half round_error () IMATH_NOEXCEPT
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0x3800); /*0.5*/
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0x3800); /*0.5*/
     }
 
     static constexpr int min_exponent   = HALF_DENORM_MIN_EXP;
@@ -964,21 +964,21 @@ public:
 #    pragma warning(pop)
 #endif
     static constexpr bool               has_denorm_loss   = false;
-    static constexpr IMATH_INTERNAL_NAMESPACE::half               infinity () IMATH_NOEXCEPT
+    static constexpr IMATH_NAMESPACE::half               infinity () IMATH_NOEXCEPT
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0x7c00); /*half::posInf()*/
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0x7c00); /*half::posInf()*/
     }
-    static constexpr IMATH_INTERNAL_NAMESPACE::half quiet_NaN () IMATH_NOEXCEPT
+    static constexpr IMATH_NAMESPACE::half quiet_NaN () IMATH_NOEXCEPT
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0x7fff); /*half::qNan()*/
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0x7fff); /*half::qNan()*/
     }
-    static constexpr IMATH_INTERNAL_NAMESPACE::half signaling_NaN () IMATH_NOEXCEPT
+    static constexpr IMATH_NAMESPACE::half signaling_NaN () IMATH_NOEXCEPT
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0x7dff); /*half::sNan()*/
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0x7dff); /*half::sNan()*/
     }
-    static constexpr IMATH_INTERNAL_NAMESPACE::half denorm_min () IMATH_NOEXCEPT
+    static constexpr IMATH_NAMESPACE::half denorm_min () IMATH_NOEXCEPT
     {
-        return IMATH_INTERNAL_NAMESPACE::half (IMATH_INTERNAL_NAMESPACE::half::FromBits, 0x0001); /*HALF_DENORM_MIN*/
+        return IMATH_NAMESPACE::half (IMATH_NAMESPACE::half::FromBits, 0x0001); /*HALF_DENORM_MIN*/
     }
 
     static constexpr bool is_iec559  = false;
@@ -997,13 +997,13 @@ public:
 //----------
 
 IMATH_EXPORT void
-printBits (std::ostream& os, IMATH_INTERNAL_NAMESPACE::half h);
+printBits (std::ostream& os, IMATH_NAMESPACE::half h);
 IMATH_EXPORT void printBits (std::ostream& os, float f);
-IMATH_EXPORT void printBits (char c[19], IMATH_INTERNAL_NAMESPACE::half h);
+IMATH_EXPORT void printBits (char c[19], IMATH_NAMESPACE::half h);
 IMATH_EXPORT void printBits (char c[35], float f);
 
 #if !defined(__CUDACC__) && !defined(__CUDA_FP16_HPP__) && !defined(__HIP__)
-using half = IMATH_INTERNAL_NAMESPACE::half;
+using half = IMATH_NAMESPACE::half;
 #elif defined(__CUDACC__) || defined(__CUDA_FP16_HPP__)
 #include <cuda_fp16.h>
 #elif defined(__HIP__)

@@ -20,6 +20,8 @@ WARN_IF_UNDOCUMENTED = NO
 PREDEFINED = IMATH_CONSTEXPR14=constexpr \
              IMATH_HOSTDEVICE= \
              IMATH_INTERNAL_NAMESPACE=Imath \
+             IMATH_STABLE_3_2_ENTER="namespace Imath {" \
+             IMATH_STABLE_3_2_EXIT="}" \
              IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER="namespace Imath {" \
              IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT="}" \
              IMATH_INTERNAL_NAMESPACE_HEADER_ENTER="namespace Imath {" \

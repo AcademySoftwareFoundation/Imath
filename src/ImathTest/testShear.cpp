@@ -23,39 +23,39 @@ testShear ()
 {
     cout << "Testing functions in ImathShear.h" << endl;
 
-    assert (IMATH_INTERNAL_NAMESPACE::Shear6f::baseTypeLowest() ==
+    assert (IMATH_NAMESPACE::Shear6f::baseTypeLowest() ==
             std::numeric_limits<float>::lowest());
-    assert (IMATH_INTERNAL_NAMESPACE::Shear6f::baseTypeMax() ==
+    assert (IMATH_NAMESPACE::Shear6f::baseTypeMax() ==
             std::numeric_limits<float>::max());
-    assert (IMATH_INTERNAL_NAMESPACE::Shear6f::baseTypeSmallest() ==
+    assert (IMATH_NAMESPACE::Shear6f::baseTypeSmallest() ==
             std::numeric_limits<float>::min());
-    assert (IMATH_INTERNAL_NAMESPACE::Shear6f::baseTypeEpsilon() ==
+    assert (IMATH_NAMESPACE::Shear6f::baseTypeEpsilon() ==
             std::numeric_limits<float>::epsilon());
         
     cout << "Imath::Shear6 constructors" << endl;
 
     const float epsilon = std::numeric_limits<float>::epsilon ();
 
-    IMATH_INTERNAL_NAMESPACE::Shear6f testConstructor1;
-    IMATH_INTERNAL_NAMESPACE::Shear6f testConstructor2 (testConstructor1);
+    IMATH_NAMESPACE::Shear6f testConstructor1;
+    IMATH_NAMESPACE::Shear6f testConstructor2 (testConstructor1);
 
     testConstructor1 = testConstructor2;
 
-    IMATH_INTERNAL_NAMESPACE::Shear6f testConstructor3 (
+    IMATH_NAMESPACE::Shear6f testConstructor3 (
         52, 128, 254, 127, 12, -20);
-    IMATH_INTERNAL_NAMESPACE::Shear6f A (testConstructor3);
-    IMATH_INTERNAL_NAMESPACE::Shear6f B = A;
-    IMATH_INTERNAL_NAMESPACE::Shear6f X, Y, tmp;
+    IMATH_NAMESPACE::Shear6f A (testConstructor3);
+    IMATH_NAMESPACE::Shear6f B = A;
+    IMATH_NAMESPACE::Shear6f X, Y, tmp;
 
     assert (A == B);
 
     cout << "Imath::Shear6 * f" << endl;
 
     assert (
-        (IMATH_INTERNAL_NAMESPACE::Shear6f (
+        (IMATH_NAMESPACE::Shear6f (
              0.330f, 0.710f, 0.010f, 0.999f, -0.531f, -0.012f) *
          0.999f) ==
-        IMATH_INTERNAL_NAMESPACE::Shear6f (
+        IMATH_NAMESPACE::Shear6f (
             0.330f * 0.999f,
             0.710f * 0.999f,
             0.010f * 0.999f,
@@ -66,10 +66,10 @@ testShear ()
     cout << "Imath::Shear6 / f" << endl;
 
     assert (
-        (IMATH_INTERNAL_NAMESPACE::Shear6f (
+        (IMATH_NAMESPACE::Shear6f (
              0.330f, 0.710f, 0.010f, 0.999f, -0.531f, -0.012f) /
          0.999f) ==
-        IMATH_INTERNAL_NAMESPACE::Shear6f (
+        IMATH_NAMESPACE::Shear6f (
             0.330f / 0.999f,
             0.710f / 0.999f,
             0.010f / 0.999f,
@@ -83,7 +83,7 @@ testShear ()
     assert (B == A);
     assert (!(B != A));
 
-    X = Y = IMATH_INTERNAL_NAMESPACE::Shear6f (
+    X = Y = IMATH_NAMESPACE::Shear6f (
         0.123f, -0.420f, 0.501f, 0.998f, -0.231f, -0.034f);
 
     X *= 0.001f;
@@ -96,7 +96,7 @@ testShear ()
         std::fabs ((Y.zx * 0.001f) - X.zx) <= epsilon &&
         std::fabs ((Y.zy * 0.001f) - X.zy) <= epsilon);
 
-    X = Y = IMATH_INTERNAL_NAMESPACE::Shear6f (
+    X = Y = IMATH_NAMESPACE::Shear6f (
         0.123f, -0.420f, 0.501f, 0.998f, -0.231f, -0.034f);
 
     X /= -1.001f;
@@ -109,9 +109,9 @@ testShear ()
         std::fabs ((Y.zx / -1.001f) - X.zx) <= epsilon &&
         std::fabs ((Y.zy / -1.001f) - X.zy) <= epsilon);
 
-    Y = IMATH_INTERNAL_NAMESPACE::Shear6f (
+    Y = IMATH_NAMESPACE::Shear6f (
         0.998f, -0.001f, 0.501f, 1.001f, -0.231f, -0.034f);
-    X = IMATH_INTERNAL_NAMESPACE::Shear6f (
+    X = IMATH_NAMESPACE::Shear6f (
         0.011f, -0.420f, -0.501f, 0.998f, -0.231f, -0.034f);
 
     tmp = X + Y;
@@ -205,7 +205,7 @@ testShear ()
         std::fabs ((X.zy / Y.zy) - tmp.zy) <= 1e-5f);
 
 
-    IMATH_INTERNAL_NAMESPACE::Shear6f s (1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
+    IMATH_NAMESPACE::Shear6f s (1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
     tmp.setValue(s.xy, s.xz, s.yz, s.yx, s.zx, s.zy);
     assert (tmp.xy == s.xy &&
             tmp.xz == s.xz &&
@@ -213,7 +213,7 @@ testShear ()
             tmp.yx == s.yx &&
             tmp.zx == s.zx &&
             tmp.zy == s.zy);
-    s = IMATH_INTERNAL_NAMESPACE::Shear6f();
+    s = IMATH_NAMESPACE::Shear6f();
     tmp.getValue(s.xy, s.xz, s.yz, s.yx, s.zx, s.zy);
     assert (tmp.xy == s.xy &&
             tmp.xz == s.xz &&
@@ -222,7 +222,7 @@ testShear ()
             tmp.zx == s.zx &&
             tmp.zy == s.zy);
 
-    s = IMATH_INTERNAL_NAMESPACE::Shear6f();
+    s = IMATH_NAMESPACE::Shear6f();
     s.setValue(tmp);
     assert (tmp.xy == s.xy &&
             tmp.xz == s.xz &&
@@ -231,7 +231,7 @@ testShear ()
             tmp.zx == s.zx &&
             tmp.zy == s.zy);
 
-    s = IMATH_INTERNAL_NAMESPACE::Shear6f();
+    s = IMATH_NAMESPACE::Shear6f();
     tmp.getValue(s);
     assert (tmp.xy == s.xy &&
             tmp.xz == s.xz &&

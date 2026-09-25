@@ -16,11 +16,7 @@
 
 #include <math.h>
 
-#include "ImathNamespace.h"
-
 #ifdef __cplusplus
-
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 
 //
 // Helpful macros for checking which C++ standard we are compiling with.
@@ -72,12 +68,6 @@ IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
 #else
 #    define IMATH_RESTRICT
 #endif
-
-#ifdef __cplusplus
-
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
-
-#endif // __cplusplus
 
 /// @endcond
 

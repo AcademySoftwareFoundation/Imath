@@ -16,7 +16,7 @@
 #include "ImathColor.h"
 #include "ImathMath.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 //
 // Non-templated helper routines for color conversion.
@@ -261,6 +261,6 @@ packed2rgb (PackedColor packed, Color4<T>& out) IMATH_NOEXCEPT
     }
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHCOLORALGO_H

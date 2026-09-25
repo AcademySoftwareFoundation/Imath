@@ -15,7 +15,7 @@
 #include "ImathNamespace.h"
 #include "ImathVecAlgo.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// Compute point1 and point2 such that point1 is on line1, point2
@@ -219,6 +219,6 @@ rotatePoint (const Vec3<T> p, Line3<T> l, T angle) IMATH_NOEXCEPT
     return r;
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHLINEALGO_H
