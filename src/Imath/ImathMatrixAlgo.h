@@ -261,9 +261,9 @@ rotationMatrix (const Vec3<T>& fromDirection, const Vec3<T>& toDirection);
 
 ///
 /// Return a 4x4 matrix that rotates the `fromDir` vector
-/// so that it points towards `toDir1.  You may also
+/// so that it points towards `toDir`.  You may also
 /// specify that you want the up vector to be pointing
-/// in a certain direction 1upDir`.
+/// in a certain direction `upDir`.
 template <class T>
 Matrix44<T> rotationMatrixWithUpDir (
     const Vec3<T>& fromDir, const Vec3<T>& toDir, const Vec3<T>& upDir);

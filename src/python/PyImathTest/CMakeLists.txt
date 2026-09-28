@@ -30,6 +30,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "")
   project(PyImathTest)
 
   find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+  set(PYIMATH_PYTHON_EMBED_FOUND ${Python3_Development_FOUND})
   find_package(Boost REQUIRED COMPONENTS python)
 
   find_package(Imath COMPONENTS PyImath)
@@ -42,6 +43,19 @@ set(PYIMATH_MODULE ${PYIMATH_MODULE_NAME}_module)
 set(PYIMATH_LIBRARY PyImath)
 
 set(PYIMATH_TEST_SOURCES main.cpp testStringTable.cpp)
+
+# PyImathTestC embeds the interpreter, so it needs libpython
+# (Python3::Python), which is not available everywhere, e.g. in the
+# manylinux images used to build wheels. It also links the PyImath
+# library directly, which is unsupported with an internal Boost.Python
+# (the test program and the imath module would each get their own copy
+# of Boost.Python and its type registry).
+
+if(IMATH_USE_INTERNAL_BOOST)
+  message(STATUS "Boost.Python is internal, skipping PyImathTestC (PyImath library not supported in this configuration)")
+elseif(NOT PYIMATH_PYTHON_EMBED_FOUND)
+  message(STATUS "Python3 Development.Embed (libpython) not found, skipping PyImathTestC")
+else()
 
 add_executable(PyImathTestC ${PYIMATH_TEST_SOURCES})
 
@@ -63,6 +77,8 @@ target_include_directories(PyImathTestC PUBLIC ${Python3_INCLUDE_DIRS} ${Boost_I
 set_target_properties(PyImathTestC PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
+
+endif()
 
 # Test of the python API.  Execute the test by invoking python
 # with the script as an argument, with PATH and PYTHONPATH set properly.
