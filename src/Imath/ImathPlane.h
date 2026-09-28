@@ -16,7 +16,7 @@
 #include "ImathLine.h"
 #include "ImathVec.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// The `Plane3` class represents a half space in 3D, so the normal
@@ -268,6 +268,6 @@ operator- (const Plane3<T>& plane) IMATH_NOEXCEPT
     return Plane3<T> (-plane.normal, -plane.distance);
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHPLANE_H

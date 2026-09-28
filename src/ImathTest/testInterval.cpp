@@ -20,7 +20,7 @@
 #include <ImathForward.h>
 
 using namespace std;
-using namespace IMATH_INTERNAL_NAMESPACE;
+using namespace IMATH_NAMESPACE;
 
 namespace
 {
@@ -35,7 +35,7 @@ testConstructors (const char* type)
     // Empty
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         assert (
             b.min == T (std::numeric_limits<T>::max ()) &&
             b.max == T (std::numeric_limits<T>::lowest ()));
@@ -46,7 +46,7 @@ testConstructors (const char* type)
     //
     {
         T                                     p (42);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (p);
+        IMATH_NAMESPACE::Interval<T> b (p);
         assert (b.min == p && b.max == p);
     }
 
@@ -56,14 +56,14 @@ testConstructors (const char* type)
     {
         T                                     p0 (42);
         T                                     p1 (666);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b (p0, p1);
         assert (b.min == p0 && b.max == p1);
     }
 
     {
         T                                     p0 (666);
         T                                     p1 (42);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b (p0, p1);
         assert (b.min == p0 && b.max == p1);
     }
 }
@@ -78,7 +78,7 @@ testMakeEmpty (const char* type)
     // Empty interval
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         b.makeEmpty ();
         assert (
             b.min == T (std::numeric_limits<T>::max ()) &&
@@ -89,7 +89,7 @@ testMakeEmpty (const char* type)
     // Non-empty, has volume
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b (T (-1), T (1));
         b.makeEmpty ();
         assert (
             b.min == T (std::numeric_limits<T>::max ()) &&
@@ -102,7 +102,7 @@ testMakeEmpty (const char* type)
     {
         T                                     min (0);
         T                                     max (10);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+        IMATH_NAMESPACE::Interval<T> b (min, max);
         b.makeEmpty ();
         assert (
             b.min == T (std::numeric_limits<T>::max ()) &&
@@ -120,7 +120,7 @@ testMakeInfinite (const char* type)
     // Infinite interval
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         b.makeInfinite ();
         assert (
             b.min == T (std::numeric_limits<T>::lowest ()) &&
@@ -131,7 +131,7 @@ testMakeInfinite (const char* type)
     // Non-empty, has volume
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b (T (-1), T (1));
         b.makeInfinite ();
         assert (
             b.min == T (std::numeric_limits<T>::lowest ()) &&
@@ -145,7 +145,7 @@ testMakeInfinite (const char* type)
         T min (0);
         T max (1);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+        IMATH_NAMESPACE::Interval<T> b (min, max);
         b.makeInfinite ();
         assert (
             b.min == T (std::numeric_limits<T>::lowest ()) &&
@@ -159,7 +159,7 @@ testExtendByPoint (const char* type)
 {
     cout << "    extendBy() point for type " << type << endl;
 
-    IMATH_INTERNAL_NAMESPACE::Rand32 rand (0);
+    IMATH_NAMESPACE::Rand32 rand (0);
 
     const unsigned int iters = 10;
 
@@ -169,7 +169,7 @@ testExtendByPoint (const char* type)
     for (unsigned int i = 0; i < iters; i++)
     {
         T p (static_cast<T>(rand.nextf (-12345, 12345)));
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         b.extendBy (p);
         assert (b.min == p && b.max == p);
     }
@@ -180,7 +180,7 @@ testExtendByPoint (const char* type)
     //
     for (unsigned int i = 0; i < iters; i++)
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
 
         T min;
         T max;
@@ -215,8 +215,8 @@ testExtendByInterval (const char* type)
     // Extend empty interval with an empty interval
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
-        b.extendBy (IMATH_INTERNAL_NAMESPACE::Interval<T> ());
+        IMATH_NAMESPACE::Interval<T> b;
+        b.extendBy (IMATH_NAMESPACE::Interval<T> ());
         assert (
             b.min == T (std::numeric_limits<T>::max ()) &&
             b.max == T (std::numeric_limits<T>::lowest ()));
@@ -229,22 +229,22 @@ testExtendByInterval (const char* type)
         T p0 (-1);
         T p1 (1);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0;
-        b0.extendBy (IMATH_INTERNAL_NAMESPACE::Interval<T> (p0, p1));
+        IMATH_NAMESPACE::Interval<T> b0;
+        b0.extendBy (IMATH_NAMESPACE::Interval<T> (p0, p1));
         assert (b0.min == p0 && b0.max == p1);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
-        b1.extendBy (IMATH_INTERNAL_NAMESPACE::Interval<T> ());
+        IMATH_NAMESPACE::Interval<T> b1 (p0, p1);
+        b1.extendBy (IMATH_NAMESPACE::Interval<T> ());
         assert (b1.min == p0 && b1.max == p1);
     }
 
     //
     // Extend non-empty interval with non-empty interval. Starts with empty, then builds.
     //
-    IMATH_INTERNAL_NAMESPACE::Rand32 rand (0);
+    IMATH_NAMESPACE::Rand32 rand (0);
     const unsigned int               iters = 10;
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
 
         T min, max;
 
@@ -258,7 +258,7 @@ testExtendByInterval (const char* type)
             min = std::min (min, p0);
             max = std::max (max, p1);
 
-            b.extendBy (IMATH_INTERNAL_NAMESPACE::Interval<T> (p0, p1));
+            b.extendBy (IMATH_NAMESPACE::Interval<T> (p0, p1));
 
             assert (b.min == min && b.max == max);
         }
@@ -271,14 +271,14 @@ testComparators (const char* type)
 {
     cout << "    comparators for type " << type << endl;
 
-    IMATH_INTERNAL_NAMESPACE::Rand32 rand (0);
+    IMATH_NAMESPACE::Rand32 rand (0);
 
     //
     // Compare empty.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0;
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1;
+        IMATH_NAMESPACE::Interval<T> b0;
+        IMATH_NAMESPACE::Interval<T> b1;
 
         assert (b0 == b1);
         assert (!(b0 != b1));
@@ -291,8 +291,8 @@ testComparators (const char* type)
         T p0 (-1);
         T p1 (1);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0;
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b0;
+        IMATH_NAMESPACE::Interval<T> b1 (p0, p1);
         assert (!(b0 == b1));
         assert (b0 != b1);
     }
@@ -307,9 +307,9 @@ testComparators (const char* type)
         T p2 (-2);
         T p3 (2);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (p0, p1);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p2, p3);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b2 (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b0 (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b1 (p2, p3);
+        IMATH_NAMESPACE::Interval<T> b2 (p0, p1);
 
         assert (b0 != b1);
         assert (!(b0 == b1));
@@ -325,13 +325,13 @@ testIntersects (const char* type)
 {
     cout << "    intersects() for type " << type << endl;
 
-    IMATH_INTERNAL_NAMESPACE::Rand32 rand (0);
+    IMATH_NAMESPACE::Rand32 rand (0);
 
     //
     // Intersect point with empty interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         T                                     p (1);
 
         assert (!b.intersects (p));
@@ -341,7 +341,7 @@ testIntersects (const char* type)
     // Intersect point with non-empty, has-volume interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b (T (-1), T (1));
         T                                     p0 (0);
         T                                     p1 (5);
         T                                     p2 (-5);
@@ -360,7 +360,7 @@ testIntersects (const char* type)
 
         T                                     p0 (0);
         T                                     p1 (5);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+        IMATH_NAMESPACE::Interval<T> b (min, max);
 
         assert (b.intersects (p0));
         assert (!b.intersects (p1));
@@ -370,8 +370,8 @@ testIntersects (const char* type)
     // Intersect empty interval with empty interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0;
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1;
+        IMATH_NAMESPACE::Interval<T> b0;
+        IMATH_NAMESPACE::Interval<T> b1;
 
         assert (!b0.intersects (b1));
         assert (!b1.intersects (b0));
@@ -381,9 +381,9 @@ testIntersects (const char* type)
     // Intersect empty interval with non-empty has-volume intervales.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0;
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (T (-1), T (1));
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b2 (T (1), T (2));
+        IMATH_NAMESPACE::Interval<T> b0;
+        IMATH_NAMESPACE::Interval<T> b1 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b2 (T (1), T (2));
 
         assert (!b0.intersects (b1));
         assert (!b0.intersects (b2));
@@ -400,8 +400,8 @@ testIntersects (const char* type)
         T max                     = min;
         max[T::dimensions () - 1] = 1;
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0;
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (min, max);
+        IMATH_NAMESPACE::Interval<T> b0;
+        IMATH_NAMESPACE::Interval<T> b1 (min, max);
 
         assert (!b0.intersects (b1));
         assert (!b1.intersects (b0));
@@ -411,10 +411,10 @@ testIntersects (const char* type)
     // Intersect non-empty has-volume interval with non-empty has-volume interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (T (-1), T (1));
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b2 (T (-1), T (1));
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b3 (T (1), T (2));
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b4 (T (2), T (3));
+        IMATH_NAMESPACE::Interval<T> b1 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b2 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b3 (T (1), T (2));
+        IMATH_NAMESPACE::Interval<T> b4 (T (2), T (3));
 
         assert (b1.intersects (b1));
         assert (b1.intersects (b3));
@@ -428,13 +428,13 @@ testIntersects (const char* type)
     // Intersect non-empty has-volume interval with non-empty no-volume interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b0 (T (-1), T (1));
 
         T min (0);
         T max (1);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (min, max);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b2 (min + T (2), max + T (2));
+        IMATH_NAMESPACE::Interval<T> b1 (min, max);
+        IMATH_NAMESPACE::Interval<T> b2 (min + T (2), max + T (2));
 
         assert (b0.intersects (b1));
         assert (b1.intersects (b0));
@@ -450,9 +450,9 @@ testIntersects (const char* type)
         T min (0);
         T max (1);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (min, max);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (min, max + T (2));
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b2 (min + T (2), max + T (2));
+        IMATH_NAMESPACE::Interval<T> b0 (min, max);
+        IMATH_NAMESPACE::Interval<T> b1 (min, max + T (2));
+        IMATH_NAMESPACE::Interval<T> b2 (min + T (2), max + T (2));
 
         assert (b0.intersects (b1));
         assert (b1.intersects (b0));
@@ -472,7 +472,7 @@ testSize (const char* type)
     // Size of empty interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         assert (b.size () == T (0));
     }
 
@@ -480,12 +480,12 @@ testSize (const char* type)
     // Size of non-empty, has-volume interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b0 (T (-1), T (1));
         assert (b0.size () == T (2));
 
         T p (42);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (-p, p);
+        IMATH_NAMESPACE::Interval<T> b1 (-p, p);
         assert (b1.size () == p * T (2));
     }
 
@@ -496,7 +496,7 @@ testSize (const char* type)
         T min (0);
         T max (1);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+        IMATH_NAMESPACE::Interval<T> b (min, max);
 
         assert (b.size () == max);
     }
@@ -512,7 +512,7 @@ testCenter (const char* type)
     // Center of empty interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         assert (b.center () == T (0));
     }
 
@@ -520,13 +520,13 @@ testCenter (const char* type)
     // Center of non-empty, has-volume interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b0 (T (-1), T (1));
         assert (b0.center () == T (0));
 
         T p0 (1);
         T p1 (2);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b1 (p0, p1);
         assert (b1.center () == (p1 + p0) / 2);
     }
 
@@ -537,7 +537,7 @@ testCenter (const char* type)
         T min (0);
         T max (2);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+        IMATH_NAMESPACE::Interval<T> b (min, max);
 
         assert (b.center () == max / 2);
     }
@@ -553,7 +553,7 @@ testIsEmpty (const char* type)
     // Empty interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         assert (b.isEmpty ());
     }
 
@@ -561,12 +561,12 @@ testIsEmpty (const char* type)
     // Non-empty, has-volume interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b0 (T (-1), T (1));
         assert (!b0.isEmpty ());
 
         T                                     p0 (2);
         T                                     p1 (4);
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b1 (p0, p1);
         assert (!b1.isEmpty ());
     }
 
@@ -577,7 +577,7 @@ testIsEmpty (const char* type)
         T min (0);
         T max (2);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+        IMATH_NAMESPACE::Interval<T> b (min, max);
 
         assert (!b.isEmpty ());
     }
@@ -593,7 +593,7 @@ testIsInfinite (const char* type)
     // Infinite interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         b.makeInfinite ();
         assert (b.isInfinite ());
     }
@@ -602,13 +602,13 @@ testIsInfinite (const char* type)
     // Non-empty, has-volume interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b0 (T (-1), T (1));
         assert (!b0.isInfinite ());
 
         T p0 (2);
         T p1 (4);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b1 (p0, p1);
         assert (!b1.isInfinite ());
     }
 
@@ -619,7 +619,7 @@ testIsInfinite (const char* type)
         T min (0);
         T max (2);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+        IMATH_NAMESPACE::Interval<T> b (min, max);
 
         assert (!b.isInfinite ());
     }
@@ -635,7 +635,7 @@ testHasVolume (const char* type)
     // Empty interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         assert (!b.hasVolume ());
     }
 
@@ -643,7 +643,7 @@ testHasVolume (const char* type)
     // Infinite interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b;
+        IMATH_NAMESPACE::Interval<T> b;
         b.makeInfinite ();
         assert (b.hasVolume ());
     }
@@ -652,13 +652,13 @@ testHasVolume (const char* type)
     // Non-empty, has-volume interval.
     //
     {
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b0 (T (-1), T (1));
+        IMATH_NAMESPACE::Interval<T> b0 (T (-1), T (1));
         assert (b0.hasVolume ());
 
         T p0 (2);
         T p1 (4);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b1 (p0, p1);
+        IMATH_NAMESPACE::Interval<T> b1 (p0, p1);
         assert (b1.hasVolume ());
     }
 
@@ -669,7 +669,7 @@ testHasVolume (const char* type)
         T min (0);
         T max (2);
 
-        IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+        IMATH_NAMESPACE::Interval<T> b (min, max);
         b.makeEmpty ();
         assert (!b.hasVolume ());
     }
@@ -684,7 +684,7 @@ testStream (const char* type)
     T min (0);
     T max (1);
 
-    IMATH_INTERNAL_NAMESPACE::Interval<T> b (min, max);
+    IMATH_NAMESPACE::Interval<T> b (min, max);
     std::stringstream                     s1;
     s1 << '(' << min << ' ' << max << ')';
 

@@ -29,7 +29,7 @@
 #    pragma warning(disable : 4290)
 #endif
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 /// Enum used to indicate uninitialized construction of Matrix22,
 /// Matrix33, Matrix44
@@ -1597,7 +1597,7 @@ Matrix22<T>::equalWithAbsError (const Matrix22<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
-            if (!IMATH_INTERNAL_NAMESPACE::equalWithAbsError (
+            if (!IMATH_NAMESPACE::equalWithAbsError (
                     (*this).x[i][j], m.x[i][j], e))
                 return false;
 
@@ -1610,7 +1610,7 @@ Matrix22<T>::equalWithRelError (const Matrix22<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
-            if (!IMATH_INTERNAL_NAMESPACE::equalWithRelError (
+            if (!IMATH_NAMESPACE::equalWithRelError (
                     (*this).x[i][j], m.x[i][j], e))
                 return false;
 
@@ -1836,7 +1836,7 @@ Matrix22<T>::inverse (bool singExc) const
 
     T r = x[0][0] * x[1][1] - x[1][0] * x[0][1];
 
-    if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+    if (IMATH_NAMESPACE::abs (r) >= 1)
     {
         for (int i = 0; i < 2; ++i)
         {
@@ -1849,13 +1849,13 @@ Matrix22<T>::inverse (bool singExc) const
     else
     {
         T mr =
-            IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min ();
+            IMATH_NAMESPACE::abs (r) / std::numeric_limits<T>::min ();
 
         for (int i = 0; i < 2; ++i)
         {
             for (int j = 0; j < 2; ++j)
             {
-                if (mr > IMATH_INTERNAL_NAMESPACE::abs (s[i][j]))
+                if (mr > IMATH_NAMESPACE::abs (s[i][j]))
                 {
                     s[i][j] /= r;
                 }
@@ -1880,7 +1880,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>
 
     T r = x[0][0] * x[1][1] - x[1][0] * x[0][1];
 
-    if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+    if (IMATH_NAMESPACE::abs (r) >= 1)
     {
         for (int i = 0; i < 2; ++i)
         {
@@ -1893,13 +1893,13 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix22<T>
     else
     {
         T mr =
-            IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min ();
+            IMATH_NAMESPACE::abs (r) / std::numeric_limits<T>::min ();
 
         for (int i = 0; i < 2; ++i)
         {
             for (int j = 0; j < 2; ++j)
             {
-                if (mr > IMATH_INTERNAL_NAMESPACE::abs (s[i][j]))
+                if (mr > IMATH_NAMESPACE::abs (s[i][j]))
                 {
                     s[i][j] /= r;
                 }
@@ -2264,7 +2264,7 @@ Matrix33<T>::equalWithAbsError (const Matrix33<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            if (!IMATH_INTERNAL_NAMESPACE::equalWithAbsError (
+            if (!IMATH_NAMESPACE::equalWithAbsError (
                     (*this)[i][j], m[i][j], e))
                 return false;
 
@@ -2277,7 +2277,7 @@ Matrix33<T>::equalWithRelError (const Matrix33<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            if (!IMATH_INTERNAL_NAMESPACE::equalWithRelError (
+            if (!IMATH_NAMESPACE::equalWithRelError (
                     (*this)[i][j], m[i][j], e))
                 return false;
 
@@ -2464,7 +2464,7 @@ Matrix33<T>::operator*= (const Matrix33<T>& v) IMATH_NOEXCEPT
 {
     // Avoid initializing with 0 values before immediately overwriting them,
     // and unroll all loops for the best autovectorization.
-    Matrix33 tmp (IMATH_INTERNAL_NAMESPACE::UNINITIALIZED);
+    Matrix33 tmp (IMATH_NAMESPACE::UNINITIALIZED);
 
     tmp.x[0][0] =
         x[0][0] * v.x[0][0] + x[0][1] * v.x[1][0] + x[0][2] * v.x[2][0];
@@ -2497,7 +2497,7 @@ Matrix33<T>::operator* (const Matrix33<T>& v) const IMATH_NOEXCEPT
 {
     // Avoid initializing with 0 values before immediately overwriting them,
     // and unroll all loops for the best autovectorization.
-    Matrix33 tmp (IMATH_INTERNAL_NAMESPACE::UNINITIALIZED);
+    Matrix33 tmp (IMATH_NAMESPACE::UNINITIALIZED);
 
     tmp.x[0][0] =
         x[0][0] * v.x[0][0] + x[0][1] * v.x[1][0] + x[0][2] * v.x[2][0];
@@ -2866,7 +2866,7 @@ Matrix33<T>::inverse (bool singExc) const
 
         T r = x[0][0] * s[0][0] + x[0][1] * s[1][0] + x[0][2] * s[2][0];
 
-        if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+        if (IMATH_NAMESPACE::abs (r) >= 1)
         {
             for (int i = 0; i < 3; ++i)
             {
@@ -2878,14 +2878,14 @@ Matrix33<T>::inverse (bool singExc) const
         }
         else
         {
-            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) /
+            T mr = IMATH_NAMESPACE::abs (r) /
                    std::numeric_limits<T>::min ();
 
             for (int i = 0; i < 3; ++i)
             {
                 for (int j = 0; j < 3; ++j)
                 {
-                    if (mr > IMATH_INTERNAL_NAMESPACE::abs (s.x[i][j]))
+                    if (mr > IMATH_NAMESPACE::abs (s.x[i][j]))
                     {
                         s.x[i][j] /= r;
                     }
@@ -2919,7 +2919,7 @@ Matrix33<T>::inverse (bool singExc) const
 
         T r = x[0][0] * x[1][1] - x[1][0] * x[0][1];
 
-        if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+        if (IMATH_NAMESPACE::abs (r) >= 1)
         {
             for (int i = 0; i < 2; ++i)
             {
@@ -2931,14 +2931,14 @@ Matrix33<T>::inverse (bool singExc) const
         }
         else
         {
-            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) /
+            T mr = IMATH_NAMESPACE::abs (r) /
                    std::numeric_limits<T>::min ();
 
             for (int i = 0; i < 2; ++i)
             {
                 for (int j = 0; j < 2; ++j)
                 {
-                    if (mr > IMATH_INTERNAL_NAMESPACE::abs (s.x[i][j]))
+                    if (mr > IMATH_NAMESPACE::abs (s.x[i][j]))
                     {
                         s.x[i][j] /= r;
                     }
@@ -2981,7 +2981,7 @@ Matrix33<T>::inverse () const IMATH_NOEXCEPT
 
         T r = x[0][0] * s.x[0][0] + x[0][1] * s.x[1][0] + x[0][2] * s.x[2][0];
 
-        if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+        if (IMATH_NAMESPACE::abs (r) >= 1)
         {
             for (int i = 0; i < 3; ++i)
             {
@@ -2993,14 +2993,14 @@ Matrix33<T>::inverse () const IMATH_NOEXCEPT
         }
         else
         {
-            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) /
+            T mr = IMATH_NAMESPACE::abs (r) /
                    std::numeric_limits<T>::min ();
 
             for (int i = 0; i < 3; ++i)
             {
                 for (int j = 0; j < 3; ++j)
                 {
-                    if (mr > IMATH_INTERNAL_NAMESPACE::abs (s.x[i][j]))
+                    if (mr > IMATH_NAMESPACE::abs (s.x[i][j]))
                     {
                         s.x[i][j] /= r;
                     }
@@ -3031,7 +3031,7 @@ Matrix33<T>::inverse () const IMATH_NOEXCEPT
 
         T r = x[0][0] * x[1][1] - x[1][0] * x[0][1];
 
-        if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+        if (IMATH_NAMESPACE::abs (r) >= 1)
         {
             for (int i = 0; i < 2; ++i)
             {
@@ -3043,14 +3043,14 @@ Matrix33<T>::inverse () const IMATH_NOEXCEPT
         }
         else
         {
-            T mr = IMATH_INTERNAL_NAMESPACE::abs (r) /
+            T mr = IMATH_NAMESPACE::abs (r) /
                    std::numeric_limits<T>::min ();
 
             for (int i = 0; i < 2; ++i)
             {
                 for (int j = 0; j < 2; ++j)
                 {
-                    if (mr > IMATH_INTERNAL_NAMESPACE::abs (s.x[i][j]))
+                    if (mr > IMATH_NAMESPACE::abs (s.x[i][j]))
                     {
                         s.x[i][j] /= r;
                     }
@@ -3692,7 +3692,7 @@ Matrix44<T>::equalWithAbsError (const Matrix44<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
-            if (!IMATH_INTERNAL_NAMESPACE::equalWithAbsError (
+            if (!IMATH_NAMESPACE::equalWithAbsError (
                     (*this).x[i][j], m.x[i][j], e))
                 return false;
 
@@ -3705,7 +3705,7 @@ Matrix44<T>::equalWithRelError (const Matrix44<T>& m, T e) const IMATH_NOEXCEPT
 {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
-            if (!IMATH_INTERNAL_NAMESPACE::equalWithRelError (
+            if (!IMATH_NAMESPACE::equalWithRelError (
                     (*this).x[i][j], m.x[i][j], e))
                 return false;
 
@@ -4441,7 +4441,7 @@ Matrix44<T>::inverse (bool singExc) const
 
     T r = x[0][0] * s.x[0][0] + x[0][1] * s.x[1][0] + x[0][2] * s.x[2][0];
 
-    if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+    if (IMATH_NAMESPACE::abs (r) >= 1)
     {
         for (int i = 0; i < 3; ++i)
         {
@@ -4454,13 +4454,13 @@ Matrix44<T>::inverse (bool singExc) const
     else
     {
         T mr =
-            IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min ();
+            IMATH_NAMESPACE::abs (r) / std::numeric_limits<T>::min ();
 
         for (int i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 3; ++j)
             {
-                if (mr > IMATH_INTERNAL_NAMESPACE::abs (s.x[i][j]))
+                if (mr > IMATH_NAMESPACE::abs (s.x[i][j]))
                 {
                     s.x[i][j] /= r;
                 }
@@ -4516,7 +4516,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>
 
     T r = x[0][0] * s.x[0][0] + x[0][1] * s.x[1][0] + x[0][2] * s.x[2][0];
 
-    if (IMATH_INTERNAL_NAMESPACE::abs (r) >= 1)
+    if (IMATH_NAMESPACE::abs (r) >= 1)
     {
         for (int i = 0; i < 3; ++i)
         {
@@ -4529,13 +4529,13 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline Matrix44<T>
     else
     {
         T mr =
-            IMATH_INTERNAL_NAMESPACE::abs (r) / std::numeric_limits<T>::min ();
+            IMATH_NAMESPACE::abs (r) / std::numeric_limits<T>::min ();
 
         for (int i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 3; ++j)
             {
-                if (mr > IMATH_INTERNAL_NAMESPACE::abs (s.x[i][j]))
+                if (mr > IMATH_NAMESPACE::abs (s.x[i][j]))
                 {
                     s.x[i][j] /= r;
                 }
@@ -5216,6 +5216,6 @@ operator* (const Vec4<S>& v, const Matrix44<T>& m) IMATH_NOEXCEPT
     return Vec4<S> (x, y, z, w);
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHMATRIX_H

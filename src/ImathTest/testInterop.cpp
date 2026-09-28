@@ -18,18 +18,19 @@
 #include <vector>
 
 using namespace std;
-using namespace IMATH_INTERNAL_NAMESPACE;
+using namespace IMATH_NAMESPACE;
+using namespace IMATH_STABLE_3_2_NAME;
 
 #if IMATH_FOREIGN_VECTOR_INTEROP
 
 // Imath::has_subscript fails for std::vector because its length does not
 // appear to be the length of N elements. Carve out an exception here that
 // allows this to work.
-IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
+IMATH_STABLE_3_2_ENTER
 template <typename T, int N>
 struct has_subscript<std::vector<T>, T, N> : public std::true_type
 {};
-IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT
+IMATH_STABLE_3_2_EXIT
 
 
 namespace

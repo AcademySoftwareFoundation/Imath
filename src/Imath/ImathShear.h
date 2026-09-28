@@ -17,7 +17,7 @@
 #include "ImathVec.h"
 #include <iostream>
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// Shear6 class template.
@@ -545,7 +545,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Shear6<T>::equalWithAbsError (const Shear6<T>& h, T e) const
 {
     for (int i = 0; i < 6; i++)
-        if (!IMATH_INTERNAL_NAMESPACE::equalWithAbsError ((*this)[i], h[i], e))
+        if (!IMATH_NAMESPACE::equalWithAbsError ((*this)[i], h[i], e))
             return false;
 
     return true;
@@ -556,7 +556,7 @@ IMATH_HOSTDEVICE IMATH_CONSTEXPR14 inline bool
 Shear6<T>::equalWithRelError (const Shear6<T>& h, T e) const
 {
     for (int i = 0; i < 6; i++)
-        if (!IMATH_INTERNAL_NAMESPACE::equalWithRelError ((*this)[i], h[i], e))
+        if (!IMATH_NAMESPACE::equalWithRelError ((*this)[i], h[i], e))
             return false;
 
     return true;
@@ -730,6 +730,6 @@ operator* (S a, const Shear6<T>& h)
         a * h.xy, a * h.xz, a * h.yz, a * h.yx, a * h.zx, a * h.zy);
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHSHEAR_H

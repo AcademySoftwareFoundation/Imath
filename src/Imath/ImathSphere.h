@@ -17,7 +17,7 @@
 #include "ImathLine.h"
 #include "ImathVec.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// A 3D sphere
@@ -161,6 +161,6 @@ Sphere3<T>::intersect (const Line3<T>& line, Vec3<T>& intersection) const
     }
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHSPHERE_H

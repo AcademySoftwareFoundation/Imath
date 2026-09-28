@@ -16,7 +16,7 @@
 #include <iostream>
 
 using namespace std;
-using namespace IMATH_INTERNAL_NAMESPACE;
+using namespace IMATH_NAMESPACE;
 
 namespace
 {
@@ -196,7 +196,7 @@ testRandomAngles33 ()
         float angleEx;
         extractEuler (M, angleEx);
 
-        assert (IMATH_INTERNAL_NAMESPACE::equal (angle, angleEx, eps));
+        assert (IMATH_NAMESPACE::equal (angle, angleEx, eps));
     }
 }
 

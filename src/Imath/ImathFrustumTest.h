@@ -24,7 +24,7 @@
 #include "ImathSphere.h"
 #include "ImathVec.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// template class FrustumTest<T>
@@ -140,13 +140,13 @@ public:
     bool completelyContains (const Box<Vec3<T>>& box) const IMATH_NOEXCEPT;
 
     /// Return the camera matrix (primarily for debugging)
-    IMATH_INTERNAL_NAMESPACE::Matrix44<T> cameraMat () const IMATH_NOEXCEPT
+    IMATH_NAMESPACE::Matrix44<T> cameraMat () const IMATH_NOEXCEPT
     {
         return cameraMatrix;
     }
 
     /// Return the viewing frustum (primarily for debugging)
-    IMATH_INTERNAL_NAMESPACE::Frustum<T> currentFrustum () const IMATH_NOEXCEPT
+    IMATH_NAMESPACE::Frustum<T> currentFrustum () const IMATH_NOEXCEPT
     {
         return currFrustum;
     }
@@ -350,6 +350,6 @@ typedef FrustumTest<float> FrustumTestf;
 /// FrustymTest of type double
 typedef FrustumTest<double> FrustumTestd;
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHFRUSTUMTEST_H

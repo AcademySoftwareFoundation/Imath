@@ -15,7 +15,7 @@
 
 #include "ImathVec.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// An Interval has a min and a max and some miscellaneous
@@ -265,6 +265,6 @@ operator<< (std::ostream& s, const Interval<T>& v)
     return s << '(' << v.min << ' ' << v.max << ')';
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHINTERVAL_H
