@@ -106,6 +106,11 @@ using namespace IMATH_STABLE_3_2_NAME;
 #define IMATH_STABLE_3_2_ENTER namespace IMATH_STABLE_3_2_NAME {
 #define IMATH_STABLE_3_2_EXIT }
 
+// Backwards compatibility: OpenEXR uses these for forward declarations
+#define IMATH_INTERNAL_NAMESPACE_HEADER_ENTER IMATH_STABLE_3_2_ENTER
+#define IMATH_INTERNAL_NAMESPACE_HEADER_EXIT IMATH_STABLE_3_2_EXIT
+
+
 #endif // __cplusplus
 
 /// @endcond
