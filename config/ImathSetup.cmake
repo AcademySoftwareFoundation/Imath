@@ -32,7 +32,7 @@ set(tmp)
 # Namespace-related settings: allows one to customize the namespace
 # generated, and to version the namespaces.
 set(IMATH_NAMESPACE_CUSTOM "0" CACHE STRING "Whether the namespace has been customized (so external users know)")
-set(IMATH_INTERNAL_NAMESPACE "Imath_${IMATH_VERSION_API}" CACHE STRING "Real namespace for Imath that will end up in compiled symbols")
+set(IMATH_INTERNAL_NAMESPACE "Imath" CACHE STRING "Real namespace root for Imath that will end up in compiled symbols")
 set(IMATH_NAMESPACE "Imath" CACHE STRING "Public namespace alias for Imath")
 set(IMATH_PACKAGE_NAME "Imath ${IMATH_VERSION}${IMATH_VERSION_RELEASE_TYPE}" CACHE STRING "Public string / label for displaying package")
 

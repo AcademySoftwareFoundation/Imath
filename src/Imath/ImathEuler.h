@@ -20,7 +20,7 @@
 
 #include <iostream>
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 #if (defined _WIN32 || defined _WIN64) && defined _MSC_VER
 // Disable MS VC++ warnings about conversion from double to float
@@ -1088,6 +1088,6 @@ operator<< (std::ostream& o, const Euler<T>& euler)
 #    pragma warning(pop)
 #endif
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHEULER_H

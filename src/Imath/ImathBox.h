@@ -15,7 +15,7 @@
 
 #include "ImathVec.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// The `Box<V>` template represents an axis-aligned bounding box defined by
@@ -854,6 +854,6 @@ Box<Vec3<T>>::majorAxis () const IMATH_NOEXCEPT
     return (s.y >= s.z) ? 1 : 2;
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHBOX_H

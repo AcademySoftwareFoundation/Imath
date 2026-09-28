@@ -13,7 +13,7 @@
 #include "ImathRandom.h"
 #include <cstdint>
 
-IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER
+IMATH_STABLE_3_2_ENTER
 namespace
 {
 
@@ -109,7 +109,7 @@ erand48 (unsigned short state[3])
 double
 drand48 ()
 {
-    return IMATH_INTERNAL_NAMESPACE::erand48 (staticState);
+    return IMATH_NAMESPACE::erand48 (staticState);
 }
 
 /// Generate uniformly distributed integers between 0 and 0x7fffffff.
@@ -128,7 +128,7 @@ nrand48 (unsigned short state[3])
 long int
 lrand48 ()
 {
-    return IMATH_INTERNAL_NAMESPACE::nrand48 (staticState);
+    return IMATH_NAMESPACE::nrand48 (staticState);
 }
 
 void
@@ -167,4 +167,4 @@ Rand32::nextf ()
     return u.f - 1;
 }
 
-IMATH_INTERNAL_NAMESPACE_SOURCE_EXIT
+IMATH_STABLE_3_2_EXIT

@@ -22,7 +22,7 @@
 #endif
 
 using namespace std;
-using namespace IMATH_INTERNAL_NAMESPACE;
+using namespace IMATH_NAMESPACE;
 
 namespace
 {
@@ -286,7 +286,7 @@ testMiscMatrixAlgo ()
         cout
             << "Testing the building of an orthonormal direct frame from : a position, "
             << "an x axis direction and a normal to the y axis" << endl;
-        cout << "IMATH_INTERNAL_NAMESPACE::computeLocalFrame()" << endl;
+        cout << "IMATH_NAMESPACE::computeLocalFrame()" << endl;
 
         testComputeLocalFrame ();
 
@@ -294,7 +294,7 @@ testMiscMatrixAlgo ()
 
         cout << "Add a translate/rotate/scale offset to an input frame "
              << "and put it in another frame of reference" << endl;
-        cout << "IMATH_INTERNAL_NAMESPACE::addOffset()" << endl;
+        cout << "IMATH_NAMESPACE::addOffset()" << endl;
 
         testAddOffset ();
 
@@ -302,7 +302,7 @@ testMiscMatrixAlgo ()
 
         cout << "Compute Translate/Rotate/Scale matrix from matrix A " << endl;
         cout << "with the Rotate/Scale of Matrix B" << endl;
-        cout << "IMATH_INTERNAL_NAMESPACE::computeRSMatrix()" << endl;
+        cout << "IMATH_NAMESPACE::computeRSMatrix()" << endl;
 
         testComputeRSMatrix ();
 

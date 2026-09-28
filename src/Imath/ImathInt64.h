@@ -15,7 +15,7 @@
 #include "ImathNamespace.h"
 #include <limits.h>
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 #if (defined _WIN32 || defined _WIN64) && _MSC_VER >= 1300
 /// Int64 - unsigned 64-bit integer
@@ -40,6 +40,6 @@ IMATH_DEPRECATED ("use sint64_t")
 typedef long long int SInt64;
 #endif
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATH_INT64_H

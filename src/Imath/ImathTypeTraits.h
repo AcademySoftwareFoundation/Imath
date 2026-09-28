@@ -14,7 +14,7 @@
 
 #include "ImathPlatform.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 /// Define Imath::enable_if_t to be std for C++14, equivalent for C++11.
 #if (IMATH_CPLUSPLUS_VERSION >= 14)
@@ -28,7 +28,7 @@ using enable_if_t = typename std::enable_if<B, T>::type;
 /// An enable_if helper to be used in template parameters which results in
 /// much shorter symbols.
 #define IMATH_ENABLE_IF(...)                                                   \
-    IMATH_INTERNAL_NAMESPACE::enable_if_t<(__VA_ARGS__), int> = 0
+    IMATH_NAMESPACE::enable_if_t<(__VA_ARGS__), int> = 0
 
 /// A type trait that identifies types for which Vec length/normalize operations
 /// are meaningful. Defaults to std::is_floating_point, with a specialization
@@ -240,6 +240,6 @@ struct has_double_subscript<Base[Rows][Cols], Base, Rows, Cols>
 
 #endif
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHTYPETRAITS_H

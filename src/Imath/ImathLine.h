@@ -14,7 +14,7 @@
 #include "ImathNamespace.h"
 #include "ImathVec.h"
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 ///
 /// The `Line3` class represents a 3D line, defined by a point and a
@@ -180,6 +180,6 @@ operator* (const Line3<S>& line, const Matrix44<T>& M) IMATH_NOEXCEPT
     return Line3<S> (line.pos * M, (line.pos + line.dir) * M);
 }
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHLINE_H

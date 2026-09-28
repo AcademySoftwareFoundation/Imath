@@ -21,7 +21,7 @@
 #include "ImathVec.h"
 #include <math.h>
 
-IMATH_INTERNAL_NAMESPACE_HEADER_ENTER
+IMATH_STABLE_3_2_ENTER
 
 //------------------
 // Identity matrices
@@ -564,8 +564,8 @@ extractAndRemoveScalingAndShear (
     T maxVal = 0;
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            if (IMATH_INTERNAL_NAMESPACE::abs (row[i][j]) > maxVal)
-                maxVal = IMATH_INTERNAL_NAMESPACE::abs (row[i][j]);
+            if (IMATH_NAMESPACE::abs (row[i][j]) > maxVal)
+                maxVal = IMATH_NAMESPACE::abs (row[i][j]);
 
     //
     // We normalize the 3x3 matrix here.
@@ -1247,8 +1247,8 @@ extractAndRemoveScalingAndShear (
     T maxVal = 0;
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
-            if (IMATH_INTERNAL_NAMESPACE::abs (mat[i][j]) > maxVal)
-                maxVal = IMATH_INTERNAL_NAMESPACE::abs (mat[i][j]);
+            if (IMATH_NAMESPACE::abs (mat[i][j]) > maxVal)
+                maxVal = IMATH_NAMESPACE::abs (mat[i][j]);
 
     //
     // We normalize the 2x2 matrix here.
@@ -1574,6 +1574,6 @@ template <typename TM, typename TV> void maxEigenVector (TM& A, TV& S);
 /// of a real symmetric matrix using Jacobi transformation.
 template <typename TM, typename TV> void minEigenVector (TM& A, TV& S);
 
-IMATH_INTERNAL_NAMESPACE_HEADER_EXIT
+IMATH_STABLE_3_2_EXIT
 
 #endif // INCLUDED_IMATHMATRIXALGO_H
