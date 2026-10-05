@@ -2,7 +2,7 @@
 # Copyright (c) Contributors to the OpenEXR Project.
 
 [build-system]
-requires = ["scikit-build-core==0.12.2"]
+requires = ["scikit-build-core==1.1.0"]
 build-backend = "scikit_build_core.build"
 
 [project]
