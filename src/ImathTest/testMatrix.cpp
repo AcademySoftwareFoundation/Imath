@@ -724,6 +724,24 @@ testMatrix ()
         }
     }
 
+    // Outer product of two 4D vectors
+    {
+        cout << "Outer product of two 4D vectors" << endl;
+
+        IMATH_NAMESPACE::V4d  a (1, 2, 3, 4);
+        IMATH_NAMESPACE::V4d  b (5, 6, 7, 8);
+        IMATH_NAMESPACE::M44d p =
+            IMATH_NAMESPACE::outerProduct (a, b);
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                assert (p[i][j] == a[i] * b[j]);
+            }
+        }
+    }
+
     // Determinants (by building a random singular value decomposition)
     {
         cout << "4x4 determinants" << endl;
