@@ -2,5 +2,5 @@
 # Copyright (c) Contributors to the OpenEXR Project.
 
 sphinx == 9.0.4
-breathe == 5.0.0
+breathe == 5.1.0
 pydata-sphinx-theme == 0.21.0
