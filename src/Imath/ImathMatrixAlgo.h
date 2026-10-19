@@ -1385,10 +1385,17 @@ template <class T>
 bool
 checkForZeroScaleInRow (const T& scl, const Vec2<T>& row, bool exc /* = true */)
 {
-    for (int i = 0; i < 2; i++)
+    if (abs (scl) < T(1))
     {
-        if ((abs (scl) < 1 &&
-             abs (row[i]) >= std::numeric_limits<T>::max () * abs (scl)))
+        if (abs (row.x) >= std::numeric_limits<T>::max () * abs (scl))
+        {
+            if (exc)
+                throw std::domain_error (
+                    "Cannot remove zero scaling from matrix.");
+            else
+                return false;
+        }
+        if (abs (row.y) >= std::numeric_limits<T>::max () * abs (scl))
         {
             if (exc)
                 throw std::domain_error (
