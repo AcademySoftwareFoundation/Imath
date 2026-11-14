@@ -11,12 +11,12 @@ version: 2
 build:
   os: "ubuntu-22.04"
   tools:
-    # sphinx >= 9 requires Python >= 3.11
-    python: "3.11"
+    # sphinx >= 9 requires Python >= 3.11; soupsieve >= 4 requires >= 3.11.5
+    python: "3.12"
        
 sphinx:
   configuration: website/conf.py
 
 python:
   install:
-    - requirements: website/requirements.txt
+    - requirements: website/requirements-lock.txt
